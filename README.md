@@ -26,7 +26,8 @@ Technologies:
 * [Mocha](http://mochajs.org/): test framework.
 * [Sinon](http://sinonjs.org/): test spies, stubs and mocks.
 * [Travis](https://travis-ci.org/): Test and deploy.
-* [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit) [![Code Climate](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit)
+* [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit) [![Code Climate]
+[![Test Coverage](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage)
 
 #Workflow
 

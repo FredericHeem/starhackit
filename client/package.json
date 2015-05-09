@@ -5,6 +5,7 @@
   "description": "Starterkit frontend writen in react",
   "dependencies": {
     "aug": "^0.1.0",
+    "bower": "^1.4.1",
     "debug": "^2.1.3",
     "immutable": "3.7.1",
     "jquery": "~2.1.3",
@@ -72,7 +73,7 @@
     "webpack": "^1.8.1"
   },
   "scripts": {
-    "postinstall": "bower install && npm run build",
+    "postinstall": "./node_modules/bower/bin/bower install && npm run build",
     "buildrelease": "gulp build --release",
     "build": "gulp build",
     "test": "jest"

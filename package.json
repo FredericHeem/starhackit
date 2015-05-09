@@ -1,0 +1,12 @@
+{
+  "name": "react-node-startkit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cd server && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:FredericHeem/react-node-starterkit.git"
+  }
+}

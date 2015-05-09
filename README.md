@@ -11,19 +11,21 @@ Fullstack web application starter kit written in react and node.js with the foll
 
 Technologies:
 
-* [react](https://facebook.github.io/react/): a facebook library to build usr interfaces
-* [material ui](http://callemall.github.io/material-ui/#/): a CSS framework and a set of react components that implement google's material design
-* [express](http://expressjs.com/): fast, unopinionated, minimalist web framework for Node.js
-* [socket.io](http://socket.io/): real-time bidirectional event-based communication.
-* [sequelize](http://docs.sequelizejs.com/en/latest/) ORM supporting majors relational SQL database.
+* [React](https://facebook.github.io/react/): a facebook library to build user interfaces.
+* [Material ui](http://callemall.github.io/material-ui/#/): a CSS framework and a set of react components that implement google's material design.
+* [Express](http://expressjs.com/): fast, unopinionated, minimalist web framework for Node.js.
+* [Socket.io](http://socket.io/): real-time bidirectional event-based communication.
+* [Sequelize](http://docs.sequelizejs.com/en/latest/): Object Relationship Management (ORM) supporting majors relational SQL database.
+* [PostgreSQL](http://www.postgresql.org/): the world's most advanced open source  
 * [RabbitMq](https://www.rabbitmq.com/): messaging system.
-* [passport](http://passportjs.org/): authentication framework with more than 140 authentication strategies: username/password, facebook , google, github etc ...
-* [bower](http://bower.io/): a package manager for the web
-* [gulp](http://gulpjs.com/): automate and enhance your workflow
-* [grunt](http://gruntjs.com/): the javascript task runner
-* [Mocha](http://mochajs.org/): test framework
-* [sinon](http://sinonjs.org/): test spies, stubs and mocks.
-* [travis](https://travis-ci.org/): Test and deploy
+* [Passport](http://passportjs.org/): authentication framework with more than 140 authentication strategies: username/password, facebook , google, github etc ...
+* [Winston](https://github.com/winstonjs/winston): a multi-transport async logging library.
+* [Bower](http://bower.io/): a package manager for the web.
+* [Gulp](http://gulpjs.com/): automate and enhance your workflow.
+* [Grunt](http://gruntjs.com/): the javascript task runner.
+* [Mocha](http://mochajs.org/): test framework.
+* [Sinon](http://sinonjs.org/): test spies, stubs and mocks.
+* [Travis](https://travis-ci.org/): Test and deploy.
 
 
 #Workflow

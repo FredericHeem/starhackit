@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install": "cd client && npm install && cd ../server && npm install",
-    "start": "cd server && npm start"
+    "install": "(cd client && npm install) && (cd server && npm install)",
+    "start": "cd server && npm start",
+    "test":"cd server && npm test"
   },
   "repository": {
     "type": "git",

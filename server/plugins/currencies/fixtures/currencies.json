@@ -1,0 +1,14 @@
+[
+ {
+   "code":"EUR",
+   "name":"Euro"
+ },
+ {
+   "code":"USD",
+   "name":"US Dollar"
+ },
+ {
+   "code":"GBP",
+   "name":"British Pound"
+ } 
+]

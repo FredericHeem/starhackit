@@ -1,0 +1,9 @@
+{
+  "components": {
+    "pages": {
+      "home": {
+        "title": "Home"
+      }
+    }
+  }
+}

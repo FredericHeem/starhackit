@@ -1,0 +1,22 @@
+{
+  "name": "react-node-starterkit",
+  "version": "0.0.1",
+  "homepage": "http://github.com/FredericHeem/react-node-starterkit",
+  "description": "Frontend written in react",
+  "main": "src/app.js",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation": "5.5.0",
+    "foundation-icons": "*",
+    "mdi": "~0.9.21-alpha"
+  }
+}

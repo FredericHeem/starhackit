@@ -1,0 +1,7 @@
+{
+  "Admin": [
+   "/users get post", "/users/:id get put"
+  ],
+  "AdminReadOnly": ["/users get"],
+  "User": ["user_profile"]
+}

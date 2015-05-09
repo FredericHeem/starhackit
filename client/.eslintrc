@@ -1,0 +1,23 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true ,
+    "amd": true
+  },
+  "globals": {
+    "__DEV__": true,
+    "__SERVER__": true,
+    "zxcvbn": true
+  },
+  "rules": {
+    // Code style
+    "indent": [2, 2],
+    "quotes": [2, "double"],
+    "no-alert": 0,
+    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+    "new-cap": [2, {
+      "capIsNewExceptions": ["Immutable", "Map", "List"]
+    }]
+  }
+}

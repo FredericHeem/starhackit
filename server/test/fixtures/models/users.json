@@ -1,0 +1,12 @@
+{
+  "admin":{
+    "username":"admin",
+    "password":"password",
+    "group": "Admin"
+  },
+  "alice":{
+    "username":"alice",
+    "password":"password",
+    "group": "User"
+  }
+}

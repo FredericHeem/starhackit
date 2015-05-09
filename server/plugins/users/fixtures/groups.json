@@ -1,0 +1,14 @@
+[
+ {
+   "name":"Admin",
+   "description":"Administrator, can perform any actions"
+ },
+ {
+   "name":"AdminReadOnly",
+   "description":"A Administrator group with read only access"
+ },
+ {
+   "name":"User",
+   "description":"An authenticated user"
+ }
+]

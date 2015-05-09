@@ -1,0 +1,15 @@
+build/
+dist/
+node_modules/
+bower_components/
+vendor
+.DS_Store
+*.swo
+*.swp
+nohup.out
+npm-debug.log
+logs/*.log
+coverage
+.buildpath
+.project
+.settings/

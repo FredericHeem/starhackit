@@ -1,0 +1,10 @@
+{
+  "db":{
+    "driver": "sqlite3",
+    "dialect":"sqlite",
+    "database": "db_test",
+    "user": "user",
+    "password": "",
+    "logging": false
+  }
+}

@@ -1,0 +1,241 @@
+@import "../bower_components/foundation/scss/foundation/_functions";
+
+// Helper classes
+.max-width {
+  width: 100%;
+}
+
+// Elements
+pre > code {
+  display: block;
+}
+
+// App
+section.app-container {
+  max-width: 62.5rem;
+  margin: 0 auto;
+}
+
+// Main
+.main {
+  padding: 0.75rem;
+}
+
+// Header
+@media #{$small-only} {
+  .logo-bar {
+    display: none;
+  }
+}
+
+// Navigation
+.navlink {
+  margin: 0 24px 0 10px;
+  margin-top: 18px;
+  text-transform: uppercase;
+  //background-color: rgba(0,0,0,0);
+  display: inline-block;
+  .mui-icon {
+    line-height: 24px !important;
+    margin-right: 5px;
+  }
+}
+// Header
+/*
+@media #{$medium-up} {
+  .top-bar {
+    .profile {
+      display: none;
+    }
+    .logout {
+      display: none;
+    }
+    .login {
+      display: none;
+    }
+  }
+}
+*/
+
+.dev-dropdown-icon {
+  color: #f00;
+  font-size: 50px;
+}
+
+// Top bar
+.top-bar .name a {
+  line-height: 45px;
+  font-size: 0.8125rem;
+  margin: 0 0.75rem;
+  color: #FFFFFF;
+}
+
+.top-bar-section .mui-icon {
+  font-size: 0.8125rem;
+}
+
+.top-bar li.active {
+  background: #008CBA;
+}
+
+.top-bar li.active:hover {
+  background: #0078a0;
+}
+
+// Loading indicator
+.loading {
+  -webkit-animation:spin 1s linear infinite;
+  -moz-animation:spin 1s linear infinite;
+  animation:spin 1s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+// Breadcrumbs
+.breadcrumbs {
+  margin-bottom: 0;
+  padding: 0.5625rem 0.75rem;
+  border-style: none;
+  background-color: transparent;
+}
+.breadcrumbs .mdi {
+  font-size: 0.6875rem !important;
+}
+
+// Questions listing
+.questions {
+  .sort-controls {
+    margin-bottom: 0.5rem;
+  }
+  .question {
+    margin: 0 0 1rem 0;
+    .inner {
+      padding: 0.5rem;
+    }
+  }
+}
+
+// Single question
+.question {
+  h1 {
+    font-size: rem-calc(23);
+  }
+}
+
+// Footer
+.full-width {
+  max-width: 1400px;
+}
+
+$text-color: #fff;
+
+
+.footer {
+  padding: 1rem 0rem;
+  text-align: center;
+  //color: $text-color;
+  i {
+    font-size: 100px;
+  }
+  h4 {
+    color: $text-color;
+    font-size: 1em;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-top: 2.5rem;
+    margin-bottom: 10px;
+  }
+  p, a {
+    font-weight: 300;
+    font-size: .8em;
+    //color: $text-color;
+  }
+}
+
+@media only screen and (min-width: 40.063em) {
+  .footer {
+    .columns:nth-child(n+2) {
+      border-left: 1px solid scale-color($text-color, $lightness: -10%);
+      min-height: 200px;
+    }
+  }
+}
+
+.footer-links {
+  list-style-type: none;
+  li {
+    margin-top: 0.2rem;
+  }
+}
+
+// Signup panel
+.signup-panel {
+  i {
+    //font-size: 30px;
+    line-height: 45px;
+    color: #999;
+  }
+}
+
+.login-panel {
+  i {
+    line-height: 45px;
+    color: #999;
+  }
+}
+
+// Input
+.mui-input-description {
+  font-size: .8em;
+}
+
+.mui-input-error {
+  font-size: .8em;
+}
+
+.mui-input input:focus + .mui-input-placeholder, .mui-input input:valid + .mui-input-placeholder {
+  top: -1.6em;
+}
+
+// Mui fixes
+.mui-date-picker-calendar ul {
+  margin: 0;
+}
+
+// React spinner
+.react-spinner {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  top: 50%;
+  left: 50%;
+}
+
+.react-spinner_bar {
+  -webkit-animation: react-spinner_spin 1.2s linear infinite;
+  -moz-animation: react-spinner_spin 1.2s linear infinite;
+  animation: react-spinner_spin 1.2s linear infinite;
+  border-radius: 5px;
+  background-color: black;
+  position: absolute;
+  width: 20%;
+  height: 7.8%;
+  top: -3.9%;
+  left: -10%;
+}
+
+@keyframes react-spinner_spin {
+  0% { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+
+@-moz-keyframes react-spinner_spin {
+  0% { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+
+@-webkit-keyframes react-spinner_spin {
+  0% { opacity: 1; }
+  100% { opacity: 0.15; }
+}

@@ -1,0 +1,29 @@
+[
+ {
+   "name":"/users get post",
+   "resource":"/users",
+   "description":"Can create and list users",
+   "POST":true,
+   "GET":true
+ },
+ {
+   "name":"/users get",
+   "resource":"/users",
+   "description":"Can list users",
+   "GET":true
+ },
+ {
+   "name":"/users/:id get put",
+   "resource":"/users/:id",
+   "description":"Can get a user and update it",
+   "GET":true,
+   "PUT":true
+ },
+ {
+   "name":"user_profile",
+   "resource":"/user/profile",
+   "description":"Can read and update the user profille",
+   "GET":true,
+   "PUT":true
+ }
+]

@@ -1,1 +1,1 @@
-web: node server/processes/server.js
+web: cd server && npm start

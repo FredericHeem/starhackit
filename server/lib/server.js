@@ -76,7 +76,7 @@ module.exports = function (app) {
     var port = process.env.PORT || config.port || 3000;
     
     return new Promise(function(resolve){
-      httpHandle = server.listen(port, host, function() {
+      httpHandle = server.listen(port, function() {
         //console.log('Listening');
         log.info("listening api on %s:%s", host, port);
         resolve();

@@ -60,6 +60,7 @@ describe('Authentication', function(){
   it('login without parameters should return bad request', function(done){
     client.login()
     .catch(function(err){
+      assert(err);
       assert.equal(err.statusCode, 400);
       assert.equal(err.body, "Bad Request");
     })

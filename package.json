@@ -5,10 +5,13 @@
   "scripts": {
     "install": "(cd client && npm install) && (cd server && npm install)",
     "start": "cd server && npm start",
-    "test":"cd server && npm test"
+    "test": "cd server && npm test"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:FredericHeem/react-node-starterkit.git"
+  },
+  "dependencies": {
+    "codeclimate-test-reporter": "0.0.4"
   }
 }

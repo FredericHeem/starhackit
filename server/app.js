@@ -11,7 +11,7 @@ app.log = new Log(app);
 var log = app.log.get(__filename);
 
 //Message queue
-app.mq = require(__dirname + '/lib/mq')(app);
+//app.mq = require(__dirname + '/lib/mq')(app);
 
 //TODO replace with REDIS
 app.quoteMap = {}

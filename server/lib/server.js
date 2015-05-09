@@ -70,10 +70,10 @@ module.exports = function (app) {
    */
   server.start = function(){
 
-    var config = app.config;
+    var config = app.config.http;
 
-    var host = config.has('HOST') ? config.get('HOST') : 'localhost';
-    var port = config.has('PORT') ? config.get('PORT') : 3000;
+    var host = config.host ||  'localhost';
+    var port = process.env.PORT || config.port || 3000;
     
     return new Promise(function(resolve){
       httpHandle = server.listen(port, host, function() {

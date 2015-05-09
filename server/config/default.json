@@ -1,6 +1,6 @@
 {
   //"WEBAPP_PATH": "../client/public";
-  "api":{
+  "http":{
     "host":"localhost",
     "port":3000
   }

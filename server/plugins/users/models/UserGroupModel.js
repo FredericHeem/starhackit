@@ -19,22 +19,10 @@ module.exports = function (app) {
     classMethods: {
       addUserInGroup: addUserInGroup,
       addUserIdInGroup:addUserIdInGroup,
-      addUserIdInGroupId: addUserIdInGroupId,
-      addUserIdInGroups:addUserIdInGroups,
+      addUserIdInGroups:addUserIdInGroups
     }
   });
-  /**
-   * Creates in the db userGroup association between groupId and userId
-   * @param {String} groupId  -   id of the group for which we want to add the user
-   * @param {String} userId   -   userId to be added to the group   *
-   * @returns {Promise} returns a  Promise containing the results of the upsert
-   */
-  function addUserIdInGroupId(groupId,userId) {
-    return UserGroup.upsert({
-        groupId: groupId,
-        userId: userId
-      });
-    }
+ 
 
  /**
    * Creates in the db userGroup association between groupname and userId
@@ -88,8 +76,8 @@ module.exports = function (app) {
           throw err;
         }
         return UserGroup.upsert({
-          groupId: group.dataValues.id,
-          userId: user.dataValues.id
+          groupId: group.get().id,
+          userId: user.get().id
         },{transaction:t});
       });
     });

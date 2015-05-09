@@ -74,8 +74,8 @@
   },
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install && npm run build",
-    "buildrelease": "gulp build --release",
-    "build": "gulp build",
+    "buildrelease": "./node_modules/gulp/bin/gulp.js build --release",
+    "build": "./node_modules/gulp/bin/gulp.js build",
     "test": "jest"
   },
   "engines": {

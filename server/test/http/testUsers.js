@@ -59,14 +59,13 @@ describe('Users', function(){
       })
       .then(done, done);
     });
-    it('should not delete on all users', function(done) {
-      return client.delete('v1/users')
+    it('should not list on all users', function(done) {
+      return client.get('v1/users')
       .then(function(){
         done({error:"ShouldNotBeHere"});
       })
       .catch(function(err){ 
-        //console.log(err);
-        assert(err);
+        assert.equal(err.statusCode, 401);
       })
       .then(done, done);
     });

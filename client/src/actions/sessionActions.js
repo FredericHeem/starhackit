@@ -64,14 +64,14 @@ actions.logout.listen(function() {
 });
 
 actions.register.listen(function(params) {
-  console.log("register")
+  console.log("register");
   dataInterface.post("/v1/auth/register", params)
   .then(function(data) {
-    console.log("registerSuccess")
+    console.log("registerSuccess");
     actions.registerSuccess();
   })
   .catch(function(jqXHR, textStatus, errorThrown) {
-    console.log("registerFail")
+    console.log("registerFail");
     actions.registerFail(jqXHR, textStatus, errorThrown);
   });
 });

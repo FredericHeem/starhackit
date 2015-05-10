@@ -2,7 +2,7 @@
 var Q = require("q");
 var inDOMEnvironment = typeof window !== "undefined";
 var dataProvider = require("local/core/syncDataProvider");
-var debug = require('debug')('core:dataInterface');
+var debug = require("debug")("core:dataInterface");
 
 // TODO: Remove the following eslint directive once
 // https://github.com/babel/babel-eslint/issues/21#issuecomment-76796488 is resolved
@@ -19,13 +19,12 @@ class DataInterface {
     };
   }
 
-  getUrl(path){
+  getUrl(path) {
     return window.location.protocol + "//" + window.location.host + path;
   }
   // Rest methods
   get(path, localOnly) {
     // Check for hydrated data
-
     var hydratedData = dataProvider.getDataByPath(path);
     debug("get: %s, hydratedData: %s", path, JSON.stringify(hydratedData));
     if(Object.getOwnPropertyNames(hydratedData).length !== 0 || localOnly){

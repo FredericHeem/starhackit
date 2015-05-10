@@ -1,3 +1,4 @@
+'use strict';
 var assert = require('assert');
 var Client = require(__dirname + '/../client/restClient');
 var testManager = require('../testManager');
@@ -6,19 +7,19 @@ var client;
 describe('Authentication', function(){
   this.timeout(9000);
   require('../mochaCheck')(testManager);
-  
+
   beforeEach(function(done) {
     client = new Client();
     done();
   });
-  
+
   describe('After Login', function(){
     beforeEach(function(done) {
       var postParam = {
           username:"alice",
           password:"password"
       };
-      
+
       client.login(postParam)
       .then(function(){
         done();
@@ -35,7 +36,7 @@ describe('Authentication', function(){
       })
       .catch(done);
     });
-    
+
     it('should logout', function(done){
       client.post('v1/auth/logout')
       .then(function(res){
@@ -48,15 +49,15 @@ describe('Authentication', function(){
       .catch(function(err){
         assert(err);
         if(err){
-          done();  
+          done();
         } else {
-          done("shoud get the error")
+          done("shoud get the error");
         }
-        
+
       });
     });
   });
-  
+
   it('login without parameters should return bad request', function(done){
     client.login()
     .catch(function(err){
@@ -65,7 +66,7 @@ describe('Authentication', function(){
       assert.equal(err.body, "Bad Request");
     })
     .then(done)
-    .catch(done)
+    .catch(done);
   });
 
   it('logout without login should fail', function(done){
@@ -75,9 +76,9 @@ describe('Authentication', function(){
       assert.equal(err.body, "Unauthorized");
       done();
     })
-    .catch(done)
+    .catch(done);
   });
-  
+
   it('session without login should fail', function(done){
     client.get('v1/auth/session')
     .catch(function(err){
@@ -86,13 +87,13 @@ describe('Authentication', function(){
       done();
     });
   });
-  
+
   it('should not login with unknown username', function(done){
     var postParam = {
         username:"idonotexist",
         password:"password"
     };
-    
+
     client.login(postParam)
     .catch(function(err){
       assert.equal(err.statusCode, 401);
@@ -100,13 +101,13 @@ describe('Authentication', function(){
       done();
     });
   });
-  
+
   it('should not login with empty password', function(done){
     var postParam = {
         username:"bob",
         password:"aaaaaa"
     };
-    
+
     client.login(postParam)
     .catch(function(err){
       assert.equal(err.statusCode, 401);
@@ -114,13 +115,13 @@ describe('Authentication', function(){
       done();
     });
   });
-  
+
   it('should not login with wrong password', function(done){
     var postParam = {
         username:"admin",
         password:"passwordaaaaaa"
     };
-    
+
     client.login(postParam)
     .catch(function(err){
       assert.equal(err.statusCode, 401);
@@ -133,7 +134,7 @@ describe('Authentication', function(){
         username:"alice",
         password:"password"
     };
-    
+
     client.login(postParam)
     .then(function(res){
       assert(res.success);
@@ -157,4 +158,3 @@ describe('Authentication', function(){
     });
   });
 });
-

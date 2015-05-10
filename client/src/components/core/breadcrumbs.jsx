@@ -8,6 +8,7 @@ var ImmutableRenderMixin = require("react-immutable-render-mixin");
 var connect = require("local/libraries/tmp_connect");
 
 var Breadcrumbs = React.createClass({
+  displayName: "Breadcrumbs",
   mixins: [connect(NavigationStore), ImmutableRenderMixin],
   render: function() {
     // TODO: DRY this up
@@ -15,7 +16,12 @@ var Breadcrumbs = React.createClass({
     var availableRoutes = this.state.get("availableRoutes");
     var documentTitle = this.state.get("documentTitle");
 
-    var crumbs = (<li className="current" key={-1}><mui.FontIcon className="mdi mdi-home" />&nbsp;<Link to="/">Home</Link></li>);
+    var crumbs = (
+      <li className="current" key={-1}>
+        <mui.FontIcon className="mdi mdi-home" />&nbsp;
+          <Link to="/">Home</Link>
+        </li>);
+
     if (availableRoutes && navState && documentTitle) {
       if (navState.get("path") !== "/" && navState.get("routes").size > 1) {
         crumbs = [];

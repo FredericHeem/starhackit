@@ -4,7 +4,7 @@ var Immutable = require("immutable");
 var sessionActions = require("local/actions/sessionActions");
 var dataInterface = require("local/core/dataInterface");
 var aug = require("aug");
-var debug = require('debug')('stores:session')
+var debug = require("debug")("stores:session");
 
 var defaultData = {
   id: -1,
@@ -28,10 +28,9 @@ var SessionStore = Reflux.createStore({
       var user = data.user;
       if (user) {
         //user.auth = true;
-        
         debug("init authenticated ");
         initialData = aug({}, defaultData, user);
-        me.onLoginSuccess(user)
+        me.onLoginSuccess(user);
       } else {
         debug("no valid user");
       }
@@ -39,8 +38,8 @@ var SessionStore = Reflux.createStore({
     })
     .catch(function(err) {
       debug("init error ", err);
-    })
-    
+    });
+
     this.data = Immutable.Map(initialData);
     // Set data
   },
@@ -87,13 +86,11 @@ var SessionStore = Reflux.createStore({
     // Clear volatile message
     this.setData({msg: null});
   },
-  
   // Session information
   onSetLoginReturnPath: function(path) {
     debug("onSetLoginReturnPath ", path);
     this.setData({returnPath: path});
   },
-
   // Password checker
   onLoadPasswordChecker: function() {
     this.setData({pwdCheckerState: "loading"});
@@ -107,12 +104,11 @@ var SessionStore = Reflux.createStore({
     this.setData({pwdCheckerState: "failed"});
     this.trigger(this.data);
   },
-
   // API
   isLoggedIn: function() {
     var auth = this.data.get("auth");
     debug("isLoggedIn ", auth);
-    return auth
+    return auth;
   }
 });
 module.exports = SessionStore;

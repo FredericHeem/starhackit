@@ -17,15 +17,14 @@ var Balances = React.createClass({
     //var view = this;
     //console.log("Balances render     ", this.state.toString())
     //console.log("Balances render  ", this.state.balances)
-    
     //console.log("Balances render ", this.state.get("balances"))
     var balancesView = <ReactSpinner/>;
     if(this.state.balances.size){
       balancesView = this.state.balances.map(function(balance){
         //  console.log("balance ",balance.toString());
         //console.log("balance ",balance.get('balance'));
-        console.log("currency ",balance.get('currency'));
-        return (<div>{balance.get('balance')} {balance.get('currency')}</div>)
+        console.log("currency ", balance.get("currency"));
+        return (<div>{balance.get("balance")} {balance.get("currency")}</div>);
       }).toJS();
     }
     return (

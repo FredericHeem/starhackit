@@ -6,6 +6,7 @@ var ImmutableRenderMixin = require("react-immutable-render-mixin");
 var authRouteMixin = require("local/mixins/authRoute");
 
 var Profile = React.createClass({
+  displayName: "Profile",
   mixins: [ImmutableRenderMixin, authRouteMixin],
   render: function() {
     return (

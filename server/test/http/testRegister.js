@@ -6,7 +6,7 @@ var app = testManager.app;
 var models = app.data.sequelize.models;
 var client;
 
-describe('UserRegister', function(){
+describe('UserRegister', function() {
   this.timeout(9000);
   require('../mochaCheck')(testManager);
   
@@ -15,27 +15,27 @@ describe('UserRegister', function(){
     done();
   });
   
-  function createUsernameRandom(){
+  function createUsernameRandom() {
     var sha = crypto.createHash('sha256');
     var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
     return username;
   }
   
-  it('shoud register a user', function(done){
-      var username = createUsernameRandom();
-      var userConfig = {
-          username: username,
-          password:'password'
-      };
+  it('shoud register a user', function(done) {
+    var username = createUsernameRandom();
+    var userConfig = {
+      username: username,
+      password:'password'
+    };
         	 
-      client.post('v1/auth/register', userConfig)
-      .then(function(res){
+    client.post('v1/auth/register', userConfig)
+      .then(function(res) {
         assert(res);
         //console.log(res);
         assert(res.success);
         return models.user.findByUsername(username);
       })
-      .then(function(res){
+      .then(function(res) {
         assert(res);
         var user = res.get();
         assert(user.username, username);
@@ -44,28 +44,28 @@ describe('UserRegister', function(){
       .then(done, done)
       .catch(done);
   });
-  it('shoud register twice a user', function(done){
-      var username = createUsernameRandom();
-      var userConfig = {
-          username: username,
-          password:'password'
-      };
+  it('shoud register twice a user', function(done) {
+    var username = createUsernameRandom();
+    var userConfig = {
+      username: username,
+      password:'password'
+    };
         	 
-      client.post('v1/auth/register', userConfig)
-      .then(function(res){
+    client.post('v1/auth/register', userConfig)
+      .then(function(res) {
         assert(res);
         //console.log(res);
         assert(res.success);
         return client.post('v1/auth/register', userConfig);
       })
-      .then(function(res){
+      .then(function(res) {
         assert(res);
         assert(res.success);
       })
       .then(done, done)
       .catch(done);
   });
-  describe('After Login', function(){
+  describe('After Login', function() {
     /*
     beforeEach(function(done) {
       var postParam = {
@@ -81,13 +81,7 @@ describe('UserRegister', function(){
     });
 */
     
-   
   });
   
- 
-  
-  
-  
- 
 });
 

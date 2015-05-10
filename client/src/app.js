@@ -9,7 +9,7 @@ Reflux.nextTick(require("setimmediate2"));
 Reflux.PublisherMethods.triggerAsync = Reflux.PublisherMethods.trigger;
 
 // logging with https://github.com/visionmedia/debug
-var log = require("local/core/log");
+require("local/core/log");
 var debug = require("debug")("app");
 
 // Data interface

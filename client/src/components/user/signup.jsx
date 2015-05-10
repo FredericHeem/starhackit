@@ -40,7 +40,7 @@ var Signup = React.createClass({
     var password = this.refs.password.getValue();
 
     if (this.validate(username, password)) {
-      sessionActions.register({username:username, password:password});
+      sessionActions.register({username: username, password: password});
     }
   },
   handlePwdChange: function() {
@@ -48,7 +48,10 @@ var Signup = React.createClass({
     if(this.state.session.get("pwdCheckerState") === "ready" && pwd) {
       var pwdTest = zxcvbn(this.refs.password.getValue());
       var qualities = ["Awful", "Poor", "Fair", "Okay", "Great"];
-      var pwdQuality = qualities[pwdTest.score] + " (score: " + pwdTest.score + " (0-4); crack time: ~" + pwdTest.crack_time_display + ")";
+      var pwdQuality = qualities[pwdTest.score] +
+// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+          " (score: " + pwdTest.score + " (0-4); crack time: ~" + pwdTest.crack_time_display + ")";
+// jscs:enable requireCamelCaseOrUpperCaseIdentifiers
       this.setState({pwdQualityMsg: pwdQuality});
     }
     else if (!pwd) {

@@ -187,10 +187,7 @@ module.exports = function (app) {
       comparePassword : function(candidatePassword) {
         var me = this;
         return new Promise(function(resolve, reject){
-          var hashPassword = me.get('password');
-          if(!hashPassword) {
-            return resolve(false);
-          }
+          var hashPassword = me.get('password') || '';
           
           bcrypt.compare(candidatePassword, hashPassword, function(err, isMatch) {
             if(err) {return reject(err); }

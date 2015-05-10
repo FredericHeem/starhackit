@@ -26,7 +26,10 @@
                                 //   "single" : require single quotes
                                 //   "double" : require double quotes
     "undef"         : true,     // true: Require all non-global variables to be declared (prevents global leaks)
-    "unused"        : true,     // true: Require all defined variables be used
+    "unused"        : true,     // Unused variables:
+                                //   true     : all variables, last function parameter
+                                //   "vars"   : all variables only
+                                //   "strict" : all variables, all function parameters
     "strict"        : true,     // true: Requires all functions run in ES5 Strict Mode
     "maxparams"     : false,    // {int} Max number of formal params allowed per function
     "maxdepth"      : false,    // {int} Max depth of nested blocks (within functions)
@@ -63,7 +66,7 @@
     "validthis"     : false,     // true: Tolerate using this in a non-constructor function
 
     // Environments
-    "browser"       : false,     // Web Browser (window, document, etc)
+    "browser"       : true,     // Web Browser (window, document, etc)
     "browserify"    : false,    // Browserify (node.js code in the browser)
     "couch"         : false,    // CouchDB
     "devel"         : true,     // Development/debugging (alert, confirm, etc)
@@ -74,16 +77,16 @@
     "mootools"      : false,    // MooTools
     "node"          : true,    // Node.js
     "nonstandard"   : false,    // Widely adopted globals (escape, unescape, etc)
+    "phantom"       : false,    // PhantomJS
     "prototypejs"   : false,    // Prototype and Scriptaculous
     "qunit"         : false,    // QUnit
     "rhino"         : false,    // Rhino
     "shelljs"       : false,    // ShellJS
+    "typed"         : false,    // Globals for typed array constructions
     "worker"        : false,    // Web Workers
     "wsh"           : false,    // Windows Scripting Host
     "yui"           : false,    // Yahoo User Interface
 
     // Custom Globals
-    "globals"       : {
-      "Promise":true
-    }        // additional predefined global variables
+    "globals"       : {}        // additional predefined global variables
 }

@@ -23,10 +23,11 @@ Technologies:
 * [Bower](http://bower.io/): a package manager for the web.
 * [Gulp](http://gulpjs.com/): automate and enhance your workflow.
 * [Grunt](http://gruntjs.com/): the javascript task runner.
+* [Webpack](http://webpack.github.io/): module bundler for the browser
 * [Mocha](http://mochajs.org/): test framework.
 * [Sinon](http://sinonjs.org/): test spies, stubs and mocks.
 * [Travis](https://travis-ci.org/): Test and deploy. [![Build Status](https://travis-ci.org/FredericHeem/react-node-starterkit.svg?branch=master)](https://travis-ci.org/FredericHeem/react-node-starterkit)
-* [Drone.io](https://drone.io) : Continious intergration [![Build Status](https://drone.io/github.com/FredericHeem/react-node-starterkit/status.png)](https://drone.io/github.com/FredericHeem/react-node-starterkit/latest) 
+* [Drone.io](https://drone.io) : Continuous intergration [![Build Status](https://drone.io/github.com/FredericHeem/react-node-starterkit/status.png)](https://drone.io/github.com/FredericHeem/react-node-starterkit/latest) 
 * [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit)
 [![Test Coverage](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage)
 * [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/react-node-starterkit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/react-node-starterkit?branch=master)

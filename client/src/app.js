@@ -10,7 +10,7 @@ Reflux.PublisherMethods.triggerAsync = Reflux.PublisherMethods.trigger;
 
 // logging with https://github.com/visionmedia/debug
 var log = require("local/core/log");
-var debug = require('debug')('app');
+var debug = require("debug")("app");
 
 // Data interface
 var DI = require("local/core/dataInterface");
@@ -21,7 +21,7 @@ module.exports = {
   },
   renderToDom: function(water) {
     // Check if initial data is available
-    debug("renderToDom water: ", water); 
+    debug("renderToDom water: ", water);
     if (water) {
       require("local/core/syncDataProvider").hydrate(water);
     }

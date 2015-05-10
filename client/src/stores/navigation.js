@@ -27,15 +27,15 @@ var NavigationStore = Reflux.createStore({
     }
   },
   onTransitionEnd: function(state) {
-    this.setData({ currentState: state});
+    this.setData({currentState: state});
     this.triggerUpdate();
   },
   onRouteUpdate: function(routes) {
-    this.setData({ availableRoutes: routes});
+    this.setData({availableRoutes: routes});
     this.triggerUpdate();
   },
   onDocumentTitleUpdate: function(title) {
-    this.setData({ documentTitle: title});
+    this.setData({documentTitle: title});
     this.triggerUpdate();
   }
 });

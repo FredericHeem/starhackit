@@ -8,7 +8,7 @@ var debug = require("debug")("mixins:authRoute");
 var authRoute = {
   mixins: [connect(sessionStore, "session"), State],
   statics: {
-    willTransitionTo: function (transition, params) {
+    willTransitionTo: function(transition, params) {
       if (!sessionStore.isLoggedIn()) {
         // Set return path
         debug("willTransitionTo not logged in");

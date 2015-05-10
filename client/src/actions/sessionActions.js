@@ -40,13 +40,12 @@ actions.login.listen(function(username, password) {
     .then(function(data) {
       if (data.success) {
         actions.loginSuccess(data.user);
-      }
-      else {
+      } else {
         actions.loginFail("");
       }
     })
     .catch(function(jqXHR, textStatus, errorThrown) {
-      if(jqXHR.status === 401){
+      if (jqXHR.status === 401) {
         actions.loginFail();
       } else {
         actions.loginError(textStatus, errorThrown);

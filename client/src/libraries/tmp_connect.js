@@ -3,23 +3,21 @@
  * @type {exports}
  */
 "use strict";
-var Reflux = require("reflux"),
-  _ = require("reflux/src/utils");
+var Reflux = require("reflux");
+var _ = require("reflux/src/utils");
 
-module.exports = function (listenable, key) {
+module.exports = function(listenable, key) {
   return {
-    getInitialState: function () {
+    getInitialState: function() {
       if (!_.isFunction(listenable.getInitialState)) {
         return {};
-      }
-      else if (key === undefined) {
+      } else if (key === undefined) {
         return listenable.getInitialState();
-      }
-      else {
+      } else {
         return _.object([key], [listenable.getInitialState()]);
       }
     },
-    componentDidMount: function () {
+    componentDidMount: function() {
       var warned = false;
       for (var m in Reflux.ListenerMethods) {
         if (this[m] && typeof console && typeof console.warn === "function" && !warned) {
@@ -33,7 +31,7 @@ module.exports = function (listenable, key) {
         }
         this[m] = Reflux.ListenerMethods[m];
       }
-      var me = this, cb = (key === undefined ? this.replaceState : function (v) {
+      var me = this, cb = (key === undefined ? this.replaceState : function(v) {
         me.setState(_.object([key], [v]));
       });
       this.listenTo(listenable, cb);

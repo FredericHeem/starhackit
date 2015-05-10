@@ -27,7 +27,7 @@ var actions = reflux.createActions([
 
 // Action handlers
 actions.loadResource.listen(function(type, id, childrenType) {
-  dataInterface.get("/v1/" + [type, id, childrenType].filter(function(e){ return e; }).join("/"))
+  dataInterface.get("/v1/" + [type, id, childrenType].filter(function(e) { return e; }).join("/"))
     .then(function(data) {
       actions.loadResourceSuccess(type, id, childrenType, data);
     })
@@ -37,7 +37,7 @@ actions.loadResource.listen(function(type, id, childrenType) {
 });
 
 actions.createResource.listen(function(type, data, navigateTo) {
-  dataInterface.post("/v1" + [type].filter(function(e){ return e; }).join("/"), data)
+  dataInterface.post("/v1" + [type].filter(function(e) { return e; }).join("/"), data)
     .then(function(resultData) {
       actions.createResourceSuccess(type, resultData);
 

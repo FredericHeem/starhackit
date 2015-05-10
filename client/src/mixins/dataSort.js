@@ -1,7 +1,7 @@
 "use strict";
 var immutableDataSortMixin = {
   immutableDataSort: function(data, key, dir) {
-    return data.sort(function (a, b) {
+    return data.sort(function(a, b) {
       var first = (dir === "asc") ? a.get(key) : b.get(key);
       var last = (dir === "asc") ? b.get(key) : a.get(key);
 
@@ -12,7 +12,7 @@ var immutableDataSortMixin = {
     });
   },
   dataSort: function(data, key, dir) {
-    return data.sort(function (a, b) {
+    return data.sort(function(a, b) {
       var first = (dir === "asc") ? a[key] : b[key];
       var last = (dir === "asc") ? b[key] : a[key];
 
@@ -33,7 +33,7 @@ var immutableDataSortMixin = {
     });
   },
   getSortLabel: function(title, key) {
-    title += (this.state.sortKey === key) ? ((this.state.sortDir ==="asc") ? " \u25B2" : " \u25BC") : "";
+    title += (this.state.sortKey === key) ? ((this.state.sortDir === "asc") ? " \u25B2" : " \u25BC") : "";
     return title;
   }
 };

@@ -1,0 +1,20 @@
+{
+    "preset": "google",
+    "validateQuoteMarks":true,
+    "maximumLineLength": 120,
+    "requireCurlyBraces": [
+    ],
+    "requireSpaceAfterKeywords": [
+        "if",
+        "else",
+        "for",
+        "while",
+        "do",
+        "switch",
+        "case",
+        "return",
+        "try",
+        "catch",
+        "typeof"
+    ]
+}

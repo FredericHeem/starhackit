@@ -26,7 +26,7 @@ var SessionStore = Reflux.createStore({
     .then(function(data) {
       debug("auth session ", JSON.stringify(data));
       var user = data.user;
-      if(user){
+      if (user) {
         //user.auth = true;
         
         debug("init authenticated ");
@@ -37,7 +37,7 @@ var SessionStore = Reflux.createStore({
       }
       //me.setData(initialData);
     })
-    .catch(function(err){
+    .catch(function(err) {
       debug("init error ", err);
     })
     

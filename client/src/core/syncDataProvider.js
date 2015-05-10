@@ -4,7 +4,7 @@ var syncDataProvider = {
   hydrate: function(water) {
     data = water;
   },
-  getDataByPath: function (path) {
+  getDataByPath: function(path) {
     if (data.hasOwnProperty(path)) {
       return data[path];
     }

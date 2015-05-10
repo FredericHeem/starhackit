@@ -21,6 +21,7 @@ module.exports = function(app){
     log.debug("register");
 
     return res.status(201).json({
+      success:true,
       message: "confirm email"
     });
   }

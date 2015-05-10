@@ -49,7 +49,7 @@ module.exports = function(app){
                 username: username,
                 password: password
             };
-            User.createUserInGroup(userConfig, "User")
+            models.user.createUserInGroups(userConfig, ["User"])
             .then(function(res){
               var userCreated = res.get();
               log.info("register created new user ", userCreated);

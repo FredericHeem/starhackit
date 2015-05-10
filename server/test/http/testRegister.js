@@ -1,0 +1,60 @@
+var assert = require('assert');
+var crypto = require('crypto');
+var Client = require(__dirname + '/../client/restClient');
+var testManager = require('../testManager');
+var client;
+
+describe('UserRegister', function(){
+  this.timeout(9000);
+  require('../mochaCheck')(testManager);
+  
+  beforeEach(function(done) {
+    client = new Client();
+    done();
+  });
+  
+   it('shoud register a user', function(done){
+     var sha = crypto.createHash('sha256');
+      var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+      var userConfig = {
+          username: username,
+          password:'password',  
+          group: 'Admin'
+      };
+      
+      client.post('v1/auth/register', userConfig)
+      .then(function(res){
+        assert(res);
+        console.log(res);
+        assert(res.success);
+      })
+      .then(done, done)
+      .catch(done);
+  });
+    
+  describe('After Login', function(){
+    /*
+    beforeEach(function(done) {
+      var postParam = {
+          username:"alice",
+          password:"password"
+      };
+      
+      client.login(postParam)
+      .then(function(){
+        done();
+      })
+      .catch(done);
+    });
+*/
+    
+   
+  });
+  
+ 
+  
+  
+  
+ 
+});
+

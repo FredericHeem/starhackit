@@ -38,24 +38,6 @@ describe('Users', function(){
       })
       .then(done, done);
     });
-    it.skip('should create a new user', function(done){
-      var sha = crypto.createHash('sha256');
-      var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
-      var userConfig = {
-          username: username,  
-          group: 'BankBridge'
-      };
-      
-      return client.post('v1/users', userConfig)
-      .then(function(res){
-        assert(res);
-        assert(!res.error);
-        done();
-      })
-      .catch(function(err) {
-        console.log(err)
-      });
-    });
     
     it.skip('should not create a new user with missing username', function(done){
       return client.post('v1/users')

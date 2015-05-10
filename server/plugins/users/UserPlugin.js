@@ -3,23 +3,57 @@ var plugin = module.exports = function (app) {
   var Promise = require("bluebird");
   var _ = require("underscore");
   
-  // Sequelize models
-    
-  var models = require('require-all')({
-    dirname: __dirname + '/models',
-    filter: /(.+)Model\.js$/,
-    resolve: function (Model) {
-      var model = new Model(app);
-      return model;
-    }
-  });
-  
-  app.models = _.extend(app.models, models);
-  
   var log = app.log.get(__filename);
   
-  var auth = require("./PassportAuth")(app);
-  app.auth = auth;
+  var auth = setupAuthentication();
+    
+  var models = setupModel();
+  var controllers = setupController();
+  var routers = setupRouter(controllers, auth);
+  
+  
+  
+  // Sequelize models
+  function setupModel() {
+    var models = require('require-all')({
+      dirname: __dirname + '/models',
+      filter: /(.+)Model\.js$/,
+      resolve: function (Model) {
+        var model = new Model(app);
+        return model;
+      }
+    });
+
+    app.models = _.extend(app.models, models);
+    plugin.models = models;
+    return models;
+  }
+  
+  // Express controllers
+  function setupController() {
+    var controllers = {};
+    controllers.user = require("./controller/UserHttpController")(app);
+    controllers.authentication = require("./controller/AuthenticationHttpController")(app);
+    plugin.controllers = controllers;
+    return controllers;
+  }
+  
+  function setupRouter(controllers, auth) {
+    // Http Routes
+    var routers = {};
+    routers.users = require("./routes/UsersRoutes")(app, auth, controllers);
+    routers.authentication = require("./routes/AuthenticationRoutes")(app, auth, controllers);
+
+    plugin.routers = routers;
+    return routers;
+  }
+  
+  function setupAuthentication() {
+    var auth = require("./PassportAuth")(app);
+    app.auth = auth;
+    return auth;
+  }
+  
 
   plugin.seedDefault = function(){
      var seedDefaultFns = [
@@ -40,21 +74,6 @@ var plugin = module.exports = function (app) {
       return Promise.resolve(count);
     });
   };
-  
-  plugin.models = models;
-
-  // Express controllers
-  var controllers = {};
-  controllers.user = require("./controller/UserHttpController")(app);
-  controllers.authentication = require("./controller/AuthenticationHttpController")(app);
-  plugin.controllers = controllers;
-  
-  // Http Routes
-  var routers = {};
-  routers.users = require("./routes/UsersRoutes")(app, auth, controllers);
-  routers.authentication = require("./routes/AuthenticationRoutes")(app, auth, controllers);
-
-  plugin.routers = routers;
   
   plugin.registerMiddleware = function(server){
     server.use('/v1/auth', routers.authentication);

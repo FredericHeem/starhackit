@@ -15,9 +15,14 @@ describe('UserRegister', function(){
     done();
   });
   
-   it('shoud register a user', function(done){
-     var sha = crypto.createHash('sha256');
-      var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+  function createUsernameRandom(){
+    var sha = crypto.createHash('sha256');
+    var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    return username;
+  }
+  
+  it('shoud register a user', function(done){
+      var username = createUsernameRandom();
       var userConfig = {
           username: username,
           password:'password'
@@ -26,7 +31,7 @@ describe('UserRegister', function(){
       client.post('v1/auth/register', userConfig)
       .then(function(res){
         assert(res);
-        console.log(res);
+        //console.log(res);
         assert(res.success);
         return models.user.findByUsername(username);
       })
@@ -39,7 +44,27 @@ describe('UserRegister', function(){
       .then(done, done)
       .catch(done);
   });
-    
+  it('shoud register twice a user', function(done){
+      var username = createUsernameRandom();
+      var userConfig = {
+          username: username,
+          password:'password'
+      };
+        	 
+      client.post('v1/auth/register', userConfig)
+      .then(function(res){
+        assert(res);
+        //console.log(res);
+        assert(res.success);
+        return client.post('v1/auth/register', userConfig);
+      })
+      .then(function(res){
+        assert(res);
+        assert(res.success);
+      })
+      .then(done, done)
+      .catch(done);
+  });
   describe('After Login', function(){
     /*
     beforeEach(function(done) {

@@ -53,13 +53,12 @@ module.exports = function(app){
             .then(function(res){
               var userCreated = res.toJSON();
               log.info("register created new user ", userCreated);
-              done(null, userCreated);
+              done(null, {});
             })
-            .then(done)
-            .catch(done);
+            .then(done, done);
           } else {
             log.info("already registered", username);
-            done();
+            done(null, {});
           }
         })
         .catch(done);

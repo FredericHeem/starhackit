@@ -25,7 +25,24 @@ describe('GroupModel', function(){
       });
     })
     .then(done, done);
-    
+  });
+
+  it('should list permission for a given group', function(done){
+    var groupName = "Admin";
+    models.group.getPermissions(groupName)
+    .then(function (res) {
+      var group = res.get();
+      //console.log("group: ", res.get());
+      expect(group).to.exist;
+      expect(group.permissions.length).to.be.above(0);
+      _.each(group.permissions, function (item) {
+        var permission = item.get();
+        //console.log("permissions: ", permission);
+        expect(permission.name).to.exist;
+        expect(permission.resource).to.exist;
+      });
+    })
+    .then(done, done);
   });
   
   it('should list all permissions', function(done){

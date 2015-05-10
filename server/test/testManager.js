@@ -56,34 +56,8 @@ var TestMngr = function(){
     var schemaObject = require(schema);
     var validatorResult = app.schemaValidator.validate(response, schemaObject);
     assert(validatorResult.errors.length === 0)
-  }
-  /**
-   * Seeds the DB with preconfigured data
-   *
-   * @param {App} application  - The application containing the models
-   * @returns {Promise} a Promise containing array of results
-   */
-  function seedDB() {
-    var option = {force:true};
-    return app.models.sequelize.sync(option)
-    
-    .then(function() { 
-      return app.dataDefaults.configureDatabase();
-    })
-    .then(function() {
-    });
-  }
+  };
 
-  function seedUsers() {
-    console.log('seedUsers')
-    return Promise.each(_.values(users),function(user) {
-      var userModel = {
-          username: user.username,
-          password: user.password
-      };
-      return app.models.user.upsertUserInGroup(userModel,user.group);
-    });
-  }
 };
 
 /* ************************************************************************

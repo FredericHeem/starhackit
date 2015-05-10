@@ -29,8 +29,7 @@ module.exports = function (app) {
     classMethods: {
       seedDefault:seedDefault,
       findByName: findByName,
-      getGroupId: getGroupId,
-      getGroupPermissions: getGroupPermissions,
+      getPermissions: getPermissions,
       associate: function(models) {
         models.user.belongsToMany(Group,{ "through" : models.userGroup, foreignKey: "userId" });
         Group.belongsToMany(models.permission,{ "through" : models.groupPermission, foreignKey: "groupId"});
@@ -55,48 +54,21 @@ module.exports = function (app) {
       return res;
     });   
   }
-  /**
-   * Get group id given groupName
-   *
-   * @param {String} groupName - groupName of the group to get the group id
-   *
-   * @returns {Promise} Promise containing group id
-  */
-   function getGroupId(groupName) {
-     return app.models.group.find(
-         {
-           attributes: [ 'id' ],
-           where: 
-           { 
-             name: groupName 
-           } 
-         })
-         .then(function(res) {
-   
-           if (!res) {
-             var err = app.error.format('GroupNotFound',groupName);
-             throw err;
-           }
-           
-           return  Promise.resolve(res.get().id);
-         });
-   }
   
   /**
    * Returns all the  permission associated with a group 
    *
-   * @param {Object} app  - The application
-   * @param {String} group  - The name of the group to search
+   * @param {String} groupName  - The name of the group to search
    * @returns {Promise}  a Promise containing permission results
    */
-  function getGroupPermissions(group) {
-    return models.group.findAll({     
+  function getPermissions(groupName) {
+    return models.group.find({     
       include:[
         {
          model: models.permission   
       }],
       where:{
-         name: group
+         name: groupName
       }
       });
   }

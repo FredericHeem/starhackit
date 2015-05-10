@@ -20,8 +20,8 @@ module.exports = function(app){
           user.comparePassword(password)
           .then(function(result){
             if(result){
-              //log.info("userBasic valid password for user: ", user.get());
-              return done(null, user.get());
+              log.debug("userBasic valid password for user: ", user.toJSON());
+              return done(null, user.toJSON());
             } else {
               log.info("userBasic invalid password user: ", user.get());
               return done(null, false, { message: 'InvalidUsernameOrPassword'});
@@ -51,7 +51,7 @@ module.exports = function(app){
             };
             models.user.createUserInGroups(userConfig, ["User"])
             .then(function(res){
-              var userCreated = res.get();
+              var userCreated = res.toJSON();
               log.info("register created new user ", userCreated);
               done(null, userCreated);
             })

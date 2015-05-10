@@ -17,8 +17,11 @@ describe('GroupModel', function(){
   it('should list all groups', function(done){
     models.group.findAll({attributes: [ 'id', 'name' ]})
     .then(function(res){
+      expect(res.length).to.be.above(0);
       _.each(res, function(item){
+        var group = item.get();
          console.log("group: ", item.get());
+         expect(group.name).to.exist;
       });
     })
     .then(done, done);
@@ -26,7 +29,6 @@ describe('GroupModel', function(){
   });
   
   it('should list all permissions', function(done){
-    
     models.permission.findAll({attributes: [ 'id', 'name', 'resource' ]})
     .then(function(res){
       expect(res.length).to.be.above(0);
@@ -59,6 +61,24 @@ describe('GroupModel', function(){
     .then(done, done);
   });
 
+  it('should not add an unknown group', function(done){
+    models.groupPermission.add("GroupUnkknown", ['/users get post'])
+    .catch(function(err){
+     console.log(err);
+     expect(err.name).to.be.equal("GroupNotFound");
+    })
+    .then(done, done);
+  });
+  
+  it('should not add an unknown permission', function(done){
+    models.groupPermission.add("Admin", ['/usersnotexit get post'])
+    .catch(function(err){
+     console.log(err);
+     expect(err.name).to.be.equal("PermissionNotFound");
+    })
+    .then(done, done);
+  });
+  
   it('should list all user - groups ', function(done){
     models.userGroup.findAll({attributes: [ 'id','userId', 'groupId' ]})
     .then(function(res){

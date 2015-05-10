@@ -2,6 +2,8 @@ var assert = require('assert');
 var crypto = require('crypto');
 var Client = require(__dirname + '/../client/restClient');
 var testManager = require('../testManager');
+var app = testManager.app;
+var models = app.data.sequelize.models;
 var client;
 
 describe('UserRegister', function(){
@@ -18,15 +20,21 @@ describe('UserRegister', function(){
       var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
       var userConfig = {
           username: username,
-          password:'password',  
-          group: 'Admin'
+          password:'password'
       };
-      
+        	 
       client.post('v1/auth/register', userConfig)
       .then(function(res){
         assert(res);
         console.log(res);
         assert(res.success);
+        return models.user.findByUsername(username);
+      })
+      .then(function(res){
+        assert(res);
+        var user = res.get();
+        assert(user.username, username);
+        //console.log(user);
       })
       .then(done, done)
       .catch(done);

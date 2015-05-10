@@ -222,7 +222,7 @@ module.exports = function (app) {
        * Removes password from the toJson
        *
        */
-      toJSON: function () {
+        toJSON: function () {
         var values = this.get({clone: true});
         delete values.password;
         return values;

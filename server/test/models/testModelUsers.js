@@ -8,7 +8,7 @@ var userModel = app.data.sequelize.models.user;
 
 describe('UserModel', function(){
   "use strict";
-  this.timeout(2e3);
+  this.timeout(5e3);
 
   require('../mochaCheck')(testManager);
   
@@ -63,8 +63,10 @@ describe('UserModel', function(){
   it.skip('should find the user ', function(done){
     userModel.findByUsername('alice')
     .then(function(res){  
-      chai.assert(res)
-      chai.assert.isUndefined(res.toJSON().password);
+      chai.assert(res);
+      chai.assert(res.get().password);
+      var userJson = res.toJSON();
+      chai.assert.isUndefined(userJson.password);
     })
     .then(done, done);
   });

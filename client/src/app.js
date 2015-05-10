@@ -1,6 +1,3 @@
-/**
- * React-spa initialization
- */
 "use strict";
 
 // Reflux config

@@ -2,6 +2,7 @@
 var React = require("react");
 var DocTitle = require("react-document-title");
 var navigationActions = require("local/actions/navigationActions");
+var config = require("local/config.json");
 
 var DocumentTitle = React.createClass({
   propTypes: {
@@ -14,7 +15,7 @@ var DocumentTitle = React.createClass({
   },
   getDocumentTitle: function() {
     var preFix = "";
-    var postFix = " - React-spa demo";
+    var postFix = " - " + config.title;
     return preFix + this.props.title + postFix;
   },
   componentDidMount: function () {

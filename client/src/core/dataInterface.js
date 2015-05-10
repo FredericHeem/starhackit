@@ -19,12 +19,15 @@ class DataInterface {
     };
   }
 
+  getUrl(path){
+    return window.location.protocol + "//" + window.location.host + path;
+  }
   // Rest methods
   get(path, localOnly) {
     // Check for hydrated data
 
     var hydratedData = dataProvider.getDataByPath(path);
-    debug("get: %s, hydratedData: %s", path, JSON.stringify(hydratedData))
+    debug("get: %s, hydratedData: %s", path, JSON.stringify(hydratedData));
     if(Object.getOwnPropertyNames(hydratedData).length !== 0 || localOnly){
       this.response = hydratedData;
 
@@ -37,8 +40,8 @@ class DataInterface {
       if (this.inDom) {
         var $ = require("jquery");
         // Check if we need artificial server delay for testing
-        return Q.when($.get("http://" + window.location.host + path)).then(function(result) {
-          debug("get response: ", result)
+        return Q.when($.get(this.getUrl(path))).then(function(result) {
+          debug("get response: ", result);
           return result;
         });
       }
@@ -57,7 +60,7 @@ class DataInterface {
   post(path, data) {
     if (this.inDom) {
       var $ = require("jquery");
-      return Q.when($.post("http://" + window.location.host + path, data)).then(function(result) {
+      return Q.when($.post(this.getUrl(path), data)).then(function(result) {
         return result;
       });
     }
@@ -91,7 +94,7 @@ class DataInterface {
       };
 
       // Retrieve password checker
-      return Q.when($.cachedScript("http://" + window.location.host + path));
+      return Q.when($.cachedScript(this.getUrl(path)));
     }
   };
 

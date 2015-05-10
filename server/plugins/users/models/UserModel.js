@@ -31,10 +31,8 @@ module.exports = function (app) {
       },
 
       seedDefault: function () {
-        log.debug('seedDefault USER');
         var usersJson = require('../fixtures/users.json');
         log.debug('seedDefault: ', JSON.stringify(usersJson, null, 4));
-        //return app.data.utils.upsertRows(User, usersJson);
         return Promise.each(usersJson, function(userJson){
           return User.createUserInGroups(userJson, userJson.groups);
         });

@@ -40,7 +40,6 @@ module.exports = function (app) {
   });
 
   function seedDefault() {
-    log.debug('seedDefault ');
     var groupsJson = require('../fixtures/groups.json');
     log.debug('seedDefault: ', JSON.stringify(groupsJson, null, 4));
     return app.data.utils.upsertRows(Group,groupsJson);

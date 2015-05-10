@@ -58,7 +58,6 @@ module.exports = function (app) {
   });
   
   function seedDefault() {
-    log.debug('seedDefault ');
     var permissionsJson = require('../fixtures/permissions.json');
     log.debug('seedDefault: ', JSON.stringify(permissionsJson, null, 4));
     return app.data.utils.upsertRows(Permission,permissionsJson);

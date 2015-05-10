@@ -17,7 +17,6 @@ module.exports = function (app) {
     }
   },{
     classMethods: {
-      addUserInGroup: addUserInGroup,
       addUserIdInGroup:addUserIdInGroup,
       addUserIdInGroups:addUserIdInGroups
     }
@@ -56,32 +55,6 @@ module.exports = function (app) {
       },{transaction:t});
     });
   }
-  /**
-   * Creates in the db userGroup association between groupname and username
-   * @param {String} groupName  - Name of the group for which we want to add the user
-   * @param {String} userName   - Username to be added to the group   *
-   * @returns {Promise} returns a  Promise containing the results of the upsert
-   */
-  function addUserInGroup(groupName,userName,t) {
-    return models.group.findByName(groupName)
-    .then(function(group) {    
-      if (!group) { 
-        var err = app.error.format('GroupNotFound',groupName);
-        throw err;
-      }
-      return app.models.user.findByName(userName)
-      .then(function(user){
-        if (!user) {
-          var err = app.error.format('UserNotFound',userName);
-          throw err;
-        }
-        return UserGroup.upsert({
-          groupId: group.get().id,
-          userId: user.get().id
-        },{transaction:t});
-      });
-    });
-  }
-
+  
   return UserGroup;
 };

@@ -151,4 +151,26 @@ describe('GroupModel', function(){
         })
         .then(done, done);
   });
+  
+  it('should get all permission for a given user ', function(done){
+    models.user.getPermissions("admin")
+    .then(function(res){
+      var user = res.get();
+      //console.log(user);
+      _.each(user.groups, function(item){
+        var group = item.get();
+        //console.log("group:", group.name);
+        //console.log("group:", group.permissions);
+        _.each(group.permissions, function(item){
+          var permission = item.get();
+          chai.assert(permission.name);
+          chai.assert(permission.resource);
+          //console.log("permission name:%s, resource ", permission.name, permission.resource);
+        });
+      });
+    })
+    .then(done, done);
+  });
+
+
 });

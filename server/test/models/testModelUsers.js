@@ -50,7 +50,7 @@ describe('UserModel', function(){
   });
   
   it('should not create an empty entry', function(done){
-    var user = userModel.create({})
+    userModel.create({})
     .then(function(userCreated){
       chai.assert(false, "user should not be created");
     })

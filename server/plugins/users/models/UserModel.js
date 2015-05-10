@@ -120,24 +120,6 @@ module.exports = function (app) {
       findByUsername: function  findByUsername(userName) {
         return this.find({where: { "username": userName } });
       },
-      /**
-       * Updates or insert a user given a json representation and updates or insert it to the group GroupName,
-       * returns the model of the created user
-       *
-       * @param {Object} user  -   User in json format 
-       * @param {String} groupName - Name of the group to update or insert the user on
-       *
-       * @returns {Promise} Promise user created model
-       */
-      upsertUserInGroup: function(user, groupName) {
-        return models.user.upsert(user)
-        .then(function() {
-          return this.findByUsername(user.username);
-        })
-        .then(function(userFound) {
-          return models.userGroup.addUserIdInGroup(groupName,userFound.get().id);
-        });
-      },
       
       /**
        * Checks whether a user is able to perform an action on a resource
@@ -180,13 +162,12 @@ module.exports = function (app) {
       /**
        * Returns all permissions associated with a user
        *
-       * @param {App} application  - The application containing the models
        * @param {String} username - The username to search permissions for
        *
        * @returns {Promise} a Promise containing array of permission results
        */
-      getUserPermissions: function (username) {
-        return this.findAll({
+      getPermissions: function (username) {
+        return this.find({
           include: [
                     {
                     model: models.group,

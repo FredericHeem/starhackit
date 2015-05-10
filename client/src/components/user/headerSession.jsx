@@ -1,8 +1,7 @@
 "use strict";
 var React = require("react");
 var Router = require("react-router");
-var Link = Router.Link;
-var Mui = require("material-ui");
+//var Mui = require("material-ui");
 var NavLink = require("local/components/core/navLink.jsx");
 var connect = require("local/libraries/tmp_connect");
 
@@ -16,7 +15,7 @@ var HeaderSession = React.createClass({
     router: React.PropTypes.func
   },
   render: function() {
-    
+    /*
     var iconMenuItems = 
       [
        { text: "Profile",
@@ -32,18 +31,15 @@ var HeaderSession = React.createClass({
          }
        }
        ];
-
+*/
     var menu;
     if(this.state.session.get("auth")){
       menu = (
         <section className="top-bar-section">
           <ul className="left">
-          
-          
             <NavLink to="/profile" title="Profile" className="profile"/>
             <li to="/logout" className="logout"><LogoutLink/></li>
           </ul>
-          
           <ul className="right">
           <li className="has-dropdown">
             <a href="#">Me</a>
@@ -53,7 +49,6 @@ var HeaderSession = React.createClass({
             </ul>
           </li>
         </ul>
-        
         </section>
       );
     } else {

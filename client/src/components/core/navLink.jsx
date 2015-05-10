@@ -19,7 +19,6 @@ var NavigationLink = React.createClass({
       activeClassName: "active"
     };
   },
-  
   render: function () {
     var { router } = this.context;
     var isActive = router.isActive(this.props.to, this.props.params, this.props.query);

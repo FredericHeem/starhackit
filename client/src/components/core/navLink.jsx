@@ -6,10 +6,13 @@ var Link = Router.Link;
 var connect = require("local/libraries/tmp_connect");
 
 var NavigationLink = React.createClass({
+  displayName: "NavigationLink",
   mixins: [connect(NavigationStore)],
   propTypes: {
     activeClassName: React.PropTypes.string.isRequired,
-    to: React.PropTypes.string.isRequired
+    to: React.PropTypes.string.isRequired,
+    params: React.PropTypes.string.isRequired,
+    query: React.PropTypes.string.isRequired
   },
   contextTypes: {
     router: React.PropTypes.func
@@ -22,7 +25,7 @@ var NavigationLink = React.createClass({
   render: function () {
     var { router } = this.context;
     var isActive = router.isActive(this.props.to, this.props.params, this.props.query);
-    var className = isActive ? 'active' : '';
+    var className = isActive ? "active" : "";
     var link = (
       <Link {...this.props} >{this.props.title}</Link>
     );

@@ -4,7 +4,7 @@ var connect = require("local/libraries/tmp_connect");
 var sessionStore = require("local/stores/session");
 var ImmutableRenderMixin = require("react-immutable-render-mixin");
 var HeaderSession = require("local/components/user/headerSession.jsx");
-var debug = require('debug')('components:core:navigation')
+var debug = require("debug")("components:core:navigation");
 
 var Navigation = React.createClass({
   mixins: [connect(sessionStore, "session"), ImmutableRenderMixin],
@@ -15,7 +15,6 @@ var Navigation = React.createClass({
 
   render: function() {
     debug("render");
-    
     return (
       <nav className="top-bar foundation-bar" data-topbar role="navigation">
         <ul className="title-area">

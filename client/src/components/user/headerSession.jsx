@@ -1,6 +1,6 @@
 "use strict";
 var React = require("react");
-var Router = require("react-router");
+//var Router = require("react-router");
 //var Mui = require("material-ui");
 var NavLink = require("local/components/core/navLink.jsx");
 var connect = require("local/libraries/tmp_connect");
@@ -15,23 +15,6 @@ var HeaderSession = React.createClass({
     router: React.PropTypes.func
   },
   render: function() {
-    /*
-    var iconMenuItems = 
-      [
-       { text: "Profile",
-         onItemClick:function(){
-           this.context.route.transitionTo("profile");
-         }
-       },
-       { 
-         text: "Logout", 
-         iconClassName: "mdi mdi-clock",
-         onItemClick:function(){
-           
-         }
-       }
-       ];
-*/
     var menu;
     if(this.state.session.get("auth")){
       menu = (

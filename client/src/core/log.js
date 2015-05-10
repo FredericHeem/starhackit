@@ -1,6 +1,5 @@
 "use strict";
-window.appDebug = require("debug")
-
-appDebug.enable("*")
-
+var appDebug = require("debug");
+appDebug.enable("*");
+window.appDebug = appDebug;
 module.export = appDebug;

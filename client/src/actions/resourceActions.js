@@ -46,7 +46,7 @@ actions.createResource.listen(function(type, data, navigateTo) {
         var router = require("local/core/router").router;
         //var urlCreator = require("local/helper/resourceUrlCreator");
         //var url = urlCreator(type, resultData);
-        var url = '/';
+        var url = "/";
         router.transitionTo(url);
       }
     })

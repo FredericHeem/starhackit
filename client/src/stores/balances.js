@@ -20,9 +20,9 @@ var BalancesStore = Reflux.createStore({
 
   // Event handlers
   onLoadResourceSuccess: function(type, id, childrenType, data) {
-    console.log("onLoadResourceSuccess type: %s, id: %s, data %s", type, id, JSON.stringify(data))
+    console.log("onLoadResourceSuccess type: %s, id: %s, data %s", type, id, JSON.stringify(data));
     if (this.forThisStore.apply(null, arguments)) {
-      console.log("onLoadResourceSuccess for us")
+      console.log("onLoadResourceSuccess for us");
       this.data = Immutable.fromJS(data);
       this.trigger(this.data);
     }

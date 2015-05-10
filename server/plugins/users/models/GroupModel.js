@@ -45,14 +45,7 @@ module.exports = function (app) {
   }
 
   function findByName(groupName) {
-    return models.group.find({where: { "name": groupName } })
-    .then(function(res) {
-      if (!res) {
-        var err = app.error.format('GroupNotFound',groupName);
-        throw err;
-      } 
-      return res;
-    });   
+    return models.group.find({where: { "name": groupName } });
   }
   
   /**

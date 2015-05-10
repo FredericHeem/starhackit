@@ -37,31 +37,7 @@ module.exports = function (app) {
           return User.createUserInGroups(userJson, userJson.groups);
         });
       },
-      /**
-       * Get user_id given username
-       *
-       * @param {String} userName - userName of the user to get the user id
-       *
-       * @returns {Promise} Promise user id
-      */
-      getUserId:  function(username) {
-        return this.find(
-            {
-              attributes: [ 'id' ],
-              where: 
-              { 
-                username: username 
-              } 
-            })
-            .then(function(res) {
-              
-              if (!res)  {
-                var err = app.error.format('UserNotFound',username);
-                throw err;
-              }
-              return  Promise.resolve(res.get().id);
-            });
-      },
+      
       /**
        * Finds a user by userid
        * returns the model of the  user

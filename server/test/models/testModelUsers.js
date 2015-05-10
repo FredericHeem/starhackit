@@ -70,16 +70,7 @@ describe('UserModel', function(){
     })
     .then(done, done);
   });
-  it('should find the user id', function(done){
-    userModel.getUserId(fixtures.admin.username)
-    .then(function(res){
-      chai.assert.typeOf(res, 'number');
-      done()
-    })
-    .catch(function(err){
-      done(err);
-    })
-  });
+  
   it('should not create a user with invalid group', function(done){
     var sha  = crypto.createHash('sha256');
     var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');

@@ -50,7 +50,7 @@ module.exports = function (app) {
         throw err;
       }
       return UserGroup.upsert({
-        groupId: group.dataValues.id,
+        groupId: group.get().id,
         userId: userId
       },{transaction:t});
     });

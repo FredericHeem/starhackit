@@ -50,7 +50,6 @@ module.exports = function (app) {
   classMethods: {
     seedDefault:seedDefault,
     findByName: findByName,
-    findByResourceName: findByResourceName,
     associate: function(models) {
       Permission.belongsToMany(models.group,{ "through" : models.groupPermission, foreignKey: "permissionId"});
     }
@@ -64,18 +63,8 @@ module.exports = function (app) {
   }
 
   function findByName(permissionName) {
-    console.log("findByName", permissionName);
-    return Permission.find({where: { "name": permissionName } })
-    .then(function(permissionFound){
-      //console.log("AAaAaAAaaaaAA", permissionFound.get());
-      return permissionFound;
-    })  
+    return Permission.find({where: { "name": permissionName } });  
   }
   
-  function findByResourceName(resourceName) {
-    return Permission.find({where: { "resource": resourceName } });   
-  }
-  
- 
   return Permission;
 };

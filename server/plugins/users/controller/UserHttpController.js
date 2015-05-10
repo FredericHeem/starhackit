@@ -6,11 +6,11 @@ module.exports = function(app){
   function index(req, res) {
     app.http.utils.respond(app.api.users.list,[req.query],res);
   }
-  
+  /*
   function create(req, res) {
     app.http.utils.respond(app.api.users.create,[req.body],res);
   }
-  
+  */
   function show(req, res) {
     log.info("show user id: ", req.params.id);
     app.http.utils.respond( app.api.users.get,[req.params.id],res);
@@ -18,7 +18,7 @@ module.exports = function(app){
   
   return {
     index:index,
-    create:create,
+    //create:create,
     show:show
   };
 };

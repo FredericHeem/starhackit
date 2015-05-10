@@ -1,3 +1,4 @@
+/// <reference path="../../typings/node/node.d.ts"/>
 var Promise = require('bluebird');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -9,59 +10,78 @@ module.exports = function (app) {
   var log = app.log.get(__filename);
   var config = app.config;
 
-  var cors = require('cors')();
-
   var server = express();
-  server.use(cors);
-
+  
+  setupMiddleware();
+  setupPlugins();
+  
+  function setupMiddleware(){
+    setupCors();
+    setupLiveReload();
+    setupFrontend();
+    setupBodyParser();
+    setupSession();
+  }
+  
+  function setupCors() {
+    var cors = require('cors')();
+    server.use(cors);
+  }
+  
   function prepend(w, s) {
     return s + w;
   }
-  //Live reload support
-  if(config.has('liveReload')) {
-    server.use(require('connect-livereload')({
+  
+  function setupLiveReload(){
+    if(config.has('liveReload')) {
+      server.use(require('connect-livereload')({
       rules: [{
         match: /<\/body>(?![\s\S]*<\/body>)/i,
         fn: prepend
       }, {
         match: /<\/html>(?![\s\S]*<\/html>)/i,
         fn: prepend
-      }/*, {
-        match: /<\!DOCTYPE.+?>/i,
-        fn: append
-      }*/],
+      }],
       port: 35729}));
+    }
+  }
+
+  function setupFrontend() {
+    if (config.has('frontend')) {
+      var frontend_path = config.get('frontend');
+      server.use('/', express.static(frontend_path));
+    } else {
+      log.debug("frontend not served");
+    }
+  }
+
+  function setupBodyParser() {
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({ extended: true }));
+    server.use(cookieParser());
   }
   
-  if(config.has('frontend')){
-    var frontend_path = config.get('frontend');
-    server.use('/', express.static(frontend_path));
-  } else {
-    log.debug("frontend not served");
-  }
-  
-  server.use(bodyParser.json());
-  server.use(bodyParser.urlencoded({ extended: true }));
-  server.use(cookieParser());
-  server.use(require('express-session')({
+  function setupSession() {
+    server.use(require('express-session')({
       secret: 'I love shrimp with mayonnaise',
       resave: false,
       saveUninitialized: false
-  }));
+    }));
+  }
   
-  var auth = app.auth;
-  
-  server.use(auth.passport.initialize());
-  server.use(auth.passport.session());
-  
-  assert(app.plugins);
-  assert(app.plugins.users);
-  //server.use('/v1/auth/login', auth.passport.authenticate('login'));
-  //server.use('/v1/auth/register', auth.passport.authenticate('register'));
-  app.plugins.users.registerMiddleware(server);
-  
-  //server.use('/v1/auth', routers.authentication);
-  //server.use('/v1', auth.ensureAuthenticated, routers.admin);
+  function setupPlugins() {
+    
+    //TODO clean 
+    var auth = app.auth;
+    assert(auth);
+    server.use(auth.passport.initialize());
+    server.use(auth.passport.session());
+
+
+    assert(app.plugins);
+    assert(app.plugins.users);
+    app.plugins.users.registerMiddleware(server);
+  }
   
   var httpHandle;
   
@@ -88,7 +108,7 @@ module.exports = function (app) {
    * Stop the express server
    */
   server.stop = function() {
-    //app.log.info("closing express ",  typeof httpHandle);
+    log.info("stopping web server",  typeof httpHandle);
 
     return new Promise(function(resolve) {
       httpHandle.close(function() {

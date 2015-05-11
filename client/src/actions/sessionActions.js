@@ -55,7 +55,7 @@ actions.login.listen(function(username, password) {
 
 actions.logout.listen(function() {
   dataInterface.post("/v1/auth/logout")
-    .then(function(data) {
+    .then(function() {
       actions.logoutSuccess();
     })
     .catch(function(jqXHR, textStatus, errorThrown) {
@@ -68,7 +68,7 @@ actions.register.listen(function(params) {
   dataInterface.post("/v1/auth/register", params)
   .then(function(data) {
     console.log("registerSuccess");
-    actions.registerSuccess();
+    actions.registerSuccess(data);
   })
   .catch(function(jqXHR, textStatus, errorThrown) {
     console.log("registerFail");

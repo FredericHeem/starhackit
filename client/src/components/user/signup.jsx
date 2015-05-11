@@ -94,8 +94,14 @@ var Signup = React.createClass({
           <a href="#" className="close">&times;</a>
         </div>
       );
-    }
-    else {
+    } else if(this.state.session.get("success")) {
+      msg = (
+        <div data-alert className="alert-box info">
+          We have sent you a confirmation email, please open the email and click on the confirmation link to continue the registration.
+          <a href="#" className="close">&times;</a>
+        </div>
+      );
+    } else {
       msg = null;
     }
 

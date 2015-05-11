@@ -77,8 +77,18 @@ var SessionStore = Reflux.createStore({
     this.trigger(this.data);
   },
 
+  onRegisterSuccess: function(data) {
+    debug("onRegisterSuccess ", data);
+    this.setData({success: true});
+    this.trigger(this.data);
+    // Clear volatile message
+    //this.setData({msg: null});
+  },
+
   onRegisterFail: function(jqXHR, textStatus) {
     debug("onRegisterFail ", jqXHR);
+    debug("onRegisterFail textStatus ", textStatus);
+
     this.setData(defaultData);
     this.setData({msg: jqXHR.responseText || "Unknown Error"});
     this.trigger(this.data);

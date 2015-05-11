@@ -17,8 +17,7 @@ var avoided = [
     "testManager.js",
     "testMan.js",
     "restClient.js",
-    "mochaCheck.js",
-    "jobs"
+    "mochaCheck.js"
 ];
  
 // Add the tests to the Mocha instance

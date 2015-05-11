@@ -1,61 +1,105 @@
 var assert = require('assert');
+var Promise = require('bluebird');
+var Subscriber = require('../../lib/mq/subscriber.js');
+var Publisher = require('../../lib/mq/publisher');
 var testManager = require('../testManager');
 var app = testManager.app;
-var models = app.models;
 
-describe('Subscriber', function(){
+describe('PublisherSubscriber', function() {
   "use strict";
-  this.timeout(10e3);
+  this.timeout(15e3);
   var hasStarted = false;
   require('../mochaCheck')(testManager);
   var publisher;
-  
-  before(function(done) {
-    console.log("publisher.start()");
-    publisher = new app.mq.Publisher(app, {exchange:"user.new"});
-    publisher.start().then(done, done);
-  });
-  after(function(done) {
-    console.log("publisher.stop()");
-    publisher.stop().then(done, done);
-  });
-  
-  it('should start the mq', function(done){
-    console.log("should start the mq");
-    var options = {
-        exchange:'user.new',
-        queueName:'user.new'
-    };
-    
-    var subscriber = new app.mq.Subscriber(app, options);
-    subscriber.getEventEmitter().on('message', onIncomingMessage);
-    
-    subscriber.start()
-    .then(function(){
-      console.log("started");
-      hasStarted = true;
-      return models.user.findByUsername("bob");
-    })
-    .then(function(res){
-      var user = res.get();
-      publisher.publish('', JSON.stringify(user));
-    })
-    .then(function(){
-    })
-    .catch(done);
-    
-    function onIncomingMessage(message){
-      console.log("onIncomingMessage ", message.fields);
+  var subscriber;
+  var mqOptions = {
+    exchange:'user.new',
+    queueName:'user.new'
+  };
 
-      assert(message);
-      assert(message.content);
-      assert(message.content.length > 0);
-      subscriber.ack(message);
-      console.log("hasStarted ", hasStarted);
-      if(hasStarted){
-        
-        done();
+  describe('StartStop', function() {
+    it('should start and stop the publisher', function(done) {
+      publisher = new Publisher(app, {exchange:"user.new"});
+      publisher.start().delay(1e3).then(publisher.stop).then(done, done);
+    });
+
+    it('should start, purge the queue and stop the subscriber', function(done) {
+      subscriber = new Subscriber(app, mqOptions);
+      subscriber.start()
+      .delay(1e3)
+      .then(subscriber.purgeQueue)
+      .then(subscriber.stop)
+      .then(done, done);
+    });
+
+    it('should stop the subscriber without start', function(done) {
+      subscriber = new Subscriber(app, mqOptions);
+      subscriber.stop().then(done, done);
+    });
+
+    it('should start and stop the publisher and subscriber', function(done) {
+      publisher = new Publisher(app, {exchange:"user.new"});
+      subscriber = new Subscriber(app, mqOptions);
+      Promise.all(
+        [
+          publisher.start(),
+          subscriber.start()
+         ])
+      .delay(1e3)
+      .then(function(){
+        return Promise.all(
+          [
+            publisher.stop(),
+            subscriber.stop()
+           ]);
+      })
+      .then(function(){
+
+      })
+      .then(done, done);
+    });
+  });
+
+  describe('Subscriber', function() {
+    before(function(done) {
+      console.log("publisher.start()");
+      publisher = new Publisher(app, {exchange:"user.new"});
+      publisher.start().then(done, done);
+    });
+
+    after(function(done) {
+      console.log("publisher.stop()");
+      publisher.stop().then(done, done);
+    });
+
+    it('should start the mq', function(done) {
+      console.log("should start the mq");
+
+
+      var subscriber = new Subscriber(app, mqOptions);
+      subscriber.getEventEmitter().on('message', onIncomingMessage);
+
+      subscriber.start()
+      .then(function() {
+        console.log("started");
+        publisher.publish('', 'Ciao');
+        hasStarted = true;
+      })
+      .catch(done);
+
+      function onIncomingMessage(message) {
+        console.log("onIncomingMessage ", message.fields);
+
+        assert(message);
+        assert(message.content);
+        assert(message.content.length > 0);
+        subscriber.ack(message);
+        console.log("hasStarted ", hasStarted);
+        if (hasStarted) {
+
+          done();
+        }
       }
-    }
+    });
   });
 });

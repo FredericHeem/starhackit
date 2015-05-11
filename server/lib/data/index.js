@@ -1,6 +1,6 @@
 var Data = function(app){
   "use strict";
-  var Promise = require('bluebird');
+  //var Promise = require('bluebird');
   var assert = require('assert');
   //var _ = require('lodash');
   var log = app.log.get(__filename);
@@ -31,11 +31,7 @@ var Data = function(app){
   Data.seedDB = function () {
     log.info("seedDB");
     var option = {force:true};
-    var models = Data.sequelize.models;
     return Data.sequelize.sync(option)
-    .then(function() {
-      //return constraintSet(models);
-    })
     .then(function() {
       return seedDefault();
     })

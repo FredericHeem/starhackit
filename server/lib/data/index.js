@@ -4,11 +4,11 @@ var Data = function(app){
   var assert = require('assert');
   //var _ = require('lodash');
   var log = app.log.get(__filename);
-  
+
   Data.utils = require('./utils')(app);
-  
+
   Data.sequelize = createSequelize(app.config);
-  
+  /*
   function constraintSet(){
     log.info("settings contraints");
     var models = Data.sequelize.models;
@@ -27,14 +27,14 @@ var Data = function(app){
        }
       });
   }
-
+  */
   Data.seedDB = function () {
     log.info("seedDB");
     var option = {force:true};
     var models = Data.sequelize.models;
     return Data.sequelize.sync(option)
-    .then(function() { 
-      return constraintSet(models);
+    .then(function() {
+      //return constraintSet(models);
     })
     .then(function() {
       return seedDefault();
@@ -43,13 +43,13 @@ var Data = function(app){
       log.info("seeded");
     });
   };
-  
+
   function seedDefault(){
     log.debug("seedDefault");
     assert(app.plugins.users);
     return app.plugins.users.seedDefault();
   }
-  
+
   function seedIfEmpty(){
     log.info("seedIfEmpty");
     return app.plugins.users.isSeeded()
@@ -57,7 +57,7 @@ var Data = function(app){
        if(!isSeeded){
          return Data.seedDB();
        } else {
-         log.info("isSeeded");  
+         log.info("isSeeded");
        }
      });
   }
@@ -75,9 +75,9 @@ var Data = function(app){
     };
     log.info("dbOptions: ", dbOptions);
 
-    return new Sequelize(db.database, db.user, db.password, dbOptions);  
+    return new Sequelize(db.database, db.user, db.password, dbOptions);
   }
-  
+
   function associateModel(models){
     log.debug("associateModel");
     Object.keys(models).forEach(function(modelName) {
@@ -87,27 +87,24 @@ var Data = function(app){
       }
     });
   }
-  
+
   Data.start = function(){
     log.info("DATA start");
     var option = {force:false};
-    
+
     associateModel(Data.sequelize.models);
-    
+
     return Data.sequelize.sync(option)
     .then(function() {
          return seedIfEmpty();
     })
     .then(function() {
-         log.info("DATA started"); 
+         log.info("DATA started");
     });
   };
-  
+
   return Data;
 };
 
 
 module.exports = Data;
-
-
-

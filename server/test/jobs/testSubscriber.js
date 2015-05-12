@@ -9,7 +9,6 @@ var app = testManager.app;
 describe('PublisherSubscriber', function() {
   "use strict";
   this.timeout(15e3);
-  var hasStarted = false;
   require('../mochaCheck')(testManager);
   var publisher;
   var subscriber;
@@ -73,17 +72,16 @@ describe('PublisherSubscriber', function() {
       publisher.stop().then(done, done);
     });
 
-    it('should start the mq', function(done) {
+    it('should receive the published message', function(done) {
       debug("should start the mq");
 
       var subscriber = new Subscriber(app, mqOptions);
-      subscriber.getEventEmitter().on('message', onIncomingMessage);
+      subscriber.getEventEmitter().once('message', onIncomingMessage);
 
       subscriber.start()
       .then(function() {
         debug("started");
         publisher.publish('', 'Ciao');
-        hasStarted = true;
       })
       .catch(done);
 
@@ -94,9 +92,34 @@ describe('PublisherSubscriber', function() {
         assert(message.content);
         assert(message.content.length > 0);
         subscriber.ack(message);
-        debug("hasStarted ", hasStarted);
-        if (hasStarted) {
+        done();
+      }
+    });
+    it('should send and receive 10 messages', function(done) {
+      debug("should start the mq");
+      var numMessage = 0;
+      var numMessageToSend = 10;
 
+      var subscriber = new Subscriber(app, mqOptions);
+      subscriber.getEventEmitter().on('message', onIncomingMessage);
+
+      subscriber.start()
+      .then(function() {
+        debug("started");
+        for(var i = 1; i <= numMessageToSend; i++){
+          publisher.publish('', 'Ciao ' + i);
+        }
+      })
+      .catch(done);
+
+      function onIncomingMessage(message) {
+        debug("onIncomingMessage ", message.fields);
+        subscriber.ack(message);
+
+        numMessage++;
+        debug("onIncomingMessage ", numMessage);
+        if(numMessage >= numMessageToSend){
+          subscriber.getEventEmitter().removeListener('message', onIncomingMessage);
           done();
         }
       }

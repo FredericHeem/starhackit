@@ -8,16 +8,17 @@ function Publisher(app, options){
   var log = app.log.get(__filename);
   var _channel;
   var _options = options || {};
-  _options = _.defaults(_options, {
-    type:'direct'
+  _options = _.defaults(options, {
+    type:'direct',
+    url: 'amqp://localhost'
   });
-  
+
   log.info("Publisher options:", util.inspect(_options));
-  
+
   Publisher.prototype.start = function(){
     log.info("start ", util.inspect(_options));
-    
-    return amqp.connect('amqp://localhost')
+
+    return amqp.connect(_options.url)
     .then(function(conn) {
       log.info("connected to mq");
       return conn.createChannel();
@@ -26,12 +27,12 @@ function Publisher(app, options){
       log.info("connected to channel");
       _channel = ch;
       return ch.assertExchange(_options.exchange, _options.type, {durable: true});
-    }) 
+    })
     .then(function(res) {
       log.info("connected ", res);
     });
   };
-  
+
   Publisher.prototype.stop = function(){
     log.info("stop");
     if(_channel){
@@ -40,7 +41,7 @@ function Publisher(app, options){
       return Promise.resolve();
     }
   };
-  
+
   Publisher.prototype.publish = function(key, message){
     log.info("publish exchange:%s, key:%s, message %s", _options.exchange, key, message);
     _channel.publish(_options.exchange, key, new Buffer(message));

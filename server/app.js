@@ -6,8 +6,8 @@ app.rootDir = __dirname;
 app.config = require('config');
 
 //Logging
-var Log = require(__dirname + '/lib/logfilename.js');
-app.log = new Log(app);
+var Log = require('logfilename');
+app.log = new Log(app.config.log);
 var log = app.log.get(__filename);
 
 var SchemaValidator = require('jsonschema').Validator;
@@ -26,21 +26,20 @@ app.schemaPath = (__dirname + '/../spec/src/');
 app.api = require(__dirname + '/lib/api')(app);
 app.error = app.utils.error;
 
-var plugins =
-    [
-     app.data.start(),
-     app.server.start(app)
+var plugins = [
+  app.data.start(),
+  app.server.start(app)
 ];
 
-app.start = function(){
+app.start = function() {
   log.info("start");
   return Promise.all(plugins)
-  .then(function(){
-    log.info("started");
-  });
+    .then(function() {
+      log.info("started");
+    });
 };
 
-app.stop = function(){
+app.stop = function() {
   return app.server.stop(app);
 };
 

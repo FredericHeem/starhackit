@@ -66,6 +66,7 @@
     "coveralls": "~2.11.2",
     "chai": "~2.1.0",
     "chai-as-promised": "~4.2.0",
+    "debug": "^2.2.0",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
     "grunt-db-migrate": "~0.2.0",

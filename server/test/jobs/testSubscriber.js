@@ -1,5 +1,6 @@
 var assert = require('assert');
 var Promise = require('bluebird');
+var debug = require('debug');
 var Subscriber = require('../../lib/mq/subscriber.js');
 var Publisher = require('../../lib/mq/publisher');
 var testManager = require('../testManager');
@@ -46,14 +47,14 @@ describe('PublisherSubscriber', function() {
           subscriber.start()
          ])
       .delay(1e3)
-      .then(function(){
+      .then(function() {
         return Promise.all(
           [
             publisher.stop(),
             subscriber.stop()
            ]);
       })
-      .then(function(){
+      .then(function() {
 
       })
       .then(done, done);
@@ -62,39 +63,38 @@ describe('PublisherSubscriber', function() {
 
   describe('Subscriber', function() {
     before(function(done) {
-      console.log("publisher.start()");
+      debug("publisher.start()");
       publisher = new Publisher(app, {exchange:"user.new"});
       publisher.start().then(done, done);
     });
 
     after(function(done) {
-      console.log("publisher.stop()");
+      debug("publisher.stop()");
       publisher.stop().then(done, done);
     });
 
     it('should start the mq', function(done) {
-      console.log("should start the mq");
-
+      debug("should start the mq");
 
       var subscriber = new Subscriber(app, mqOptions);
       subscriber.getEventEmitter().on('message', onIncomingMessage);
 
       subscriber.start()
       .then(function() {
-        console.log("started");
+        debug("started");
         publisher.publish('', 'Ciao');
         hasStarted = true;
       })
       .catch(done);
 
       function onIncomingMessage(message) {
-        console.log("onIncomingMessage ", message.fields);
+        debug("onIncomingMessage ", message.fields);
 
         assert(message);
         assert(message.content);
         assert(message.content.length > 0);
         subscriber.ack(message);
-        console.log("hasStarted ", hasStarted);
+        debug("hasStarted ", hasStarted);
         if (hasStarted) {
 
           done();

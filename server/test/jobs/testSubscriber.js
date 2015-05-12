@@ -1,4 +1,5 @@
 var assert = require('assert');
+var _ = require('lodash');
 var Promise = require('bluebird');
 var debug = require('debug');
 var Subscriber = require('../../lib/mq/subscriber.js');
@@ -106,9 +107,10 @@ describe('PublisherSubscriber', function() {
       subscriber.start()
       .then(function() {
         debug("started");
-        for(var i = 1; i <= numMessageToSend; i++){
-          publisher.publish('', 'Ciao ' + i);
-        }
+        _.times(numMessageToSend, function(n){
+          publisher.publish('', 'Ciao ' + n);
+        });
+
       })
       .catch(done);
 

@@ -12,6 +12,7 @@
     "url": "git@github.com:FredericHeem/react-node-starterkit.git"
   },
   "dependencies": {
-    "codeclimate-test-reporter": "0.0.4"
+    "codeclimate-test-reporter": "0.0.4",
+    "rabbitmq-pubsub": "0.0.1"
   }
 }

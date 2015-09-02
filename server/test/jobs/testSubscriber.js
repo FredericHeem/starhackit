@@ -23,7 +23,7 @@ describe('PublisherSubscriber', function() {
 
   describe('StartStop', function() {
     it('should start and stop the publisher', function(done) {
-      publisher = new Publisher(app, {exchange:"user.new"});
+      publisher = new Publisher({exchange:"user.new"});
       publisher.start().delay(1e3).then(publisher.stop).then(done, done);
     });
 

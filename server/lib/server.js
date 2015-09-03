@@ -89,7 +89,7 @@ module.exports = function (app) {
    * Start the express server
    */
   expressApp.start = function(){
-
+    log.info("start express server on %s:%s", host, port);
     var config = app.config.http;
 
     var host = config.host ||  'localhost';
@@ -97,8 +97,7 @@ module.exports = function (app) {
 
     return new Promise(function(resolve){
       httpHandle = expressApp.listen(port, function() {
-        //console.log('Listening');
-        log.info("listening api on %s:%s", host, port);
+        log.info("listening express server on %s:%s", host, port);
         resolve();
       });
     });
@@ -108,10 +107,11 @@ module.exports = function (app) {
    * Stop the express server
    */
   expressApp.stop = function() {
-    log.info("stopping web server",  typeof httpHandle);
+    log.info("stopping web server");
 
     return new Promise(function(resolve) {
       httpHandle.close(function() {
+        log.info("web server is stopped");
         resolve();
       });
     });

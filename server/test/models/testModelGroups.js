@@ -1,19 +1,24 @@
 var _ = require('lodash');
-var crypto   = require('crypto');
 var chai = require('chai');
 var expect = chai.expect;
-var fixtures = require(__dirname+'/../fixtures/models/users');
-var testManager = require('../testManager');
-var app = testManager.app;
-var models = app.data.sequelize.models;
-
 
 describe('GroupModel', function(){
   "use strict";
   this.timeout(2e3);
 
-  require('../mochaCheck')(testManager);
-  
+  var TestManager = require('../testManager');
+
+  var testMngr = new TestManager();
+  var app = testMngr.app;
+  var models = app.data.sequelize.models;
+
+  before(function(done) {
+      testMngr.start().then(done, done);
+  });
+  after(function(done) {
+      testMngr.stop().then(done, done);
+  });
+
   it('should list all groups', function(done){
     models.group.findAll({attributes: [ 'id', 'name' ]})
     .then(function(res){
@@ -44,7 +49,7 @@ describe('GroupModel', function(){
     })
     .then(done, done);
   });
-  
+
   it('should list all permissions', function(done){
     models.permission.findAll({attributes: [ 'id', 'name', 'resource' ]})
     .then(function(res){
@@ -65,9 +70,9 @@ describe('GroupModel', function(){
   });
 
 
-  
+
   it('should list all groups permissions', function(done){
-    
+
     models.groupPermission.findAll({attributes: [ 'id','groupId', 'permissionId' ]})
     .then(function(res){
       expect(res.length).to.be.above(0);
@@ -86,7 +91,7 @@ describe('GroupModel', function(){
     })
     .then(done, done);
   });
-  
+
   it('should not add an unknown permission', function(done){
     models.groupPermission.add("Admin", ['/usersnotexit get post'])
     .catch(function(err){
@@ -95,7 +100,7 @@ describe('GroupModel', function(){
     })
     .then(done, done);
   });
-  
+
   it('should list all user - groups ', function(done){
     models.userGroup.findAll({attributes: [ 'id','userId', 'groupId' ]})
     .then(function(res){
@@ -109,12 +114,12 @@ describe('GroupModel', function(){
 
 
   function checkUserPermission(param){
-    return models.user.checkUserPermission(param.userId, param.routePath, param.method)    
+    return models.user.checkUserPermission(param.userId, param.routePath, param.method)
     .then(function(authorized){
       expect(authorized).to.be.equal(param.authorized);
     });
   }
-  
+
   it('should check permission given a user id,  a route path and a method', function(done){
    var param = {
      userId:1,
@@ -122,11 +127,11 @@ describe('GroupModel', function(){
      method:"get",
      authorized:true
    };
-   
+
    return checkUserPermission(param)
     .then(done, done);
   });
-  
+
   it('should get all groups for a given user', function(done){
     var userId = 1;
     return models.user.find({
@@ -136,7 +141,7 @@ describe('GroupModel', function(){
                     }],
           where: {
               id: userId
-            }                      
+            }
         }).then(function(res) {
           //console.log(res)
           expect(res).to.exist;
@@ -147,11 +152,11 @@ describe('GroupModel', function(){
           _.each(res.get().groups, function (item) {
             console.log("group: ", item.get().name);
           });
-         
+
         })
         .then(done, done);
   });
-  
+
   it('should get all permission for a given user ', function(done){
     models.user.getPermissions("admin")
     .then(function(res){
@@ -171,6 +176,4 @@ describe('GroupModel', function(){
     })
     .then(done, done);
   });
-
-
 });

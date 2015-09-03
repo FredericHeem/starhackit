@@ -2,16 +2,22 @@ var _ = require('lodash');
 var crypto   = require('crypto');
 var chai = require('chai');
 var fixtures = require(__dirname+'/../fixtures/models/users');
-var testManager = require('../testManager');
-var app = testManager.app;
-var userModel = app.data.sequelize.models.user;
 
 describe('UserModel', function(){
   "use strict";
   this.timeout(5e3);
+  var TestManager = require('../testManager');
+  var testMngr = new TestManager();
+  var models = testMngr.app.data.sequelize.models;
+  var userModel = models.user;
 
-  require('../mochaCheck')(testManager);
-  
+  before(function(done) {
+      testMngr.start().then(done, done);
+  });
+  after(function(done) {
+      testMngr.stop().then(done, done);
+  });
+
   it('should successfully create an entry', function(done){
     var sha  = crypto.createHash('sha256');
     var userCreated;
@@ -31,15 +37,15 @@ describe('UserModel', function(){
       return userCreated.destroy();
     })
     .then(function(){
-      
+
     })
     .then(done, done);
   });
-  
+
   it('should not create the user 2 times', function(done){
     var admin = fixtures.admin;
     userModel.createUserInGroups(admin,["User"])
-    .then(function(res){
+    .then(function(/*res*/){
       return userModel.createUserInGroups(admin, ["User"]);
     })
     .catch(function(err){
@@ -48,10 +54,10 @@ describe('UserModel', function(){
     })
     .then(done, done);
   });
-  
+
   it('should not create an empty entry', function(done){
     userModel.create({})
-    .then(function(userCreated){
+    .then(function(/*userCreated*/){
       chai.assert(false, "user should not be created");
     })
     .catch(function(err){
@@ -62,7 +68,7 @@ describe('UserModel', function(){
   });
   it.skip('should find the user ', function(done){
     userModel.findByUsername('alice')
-    .then(function(res){  
+    .then(function(res){
       chai.assert(res);
       chai.assert(res.get().password);
       var userJson = res.toJSON();
@@ -70,7 +76,7 @@ describe('UserModel', function(){
     })
     .then(done, done);
   });
-  
+
   it('should not create a user with invalid group', function(done){
     var sha  = crypto.createHash('sha256');
     var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
@@ -78,7 +84,7 @@ describe('UserModel', function(){
         username: username,
         password: "password"
     };
-    
+
     userModel.createUserInGroups(userConfig,["GroupNotExist"])
     .catch(function(err){
       chai.assert.equal(err.name, "GroupNotFound");

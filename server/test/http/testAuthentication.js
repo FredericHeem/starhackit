@@ -1,12 +1,20 @@
 'use strict';
 var assert = require('assert');
 var Client = require(__dirname + '/../client/restClient');
-var testManager = require('../testManager');
-var client;
 
 describe('Authentication', function(){
   this.timeout(9000);
-  require('../mochaCheck')(testManager);
+  var TestManager = require('../testManager');
+  var client;
+
+  var testMngr = new TestManager();
+
+  before(function(done) {
+      testMngr.start().then(done, done);
+  });
+  after(function(done) {
+      testMngr.stop().then(done, done);
+  });
 
   beforeEach(function(done) {
     client = new Client();
@@ -146,7 +154,7 @@ describe('Authentication', function(){
     });
   });
   it('should login admin with testManager', function(done){
-    var client = testManager.client("admin");
+    var client = testMngr.client("admin");
     client.login()
     .then(function(res){
       assert(res.success);

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node processes/server.js",
-    "test": "grunt jshint && ./node_modules/.bin/istanbul cover  ./test/testMan.js",
+    "test": "grunt jshint && ./node_modules/.bin/istanbul cover  mocha ./test/**/*.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "codeclimate": "CODECLIMATE_REPO_TOKEN=0f9fc3d7a8dedfb617ecf7637eb87bf24e9e4f643544ac0d0280a250106689b8 codeclimate < coverage/lcov.info",
     "lint": "grunt jshint"
@@ -12,9 +12,6 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:FredericHeem/react-node-starterkit.git"
-  },
-  "bin": {
-    "gatewayd": "./bin/gateway"
   },
   "dependencies": {
     "amqplib": "^0.3.1",

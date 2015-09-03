@@ -28,20 +28,30 @@ app.api = require(__dirname + '/lib/api')(app);
 app.error = app.utils.error;
 
 var plugins = [
-  app.data.start(),
-  app.server.start(app)
+  app.data,
+  app.server
 ];
 
 app.start = function() {
   log.info("start");
-  return Promise.all(plugins)
-    .then(function() {
-      log.info("started");
-    });
+  return Promise.each(plugins, function(plugin) {
+      log.info("start ");
+      return plugin.start(app);
+  })
+  .then(function(){
+    log.info("started");
+  });
 };
 
 app.stop = function() {
-  return app.server.stop(app);
+  log.info("stop");
+  return Promise.each(plugins, function(plugin) {
+      log.info("stopping");
+      return plugin.stop(app);
+    })
+    .then(function(){
+      log.info("stopped");
+    });
 };
 
 module.exports = app;

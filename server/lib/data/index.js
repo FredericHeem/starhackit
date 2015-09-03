@@ -99,6 +99,11 @@ var Data = function(app){
     });
   };
 
+  Data.stop = function(){
+    log.info("data stop");
+    
+  };
+
   return Data;
 };
 

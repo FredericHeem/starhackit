@@ -1,7 +1,7 @@
 {
-  "name": "react-node-startkit",
+  "name": "superliquid",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "install": "(cd client && npm install) && (cd server && npm install)",
     "start": "cd server && npm start",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:FredericHeem/react-node-starterkit.git"
+    "url": "git@github.com:FredericHeem/superliquid.git"
   },
   "dependencies": {
     "codeclimate-test-reporter": "0.0.4",

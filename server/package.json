@@ -33,7 +33,7 @@
     "jsonschema": "1.0.2",
     "load-grunt-tasks": "~3.2.0",
     "lodash": "^3.3.1",
-    "logfilename": "0.0.6",
+    "logfilename": "0.1.1",
     "node-uuid": "~1.4.2",
     "nodemailer": "1.4.0",
     "passport": "~0.3.0",

@@ -8,13 +8,14 @@ app.config = require('config');
 //Logging
 var Log = require('logfilename');
 app.log = new Log(app.config.log);
-var log = app.log.get(__filename);
+var log = require('logfilename')(__filename);
 
 var SchemaValidator = require('jsonschema').Validator;
 app.schemaValidator = new SchemaValidator();
 
 app.utils = require(__dirname + '/lib/utils')(app);
 app.error = app.utils.error;
+
 
 app.data = require(__dirname + '/lib/data')(app);
 

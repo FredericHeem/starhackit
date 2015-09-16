@@ -7,7 +7,7 @@ module.exports = function (app) {
   var sequelize = app.data.sequelize;
   var models = sequelize.models;
   
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   
   var GroupPermission = sequelize.define('groupPermission', {
     id: { 

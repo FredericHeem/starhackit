@@ -1,6 +1,6 @@
-module.exports = function (app) {
+module.exports = function (/*app*/) {
   "use strict";
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   function convertAndRespond(error,res) {
     if (!error.name) {
       log.info('UnknownError',error);
@@ -27,7 +27,7 @@ module.exports = function (app) {
       }
     }
   }
- 
+
   return {
     convertAndRespond: convertAndRespond
   };

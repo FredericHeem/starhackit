@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 
 module.exports = function (app) {
   "use strict";
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   var Sequelize = require('sequelize');
   var sequelize = app.data.sequelize;
   var models = sequelize.models;

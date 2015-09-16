@@ -5,7 +5,7 @@ module.exports = function (app) {
   "use strict";
   assert(app && app.data && app.data.sequelize);
   
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   
   var Sequelize = require('sequelize');
   var sequelize = app.data.sequelize;

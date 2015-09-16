@@ -1,9 +1,10 @@
 "use strict";
-var EventEmitter = require('events').EventEmitter;
+import EventEmitter from "events";
+//var EventEmitter = require('events').EventEmitter;
 var Subscriber = require('local/lib/mq/subscriber');
 
 function BaseJob(app, options) {
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
 
   var subscriber = new Subscriber(app, options);
   var eventEmitter = new EventEmitter();

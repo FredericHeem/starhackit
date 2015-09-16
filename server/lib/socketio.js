@@ -5,7 +5,7 @@ var Router = function(app, io) {
   var _clients = {};
   var defaultFunctions = [];
   var errorCb;
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   var debug = log.debug;
 
   io.on('connection', function(socket) {
@@ -84,7 +84,7 @@ var Router = function(app, io) {
 
 module.exports = function(app, expressApp) {
   "use strict";
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   //exports.app = app;
   var server = http.createServer(expressApp);
   var io = require('socket.io').listen(server);

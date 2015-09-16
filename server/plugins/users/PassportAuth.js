@@ -3,7 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function(app){
   "use strict";
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   var models = app.data.sequelize.models;
   
   var loginStrategy = new LocalStrategy(

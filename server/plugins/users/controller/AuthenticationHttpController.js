@@ -1,7 +1,7 @@
 module.exports = function(app){
   "use strict";
 
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
 
   function login(req, res) {
     log.debug("login",  req.user);

@@ -3,7 +3,7 @@ var plugin = module.exports = function (app) {
   var Promise = require("bluebird");
   var _ = require("underscore");
   
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   
   var auth = setupAuthentication();
     

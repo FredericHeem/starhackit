@@ -9,7 +9,7 @@ var assert = require('assert');
 
 var TestMngr = function(){
   this.app = app;
-  //var log = app.log.get(__filename);
+  //var log = require('logfilename')(__filename);
   var users = require(__dirname + '/fixtures/models/users.json');
 
   var clientsMap = {};

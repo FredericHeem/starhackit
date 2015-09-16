@@ -7,7 +7,7 @@ var assert = require('assert');
 
 module.exports = function (app) {
   "use strict";
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   var config = app.config;
   var expressApp = express();
 

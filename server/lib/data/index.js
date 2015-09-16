@@ -3,7 +3,7 @@ var Data = function(app){
   //var Promise = require('bluebird');
   var assert = require('assert');
   //var _ = require('lodash');
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
 
   Data.utils = require('./utils')(app);
 
@@ -101,7 +101,7 @@ var Data = function(app){
 
   Data.stop = function(){
     log.info("data stop");
-    
+
   };
 
   return Data;

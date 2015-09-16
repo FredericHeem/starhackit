@@ -9,7 +9,7 @@ util.inherits(Mail, BaseJob);
 function Mail(app){
   var me = this;
   //var models = app.models;
-  var log = app.log.get(__filename);
+  var log = require('logfilename')(__filename);
   var options = {
       exchange:'user.register',
       queueName: 'user.register'

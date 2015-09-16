@@ -15,14 +15,13 @@ module.exports = function(app) {
       app.http.error.convertAndRespond(error,res);
     });
   }
-  
-  
+
+
   return {
     respond: respond,
   };
-  
-  
-  
-  
-};
 
+
+
+
+};

@@ -1,10 +1,8 @@
-var assert = require('assert');
-var _ = require('lodash');
-var Subscriber = require("rabbitmq-pubsub").Subscriber;
-var Publisher = require("rabbitmq-pubsub").Publisher;
+
+import {Subscriber, Publisher} from 'rabbitmq-pubsub';
+
 
 describe('PublisherSubscriber', function() {
-  "use strict";
   this.timeout(15e3);
   var TestManager = require('../testManager');
   var testMngr = new TestManager();

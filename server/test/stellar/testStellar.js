@@ -26,5 +26,12 @@ describe('Stellar', function() {
       assert.equal("GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H", keyPairMaster.address());
       done();
     });
+    it('create a random account', function(done) {
+      assert(true);
+      var keyPair = StellarBase.Keypair.random();
+      assert(keyPair.address());
+      assert(keyPair.canSign());
+      done();
+    });
   });
 });

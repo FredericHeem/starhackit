@@ -1,13 +1,8 @@
-React Node starterkit
+Superliquid
 ==================
 
-Fullstack web application starter kit written in react and node.js with the following features:
+Superliquid is a currency and asset exchange based on the [stellar stack](https://www.stellar.org/)
 
-* Authentication: register, login  
-* Authorization: scheme using user, group and permission  
-* Scalable by using a micro services based architecture, a.k.a message queues
-* Relational database: postgres, mysql, sqlite, mssql etc, ...
-* Logging
 
 Technologies:
 
@@ -32,7 +27,7 @@ Technologies:
 * [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit)
 [![Test Coverage](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage)
 * [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/react-node-starterkit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/react-node-starterkit?branch=master)
- 
+
 #Workflow
 
 
@@ -43,7 +38,7 @@ To install all the dependencies:
 
 To test the backend:
 
-    # npm test 
+    # npm test
 
 It will not only test the code, but also check the source code with jshint and generate a code coverage report located at `coverage/lcov-report/index.html`
 

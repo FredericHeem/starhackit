@@ -1,14 +1,14 @@
 language: node_js
 node_js:
-  - "0.10"
+  - "0.12"
 
 services:
   - rabbitmq
 
 addons:
-  postgresql: "9.3"
+  postgresql: "9.4"
   code_climate:
-    repo_token: 0f9fc3d7a8dedfb617ecf7637eb87bf24e9e4f643544ac0d0280a250106689b8
+    repo_token: 43892d54c7e11ce8ae46a61b23e0f3fec5adb0b29166c273a16c48ac569bf05f
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres

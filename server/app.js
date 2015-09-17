@@ -6,9 +6,16 @@ app.rootDir = __dirname;
 app.config = require('config');
 
 //Logging
-var Log = require('logfilename');
-app.log = new Log(app.config.log);
-var log = require('logfilename')(__filename);
+
+var logOptions = {
+  console: {
+    level: 'info',
+    timestamp: true,
+    colorize: true
+  }
+};
+
+var log = require('logfilename')(__filename, logOptions);
 
 var SchemaValidator = require('jsonschema').Validator;
 app.schemaValidator = new SchemaValidator();

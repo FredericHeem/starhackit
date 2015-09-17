@@ -1,31 +1,30 @@
 "use strict";
 import EventEmitter from "events";
-//var EventEmitter = require('events').EventEmitter;
-var Subscriber = require('local/lib/mq/subscriber');
+import {Subscriber} from 'rabbitmq-pubsub';
 
-function BaseJob(app, options) {
-  var log = require('logfilename')(__filename);
+let log = require('logfilename')(__filename);
 
-  var subscriber = new Subscriber(app, options);
-  var eventEmitter = new EventEmitter();
+export class BaseJob {
+  constructor(app, options){
+    this._subscriber = new Subscriber(app, options);
+    this._eventEmitter = new EventEmitter();
+  }
 
-  BaseJob.prototype.getEventEmitter = function() {
-    return eventEmitter;
-  };
+  getEventEmitter(){
+    return this._eventEmitter;
+  }
 
-  BaseJob.prototype.getSubscriber = function() {
-    return subscriber;
-  };
+  getSubscriber() {
+    return this._subscriber;
+  }
 
-  BaseJob.prototype.start = function() {
+  start() {
     log.info("start");
-    return subscriber.start();
-  };
+    return this._subscriber.start();
+  }
 
-  BaseJob.prototype.stop = function() {
+  stop() {
     log.info("stop");
-    return subscriber.stop();
-  };
+    return this._subscriber.stop();
+  }
 }
-
-module.exports = BaseJob;

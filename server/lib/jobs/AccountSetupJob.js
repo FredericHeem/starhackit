@@ -1,4 +1,5 @@
 "use strict";
+var assert = require('assert');
 var util = require('util');
 var StellarBase = require('stellar-base');
 //var Promise = require('bluebird');
@@ -12,21 +13,22 @@ let options = {
 
 export class AccountSetupJob extends BaseJob {
 
-  constructor(models) {
-    super(options);
+  constructor(app/*, options*/) {
+    super(app/*, options*/);
     super.getEventEmitter().on('message', this._onIncomingMessage);
-    this._models = models;
+    this._models = app.data.sequelize.models;
   }
 
   createAccount(account) {
     //TODO
     log.info('createAccount', account);
     return this._models.user.findByUsername(account.username)
-    .then(function(user){
-       log.info('createAccount user: ', user.get());
-       var keyPair = StellarBase.Keypair.random();
+    .then(function(user) {
+      log.info('createAccount user: ', user.get());
+      var keyPair = StellarBase.Keypair.random();
+      assert(keyPair.address());
+      log.debug("public address: ", keyPair.address());
 
-       //assert(keyPair.address());
     });
   }
 

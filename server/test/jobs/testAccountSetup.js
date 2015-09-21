@@ -7,12 +7,12 @@ describe('AccountSetup', function() {
   this.timeout(15e3);
   let TestManager = require('../testManager');
   let testMngr = new TestManager();
+  let app = testMngr.app;
   let accountSetupJob;
   var publisher;
-  assert(testMngr.app);
-  assert(testMngr.app.data);
-  var models = testMngr.app.data.sequelize.models;
-  assert(models);
+  assert(app);
+  assert(app.data);
+
   before(function(done) {
       testMngr.start().then(done, done);
   });
@@ -21,7 +21,7 @@ describe('AccountSetup', function() {
   });
 
   beforeEach(function(done) {
-    accountSetupJob = new AccountSetupJob(models);
+    accountSetupJob = new AccountSetupJob(app);
     done();
   });
 

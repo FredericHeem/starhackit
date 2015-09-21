@@ -8,26 +8,26 @@ module.exports = function (app) {
   var models = sequelize.models;
   var Sequelize = require('sequelize');
   var User = sequelize.define('user', {
-    id: { 
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       notNull: true,
       unique: true,
     },
-    username: { 
-      type: Sequelize.STRING, 
-      unique: true, 
+    username: {
+      type: Sequelize.STRING,
+      unique: true,
       allowNull: false
     },
-    password: { 
+    password: {
       type: Sequelize.STRING,
       allowNull: true
     }
   },
   {
     classMethods: {
-      associate: function(models) {
+      associate: function(/*models*/) {
       },
 
       seedDefault: function () {
@@ -37,7 +37,7 @@ module.exports = function (app) {
           return User.createUserInGroups(userJson, userJson.groups);
         });
       },
-      
+
       /**
        * Finds a user by userid
        * returns the model of the  user
@@ -53,7 +53,7 @@ module.exports = function (app) {
        * Creates a user given a json representation and adds it to the group GroupName,
        * returns the model of the created user
        *
-       * @param {Object} userJson  -   User in json format 
+       * @param {Object} userJson  -   User in json format
        * @param {Array} groups - the groups to add the user in
        *
        * @returns {Promise}  Promise user created model
@@ -74,7 +74,7 @@ module.exports = function (app) {
         })
         .then(function (result) {
           // Transaction has been committed
-          // result is whatever the result of the promise chain returned to the transaction callback 
+          // result is whatever the result of the promise chain returned to the transaction callback
           return result;
         })
         .catch(function (err) {
@@ -84,7 +84,7 @@ module.exports = function (app) {
           throw err;
         });
       },
-      
+
       /**
        * Finds a user by username
        * returns the model of the  user
@@ -96,7 +96,7 @@ module.exports = function (app) {
       findByUsername: function  findByUsername(userName) {
         return this.find({where: { "username": userName } });
       },
-      
+
       /**
        * Checks whether a user is able to perform an action on a resource
        * Equivalent to: select name from permissions p join group_permissions g on p.id=g.permission_id where g.group_id=(select group_id from users where username='aliceab@example.com') AND p.resource='user' and p.create=true;
@@ -112,7 +112,7 @@ module.exports = function (app) {
         log.debug('Checking %s permission for %s on %s',action, userId, resource);
         var where = {
             resource: resource,
-        }; 
+        };
         where[action.toLowerCase()] = true;
         return this.find({
           include: [
@@ -126,7 +126,7 @@ module.exports = function (app) {
                     }],
           where: {
               id: userId
-            }                      
+            }
         }).then(function(res) {
          // //console.log(res)
          // console.log(res.dataValues.groups[0].dataValues.permissions)
@@ -134,7 +134,7 @@ module.exports = function (app) {
           return  Promise.resolve(true);
         });
       },
-      
+
       /**
        * Returns all permissions associated with a user
        *
@@ -150,21 +150,21 @@ module.exports = function (app) {
                     include:[
                       {
                        model: models.permission
-                      }]              
+                      }]
                     }],
           where: {
               username: username
-            }                      
+            }
         });
       }
     },
-    
+
     instanceMethods: {
       comparePassword : function(candidatePassword) {
         var me = this;
         return new Promise(function(resolve, reject){
           var hashPassword = me.get('password') || '';
-          
+
           bcrypt.compare(candidatePassword, hashPassword, function(err, isMatch) {
             if(err) {return reject(err); }
             resolve(isMatch);
@@ -183,7 +183,7 @@ module.exports = function (app) {
       }
     }
   });
-  
+
   var hashPasswordHook = function(instance, options, done) {
     if (!instance.changed('password')) { return done(); }
     bcrypt.hash(instance.get('password'), 10, function (err, hash) {
@@ -192,9 +192,9 @@ module.exports = function (app) {
       done();
     });
   };
-  
+
   User.beforeValidate(hashPasswordHook);
   User.beforeUpdate(hashPasswordHook);
-  
+
   return User;
 };

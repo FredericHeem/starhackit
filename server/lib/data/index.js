@@ -75,10 +75,10 @@ var Data = function(app){
   }
 
   function associateModel(models){
-    log.debug("associateModel");
+    log.debug("associateModel #models ", models.length);
     Object.keys(models).forEach(function(modelName) {
-      log.debug("associate model ", modelName);
       if ('associate' in models[modelName]) {
+        log.debug("associate model ", modelName);
         models[modelName].associate(models);
       }
     });

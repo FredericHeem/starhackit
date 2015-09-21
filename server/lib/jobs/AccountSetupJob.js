@@ -25,6 +25,7 @@ export class AccountSetupJob extends BaseJob {
     .then(function(user){
        log.info('createAccount user: ', user.get());
        var keyPair = StellarBase.Keypair.random();
+
        //assert(keyPair.address());
     });
   }

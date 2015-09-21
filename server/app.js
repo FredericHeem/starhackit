@@ -9,7 +9,7 @@ app.config = require('config');
 
 var logOptions = {
   console: {
-    level: 'info',
+    level: 'debug',
     timestamp: true,
     colorize: true
   }

@@ -15,3 +15,5 @@ coverage
 .project
 .settings/
 log.txt
+*.sqlite
+.coveralls.yml

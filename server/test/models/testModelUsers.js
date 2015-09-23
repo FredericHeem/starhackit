@@ -9,7 +9,7 @@ describe('UserModel', function(){
   var TestManager = require('../testManager');
   var testMngr = new TestManager();
   var models = testMngr.app.data.sequelize.models;
-  var userModel = models.user;
+  var userModel = models.User;
 
   before(function(done) {
       testMngr.start().then(done, done);

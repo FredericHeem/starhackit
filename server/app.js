@@ -24,13 +24,13 @@ app.utils = require(__dirname + '/lib/utils')(app);
 app.error = app.utils.error;
 
 
-app.data = require(__dirname + '/lib/data')(app);
+app.data = require(__dirname + '/models');
 
 app.plugins = require('./plugins/')(app);
 
 app.http = require(__dirname + '/lib/http')(app);
 app.server = require(__dirname + '/lib/server.js')(app);
-app.socketio = require('./lib/socketio')(app, app.server);
+//app.socketio = require('./lib/socketio')(app, app.server);
 app.schemaPath = (__dirname + '/../spec/src/');
 app.api = require(__dirname + '/lib/api')(app);
 app.error = app.utils.error;

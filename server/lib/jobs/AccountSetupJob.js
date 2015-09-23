@@ -22,7 +22,7 @@ export class AccountSetupJob extends BaseJob {
   createAccount(account) {
     //TODO
     log.info('createAccount', account);
-    return this._models.user.findByUsername(account.username)
+    return this._models.User.findByUsername(account.username)
     .then(function(user) {
       log.info('createAccount user: ', user.get());
       var keyPair = StellarBase.Keypair.random();

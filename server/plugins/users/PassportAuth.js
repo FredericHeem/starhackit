@@ -5,13 +5,13 @@ module.exports = function(app){
   "use strict";
   var log = require('logfilename')(__filename);
   var models = app.data.sequelize.models;
-  
+
   var loginStrategy = new LocalStrategy(
       function(username, password, done) {
         log.debug("loginStrategy username: ", username);
-        models.user.find({where:{username:username}})
+        models.User.find({where:{username:username}})
         .then(function(user){
-          
+
           if(!user) {
             log.info("userBasic invalid username user: ", username);
             return done(null, false, { message: 'InvalidUsernameOrPassword'});
@@ -40,7 +40,7 @@ module.exports = function(app){
       },
       function(req, username, password, done) {
         log.info("registerStrategy username: ", username);
-        models.user.find({where:{username:username}})
+        models.User.find({where:{username:username}})
         .then(function(user){
           if(!user) {
             log.info("register create new user");
@@ -49,7 +49,7 @@ module.exports = function(app){
                 username: username,
                 password: password
             };
-            models.user.createUserInGroups(userConfig, ["User"])
+            models.User.createUserInGroups(userConfig, ["User"])
             .then(function(res){
               var userCreated = res.toJSON();
               log.info("register created new user ", userCreated);
@@ -65,10 +65,10 @@ module.exports = function(app){
       }
   );
 
-  
+
   passport.use('login', loginStrategy);
   passport.use('register', registerStrategy);
-  
+
   passport.serializeUser(function(user, done) {
     log.debug("serializeUser ", user);
     //TODO use redis
@@ -80,17 +80,17 @@ module.exports = function(app){
     //TODO use redis
     done(null, id);
   });
-  
+
   function ensureAuthenticated(req, res, next) {
     log.info("ensureAuthenticated ", req.url);
     if(!req.isAuthenticated()){
       log.info("ensureAuthenticated KO: ", req.url);
       return res.status(401).send("Unauthorized");
     }
-    
+
     return next();
   }
-  
+
   function isAuthorized(req, res, next) {
     if(!req.user){
       return next({error:"UserNotSet"});
@@ -98,8 +98,8 @@ module.exports = function(app){
     var routePath = req.route.path;
     var userId = req.user.id;
     log.info("isAuthorized: who:%s, resource:%s, method %s", userId, routePath, req.method);
-    
-    models.user.checkUserPermission(userId, routePath, req.method)
+
+    models.User.checkUserPermission(userId, routePath, req.method)
     .then(function(authorized){
       log.info("isAuthorized ", authorized);
       if(authorized){
@@ -109,7 +109,7 @@ module.exports = function(app){
       }
     });
   }
-  
+
   return {
     ensureAuthenticated:ensureAuthenticated,
     isAuthorized:isAuthorized,

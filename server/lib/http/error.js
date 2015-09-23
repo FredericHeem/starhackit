@@ -1,5 +1,6 @@
 module.exports = function (/*app*/) {
   "use strict";
+  /*
   var log = require('logfilename')(__filename);
   function convertAndRespond(error,res) {
     if (!error.name) {
@@ -27,8 +28,8 @@ module.exports = function (/*app*/) {
       }
     }
   }
-
+*/
   return {
-    convertAndRespond: convertAndRespond
+    //convertAndRespond: convertAndRespond
   };
 };

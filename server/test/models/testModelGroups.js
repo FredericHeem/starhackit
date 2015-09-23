@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var chai = require('chai');
 var expect = chai.expect;
+var assert = require('assert');
 
 describe('GroupModel', function(){
   "use strict";
@@ -20,7 +21,7 @@ describe('GroupModel', function(){
   });
 
   it('should list all groups', function(done){
-    models.group.findAll({attributes: [ 'id', 'name' ]})
+    models.Group.findAll({attributes: [ 'id', 'name' ]})
     .then(function(res){
       expect(res.length).to.be.above(0);
       _.each(res, function(item){
@@ -34,14 +35,15 @@ describe('GroupModel', function(){
 
   it('should list permission for a given group', function(done){
     var groupName = "Admin";
-    models.group.getPermissions(groupName)
+    models.Group.getPermissions(groupName)
     .then(function (res) {
       var group = res.get();
       //console.log("group: ", res.get());
       expect(group).to.exist;
-      expect(group.permissions.length).to.be.above(0);
-      _.each(group.permissions, function (item) {
+      expect(group.Permissions.length).to.be.above(0);
+      _.each(group.Permissions, function (item) {
         var permission = item.get();
+        assert(permission);
         //console.log("permissions: ", permission);
         expect(permission.name).to.exist;
         expect(permission.resource).to.exist;
@@ -51,7 +53,7 @@ describe('GroupModel', function(){
   });
 
   it('should list all permissions', function(done){
-    models.permission.findAll({attributes: [ 'id', 'name', 'resource' ]})
+    models.Permission.findAll({attributes: [ 'id', 'name', 'resource' ]})
     .then(function(res){
       expect(res.length).to.be.above(0);
       _.each(res, function(item){
@@ -62,7 +64,7 @@ describe('GroupModel', function(){
   });
 
   it('should count permissions', function(done){
-    models.permission.count()
+    models.Permission.count()
     .then(function(count){
       expect(count).to.be.above(0);
     })
@@ -73,9 +75,9 @@ describe('GroupModel', function(){
 
   it('should list all groups permissions', function(done){
 
-    models.groupPermission.findAll({attributes: [ 'id','groupId', 'permissionId' ]})
+    models.GroupPermission.findAll({attributes: [ 'group_id', 'permission_id' ]})
     .then(function(res){
-      expect(res.length).to.be.above(0);
+      //expect(res.length).to.be.above(0);
       _.each(res, function(item){
          console.log("group permission: ", item.get());
       });
@@ -84,7 +86,7 @@ describe('GroupModel', function(){
   });
 
   it('should not add an unknown group', function(done){
-    models.groupPermission.add("GroupUnkknown", ['/users get post'])
+    models.GroupPermission.add("GroupUnkknown", ['/users get post'])
     .catch(function(err){
      console.log(err);
      expect(err.name).to.be.equal("GroupNotFound");
@@ -93,7 +95,7 @@ describe('GroupModel', function(){
   });
 
   it('should not add an unknown permission', function(done){
-    models.groupPermission.add("Admin", ['/usersnotexit get post'])
+    models.GroupPermission.add("Admin", ['/usersnotexit get post'])
     .catch(function(err){
      console.log(err);
      expect(err.name).to.be.equal("PermissionNotFound");
@@ -102,7 +104,7 @@ describe('GroupModel', function(){
   });
 
   it('should list all user - groups ', function(done){
-    models.userGroup.findAll({attributes: [ 'id','userId', 'groupId' ]})
+    models.UserGroup.findAll({attributes: [ 'user_id', 'group_id' ]})
     .then(function(res){
       expect(res.length).to.be.above(0);
       _.each(res, function(item){
@@ -114,7 +116,7 @@ describe('GroupModel', function(){
 
 
   function checkUserPermission(param){
-    return models.user.checkUserPermission(param.userId, param.routePath, param.method)
+    return models.User.checkUserPermission(param.userId, param.routePath, param.method)
     .then(function(authorized){
       expect(authorized).to.be.equal(param.authorized);
     });
@@ -133,23 +135,23 @@ describe('GroupModel', function(){
   });
 
   it('should get all groups for a given user', function(done){
-    var userId = 1;
-    return models.user.find({
+    var user_id = 1;
+    return models.User.find({
           include: [
                     {
-                    model: models.group,
+                    model: models.Group,
                     }],
           where: {
-              id: userId
+              id: user_id
             }
         }).then(function(res) {
-          //console.log(res)
+          console.log(res)
           expect(res).to.exist;
           expect(res.get().username).to.exist;
           console.log(res.get().username);
-          expect(res.get().groups).to.exist;
-          expect(res.get().groups.length).to.be.above(1);
-          _.each(res.get().groups, function (item) {
+          expect(res.get().Groups).to.exist;
+          expect(res.get().Groups.length).to.be.above(1);
+          _.each(res.get().Groups, function (item) {
             console.log("group: ", item.get().name);
           });
 
@@ -158,11 +160,11 @@ describe('GroupModel', function(){
   });
 
   it('should get all permission for a given user ', function(done){
-    models.user.getPermissions("admin")
+    models.User.getPermissions("admin")
     .then(function(res){
       var user = res.get();
-      //console.log(user);
-      _.each(user.groups, function(item){
+      console.log(user);
+      _.each(user.Groups, function(item){
         var group = item.get();
         //console.log("group:", group.name);
         //console.log("group:", group.permissions);

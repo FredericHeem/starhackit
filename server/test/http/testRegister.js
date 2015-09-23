@@ -40,7 +40,7 @@ describe('UserRegister', function() {
         assert(res);
         //console.log(res);
         assert(res.success);
-        return models.user.findByUsername(username);
+        return models.User.findByUsername(username);
       })
       .then(function(res) {
         assert(res);

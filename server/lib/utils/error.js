@@ -1,8 +1,8 @@
 module.exports = function (/*app*/) {
   "use strict";
 
-  var log = require('logfilename')(__filename);
-
+//  var log = require('logfilename')(__filename);
+/*
   function convertSequelizeError(error) {
     log("convertSequelizeError", error);
     return error;
@@ -11,9 +11,9 @@ module.exports = function (/*app*/) {
   function format(name,message) {
     return  {name: name, message: message};
   }
-
+*/
   return {
-    convertSequelizeError: convertSequelizeError,
-    format: format
+    //convertSequelizeError: convertSequelizeError,
+    //format: format
   };
 };

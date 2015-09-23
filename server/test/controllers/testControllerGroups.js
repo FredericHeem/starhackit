@@ -17,7 +17,7 @@ describe('Configure Database', function(){
 
   var models = app.data.sequelize.models;
   it.skip('should successfully find the Admin group', function(done){
-    models.group.findByName("Admin")
+    models.Group.findByName("Admin")
     .then(function(res){
       chai.assert.typeOf(res.get().id, 'number');
       chai.assert.equal(res.get().description,'Administrator, can perform any actions');
@@ -26,7 +26,7 @@ describe('Configure Database', function(){
     .catch(done);
   });
   it('should successfully find the Users crud Permission', function(done){
-    models.permission.findByName("users_cr")
+    models.Permission.findByName("users_cr")
     .then(function(/*res*/){
       //console.log(res.get())
       //chai.assert.isNotNull(res);

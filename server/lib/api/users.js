@@ -4,17 +4,17 @@ module.exports = function(app) {
   var assert = require('assert');
   var models = app.data.sequelize.models;
   assert(models);
-  function list(where) { 
-    return models.user.findAll({where:where});
+  function list(where) {
+    return models.User.findAll({where:where});
   }
-    
+
   function get(userId) {
-    return models.user.findByUserId(userId);
+    return models.User.findByUserId(userId);
   }
- 
-  return { 
+
+  return {
     list: list,
     get: get
   };
-  
+
 };

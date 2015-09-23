@@ -89,11 +89,12 @@ module.exports = function (app) {
    * Start the express server
    */
   expressApp.start = function(){
-    log.info("start express server on %s:%s", host, port);
     var config = app.config.http;
 
     var host = config.host ||  'localhost';
     var port = process.env.PORT || config.port || 3000;
+
+    log.info("start express server on %s:%s", host, port);
 
     return new Promise(function(resolve){
       httpHandle = expressApp.listen(port, function() {

@@ -1,0 +1,10 @@
+var path = require('path');
+var config = require('config');
+
+var dbConfig = config.db;
+dbConfig.config = __filename;
+
+dbConfig["migrationsPath"] = 'migrations';
+dbConfig["modelsPath"] = 'models';
+
+module.exports = dbConfig;

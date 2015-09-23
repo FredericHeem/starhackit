@@ -1,34 +1,17 @@
 var plugin = module.exports = function (app) {
   "use strict";
   var Promise = require("bluebird");
-  var _ = require("underscore");
-  
+  //var _ = require("underscore");
+
   var log = require('logfilename')(__filename);
-  
+
   var auth = setupAuthentication();
-    
-  var models = setupModel();
+
   var controllers = setupController();
   var routers = setupRouter(controllers, auth);
-  
-  
-  
-  // Sequelize models
-  function setupModel() {
-    var models = require('require-all')({
-      dirname: __dirname + '/models',
-      filter: /(.+)Model\.js$/,
-      resolve: function (Model) {
-        var model = new Model(app);
-        return model;
-      }
-    });
 
-    app.models = _.extend(app.models, models);
-    plugin.models = models;
-    return models;
-  }
-  
+  var models = app.data.sequelize.models;
+
   // Express controllers
   function setupController() {
     var controllers = {};
@@ -37,7 +20,7 @@ var plugin = module.exports = function (app) {
     plugin.controllers = controllers;
     return controllers;
   }
-  
+
   function setupRouter(controllers, auth) {
     // Http Routes
     var routers = {};
@@ -47,26 +30,26 @@ var plugin = module.exports = function (app) {
     plugin.routers = routers;
     return routers;
   }
-  
+
   function setupAuthentication() {
     var auth = require("./PassportAuth")(app);
     app.auth = auth;
     return auth;
   }
-  
+
 
   plugin.seedDefault = function(){
      var seedDefaultFns = [
-       models.User.seedDefault(),
-       models.Group.seedDefault(),
-       models.Permission.seedDefault(),
-       models.GroupPermission.seedDefault()
+       models.Group.seedDefault,
+       models.User.seedDefault,
+       models.Permission.seedDefault,
+       models.GroupPermission.seedDefault
      ];
-     return Promise.each(seedDefaultFns, function(){
-       log.debug("seedDefault ");
-     })
+     return Promise.each(seedDefaultFns, function(fn){
+       return fn();
+     });
   };
-  
+
   plugin.isSeeded = function(){
     return models.User.count()
     .then(function(count) {
@@ -74,11 +57,11 @@ var plugin = module.exports = function (app) {
       return Promise.resolve(count);
     });
   };
-  
+
   plugin.registerMiddleware = function(server){
     server.use('/v1/auth', routers.authentication);
     server.use('/v1', auth.ensureAuthenticated, routers.users);
   };
-  
+
   return plugin;
 };

@@ -6,11 +6,12 @@
     "driver": "sqlite3",
     // postgres, sqlite
     "dialect":"sqlite",
-    "database": "gatewayd_db",
-    "user": "gatewayd_user",
+    "database": "superliquid_dev",
+    "user": "user",
     "password": "password",
     "host": "localhost",
     "port": "5432",
-    "logging": false
+    "logging": true,
+    "storage": "./db.dev.sqlite"
   }
 }

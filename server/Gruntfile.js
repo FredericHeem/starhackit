@@ -1,21 +1,9 @@
 var config = require('config');
 var util = require('util');
-var db = config.get('db');
-var databaseUrl = util.format("postgres://%s:%s@%s:%s/%s",db.user, db.password, db.host, db.port, db.database);
 
 module.exports = function (grunt) {
 
   grunt.initConfig({
-    migrate: {
-      options: {
-        'migrations-dir': './lib/data/migrations',
-        verbose: true,
-        env: {
-          DATABASE_URL: databaseUrl
-        }
-      }
-    },
-
     jsdoc : {
       dist : {
         src: ['./index.js', './lib/api/*.js'],
@@ -55,8 +43,8 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
-  
+
   grunt.registerTask('test', ['jshint', 'mochaTest:test']);
 
-  grunt.registerTask('default', ['migrate']);
+  grunt.registerTask('default', ['test']);
 };

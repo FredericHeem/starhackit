@@ -53,7 +53,9 @@ describe('UserModel', function(){
       }).then(function(res) {
          console.log(res.get().username);
          _.map(res.get().StellarAccounts, function(account){
-           console.log(account.get());
+           chai.assert(account.get());
+           chai.assert(account.get().publicKey);
+           chai.assert.isUndefined(account.get().privateKey);
          });
       });
     })

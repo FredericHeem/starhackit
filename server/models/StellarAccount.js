@@ -21,15 +21,15 @@ module.exports = function(sequelize, DataTypes) {
         });
 
       },
-      findByUser:findByUser
+      findByPublicAddress:findByPublicAddress
     }
   },
   {
     underscored: true
   });
 
-  function findByUser(){
-
+  function findByPublicAddress(publicAddress){
+    return StellarAccount.find({where: { publicKey: publicAddress } });
   }
 
   return StellarAccount;

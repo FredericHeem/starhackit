@@ -1,6 +1,6 @@
 {
   "Admin": [
-   "/users get post", "/users/:id get put", "/accounts get"
+   "/users get post", "/users/:id get put", "/accounts get post", "/accounts/:address get"
   ],
   "AdminReadOnly": ["/users get"]
 }

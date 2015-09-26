@@ -4,10 +4,12 @@ module.exports = function(app, auth, controllers){
   var router = new express.Router();
   var accountHttpCtrl = controllers.account;
 
-  //Users
   router.get('/accounts', auth.isAuthorized, accountHttpCtrl.index);
-  //router.post('/users', auth.isAuthorized, userHttpCtrl.create);
-  router.get('/accounts/:id', auth.isAuthorized, accountHttpCtrl.show);
+  router.post('/accounts', auth.isAuthorized, accountHttpCtrl.create);
+
+  router.get('/accounts/:address', auth.isAuthorized, accountHttpCtrl.show);
+
+  router.get('/users/:id/address', auth.isAuthorized, accountHttpCtrl.getByUserId);
   return router;
 
 };

@@ -1,4 +1,5 @@
 var assert = require('assert');
+var StellarBase = require('stellar-base');
 
 describe('Users', function(){
   "use strict";
@@ -25,6 +26,24 @@ describe('Users', function(){
       })
       .then(done, done);
     });
+    it('should create an account', function(done){
+      var param = {
+        user_id: 1
+      };
+      return client.post('v1/accounts', param)
+      .then(function(account){
+        assert(account);
+        assert(account.publicKey);
+        //console.log(account);
+        return client.get('v1/accounts/' + account.publicKey);
+      })
+      .then(function(account){
+        assert(account);
+        assert(account.publicKey);
+        //console.log(account);
+      })
+      .then(done, done);
+    });
     it('should get all account', function(done){
       return client.get('v1/accounts')
       .then(function(accounts){
@@ -33,6 +52,7 @@ describe('Users', function(){
       })
       .then(done, done);
     });
+
   });
 
   describe('User Basic ', function(){

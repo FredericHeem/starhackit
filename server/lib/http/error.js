@@ -1,8 +1,8 @@
 module.exports = function (/*app*/) {
   "use strict";
-  /*
+
   var log = require('logfilename')(__filename);
-  function convertAndRespond(error,res) {
+  function convertAndRespond(error, res) {
     if (!error.name) {
       log.info('UnknownError',error);
       res.status(500);
@@ -14,6 +14,7 @@ module.exports = function (/*app*/) {
       });
     }
     else {
+      log.error('error name', error);
       if (error.name === 'ValidationError') {
         res.status(400);
         res.send({
@@ -28,8 +29,8 @@ module.exports = function (/*app*/) {
       }
     }
   }
-*/
+
   return {
-    //convertAndRespond: convertAndRespond
+    convertAndRespond: convertAndRespond
   };
 };

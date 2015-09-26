@@ -26,15 +26,20 @@ describe('UserModel', function(){
       var keyPair = StellarBase.Keypair.random();
 
       var accountJson =  {
-        publicKey:keyPair.address(),
-        user_id:user.get().id
+        publicKey: keyPair.address(),
+        user_id: user.get().id
       };
 
       return models.StellarAccount.create(accountJson);
     })
-    .then(function(res){
-      chai.assert(res);
-      //console.log("ACCOUNT ", res.get());
+    .then(function(account){
+      chai.assert(account);
+      return account.getUser();
+    })
+    .then(function(user){
+      chai.assert(user);
+      chai.assert.equal(username, user.get().username);
+
       return models.User.find({
         include: [
                   {
@@ -50,8 +55,6 @@ describe('UserModel', function(){
          _.map(res.get().StellarAccounts, function(account){
            console.log(account.get());
          });
-       // console.log(res.dataValues.groups[0].dataValues.permissions)
-
       });
     })
     .then(done, done);

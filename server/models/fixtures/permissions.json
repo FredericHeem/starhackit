@@ -38,5 +38,11 @@
    "resource":"/accounts/:address",
    "description":"Can get one account",
    "GET":true
+ },
+ {
+   "name":"/users/:user_id/accounts get",
+   "resource":"/users/:user_id/accounts",
+   "description":"Can get all accounts for a given user",
+   "GET":true
  }
 ]

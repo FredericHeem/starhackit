@@ -6,10 +6,8 @@ module.exports = function(app, auth, controllers){
 
   router.get('/accounts', auth.isAuthorized, accountHttpCtrl.index);
   router.post('/accounts', auth.isAuthorized, accountHttpCtrl.create);
-
   router.get('/accounts/:address', auth.isAuthorized, accountHttpCtrl.show);
-
-  router.get('/users/:id/address', auth.isAuthorized, accountHttpCtrl.getByUserId);
+  router.get('/users/:user_id/accounts', auth.isAuthorized, accountHttpCtrl.getByUserId);
   return router;
 
 };

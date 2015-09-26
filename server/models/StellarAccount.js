@@ -21,7 +21,8 @@ module.exports = function(sequelize, DataTypes) {
         });
 
       },
-      findByPublicAddress:findByPublicAddress
+      findByPublicAddress:findByPublicAddress,
+      getByUserId:getByUserId
     }
   },
   {
@@ -31,6 +32,8 @@ module.exports = function(sequelize, DataTypes) {
   function findByPublicAddress(publicAddress){
     return StellarAccount.find({where: { publicKey: publicAddress } });
   }
-
+  function getByUserId(user_id){
+    return StellarAccount.find({where: { user_id: user_id } });
+  }
   return StellarAccount;
 };

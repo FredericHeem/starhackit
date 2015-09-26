@@ -7,7 +7,7 @@ module.exports = function(app) {
     callback.apply(null,args)
     .then(function(result){
       if(result){
-        log.debug("respond ", result);
+        //log.debug("respond ", result);
         res.send(result);
       } else {
         res.status(404).send();

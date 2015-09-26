@@ -36,9 +36,11 @@ module.exports = function(app) {
   }
 
   function getByUserId(userId) {
+    log.debug("getByUserId: ", userId);
     return models.StellarAccount.getByUserId(userId)
-    .then(function(account){
-      return account.toJSON();
+    .then(function(accounts){
+      log.debug(accounts.toJSON());
+      return accounts.toJSON();
     });
   }
 

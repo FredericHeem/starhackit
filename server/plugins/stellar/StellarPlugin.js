@@ -1,15 +1,16 @@
 var plugin = module.exports = function (app) {
   "use strict";
   //var Promise = require("bluebird");
-  var _ = require("underscore");
+  //var _ = require("underscore");
 
   var log = require('logfilename')(__filename);
   log.debug("StellarPlugin");
-  /*var models = */setupModel();
+  /*var models = setupModel();*/
   //var controllers = setupController();
   //var routers = setupRouter(controllers, auth);
 
   // Sequelize models
+  /*
   function setupModel() {
     log.debug("setupModel");
     var models = require('require-all')({
@@ -25,6 +26,7 @@ var plugin = module.exports = function (app) {
     plugin.models = models;
     return models;
   }
+  */
 /*
   // Express controllers
   function setupController() {

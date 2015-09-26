@@ -67,7 +67,7 @@ module.exports = function(sequelize, DataTypes) {
           .catch(function (err) {
             // Transaction has been rolled back
             // err is whatever rejected the promise chain returned to the transaction callback
-            log.error('Error during user creation, rolling back', err)
+            log.error('Error during user creation, rolling back', err);
             throw err;
           });
         },
@@ -169,6 +169,9 @@ module.exports = function(sequelize, DataTypes) {
           return values;
         }
       }
+  },
+  {
+    underscored: true
   });
 
   var hashPasswordHook = function(instance, options, done) {

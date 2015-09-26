@@ -70,6 +70,7 @@ describe('UserModel', function(){
     userModel.findByUsername('alice')
     .then(function(res){
       chai.assert(res);
+      chai.assert(res.get().username);
       chai.assert(res.get().password);
       var userJson = res.toJSON();
       chai.assert.isUndefined(userJson.password);

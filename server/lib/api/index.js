@@ -4,11 +4,8 @@ var api = function(app){
   var apis = {};
   //apis.utils =  require('./utils.js')(app);
   apis.users = require('./users.js')(app);
-
+  apis.accounts = require('./accounts.js')(app);
   return apis;
 };
 
 module.exports = api;
-
-
-

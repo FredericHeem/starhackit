@@ -26,4 +26,11 @@
    "GET":true,
    "PUT":true
  }
+ ,
+ {
+   "name":"/accounts get",
+   "resource":"/accounts",
+   "description":"Can list the accounts",
+   "GET":true
+ }
 ]

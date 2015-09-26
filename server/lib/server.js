@@ -81,6 +81,9 @@ module.exports = function (app) {
     assert(app.plugins);
     assert(app.plugins.users);
     app.plugins.users.registerMiddleware(expressApp);
+
+    assert(app.plugins.stellar);
+    app.plugins.stellar.registerMiddleware(expressApp);
   }
 
   var httpHandle;

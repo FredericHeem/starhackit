@@ -1,6 +1,6 @@
 module.exports = function(app) {
   "use strict";
-  var log = require('logfilename')(__filename);
+  //var log = require('logfilename')(__filename);
 
   function respond(callback,args,res) {
     //apply used to pass args to the callback

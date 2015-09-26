@@ -34,6 +34,20 @@ describe('Users', function(){
       })
       .then(done, done);
     });
+    it('should get all users with filter ASC', function(done){
+      return client.get('v1/users?offset=10&order=ASC&limit=100')
+      .then(function(users){
+        assert(users);
+      })
+      .then(done, done);
+    });
+    it('should get all users with filter DESC', function(done){
+      return client.get('v1/users?offset=1000&order=DESC&limit=100')
+      .then(function(users){
+        assert(users);
+      })
+      .then(done, done);
+    });
     it('should get one user', function(done){
       return client.get('v1/users/1')
       .then(function(user){

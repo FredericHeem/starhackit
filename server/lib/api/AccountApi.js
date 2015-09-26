@@ -7,9 +7,10 @@ module.exports = function(app) {
 
   var models = app.data.sequelize.models;
   assert(models);
-  function list(where) {
-    log.debug("list");
-    return models.StellarAccount.findAll({where:where});
+  function list(qs) {
+    log.debug("list: qs ", qs);
+    var filter = app.data.queryStringToFilter(qs, "id");
+    return models.StellarAccount.findAll(filter);
   }
 
   function create(body) {

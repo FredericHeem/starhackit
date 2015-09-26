@@ -30,6 +30,15 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.queryStringToFilter = function(qs, orderBy){
+  var filter = {
+    offset:qs.offset,
+    limit:qs.limit,
+    order:qs.order ? (orderBy + " " + qs.order) : undefined
+  };
+  return filter;
+};
+
 db.start = function(app){
   log.info("db start");
   var option = {force:false};

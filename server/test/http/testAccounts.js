@@ -55,6 +55,14 @@ describe('Users', function(){
       })
       .then(done, done);
     });
+    it('should get all account with filter', function(done){
+      return client.get('v1/accounts?offset=10&order=ASC&limit=100')
+      .then(function(accounts){
+        assert(accounts);
+        console.log(accounts);
+      })
+      .then(done, done);
+    });
   });
 
   describe('User Basic ', function(){

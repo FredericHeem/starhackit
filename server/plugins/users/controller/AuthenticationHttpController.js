@@ -1,4 +1,4 @@
-module.exports = function(app){
+module.exports = function(/*app*/){
   "use strict";
 
   var log = require('logfilename')(__filename);
@@ -10,13 +10,17 @@ module.exports = function(app){
       user: req.user
     });
   }
-  
+
+  function loginFacebookCallback(/*req, res*/) {
+    //log.debug("loginFacebookCallback",  req.user);
+
+  }
   function logout(req, res) {
     log.debug("logout");
     req.logout();
     res.send({success:true});
   }
-  
+
   function register(req, res) {
     log.debug("register");
 
@@ -25,7 +29,7 @@ module.exports = function(app){
       message: "confirm email"
     });
   }
-  
+
   function session(req, res) {
     log.debug("session");
     res.send({
@@ -33,11 +37,12 @@ module.exports = function(app){
       user: req.user
     });
   }
-  
+
   return {
     login:login,
     logout:logout,
     register:register,
-    session:session
+    session:session,
+    loginFacebookCallback:loginFacebookCallback
   };
 };

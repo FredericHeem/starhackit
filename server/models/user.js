@@ -12,6 +12,22 @@ module.exports = function(sequelize, DataTypes) {
       unique: true,
       allowNull: false
     },
+    facebookId: {
+      type: DataTypes.TEXT,
+      unique: true
+    },
+    githubId: {
+      type: DataTypes.TEXT,
+      unique: true
+    },
+    twitterId: {
+      type: DataTypes.TEXT,
+      unique: true
+    },
+    googleId: {
+      type: DataTypes.TEXT,
+      unique: true
+    },
     password: DataTypes.TEXT
   },
    {

@@ -1,11 +1,31 @@
 {
-	"log": {
-		"console": {
-			"level": "debug"
-		}
-	},
-	"http": {
-		"host": "localhost",
-		"port": 3000
-	}
+  "log": {
+    "console": {
+      "level": "debug"
+    }
+  },
+  "http": {
+    "host": "localhost",
+    "port": 3000
+  },
+  "db":{
+     // pg, sqlite3  etc ...
+    "driver": "sqlite3",
+    // postgres, sqlite
+    "dialect":"sqlite",
+    "database": "dev",
+    "user": "user",
+    "password": "password",
+    "host": "localhost",
+    "port": "5432",
+    "logging": true,
+    "storage": "./db.dev.sqlite"
+  },
+  "authentication":{
+    "facebook":{
+      "clientID":"",
+      "clientSecret":"",
+      "callbackURL": "http://localhost:3000/v1/auth/facebook/callback"
+    }
+  }
 }

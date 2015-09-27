@@ -13,6 +13,22 @@ module.exports = {
         unique: true,
         allowNull: false
       },
+      facebookId: {
+        type: Sequelize.TEXT,
+        unique: true
+      },
+      githubId: {
+        type: Sequelize.TEXT,
+        unique: true
+      },
+      twitterId: {
+        type: Sequelize.TEXT,
+        unique: true
+      },
+      googleId: {
+        type: Sequelize.TEXT,
+        unique: true
+      },
       password: {
         type: Sequelize.TEXT,
         allowNull: false
@@ -27,7 +43,7 @@ module.exports = {
       }
     });
   },
-  down: function(queryInterface, Sequelize) {
+  down: function(queryInterface/*, Sequelize*/) {
     return queryInterface.dropTable('users');
   }
 };

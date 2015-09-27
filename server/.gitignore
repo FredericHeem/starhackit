@@ -17,3 +17,4 @@ coverage
 log.txt
 *.sqlite
 .coveralls.yml
+config/development.json

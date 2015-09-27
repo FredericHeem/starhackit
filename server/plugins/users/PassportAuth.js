@@ -8,8 +8,8 @@ module.exports = function(app) {
   var log = require('logfilename')(__filename);
   var models = app.data.sequelize.models;
   var authenticationFbConfig = config.authentication.facebook;
-
-  var facebookStrategy = new FacebookStrategy(
+  if (authenticationFbConfig && authenticationFbConfig.clientID) {
+    var facebookStrategy = new FacebookStrategy(
     {
       clientID: authenticationFbConfig.clientID,
       clientSecret: authenticationFbConfig.clientSecret,
@@ -27,15 +27,15 @@ module.exports = function(app) {
         done(null, req.user);
       } else {
         models.User.find({where:{facebookId: profile.id}})
-        .then(function(user){
-          if(user){
+        .then(function(user) {
+          if (user) {
             log.debug("user already exist");
             return done(null, user.get());
           } else {
             log.debug("no fb profile registered");
             models.User.find({where:{username: profile._json.email}})
-            .then(function(user){
-              if(user){
+            .then(function(user) {
+              if (user) {
                 log.debug("email already registered");
                 //should update fb profile id
                 done(null, user.get());
@@ -59,8 +59,9 @@ module.exports = function(app) {
         })
         .catch(done);
       }
-    }
-);
+    });
+    passport.use('facebook', facebookStrategy);
+  }
 
   var loginStrategy = new LocalStrategy(
       function(username, password, done) {
@@ -123,7 +124,6 @@ module.exports = function(app) {
 
   passport.use('login', loginStrategy);
   passport.use('register', registerStrategy);
-  passport.use('facebook', facebookStrategy);
 
   passport.serializeUser(function(user, done) {
     log.debug("serializeUser ", user);

@@ -22,10 +22,12 @@
     "storage": "./db.dev.sqlite"
   },
   "authentication":{
+    /*
     "facebook":{
       "clientID":"",
       "clientSecret":"",
       "callbackURL": "http://localhost:3000/v1/auth/facebook/callback"
     }
+    */
   }
 }

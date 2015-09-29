@@ -10,6 +10,7 @@ module.exports = function(app) {
   var log = require('logfilename')(__filename);
   var config = app.config;
   var expressApp = express();
+  var httpHandle;
 
   setupMiddleware();
   setupPlugins();
@@ -32,7 +33,7 @@ module.exports = function(app) {
   function setupCors() {
     var Cors = require('cors');
     var whitelist = [config.frontend.url]; // Acceptable domain names. ie: https://www.example.com
-    log.debug('cirs white list: ', config.frontend.url);
+    log.debug('cors white list: ', config.frontend.url);
     var corsOptions = {
       credentials: true,
       origin: function (origin, callback) {
@@ -67,8 +68,10 @@ module.exports = function(app) {
 
   function setupFrontend() {
     if (config.has('frontend')) {
-      var frontend_path = config.get('frontend');
-      expressApp.use('/', express.static(frontend_path));
+      log.info("frontend path: ", config.get('frontend'));
+      var frontendPath = config.get('frontend').get('path');
+
+      expressApp.use('/', express.static(frontendPath));
     } else {
       log.debug('frontend not served');
     }
@@ -100,11 +103,10 @@ module.exports = function(app) {
     assert(app.plugins.users);
     app.plugins.users.registerMiddleware(expressApp);
 
-    assert(app.plugins.stellar);
-    app.plugins.stellar.registerMiddleware(expressApp);
+    if(app.plugins.stellar){
+      app.plugins.stellar.registerMiddleware(expressApp);
+    }
   }
-
-  var httpHandle;
 
   /**
    * Start the express server

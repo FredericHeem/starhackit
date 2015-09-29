@@ -5,7 +5,8 @@
     }
   },
   "frontend": {
-    "url": "http://localhost:8080"
+    "url": "http://localhost:8080",
+    "path": "../client/build"
   },
   "http": {
     "host": "localhost",

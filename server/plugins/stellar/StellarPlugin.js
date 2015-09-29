@@ -11,7 +11,7 @@ var plugin = module.exports = function (app) {
   };
 
   plugin.registerMiddleware = function(server){
-    server.use('/v1', app.auth.ensureAuthenticated, plugin.routers.account);
+    server.use('/api/v1', app.auth.ensureAuthenticated, plugin.routers.account);
   };
 
   return plugin;

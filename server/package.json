@@ -4,11 +4,13 @@
   "private": false,
   "scripts": {
     "start": "nodemon processes/server.js",
-    "lint": "./node_modules/.bin/eslint",
-    "test": "grunt jshint && ./node_modules/.bin/istanbul cover  _mocha ./test/**/*.js",
+    "test": "npm run lint && npm run coverage",
+    "coverage": "./node_modules/.bin/istanbul cover  _mocha ./test/**/*.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "codeclimate": "CODECLIMATE_REPO_TOKEN=43892d54c7e11ce8ae46a61b23e0f3fec5adb0b29166c273a16c48ac569bf05f codeclimate-test-reporter < coverage/lcov.info",
-    "lint": "grunt jshint",
+    "jshlint": "grunt jshint",
+    "eslint": "./node_modules/.bin/eslint lib",
+    "lint": "npm run eslint && npm run jshlint",
     "migrate": "./node_modules/.bin/sequelize db:migrate"
   },
   "dependencies": {

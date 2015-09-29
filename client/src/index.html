@@ -1,41 +1,46 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home</title>
-  <link rel="stylesheet" href="/css/material-ui.css">
-  <link rel="stylesheet" href="/css/materialdesignicons.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="/js/vendor/jquery.min.js"></script>
-  <script src="/js/vendor/modernizr.js"></script>
-  <script src="/js/vendor/fastclick.js"></script>
-  <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8">
+    <title>StartKit</title>
+    <meta name="description" content="Frontend and backend starter kit">
+    <meta name="viewport" content="width=device-width">
+    <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
 </head>
+
 <body>
-<!--[if lte IE 8]>
-  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<!--[if lt IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<script type="text/javascript">
-  WebFontConfig = {
-    google: { families: [ 'Roboto::latin' ] }
-  };
-  (function() {
-    var wf = document.createElement('script');
-    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-    wf.type = 'text/javascript';
-    wf.async = 'true';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(wf, s);
-  })();
-</script>
-<script src="/js/vendor/foundation.min.js"></script>
-<script src="/js/app.js"></script>
-<script>
-  reactspa.renderToDom();
-</script>
+<!-- application container -->
+<div id="application">
+    <style type="text/css">
+        #initializing {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+            height: 30%;
+            width: 50%;
+            margin: -10% 0 0 -10%;
+        }
+
+        #initializing i {
+
+            font-size: 15em;
+            color: silver;
+        }
+    </style>
+    <div id="initializing">
+        <i class="fa fa-cog fa-spin"></i>
+    </div>
+</div>
+
+<!--The application-->
+<script type="text/javascript" src="/bundle/vendor.js"></script>
+<script type="text/javascript" src="/bundle/app.js"></script>
+
 </body>
 </html>

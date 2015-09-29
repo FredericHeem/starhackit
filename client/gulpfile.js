@@ -1,207 +1,93 @@
-"use strict";
+var path = require( 'path' );
+var gulp = require( 'gulp' );
+var gutil = require( 'gulp-util' );
+var webpack = require( 'webpack' );
+var gulpWebpack = require( 'gulp-webpack' );
+var WebpackDevServer = require( 'webpack-dev-server' );
+var stylus = require( 'gulp-stylus' );
+var clean = require( 'gulp-clean' );
+var runSequence = require( 'run-sequence' );
+var imagemin = require( 'gulp-imagemin' );
 
-// Include Gulp and other build automation tools and utilities
-// See: https://github.com/gulpjs/gulp/blob/master/docs/API.md
-var gulp = require("gulp");
-var $ = require("gulp-load-plugins")();
-var del = require("del");
-var path = require("path");
-var runSequence = require("run-sequence");
-var webpack = require("webpack");
-var argv = require("minimist")(process.argv.slice(2));
-
-// Settings
-var DEST = "./build";                         // The build output folder
-var RELEASE = !!argv.release;                 // Minimize and optimize during a build?
-var AUTOPREFIXER_BROWSERS = [                 // https://github.com/ai/autoprefixer
-  "ie >= 8",
-  "ie_mob >= 10",
-  "ff >= 24",
-  "chrome >= 20",
-  "safari >= 6",
-  "opera >= 12",
-  "ios >= 6",
-  "bb >= 10",
-  "Android 2.3",
-  "Android >= 4"
-];
-
-// Gulp src wrapper, see: https://gist.github.com/floatdrop/8269868
-gulp.plumbedSrc = function () {
-  return gulp.src.apply(gulp, Array.prototype.slice.call(arguments))
-    .pipe($.plumber());
-};
-
-var src = {};
-var watch = false;
-
-// The default task
-gulp.task("default", ["watch"]);
-
-// Clean up
-gulp.task("clean", del.bind(null, [DEST]));
-
-//HTML
-gulp.task('html', function() {
-    return gulp.src('src/*.html')
-        //.pipe($.useref())
-        .pipe(gulp.dest(DEST))
-        .pipe($.size());
-});
-
-// Static files
-gulp.task("assets", function () {
-  src.assets = "assets/**";
-  return gulp.src(src.assets)
-    .pipe($.changed(DEST))
-    .pipe(gulp.dest(DEST))
-    .pipe($.size({title: "assets"}));
-});
-
-gulp.task("libraries", function() {
-  var src = [
-    "bower_components/jquery/dist/jquery.min.js",
-    "bower_components/jquery/dist/jquery.min.map",
-    "bower_components/foundation/js/foundation.min.js",
-    "bower_components/modernizr/modernizr.js",
-    "bower_components/fastclick/lib/fastclick.js",
-    "./vendor/zxcvbn.js"
-  ];
-  return gulp.src(src)
-    .pipe(gulp.dest("build/js/vendor"));
-});
-
-gulp.task("fonts", function() {
-  // Move and minify font css
-  gulp.src("bower_components/mdi/css/materialdesignicons.css")
-    .pipe($.if(RELEASE, $.minifyCss()))
-    .pipe(gulp.dest("build/css"));
-
-  gulp.src("bower_components/mdi/css/materialdesignicons.css.map")
-  .pipe(gulp.dest("build/css"));
-  
-  // Move font files
-  gulp.src("bower_components/mdi/fonts/*.*")
-    .pipe(gulp.dest("build/fonts"));
-});
-
-gulp.task("vendor", ["libraries", "fonts"]);
-
-gulp.task("styles", ["sass-styles", "mui-styles"]);
-
-// Combine language bundles
-gulp.task("languageBundles", ["language_en"]);
-
-gulp.task("language_en", function() {
-  gulp.src("./src/**/locale_en.json")
-    .pipe($.extend("app.json"))
-    .pipe(gulp.dest("build/locales/en/"));
-});
-
-// CSS style sheets
-gulp.task("sass-styles", function () {
-  // Source files
-  src.styles = ["styles/style.sass"];
-
-  // Process
-  return gulp.plumbedSrc(src.styles)
-    // Process sass files
-    .pipe($.sass({
-      sourceMap: !RELEASE,
-      sourceMapBasepath: __dirname
-    }))
-
-    // Auto prefix, concat and format
-    .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
-    .pipe($.concat("style.css"))
-    .pipe($.csscomb())
-
-    // If in release mode, minify the css
-    .pipe($.if(RELEASE, $.minifyCss()))
-
-    // Write resulting css file to disk
-    .pipe(gulp.dest(DEST + "/css"))
-    .pipe($.size({title: "style"}));
-});
-
-gulp.task("mui-styles", function () {
-  src.styles = [
-    "styles/material-ui.less"
-  ];
-  return gulp.plumbedSrc(src.styles)
-    .pipe($.less({
-      strictMath: true,
-      sourceMap: !RELEASE,
-      sourceMapBasepath: __dirname
-    }))
-    .pipe($.if(RELEASE, $.minifyCss()))
-    .pipe(gulp.dest(DEST + "/css"))
-    .pipe($.size({title: "style"}));
-});
-
-// Bundle
-gulp.task("bundle", function (cb) {
-  var started = false;
-  var config = require("./config/webpack.js")(RELEASE);
-  var bundler = webpack(config);
-
-  function bundle(err, stats) {
-    if (err) {
-      throw new $.util.PluginError("webpack", err);
-    }
-
-    var verbose = true;//!!argv.verbose;
-    if (verbose) {
-      $.util.log("[webpack]", stats.toString({colors: true}));
-    }
-
-    if (!started) {
-      started = true;
-      return cb();
-    }
-  }
-
-  if (watch) {
-    bundler.watch(200, bundle);
-  } else {
-    bundler.run(bundle);
-  }
-});
-
-// Build the app from source code
-gulp.task("build", ["clean"], function (cb) {
-  runSequence(["html", "assets", "styles", "bundle", "vendor", "languageBundles"], cb);
-});
-
-// Setup live reload
-var tinylr;
-gulp.task("livereload", function(cb) {
-  tinylr = require("tiny-lr")();
-  tinylr.listen(35729, function() {
-    console.log('livereload listening');
-    cb();
-  })
-});
-
-function notifyLiveReload(fileName) {
-  console.log("notifyLiveReload ", fileName)
-  tinylr.changed({
-    body: {
-      files: [fileName]
-    }
-  });
+function handleError( task ) {
+    return function ( err ) {
+        this.emit( 'end' );
+        gutil.log( 'Error handler for', task, err.toString() );
+    };
 }
 
-gulp.task("watch", function (cb) {
-  watch = true;
+// The development server (the recommended option for development)
+gulp.task( 'default', [ 'webpack-dev-server', 'stylus:compile' ] );
 
-  runSequence("build", "livereload", function () {
-    gulp.watch(src.assets, ["assets"]);
-    gulp.watch(["styles/**.*"], ["styles"]);
-    gulp.watch(DEST + "/**/*.*", function (file) {
-      var fileName = path.relative(__dirname, file.path);
-      notifyLiveReload(fileName);
-    });
-    cb();
-  });
-});
+gulp.task( 'webpack-dev-server', function ( callback ) {
+    var config = Object.create( require( './webpack.dev.js' ) );
+
+    // Start a webpack-dev-server
+    new WebpackDevServer( webpack( config ), {
+        contentBase: path.join( __dirname, 'src' ),
+        publicPath: config.output.publicPath,
+        hot: true,
+        historyApiFallback: true,
+        stats: {
+            colors: true
+        },
+        proxy: {
+            '/api/v1/*': 'http://localhost:3000'
+        }
+    } ).listen( 8080, '0.0.0.0', function ( err ) {
+            if ( err ) {
+                throw new gutil.PluginError( 'webpack-dev-server', err );
+            }
+            gutil.log( '[webpack-dev-server]', 'http://localhost:8080' );
+            callback();
+        } );
+
+    //setup stylus watcher
+    gulp.watch( [ 'src/assets/stylus/*.styl', 'src/assets/stylus/**/*.styl' ], [ 'stylus:compile' ] );
+} );
+
+gulp.task( 'stylus:compile', function () {
+    return gulp.src( './src/assets/stylus/main.styl' )
+        .pipe( stylus().on( 'error', handleError( 'stylus:compile' ) ) )
+        .pipe( gulp.dest( './src/assets' ) );
+} );
+
+gulp.task( 'clean:build', function () {
+    return gulp.src( 'build/*', { read: false } )
+        .pipe( clean() );
+} );
+
+gulp.task( 'build:image:min', function () {
+    return gulp.src( './build/bundle/*.jpg' )
+        .pipe( imagemin( {
+            progressive: true,
+            svgoPlugins: [ { removeViewBox: false } ]
+        } ) )
+        .pipe( gulp.dest( 'build/bundle' ) );
+} );
+
+gulp.task( 'build:cp:index', function () {
+    return gulp.src( [
+        './src/index.html',
+        './src/favicon.png',
+        './src/assets/img/logo.jpg'
+    ] )
+        .pipe( gulp.dest( 'build/' ) );
+} );
+
+gulp.task( 'build:webpack', function () {
+    return gulp.src( 'src/app/app.js' )
+        .pipe( gulpWebpack( require( './webpack.prod.js' ), webpack ) )
+        .pipe( gulp.dest( 'build/bundle/' ) );
+} );
+
+
+gulp.task( 'build', function ( cb ) {
+    runSequence(
+        'clean:build',
+        [ 'stylus:compile', 'build:cp:index' ],
+        'build:webpack',
+        'build:image:min',
+        cb
+    );
+} );

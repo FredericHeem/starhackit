@@ -1,8 +1,13 @@
-Superliquid
+React Node starterkit
 ==================
 
-Superliquid is a currency and asset exchange based on the [stellar stack](https://www.stellar.org/)
+Fullstack web application starter kit written in react and node.js with the following features:
 
+* Authentication: register, login  
+* Authorization: scheme using user, group and permission  
+* Scalable by using a micro services based architecture, a.k.a message queues
+* Relational database: postgres, mysql, sqlite, mssql etc, ...
+* Logging
 
 Technologies:
 
@@ -21,12 +26,12 @@ Technologies:
 * [Webpack](http://webpack.github.io/): module bundler for the browser
 * [Mocha](http://mochajs.org/): test framework.
 * [Sinon](http://sinonjs.org/): test spies, stubs and mocks.
-* [Travis](https://travis-ci.org/): Test and deploy. [![Build Status](https://travis-ci.org/FredericHeem/superliquid.svg?branch=master)](https://travis-ci.org/FredericHeem/superliquid)
-* [Drone.io](https://drone.io) : Continuous integration [![Build Status](https://drone.io/github.com/FredericHeem/superliquid/status.png)](https://drone.io/github.com/FredericHeem/superliquid/latest)
+* [Travis](https://travis-ci.org/): Test and deploy. [![Build Status](https://travis-ci.org/FredericHeem/react-node-starterkit.svg?branch=master)](https://travis-ci.org/FredericHeem/react-node-starterkit)
+* [Drone.io](https://drone.io) : Continuous integration [![Build Status](https://drone.io/github.com/FredericHeem/react-node-starterkit/status.png)](https://drone.io/github.com/FredericHeem/react-node-starterkit/latest)
 * [Semaphore](https://semaphoreci.com) : Continuous integration [![Build Status](https://semaphoreci.com/api/v1/projects/0ad9309c-4953-49ac-a200-025e77931371/420174/badge.svg)](https://semaphoreci.com/frederich/react-node-starterkit)
-* [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/superliquid/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/superliquid)
-[![Test Coverage](https://codeclimate.com/github/FredericHeem/superliquid/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/superliquid/coverage)
-* [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/superliquid/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/superliquid?branch=master)
+* [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit)
+[![Test Coverage](https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage)
+* [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/react-node-starterkit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/react-node-starterkit?branch=master)
 
 #Workflow
 
@@ -46,3 +51,4 @@ It will not only test the code, but also check the source code with jshint and g
 To run the webserver:
 
     # npm start
+    # open http://localhost:8080

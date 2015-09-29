@@ -1,12 +1,13 @@
 {
     "plugins": [
-        "react"
+
     ],
     "env": {
-        "browser": true,
+        "browser": false,
         "es6": true,
-        "node": false,
-        "jquery": true
+        "node": true,
+        "jquery": false,
+        "mocha": true
     },
     "ecmaFeatures": {
         "arrowFunctions": true,
@@ -18,8 +19,7 @@
         "generators": true,
         "modules": true,
         "spread": true,
-        "templateStrings": true,
-        "jsx": true
+        "templateStrings": true
     },
     "rules": {
         "consistent-return": [0],
@@ -33,24 +33,13 @@
         "no-undef": 2,
         "no-unused-expressions": 0,
         "no-use-before-define": [2, "nofunc"],
-        "no-trailing-spaces": [2],
+        "no-trailing-spaces": [1],
         "eol-last": [0],
         "no-labels": [2],
-        "indent": 2,
+        "indent": [1,2],
         "no-mixed-spaces-and-tabs": 0,
-        "vars-on-top": 2,
-        "camelcase": [2, {"properties": "never"}],
-        "semi": [2, "always"],
-
-
-        "react/jsx-no-undef": 2,
-        "react/jsx-uses-react": 2,
-        "react/jsx-uses-vars": 2,
-        "react/no-did-mount-set-state": 1,
-        "react/no-did-update-set-state": 1,
-        "react/no-unknown-property": 1,
-        "react/wrap-multilines": 1,
-        "react/react-in-jsx-scope": 1,
-        "react/no-unknown-property": 2
+        "vars-on-top": 1,
+        "camelcase": [1, {"properties": "never"}],
+        "semi": [1, "always"]
     }
 }

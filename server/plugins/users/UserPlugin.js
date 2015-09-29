@@ -59,8 +59,8 @@ var plugin = module.exports = function (app) {
   };
 
   plugin.registerMiddleware = function(server){
-    server.use('/v1/auth', routers.authentication);
-    server.use('/v1', auth.ensureAuthenticated, routers.users);
+    server.use('/api/v1/auth', routers.authentication);
+    server.use('/api/v1', auth.ensureAuthenticated, routers.users);
   };
 
   return plugin;

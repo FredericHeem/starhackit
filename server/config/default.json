@@ -4,6 +4,9 @@
       "level": "debug"
     }
   },
+  "frontend": {
+    "url": "http://localhost:8080"
+  },
   "http": {
     "host": "localhost",
     "port": 3000

@@ -5,35 +5,54 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var assert = require('assert');
 
-module.exports = function (app) {
-  "use strict";
+module.exports = function(app) {
+  'use strict';
   var log = require('logfilename')(__filename);
   var config = app.config;
   var expressApp = express();
 
-
   setupMiddleware();
   setupPlugins();
 
-  function setupMiddleware(){
+  function setupMiddleware() {
+    setupLogMiddleware();
     setupCors();
     setupLiveReload();
     setupFrontend();
     setupBodyParser();
     setupSession();
   }
+  function setupLogMiddleware() {
+      expressApp.use(function(req, res, next) {
+        log.debug("url: " + req.url);
+        next();
+      });
+  }
 
   function setupCors() {
-    var cors = require('cors')();
-    expressApp.use(cors);
+    var Cors = require('cors');
+    var whitelist = [config.frontend.url]; // Acceptable domain names. ie: https://www.example.com
+    log.debug('cirs white list: ', config.frontend.url);
+    var corsOptions = {
+      credentials: true,
+      origin: function (origin, callback) {
+        log.debug("origin: ", origin);
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+      }
+    };
+    // Enable CORS
+    expressApp.use(Cors(corsOptions));
+    // Enable CORS Pre-Flight
+    //expressApp.options('*', Cors(corsOptions));
   }
 
   function prepend(w, s) {
     return s + w;
   }
 
-  function setupLiveReload(){
-    if(config.has('liveReload')) {
+  function setupLiveReload() {
+    if (config.has('liveReload')) {
       expressApp.use(require('connect-livereload')({
       rules: [{
         match: /<\/body>(?![\s\S]*<\/body>)/i,
@@ -51,13 +70,13 @@ module.exports = function (app) {
       var frontend_path = config.get('frontend');
       expressApp.use('/', express.static(frontend_path));
     } else {
-      log.debug("frontend not served");
+      log.debug('frontend not served');
     }
   }
 
   function setupBodyParser() {
     expressApp.use(bodyParser.json());
-    expressApp.use(bodyParser.urlencoded({ extended: true }));
+    expressApp.use(bodyParser.urlencoded({extended: true}));
     expressApp.use(cookieParser());
   }
 
@@ -77,7 +96,6 @@ module.exports = function (app) {
     expressApp.use(auth.passport.initialize());
     expressApp.use(auth.passport.session());
 
-
     assert(app.plugins);
     assert(app.plugins.users);
     app.plugins.users.registerMiddleware(expressApp);
@@ -91,17 +109,17 @@ module.exports = function (app) {
   /**
    * Start the express server
    */
-  expressApp.start = function(){
+  expressApp.start = function() {
     var config = app.config.http;
 
     var host = config.host ||  'localhost';
     var port = process.env.PORT || config.port || 3000;
 
-    log.info("start express server on %s:%s", host, port);
+    log.info('start express server on %s:%s', host, port);
 
-    return new Promise(function(resolve){
+    return new Promise(function(resolve) {
       httpHandle = expressApp.listen(port, function() {
-        log.info("listening express server on %s:%s", host, port);
+        log.info('listening express server on %s:%s', host, port);
         resolve();
       });
     });
@@ -111,11 +129,11 @@ module.exports = function (app) {
    * Stop the express server
    */
   expressApp.stop = function() {
-    log.info("stopping web server");
+    log.info('stopping web server');
 
     return new Promise(function(resolve) {
       httpHandle.close(function() {
-        log.info("web server is stopped");
+        log.info('web server is stopped');
         resolve();
       });
     });

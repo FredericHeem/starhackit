@@ -17,6 +17,8 @@ var logOptions = {
 
 var log = require('logfilename')(__filename, logOptions);
 
+log.info("ENV: ", process.env.NODE_ENV);
+
 var SchemaValidator = require('jsonschema').Validator;
 app.schemaValidator = new SchemaValidator();
 

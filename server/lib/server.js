@@ -67,10 +67,9 @@ module.exports = function(app) {
   }
 
   function setupFrontend() {
-    if (config.has('frontend')) {
-      log.info("frontend path: ", config.get('frontend'));
-      var frontendPath = config.get('frontend').get('path');
-
+    if (config.has('frontend.path')) {
+      var frontendPath = config.get('frontend.path');
+      log.info("frontend path: ", frontendPath);
       expressApp.use('/', express.static(frontendPath));
     } else {
       log.debug('frontend not served');

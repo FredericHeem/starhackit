@@ -9,6 +9,7 @@ module.exports = function(app) {
   var models = app.data.sequelize.models;
   var authenticationFbConfig = config.authentication.facebook;
   if (authenticationFbConfig && authenticationFbConfig.clientID) {
+    log.info("configuring facebook authentication strategy");
     var facebookStrategy = new FacebookStrategy(
     {
       clientID: authenticationFbConfig.clientID,

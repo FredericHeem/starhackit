@@ -5,6 +5,7 @@
   "homepage": "https://github.com/FredericHeem/react-node-starterkit",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
+    "start": "./node_modules/.bin/gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "./node_modules/.bin/gulp build",
     "build": "./node_modules/.bin/gulp build"

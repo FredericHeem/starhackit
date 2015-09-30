@@ -5,11 +5,9 @@
     }
   },
   "frontend": {
-    "url": "http://localhost:8080",
     "path": "../client/build"
   },
   "http": {
-    "host": "localhost",
     "port": 3000
   },
   "db":{

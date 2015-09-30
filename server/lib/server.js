@@ -32,20 +32,25 @@ module.exports = function(app) {
 
   function setupCors() {
     var Cors = require('cors');
-    var whitelist = [config.frontend.url]; // Acceptable domain names. ie: https://www.example.com
-    log.debug('cors white list: ', config.frontend.url);
-    var corsOptions = {
-      credentials: true,
-      origin: function (origin, callback) {
-        log.debug("origin: ", origin);
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-        callback(null, originIsWhitelisted);
-      }
-    };
+    var corsOptions = {};
+
+    if (config.has("frontend.url")) {
+      var whitelist = [config.get("frontend.url")];
+      log.debug('cors white list: ', config.frontend.url);
+
+      corsOptions = {
+        credentials: true,
+        origin: function (origin, callback) {
+          log.debug("origin: ", origin);
+          var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+          callback(null, originIsWhitelisted);
+        }
+      };
+    }
     // Enable CORS
     expressApp.use(Cors(corsOptions));
     // Enable CORS Pre-Flight
-    //expressApp.options('*', Cors(corsOptions));
+    expressApp.options('*', Cors(corsOptions));
   }
 
   function prepend(w, s) {

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "start": "nodemon processes/server.js",
+    "start": "./node_modules/.bin/nodemon processes/server.js",
     "test": "npm run lint && npm run coverage",
     "coverage": "./node_modules/.bin/istanbul cover  _mocha ./test/**/*.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
@@ -37,6 +37,7 @@
     "logfilename": "0.1.1",
     "node-uuid": "~1.4.2",
     "nodemailer": "1.4.0",
+    "nodemon": "^1.7.1",
     "passport": "~0.3.0",
     "passport-facebook": "^2.0.0",
     "passport-http": "~0.3.0",

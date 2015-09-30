@@ -12,8 +12,8 @@ let config = {
     },
 
     production: {
-        homeUrl: 'http://myfabulousapp.com/',
-        baseUrl: 'http://myfabulousapp/api/v1/'
+        homeUrl: 'https://react-node-starterkit.herokuapp.com/',
+        baseUrl: 'https://react-node-starterkit.herokuapp.com/api/v1/'
     }
 };
 

@@ -114,14 +114,13 @@ module.exports = function(app) {
   expressApp.start = function() {
     var config = app.config.http;
 
-    var host = config.host ||  'localhost';
     var port = process.env.PORT || config.port || 3000;
 
-    log.info('start express server on %s:%s', host, port);
+    log.info('start express server on port %s', port);
 
     return new Promise(function(resolve) {
       httpHandle = expressApp.listen(port, function() {
-        log.info('listening express server on %s:%s', host, port);
+        log.info('express server started');
         resolve();
       });
     });

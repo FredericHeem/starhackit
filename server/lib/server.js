@@ -103,9 +103,6 @@ module.exports = function(app) {
     assert(app.plugins.users);
     app.plugins.users.registerMiddleware(expressApp);
 
-    if(app.plugins.stellar){
-      app.plugins.stellar.registerMiddleware(expressApp);
-    }
   }
 
   /**

@@ -31,7 +31,6 @@
     "express": "~4.13.3",
     "express-authorization": "~1.0.0",
     "express-session": "^1.10.3",
-    "js-stellar-base": "git://github.com/stellar/js-stellar-base#076a167e5db9e88955c5d79d80bde7d05ab19a0c",
     "jsonschema": "1.0.2",
     "load-grunt-tasks": "~3.2.0",
     "lodash": "^3.3.1",

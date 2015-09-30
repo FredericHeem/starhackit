@@ -22,6 +22,7 @@ module.exports = function ( options ) {
                 'assets/css/filepicker.css',
                 'checkit',
                 'classnames',
+                'debug',
                 'events',
                 'jquery',
                 'lib/animatedModal.js',

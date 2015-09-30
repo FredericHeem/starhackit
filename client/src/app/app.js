@@ -12,6 +12,12 @@ import Router from 'react-router';
 //import config from 'config';
 import routes from './routes';
 
+import Debug from 'debug';
+Debug.enable("*,-engine*");
+
+let debug = new Debug("app");
+
+debug("begins");
 ///////////////////
 /// INITIALISE
 /*

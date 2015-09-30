@@ -1,4 +1,6 @@
 import when from 'when';
+import Debug from 'debug';
+let debug = new Debug("http");
 
 export function get( url, options = {} ) {
     return ajax( url, 'GET', options );
@@ -22,7 +24,7 @@ export function del( url, options = {} ) {
 
 function ajax( url, verb, options ) {
     let ajaxData;
-
+    debug("ajax url: %s, verb: %s, options ", url, verb, options);
     ajaxData = verb === 'GET' ? options.params : JSON.stringify( options.params );
 
     return when(

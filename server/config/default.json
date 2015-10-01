@@ -1,7 +1,9 @@
 {
   "log": {
     "console": {
-      "level": "debug"
+      "level": "debug",
+      "timestamp": true,
+      "colorize": true
     }
   },
   "frontend": {

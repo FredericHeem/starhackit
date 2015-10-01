@@ -1,30 +1,19 @@
 "use strict";
+import Promise from 'bluebird';
 import Plugins from './plugins';
-
-var Promise = require('bluebird');
+import Data from './models';
 
 var app = {};
 app.rootDir = __dirname;
 
-app.config = require('config');
+let config = require('config');
 
-//Logging
+var log = require('logfilename')(__filename, config.log);
 
-var logOptions = {
-  console: {
-    level: 'debug',
-    timestamp: true,
-    colorize: true
-  }
-};
-
-var log = require('logfilename')(__filename, logOptions);
-
-log.info("ENV: ", process.env.NODE_ENV);
+log.info("NODE_ENV: %s, rootDir: %s", process.env.NODE_ENV, app.rootDir);
 
 app.utils = require(__dirname + '/utils')(app);
 app.error = app.utils.error;
-
 
 app.data = require(__dirname + '/models');
 app.plugins = new Plugins(app);

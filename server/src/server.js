@@ -1,3 +1,4 @@
+var config = require('config');
 var Promise = require('bluebird');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -7,7 +8,7 @@ var assert = require('assert');
 module.exports = function(app) {
   'use strict';
   var log = require('logfilename')(__filename);
-  var config = app.config;
+
   var expressApp = express();
   var httpHandle;
 
@@ -112,9 +113,8 @@ module.exports = function(app) {
    * Start the express server
    */
   expressApp.start = function() {
-    var config = app.config.http;
-
-    var port = process.env.PORT || config.port || 3000;
+    let configHttp = config.get('http');
+    let port = process.env.PORT || configHttp.port;
 
     log.info('start express server on port %s', port);
 

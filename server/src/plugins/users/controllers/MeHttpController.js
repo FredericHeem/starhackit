@@ -6,7 +6,7 @@ export default function(app, meApi){
 
   return {
     index: function(req, res){
-      log.error(req.user);
+      log.debug(req.user);
       respond(meApi, meApi.index, [req.user.id], res);
     }
   };

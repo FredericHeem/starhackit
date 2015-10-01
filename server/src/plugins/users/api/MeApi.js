@@ -9,7 +9,7 @@ export default function MeApi (app){
       log.debug("index userId: ", userId);
       return models.User.findByUserId(userId).then(user => {
         log.debug("index user: ", user.get());
-        return user.get();
+        return user.toJSON();
       });
     },
     update: function () {

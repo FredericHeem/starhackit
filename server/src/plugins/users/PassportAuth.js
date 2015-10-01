@@ -79,7 +79,7 @@ module.exports = function(app) {
           .then(function(result) {
             if (result) {
               log.debug("userBasic valid password for user: ", user.toJSON());
-              return done(null, user.toJSON());
+              return done(null, user.get());
             } else {
               log.info("userBasic invalid password user: ", user.get());
               return done(null, false, {message: 'InvalidUsernameOrPassword'});
@@ -109,7 +109,7 @@ module.exports = function(app) {
             };
             models.User.createUserInGroups(userConfig, ["User"])
             .then(function(res) {
-              var userCreated = res.toJSON();
+              var userCreated = res.get();
               log.info("register created new user ", userCreated);
               done(null, {});
             })

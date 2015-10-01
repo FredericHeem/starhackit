@@ -4,7 +4,7 @@ module.exports = function(app, userApi){
   var log = require('logfilename')(__filename);
 
   function index(req, res) {
-    app.utils.http.respond(userApi.list,[req.query],res);
+    app.utils.http.respond(userApi, userApi.list,[req.query],res);
   }
   /*
   function create(req, res) {
@@ -13,7 +13,7 @@ module.exports = function(app, userApi){
   */
   function show(req, res) {
     log.info("show user id: ", req.params.id);
-    app.utils.http.respond( userApi.get,[req.params.id],res);
+    app.utils.http.respond(userApi, userApi.get,[req.params.id],res);
   }
 
   return {

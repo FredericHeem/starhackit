@@ -1,21 +1,19 @@
-module.exports = function(app) {
-  "use strict";
+import assert from 'assert';
 
-  var assert = require('assert');
-  var models = app.data.sequelize.models;
-  assert(models);
-  function list(qs) {
-    var filter = app.data.queryStringToFilter(qs, "id");
-    return models.User.findAll(filter);
+export default class UserApi {
+  constructor(app){
+    this.app = app;
+    this.models = app.data.sequelize.models;
+    assert(this.models);
   }
 
-  function get(userId) {
-    return models.User.findByUserId(userId);
+  list(qs) {
+    var filter = this.app.data.queryStringToFilter(qs, "id");
+    return this.models.User.findAll(filter);
   }
 
-  return {
-    list: list,
-    get: get
-  };
-
-};
+  get(userId) {
+    assert(this.models);
+    return this.models.User.findByUserId(userId);
+  }
+}

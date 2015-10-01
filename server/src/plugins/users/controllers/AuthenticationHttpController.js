@@ -32,10 +32,7 @@ export default function(/*app*/){
 
   function session(req, res) {
     log.debug("session");
-    res.send({
-      success:true,
-      user: req.user
-    });
+    res.send(req.user);
   }
 
   return {

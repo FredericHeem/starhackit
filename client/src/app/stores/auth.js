@@ -39,7 +39,7 @@ export default Reflux.createStore( {
     },
 
     userName() {
-        return this.store.name;
+        return this.store.username;
     },
 
     userId() {
@@ -56,6 +56,7 @@ export default Reflux.createStore( {
 //// Private
 
 function authenticated( authUser ) {
+    console.log(authUser);
     this.store = authUser;
 
     doTrigger.call( this );

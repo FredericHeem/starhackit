@@ -5,7 +5,7 @@ import baseUrl from 'utils/baseUrl';
 
 export function getCurrentUser() {
     return when(
-        get( baseUrl( 'auth/session' ) )
+        get( baseUrl( 'me' ) )
     );
 }
 

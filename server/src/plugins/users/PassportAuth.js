@@ -111,7 +111,7 @@ module.exports = function(app) {
             .then(function(res) {
               var userCreated = res.get();
               log.info("register created new user ", userCreated);
-              done(null, {});
+              done(null, userCreated);
             })
             .then(done, done);
           } else {

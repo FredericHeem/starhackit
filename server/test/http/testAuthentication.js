@@ -25,21 +25,12 @@ describe('Authentication', function(){
     beforeEach(function(done) {
       var postParam = {
           username:"alice",
-          password:"password"
+          password:"password",
+          email:"alice@mail.com"
       };
 
       client.login(postParam)
       .then(function(){
-        done();
-      })
-      .catch(done);
-    });
-
-    it('shoud get session', function(done){
-      client.get('v1/auth/session')
-      .then(function(res){
-        assert(res.success);
-        assert(res.user);
         done();
       })
       .catch(done);
@@ -88,7 +79,7 @@ describe('Authentication', function(){
   });
 
   it('session without login should fail', function(done){
-    client.get('v1/auth/session')
+    client.get('v1/me')
     .catch(function(err){
       assert.equal(err.statusCode, 401);
       assert.equal(err.body, "Unauthorized");
@@ -140,7 +131,8 @@ describe('Authentication', function(){
   it('should login with params', function(done){
     var postParam = {
         username:"alice",
-        password:"password"
+        password:"password",
+        email:"alice@mail.com"
     };
 
     client.login(postParam)

@@ -30,16 +30,10 @@ export default function(/*app*/){
     });
   }
 
-  function session(req, res) {
-    log.debug("session");
-    res.send(req.user);
-  }
-
   return {
     login:login,
     logout:logout,
     register:register,
-    session:session,
     loginFacebookCallback:loginFacebookCallback
   };
 }

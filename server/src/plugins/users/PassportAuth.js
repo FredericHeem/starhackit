@@ -21,7 +21,7 @@ module.exports = function(app) {
     function(req, accessToken, refreshToken, profile, done) {
       log.debug("authentication reply from fb");
       //log.debug(accessToken);
-      //log.debug(profile);
+      log.debug(JSON.stringify(profile, null, 4));
 
       if (req.user) {
         log.error("TODO");
@@ -43,9 +43,13 @@ module.exports = function(app) {
               } else {
                 //Create user
                 var userConfig = {
-                  username: profile._json.email,
+                  username: `${profile.name.givenName} ${profile.name.middleName} ${profile.name.familyName}`,
+                  email: profile._json.email,
+                  firstName: profile.name.givenName,
+                  lastName: profile.name.familyName,
                   facebookId: profile.id
                 };
+                log.debug("creating user: ", userConfig);
                 models.User.createUserInGroups(userConfig, ["User"])
                 .then(function(res) {
                   var userCreated = res.get();
@@ -101,11 +105,12 @@ module.exports = function(app) {
         models.User.find({where:{username:username}})
         .then(function(user) {
           if (!user) {
-            log.info("register create new user");
+            log.info("register create new user ", req);
             //return done(null, false, { message: 'InvalidUsernameOrPassword'});
             var userConfig = {
               username: username,
-              password: password
+              password: password,
+              email:req.body.email
             };
             models.User.createUserInGroups(userConfig, ["User"])
             .then(function(res) {

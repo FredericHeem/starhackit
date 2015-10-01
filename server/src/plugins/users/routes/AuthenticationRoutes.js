@@ -9,7 +9,6 @@ module.exports = function(app, auth, authenticationHttpCtrl){
   router.post('/register', passport.authenticate('register'), authenticationHttpCtrl.register);
 
   router.post('/logout', auth.ensureAuthenticated, authenticationHttpCtrl.logout);
-  router.get('/session', auth.ensureAuthenticated, authenticationHttpCtrl.session);
 
   router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
   router.get('/facebook/callback',

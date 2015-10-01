@@ -1,11 +1,13 @@
 [
  {
     "username":"admin",
+    "email": "admin@myapp.com",
     "password":"password",
     "groups": ["Admin", "User"]
   },
   {
     "username":"alice",
+    "email": "alice@mail.com",
     "password":"password",
     "groups": ["User"]
   }

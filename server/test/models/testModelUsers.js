@@ -24,7 +24,8 @@ describe('UserModel', function(){
     var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
     var userConfig = {
         username: username,
-        password: "password"
+        password: "password",
+        email: username + "@mail.com"
     };
     userModel.createUserInGroups(userConfig, ["User"])
     .then(function(res){
@@ -83,7 +84,8 @@ describe('UserModel', function(){
     var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
     var userConfig = {
         username: username,
-        password: "password"
+        password: "password",
+        email: username + "@mail.com"
     };
 
     userModel.createUserInGroups(userConfig,["GroupNotExist"])

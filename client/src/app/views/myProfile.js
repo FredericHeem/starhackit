@@ -42,13 +42,13 @@ export default React.createClass({
                 <div className="jumbotron clearfix">
                     <form className="form-horizontal" onSubmit={ (e) => e.preventDefault() }>
                         <div className="col-sm-11">
-                            <div className={this.formClassNames( 'name' )}  >
+                            <div className={this.formClassNames( 'username' )}  >
                                 { this.renderUsername() }
 
                                 <legend>My Name</legend>
                                 <input type="text"
                                        className="form-control"
-                                       valueLink={ this.linkStore( meStore, 'name' ) }
+                                       valueLink={ this.linkStore( meStore, 'username' ) }
                                     />
 
                                 { this.state.errors.name &&

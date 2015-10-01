@@ -8,9 +8,20 @@ module.exports = function(sequelize, DataTypes) {
 
   var User = sequelize.define('User', {
     username: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(64),
       unique: true,
       allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING(64),
+      unique: true,
+      allowNull: false
+    },
+    firstName: {
+      type: DataTypes.STRING(64)
+    },
+    lastName: {
+      type: DataTypes.STRING(64)
     },
     facebookId: {
       type: DataTypes.TEXT,

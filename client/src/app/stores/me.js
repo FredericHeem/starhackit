@@ -36,16 +36,6 @@ function gotProfile( profile ) {
     doTrigger.call( this );
 }
 
-function gotMyRecipes( recipes ) {
-    _.set( this.store, 'myRecipes', recipes );
-    doTrigger.call( this );
-}
-
-function gotMyFavouriteRecipes( recipes ) {
-    _.set( this.store, 'myFavouriteRecipes', recipes );
-    doTrigger.call( this );
-}
-
 function doTrigger() {
     this.trigger( this.store );
 }

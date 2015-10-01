@@ -32,7 +32,8 @@ describe('UserRegister', function() {
     var username = createUsernameRandom();
     var userConfig = {
       username: username,
-      password:'password'
+      password:'password',
+      email: username + "@mail.com"
     };
 
     client.post('v1/auth/register', userConfig)
@@ -55,7 +56,8 @@ describe('UserRegister', function() {
     var username = createUsernameRandom();
     var userConfig = {
       username: username,
-      password:'password'
+      password:'password',
+      email: username + "@mail.com"
     };
 
     client.post('v1/auth/register', userConfig)

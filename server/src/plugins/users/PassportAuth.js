@@ -169,7 +169,6 @@ module.exports = function(app) {
 
   return {
     ensureAuthenticated:ensureAuthenticated,
-    isAuthorized:isAuthorized,
-    passport:passport
+    isAuthorized:isAuthorized
   };
 };

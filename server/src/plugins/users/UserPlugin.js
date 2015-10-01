@@ -59,7 +59,7 @@ export default class UserPlugin {
     });
   }
 
-  registerMiddleware(server) {
+  registerRouter(server) {
     server.use('/api/v1/auth', this.routers.authentication);
     server.use('/api/v1', this.auth.ensureAuthenticated, this.routers.users);
   }

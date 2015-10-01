@@ -18,10 +18,8 @@ app.utils = {
 };
 
 app.data = data;
-app.plugins = new Plugins(app);
 app.server = new Server(app);
-
-app.api = require(__dirname + '/api')(app);
+app.plugins = new Plugins(app);
 
 var plugins = [
   app.data,

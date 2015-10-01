@@ -5,5 +5,6 @@ export default class Plugins {
   constructor(app){
     log.info('ctor');
     this.users = new UserPlugin(app);
+    this.users.registerRouter(app.server);
   }
 }

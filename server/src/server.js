@@ -2,8 +2,6 @@ var config = require('config');
 var Promise = require('bluebird');
 var express = require('express');
 
-var assert = require('assert');
-
 var defaultMiddleware = require('./middleware/DefaultMiddleware');
 var frontendMiddleware = require('./middleware/FrontendMiddleware');
 var loggerMiddleware = require('./middleware/LoggerMiddleware');
@@ -11,7 +9,7 @@ var corsMiddleware = require('./middleware/CorsMiddleware');
 var sessionMiddleware = require('./middleware/SessionMiddleware');
 var passportMiddleware = require('./middleware/PassportMiddleware');
 
-module.exports = function(app) {
+module.exports = function() {
   'use strict';
   var log = require('logfilename')(__filename);
 
@@ -24,16 +22,6 @@ module.exports = function(app) {
   defaultMiddleware(expressApp, config);
   sessionMiddleware(expressApp, config);
   passportMiddleware(expressApp, config);
-
-  setupPlugins();
-
-  function setupPlugins() {
-
-    assert(app.plugins);
-    assert(app.plugins.users);
-    app.plugins.users.registerMiddleware(expressApp);
-
-  }
 
   /**
    * Start the express server

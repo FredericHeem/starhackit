@@ -1,27 +1,27 @@
-"use strict";
 import Promise from 'bluebird';
+import Log from 'logfilename';
+import config from 'config';
 import Plugins from './plugins';
-import Data from './models';
+import data from './models';
+import Server from './server';
+import * as HttpUtils from './utils/HttpUtils';
 
 var app = {};
 app.rootDir = __dirname;
 
-let config = require('config');
-
-var log = require('logfilename')(__filename, config.log);
+var log = new Log(__filename, config.log);
 
 log.info("NODE_ENV: %s, rootDir: %s", process.env.NODE_ENV, app.rootDir);
 
-app.utils = require(__dirname + '/utils')(app);
-app.error = app.utils.error;
+app.utils = {
+  http: HttpUtils
+};
 
-app.data = require(__dirname + '/models');
+app.data = data;
 app.plugins = new Plugins(app);
-app.http = require(__dirname + '/http')(app);
-app.server = require(__dirname + '/server.js')(app);
+app.server = new Server(app);
 
 app.api = require(__dirname + '/api')(app);
-app.error = app.utils.error;
 
 var plugins = [
   app.data,

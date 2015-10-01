@@ -1,4 +1,4 @@
-console.log("server started");
-import app from './app.js';
+console.log("api server started");
+import app from './app';
 
 app.start();

@@ -11,7 +11,6 @@ var corsMiddleware = require('./middleware/CorsMiddleware');
 var sessionMiddleware = require('./middleware/SessionMiddleware');
 var passportMiddleware = require('./middleware/PassportMiddleware');
 
-
 module.exports = function(app) {
   'use strict';
   var log = require('logfilename')(__filename);

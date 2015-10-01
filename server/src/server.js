@@ -1,9 +1,16 @@
 var config = require('config');
 var Promise = require('bluebird');
 var express = require('express');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
+
 var assert = require('assert');
+
+var defaultMiddleware = require('./middleware/DefaultMiddleware');
+var frontendMiddleware = require('./middleware/FrontendMiddleware');
+var loggerMiddleware = require('./middleware/LoggerMiddleware');
+var corsMiddleware = require('./middleware/CorsMiddleware');
+var sessionMiddleware = require('./middleware/SessionMiddleware');
+var passportMiddleware = require('./middleware/PassportMiddleware');
+
 
 module.exports = function(app) {
   'use strict';
@@ -12,96 +19,16 @@ module.exports = function(app) {
   var expressApp = express();
   var httpHandle;
 
-  setupMiddleware();
+  frontendMiddleware(expressApp, config);
+  loggerMiddleware(expressApp, config);
+  corsMiddleware(expressApp, config);
+  defaultMiddleware(expressApp, config);
+  sessionMiddleware(expressApp, config);
+  passportMiddleware(expressApp, config);
+
   setupPlugins();
 
-  function setupMiddleware() {
-    setupLogMiddleware();
-    setupCors();
-    setupLiveReload();
-    setupFrontend();
-    setupBodyParser();
-    setupSession();
-  }
-  function setupLogMiddleware() {
-      expressApp.use(function(req, res, next) {
-        log.debug("url: " + req.url);
-        next();
-      });
-  }
-
-  function setupCors() {
-    var Cors = require('cors');
-    var corsOptions = {};
-
-    if (config.has("frontend.url")) {
-      var whitelist = [config.get("frontend.url")];
-      log.debug('cors white list: ', config.frontend.url);
-
-      corsOptions = {
-        credentials: true,
-        origin: function (origin, callback) {
-          log.debug("origin: ", origin);
-          var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-          callback(null, originIsWhitelisted);
-        }
-      };
-    }
-    // Enable CORS
-    expressApp.use(Cors(corsOptions));
-    // Enable CORS Pre-Flight
-    expressApp.options('*', Cors(corsOptions));
-  }
-
-  function prepend(w, s) {
-    return s + w;
-  }
-
-  function setupLiveReload() {
-    if (config.has('liveReload')) {
-      expressApp.use(require('connect-livereload')({
-      rules: [{
-        match: /<\/body>(?![\s\S]*<\/body>)/i,
-        fn: prepend
-      }, {
-        match: /<\/html>(?![\s\S]*<\/html>)/i,
-        fn: prepend
-      }],
-      port: 35729}));
-    }
-  }
-
-  function setupFrontend() {
-    if (config.has('frontend.path')) {
-      var frontendPath = config.get('frontend.path');
-      log.info("frontend path: ", frontendPath);
-      expressApp.use('/', express.static(frontendPath));
-    } else {
-      log.debug('frontend not served');
-    }
-  }
-
-  function setupBodyParser() {
-    expressApp.use(bodyParser.json());
-    expressApp.use(bodyParser.urlencoded({extended: true}));
-    expressApp.use(cookieParser());
-  }
-
-  function setupSession() {
-    expressApp.use(require('express-session')({
-      secret: 'I love shrimp with mayonnaise',
-      resave: false,
-      saveUninitialized: false
-    }));
-  }
-
   function setupPlugins() {
-
-    //TODO clean
-    var auth = app.auth;
-    assert(auth);
-    expressApp.use(auth.passport.initialize());
-    expressApp.use(auth.passport.session());
 
     assert(app.plugins);
     assert(app.plugins.users);

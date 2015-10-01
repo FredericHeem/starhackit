@@ -48,7 +48,7 @@ module.exports = function(app) {
                 };
                 models.User.createUserInGroups(userConfig, ["User"])
                 .then(function(res) {
-                  var userCreated = res.toJSON();
+                  var userCreated = res.get();
                   log.info("register created new user ", userCreated);
                   done(null, userCreated);
                 })

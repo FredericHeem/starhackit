@@ -1,9 +1,7 @@
+import Log from 'logfilename';
 
-
-module.exports = function(/*app*/){
-  "use strict";
-
-  var log = require('logfilename')(__filename);
+export default function(/*app*/){
+  let log = new Log(__filename);
 
   function login(req, res) {
     log.debug("login",  req.user);
@@ -47,4 +45,4 @@ module.exports = function(/*app*/){
     session:session,
     loginFacebookCallback:loginFacebookCallback
   };
-};
+}

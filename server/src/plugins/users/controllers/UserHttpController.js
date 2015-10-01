@@ -1,5 +1,4 @@
-module.exports = function(app, userApi){
-  "use strict";
+export default function(app, userApi){
 
   var log = require('logfilename')(__filename);
 

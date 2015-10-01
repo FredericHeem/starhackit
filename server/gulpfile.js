@@ -1,8 +1,6 @@
 var path = require( 'path' );
 var gulp = require( 'gulp' );
-var webpack = require( 'webpack' );
 var nodemon = require( 'gulp-nodemon' );
-var mocha = require( 'gulp-mocha' );
 var runSequence = require( 'run-sequence' );
 var clean = require( 'gulp-clean' );
 var connect = require('gulp-connect');
@@ -20,11 +18,7 @@ gulp.task('build', function () {
         .pipe(babel())
         .pipe(gulp.dest(paths.build));
 });
-/*
-gulp.task( 'build', function ( done ) {
-    webpack( devWebpackConfig ).run( onBuild( done ) );
-} );
-*/
+
 gulp.task( 'build:production', function ( done ) {
     runSequence(
         'clean:build',
@@ -83,13 +77,6 @@ gulp.task( 'server:images', function () {
         port: 4000
     });
 } );
-
-gulp.task( 'test', [ 'build:test' ], function () {
-    return gulp.src( path.join( __dirname, 'test.build/api.js' ), { read: false } )
-        .pipe( mocha( { reporter: 'spec' } ) )
-        .once( 'end', process.exit.bind( process ) );
-} );
-
 
 function onBuild( done ) {
     return function ( err, stats ) {

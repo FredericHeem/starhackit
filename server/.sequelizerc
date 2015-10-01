@@ -5,6 +5,6 @@ var dbConfig = config.db;
 dbConfig.config = __filename;
 
 dbConfig["migrationsPath"] = 'migrations';
-dbConfig["modelsPath"] = 'models';
+dbConfig["modelsPath"] = 'src/models';
 
 module.exports = dbConfig;

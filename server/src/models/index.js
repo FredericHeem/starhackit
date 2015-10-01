@@ -9,7 +9,6 @@ var log = require('logfilename')(__filename);
 var db        = {};
 var dbConfig = config.db;
 var sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
-
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
@@ -76,12 +75,12 @@ function seedDefault(app){
 
 db.seedIfEmpty = function (app){
   log.info("seedIfEmpty");
-  return app.plugins.users.isSeeded()
-   .then(function(isSeeded){
-     if(!isSeeded){
-       return seedDefault(app);
-     } else {
+  return db.User.count()
+   .then(function(count){
+     if(count >= 0){
        log.info("isSeeded");
+     } else {
+       return seedDefault(app);
      }
    });
 };

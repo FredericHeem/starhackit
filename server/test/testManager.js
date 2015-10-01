@@ -1,8 +1,8 @@
   "use strict";
 var Promise = require('bluebird');
-var _ = require('underscore-node');
+var _ = require('underscore');
 
-var app = require('../app');
+var app = require('../src/app');
 var Client = require(__dirname + '/client/restClient');
 var assert = require('assert');
 

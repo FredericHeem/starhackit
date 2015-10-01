@@ -8,10 +8,6 @@ var clean = require( 'gulp-clean' );
 var connect = require('gulp-connect');
 var babel = require('gulp-babel');
 
-var devWebpackConfig = require( './webpack.dev' );
-var testWebpackConfig = require( './webpack.test' );
-var prodWebpackConfig = require( './webpack.prod' );
-
 var paths = {
   scripts: ['src/**/*.js'],
   build: 'build'
@@ -33,7 +29,7 @@ gulp.task( 'build:production', function ( done ) {
     runSequence(
         'clean:build',
         'cp:assets',
-        'build:webpack:production',
+        'build',
         done
     );
 } );
@@ -44,15 +40,6 @@ gulp.task( 'build:watch', function ( done ) {
         'cp:assets',
         done
     );
-} );
-
-gulp.task( 'build:test', function ( done ) {
-    webpack( testWebpackConfig ).run( onBuild( done ) );
-} );
-
-
-gulp.task( 'build:webpack:production', function ( done ) {
-    webpack( prodWebpackConfig ).run( onBuild( done ) );
 } );
 
 gulp.task( 'clean:build', function () {
@@ -70,14 +57,7 @@ gulp.task( 'cp:assets', function () {
 gulp.task( 'watch', [ 'build' ], function () {
   gulp.watch(paths.scripts, ['build:watch']);
 } );
-/*
-gulp.task( 'watch', [ 'build' ], function () {
-    return webpack( devWebpackConfig ).watch( 250, function ( err, stats ) {
-        onBuild()( err, stats );
-        nodemon.restart();
-    } );
-} );
-*/
+
 gulp.task( 'run', ['build'], function () {
     nodemon( {
         verbose: true,

@@ -1,23 +1,19 @@
 export default function(app, userApi){
 
-  var log = require('logfilename')(__filename);
-
+  let log = require('logfilename')(__filename);
+  let respond = app.utils.http.respond;
+  
   function index(req, res) {
-    app.utils.http.respond(userApi, userApi.list,[req.query],res);
+    respond(userApi, userApi.list,[req.query],res);
   }
-  /*
-  function create(req, res) {
-    app.utils.http.respond(userApi.create,[req.body],res);
-  }
-  */
+
   function show(req, res) {
     log.info("show user id: ", req.params.id);
-    app.utils.http.respond(userApi, userApi.get,[req.params.id],res);
+    respond(userApi, userApi.get,[req.params.id],res);
   }
 
   return {
     index:index,
-    //create:create,
     show:show
   };
-};
+}

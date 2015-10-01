@@ -75,10 +75,10 @@ function seedDefault(app){
 
 db.seedIfEmpty = function (app){
   log.info("seedIfEmpty");
-  return db.User.count()
+  return sequelize.models.User.count()
    .then(function(count){
-     if(count >= 0){
-       log.info("isSeeded");
+     if(count > 0){
+       log.info("isSeeded #users: ", count);
      } else {
        return seedDefault(app);
      }

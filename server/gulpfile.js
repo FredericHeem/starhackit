@@ -13,7 +13,7 @@ var paths = {
 
 gulp.task( 'default', [ 'watch', 'run', 'server:images' ] );
 
-gulp.task('build', function () {
+gulp.task('build', ['cp:fixtures'], function () {
     return gulp.src(paths.scripts)
         .pipe(babel())
         .pipe(gulp.dest(paths.build));
@@ -23,6 +23,7 @@ gulp.task( 'build:production', function ( done ) {
     runSequence(
         'clean:build',
         'cp:assets',
+        'cp:fixtures',
         'build',
         done
     );
@@ -32,6 +33,7 @@ gulp.task( 'build:watch', function ( done ) {
     runSequence(
         'build',
         'cp:assets',
+        'cp:fixtures',
         done
     );
 } );
@@ -43,9 +45,15 @@ gulp.task( 'clean:build', function () {
 
 gulp.task( 'cp:assets', function () {
     return gulp.src( [
-        './package.json'
+        './package.json', './src/models/fixtures/*.json'
     ] )
-        .pipe( gulp.dest( 'build/' ) );
+    .pipe( gulp.dest( 'build/' ) );
+} );
+gulp.task( 'cp:fixtures', function () {
+    return gulp.src( [
+        './src/models/fixtures/*.json'
+    ] )
+    .pipe( gulp.dest( 'build/models/fixtures' ) );
 } );
 
 gulp.task( 'watch', [ 'build' ], function () {

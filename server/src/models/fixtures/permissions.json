@@ -20,13 +20,6 @@
    "PUT":true
  },
  {
-   "name":"user_profile",
-   "resource":"/user/profile",
-   "description":"Can read and update the user profille",
-   "GET":true,
-   "PUT":true
- },
- {
    "name":"/accounts get post",
    "resource":"/accounts",
    "description":"Can list the accounts",
@@ -43,6 +36,12 @@
    "name":"/users/:user_id/accounts get",
    "resource":"/users/:user_id/accounts",
    "description":"Can get all accounts for a given user",
+   "GET":true
+ },
+ {
+   "name":"/me get",
+   "resource":"/me",
+   "description":"Can get my info",
    "GET":true
  }
 ]

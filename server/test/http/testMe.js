@@ -22,6 +22,7 @@ describe('Users', function() {
     it('should get me', done => {
       return client.get('v1/me').then(me => {
         assert(me);
+        console.log(me);
       }).then(done, done);
     });
   });

@@ -17,7 +17,6 @@ import AuthenticationRoutes from './routes/AuthenticationRoutes';
 import UsersRoutes from './routes/UsersRoutes';
 import MeRoutes from './routes/MeRoutes';
 
-
 let log = new Log(__filename);
 
 export default class UserPlugin {
@@ -33,7 +32,7 @@ export default class UserPlugin {
 
     this.controllers = {
       user: new UserHttpController(app, this.api.user),
-      me: new MeHttpController(app, this.api.user),
+      me: new MeHttpController(app, this.api.me),
       authentication: AuthenticationHttpController(app)
     };
 

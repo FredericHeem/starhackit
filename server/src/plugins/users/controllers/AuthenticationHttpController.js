@@ -1,4 +1,5 @@
 import Log from 'logfilename';
+import assert from 'assert';
 
 export default function(/*app*/){
   let log = new Log(__filename);
@@ -12,8 +13,7 @@ export default function(/*app*/){
   }
 
   function loginFacebookCallback(/*req, res*/) {
-    //log.debug("loginFacebookCallback",  req.user);
-
+    assert(false);
   }
   function logout(req, res) {
     log.debug("logout");

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "start": "gulp",
+    "start": "./node_modules/.bin/gulp",
     "test": "npm run lint && npm run coverage",
     "coverage": "./node_modules/.bin/istanbul cover  _mocha ./test/**/*.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
@@ -11,7 +11,9 @@
     "jshlint": "grunt jshint",
     "eslint": "./node_modules/.bin/eslint src",
     "lint": "npm run eslint",
-    "migrate": "./node_modules/.bin/sequelize db:migrate"
+    "migrate": "./node_modules/.bin/sequelize db:migrate",
+    "postInstall": "./node_modules/.bin/gulp build:production",
+    "nodemon": "./node_modules/.bin/nodemon build/index.js"
   },
   "dependencies": {
     "async": "~1.4.2",

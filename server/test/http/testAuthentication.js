@@ -4,11 +4,10 @@ var assert = require('assert');
 var Client = require(__dirname + '/../client/restClient');
 
 describe('Authentication', function(){
-  this.timeout(9000);
-  var TestManager = require('../testManager');
+  this.timeout(20e3);
   var client;
 
-  var testMngr = new TestManager();
+  var testMngr = require('../testManager');
 
   before(function(done) {
       testMngr.start().then(done, done);

@@ -7,4 +7,11 @@ export default class Plugins {
     this.users = new UserPlugin(app);
     this.users.registerRouter(app.server);
   }
+
+  start(){
+    return this.users.start();
+  }
+  stop(){
+    return this.users.stop();
+  }
 }

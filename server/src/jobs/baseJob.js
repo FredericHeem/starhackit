@@ -4,9 +4,9 @@ import {Subscriber} from 'rabbitmq-pubsub';
 
 let log = require('logfilename')(__filename);
 
-export class BaseJob {
+export default class BaseJob {
   constructor(app, options){
-    this._subscriber = new Subscriber(app, options);
+    this._subscriber = new Subscriber(options);
     this._eventEmitter = new EventEmitter();
   }
 

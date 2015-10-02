@@ -2,7 +2,7 @@ import Log from 'logfilename';
 import assert from 'assert';
 import _ from 'underscore';
 
-export default function(/*app*/){
+export default function(app, publisherUser){
   let log = new Log(__filename);
 
   function login(req, res) {
@@ -20,7 +20,12 @@ export default function(/*app*/){
   }
 
   function register(req, res) {
-    log.debug("register");
+    log.debug("register user ", req.user);
+    if(req.user && req.user.id){
+      publisherUser.publish("new", JSON.stringify(req.user));
+    } else {
+      log.info("user already registered");
+    }
 
     return res.status(201).json({
       success:true,

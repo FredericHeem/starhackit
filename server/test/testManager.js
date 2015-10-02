@@ -77,4 +77,4 @@ TestMngr.getInstance = function(){
 };
 
 //module.exports = TestMngr.getInstance();
-module.exports = TestMngr;
+module.exports = TestMngr.getInstance();

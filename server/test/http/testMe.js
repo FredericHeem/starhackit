@@ -1,8 +1,9 @@
 const assert = require('assert');
+
 describe('Users', function() {
   let client;
-  const TestMngr = require('../testManager');
-  const testMngr = new TestMngr();
+  let testMngr = require('../testManager');
+  this.timeout(20e3);
   before(done => {
     testMngr.start().then(done, done);
   });

@@ -21,15 +21,15 @@ app.data = data;
 app.server = new Server(app);
 app.plugins = new Plugins(app);
 
-var plugins = [
+var parts = [
   app.data,
-  app.server
+  app.server,
+  app.plugins
 ];
 
 app.start = function() {
   log.info("start");
-  return Promise.each(plugins, function(plugin) {
-    log.info("start ");
+  return Promise.each(parts, function(plugin) {
     return plugin.start(app);
   })
   .then(function(){
@@ -39,8 +39,7 @@ app.start = function() {
 
 app.stop = function() {
   log.info("stop");
-  return Promise.each(plugins, function(plugin) {
-    log.info("stopping");
+  return Promise.each(parts, function(plugin) {
     return plugin.stop(app);
   })
   .then(function(){

@@ -2,9 +2,8 @@
 import Publisher from 'rabbitmq-pubsub';
 
 describe('PublisherSubscriber', function() {
-  this.timeout(15e3);
-  let TestManager = require('../testManager');
-  let testMngr = new TestManager();
+  this.timeout(20e3);
+  let testMngr = require('../testManager');
   let publisher;
 
   before(function(done) {

@@ -5,9 +5,8 @@ var fixtures = require(__dirname+'/../fixtures/models/users');
 
 describe('UserModel', function(){
   "use strict";
-  this.timeout(5e3);
-  var TestManager = require('../testManager');
-  var testMngr = new TestManager();
+  this.timeout(20e3);
+  var testMngr = require('../testManager');
   var models = testMngr.app.data.sequelize.models;
   var userModel = models.User;
 

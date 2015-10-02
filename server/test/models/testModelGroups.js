@@ -5,11 +5,10 @@ var assert = require('assert');
 
 describe('GroupModel', function(){
   "use strict";
-  this.timeout(2e3);
+  this.timeout(20e3);
 
-  var TestManager = require('../testManager');
+  var testMngr = require('../testManager');
 
-  var testMngr = new TestManager();
   var app = testMngr.app;
   var models = app.data.sequelize.models;
 

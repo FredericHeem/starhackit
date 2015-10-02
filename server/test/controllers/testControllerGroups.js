@@ -2,10 +2,8 @@ var chai = require('chai');
 
 describe('Configure Database', function(){
   "use strict";
-  this.timeout(9000);
-  var TestManager = require('../testManager');
-
-  var testMngr = new TestManager();
+  this.timeout(20e3);
+  var testMngr = require('../testManager');
   var app = testMngr.app;
 
   before(function(done) {

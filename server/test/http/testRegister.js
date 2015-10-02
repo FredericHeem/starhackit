@@ -3,9 +3,9 @@ var crypto = require('crypto');
 var Client = require(__dirname + '/../client/restClient');
 
 describe('UserRegister', function() {
-  this.timeout(9000);
-  var TestManager = require('../testManager');
-  var testMngr = new TestManager();
+  this.timeout(20e3);
+  //var TestManager = require('../testManager');
+  var testMngr = require('../testManager');
   var app = testMngr.app;
   var models = app.data.sequelize.models;
   var client;

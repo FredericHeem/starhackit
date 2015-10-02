@@ -1,4 +1,5 @@
 'use strict';
+var chai = require('chai');
 var assert = require('assert');
 var Client = require(__dirname + '/../client/restClient');
 
@@ -136,9 +137,10 @@ describe('Authentication', function(){
     };
 
     client.login(postParam)
-    .then(function(res){
-      assert(res.success);
-      assert(res.user);
+    .then(function(user){
+      assert(user);
+      console.log(user);
+      chai.assert.isUndefined(user.password);
       done();
     })
     .catch(function(err){
@@ -148,9 +150,8 @@ describe('Authentication', function(){
   it('should login admin with testManager', function(done){
     var client = testMngr.client("admin");
     client.login()
-    .then(function(res){
-      assert(res.success);
-      assert(res.user);
+    .then(function(user){
+      assert(user);
       done();
     })
     .catch(function(err){

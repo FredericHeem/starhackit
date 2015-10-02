@@ -1,4 +1,5 @@
 import Log from 'logfilename';
+import _ from 'underscore';
 let log = new Log(__filename);
 
 export default function MeApi (app){
@@ -9,7 +10,7 @@ export default function MeApi (app){
       log.debug("index userId: ", userId);
       return models.User.findByUserId(userId).then(user => {
         log.debug("index user: ", user.get());
-        return user.toJSON();
+        return _.omit(user.toJSON(), 'id');
       });
     },
     update: function () {

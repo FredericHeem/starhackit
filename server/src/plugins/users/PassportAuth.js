@@ -52,7 +52,7 @@ module.exports = function(app) {
                 log.debug("creating user: ", userConfig);
                 models.User.createUserInGroups(userConfig, ["User"])
                 .then(function(res) {
-                  var userCreated = res.get();
+                  var userCreated = res.toJSON();
                   log.info("register created new user ", userCreated);
                   done(null, userCreated);
                 })
@@ -83,7 +83,7 @@ module.exports = function(app) {
           .then(function(result) {
             if (result) {
               log.debug("userBasic valid password for user: ", user.toJSON());
-              return done(null, user.get());
+              return done(null, user.toJSON());
             } else {
               log.info("userBasic invalid password user: ", user.get());
               return done(null, false, {message: 'InvalidUsernameOrPassword'});
@@ -105,7 +105,7 @@ module.exports = function(app) {
         models.User.find({where:{username:username}})
         .then(function(user) {
           if (!user) {
-            log.info("register create new user ", req);
+            log.info("register create new user ", req.body);
             //return done(null, false, { message: 'InvalidUsernameOrPassword'});
             var userConfig = {
               username: username,
@@ -114,7 +114,7 @@ module.exports = function(app) {
             };
             models.User.createUserInGroups(userConfig, ["User"])
             .then(function(res) {
-              var userCreated = res.get();
+              var userCreated = res.toJSON();
               log.info("register created new user ", userCreated);
               done(null, userCreated);
             })

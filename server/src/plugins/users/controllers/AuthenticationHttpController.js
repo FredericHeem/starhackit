@@ -1,15 +1,13 @@
 import Log from 'logfilename';
 import assert from 'assert';
+import _ from 'underscore';
 
 export default function(/*app*/){
   let log = new Log(__filename);
 
   function login(req, res) {
     log.debug("login",  req.user);
-    res.send({
-      success:true,
-      user: req.user
-    });
+    res.send(_.omit(req.user, 'id'));
   }
 
   function loginFacebookCallback(/*req, res*/) {

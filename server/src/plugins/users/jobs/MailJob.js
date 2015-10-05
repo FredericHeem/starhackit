@@ -1,5 +1,5 @@
 import util from 'util';
-import BaseJob from "../../../jobs/BaseJob";
+import {Subscriber} from 'rabbitmq-pubsub';
 
 let log = require('logfilename')(__filename);
 
@@ -8,31 +8,47 @@ const subscriberOptions = {
   queueName: 'new'
 };
 
-export default class MailJob extends BaseJob {
-  constructor(app){
+export default class MailJob {
+  constructor(){
     log.info("MailJob subscriberOptions: ", subscriberOptions);
-    super(app, subscriberOptions);
-    super.getEventEmitter().on('message', this._onIncomingMessage);
+    this.subscriber = new Subscriber(subscriberOptions);
   }
 
-  sendEmail(user){
+  start(){
+    this.subscriber.start(this._onIncomingMessage.bind(this));
+  }
+  stop(){
+    this.subscriber.stop();
+  }
+  _sendEmail(user){
     log.debug("sendEmail to user ", user);
     return Promise.resolve();
   }
 
   _onIncomingMessage(message) {
-    var user = JSON.parse(message.content.toString());
-    log.error("onIncomingMessage user: ", user);
-    return this.sendEmail(user)
+    log.error("onIncomingMessage user: ", message.content.toString());
+    let user;
+
+    try {
+      user = JSON.parse(message.content.toString());
+    }
+    catch(error){
+      log.error("cannot convert message");
+      this.subscriber.ack(message);
+      //super.getEventEmitter().emit('error', error);
+      return;
+    }
+
+    return this._sendEmail(user)
     .then(function(res) {
       log.info("mail sent: ", res);
-      super.getSubscriber.ack(message);
-      super.getEventEmitter().emit("success", res);
+      this.subscriber.ack(message);
+      //super.getEventEmitter().emit("success", res);
     })
     .catch(function(error) {
       log.error(util.inspect(error));
-      super.getSubscriber().nack(message);
-      super.getEventEmitter().emit('error', error);
+      this.subscriber.nack(message);
+      //super.getEventEmitter().emit('error', error);
     });
   }
 }

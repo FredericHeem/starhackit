@@ -14,14 +14,16 @@ describe('PublisherSubscriber', function() {
   });
 
   beforeEach(function(done) {
-
     done();
   });
 
   describe('StartStop', function() {
     it.skip('should start and stop the publisher', function(done) {
       publisher = new Publisher({exchange:"user.new"});
-      publisher.start().delay(1e3).then(publisher.stop).then(done, done);
+      function onMessage(message){
+
+      }
+      publisher.start(onMessage).delay(1e3).then(publisher.stop).then(done, done);
     });
   });
 });

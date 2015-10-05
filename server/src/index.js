@@ -1,6 +1,8 @@
 console.log("api server started");
-import app from './app';
+import App from './app';
+let app = new App();
 
-app.start().catch(err => {
+app.start()
+.catch(err => {
   console.error("App ending with error: ", err);
 });

@@ -6,45 +6,34 @@ import data from './models';
 import Server from './server';
 import * as HttpUtils from './utils/HttpUtils';
 
-var app = {};
-app.rootDir = __dirname;
-
 var log = new Log(__filename, config.log);
+log.info("NODE_ENV: %s", process.env.NODE_ENV);
 
-log.info("NODE_ENV: %s, rootDir: %s", process.env.NODE_ENV, app.rootDir);
+export default class App {
+  constructor(){
+    this.utils = {
+      http: HttpUtils
+    };
 
-app.utils = {
-  http: HttpUtils
-};
+    this.data = data;
+    this.server = new Server(this);
+    this.plugins = new Plugins(this);
 
-app.data = data;
-app.server = new Server(app);
-app.plugins = new Plugins(app);
+    this.parts = [
+      this.data,
+      this.server,
+      this.plugins
+    ];
+  }
 
-var parts = [
-  app.data,
-  app.server,
-  app.plugins
-];
-
-app.start = function() {
-  log.info("start");
-  return Promise.each(parts, function(plugin) {
-    return plugin.start(app);
-  })
-  .then(function(){
+  async start() {
+    log.info("start");
+    await Promise.each(this.parts, part => part.start(this));
     log.info("started");
-  });
-};
-
-app.stop = function() {
-  log.info("stop");
-  return Promise.each(parts, function(plugin) {
-    return plugin.stop(app);
-  })
-  .then(function(){
+  };
+  async stop() {
+    log.info("stop");
+    await Promise.each(this.parts, part => part.stop(this));
     log.info("stopped");
-  });
-};
-
-module.exports = app;
+  };
+}

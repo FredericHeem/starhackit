@@ -14,11 +14,11 @@ export default class MailJob {
     this.subscriber = new Subscriber(subscriberOptions);
   }
 
-  start(){
-    return this.subscriber.start(this._onIncomingMessage.bind(this));
+  async start(){
+    await this.subscriber.start(this._onIncomingMessage.bind(this));
   }
-  stop(){
-    return this.subscriber.stop();
+  async stop(){
+    await this.subscriber.stop();
   }
   _sendEmail(user){
     log.debug("sendEmail to user ", user);

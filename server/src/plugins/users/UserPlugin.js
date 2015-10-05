@@ -59,20 +59,16 @@ export default class UserPlugin {
     this.startStop = [this.jobs.mail, this.publisherUser];
   }
 
-  start(){
+  async start(){
     log.info("start");
-    return Promise.each(this.startStop, obj => obj.start(this.app))
-    .then(() => {
-      log.info("started");
-    });
+    await Promise.each(this.startStop, obj => obj.start(this.app));
+    log.info("started");
   }
 
-  stop(){
+  async stop(){
     log.info("stop");
-    return Promise.each(this.startStop, obj => obj.stop(this.app))
-    .then(() => {
-      log.info("stopped");
-    });
+    await Promise.each(this.startStop, obj => obj.stop(this.app))
+    log.info("stopped");
   }
 
   seedDefault(){
@@ -82,17 +78,13 @@ export default class UserPlugin {
       this._models.Permission.seedDefault,
       this._models.GroupPermission.seedDefault
     ];
-    return Promise.each(seedDefaultFns, function(fn){
-      return fn();
-    });
+    return Promise.each(seedDefaultFns, fn => fn());
   }
 
-  isSeeded() {
-    return this._models.User.count()
-    .then(function(count) {
-      log.debug("#users ", count);
-      return Promise.resolve(count);
-    });
+  async isSeeded() {
+    let count = await this._models.User.count();
+    log.debug("#users ", count);
+    return count;
   }
 
   registerRouter(server) {

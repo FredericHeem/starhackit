@@ -2,15 +2,19 @@
 var Promise = require('bluebird');
 var _ = require('underscore');
 
-var app = require('../src/app');
+var App = require('../src/app');
 var Client = require(__dirname + '/client/restClient');
 var assert = require('assert');
 
+var log = require('logfilename')(__filename);
 
 var TestMngr = function(){
-  this.app = app;
-  //var log = require('logfilename')(__filename);
+
+  this.app = new App();
+
   var users = require(__dirname + '/fixtures/models/users.json');
+
+  log.debug("TestMngr");
 
   var clientsMap = {};
 
@@ -34,22 +38,11 @@ var TestMngr = function(){
 
   this.start = function(){
     console.log("test start ")
-    var startFns = [
-                    app.start,
-                    //seedUsers,
-                    //seedCustomers()
-                    ];
-
-    return Promise.each(startFns, function(fn){
-      return fn();
-    })
-    .then(function() {
-        console.log("test started")
-    });
+    return this.app.start();
   };
 
   this.stop = function(){
-    return app.stop();
+    return this.app.stop();
   };
 
   this.assertResponse = function(response,schema) {

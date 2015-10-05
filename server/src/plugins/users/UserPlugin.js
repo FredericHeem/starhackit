@@ -56,8 +56,6 @@ export default class UserPlugin {
       mail: new MailJob(app)
     };
 
-
-
     this.startStop = [this.jobs.mail, this.publisherUser];
   }
 

@@ -1,4 +1,5 @@
 {
+    "parser": "babel-eslint",
     "plugins": [
 
     ],
@@ -28,7 +29,7 @@
         "quote-props": [1, "as-needed"],
         "new-cap": [0],
         "no-multi-spaces": [0],
-        "no-shadow": [0],
+        "no-shadow": [1],
         "no-unused-vars": [1],
         "no-undef": 2,
         "no-unused-expressions": 0,
@@ -36,7 +37,7 @@
         "no-trailing-spaces": [1],
         "eol-last": [0],
         "no-labels": [2],
-        "indent": [1,2],
+        "indent": [0,2],
         "no-mixed-spaces-and-tabs": 0,
         "vars-on-top": 1,
         "camelcase": [1, {"properties": "never"}],

@@ -15,7 +15,7 @@ gulp.task( 'default', [ 'watch', 'run', 'server:images' ] );
 
 gulp.task('build', ['cp:fixtures'], function () {
     return gulp.src(paths.scripts)
-        .pipe(babel())
+        .pipe(babel({ stage: 1, optional: ["runtime"] }))
         .pipe(gulp.dest(paths.build));
 });
 

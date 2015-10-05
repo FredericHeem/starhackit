@@ -15,10 +15,10 @@ export default class MailJob {
   }
 
   start(){
-    this.subscriber.start(this._onIncomingMessage.bind(this));
+    return this.subscriber.start(this._onIncomingMessage.bind(this));
   }
   stop(){
-    this.subscriber.stop();
+    return this.subscriber.stop();
   }
   _sendEmail(user){
     log.debug("sendEmail to user ", user);

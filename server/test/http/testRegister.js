@@ -1,94 +1,64 @@
-var assert = require('assert');
-var crypto = require('crypto');
-var Client = require(__dirname + '/../client/restClient');
+let assert = require('assert');
+let crypto = require('crypto');
+let Client = require(__dirname + '/../client/restClient');
 
 describe('UserRegister', function() {
   this.timeout(20e3);
-  //var TestManager = require('../testManager');
-  var testMngr = require('../testManager');
-  var app = testMngr.app;
-  var models = app.data.sequelize.models;
-  var client;
+  //let TestManager = require('../testManager');
+  let testMngr = require('../testManager');
+  let app = testMngr.app;
+  let models = app.data.sequelize.models;
+  let client;
 
-  before(function(done) {
-      testMngr.start().then(done, done);
+  before(async () => {
+      await testMngr.start();
   });
-  after(function(done) {
-      testMngr.stop().then(done, done);
+  after(async () => {
+      await testMngr.stop();
   });
 
-  beforeEach(function(done) {
+  beforeEach(async () => {
     client = new Client();
-    done();
   });
 
   function createUsernameRandom() {
-    var sha = crypto.createHash('sha256');
-    var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    let sha = crypto.createHash('sha256');
+    let username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
     return username;
   }
 
-  it('shoud register a user', function(done) {
-    var username = createUsernameRandom();
-    var userConfig = {
+  it('shoud register a user', async () => {
+    let username = createUsernameRandom();
+    let userConfig = {
       username: username,
       password:'password',
       email: username + "@mail.com"
     };
 
-    client.post('v1/auth/register', userConfig)
-      .then(function(res) {
-        assert(res);
-        //console.log(res);
-        assert(res.success);
-        return models.User.findByUsername(username);
-      })
-      .then(function(res) {
-        assert(res);
-        var user = res.get();
-        assert(user.username, username);
-        //console.log(user);
-      })
-      .then(done, done)
-      .catch(done);
+    let res = await client.post('v1/auth/register', userConfig);
+    assert(res);
+    assert(res.success);
+    res = await models.User.findByUsername(username);
+    assert(res);
+    let user = res.get();
+    assert(user.username, username);
   });
-  it('shoud register twice a user', function(done) {
-    var username = createUsernameRandom();
-    var userConfig = {
+  it('shoud register twice a user', async () => {
+    let username = createUsernameRandom();
+    let userConfig = {
       username: username,
       password:'password',
       email: username + "@mail.com"
     };
 
-    client.post('v1/auth/register', userConfig)
-      .then(function(res) {
-        assert(res);
-        //console.log(res);
-        assert(res.success);
-        return client.post('v1/auth/register', userConfig);
-      })
-      .then(function(res) {
-        assert(res);
-        assert(res.success);
-      })
-      .then(done, done)
-      .catch(done);
+    let res = await client.post('v1/auth/register', userConfig);
+    assert(res);
+    assert(res.success);
+    res = await client.post('v1/auth/register', userConfig);
+    assert(res);
+    assert(res.success);
   });
   describe('After Login', function() {
-    /*
-    beforeEach(function(done) {
-      var postParam = {
-          username:"alice",
-          password:"password"
-      };
-
-      client.login(postParam)
-      .then(function(){
-        done();
-      })
-      .catch(done);
-    });
-*/
 
   });
 

@@ -1,145 +1,100 @@
-var _ = require('lodash');
-var crypto   = require('crypto');
-var chai = require('chai');
-var fixtures = require(__dirname+'/../fixtures/models/users');
+import 'mochawait';
+import _ from 'lodash';
+import assert from 'assert';
+import crypto from 'crypto';
+
+let fixtures = require(__dirname + '/../fixtures/models/users');
 
 describe('UserModel', function(){
   "use strict";
   this.timeout(20e3);
-  var testMngr = require('../testManager');
-  var models = testMngr.app.data.sequelize.models;
-  var userModel = models.User;
+  let testMngr = require('../testManager');
+  let models = testMngr.app.data.sequelize.models;
+  let userModel = models.User;
 
-  before(function(done) {
-      testMngr.start().then(done, done);
+  before(async () => {
+      await testMngr.start();
   });
-  after(function(done) {
-      testMngr.stop().then(done, done);
+  after(async () => {
+      await testMngr.stop();
   });
 
-  it('should successfully create an entry', function(done){
-    var sha  = crypto.createHash('sha256');
-    var userCreated;
-    var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
-    var userConfig = {
+  it('should successfully create an entry', async () => {
+    let sha  = crypto.createHash('sha256');
+    let username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    let userConfig = {
         username: username,
         password: "password",
         email: username + "@mail.com"
     };
-    userModel.createUserInGroups(userConfig, ["User"])
-    .then(function(res){
-      userCreated = res;
-      chai.assert(userCreated);
-      return userCreated.comparePassword(userConfig.password);
-    })
-    .then(function(isMatch){
-      chai.assert(isMatch);
-      return userCreated.destroy();
-    })
-    .then(function(){
+    let userCreated = await userModel.createUserInGroups(userConfig, ["User"]);
+    assert(userCreated);
+    let isMatch = await userCreated.comparePassword(userConfig.password);
+    assert(isMatch);
 
-    })
-    .then(done, done);
+    // should not create the user 2 times
+    try {
+      await userModel.createUserInGroups(userConfig, ["User"]);
+    } catch(err){
+      assert.equal(err.name, "SequelizeUniqueConstraintError");
+      assert.equal(err.errors[0].message, "email must be unique");
+    }
+
+    await userCreated.destroy();
   });
 
-  it('should not create the user 2 times', function(done){
-    var admin = fixtures.admin;
-    userModel.createUserInGroups(admin,["User"])
-    .then(function(/*res*/){
-      return userModel.createUserInGroups(admin, ["User"]);
-    })
-    .catch(function(err){
-      chai.assert.equal(err.name, "SequelizeUniqueConstraintError");
-      chai.assert.equal(err.errors[0].message, "username must be unique");
-    })
-    .then(done, done);
+  it('should not create an empty entry', async() => {
+    try {
+      await userModel.create({});
+    } catch(err){
+      assert.equal(err.name, "SequelizeValidationError");
+      assert.equal(err.errors[0].message, "username cannot be null");
+    }
+  });
+  it('should find the user ', async () => {
+    let res = await userModel.findByUsername('alice');
+    assert(res);
+    assert(res.get().username);
+    assert(res.get().password);
+    let userJson = res.toJSON();
+    assert(!userJson.password);
   });
 
-  it('should not create an empty entry', function(done){
-    userModel.create({})
-    .then(function(/*userCreated*/){
-      chai.assert(false, "user should not be created");
-    })
-    .catch(function(err){
-      chai.assert.equal(err.name, "SequelizeValidationError");
-      chai.assert.equal(err.errors[0].message, "username cannot be null");
-    })
-    .then(done, done);
-  });
-  it.skip('should find the user ', function(done){
-    userModel.findByUsername('alice')
-    .then(function(res){
-      chai.assert(res);
-      chai.assert(res.get().username);
-      chai.assert(res.get().password);
-      var userJson = res.toJSON();
-      chai.assert.isUndefined(userJson.password);
-    })
-    .then(done, done);
-  });
-
-  it('should not create a user with invalid group', function(done){
-    var sha  = crypto.createHash('sha256');
-    var username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
-    var userConfig = {
+  it('should not create a user with invalid group', async () => {
+    let sha  = crypto.createHash('sha256');
+    let username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    let userConfig = {
         username: username,
         password: "password",
         email: username + "@mail.com"
     };
+    try {
+      await userModel.createUserInGroups(userConfig,["GroupNotExist"]);
+    } catch(err){
+      assert.equal(err.name, "GroupNotFound");
+    }
+  });
 
-    userModel.createUserInGroups(userConfig,["GroupNotExist"])
-    .catch(function(err){
-      chai.assert.equal(err.name, "GroupNotFound");
-      done();
+  it('should count users', async () =>  {
+    let count = await userModel.count();
+    assert(count > 0);
+  });
+  it('should list users', async () => {
+    let res = await userModel.findAll({attributes: [ 'id', 'username' ]});
+    assert(res);
+    _.each(res, user => {
+       //console.log("user: ", user.get());
+       assert(user.get().username);
     });
   });
-
-  it('should count users', function (done) {
-    userModel.count()
-    .then(function(count) {
-      console.log("COUNT ", count);
-      chai.expect(count).to.be.above(0);
-    })
-    .then(done, done);
-  });
-  it('should list users', function (done) {
-    userModel.findAll({
-           attributes: [ 'id', 'username' ]
-         })
-    .then(function(res) {
-      console.log("users: ", res.length);
-      chai.expect(res).to.exist;
-      _.each(res, function(user){
-         console.log("user: ", user.get());
-      });
-    })
-    .then(done, done);
-  });
-  it('should find admin user, with attributes', function (done) {
-    var adminUsername = 'admin';
-    userModel.find({
+  it('should find admin user, with attributes', async () => {
+    let adminUsername = 'admin';
+    let res = await userModel.find({
            attributes: [ 'id', 'username' ],
            where:{
              username:adminUsername
            }
-         })
-    .then(function(res) {
-      chai.expect(res).to.exist;
-    })
-    .then(done, done);
+         });
+    assert(res.get().username);
   });
-  it('should find admin user, without attributes', function (done) {
-    var adminUsername = 'admin';
-    userModel.find({
-           where:{
-             username:adminUsername
-           }
-         })
-    .then(function(res) {
-      console.log(res.get());
-      chai.expect(res).to.exist;
-    })
-    .then(done, done);
-  });
-
 });

@@ -1,10 +1,9 @@
 import assert from 'assert';
 import {Client} from 'restauth';
+import testMngr from '~/test/testManager';
 
 describe('Authentication', function(){
   let client;
-
-  let testMngr = require('../../../../test/testManager');
 
   before(async () => {
       await testMngr.start();

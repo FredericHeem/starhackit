@@ -2,11 +2,11 @@ import 'mochawait';
 import _ from 'lodash';
 import assert from 'assert';
 import crypto from 'crypto';
+import testMngr from '~/test/testManager';
 
 let fixtures = require(__dirname + '/../fixtures/models/users');
 
 describe('UserModel', function(){
-  let testMngr = require('../testManager');
   let models = testMngr.app.data.sequelize.models;
   let userModel = models.User;
 

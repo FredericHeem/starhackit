@@ -1,8 +1,9 @@
 import assert from 'assert';
+import testMngr from '~/test/testManager';
 
 describe('Users', function() {
   let client;
-  let testMngr = require('../../../../test/testManager');
+
   before(async () => {
       await testMngr.start();
   });

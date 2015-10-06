@@ -3,7 +3,6 @@ import {Publisher} from 'rabbitmq-pubsub';
 import MailJob from './MailJob';
 
 describe('MailJob', function() {
-  //let testMngr = require('../testManager');
   let publisher;
 
   before(async () => {

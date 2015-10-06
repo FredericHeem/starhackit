@@ -1,8 +1,7 @@
 var chai = require('chai');
+import testMngr from '~/test/testManager';
 
 describe('Configure Database', function(){
-  "use strict";
-  var testMngr = require('../testManager');
   var app = testMngr.app;
 
   before(function(done) {

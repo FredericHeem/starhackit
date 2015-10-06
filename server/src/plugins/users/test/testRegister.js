@@ -1,9 +1,9 @@
 let assert = require('assert');
 let crypto = require('crypto');
 import {Client} from 'restauth';
+import testMngr from '~/test/testManager';
 
 describe('UserRegister', function() {
-  let testMngr = require('../../../../test/testManager');
   let app = testMngr.app;
   let models = app.data.sequelize.models;
   let client;

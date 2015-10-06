@@ -1,9 +1,9 @@
 import assert from 'assert';
 import Promise from 'bluebird';
 import {Publisher} from 'rabbitmq-pubsub';
+import testMngr from '~/test/testManager';
 
 describe('PublisherSubscriber', function() {
-  let testMngr = require('../testManager');
   let publisher;
 
   before(async () => {

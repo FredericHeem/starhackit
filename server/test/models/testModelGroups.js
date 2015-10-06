@@ -3,9 +3,9 @@ import _ from 'lodash';
 import chai from 'chai';
 const expect = chai.expect;
 import assert from 'assert';
+import testMngr from '~/test/testManager';
 
 describe('GroupModel', function() {
-    const testMngr = require('../testManager');
     const app = testMngr.app;
     const models = app.data.sequelize.models;
 

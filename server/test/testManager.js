@@ -1,10 +1,9 @@
-  "use strict";
-var Promise = require('bluebird');
-var _ = require('underscore');
+import assert from 'assert';
+import Promise from 'bluebird';
+import _ from 'underscore';
+import {Client} from 'restauth';
 
 var App = require('../src/app');
-var Client = require(__dirname + '/client/restClient');
-var assert = require('assert');
 
 var log = require('logfilename')(__filename);
 
@@ -37,7 +36,6 @@ var TestMngr = function(){
   };
 
   this.start = function(){
-    console.log("test start ")
     return this.app.start();
   };
 
@@ -45,17 +43,8 @@ var TestMngr = function(){
     return this.app.stop();
   };
 
-  this.assertResponse = function(response,schema) {
-    var schemaObject = require(schema);
-    var validatorResult = app.schemaValidator.validate(response, schemaObject);
-    assert(validatorResult.errors.length === 0)
-  };
-
 };
 
-/* ************************************************************************
-SINGLETON CLASS DEFINITION
-************************************************************************ */
 TestMngr.instance = null;
 
 /**

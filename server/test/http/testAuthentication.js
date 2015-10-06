@@ -2,7 +2,6 @@ import assert from 'assert';
 let Client = require(__dirname + '/../client/restClient');
 
 describe('Authentication', function(){
-  this.timeout(20e3);
   let client;
 
   let testMngr = require('../testManager');

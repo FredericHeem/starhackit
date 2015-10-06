@@ -2,7 +2,6 @@ import assert from 'assert';
 import Publisher from 'rabbitmq-pubsub';
 
 describe('PublisherSubscriber', function() {
-  this.timeout(20e3);
   let testMngr = require('../testManager');
   let publisher;
 

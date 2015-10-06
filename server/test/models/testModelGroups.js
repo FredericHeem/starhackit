@@ -5,7 +5,6 @@ const expect = chai.expect;
 import assert from 'assert';
 
 describe('GroupModel', function() {
-    this.timeout(20000);
     const testMngr = require('../testManager');
     const app = testMngr.app;
     const models = app.data.sequelize.models;

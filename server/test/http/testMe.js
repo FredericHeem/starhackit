@@ -3,7 +3,6 @@ import assert from 'assert';
 describe('Users', function() {
   let client;
   let testMngr = require('../testManager');
-  this.timeout(20e3);
   before(async () => {
       await testMngr.start();
   });

@@ -6,8 +6,6 @@ import crypto from 'crypto';
 let fixtures = require(__dirname + '/../fixtures/models/users');
 
 describe('UserModel', function(){
-  "use strict";
-  this.timeout(20e3);
   let testMngr = require('../testManager');
   let models = testMngr.app.data.sequelize.models;
   let userModel = models.User;

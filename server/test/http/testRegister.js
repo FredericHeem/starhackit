@@ -3,7 +3,6 @@ let crypto = require('crypto');
 let Client = require(__dirname + '/../client/restClient');
 
 describe('UserRegister', function() {
-  this.timeout(20e3);
   //let TestManager = require('../testManager');
   let testMngr = require('../testManager');
   let app = testMngr.app;

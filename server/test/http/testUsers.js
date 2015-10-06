@@ -2,7 +2,6 @@ import assert from 'assert';
 
 describe('Users', function() {
   'use strict';
-  this.timeout(20e3);
   let client;
   let testMngr = require('../testManager');
   before(async () => {

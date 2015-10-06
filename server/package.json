@@ -76,6 +76,7 @@
     "mocha": "~2.3.2",
     "mochawait": "^2.0.1",
     "request": "~2.64.0",
+    "restauth": "^0.1.0",
     "run-sequence": "^1.1.4",
     "sequelize-cli": "~1.9.1",
     "sinon": "~1.17.1",

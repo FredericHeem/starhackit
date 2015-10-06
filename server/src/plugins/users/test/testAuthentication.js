@@ -1,10 +1,10 @@
 import assert from 'assert';
-let Client = require(__dirname + '/../client/restClient');
+import {Client} from 'restauth';
 
 describe('Authentication', function(){
   let client;
 
-  let testMngr = require('../testManager');
+  let testMngr = require('../../../../test/testManager');
 
   before(async () => {
       await testMngr.start();

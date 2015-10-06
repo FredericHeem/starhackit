@@ -1,5 +1,6 @@
 import assert from 'assert';
-import Publisher from 'rabbitmq-pubsub';
+import Promise from 'bluebird';
+import {Publisher} from 'rabbitmq-pubsub';
 
 describe('PublisherSubscriber', function() {
   let testMngr = require('../testManager');
@@ -13,12 +14,10 @@ describe('PublisherSubscriber', function() {
   });
 
   describe('StartStop', function() {
-    it.skip('should start and stop the publisher', async () => {
+    it('should start and stop the publisher', async () => {
       publisher = new Publisher({exchange:"user.new"});
-      function onMessage(message){
-        assert(message);
-      }
-      await publisher.start(onMessage);
+
+      await publisher.start();
       await Promise.delay(1e3);
       await publisher.stop();
     });

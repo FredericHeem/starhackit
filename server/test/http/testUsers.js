@@ -1,66 +1,65 @@
-const assert = require('assert');
+import assert from 'assert';
+
 describe('Users', function() {
   'use strict';
   this.timeout(20e3);
   let client;
-  const testMngr = require('../testManager');
-  before(done => {
-    testMngr.start().then(done, done);
+  let testMngr = require('../testManager');
+  before(async () => {
+      await testMngr.start();
   });
-  after(done => {
-    testMngr.stop().then(done, done);
+  after(async () => {
+      await testMngr.stop();
   });
+
   describe('Admin', () => {
-    before(done => {
+    before(async () => {
       client = testMngr.client('admin');
       assert(client);
-      client.login().then(res => {
-        console.log(res);
-        assert(res);
-      }).then(done, done);
+      let res = await client.login();
+      assert(res);
     });
-    it('should get all users', done => {
-      return client.get('v1/users').then(users => {
-        assert(users);
-      }).then(done, done);
+    it('should get all users', async () => {
+      let users = await client.get('v1/users');
+      assert(users);
     });
-    it('should get all users with filter ASC', done => {
-      return client.get('v1/users?offset=10&order=ASC&limit=100').then(users => {
-        assert(users);
-      }).then(done, done);
+    it('should get all users with filter ASC', async () => {
+      let users = await client.get('v1/users?offset=10&order=ASC&limit=100');
+      assert(users);
     });
-    it('should get all users with filter DESC', done => {
-      return client.get('v1/users?offset=1000&order=DESC&limit=100').then(users => {
-        assert(users);
-      }).then(done, done);
+    it('should get all users with filter DESC', async () => {
+      let users = await client.get('v1/users?offset=10&order=DESC&limit=100');
+      assert(users);
     });
-    it('should get one user', done => {
-      return client.get('v1/users/1').then(user => {
-        assert(user);
-      }).then(done, done);
+    it('should get one user', async () => {
+      let user = await client.get('v1/users/1');
+      assert(user);
     });
-    it.skip('should not create a new user with missing username', done => {
-      return client.post('v1/users').catch(err => {
+    it.skip('should not create a new user with missing username', async () => {
+      try {
+        await client.post('v1/users');
+        assert(false);
+      } catch(err){
+        assert(err);
         assert.equal(err.statusCode, 400);
-        done();
-      });
+      }
     });
   });
   describe('User Basic ', () => {
-    before(done => {
+    before(async () => {
       client = testMngr.client('alice');
       assert(client);
-      client.login().then(res => {
-        console.log(res);
-        assert(res);
-      }).then(done, done);
+      let res = await client.login();
+      assert(res);
     });
-    it('should not list on all users', done => {
-      return client.get('v1/users').then(() => {
-        done({error: 'ShouldNotBeHere'});
-      }).catch(err => {
+    it('should not list on all users', async () => {
+      try {
+        await client.get('v1/users');
+        assert(false);
+      } catch(err){
+        assert(err);
         assert.equal(err.statusCode, 401);
-      }).then(done, done);
+      }
     });
   });
 });

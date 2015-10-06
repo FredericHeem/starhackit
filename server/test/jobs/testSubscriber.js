@@ -1,4 +1,4 @@
-"use strict";
+import assert from 'assert';
 import Publisher from 'rabbitmq-pubsub';
 
 describe('PublisherSubscriber', function() {
@@ -6,24 +6,22 @@ describe('PublisherSubscriber', function() {
   let testMngr = require('../testManager');
   let publisher;
 
-  before(function(done) {
-      testMngr.start().then(done, done);
+  before(async () => {
+      await testMngr.start();
   });
-  after(function(done) {
-      testMngr.stop().then(done, done);
-  });
-
-  beforeEach(function(done) {
-    done();
+  after(async () => {
+      await testMngr.stop();
   });
 
   describe('StartStop', function() {
-    it.skip('should start and stop the publisher', function(done) {
+    it.skip('should start and stop the publisher', async () => {
       publisher = new Publisher({exchange:"user.new"});
       function onMessage(message){
-
+        assert(message);
       }
-      publisher.start(onMessage).delay(1e3).then(publisher.stop).then(done, done);
+      await publisher.start(onMessage);
+      await Promise.delay(1e3);
+      await publisher.stop();
     });
   });
 });

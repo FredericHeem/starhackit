@@ -14,4 +14,4 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 
 after_script:
-  - cd server && npm run codeclimate
+  - cd server && npm run codeclimate && npm run coveralls

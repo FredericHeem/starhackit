@@ -1,6 +1,6 @@
-let passport = require('passport');
-let localStrategy = require('./auth-strategy/LocalStrategy');
-let facebookStrategy = require('./auth-strategy/FacebookStrategy');
+import passport from 'passport';
+import {register as registerlocal} from './auth-strategy/LocalStrategy';
+import {register as registerFacebook} from './auth-strategy/FacebookStrategy';
 //let config = require('config');
 
 module.exports = function(app) {
@@ -8,8 +8,8 @@ module.exports = function(app) {
 
   let models = app.data.sequelize.models;
 
-  localStrategy(passport, models);
-  facebookStrategy(passport, models);
+  registerlocal(passport, models);
+  registerFacebook(passport, models);
 
   passport.serializeUser(function(user, done) {
     log.debug("serializeUser ", user);

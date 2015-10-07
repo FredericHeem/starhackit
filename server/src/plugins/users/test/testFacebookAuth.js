@@ -2,7 +2,7 @@ import assert from 'assert';
 import {Client} from 'restauth';
 import testMngr from '~/test/testManager';
 
-describe('Facebook', function(){
+describe.skip('Facebook', function(){
   let client;
 
   before(async () => {

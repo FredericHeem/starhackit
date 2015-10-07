@@ -6,7 +6,7 @@ export default function UserApi (app){
   return {
     list: function(qs){
       log.debug("list qs: ", qs);
-      var filter = app.data.queryStringToFilter(qs, "id");
+      let filter = app.data.queryStringToFilter(qs, "id");
       return models.User.findAll(filter);
     },
     get: function (userId) {

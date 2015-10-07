@@ -1,12 +1,12 @@
 'use strict';
-var bcrypt = require("bcrypt");
-var Promise = require('bluebird');
+let bcrypt = require("bcrypt");
+let Promise = require('bluebird');
 
 module.exports = function(sequelize, DataTypes) {
-  var log = require('logfilename')(__filename);
-  var models = sequelize.models;
+  let log = require('logfilename')(__filename);
+  let models = sequelize.models;
 
-  var User = sequelize.define('User', {
+  let User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING(64),
       unique: true,
@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
      tableName: "users",
       classMethods: {
         seedDefault: function () {
-          var usersJson = require('./fixtures/users.json');
+          let usersJson = require('./fixtures/users.json');
           log.debug('seedDefault: ', JSON.stringify(usersJson, null, 4));
           return Promise.each(usersJson, function(userJson){
             return User.createUserInGroups(userJson, userJson.groups);
@@ -108,13 +108,12 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise} Promise user model
          */
         findByUsername: function  findByUsername(userName) {
-          return this.find({where: { "username": userName } });
+          return this.find({where: { username: userName } });
         },
 
         /**
          * Checks whether a user is able to perform an action on a resource
          * Equivalent to: select name from permissions p join group_permissions g on p.id=g.permission_id where g.group_id=(select group_id from users where username='aliceab@example.com') AND p.resource='user' and p.create=true;
-         * @param {Object} app  - The application
          * @param {String} userId  - The userId to search
          * @param {String} resource  -The resource name to search
          * @param {String} action  - The action , "create,read,update,delete"
@@ -124,7 +123,7 @@ module.exports = function(sequelize, DataTypes) {
 
         checkUserPermission: function(userId,resource,action) {
           log.debug('Checking %s permission for %s on %s',action, userId, resource);
-          var where = {
+          let where = {
               resource: resource,
           };
           where[action.toLowerCase()] = true;
@@ -175,9 +174,9 @@ module.exports = function(sequelize, DataTypes) {
 
       instanceMethods: {
         comparePassword : function(candidatePassword) {
-          var me = this;
+          let me = this;
           return new Promise(function(resolve, reject){
-            var hashPassword = me.get('password') || '';
+            let hashPassword = me.get('password') || '';
 
             bcrypt.compare(candidatePassword, hashPassword, function(err, isMatch) {
               if(err) {return reject(err); }
@@ -191,7 +190,7 @@ module.exports = function(sequelize, DataTypes) {
          *
          */
           toJSON: function () {
-          var values = this.get({clone: true});
+          let values = this.get({clone: true});
           delete values.password;
           delete values.createdAt;
           delete values.updatedAt;
@@ -203,7 +202,7 @@ module.exports = function(sequelize, DataTypes) {
     underscored: true
   });
 
-  var hashPasswordHook = function(instance, options, done) {
+  let hashPasswordHook = function(instance, options, done) {
     if (!instance.changed('password')) { return done(); }
     bcrypt.hash(instance.get('password'), 10, function (err, hash) {
       if (err) { return done(err); }

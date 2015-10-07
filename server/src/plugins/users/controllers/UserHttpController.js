@@ -2,7 +2,7 @@ export default function(app, userApi){
 
   let log = require('logfilename')(__filename);
   let respond = app.utils.http.respond;
-  
+
   function index(req, res) {
     respond(userApi, userApi.list,[req.query],res);
   }

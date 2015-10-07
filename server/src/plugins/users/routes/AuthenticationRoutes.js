@@ -1,10 +1,10 @@
 import passport from 'passport';
-var express = require("express");
+let express = require("express");
 
 module.exports = function(app, auth, authenticationHttpCtrl){
   "use strict";
 
-  var router = new express.Router();
+  let router = new express.Router();
   router.post('/login', passport.authenticate('login'), authenticationHttpCtrl.login);
   router.post('/register', passport.authenticate('register'), authenticationHttpCtrl.register);
 

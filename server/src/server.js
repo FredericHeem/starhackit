@@ -1,19 +1,19 @@
-var config = require('config');
-var Promise = require('bluebird');
-var express = require('express');
+let config = require('config');
+let Promise = require('bluebird');
+let express = require('express');
 
-var defaultMiddleware = require('./middleware/DefaultMiddleware');
-var frontendMiddleware = require('./middleware/FrontendMiddleware');
-var loggerMiddleware = require('./middleware/LoggerMiddleware');
-var corsMiddleware = require('./middleware/CorsMiddleware');
-var sessionMiddleware = require('./middleware/SessionMiddleware');
-var passportMiddleware = require('./middleware/PassportMiddleware');
+let defaultMiddleware = require('./middleware/DefaultMiddleware');
+let frontendMiddleware = require('./middleware/FrontendMiddleware');
+let loggerMiddleware = require('./middleware/LoggerMiddleware');
+let corsMiddleware = require('./middleware/CorsMiddleware');
+let sessionMiddleware = require('./middleware/SessionMiddleware');
+let passportMiddleware = require('./middleware/PassportMiddleware');
 
 module.exports = function() {
-  var log = require('logfilename')(__filename);
+  let log = require('logfilename')(__filename);
 
-  var expressApp = express();
-  var httpHandle;
+  let expressApp = express();
+  let httpHandle;
 
   frontendMiddleware(expressApp, config);
   loggerMiddleware(expressApp, config);

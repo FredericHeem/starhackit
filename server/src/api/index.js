@@ -1,7 +1,7 @@
-var api = function(){
+let api = function(){
   "use strict";
 
-  var apis = {};
+  let apis = {};
   //apis.utils =  require('./utils.js')(app);
   //apis.users = require('./UserApi.js')(app);
 

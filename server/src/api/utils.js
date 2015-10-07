@@ -2,10 +2,10 @@ module.exports = function(app) {
   "use strict";
 
   function validateRequest(request,schema) {
-    var schemaObject = require(schema);
-    var validatorResult = app.schemaValidator.validate(request,schemaObject);
+    let schemaObject = require(schema);
+    let validatorResult = app.schemaValidator.validate(request,schemaObject);
     if(validatorResult.errors.length > 0) {
-      var error = app.error.format('ValidationError',validatorResult.errors);
+      let error = app.error.format('ValidationError',validatorResult.errors);
       return error;
     }
     else {

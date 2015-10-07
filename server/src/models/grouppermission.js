@@ -1,10 +1,10 @@
 'use strict';
 module.exports = function(sequelize/*, DataTypes*/) {
-  var log = require('logfilename')(__filename);
-  var Promise = require('bluebird');
-  var _ = require('underscore');
-  var models = sequelize.models;
-  var GroupPermission = sequelize.define('GroupPermission', {},
+  let log = require('logfilename')(__filename);
+  let Promise = require('bluebird');
+  let _ = require('underscore');
+  let models = sequelize.models;
+  let GroupPermission = sequelize.define('GroupPermission', {},
   {
     tableName:"group_permissions",
     classMethods: {
@@ -14,7 +14,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
   });
 
   function seedDefault() {
-    var groupPermissionsJson = require('./fixtures/group_permission.json');
+    let groupPermissionsJson = require('./fixtures/group_permission.json');
     log.debug('seedDefault: ', JSON.stringify(groupPermissionsJson, null, 4));
     //console.log('creating all groupPermissions:',groupsPermissions)
     return Promise.each(_.keys(groupPermissionsJson), function(groupName) {
@@ -34,7 +34,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
       return models.Group.findByName(groupName)
       .then(function(group) {
         if (!group)  {
-          var err = {name: 'GroupNotFound', message: groupName};
+          let err = {name: 'GroupNotFound', message: groupName};
           throw err;
         }
         log.debug("found group ", group.get());
@@ -44,7 +44,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
           .then(function(permissionFound) {
             if (!permissionFound) {
               log.debug("PermissionNotFound");
-              var err = {name: 'PermissionNotFound', message: permission};
+              let err = {name: 'PermissionNotFound', message: permission};
               throw err;
             }
             log.debug("add: groupId %s, permissionsId %s", group.get().id, permissionFound.get().id);
@@ -53,7 +53,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
               permission_id: permissionFound.get().id
             });
           });
-        }, {"concurrency": 1});
+        }, {concurrency: 1});
       });
     }
 

@@ -1,4 +1,4 @@
-import assert from 'assert';
+//import assert from 'assert';
 import {Publisher} from 'rabbitmq-pubsub';
 import MailJob from './MailJob';
 

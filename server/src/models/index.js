@@ -1,14 +1,14 @@
 'use strict';
-var assert = require('assert');
-var fs        = require('fs');
-var path      = require('path');
-var Sequelize = require('sequelize');
-var basename  = path.basename(module.filename);
-var config = require('config');
-var log = require('logfilename')(__filename);
-var db        = {};
-var dbConfig = config.db;
-var sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+let assert = require('assert');
+let fs        = require('fs');
+let path      = require('path');
+let Sequelize = require('sequelize');
+let basename  = path.basename(module.filename);
+let config = require('config');
+let log = require('logfilename')(__filename);
+let db        = {};
+let dbConfig = config.db;
+let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
@@ -16,7 +16,7 @@ fs
   })
   .forEach(function(file) {
     if (file.slice(-3) !== '.js') return;
-    var model = sequelize['import'](path.join(__dirname, file));
+    let model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
@@ -30,7 +30,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.queryStringToFilter = function(qs, orderBy){
-  var filter = {
+  let filter = {
     offset:qs.offset,
     limit:qs.limit,
     order:qs.order ? (orderBy + " " + qs.order) : undefined
@@ -40,7 +40,7 @@ db.queryStringToFilter = function(qs, orderBy){
 
 db.start = function(app){
   log.info("db start");
-  var option = {force:false};
+  let option = {force:false};
 
   return sequelize.sync(option)
   .then(function() {
@@ -57,7 +57,7 @@ db.stop = function(){
 /*
 db.seedDB = function () {
   log.info("seedDB");
-  var option = {force:true};
+  let option = {force:true};
   return sequelize.sync(option)
   .then(function() {
     return seedDefault();

@@ -1,6 +1,6 @@
 import Log from 'logfilename';
 
-var log = new Log(__filename);
+let log = new Log(__filename);
 
 export function respond(me, callback,args,res) {
     //apply used to pass args to the callback

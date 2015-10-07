@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 
 //let log = new Log(__filename);
 
-export default function DefaultMiddleware(expressApp, config){
+export default function DefaultMiddleware(expressApp){
   expressApp.use(bodyParser.json());
   expressApp.use(bodyParser.urlencoded({extended: true}));
   expressApp.use(cookieParser());

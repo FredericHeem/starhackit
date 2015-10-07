@@ -30,12 +30,12 @@ module.exports = function(passport, models) {
             return done(null, user.get());
           } else {
             log.debug("no fb profile registered");
-            models.User.find({where:{username: profile._json.email}})
-            .then(function(user) {
-              if (user) {
+            models.User.find({where:{email: profile._json.email}})
+            .then(function(userByEmail) {
+              if (userByEmail) {
                 log.debug("email already registered");
                 //should update fb profile id
-                done(null, user.get());
+                done(null, userByEmail.get());
               } else {
                 //Create user
                 let userConfig = {

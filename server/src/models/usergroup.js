@@ -1,13 +1,13 @@
 'use strict';
-var assert = require('assert');
-var Promise = require('bluebird');
+let assert = require('assert');
+let Promise = require('bluebird');
 
 module.exports = function(sequelize, DataTypes) {
-  var log = require('logfilename')(__filename);
-  var models = sequelize.models;
+  let log = require('logfilename')(__filename);
+  let models = sequelize.models;
   assert(models);
 
-  var UserGroup = sequelize.define('UserGroup', {
+  let UserGroup = sequelize.define('UserGroup', {
     name: DataTypes.TEXT
   }, {
     tableName:"user_groups",
@@ -40,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
      return models.Group.findByName(groupName)
      .then(function(group) {
        if (!group) {
-         var err = {name: 'GroupNotFound', message: groupName};
+         let err = {name: 'GroupNotFound', message: groupName};
          throw err;
        }
        return UserGroup.upsert({

@@ -6,7 +6,7 @@ import data from './models';
 import Server from './server';
 import * as HttpUtils from './utils/HttpUtils';
 
-var log = new Log(__filename, config.log);
+let log = new Log(__filename, config.log);
 log.info("NODE_ENV: %s", process.env.NODE_ENV);
 
 export default class App {

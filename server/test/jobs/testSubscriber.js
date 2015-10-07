@@ -1,4 +1,4 @@
-import assert from 'assert';
+//import assert from 'assert';
 import Promise from 'bluebird';
 import {Publisher} from 'rabbitmq-pubsub';
 import testMngr from '~/test/testManager';

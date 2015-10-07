@@ -10,7 +10,6 @@ var sessionMiddleware = require('./middleware/SessionMiddleware');
 var passportMiddleware = require('./middleware/PassportMiddleware');
 
 module.exports = function() {
-  'use strict';
   var log = require('logfilename')(__filename);
 
   var expressApp = express();

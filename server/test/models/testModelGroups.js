@@ -142,8 +142,8 @@ describe('GroupModel', function() {
             const group = item.get();
             //console.log("group:", group.name);
             //console.log("group:", group.permissions);
-            _.each(group.permissions, item => {
-                const permission = item.get();
+            _.each(group.permissions, itemPermission => {
+                const permission = itemPermission.get();
                 assert(permission.name);
                 assert(permission.resource);
                 //console.log("permission name:%s, resource ", permission.name, permission.resource);

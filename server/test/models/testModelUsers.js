@@ -33,6 +33,7 @@ describe('UserModel', function(){
     // should not create the user 2 times
     try {
       await userModel.createUserInGroups(userConfig, ["User"]);
+      assert(false);
     } catch(err){
       assert.equal(err.name, "SequelizeUniqueConstraintError");
       assert.equal(err.errors[0].message, "email must be unique");

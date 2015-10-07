@@ -1,22 +1,21 @@
-var http = require('http');
+import  http from 'http';
 
-var Router = function(app, io) {
-  'use strict';
-  var _clients = {};
-  var defaultFunctions = [];
-  var errorCb;
-  var log = require('logfilename')(__filename);
-  var debug = log.debug;
+let Router = function(app, io) {
+  let _clients = {};
+  let defaultFunctions = [];
+  let errorCb;
+  let log = require('logfilename')(__filename);
+  let debug = log.debug;
 
   io.on('connection', function(socket) {
-    var ua = socket.handshake.headers['user-agent'] || "???" ;
+    let ua = socket.handshake.headers['user-agent'] || "???" ;
     debug("router connection %s from %s, ua: %s, #clients %s",
             socket.id, socket.handshake.address, ua, Object.keys(_clients).length);
     //debug(JSON.stringify(socket.handshake))
     _clients[socket.id] = socket;
     socket.on('disconnect', function() {
       debug("disconnect %s, #clients %s", socket.id, Object.keys(_clients).length);
-      var client = _clients[socket.id];
+      let client = _clients[socket.id];
       //debug("client.user", client.user);
       if (client) {
         delete  _clients[socket.id];
@@ -64,9 +63,9 @@ var Router = function(app, io) {
       throw new Error('missing handler handler');
     }
 
-    var functions = Object.create(defaultFunctions);
+    let functions = Object.create(defaultFunctions);
 
-    for (var i = 1; i < arguments.length; i++) {
+    for (let i = 1; i < arguments.length; i++) {
       functions.push(arguments[i]);
     }
 
@@ -83,13 +82,12 @@ var Router = function(app, io) {
 };
 
 module.exports = function(app, expressApp) {
-  "use strict";
-  var log = require('logfilename')(__filename);
+  let log = require('logfilename')(__filename);
   //exports.app = app;
-  var server = http.createServer(expressApp);
-  var io = require('socket.io').listen(server);
+  let server = http.createServer(expressApp);
+  let io = require('socket.io').listen(server);
 
-  var router = new Router(app, io);
+  let router = new Router(app, io);
 
   function onMessage(client, eventName, data, next) {
     log.debug("onMessage ", eventName);
@@ -98,7 +96,7 @@ module.exports = function(app, expressApp) {
 
   function callbackId(data) {
     if (data) {
-      var header = data.header;
+      let header = data.header;
       if (header) {
         return header.callbackId;
       }
@@ -107,7 +105,7 @@ module.exports = function(app, expressApp) {
   }
 
   function onError(err, client, eventName, data) {
-    var message = eventName ? eventName : '';
+    let message = eventName ? eventName : '';
     log.info("onError: message: %s, callbackId: %s, error: %s",
             message, callbackId(data), JSON.stringify(err));
     client.emit(message, {message: message, callbackId: callbackId(data), error:err});

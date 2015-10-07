@@ -1,4 +1,4 @@
-var api = function(app){
+var api = function(){
   "use strict";
 
   var apis = {};

@@ -67,7 +67,7 @@ export default class UserPlugin {
 
   async stop(){
     log.info("stop");
-    await Promise.each(this.startStop, obj => obj.stop(this.app))
+    await Promise.each(this.startStop, obj => obj.stop(this.app));
     log.info("stopped");
   }
 

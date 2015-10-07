@@ -1,7 +1,7 @@
 {
     "parser": "babel-eslint",
     "plugins": [
-
+      "mocha"
     ],
     "env": {
         "browser": false,
@@ -23,6 +23,7 @@
         "templateStrings": true
     },
     "rules": {
+        "mocha/no-exclusive-tests": 2,
         "consistent-return": [0],
         "key-spacing": [0],
         "quotes": [0, "single", "avoid-escape"],

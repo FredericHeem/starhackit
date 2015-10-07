@@ -1,5 +1,5 @@
 import when from 'when';
-import {del, get, post, put} from 'utils/http';
+import {get, post} from 'utils/http';
 
 import baseUrl from 'utils/baseUrl';
 

@@ -3,12 +3,13 @@ Node.js starterkit
 
 Backend Starter Kit written in node.js with the following features:
 
+* ES6/ES7 ready: async/await, classes, arrow function, template strings etc ...
 * REST API and Websocket
 * Authentication
 * Authorization
 * Scalable by using a micro services based architecture
-* Relational and non relational database.
-* Logging
+* Relational database.
+* Logging with timestamp and filename.
 
 #Workflow
 
@@ -16,16 +17,17 @@ To install all the dependencies:
 
     # npm install
 
+## Backend
+
+To start the backend:
+
+    # npm start
+
 To test the backend:
 
     # npm test
 
-It will not only test the code, but also check the source code with jshint and generate a code coverage report located at `coverage/lcov-report/index.html`
-
-To run the webserver:
-
-    # npm start
-
+This command also statically analyze the code with eslint and generate a code coverage in text and html format.
 
 # Development
 

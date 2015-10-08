@@ -1,73 +1,95 @@
-let LocalStrategy = require('passport-local').Strategy;
+import {Strategy as LocalStrategy} from 'passport-local';
 let log = require('logfilename')(__filename);
 
-export function verifyLogin(models, username, password, done){
+export async function verifyLogin(models, username, password) {
   log.debug("loginStrategy username: ", username);
-  models.User.find({where:{username:username}})
-  .then(function(user) {
-
-    if (!user) {
-      log.info("userBasic invalid username user: ", username);
-      return done(null, false, {message: 'InvalidUsernameOrPassword'});
+  let user = await models.User.find({
+    where: {
+      username: username
     }
-    //log.info("userBasic user: ", user.get());
-    user.comparePassword(password)
-    .then(function(result) {
-      if (result) {
-        log.debug("userBasic valid password for user: ", user.toJSON());
-        return done(null, user.toJSON());
-      } else {
-        log.info("userBasic invalid password user: ", user.get());
-        return done(null, false, {message: 'InvalidUsernameOrPassword'});
+  });
+  if (!user) {
+    log.info("userBasic invalid username user: ", username);
+    return {
+      error: {
+        message: 'InvalidUsernameOrPassword'
       }
-    });
-  })
-  .catch(done);
+    };
+  }
+  //log.info("userBasic user: ", user.get());
+  let result = await user.comparePassword(password);
+  if (result) {
+    log.debug("userBasic valid password for user: ", user.toJSON());
+    return {
+      user: user.toJSON()
+    };
+  } else {
+    log.info("userBasic invalid password user: ", user.get());
+    return {
+      error: {
+        message: 'InvalidUsernameOrPassword'
+      }
+    };
+  }
 }
 
-export function verifyRegister(models, req, username, password, done){
-  log.info("registerStrategy username: ", username);
-  models.User.find({where: {username: username}})
-  .then(function(user) {
-    if (!user) {
-      log.info("register create new user ", req.body);
-      //return done(null, false, { message: 'InvalidUsernameOrPassword'});
-      let userConfig = {
-        username: username,
-        password: password,
-        email:req.body.email
-      };
-      models.User.createUserInGroups(userConfig, ["User"])
-      .then(function(res) {
-        let userCreated = res.toJSON();
-        log.info("register created new user ", userCreated);
-        done(null, userCreated);
-      })
-      .then(done, done);
-    } else {
-      log.info("already registered", username);
-      done(null, {});
+export async function verifyRegister(models, req, username, password) {
+  log.info("verifyRegister username: ", username);
+  let user = await models.User.find({
+    where: {
+      username: username
     }
-  })
-  .catch(done);
+  });
+
+  if (user) {
+    log.info("already registered", username);
+    return {
+      user: {
+      }
+    };
+  }
+
+  log.info("register create new user ", req.body);
+  //return done(null, false, { message: 'InvalidUsernameOrPassword'});
+  let userConfig = {
+    username: username,
+    password: password,
+    email: req.body.email
+  };
+
+  let res = await models.User.createUserInGroups(userConfig, ["User"]);
+  let userCreated = res.toJSON();
+  log.info("register created new user ", userCreated);
+  return {
+    user: userCreated
+  };
 }
 
 export function register(passport, models) {
   let loginStrategy = new LocalStrategy(
-      function(username, password, done) {
-        verifyLogin(models, username, password, done);
+    async function (username, password, done) {
+      try {
+        let res = await verifyLogin(models, username, password);
+        done(res.err, res.user);
+      } catch (err) {
+        done(err);
       }
+    }
   );
 
-  let registerStrategy = new LocalStrategy(
-      {
-        usernameField : 'username',
-        passwordField : 'password',
-        passReqToCallback : true
-      },
-      function(req, username, password, done) {
-        verifyRegister(models, req, username, password, done);
+  let registerStrategy = new LocalStrategy({
+      usernameField: 'username',
+      passwordField: 'password',
+      passReqToCallback: true
+    },
+    async function (req, username, password, done) {
+      try {
+        let res = await verifyRegister(models, req, username, password);
+        done(res.err, res.user);
+      } catch (err) {
+        done(err);
       }
+    }
   );
 
   passport.use('login', loginStrategy);

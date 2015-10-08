@@ -52,9 +52,11 @@ describe('UserRegister', function() {
     let res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);
+    assert.equal(res.message, "confirm email");
     res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);
+    assert.equal(res.message, "confirm email");
   });
   describe('After Login', function() {
 

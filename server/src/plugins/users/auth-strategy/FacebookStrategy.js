@@ -20,7 +20,7 @@ export async function verify(models, req, accessToken, refreshToken, profile) {
       user: user.toJSON()
     };
   }
-  
+
   log.debug("no fb profile registered");
   let userByEmail = await models.User.find({
     where: {

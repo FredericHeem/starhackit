@@ -1,4 +1,5 @@
 {
+  "website_url": "http://localhost",
   "log": {
     "console": {
       "level": "debug",
@@ -31,6 +32,18 @@
       "clientID":"",
       "clientSecret":"",
       "callbackURL": "http://localhost:3000/v1/auth/facebook/callback"
+    }
+    */
+  },
+  "mail": {
+    /*
+    "email_from": "notification@yourproject.com",
+    "options": {
+      "service": "Mailgun",
+      "auth": {
+        "user": "postmaster@yourproject.mailgun.org",
+        "pass": "2109aef076a99216943a141d9abad454"
+      }
     }
     */
   }

@@ -15,11 +15,12 @@ export async function verify(models, req, accessToken, refreshToken, profile) {
   });
 
   if (user) {
-    log.debug("user already exist");
+    log.debug("user already exist: ", user.toJSON());
     return {
       user: user.toJSON()
     };
   }
+  
   log.debug("no fb profile registered");
   let userByEmail = await models.User.find({
     where: {
@@ -64,9 +65,9 @@ export function register(passport, models) {
         profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified'],
         enableProof: false
       },
-      function (req, accessToken, refreshToken, profile, done) {
+      async function (req, accessToken, refreshToken, profile, done) {
         try {
-          let res = verify(models, req, accessToken, refreshToken, profile);
+          let res = await verify(models, req, accessToken, refreshToken, profile);
           done(res.err, res.user);
         } catch(err){
           done(err);

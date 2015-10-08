@@ -1,1 +1,1 @@
-web: cd server && npm run nodemon
+web: cd server && npm run run

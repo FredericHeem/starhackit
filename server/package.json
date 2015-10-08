@@ -16,7 +16,8 @@
     "lint": "./node_modules/.bin/eslint src",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
     "postInstall": "./node_modules/.bin/gulp build:production",
-    "nodemon": "./node_modules/.bin/nodemon"
+    "nodemon": "./node_modules/.bin/nodemon",
+    "run": "node build/index.js"
   },
   "dependencies": {
     "babel": "^5.8.23",

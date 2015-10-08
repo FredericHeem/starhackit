@@ -2,6 +2,7 @@
   "name": "react-node-startkit-api",
   "version": "0.0.1",
   "private": false,
+  "main": "build/index.js",
   "scripts": {
     "prebuild": "npm run lint",
     "build": "./node_modules/.bin/gulp build",
@@ -15,7 +16,7 @@
     "lint": "./node_modules/.bin/eslint src",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
     "postInstall": "./node_modules/.bin/gulp build:production",
-    "nodemon": "./node_modules/.bin/nodemon build/index.js"
+    "nodemon": "./node_modules/.bin/nodemon"
   },
   "dependencies": {
     "babel": "^5.8.23",

@@ -1,17 +1,18 @@
-var chai = require('chai');
+import chai from 'chai';
 import testMngr from '~/test/testManager';
 
 describe('Configure Database', function(){
-  var app = testMngr.app;
+  let app = testMngr.app;
+  let models = app.data.sequelize.models;
 
-  before(function(done) {
-      testMngr.start().then(done, done);
+  before(async () => {
+      await testMngr.start();
   });
-  after(function(done) {
-      testMngr.stop().then(done, done);
+  after(async () => {
+      await testMngr.stop();
   });
 
-  var models = app.data.sequelize.models;
+
   it.skip('should successfully find the Admin group', function(done){
     models.Group.findByName("Admin")
     .then(function(res){
@@ -31,13 +32,4 @@ describe('Configure Database', function(){
     })
     .then(done, done);
   });
-//  it('should successfully check aliceab read permission', function(done){
-//    app.models.user.checkUserPermission("aliceab","user","get")
-//    .then(function(res){
-//      chai.assert.equal(res,true);
-//      done();
-//    })
-//    .catch(done)
-//  });
-
 });

@@ -1,5 +1,5 @@
 import Log from 'logfilename';
-import _ from 'underscore';
+import _ from 'lodash';
 let log = new Log(__filename);
 
 export default function MeApi (app){

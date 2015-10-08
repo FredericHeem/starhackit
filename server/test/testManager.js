@@ -1,6 +1,6 @@
 import assert from 'assert';
 import Promise from 'bluebird';
-import _ from 'underscore';
+import _ from 'lodash';
 import {Client} from 'restauth';
 
 var App = require('../src/app');

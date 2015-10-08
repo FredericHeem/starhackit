@@ -4,7 +4,7 @@ import assert from 'assert';
 import crypto from 'crypto';
 import testMngr from '~/test/testManager';
 
-let fixtures = require(__dirname + '/../fixtures/models/users');
+//let fixtures = require(__dirname + '/../fixtures/models/users');
 
 describe('UserModel', function(){
   let models = testMngr.app.data.sequelize.models;

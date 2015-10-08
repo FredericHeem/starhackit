@@ -1,6 +1,6 @@
 import Log from 'logfilename';
 import assert from 'assert';
-import _ from 'underscore';
+import _ from 'lodash';
 
 export default function(app, publisherUser){
   let log = new Log(__filename);

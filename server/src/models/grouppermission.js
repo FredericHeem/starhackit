@@ -2,7 +2,7 @@
 module.exports = function(sequelize/*, DataTypes*/) {
   let log = require('logfilename')(__filename);
   let Promise = require('bluebird');
-  let _ = require('underscore');
+  let _ = require('lodash');
   let models = sequelize.models;
   let GroupPermission = sequelize.define('GroupPermission', {},
   {

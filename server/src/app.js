@@ -8,6 +8,9 @@ import * as HttpUtils from './utils/HttpUtils';
 
 let log = new Log(__filename, config.log);
 log.info("NODE_ENV: %s", process.env.NODE_ENV);
+if(process.env.NODE_CONFIG){
+  log.info("NODE_CONFIG is set");
+}
 
 export default class App {
   constructor(){

@@ -1,5 +1,5 @@
 {
-  "website_url": "http://localhost",
+  "websiteUrl": "http://localhost:8080",
   "log": {
     "console": {
       "level": "debug",

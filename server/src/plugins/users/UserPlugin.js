@@ -20,7 +20,7 @@ import UsersRoutes from './routes/UsersRoutes';
 import MeRoutes from './routes/MeRoutes';
 
 // Jobs
-import MailJob from './jobs/MailJob';
+import MailJob from './jobs/mail/MailJob';
 
 let log = new Log(__filename);
 
@@ -54,7 +54,7 @@ export default class UserPlugin {
     this._models = app.data.sequelize.models;
 
     this.jobs = {
-      mail: new MailJob(config.mail)
+      mail: new MailJob(config)
     };
 
     this.startStop = [this.jobs.mail, this.publisherUser];

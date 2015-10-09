@@ -32,20 +32,30 @@ describe('MailJob', function () {
   });
 
   let user = {
-    email: 'adam.desagesse@nomail.com'
+    email: 'frederic.heem@gmail.com'
   };
 
   let emailType = 'user.register';
 
   describe('Basic', () => {
+    it('getTemplate ok', async() => {
+      let mailJob = new MailJob(config);
+      let content = await mailJob.getTemplate(emailType);
+      assert(content);
+    });
+    it('getTemplate ko', async() => {
+      let mailJob = new MailJob(config);
+      let content = await mailJob.getTemplate(emailType);
+      assert(content);
+    });
     it('send email directly', async() => {
-      let mailJob = new MailJob(config.mail);
+      let mailJob = new MailJob(config);
       await mailJob._sendEmail(emailType, user);
     });
     it('login failed', async() => {
-      let badPasswordConfig = _.clone(config.mail, true);
+      let badPasswordConfig = _.clone(config, true);
       console.log(JSON.stringify(badPasswordConfig));
-      badPasswordConfig.smtp.auth.pass = "1234567890";
+      badPasswordConfig.mail.smtp.auth.pass = "1234567890";
 
       let mailJob = new MailJob(badPasswordConfig);
 
@@ -60,7 +70,7 @@ describe('MailJob', function () {
     });
 
     it('start, publish and stop the MailJob', async(done) => {
-      let mailJob = new MailJob(config.mail);
+      let mailJob = new MailJob(config);
       sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
         //console.log("_sendEmail has been called");
         assert.equal(type, 'user.register');

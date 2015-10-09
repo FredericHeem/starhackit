@@ -5,6 +5,7 @@ var runSequence = require( 'run-sequence' );
 var clean = require( 'gulp-clean' );
 var connect = require('gulp-connect');
 var babel = require('gulp-babel');
+var debug = require('gulp-debug');
 
 var paths = {
   scripts: ['src/**/*.js'],
@@ -13,7 +14,7 @@ var paths = {
 
 gulp.task( 'default', [ 'watch', 'run', 'server:images' ] );
 
-gulp.task('build', ['cp:fixtures'], function () {
+gulp.task('build', function () {
     return gulp.src(paths.scripts)
         .pipe(babel({ stage: 1, optional: ["runtime"] }))
         .pipe(gulp.dest(paths.build));
@@ -21,10 +22,9 @@ gulp.task('build', ['cp:fixtures'], function () {
 
 gulp.task( 'build:production', function ( done ) {
     runSequence(
-        'clean:build',
-        'cp:assets',
-        'cp:fixtures',
+        'clean',
         'build',
+        'cp:assets',
         done
     );
 } );
@@ -33,34 +33,28 @@ gulp.task( 'build:watch', function ( done ) {
     runSequence(
         'build',
         'cp:assets',
-        'cp:fixtures',
         done
     );
 } );
 
-gulp.task( 'clean:build', function () {
+gulp.task( 'clean', function () {
     return gulp.src( 'build/*', { read: false } )
         .pipe( clean() );
 } );
 
 gulp.task( 'cp:assets', function () {
     return gulp.src( [
-        './package.json', './src/models/fixtures/*.json'
+        './package.json', './src/**/*.html', './src/**/*.json'
     ] )
+    .pipe(debug())
     .pipe( gulp.dest( 'build/' ) );
-} );
-gulp.task( 'cp:fixtures', function () {
-    return gulp.src( [
-        './src/models/fixtures/*.json'
-    ] )
-    .pipe( gulp.dest( 'build/models/fixtures' ) );
 } );
 
 gulp.task( 'watch', [ 'build' ], function () {
   gulp.watch(paths.scripts, ['build:watch']);
 } );
 
-gulp.task( 'run', ['build'], function () {
+gulp.task( 'run', ['build', 'cp:assets'], function () {
     nodemon( {
         verbose: true,
         execMap: {
@@ -85,17 +79,3 @@ gulp.task( 'server:images', function () {
         port: 4000
     });
 } );
-
-function onBuild( done ) {
-    return function ( err, stats ) {
-        if ( err ) {
-            console.log( 'Error', err );
-        }
-        else {
-            console.log( stats.toString() );
-        }
-        if ( done ) {
-            done();
-        }
-    };
-}

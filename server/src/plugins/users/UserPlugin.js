@@ -4,6 +4,7 @@ import {Publisher} from 'rabbitmq-pubsub';
 
 import PassportAuth from './PassportAuth';
 
+import config from 'config';
 // Api
 import MeApi from './api/MeApi';
 import UserApi from './api/UserApi';
@@ -53,7 +54,7 @@ export default class UserPlugin {
     this._models = app.data.sequelize.models;
 
     this.jobs = {
-      mail: new MailJob(app)
+      mail: new MailJob(config.mail)
     };
 
     this.startStop = [this.jobs.mail, this.publisherUser];

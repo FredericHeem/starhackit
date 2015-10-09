@@ -23,7 +23,7 @@
         "templateStrings": true
     },
     "rules": {
-        "mocha/no-exclusive-tests": 2,
+        "mocha/no-exclusive-tests": 1,
         "consistent-return": [0],
         "key-spacing": [0],
         "quotes": [0, "single", "avoid-escape"],

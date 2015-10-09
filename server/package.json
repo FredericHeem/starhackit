@@ -73,6 +73,7 @@
     "chance": "^0.7.7",
     "codeclimate-test-reporter": "^0.1.1",
     "coveralls": "~2.11.2",
+    "gulp-debug": "^2.1.1",
     "isparta": "^3.1.0",
     "istanbul": "~0.3.6",
     "mocha": "~2.3.2",

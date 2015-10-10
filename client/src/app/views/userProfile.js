@@ -65,9 +65,6 @@ export default React.createClass( {
                     </div>
                     }
 
-                    { this.renderFriends() }
-
-                    { this.renderUserRecipes() }
                 </div>
             );
         }
@@ -88,21 +85,6 @@ export default React.createClass( {
 
     isNotMe() {
         return !(authStore.isMyId( _.get( this.state.user, 'id' ) ));
-    },
-
-    addFriend() {
-        meActions.addFriend( this.state.user )
-            .then( this.hideAddFriend )
-            .then( this.notifySent )
-            .catch( this.showError );
-    },
-
-    hideAddFriend() {
-        this.setState( {
-            display: {
-                addFriend: false
-            }
-        } );
     },
 
     notifySent() {

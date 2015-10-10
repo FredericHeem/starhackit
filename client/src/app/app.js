@@ -1,4 +1,3 @@
-/*global FB*/
 
 //load CSS assets first
 require( '../assets/main.css' );
@@ -13,7 +12,7 @@ import Router from 'react-router';
 import routes from './routes';
 
 import Debug from 'debug';
-Debug.enable("*,-engine*");
+Debug.enable("*,-engine*,-socker*");
 
 let debug = new Debug("app");
 
@@ -27,14 +26,7 @@ if ( analytics ) {
     ga.initialize( analytics );
 }
 */
-/*
-FB.init( {
-    appId: config.auth.facebookClientId,
-    cookie: true,
-    version: 'v2.4',
-    xfbml: true
-} );
-*/
+
 Reflux.setPromiseFactory( require( 'when' ).promise );
 
 /*

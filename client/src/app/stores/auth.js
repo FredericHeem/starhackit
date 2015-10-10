@@ -3,6 +3,8 @@ import Reflux from 'reflux';
 
 import authActions from 'actions/auth';
 import { getCurrentUser } from 'resources/auths';
+import Debug from 'debug';
+let debug = new Debug("stores:auth");
 
 export default Reflux.createStore( {
 
@@ -10,7 +12,7 @@ export default Reflux.createStore( {
 
     init() {
         this.listenTo( authActions.signupOrLoginThirdParty.completed, authenticated.bind( this ) );
-        this.listenTo( authActions.signupLocal.completed, authenticated.bind( this ) );
+        this.listenTo( authActions.signupLocal.completed, registerCompleted.bind( this ) );
         this.listenTo( authActions.loginLocal.completed, authenticated.bind( this ) );
 
         this.listenTo( authActions.logout.completed, loggedOut.bind( this ) );
@@ -25,29 +27,33 @@ export default Reflux.createStore( {
     ///public methods
 
     authenticate() {
+        debug("authenticate");
         return getCurrentUser()
             .then( authenticated.bind( this ) )
             .catch( swallowIfNotAuthorised );
     },
 
     isAuthenticated() {
-        return _.keys( this.store ).length > 0;
+        return _.keys( this.store.user ).length > 0;
     },
 
+    isRegisterCompleted() {
+        return this.store.registerCompleted;
+    },
     avatarUrl() {
-        return this.store.imageUrl;
+        return this.store.user.imageUrl;
     },
 
     userName() {
-        return this.store.username;
+        return this.store.user.username;
     },
 
     userId() {
-        return this.store.id;
+        return this.store.user.id;
     },
 
     isMyId( userId ) {
-        return Number( userId ) === this.store.id;
+        return Number( userId ) === this.store.user.id;
     }
 
 } );
@@ -55,9 +61,15 @@ export default Reflux.createStore( {
 //////////////////////////
 //// Private
 
+function registerCompleted(){
+    debug("registerCompleted");
+    this.store.registerCompleted = true;
+    doTrigger.call( this );
+}
+
 function authenticated( authUser ) {
-    console.log(authUser);
-    this.store = authUser;
+    debug("authenticated ", authUser);
+    this.store.user = authUser;
 
     doTrigger.call( this );
 }

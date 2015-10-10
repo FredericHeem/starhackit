@@ -6,7 +6,8 @@ module.exports = function(app, auth, authenticationHttpCtrl){
 
   let router = new express.Router();
   router.post('/login', passport.authenticate('login'), authenticationHttpCtrl.login);
-  router.post('/register', passport.authenticate('register'), authenticationHttpCtrl.register);
+  router.post('/register', authenticationHttpCtrl.register);
+  router.post('/verify_email_code', authenticationHttpCtrl.verifyEmailCode);
 
   router.post('/logout', auth.ensureAuthenticated, authenticationHttpCtrl.logout);
 

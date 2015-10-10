@@ -36,13 +36,13 @@ export default class UserPlugin {
 
     this.api = {
       me: new MeApi(app),
-      user: new UserApi(app)
+      user: new UserApi(app, this.publisherUser)
     };
 
     this.controllers = {
       user: new UserHttpController(app, this.api.user),
       me: new MeHttpController(app, this.api.me),
-      authentication: new AuthenticationHttpController(app, this.publisherUser)
+      authentication: new AuthenticationHttpController(app, this.api.user)
     };
 
     this.routers = {

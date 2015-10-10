@@ -2,8 +2,9 @@ import Log from 'logfilename';
 import assert from 'assert';
 import _ from 'lodash';
 
-export default function(app, publisherUser){
+export default function(app, userApi){
   let log = new Log(__filename);
+  let respond = app.utils.http.respond;
 
   function login(req, res) {
     log.debug("login",  req.user);
@@ -20,23 +21,19 @@ export default function(app, publisherUser){
   }
 
   function register(req, res) {
-    log.debug("register user ", req.user);
-    if(req.user && req.user.id){
-      publisherUser.publish("new", JSON.stringify(req.user));
-    } else {
-      log.info("user already registered");
-    }
-
-    return res.status(201).json({
-      success:true,
-      message: "confirm email"
-    });
+    log.debug("register user ", req.body);
+    respond(userApi, userApi.createPending, [req.body], res);
   }
 
+  function verifyEmailCode(req, res) {
+    log.debug("verifyEmailCode", req.body);
+    respond(userApi, userApi.verifyEmailCode, [req.body], res);
+  }
   return {
     login:login,
     logout:logout,
     register:register,
+    verifyEmailCode:verifyEmailCode,
     loginFacebookCallback:loginFacebookCallback
   };
 }

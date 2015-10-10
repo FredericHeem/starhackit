@@ -1,6 +1,6 @@
 'use strict';
-let bcrypt = require("bcrypt");
-let Promise = require('bluebird');
+import bcrypt from "bcrypt";
+import Promise from 'bluebird';
 
 module.exports = function(sequelize, DataTypes) {
   let log = require('logfilename')(__filename);
@@ -39,7 +39,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       unique: true
     },
-    password: DataTypes.TEXT
+    password: DataTypes.TEXT,
+    passwordHash: DataTypes.TEXT
   },
    {
      tableName: "users",
@@ -176,7 +177,7 @@ module.exports = function(sequelize, DataTypes) {
         comparePassword : function(candidatePassword) {
           let me = this;
           return new Promise(function(resolve, reject){
-            let hashPassword = me.get('password') || '';
+            let hashPassword = me.get('passwordHash') || '';
 
             bcrypt.compare(candidatePassword, hashPassword, function(err, isMatch) {
               if(err) {return reject(err); }
@@ -206,11 +207,14 @@ module.exports = function(sequelize, DataTypes) {
     if (!instance.changed('password')) { return done(); }
     bcrypt.hash(instance.get('password'), 10, function (err, hash) {
       if (err) { return done(err); }
-      instance.set('password', hash);
+      instance.set('passwordHash', hash);
       done();
     });
   };
 
+  User.beforeCreate(function(user) {
+    delete user.password;
+  });
   User.beforeValidate(hashPasswordHook);
   User.beforeUpdate(hashPasswordHook);
 

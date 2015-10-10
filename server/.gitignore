@@ -19,3 +19,5 @@ log.txt
 *.sqlite
 .coveralls.yml
 config/development.json
+config/heroku.json
+config/travis.json

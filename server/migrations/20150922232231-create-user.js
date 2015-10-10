@@ -40,9 +40,9 @@ module.exports = {
         type: Sequelize.TEXT,
         unique: true
       },
-      password: {
+      passwordHash: {
         type: Sequelize.TEXT,
-        allowNull: false
+        allowNull: true
       },
       createdAt: {
         allowNull: false,

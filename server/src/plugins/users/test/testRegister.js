@@ -36,10 +36,52 @@ describe('UserRegister', function() {
     let res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);
-    res = await models.User.findByUsername(username);
+    res = await models.UserPending.find({
+      where: {
+        email: userConfig.email
+      }
+    });
+    assert(res);
+    let userPending = res.get();
+    assert(userPending.username, userConfig.username);
+    assert(userPending.email, userConfig.email);
+    assert(userPending.code);
+
+    try {
+      await client.get('v1/me');
+      assert(false);
+    } catch(error){
+      assert(error);
+    }
+
+    await client.post('v1/auth/verify_email_code', {code:userPending.code});
+    res = await models.User.find({
+      where: {
+        email: userConfig.email
+      }
+    });
     assert(res);
     let user = res.get();
-    assert(user.username, username);
+    assert(user.username, userConfig.username);
+    assert(user.email, userConfig.email);
+    console.log("user password ", user.password);
+
+    res = await models.UserPending.find({
+      where: {
+        email: userConfig.email
+      }
+    });
+    assert(!res);
+  });
+  it('invalid email code', async (done) => {
+    try {
+      await client.post('v1/auth/verify_email_code', {code: "1234567890123456"});
+      done("should not get here");
+    } catch(error){
+      //console.log(error.body);
+      assert.equal(error.body.error.name, "NoSuchCode");
+      done();
+    }
   });
   it('shoud register twice a user', async () => {
     let username = createUsernameRandom();

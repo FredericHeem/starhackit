@@ -20,9 +20,8 @@ export function respond(me, callback,args,res) {
 
 export function convertAndRespond(error, res) {
   if (!error.name) {
-    log.info('UnknownError',error);
-    res.status(500);
-    res.send({
+    log.error('UnknownError', error);
+    res.status(500).send({
       error: {
         name: 'UnknownError',
         message: ''
@@ -31,17 +30,8 @@ export function convertAndRespond(error, res) {
   }
   else {
     log.error('error name', error);
-    if (error.name === 'ValidationError') {
-      res.status(400);
-      res.send({
-        error: error
-      });
-    }
-    else {
-      res.status(500);
-      res.send({
-        error: error
-      });
-    }
+    res.status(400).send({
+      error: error
+    });
   }
 }

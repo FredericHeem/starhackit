@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import Reflux from 'reflux';
-import { State } from 'react-router';
+import { History } from 'react-router';
 
 import userActions from 'actions/user';
-import meActions from 'actions/me';
 
 import userProfileStore from 'stores/userProfile';
 
@@ -23,7 +22,7 @@ export default React.createClass( {
     },
 
     mixins: [
-        State,
+        History,
         Reflux.connect( userProfileStore, 'user' )
     ],
 
@@ -98,6 +97,4 @@ export default React.createClass( {
             $.bootstrapGrowl( 'Unknown error has occurred. Please contact us on our Facebook Page or sub-Reddit; links are in the home page', { type: 'danger', delay: 5000 } );
         }
     }
-
-
 } );

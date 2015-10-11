@@ -1,8 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
 
-import {RouteHandler} from 'react-router';
-
 import analyticsStore from 'stores/analytics';
 
 import NavBar from 'components/navbar';
@@ -20,7 +18,7 @@ export default React.createClass( {
                 <NavBar />
 
                 <div className="container">
-                    <RouteHandler />
+                    {this.props.children}
                 </div>
 
                 <Footer />

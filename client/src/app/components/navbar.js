@@ -1,16 +1,15 @@
 import React from 'react';
 import Reflux from 'reflux';
 import cx from 'classnames';
-import {Link, State} from 'react-router';
+import {Link, History} from 'react-router';
 
 import NavLink from 'components/navLink';
-
 import authStore from 'stores/auth';
 
 export default React.createClass( {
 
     mixins: [
-        State,
+        History,
         Reflux.connect( authStore, 'user' )
     ],
 
@@ -25,7 +24,7 @@ export default React.createClass( {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <Link to="home" className="navbar-brand">StarterKit</Link>
+                        <Link to="/home" className="navbar-brand">StarterKit</Link>
                     </div>
                     <div className="navbar-collapse collapse">
                         <ul className="nav navbar-nav navbar-left">
@@ -44,8 +43,8 @@ export default React.createClass( {
     renderGuestNavigation() {
         return (
             <ul className="nav navbar-nav navbar-right">
-                <NavLink to="login">Login</NavLink>
-                <NavLink to="signup">Signup</NavLink>
+                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/signup">Signup</NavLink>
             </ul>
         );
     },
@@ -59,19 +58,13 @@ export default React.createClass( {
                         <span className="caret"></span>
                     </button>
                     <ul className="dropdown-menu">
-                        <NavLink to="profile">Profile</NavLink>
-                        
+                        <NavLink to="/profile">Profile</NavLink>
+
                         <li role="separator" className="divider"></li>
-                        <NavLink to="logout">Logout</NavLink>
+                        <NavLink to="/logout">Logout</NavLink>
                     </ul>
                 </li>
             </ul>
         );
-    },
-
-    activeClassForTo( to ) {
-        return cx( { active: this.isActive( to ) } );
     }
-
-
 } );

@@ -1,16 +1,16 @@
 import React from 'react';
 import cx from 'classnames';
-import {Link, State} from 'react-router';
+import {Link, History} from 'react-router';
 
 
 export default React.createClass( {
 
     mixins: [
-        State
+        History
     ],
 
-    activeClassForTo( to ) {
-        return cx( { active: this.isActive( to ) } );
+    activeClassForTo( pathname) {
+        return cx( { active: this.history.isActive(pathname) } );
     },
 
     render() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Navigation, State } from 'react-router';
+import { Link, History } from 'react-router';
 import Reflux from 'reflux';
 
 import MediaSigninButtons from 'components/mediaSigninButtons';
@@ -10,8 +10,7 @@ import authStore from 'stores/auth';
 export default React.createClass( {
 
     mixins: [
-        Navigation,
-        State,
+        History,
         Reflux.connect( authStore, 'auth' )
     ],
 
@@ -22,10 +21,11 @@ export default React.createClass( {
     },
 
     componentWillUpdate() {
-        let path = this.getQuery().nextPath || 'profile';
-
+        //let path = this.props.location.search.nextPath || '/profile';
+        //TODO
+        let path = '/profile';
         if ( authStore.isAuthenticated() ) {
-            this.replaceWith( path );
+            this.history.go( path );
         }
     },
 
@@ -45,7 +45,7 @@ export default React.createClass( {
                             <div className="strike"><span className="or">OR</span></div>
 
                             <div className="text-center">
-                                <Link to="forgot" className="btn btn-primary">Forgot Password</Link>
+                                <Link to="/forgot" className="btn btn-primary">Forgot Password</Link>
                             </div>
 
                             <div className="strike"><span className="or">OR</span></div>

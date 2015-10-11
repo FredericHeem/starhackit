@@ -1,5 +1,4 @@
 import React from 'react';
-import {RouteHandler} from 'react-router';
 
 import authStore from 'stores/auth';
 
@@ -16,9 +15,8 @@ export default React.createClass( {
     render() {
         return (
             <div id="account">
-                <RouteHandler/>
+                {this.props.children}
             </div>
         );
     }
-
 } );

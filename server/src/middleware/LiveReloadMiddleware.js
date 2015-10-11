@@ -5,7 +5,7 @@ function prepend(w, s) {
   return s + w;
 }
 
-export default function FrontendMiddleware(expressApp, config){
+export default function liveReloadMiddleware(expressApp, config){
   if (config.has('liveReload')) {
     expressApp.use(require('connect-livereload')({
     rules: [{

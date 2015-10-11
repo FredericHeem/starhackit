@@ -3,9 +3,7 @@ let Promise = require('bluebird');
 let express = require('express');
 
 let defaultMiddleware = require('./middleware/DefaultMiddleware');
-let frontendMiddleware = require('./middleware/FrontendMiddleware');
 let loggerMiddleware = require('./middleware/LoggerMiddleware');
-let corsMiddleware = require('./middleware/CorsMiddleware');
 let sessionMiddleware = require('./middleware/SessionMiddleware');
 let passportMiddleware = require('./middleware/PassportMiddleware');
 
@@ -15,9 +13,16 @@ module.exports = function() {
   let expressApp = express();
   let httpHandle;
 
-  frontendMiddleware(expressApp, config);
   loggerMiddleware(expressApp, config);
-  corsMiddleware(expressApp, config);
+
+  if(config.has('frontend.path')) {
+    require('./middleware/FrontendMiddleware')(expressApp, config);
+  }
+
+  if(config.has('cors')) {
+    require('./middleware/CorsMiddleware')(expressApp, config);
+  }
+
   defaultMiddleware(expressApp, config);
   sessionMiddleware(expressApp, config);
   passportMiddleware(expressApp, config);

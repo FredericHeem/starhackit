@@ -1,15 +1,19 @@
 import passport from 'passport';
 import {register as registerlocal} from './auth-strategy/LocalStrategy';
-import {register as registerFacebook} from './auth-strategy/FacebookStrategy';
-//let config = require('config');
 
-module.exports = function(app) {
+let config = require('config');
+
+export default function(app) {
   let log = require('logfilename')(__filename);
 
   let models = app.data.sequelize.models;
 
   registerlocal(passport, models);
-  registerFacebook(passport, models);
+
+  if(config.has('authentication.facebook')) {
+    let register = require('./auth-strategy/FacebookStrategy').register;
+    register(passport, models);
+  }
 
   passport.serializeUser(function(user, done) {
     log.debug("serializeUser ", user);

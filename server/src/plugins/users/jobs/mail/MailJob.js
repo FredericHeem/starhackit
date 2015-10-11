@@ -56,9 +56,8 @@ export default class MailJob {
       return;
     }
 
-    let emailCode = "12345678";
     let locals = {
-      code:emailCode,
+      code: user.code,
       websiteUrl: this.config.websiteUrl,
       signature:this.config.mail.signature
     };

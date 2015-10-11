@@ -25,18 +25,20 @@ export default function UserApi(app, publisherUser) {
       });
 
       if (!user) {
+        let code = chance.string({
+          length: 16,
+          pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        });
         let userPendingOut = {
-          code: chance.string({
-            length: 16,
-            pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-          }),
+          code: code,
           username: userPendingIn.username,
           email: userPendingIn.email,
           password: userPendingIn.password
         };
         log.info("createPending code ", userPendingOut.code);
         await models.UserPending.create(userPendingOut);
-        await publisherUser.publish("user.register", JSON.stringify(userPendingIn));
+        delete userPendingOut.password;
+        await publisherUser.publish("user.register", JSON.stringify(userPendingOut));
       } else {
         log.info("already registered", userPendingIn.email);
       }
@@ -74,17 +76,3 @@ export default function UserApi(app, publisherUser) {
     }
   };
 }
-/*
-function bcryptHash(passwordClear){
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(passwordClear, 10, function (err, hash) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(hash);
-      }
-    });
-  })
-
-}
-*/

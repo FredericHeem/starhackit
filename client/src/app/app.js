@@ -12,7 +12,7 @@ import Router from 'react-router';
 import routes from './routes';
 
 import Debug from 'debug';
-Debug.enable("*,-engine*,-socker*");
+Debug.enable("*,-engine*,-socket*");
 
 let debug = new Debug("app");
 

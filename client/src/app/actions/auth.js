@@ -4,7 +4,8 @@ import {
     signupOrLoginThirdParty,
     signupLocal,
     loginLocal,
-    logout
+    logout,
+    verifyEmailCode
 } from 'resources/auths';
 
 let actions = Reflux.createActions({
@@ -13,8 +14,9 @@ let actions = Reflux.createActions({
     signupLocal: { asyncResult: true },
     loginLocal: { asyncResult: true },
     logout: { asyncResult: true },
-
+    verifyEmailCode: { asyncResult: true },
     //ui actions
+
     SignedUpToLoggedInToSaveRecipe: {}
 } );
 
@@ -22,5 +24,6 @@ export default actions;
 
 actions.signupOrLoginThirdParty.listenAndPromise( signupOrLoginThirdParty );
 actions.signupLocal.listenAndPromise( signupLocal );
+actions.verifyEmailCode.listenAndPromise( verifyEmailCode );
 actions.loginLocal.listenAndPromise( loginLocal );
 actions.logout.listenAndPromise( logout );

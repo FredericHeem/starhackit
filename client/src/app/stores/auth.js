@@ -14,7 +14,7 @@ export default Reflux.createStore( {
         this.listenTo( authActions.signupOrLoginThirdParty.completed, authenticated.bind( this ) );
         this.listenTo( authActions.signupLocal.completed, registerCompleted.bind( this ) );
         this.listenTo( authActions.loginLocal.completed, authenticated.bind( this ) );
-
+        this.listenTo( authActions.verifyEmailCode.completed, emailCodeVerified.bind( this ) );
         this.listenTo( authActions.logout.completed, loggedOut.bind( this ) );
 
         this.authenticate();
@@ -40,6 +40,11 @@ export default Reflux.createStore( {
     isRegisterCompleted() {
         return this.store.registerCompleted;
     },
+
+    isEmailCodeVerified() {
+        return this.store.emailCodeVerified;
+    },
+
     avatarUrl() {
         return this.store.user.imageUrl;
     },
@@ -60,6 +65,12 @@ export default Reflux.createStore( {
 
 //////////////////////////
 //// Private
+
+function emailCodeVerified(){
+    debug("emailCodeVerified");
+    this.store.emailCodeVerified = true;
+    doTrigger.call( this );
+}
 
 function registerCompleted(){
     debug("registerCompleted");

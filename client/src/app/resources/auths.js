@@ -43,3 +43,8 @@ export function logout() {
         post( baseUrl( 'auth/logout' ) )
     );
 }
+export function verifyEmailCode(code) {
+    return when(
+        post( baseUrl('auth/verify_email_code/'), {code: code})
+    );
+}

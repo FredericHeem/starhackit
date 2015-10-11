@@ -10,7 +10,7 @@ import Application from 'views/application';
 import Logout from 'views/logout';
 import MainLanding from 'views/mainLanding';
 import UserProfile from 'views/userProfile';
-
+import RegistrationComplete from 'views/registrationComplete';
 import MyProfile from 'views/myProfile';
 
 
@@ -24,8 +24,8 @@ let routes = (
         <Route name="logout" handler={Logout} />
         <Route name="forgot" handler={Forgot} />
 
-
         <Route name="userProfile" path="users/:id" handler={UserProfile} />
+        <Route name="verifyEmail" path="verifyEmail/:code" handler={RegistrationComplete} />
 
         <Route name="account" path="/my" handler={Account}>
             <Route name="profile" handler={MyProfile} />

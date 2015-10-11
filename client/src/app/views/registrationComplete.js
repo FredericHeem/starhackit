@@ -1,6 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
-import { Navigation, State } from 'react-router';
+import { History } from 'react-router';
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
@@ -8,36 +8,26 @@ import authStore from 'stores/auth';
 import authActions from 'actions/auth';
 
 export default React.createClass( {
-    code:"",
-    statics: {
-        onEnter: function (nextState, replaceState) {
-            debug("willTransitionTo ", nextState);
-            //verifyEmailCode(params.code);
-            //this.code = params.code;
-            //debug("willTransitionTo end");
-        }
-    },
     mixins: [
-        Navigation,
-        State,
+        History,
         Reflux.connect( authStore, 'auth' )
     ],
 
     getInitialState() {
         return {
-            errors: {}
+            errors: null
         };
     },
-    componentWillMount(){
-        debug("componentWillMount");
-        this.verifyEmailCode(this.code);
+    componentDidMount(){
+        debug("componentDidMount", this.props.params);
+        this.verifyEmailCode(this.props.params.code);
     },
 
     componentWillUpdate() {
         debug("componentWillUpdate");
         if ( authStore.isEmailCodeVerified() ) {
-            let path = 'login';
-            this.replaceWith( path );
+            let path = '/login';
+            this.history.pushState(null, path);
         }
     },
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Reflux from 'reflux';
-import cx from 'classnames';
 import {Link, History} from 'react-router';
 
 import NavLink from 'components/navLink';
@@ -58,7 +57,7 @@ export default React.createClass( {
                         <span className="caret"></span>
                     </button>
                     <ul className="dropdown-menu">
-                        <NavLink to="/profile">Profile</NavLink>
+                        <NavLink to="/my/profile">Profile</NavLink>
 
                         <li role="separator" className="divider"></li>
                         <NavLink to="/logout">Logout</NavLink>

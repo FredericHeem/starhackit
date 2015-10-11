@@ -193,6 +193,7 @@ module.exports = function(sequelize, DataTypes) {
           toJSON: function () {
           let values = this.get({clone: true});
           delete values.password;
+          delete values.passwordHash;
           delete values.createdAt;
           delete values.updatedAt;
           return values;
@@ -207,12 +208,14 @@ module.exports = function(sequelize, DataTypes) {
     if (!instance.changed('password')) { return done(); }
     bcrypt.hash(instance.get('password'), 10, function (err, hash) {
       if (err) { return done(err); }
+      instance.set('password', '');
       instance.set('passwordHash', hash);
       done();
     });
   };
 
   User.beforeCreate(function(user) {
+    //TODO KO
     delete user.password;
   });
   User.beforeValidate(hashPasswordHook);

@@ -23,9 +23,10 @@ export default React.createClass( {
     componentWillUpdate() {
         //let path = this.props.location.search.nextPath || '/profile';
         //TODO
-        let path = '/profile';
+
         if ( authStore.isAuthenticated() ) {
-            this.history.go( path );
+            let path = '/my/profile';
+            this.history.pushState(null, path);
         }
     },
 

@@ -25,7 +25,8 @@ let routes = (
         <Route component={RegistrationComplete} name="verifyEmail" onEnter={RegistrationComplete.onEnter} path="verifyEmail/:code"/>
 
         <Route component={Account} name="account" path="/my">
-        <Route component={MyProfile} path="profile"/>
+            <Route component={MyProfile} path="profile"/>
+        </Route>
     </Route>
 );
 

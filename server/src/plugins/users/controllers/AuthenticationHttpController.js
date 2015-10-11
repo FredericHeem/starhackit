@@ -26,7 +26,7 @@ export default function(app, userApi){
   }
 
   function verifyEmailCode(req, res) {
-    log.debug("verifyEmailCode", req.body);
+    log.debug("verifyEmailCode: ", req.body);
     respond(userApi, userApi.verifyEmailCode, [req.body], res);
   }
   return {

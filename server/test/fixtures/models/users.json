@@ -2,13 +2,13 @@
   "admin":{
     "username":"admin",
     "password":"password",
-    "email":"admin@mail.com",
+    "email":"admin@myapp.com",
     "group": "Admin"
   },
   "alice":{
     "username":"alice",
     "password":"password",
-    "email":"admin@mail.com",
+    "email":"alice@mail.com",
     "group": "User"
   }
 }

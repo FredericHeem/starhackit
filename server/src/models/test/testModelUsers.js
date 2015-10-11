@@ -54,7 +54,8 @@ describe('UserModel', function(){
     let res = await userModel.findByUsername('alice');
     assert(res);
     assert(res.get().username);
-    assert(res.get().password);
+    assert(!res.get().password);
+    assert(res.get().passwordHash);
     let userJson = res.toJSON();
     assert(!userJson.password);
   });

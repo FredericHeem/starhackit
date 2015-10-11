@@ -57,7 +57,7 @@ export default function UserApi(app, publisherUser) {
       if(res){
         let userPending = res.get();
         log.debug("verifyEmailCode: userPending: ", userPending);
-        let userToCreate = _.pick(userPending, 'username', 'email', 'password');
+        let userToCreate = _.pick(userPending, 'username', 'email', 'passwordHash');
         //TODO transaction
         let user = await models.User.createUserInGroups(userToCreate, ["User"]);
         await models.UserPending.destroy({

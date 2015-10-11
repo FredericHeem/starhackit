@@ -16,15 +16,12 @@ export default React.createClass( {
     },
 
     render() {
-        let passwordFieldType;
-
-        passwordFieldType = this.props.hidePassword ? 'password' : 'text';
 
         return (
             <div className="local-signin-form">
                 <form action={ this.signup }>
                     <div className="signup-options text-center form">
-                        { this.props.showEmail &&
+                        { !this.props.hideEmail &&
                             <div className={this.formClassNames('email')}>
                                 <input type="text"
                                        className="form-control"
@@ -37,19 +34,20 @@ export default React.createClass( {
                                 }
                             </div>
                         }
-                        <div className={this.formClassNames('username')}>
-                            <input type="text"
-                                   className="form-control"
-                                   placeholder="Your Username"
-                                   valueLink={this.linkState( 'username' )}
-                                />
-                            { this.props.errors.username &&
-                                <span className="label label-danger animate bounceIn">{ this.props.errors.username[ 0 ]}</span>
-                            }
-                        </div>
-
+                        { !this.props.hideUsername &&
+                            <div className={this.formClassNames('username')}>
+                                <input type="text"
+                                       className="form-control"
+                                       placeholder="Your Username"
+                                       valueLink={this.linkState( 'username' )}
+                                    />
+                                { this.props.errors.username &&
+                                    <span className="label label-danger animate bounceIn">{ this.props.errors.username[ 0 ]}</span>
+                                }
+                            </div>
+                        }
                         <div className={this.formClassNames('password')}>
-                            <input type={ passwordFieldType }
+                            <input type='password'
                                    className="form-control"
                                    placeholder="Your Password"
                                    valueLink={this.linkState( 'password' )}
@@ -58,9 +56,6 @@ export default React.createClass( {
                                 <span className="label label-danger animate bounceIn">{ this.props.errors.password[ 0 ]}</span>
                             }
                         </div>
-
-
-
                         <button className="btn btn-lg btn-primary btn-signup" onClick={this.signup}>{ this.props.buttonCaption }</button>
                     </div>
                 </form>

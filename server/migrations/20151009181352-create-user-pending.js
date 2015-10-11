@@ -15,7 +15,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      password: {
+      passwordHash: {
         type: Sequelize.TEXT,
         allowNull: false
       },

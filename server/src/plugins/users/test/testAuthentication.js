@@ -19,9 +19,8 @@ describe('Authentication', function(){
   describe('After Login', () => {
     beforeEach(async () => {
       let postParam = {
-          username:"alice",
           password:"password",
-          email:"alice@mail.com"
+          username:"alice@mail.com"
       };
 
       await client.login(postParam);
@@ -128,6 +127,7 @@ describe('Authentication', function(){
     assert(user);
     assert.equal(user.username, postParam.username);
     assert(!user.password);
+    assert(!user.passwordHash);
   });
   it('should login admin with testManager', async () => {
     let clientAdmin = testMngr.client("admin");

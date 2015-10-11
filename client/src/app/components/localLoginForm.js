@@ -5,6 +5,10 @@ import LocalAuthenticationForm from 'components/localAuthenticationForm';
 import ValidateLoginFields from 'services/validateLoginFields';
 import authActions from 'actions/auth';
 
+import Debug from 'debug';
+
+let debug = new Debug("components:login");
+
 export default React.createClass( {
 
     getInitialState() {
@@ -31,10 +35,9 @@ export default React.createClass( {
                 <LocalAuthenticationForm
                     buttonCaption={ this.props.buttonCaption || 'Log In' }
                     errors={ this.state.errors }
-                    hidePassword={ true }
+                    hideUsername = {true}
                     onButtonClick={this.login}
                     />
-
             </div>
         );
     },
@@ -59,17 +62,18 @@ export default React.createClass( {
 
 function validateLogin( payload ) {
     return new ValidateLoginFields( {
-        username: payload.username,
+        email: payload.email,
         password: payload.password
     } )
-        .execute();
+    .execute();
 }
 
 function loginLocal( payload ) {
-    return authActions.loginLocal( payload.username, payload.password );
+    return authActions.loginLocal( payload );
 }
 
 function setErrors( e ) {
+    debug("setErrors", e);
     if ( e.name === 'CheckitError' ) {
         this.setState( {
             errors: e.toJSON()

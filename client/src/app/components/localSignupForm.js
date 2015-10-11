@@ -5,6 +5,10 @@ import LocalAuthenticationForm from 'components/localAuthenticationForm';
 import ValidateSignupFields from 'services/validateSignupFields';
 import authActions from 'actions/auth';
 
+import Debug from 'debug';
+
+let debug = new Debug("components:signup");
+
 export default React.createClass( {
 
     getInitialState() {
@@ -31,7 +35,6 @@ export default React.createClass( {
                 <LocalAuthenticationForm
                     buttonCaption={this.props.buttonCaption || 'Get Started' }
                     errors={ this.state.errors }
-                    showEmail={true}
                     onButtonClick={this.signup}
                     />
 
@@ -66,7 +69,7 @@ function signupLocal( payload ) {
 }
 
 function setErrors( e ) {
-    console.log("setErrors", e);
+    debug("setErrors", e);
     if ( e.name === 'CheckitError' ) { //local validation
         this.setState( {
             errors: e.toJSON()

@@ -66,12 +66,24 @@ describe('UserRegister', function() {
     assert(user.email, userConfig.email);
     console.log("user password ", user.password);
 
+    //The user shoud no longer be in the user_pendings table
     res = await models.UserPending.find({
       where: {
         email: userConfig.email
       }
     });
     assert(!res);
+
+    // Should login now
+    let loginParam = {
+        password: userConfig.password,
+        username: userConfig.email
+    };
+
+    let loginRes = await client.login(loginParam);
+    assert(loginRes);
+    console.log(loginRes);
+
   });
   it('invalid email code', async (done) => {
     try {
@@ -100,8 +112,4 @@ describe('UserRegister', function() {
     assert(res.success);
     assert.equal(res.message, "confirm email");
   });
-  describe('After Login', function() {
-
-  });
-
 });

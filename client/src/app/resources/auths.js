@@ -27,12 +27,12 @@ export function signupLocal( username, password, email ) {
     );
 }
 
-export function loginLocal( username, password ) {
+export function loginLocal( payload ) {
     return when(
         post( baseUrl( 'auth/login' ), {
             params: {
-                username,
-                password
+                username: payload.email,
+                password: payload.password
             }
         } )
     );
@@ -43,8 +43,13 @@ export function logout() {
         post( baseUrl( 'auth/logout' ) )
     );
 }
+
 export function verifyEmailCode(code) {
     return when(
-        post( baseUrl('auth/verify_email_code/'), {code: code})
+        post(baseUrl('auth/verify_email_code/'), {
+            params: {
+                code: code
+            }
+        })
     );
 }

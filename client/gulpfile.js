@@ -1,6 +1,7 @@
 var path = require( 'path' );
 var gulp = require( 'gulp' );
 var gutil = require( 'gulp-util' );
+var debug = require('gulp-debug');
 var webpack = require( 'webpack' );
 var gulpWebpack = require( 'gulp-webpack' );
 var WebpackDevServer = require( 'webpack-dev-server' );
@@ -17,7 +18,7 @@ function handleError( task ) {
 }
 
 // The development server (the recommended option for development)
-gulp.task( 'default', [ 'webpack-dev-server', 'stylus:compile' ] );
+gulp.task( 'default', [ 'webpack-dev-server', 'stylus:compile', 'build:cp' ] );
 
 gulp.task( 'webpack-dev-server', function ( callback ) {
     var config = Object.create( require( './webpack.dev.js' ) );
@@ -66,13 +67,16 @@ gulp.task( 'build:image:min', function () {
         .pipe( gulp.dest( 'build/bundle' ) );
 } );
 
-gulp.task( 'build:cp:index', function () {
+gulp.task( 'build:cp', function () {
     return gulp.src( [
         './src/index.html',
         './src/favicon.png',
-        './src/assets/img/logo.jpg'
+        './src/assets/**/img/*.png',
+        './src/assets/**/img/*.jpg',
+        './src/assets/**/img/*.svg'
     ] )
-        .pipe( gulp.dest( 'build/' ) );
+    .pipe(debug())
+    .pipe( gulp.dest( 'build/' ) );
 } );
 
 gulp.task( 'build:webpack', function () {
@@ -85,7 +89,7 @@ gulp.task( 'build:webpack', function () {
 gulp.task( 'build', function ( cb ) {
     runSequence(
         'clean:build',
-        [ 'stylus:compile', 'build:cp:index' ],
+        [ 'stylus:compile', 'build:cp' ],
         'build:webpack',
         'build:image:min',
         cb

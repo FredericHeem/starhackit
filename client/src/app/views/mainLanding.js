@@ -28,7 +28,7 @@ export default React.createClass({
                 <div className="header-container">
                     <div className="header clearfix" style={style}>
                         <div className="text-vertical-center">
-                            <h1>StarterKit</h1>
+                            <h1>ES7 StarterKit</h1>
                             <h2>A Full Stack Web Application Starter Kit </h2>
                             <h3>Built with React, Node, data backed by SQL</h3>
                             <br />
@@ -105,11 +105,10 @@ export default React.createClass({
                       </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-3 col-sm-6">
+                        <div className="col-md-4">
                             <div className="start-item">
-
                                 <span className="fa-stack fa-4x">
-                                    <img src="https://facebook.github.io/react/img/logo.svg" alt='REACT' width="64"/>
+                                    <img src="assets/img/react.svg" alt='REACT' width="64"/>
                                 </span>
                                 <h4>
                                     <a href="https://facebook.github.io/react/"><strong>React.js</strong></a>
@@ -118,7 +117,7 @@ export default React.createClass({
                             </div>
                         </div>
 
-                        <div className="col-md-3 col-sm-6">
+                        <div className="col-md-4">
                             <div className="start-item">
                                 <span className="fa-stack fa-4x">
                                     <i className="fa fa-retweet fa-stack-1x"></i>
@@ -129,29 +128,15 @@ export default React.createClass({
                                 <p>A simple library for uni-directional dataflow application architecture with React extensions inspired by Flux</p>
                             </div>
                         </div>
-
-                        <div className="col-md-3 col-sm-6">
+                        <div className="col-md-4">
                             <div className="start-item">
                                 <span className="fa-stack fa-4x">
-                                    <img src="http://brunch.io/images/others/gulp.png" alt='REACT' width="64"/>
+                                    <img src="assets/img/bootstrap.png" alt='Bootstrap' width="64"/>
                                 </span>
                                 <h4>
-                                    <a href="http://gulpjs.com/"><strong>Gulp</strong></a>
+                                    <a href="http://getbootstrap.com/"><strong>Bootstrap</strong></a>
                                 </h4>
-                                <p>A very popular build system for frontend development</p>
-                            </div>
-                        </div>
-
-                        <div className="col-md-3 col-sm-6">
-
-                            <div className="start-item">
-                                <span className="fa-stack fa-4x">
-                                    <img src="https://angularclass.com/images/es6.png" alt='REACT' width="64"/>
-                                </span>
-                                <h4>
-                                    <a href="https://github.com/lukehoban/es6features"><strong>ES6 ready</strong></a>
-                                </h4>
-                                <p>The new javascript ECMAScript 6</p>
+                                <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.</p>
                             </div>
                         </div>
                     </div>
@@ -169,7 +154,7 @@ export default React.createClass({
                             <div className="start-item">
 
                                 <span className="fa-stack fa-4x">
-                                    <img src="https://nodejs.org/static/images/logos/nodejs.png" alt='REACT' height="64"/>
+                                    <img src="assets/img/nodejs.png" alt='Node.js' height="64"/>
                                 </span>
                                 <h4>
                                     <a href="https://nodejs.org"><strong>Node.js</strong></a>
@@ -181,7 +166,7 @@ export default React.createClass({
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
                                 <span className="fa-stack fa-4x">
-                                    <img src="http://docs.sequelizejs.com/en/latest/images/logo-small.png" alt='Sequelize' height="64"/>
+                                    <img src="assets/img/sequelize.png" alt='Sequelize' height="64"/>
                                 </span>
                                 <h4>
                                     <a href="http://docs.sequelizejs.com/en/latest/"><strong>Sequelize</strong></a>
@@ -193,7 +178,7 @@ export default React.createClass({
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
                                 <span className="fa-stack fa-4x">
-                                    <img src="https://www.rabbitmq.com/img/rabbitmq_logo_strap.png" alt='RabbitMq' height="32"/>
+                                    <img src="assets/img/rabbitmq.png" alt='RabbitMq' height="32"/>
                                 </span>
                                 <h4>
                                     <a href="https://www.rabbitmq.com/"><strong>RabbitMq</strong></a>
@@ -205,7 +190,7 @@ export default React.createClass({
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
                                 <span className="fa-stack fa-4x">
-                                    <img src="http://the-phpjs-ldc.rgou.net/nodejs-modules/passport/assets/images/logo-90px.png" alt='REACT' width="64"/>
+                                    <img src="assets/img/passportjs.png" alt='Passportjs' width="64"/>
                                 </span>
                                 <h4>
                                     <a href="http://passportjs.org/"><strong>Passport</strong></a>
@@ -220,40 +205,114 @@ export default React.createClass({
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h3>
-                            <strong>Developper Tools</strong>
+                            <strong>Developer Tools</strong>
                         </h3>
                       </div>
                     </div>
                     <div className="row">
+                        <div className="col-md-3 col-sm-6">
+
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/es7.png" alt='ES6/ES7' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="https://github.com/lukehoban/es6features"><strong>ES6/ES7 ready</strong></a>
+                                </h4>
+                                <p>The new javascript ECMAScript 7</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/gulp.png" alt='Gulp' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="http://gulpjs.com/"><strong>Gulp</strong></a>
+                                </h4>
+                                <p>A very popular build system for frontend and backend development</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/eslint.svg" alt='eslint' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="http://eslint.org/"><strong>ESLint</strong></a>
+                                </h4>
+                                <p>The pluggable linting utility for JavaScript and JSX, find errors and coding style violation.</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/mocha.svg" alt='Mocha' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="https://mochajs.org/"><strong>Mocha</strong></a>
+                                </h4>
+                                <p>A rich asynchronous test framework</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/webpack.png" alt='Webpack' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="http://webpack.github.io/docs/"><strong>Webpack</strong></a>
+                                </h4>
+                                <p>A bundler for javascript and friends. Packs many modules into a few bundled assets.</p>
+                            </div>
+                        </div>
 
                         <div className="col-md-3 col-sm-6">
-                            <h4>Static analysis</h4>
-                            <p> <a href="http://eslint.org/" target="_blank">ESLint</a>: the pluggable linting utility for JavaScript and JSX, find errors and coding style violation.</p>
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/nodemon.svg" alt='Nodemon' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="http://nodemon.io/"><strong>Nodemon</strong></a>
+                                </h4>
+                                <p>Monitors for any changes in your node.js application and automatically restart the server</p>
+                            </div>
                         </div>
                         <div className="col-md-3 col-sm-6">
-                            <h4>Testing</h4>
-                            <p><a href="https://mochajs.org/" target="_blank">Mocha</a>: a rich test framework.</p>
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/travis.png" alt='Travis CI' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="https://travis-ci.org/"><strong>Travis CI</strong></a>
+                                </h4>
+                                <p>A continuous integration platform.</p>
 
-                            <p><a href="https://travis-ci.org/" target="_blank">Travis: </a>
-                                <a href="https://travis-ci.org/FredericHeem/react-node-starterkit"><img src="https://travis-ci.org/FredericHeem/react-node-starterkit.svg?branch=master"/></a>
-                            </p>
+                                <p><a href="https://travis-ci.org/FredericHeem/react-node-starterkit"><img src="https://travis-ci.org/FredericHeem/react-node-starterkit.svg?branch=master"/></a></p>
+                            </div>
                         </div>
                         <div className="col-md-3 col-sm-6">
-                            <h4>Code coverage</h4>
-                            <p><a href="https://gotwarlost.github.io/istanbul/" target="_blank">Istanbul</a>: a code coverage tool that computes statement, line, function and branch coverage. </p>
-                            <p><a href="https://coveralls.io">Coveralls</a>: <a href="https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage"><img alt="Test Coverage" src="https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg"/></a></p>
-                        </div>
-                        <div className="col-md-3 col-sm-6">
-                            <h4>Hot code reloading</h4>
-                            <p>On the frontend side, <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack dev server</a>, the browser is automatically reload when code is changed.</p>
-                            <p>On the backend side, <a href="https://github.com/remy/nodemon">nodemon</a> monitors for any changes in your node.js application and automatically restart the server </p>
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/codeclimate.png" alt='CodeClimate' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="https://codeclimate.com/"><strong>CodeClimate</strong></a>
+                                </h4>
+                                <p>Cocde Coverage and Code Review</p>
+                                <p><a href="https://codeclimate.com/github/FredericHeem/react-node-starterkit"><img src="https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg" /></a></p>
+                                <p><a href="https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage"><img alt="Test Coverage" src="https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg"/></a></p>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section id="info">
                     <div className="jumbotron">
-                        <p className="lead">
+                        <p className="lead text-center">
                             All <a href="https://github.com/FredericHeem/react-node-starterkit" target="_blank">
                             source code </a> is released
                             under an open source license at <i className="fa fa-github"/>

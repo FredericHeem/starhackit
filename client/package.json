@@ -35,6 +35,7 @@
     "font-awesome": "4.4.0",
     "gulp": "^3.9.0",
     "gulp-clean": "0.3.1",
+    "gulp-debug": "^2.1.1",
     "gulp-imagemin": "2.3.0",
     "gulp-stylus": "2.1.0",
     "gulp-util": "3.0.6",

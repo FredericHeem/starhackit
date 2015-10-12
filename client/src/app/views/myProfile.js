@@ -1,13 +1,12 @@
-import _ from 'lodash';
 import React from 'react/addons';
 import Reflux from 'reflux';
 import cx from 'classnames';
-
+import DocTitle from 'components/docTitle';
 import formLinkHandlers from 'mixins/formLinkHandlers';
 import ValidateProfileForm from 'services/validateProfileForm';
 
 import meStore from 'stores/me';
-import authStore from 'stores/auth';
+//import authStore from 'stores/auth';
 
 import meActions from 'actions/me';
 
@@ -33,10 +32,11 @@ export default React.createClass({
     },
 
     render() {
-        document.title = 'StarterKit - My Profile';
-
         return (
             <div id="profile">
+                <DocTitle
+                    title="My Profile"
+                />
                 <legend>My Profile</legend>
 
                 <div className="jumbotron clearfix">

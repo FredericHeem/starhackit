@@ -4,7 +4,9 @@ let env = process.env;
 
 let config = {
 
-    general: {},
+    general: {
+        title: 'StarterKit'
+    },
 
     development: {
         homeUrl: 'http://dev.myfabulousapp.com/',

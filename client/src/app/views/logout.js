@@ -1,4 +1,5 @@
 import React from 'react';
+import DocTitle from 'components/docTitle';
 
 import authActions from 'actions/auth';
 
@@ -11,7 +12,9 @@ export default React.createClass( {
     render() {
         return (
             <div id="logout">
-
+                <DocTitle
+                    title="Logout"
+                />
                 <div className="jumbotron">
                     <h1>Logged Out</h1>
                 </div>

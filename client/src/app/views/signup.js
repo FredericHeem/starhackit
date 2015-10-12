@@ -1,6 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
-
+import DocTitle from 'components/docTitle';
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalSignupForm from 'components/localSignupForm';
 
@@ -19,10 +19,12 @@ export default React.createClass( {
     },
 
     render() {
-        document.title = 'StarterKit - Signup';
 
         return (
             <div id="signup">
+                <DocTitle
+                    title="Register"
+                />
                 { authStore.isRegisterCompleted() && this.renderRegisterComplete() }
                 { !authStore.isRegisterCompleted() && this.renderRegisterForm() }
 

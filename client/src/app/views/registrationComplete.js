@@ -1,6 +1,8 @@
 import React from 'react';
 import Reflux from 'reflux';
 import { History } from 'react-router';
+import DocTitle from 'components/docTitle';
+
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
@@ -32,10 +34,11 @@ export default React.createClass( {
     },
 
     render() {
-        document.title = 'StarterKit - Registration completed';
-
         return (
             <div id="registration-complete">
+                <DocTitle
+                    title="Registering"
+                />
                 {this.renderError()}
                 {this.renderRegistering()}
             </div>

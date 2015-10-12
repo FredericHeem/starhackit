@@ -3,7 +3,7 @@ import React from 'react/addons';
 import cx from 'classnames';
 import { Button } from 'react-bootstrap';
 import { Navigation } from 'react-router';
-
+import DocTitle from 'components/docTitle';
 import resetActions from 'actions/reset';
 
 import authStore from 'stores/auth';
@@ -29,6 +29,9 @@ export default React.createClass( {
     render() {
         return (
             <div id="forgot">
+                <DocTitle
+                    title="Forgot password"
+                />
                 <legend>Password Reset</legend>
 
                 <div className="panel panel-primary">

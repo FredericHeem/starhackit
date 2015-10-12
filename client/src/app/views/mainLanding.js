@@ -1,6 +1,6 @@
 import React from 'react';
 import DocMeta from 'react-doc-meta';
-
+import DocTitle from 'components/docTitle';
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
@@ -11,7 +11,6 @@ export default React.createClass({
 
     componentDidMount() {
         debug("componentDidMount");
-        document.title = 'StarterKit';
     },
 
     render() {
@@ -22,6 +21,9 @@ export default React.createClass({
 
         return (
             <div id="main-landing">
+                <DocTitle
+                    title="Home"
+                />
                 <DocMeta tags={ this.tags() } />
                 <div className="header-container">
                     <div className="header clearfix" style={style}>

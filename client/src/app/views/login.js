@@ -2,8 +2,10 @@ import React from 'react';
 import { Link, History } from 'react-router';
 import Reflux from 'reflux';
 
+
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalLoginForm from 'components/localLoginForm';
+import DocTitle from 'components/docTitle';
 
 import authStore from 'stores/auth';
 
@@ -31,11 +33,11 @@ export default React.createClass( {
     },
 
     render() {
-        document.title = 'StarterKit - Login';
-
         return (
             <div id="login">
-
+                <DocTitle
+                    title="Login"
+                />
                 <div className="jumbotron">
                     <h2 className="text-center">Log In</h2>
 

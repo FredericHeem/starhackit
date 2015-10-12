@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "prebuild": "npm run lint",
-    "build": "./node_modules/.bin/gulp build",
+    "build": "./node_modules/.bin/gulp build:production",
     "start": "./node_modules/.bin/gulp",
     "pretest": "npm run build",
     "test": "npm run coverage",
@@ -15,7 +15,7 @@
     "codeclimate": "./node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "./node_modules/.bin/eslint src",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
-    "postInstall": "./node_modules/.bin/gulp build:production",
+    "postInstall": "npm run build",
     "nodemon": "./node_modules/.bin/nodemon",
     "run": "node build/index.js"
   },

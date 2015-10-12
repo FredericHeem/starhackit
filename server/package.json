@@ -10,7 +10,7 @@
     "pretest": "npm run build",
     "test": "npm run coverage",
     "mocha": "./node_modules/.bin/mocha ./src/**/test*.js ./test/**/test*.js",
-    "coverage": "./node_modules/.bin/istanbul cover  _mocha --report text --report html --report lcov ./src/**/test*.js ./test/**/*.js",
+    "coverage": "./node_modules/.bin/istanbul  cover -x '**/test*.js'  _mocha --report text --report html --report lcov ./src/**/test*.js ./test/**/*.js",
     "coveralls": "./node_modules/.bin/coveralls < coverage/lcov.info",
     "codeclimate": "./node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "./node_modules/.bin/eslint src",

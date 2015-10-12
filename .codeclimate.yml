@@ -1,5 +1,12 @@
-languages:
-  JavaScript: true
+engines:
+  eslint:
+    enabled: true
+ratings:
+   paths:
+   - client/src/app/**
+   - server/src/**
 exclude_paths:
- - "client/src/app/lib"
- - "server/migrations"
+  - "client/src/app/lib/**/*"
+  - "server/migrations/**/*"
+  - "server/src/**/test*.js"
+  - "test*.js"

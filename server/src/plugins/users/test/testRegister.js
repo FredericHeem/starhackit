@@ -1,5 +1,6 @@
 let assert = require('assert');
 let crypto = require('crypto');
+import sinon from 'sinon';
 import {Client} from 'restauth';
 import testMngr from '~/test/testManager';
 
@@ -7,11 +8,19 @@ describe('UserRegister', function() {
   let app = testMngr.app;
   let models = app.data.sequelize.models;
   let client;
+  let sandbox;
 
   before(async () => {
       await testMngr.start();
+      sandbox = sinon.sandbox.create();
+      sinon.stub(app.plugins.users.publisherUser, "publish", (key, msg) => {
+        console.log("publish has been called");
+        assert.equal(key, "user.register");
+        assert(msg);
+      });
   });
   after(async () => {
+      sandbox.restore();
       await testMngr.stop();
   });
 

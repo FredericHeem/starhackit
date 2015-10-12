@@ -38,39 +38,49 @@ describe('MailJob', function () {
   let emailType = 'user.register';
 
   describe('Basic', () => {
+    let mailJob;
+    beforeEach(function (done) {
+      mailJob = new MailJob(config);
+      done();
+    });
+
+    afterEach(function (done) {
+      done();
+    });
     it('getTemplate ok', async() => {
-      let mailJob = new MailJob(config);
       let content = await mailJob.getTemplate(emailType);
       assert(content);
     });
     it('getTemplate ko', async() => {
-      let mailJob = new MailJob(config);
       let content = await mailJob.getTemplate(emailType);
       assert(content);
     });
     it('send email directly', async() => {
-      let mailJob = new MailJob(config);
       await mailJob._sendEmail(emailType, user);
     });
-    it('login failed', async() => {
-      let badPasswordConfig = _.clone(config, true);
-      console.log(JSON.stringify(badPasswordConfig));
-      badPasswordConfig.mail.smtp.auth.pass = "1234567890";
-
-      let mailJob = new MailJob(badPasswordConfig);
-
+    it('invalid email type', async(done) => {
       try {
-        await mailJob._sendEmail(emailType, user);
-        assert(false);
+        await mailJob._sendEmail('invalidEmailType', user);
       } catch(error){
-        console.log(error);
         assert(error);
-        assert.equal(error.code, "EAUTH");
+        assert.equal(error.code, 'ENOENT');
+        done();
       }
     });
+  });
 
-    it('start, publish and stop the MailJob', async(done) => {
-      let mailJob = new MailJob(config);
+  describe('StartStop', () => {
+    let mailJob;
+    beforeEach(async () => {
+      mailJob = new MailJob(config);
+      await mailJob.start();
+    });
+
+    afterEach(async () => {
+      await mailJob.stop();
+    });
+
+    it('publish to the MailJob', async(done) => {
       sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
         //console.log("_sendEmail has been called");
         assert.equal(type, 'user.register');
@@ -78,8 +88,25 @@ describe('MailJob', function () {
         assert.equal(userToSend.email, user.email);
         done();
       });
-      await mailJob.start();
+
       await publisher.publish("user.register", JSON.stringify(user));
+    });
+  });
+  describe('Ko', () => {
+    it('login failed', async(done) => {
+      let badPasswordConfig = _.clone(config, true);
+      //console.log(JSON.stringify(badPasswordConfig));
+      badPasswordConfig.mail.smtp.auth.pass = "1234567890";
+
+      let mailJob = new MailJob(badPasswordConfig);
+
+      try {
+        await mailJob._sendEmail(emailType, user);
+      } catch(error){
+        assert(error);
+        assert.equal(error.code, "EAUTH");
+        done();
+      }
     });
   });
 });

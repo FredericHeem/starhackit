@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 import fs from 'fs';
 import path from 'path';
+import _ from 'lodash';
 
 let log = require('logfilename')(__filename);
 
@@ -37,7 +38,7 @@ export default class MailJob {
 
   async getTemplate(type){
     let filename = path.join(path.dirname(__filename), 'templates', type + '.html');
-    console.log("filename", filename);
+    //log.debug("filename", filename);
     return new Promise((resolve, reject) => {
       fs.readFile(filename, "utf8", (error, data) => {
         if(error){
@@ -75,7 +76,7 @@ export default class MailJob {
       html: body
     };
 
-    log.debug("sendEmail: ", mailOptions);
+    log.debug("_sendEmail: ", _.omit(mailOptions, 'html'));
 
     return new Promise( (resolve, reject) => {
       this.transporter.sendMail(mailOptions, function(error, info){
@@ -83,6 +84,7 @@ export default class MailJob {
             log.error("cannot send mail: ", error);
             reject(error);
           } else {
+            delete info.html;
             log.debug("mail sent: ", info);
             resolve(info);
           }

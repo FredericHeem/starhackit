@@ -1,1 +1,3 @@
 **/src/app/lib/*.js
+gulpfile.js
+webpack*

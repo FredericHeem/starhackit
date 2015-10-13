@@ -22,7 +22,6 @@ gulp.task( 'default', [ 'webpack-dev-server', 'stylus:compile', 'build:cp' ] );
 
 gulp.task( 'webpack-dev-server', function ( callback ) {
     var config = Object.create( require( './webpack.dev.js' ) );
-
     // Start a webpack-dev-server
     new WebpackDevServer( webpack( config ), {
         contentBase: path.join( __dirname, 'src' ),
@@ -71,9 +70,9 @@ gulp.task( 'build:cp', function () {
     return gulp.src( [
         './src/index.html',
         './src/favicon.png',
-        './src/assets/**/img/*.png',
-        './src/assets/**/img/*.jpg',
-        './src/assets/**/img/*.svg'
+        './src/**/assets/img/*.png',
+        './src/**/assets/img/*.jpg',
+        './src/**/assets/img/*.svg'
     ] )
     .pipe(debug())
     .pipe( gulp.dest( 'build/' ) );

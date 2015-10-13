@@ -291,7 +291,7 @@ export default React.createClass({
                                 </h4>
                                 <p>A continuous integration platform.</p>
 
-                                <p><a href="https://travis-ci.org/FredericHeem/react-node-starterkit"><img src="https://travis-ci.org/FredericHeem/react-node-starterkit.svg?branch=master"/></a></p>
+                                <p><a href="https://travis-ci.org/FredericHeem/starhackit"><img src="https://travis-ci.org/FredericHeem/starhackit.svg?branch=master"/></a></p>
                             </div>
                         </div>
                         <div className="col-md-3 col-sm-6">
@@ -303,8 +303,8 @@ export default React.createClass({
                                     <a href="https://codeclimate.com/"><strong>CodeClimate</strong></a>
                                 </h4>
                                 <p>Cocde Coverage and Code Review</p>
-                                <p><a href="https://codeclimate.com/github/FredericHeem/react-node-starterkit"><img src="https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/gpa.svg" /></a></p>
-                                <p><a href="https://codeclimate.com/github/FredericHeem/react-node-starterkit/coverage"><img alt="Test Coverage" src="https://codeclimate.com/github/FredericHeem/react-node-starterkit/badges/coverage.svg"/></a></p>
+                                <p><a href="https://codeclimate.com/github/FredericHeem/starhackit"><img src="https://codeclimate.com/github/FredericHeem/starhackit/badges/gpa.svg" /></a></p>
+                                <p><a href="https://codeclimate.com/github/FredericHeem/starhackit/coverage"><img alt="Test Coverage" src="https://codeclimate.com/github/FredericHeem/starhackit/badges/coverage.svg"/></a></p>
                             </div>
                         </div>
                     </div>
@@ -313,7 +313,7 @@ export default React.createClass({
                 <section id="info">
                     <div className="jumbotron">
                         <p className="lead text-center">
-                            All <a href="https://github.com/FredericHeem/react-node-starterkit" target="_blank">
+                            All <a href="https://github.com/FredericHeem/starhackit" target="_blank">
                             source code </a> is released
                             under an open source license at <i className="fa fa-github"/>
                         </p>

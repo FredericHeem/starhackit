@@ -1,5 +1,5 @@
 {
-  "name": "react-node-startkit",
+  "name": "starhackit",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:FredericHeem/react-node-starterkit.git"
+    "url": "git@github.com:FredericHeem/starhackit.git"
   }
 }

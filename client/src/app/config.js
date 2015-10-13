@@ -5,17 +5,17 @@ let env = process.env;
 let config = {
 
     general: {
-        title: 'StarterKit'
+        title: 'StarHackIt'
     },
 
     development: {
-        homeUrl: 'http://dev.myfabulousapp.com/',
+        homeUrl: 'http://localhost:8080/',
         baseUrl: 'http://localhost:8080/api/v1/'
     },
 
     production: {
-        homeUrl: 'https://react-node-starterkit.herokuapp.com/',
-        baseUrl: 'https://react-node-starterkit.herokuapp.com/api/v1/'
+        homeUrl: 'https://starhack.it/',
+        baseUrl: 'https://starhack.it/api/v1/'
     }
 };
 

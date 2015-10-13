@@ -4,6 +4,7 @@ import {Link, History} from 'react-router';
 
 import NavLink from 'components/navLink';
 import authStore from 'stores/auth';
+import config from 'config';
 
 export default React.createClass( {
 
@@ -23,7 +24,7 @@ export default React.createClass( {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <Link to="/home" className="navbar-brand">StarterKit</Link>
+                        <Link to="/" className="navbar-brand">{config.title}</Link>
                     </div>
                     <div className="navbar-collapse collapse">
                         <ul className="nav navbar-nav navbar-left">

@@ -2,10 +2,7 @@ import React from 'react';
 import DocMeta from 'react-doc-meta';
 import DocTitle from 'components/docTitle';
 import Debug from 'debug';
-let debug = new Debug("views:registrationComplete");
-
-//import { Link } from 'react-router';
-//import background from 'assets/img/landing-background.jpg';
+let debug = new Debug("views:main");
 
 export default React.createClass({
 
@@ -16,7 +13,6 @@ export default React.createClass({
     render() {
         debug("render");
         let style = {
-            //background: `url(${background}) no-repeat center center scroll`
         };
 
         return (

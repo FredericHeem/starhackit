@@ -15,8 +15,8 @@ let config = {
     },
 
     production: {
-        homeUrl: 'https://starhack.it/',
-        baseUrl: 'https://starhack.it/api/v1/'
+        homeUrl: 'http://starhack.it/',
+        baseUrl: 'http://starhack.it/api/v1/'
     }
 };
 

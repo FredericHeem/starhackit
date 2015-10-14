@@ -38,7 +38,7 @@ export default React.createClass( {
                 <DocTitle
                     title="Login"
                 />
-                <div className="jumbotron">
+                <div>
                     <h2 className="text-center">Log In</h2>
 
                     <div className="row">

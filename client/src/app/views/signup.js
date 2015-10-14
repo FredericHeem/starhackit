@@ -40,7 +40,7 @@ export default React.createClass( {
     },
     renderRegisterForm(){
         return (
-            <div className="jumbotron">
+            <div>
                 <h2 className="text-center">Register An Account</h2>
 
                 <p className="text-center">Create a free account</p>

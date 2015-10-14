@@ -57,7 +57,7 @@ export default React.createClass( {
                     </div>
 
                     { user.about &&
-                    <div className="jumbotron compact">
+                    <div className="compact">
                         <MarkedDisplay
                             content={ user.about }
                             />

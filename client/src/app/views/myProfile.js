@@ -39,7 +39,7 @@ export default React.createClass({
                 />
                 <legend>My Profile</legend>
 
-                <div className="jumbotron clearfix">
+                <div className="clearfix">
                     <form className="form-horizontal" onSubmit={ (e) => e.preventDefault() }>
                         <div className="col-sm-11">
                             <div className={this.formClassNames( 'username' )}  >

@@ -15,7 +15,7 @@ export default React.createClass( {
                 <DocTitle
                     title="Logout"
                 />
-                <div className="jumbotron">
+                <div className="text-center">
                     <h1>Logged Out</h1>
                 </div>
 

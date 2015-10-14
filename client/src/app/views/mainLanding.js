@@ -12,8 +12,7 @@ export default React.createClass({
 
     render() {
         debug("render");
-        let style = {
-        };
+
 
         return (
             <div id="main-landing">
@@ -22,7 +21,7 @@ export default React.createClass({
                 />
                 <DocMeta tags={ this.tags() } />
                 <div className="header-container">
-                    <div className="header clearfix" style={style}>
+                    <div className="header clearfix">
                         <div className="text-vertical-center">
                             <h1>ES7 StarterKit</h1>
                             <h2>A Full Stack Web Application Starter Kit </h2>

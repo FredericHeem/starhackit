@@ -51,16 +51,11 @@
 #forgot .spacer {
   margin-top: 15px;
 }
-#main-landing .header-container {
-  height: 400px;
-}
 #main-landing .header-container .header {
-  position: absolute;
   top: 64px;
   left: 0;
   right: 0;
   width: 100%;
-  height: 400px;
   display: table;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -72,7 +67,7 @@
   vertical-align: middle;
 }
 #main-landing .header-container .header .text-vertical-center h1 {
-  font-size: 120px;
+  font-size: 60px;
 }
 #main-landing .start-item {
   text-align: center;
@@ -81,9 +76,6 @@
 #main-landing #start {
   margin-top: 10px;
   margin-bottom: 10px;
-}
-#main-landing #start .fa-circle {
-  color: #098bef;
 }
 #profile .input-description {
   width: 100%;

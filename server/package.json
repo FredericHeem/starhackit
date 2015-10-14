@@ -16,7 +16,7 @@
     "codeclimate": "./node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "./node_modules/.bin/eslint src",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
-    "postInstall": "npm run build",
+    "postinstall": "npm run build",
     "nodemon": "./node_modules/.bin/nodemon",
     "run": "node build/index.js"
   },

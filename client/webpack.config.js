@@ -15,7 +15,7 @@ module.exports = function ( options ) {
         entry: {
             vendor: [
                 'bootstrap/dist/js/bootstrap.min.js',
-                'assets/css/theme.css',
+                'assets/css/bootstrap-cosmo.css',
                 'assets/css/animate.css',
                 'font-awesome/css/font-awesome.min.css',
                 'react-dropzone-component/node_modules/dropzone/dist/dropzone.css',

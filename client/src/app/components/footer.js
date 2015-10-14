@@ -13,7 +13,7 @@ export default React.createClass({
                     <div className="row">
 
                         <div className="content col-md-12 col-sm-12 text-center">
-                            <div>StarterKit is the starting point to build a full stack web application.</div>
+                            <div>StarHackIt is the starting point to build a full stack web application.</div>
                             <div>
                                 Get the source code at <a href="https://github.com/FredericHeem/starhackit" target="_blank">GitHub</a>
                             </div>

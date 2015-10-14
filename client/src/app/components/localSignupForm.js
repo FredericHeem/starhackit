@@ -33,7 +33,7 @@ export default React.createClass( {
                   </div>
               }
                 <LocalAuthenticationForm
-                    buttonCaption={this.props.buttonCaption || 'Get Started' }
+                    buttonCaption={this.props.buttonCaption || 'Create an account' }
                     errors={ this.state.errors }
                     onButtonClick={this.signup}
                     />

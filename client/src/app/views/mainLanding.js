@@ -1,6 +1,8 @@
 import React from 'react';
 import DocMeta from 'react-doc-meta';
 import DocTitle from 'components/docTitle';
+import config from 'config';
+
 import Debug from 'debug';
 let debug = new Debug("views:main");
 
@@ -327,7 +329,7 @@ export default React.createClass({
     },
 
     tags() {
-        let description = 'StartKit is a full stack application boilerplate';
+        let description = config.description;
 
         return [
             {name: 'description', content: description},

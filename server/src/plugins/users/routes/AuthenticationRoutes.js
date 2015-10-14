@@ -15,7 +15,7 @@ module.exports = function(app, auth, authenticationHttpCtrl){
 
   router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
   router.get('/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/#/profile'}),
+    passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/my/profile'}),
     authenticationHttpCtrl.loginFacebookCallback);
 
   return router;

@@ -8,6 +8,8 @@ module.exports = function(app, auth, authenticationHttpCtrl){
   router.post('/login', passport.authenticate('login'), authenticationHttpCtrl.login);
   router.post('/register', authenticationHttpCtrl.register);
   router.post('/verify_email_code', authenticationHttpCtrl.verifyEmailCode);
+  router.post('/reset_password', authenticationHttpCtrl.resetPassword);
+  router.post('/verify_reset_password_token', authenticationHttpCtrl.verifyResetPasswordToken);
 
   router.post('/logout', auth.ensureAuthenticated, authenticationHttpCtrl.logout);
 

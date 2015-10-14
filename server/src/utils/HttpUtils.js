@@ -6,12 +6,7 @@ export function respond(me, callback,args,res) {
     //apply used to pass args to the callback
     callback.apply(me, args)
     .then(function(result){
-      if(result){
-        //log.debug("respond ", result);
-        res.send(result);
-      } else {
-        res.status(404).send();
-      }
+      res.send(result);
     })
     .catch(function(error){
       convertAndRespond(error,res);

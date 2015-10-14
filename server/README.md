@@ -51,6 +51,8 @@ By using the *model:create* command, a new sequelize model is created alongside 
 
     $ ./node_modules/.bin/sequelize model:create --name UserPending --attributes "username:string(64), email:string(64), password:string, code:string(16)"
 
+    $ ./node_modules/.bin/sequelize model:create --name PasswordReset --attributes "user_id:integer, token:string(32)"
+
 2 files will be generated:
   * the javascript sequelize model in the *models* directory
   * the sql migration script in the *migrations* directory

@@ -18,17 +18,10 @@ export default function UserApi(app, publisherUser) {
     },
     async createPending(userPendingIn) {
       log.debug("createPending: ", userPendingIn);
-      let user = await models.User.find({
-        where: {
-          email: userPendingIn.email
-        }
-      });
+      let user = await models.User.findByEmail(userPendingIn.email);
 
       if (!user) {
-        let code = chance.string({
-          length: 16,
-          pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        });
+        let code = createToken();
         let userPendingOut = {
           code: code,
           username: userPendingIn.username,
@@ -73,6 +66,68 @@ export default function UserApi(app, publisherUser) {
           name:"NoSuchCode"
         });
       }
+    },
+    async resetPassword(payload){
+      let email = payload.email;
+      log.info("resetPassword: ", email);
+      let user = await models.User.findByEmail(email);
+      if(user){
+        log.info("resetPassword: find user: ", user.get());
+        let passwordReset = {
+          token: createToken(),
+          user_id: user.id
+        };
+        await models.PasswordReset.upsert(passwordReset);
+        // send password reset email with the token.
+      } else {
+        log.info("resetPassword: no such email: ", email);
+      }
+
+      return {
+        success:true
+      };
+    },
+    async verifyResetPasswordToken(payload){
+      let {token, password} = payload;
+
+      log.info("verifyResetPasswordToken: ", token);
+      // Has the token expired ?
+
+      // find the user
+      let user = await models.User.find({
+        include: [{
+          model: models.PasswordReset,
+          where: {
+            token: token
+          },
+        }]
+      });
+      log.info("verifyResetPasswordToken: password ", password);
+
+      if(user){
+        await user.update({password: password});
+        return {
+          success:true
+        };
+      } else {
+        log.warn("verifyResetPasswordToken: no such token ", token);
+        return {
+          error:{
+            name:"TokenInvalid"
+          }
+        };
+      }
+
+      return {
+        success:true
+      };
     }
   };
+}
+
+function createToken(){
+  return chance.string({
+    length: 16,
+    pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  });
 }

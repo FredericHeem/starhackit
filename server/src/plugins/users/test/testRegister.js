@@ -91,8 +91,7 @@ describe('UserRegister', function() {
 
     let loginRes = await client.login(loginParam);
     assert(loginRes);
-    console.log(loginRes);
-
+    //console.log(loginRes);
   });
   it('invalid email code', async (done) => {
     try {

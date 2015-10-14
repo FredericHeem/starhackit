@@ -14,6 +14,7 @@ export default function(app, userApi){
   function loginFacebookCallback(/*req, res*/) {
     assert(false);
   }
+
   function logout(req, res) {
     log.debug("logout");
     req.logout();
@@ -29,11 +30,24 @@ export default function(app, userApi){
     log.debug("verifyEmailCode: ", req.body);
     respond(userApi, userApi.verifyEmailCode, [req.body], res);
   }
+
+  function resetPassword(req, res) {
+    log.debug("resetPassword: ", req.body);
+    respond(userApi, userApi.resetPassword, [req.body], res);
+  }
+
+  function verifyResetPasswordToken(req, res) {
+    log.debug("verifyResetPasswordToken: ", req.body);
+    respond(userApi, userApi.verifyResetPasswordToken, [req.body], res);
+  }
+
   return {
     login:login,
     logout:logout,
     register:register,
     verifyEmailCode:verifyEmailCode,
+    resetPassword:resetPassword,
+    verifyResetPasswordToken:verifyResetPasswordToken,
     loginFacebookCallback:loginFacebookCallback
   };
 }

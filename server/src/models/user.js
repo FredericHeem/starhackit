@@ -52,7 +52,17 @@ module.exports = function(sequelize, DataTypes) {
             return User.createUserInGroups(userJson, userJson.groups);
           });
         },
-
+        /**
+         * Finds a user by its email
+         * returns the model of the  user
+         *
+         * @param {String} email - the user's email address
+         *
+         * @returns {Promise} Promise user model
+        */
+        findByEmail: function(email) {
+          return this.find({where: { email: email } });
+        },
         /**
          * Finds a user by userid
          * returns the model of the  user
@@ -208,17 +218,13 @@ module.exports = function(sequelize, DataTypes) {
     if (!instance.changed('password')) { return done(); }
     bcrypt.hash(instance.get('password'), 10, function (err, hash) {
       if (err) { return done(err); }
-      instance.set('password', '');
+      instance.set('password');
       instance.set('passwordHash', hash);
       done();
     });
   };
 
-  User.beforeCreate(function(user) {
-    //TODO KO
-    delete user.password;
-  });
-  User.beforeValidate(hashPasswordHook);
+  User.beforeCreate(hashPasswordHook);
   User.beforeUpdate(hashPasswordHook);
 
   return User;

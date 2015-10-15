@@ -32,7 +32,8 @@ describe('MailJob', function () {
   });
 
   let user = {
-    email: 'frederic.heem@gmail.com'
+    email: 'frederic.heem@gmail.com',
+    code:'1234567890123456'
   };
 
   let emailType = 'user.register';
@@ -55,8 +56,12 @@ describe('MailJob', function () {
       let content = await mailJob.getTemplate(emailType);
       assert(content);
     });
-    it('send email directly', async() => {
+    it('send user registration email', async() => {
       await mailJob._sendEmail(emailType, user);
+    });
+    it('send reset password email', async() => {
+      let passwordReset = 'user.resetpassword';
+      await mailJob._sendEmail(passwordReset, user);
     });
     it('invalid email type', async(done) => {
       try {
@@ -77,10 +82,11 @@ describe('MailJob', function () {
     });
 
     afterEach(async () => {
+      mailJob._sendEmail.restore();
       await mailJob.stop();
     });
 
-    it('publish to the MailJob', async(done) => {
+    it('publish user.register', async(done) => {
       sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
         //console.log("_sendEmail has been called");
         assert.equal(type, 'user.register');
@@ -90,6 +96,17 @@ describe('MailJob', function () {
       });
 
       await publisher.publish("user.register", JSON.stringify(user));
+    });
+    it('publish user.resetpassword', async(done) => {
+      sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
+        //console.log("_sendEmail has been called");
+        assert.equal(type, 'user.resetpassword');
+        assert(userToSend);
+        assert.equal(userToSend.email, user.email);
+        done();
+      });
+
+      await publisher.publish("user.resetpassword", JSON.stringify(user));
     });
   });
   describe('Ko', () => {

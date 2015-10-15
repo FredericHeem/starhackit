@@ -1,4 +1,3 @@
-//import util from 'util';
 import {Subscriber} from 'rabbitmq-pubsub';
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
@@ -10,7 +9,8 @@ let log = require('logfilename')(__filename);
 
 const subscriberOptions = {
   exchange: 'user',
-  queueName: 'user.register'
+  queueName: 'user',
+  routingKeys:['user.register', 'user.resetpassword']
 };
 
 //const templates = ['user.register'];
@@ -51,7 +51,7 @@ export default class MailJob {
   }
 
   async _sendEmail(type, user) {
-    log.debug("sendEmail %s to user ", type, user);
+    log.info("sendEmail %s to user ", type, user);
     if(!user.email){
       log.error("email not set");
       return;

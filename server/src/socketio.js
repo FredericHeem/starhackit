@@ -1,3 +1,4 @@
+/*
 import  http from 'http';
 
 let Router = function(app, io) {
@@ -122,3 +123,4 @@ module.exports = function(app, expressApp) {
     callbackId:callbackId
   };
 };
+*/

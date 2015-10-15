@@ -72,6 +72,24 @@ describe('MailJob', function () {
         done();
       }
     });
+    it('no email', async(done) => {
+      try {
+        await mailJob._sendEmail(emailType, {});
+      } catch(error){
+        assert(error);
+        assert.equal(error.name, 'email not set');
+        done();
+      }
+    });
+    it('no token', async(done) => {
+      try {
+        await mailJob._sendEmail(emailType, {email:user.email});
+      } catch(error){
+        assert(error);
+        assert.equal(error.name, 'token not set');
+        done();
+      }
+    });
   });
 
   describe('StartStop', () => {

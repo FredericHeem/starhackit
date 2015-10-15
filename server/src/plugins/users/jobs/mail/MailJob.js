@@ -13,8 +13,6 @@ const subscriberOptions = {
   routingKeys:['user.register', 'user.resetpassword']
 };
 
-//const templates = ['user.register'];
-
 export default class MailJob {
   constructor(config) {
     log.info("MailJob subscriberOptions: ", subscriberOptions);
@@ -29,6 +27,7 @@ export default class MailJob {
   }
 
   async start() {
+    log.info('start');
     await this.subscriber.start(this._onIncomingMessage.bind(this));
   }
 
@@ -54,7 +53,12 @@ export default class MailJob {
     log.info("sendEmail %s to user ", type, user);
     if(!user.email){
       log.error("email not set");
-      return;
+      throw {name:"email not set"};
+    }
+
+    if(!user.code){
+      log.error("token not set");
+      throw {name:"token not set"};
     }
 
     let locals = {

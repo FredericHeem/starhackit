@@ -80,7 +80,8 @@ describe('PasswordReset', function () {
     await resetPasswordProcedure(email, passwordNew);
     await resetPasswordProcedure(email, passwordOld);
   });
-  it.skip('reset password wrong email', async() => {
+
+  it.skip('reset password email', async() => {
 
   });
   it('verify with wrong token', async(done) => {

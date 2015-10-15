@@ -73,12 +73,19 @@ export default function UserApi(app, publisherUser) {
       let user = await models.User.findByEmail(email);
       if(user){
         log.info("resetPassword: find user: ", user.get());
+        let token = createToken();
         let passwordReset = {
-          token: createToken(),
+          token: token,
           user_id: user.id
         };
         await models.PasswordReset.upsert(passwordReset);
         // send password reset email with the token.
+        let passwordResetPublished = {
+          code: token,
+          email: user.email
+        };
+        log.debug("resetPassword: publish: ", passwordResetPublished);
+        await publisherUser.publish('user.resetpassword', JSON.stringify(passwordResetPublished));
       } else {
         log.info("resetPassword: no such email: ", email);
       }
@@ -106,6 +113,7 @@ export default function UserApi(app, publisherUser) {
 
       if(user){
         await user.update({password: password});
+        //TODO delete token
         return {
           success:true
         };

@@ -21,7 +21,7 @@ export default React.createClass( {
 
     getInitialState() {
         return {
-            step: 0,
+            step: 'SendPasswordResetEmail',
             errors: {}
         };
     },
@@ -34,95 +34,59 @@ export default React.createClass( {
                 />
                 <legend>Password Reset</legend>
 
-                <div className="panel panel-primary">
-                    <div className="panel-heading">Step 1 - Send Reset Email</div>
-                    <div className="panel-body">
-                        <p><strong>Enter the email address used when you registered with username and password. </strong></p>
-
-                        <p>You'll be sent a reset code to change your password.</p>
-
-                        <div className="form-inline">
-                            <div className={ this.formClassNames( 'email' ) }>
-                                <label>Email Address</label>
-                                <input className="form-control"
-                                       type="text"
-                                       valueLink={ this.linkState( 'email' ) }
-                                    />
-
-                                { this.renderErrorsFor( 'email' ) }
-                            </div>
-                        </div>
-
-                        <div className="spacer">
-                            <Button bsStyle="primary" onClick={ this.requestReset }>Send Reset Email</Button>
-                        </div>
-                    </div>
-                </div>
-
-                { this.renderResetStep() }
-                { this.renderPasswordReset() }
+                { this.renderSendPasswordResetEmail()}
+                { this.renderCheckEmail() }
             </div>
         );
     },
 
-    renderResetStep() {
-        if ( this.state.step > 0 ) {
-            return (
-                <div className="panel panel-primary animate bounceIn">
-                    <div className="panel-heading">Step 2 - Reset Code</div>
-                    <div className="panel-body">
-                        <p><strong>An email has been sent containing your reset code. Enter the reset code to proceed.</strong></p>
+    renderSendPasswordResetEmail() {
+        if ( this.state.step != 'SendPasswordResetEmail' ) {
+            return;
+        }
+        return (
+            <div className="panel panel-primary">
+                <div className="panel-heading">Send Reset Email</div>
+                <div className="panel-body">
+                    <p><strong>Enter the email address used when you registered with username and password. </strong></p>
 
-                        <p>Please also check your spam folder just in case the reset email ended up there.</p>
+                    <p>You'll be sent a reset code to change your password.</p>
 
-                        <div className="form-inline">
-                            <div className={ this.formClassNames( 'code' ) }>
-                                <label>Reset Code</label>
-                                <input className="form-control"
-                                       type="text"
-                                       valueLink={ this.linkState( 'code' ) }
-                                    />
+                    <div className="form-inline">
+                        <div className={ this.formClassNames( 'email' ) }>
+                            <label>Email Address</label>
+                            <input className="form-control"
+                                   type="text"
+                                   valueLink={ this.linkState( 'email' ) }
+                                />
 
-                                { this.renderErrorsFor( 'code' ) }
-                            </div>
-                        </div>
-
-                        <div className="spacer">
-                            <Button bsStyle="primary" onClick={ this.verifyCode }>Verify Reset Code</Button>
+                            { this.renderErrorsFor( 'email' ) }
                         </div>
                     </div>
+
+                    <div className="spacer">
+                        <Button bsStyle="primary" onClick={ this.requestReset }>Send Reset Email</Button>
+                    </div>
                 </div>
-            );
-        }
+            </div>
+    );
     },
-
-    renderPasswordReset() {
-        if ( this.state.step > 1 ) {
-            return (
-                <div className="panel panel-primary animate bounceIn">
-                    <div className="panel-heading">Step 3 - Password Reset</div>
-                    <div className="panel-body">
-                        <p><strong>Enter your new password.</strong></p>
-
-                        <div className="form-inline">
-                            <div className={ this.formClassNames( 'password' ) }>
-                                <label>Password</label>
-                                <input className="form-control"
-                                       type="text"
-                                       valueLink={ this.linkState( 'password' ) }
-                                    />
-                            </div>
-
-                            { this.renderErrorsFor( 'password' ) }
-                        </div>
-
-                        <div className="spacer">
-                            <Button bsStyle="primary" onClick={ this.resetPassword }>Reset Password</Button>
-                        </div>
-                    </div>
-                </div>
-            );
+    renderCheckEmail() {
+        if ( this.state.step != 'CheckEmail' ) {
+            return;
         }
+        return (
+            <div className="panel panel-primary animate bounceIn">
+                <div className="panel-heading">Step 2 - Check Email</div>
+                <div className="panel-body">
+                    <p><strong>An email has been sent containing your reset link. Click on this link to proceed.</strong></p>
+
+                    <p>Please also check your spam folder just in case the reset email ended up there.</p>
+
+                    <p>This page can be safely closed.</p>
+                </div>
+            </div>
+        );
     },
 
     renderErrorsFor( field ) {
@@ -139,7 +103,7 @@ export default React.createClass( {
         validateEmail.call( this )
             .with( this )
             .then( requestReset )
-            .then( setTokenAndStep1 )
+            .then( setNextStep )
             .catch( errors );
 
         function validateEmail() {
@@ -164,10 +128,9 @@ export default React.createClass( {
             return resetActions.requestPasswordReset( this.email() );
         }
 
-        function setTokenAndStep1( data ) {
+        function setNextStep( ) {
             this.setState( {
-                token: data.token,
-                step: 1
+                step: 'CheckEmail'
             } );
         }
 
@@ -180,11 +143,7 @@ export default React.createClass( {
                 let error = e.responseJSON;
                 let message;
 
-                if ( error.message === 'Record not found' ) {
-                    message = 'Could not find an account with this email';
-                } else {
-                    message = error.message;
-                }
+                message = error.message;
 
                 this.setState( {
                     errors: {
@@ -196,91 +155,6 @@ export default React.createClass( {
 
     },
 
-    verifyCode() {
-        this.resetErrors();
-
-        validateCodeField.call( this )
-            .with( this )
-            .then( validateCode )
-            .then( toStep2 )
-            .catch( errors );
-
-        function validateCodeField() {
-            return new ValidateRequiredField( 'code', this.code() )
-                .execute();
-        }
-
-        function validateCode() {
-            return resetActions.verifyCode( this.state.token, this.code() );
-        }
-
-        function toStep2() {
-            this.setState( {
-                step: 2
-            } );
-        }
-
-        function errors( e ) {
-            if ( e.name === 'CheckitError' ) {
-                this.setState( {
-                    errors: e.toJSON()
-                } );
-            } else {
-                let error = e.responseJSON;
-
-                if ( error.errorType === 'RecordNotFound' ) {
-                    this.setState( {
-                        errors: {
-                            email: 'Invalid Reset Code. Please check your Reset Code and try again.'
-                        }
-                    } );
-                }
-            }
-        }
-    },
-
-    resetPassword() {
-        this.resetErrors();
-
-        validatePassword.call( this )
-            .with( this )
-            .then( requestPasswordChange )
-            .then( toProfile )
-            .catch( errors );
-
-        function validatePassword() {
-            return new ValidatePassword( this.password() )
-                .execute();
-        }
-
-        function requestPasswordChange() {
-            return resetActions.resetPassword( this.state.token, this.code(), this.password() );
-        }
-
-        function toProfile() {
-            setTimeout( () => {
-                authStore.authenticate()
-                    .then( () => this.transitionTo( 'profile' ) );
-            } );
-        }
-
-        function errors( e ) {
-            if ( e.name === 'CheckitError' ) {
-                this.setState( {
-                    errors: e.toJSON()
-                } );
-            } else {
-                let error = e.responseJSON;
-
-                this.setState( {
-                    errors: {
-                        password: error.message
-                    }
-                } );
-            }
-        }
-
-    },
 
     email() {
         return _.trim( this.state.email );
@@ -305,6 +179,4 @@ export default React.createClass( {
             'has-error': this.state.errors[ field ]
         } );
     }
-
-
 } );

@@ -5,7 +5,7 @@ import baseUrl from 'utils/baseUrl';
 
 export function requestPasswordReset( email ) {
     return when(
-        post( baseUrl( 'resets/request-reset' ), {
+        post( baseUrl( 'auth/reset_password' ), {
             params: {
                 email
             }
@@ -13,12 +13,12 @@ export function requestPasswordReset( email ) {
     );
 }
 
-export function verifyCode( token, code ) {
+export function verifyCode( token, password) {
     return when(
-        post( baseUrl( 'resets/verify' ), {
+        post( baseUrl( 'auth/verify_reset_password_token' ), {
             params: {
                 token,
-                code
+                password
             }
         } )
     );

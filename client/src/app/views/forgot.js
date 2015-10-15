@@ -2,21 +2,16 @@ import _ from 'lodash';
 import React from 'react/addons';
 import cx from 'classnames';
 import { Button } from 'react-bootstrap';
-import { Navigation } from 'react-router';
 import DocTitle from 'components/docTitle';
 import resetActions from 'actions/reset';
 
-import authStore from 'stores/auth';
-
 import ValidateEmail from 'services/validateEmail';
 import ValidateRequiredField from 'services/validateRequiredField';
-import ValidatePassword from 'services/validatePassword';
 
 export default React.createClass( {
 
     mixins: [
         React.addons.LinkedStateMixin,
-        Navigation
     ],
 
     getInitialState() {

@@ -11,6 +11,7 @@ import Logout from 'views/logout';
 import MainLanding from 'views/mainLanding';
 import UserProfile from 'views/userProfile';
 import RegistrationComplete from 'views/registrationComplete';
+import ResetPassword from 'views/resetPassword';
 import MyProfile from 'views/myProfile';
 
 let routes = (
@@ -22,7 +23,8 @@ let routes = (
         <Route component={Forgot} path="forgot"/>
 
         <Route component={UserProfile} name="userProfile" path="users/:id"/>
-        <Route component={RegistrationComplete} name="verifyEmail" onEnter={RegistrationComplete.onEnter} path="verifyEmail/:code"/>
+        <Route component={RegistrationComplete} name="verifyEmail" path="verifyEmail/:code"/>
+        <Route component={ResetPassword} name="ResetPasswordToken" path="resetPassword/:token"/>
 
         <Route component={Account} name="account" path="/my">
             <Route component={MyProfile} path="profile"/>

@@ -2,19 +2,16 @@ import Reflux from 'reflux';
 
 import {
     requestPasswordReset,
-    verifyCode,
-    resetPassword
+    verifyResetPasswordToken
 } from 'resources/resets';
 
 let actions = Reflux.createActions( {
     //async action
     requestPasswordReset: { asyncResult: true },
-    verifyCode: { asyncResult: true },
-    resetPassword: { asyncResult: true }
+    verifyResetPasswordToken: { asyncResult: true }
 } );
 
 export default actions;
 
 actions.requestPasswordReset.listenAndPromise( requestPasswordReset );
-actions.verifyCode.listenAndPromise( verifyCode );
-actions.resetPassword.listenAndPromise( resetPassword );
+actions.verifyResetPasswordToken.listenAndPromise( verifyResetPasswordToken );

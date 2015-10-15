@@ -62,7 +62,8 @@ export default function UserApi(app, publisherUser) {
         return user.toJSON();
       } else {
         log.warn("verifyEmailCode: no such code ", param.code);
-        return Promise.reject({
+        throw ({
+          code:422,
           name:"NoSuchCode"
         });
       }
@@ -119,16 +120,12 @@ export default function UserApi(app, publisherUser) {
         };
       } else {
         log.warn("verifyResetPasswordToken: no such token ", token);
-        return {
-          error:{
-            name:"TokenInvalid"
-          }
+
+        throw {
+          code:422,
+          name:"TokenInvalid"
         };
       }
-
-      return {
-        success:true
-      };
     }
   };
 }

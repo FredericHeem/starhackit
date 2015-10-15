@@ -17,16 +17,12 @@ export function convertAndRespond(error, res) {
   if (!error.name) {
     log.error('UnknownError', error);
     res.status(500).send({
-      error: {
-        name: 'UnknownError',
-        message: ''
-      }
+        name: 'UnknownError'
     });
   }
   else {
     log.error('error name', error);
-    res.status(400).send({
-      error: error
-    });
+    let code = error.code || 400;
+    res.status(code).send(error);
   }
 }

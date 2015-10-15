@@ -96,10 +96,9 @@ describe('UserRegister', function() {
   it('invalid email code', async (done) => {
     try {
       await client.post('v1/auth/verify_email_code', {code: "1234567890123456"});
-      done("should not get here");
     } catch(error){
-      assert.equal(error.statusCode, 400);
-      assert.equal(error.body.error.name, "NoSuchCode");
+      assert.equal(error.statusCode, 422);
+      assert.equal(error.body.name, "NoSuchCode");
       done();
     }
   });

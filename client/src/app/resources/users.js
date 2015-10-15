@@ -9,15 +9,3 @@ export function getProfile( userId ) {
         get( baseUrl( `users/${userId}` ) )
     );
 }
-
-export function getRecipes( user ) {
-    return when(
-        get( baseUrl( `users/${user.id}/recipes` ) )
-    );
-}
-
-export function getFriends( user ) {
-    return when(
-        get( baseUrl( `users/${user.id}/friends` ) )
-    );
-}

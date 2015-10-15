@@ -94,10 +94,13 @@ describe('PasswordReset', function () {
       password: "passWordNew"
     };
 
-    let res = await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
-    assert(res);
-    console.log(res);
-    assert.equal(res.error.name, 'TokenInvalid');
-    done();
+    try {
+      await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
+    } catch(res){
+      assert(res);
+      assert.equal(res.statusCode, 422);
+      assert.equal(res.body.name, 'TokenInvalid');
+      done();
+    }
   });
 });

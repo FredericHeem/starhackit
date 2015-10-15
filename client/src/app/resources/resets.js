@@ -13,23 +13,11 @@ export function requestPasswordReset( email ) {
     );
 }
 
-export function verifyCode( token, password) {
+export function verifyResetPasswordToken( token, password) {
     return when(
         post( baseUrl( 'auth/verify_reset_password_token' ), {
             params: {
                 token,
-                password
-            }
-        } )
-    );
-}
-
-export function resetPassword( token, code, password ) {
-    return when(
-        post( baseUrl( 'resets/reset-password' ), {
-            params: {
-                token,
-                code,
                 password
             }
         } )

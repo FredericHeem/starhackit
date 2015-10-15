@@ -7,10 +7,8 @@ import Server from './server';
 import * as HttpUtils from './utils/HttpUtils';
 
 let log = new Log(__filename, config.log);
-log.info("NODE_ENV: %s", process.env.NODE_ENV);
-if(process.env.NODE_CONFIG){
-  log.info("NODE_CONFIG is set");
-}
+
+displayInfoEnv();
 
 export default class App {
   constructor(){
@@ -39,4 +37,13 @@ export default class App {
     await Promise.each(this.parts, part => part.stop(this));
     log.info("stopped");
   };
+}
+
+function displayInfoEnv(){
+  log.info("NODE_ENV: %s", process.env.NODE_ENV);
+  if(process.env.NODE_CONFIG){
+    log.info("NODE_CONFIG is set");
+  }
+  log.info("USER: %s", process.env.USER);
+  log.info("PWD: %s", process.env.PWD);
 }

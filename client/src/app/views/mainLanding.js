@@ -299,7 +299,7 @@ export default React.createClass({
                                 <h4>
                                     <a href="https://codeclimate.com/"><strong>CodeClimate</strong></a>
                                 </h4>
-                                <p>Cocde Coverage and Code Review</p>
+                                <p>Code Coverage and Code Review</p>
                                 <p><a href="https://codeclimate.com/github/FredericHeem/starhackit"><img src="https://codeclimate.com/github/FredericHeem/starhackit/badges/gpa.svg" /></a></p>
                                 <p><a href="https://codeclimate.com/github/FredericHeem/starhackit/coverage"><img alt="Test Coverage" src="https://codeclimate.com/github/FredericHeem/starhackit/badges/coverage.svg"/></a></p>
                             </div>

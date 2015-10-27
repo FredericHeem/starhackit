@@ -39,7 +39,6 @@
     "gulp-rimraf": "^0.2.0",
     "gulp-stylus": "2.1.0",
     "gulp-util": "3.0.6",
-    "gulp-webpack": "1.5.0",
     "history": "^1.12.4",
     "jquery": "2.1.4",
     "load-script": "1.0.0",
@@ -64,6 +63,7 @@
     "url-loader": "0.5.6",
     "webpack": "1.12.2",
     "webpack-dev-server": "1.12.0",
+    "webpack-stream": "^2.1.1",
     "when": "3.7.3"
   }
 }

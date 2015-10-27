@@ -6,7 +6,7 @@ var webpack = require( 'webpack' );
 var gulpWebpack = require( 'gulp-webpack' );
 var WebpackDevServer = require( 'webpack-dev-server' );
 var stylus = require( 'gulp-stylus' );
-var clean = require( 'gulp-clean' );
+var clean = require( 'gulp-rimraf' );
 var runSequence = require( 'run-sequence' );
 var imagemin = require( 'gulp-imagemin' );
 
@@ -52,7 +52,7 @@ gulp.task( 'stylus:compile', function () {
         .pipe( gulp.dest( './src/assets' ) );
 } );
 
-gulp.task( 'clean:build', function () {
+gulp.task( 'clean', function () {
     return gulp.src( 'build/*', { read: false } )
         .pipe( clean() );
 } );
@@ -87,7 +87,7 @@ gulp.task( 'build:webpack', function () {
 
 gulp.task( 'build', function ( cb ) {
     runSequence(
-        'clean:build',
+        'clean',
         [ 'stylus:compile', 'build:cp' ],
         'build:webpack',
         'build:image:min',

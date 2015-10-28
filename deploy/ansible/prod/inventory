@@ -1,0 +1,2 @@
+[server]
+62.210.182.186 ansible_ssh_user=ops ansible_ssh_private_key_file=$HOME/.ssh/id_rsa_starthackitprod

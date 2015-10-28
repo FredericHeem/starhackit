@@ -1,0 +1,4 @@
+app_name: starthackit
+git_repo: https://github.com/FredericHeem/starhackit.git
+git_version: master
+api_dir: '{{home}}/{{app_name}}'

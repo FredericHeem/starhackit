@@ -1,0 +1,5 @@
+# file: roles/api/handlers/main.yml
+---
+
+- name: restart api
+  service: name=api state=restarted

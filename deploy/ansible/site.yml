@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: vagrant
+  sudo: true
+  roles:
+  #- nodesource.node
+  - mrlesmithjr.rabbitmq
+  - api

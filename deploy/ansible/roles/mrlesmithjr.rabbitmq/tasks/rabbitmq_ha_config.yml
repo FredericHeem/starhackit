@@ -1,0 +1,30 @@
+---
+- name: rabbitmq_ha_config | install rabbitMQ admin
+  shell: wget http://guest:guest@localhost:55672/cli/rabbitmqadmin
+
+- name: rabbitmq_ha_config | moving the rabbitMQ Admin
+  shell: mv rabbitmqadmin /usr/sbin
+
+- name: rabbitmq_ha_config | making executable rabbitMQ Admin
+  shell: chmod +x /usr/sbin/rabbitmqadmin
+  notify: restart rabbitmq-server
+
+- name: rabbitmq_ha_config | creating queue(s)
+  command: rabbitmqadmin declare queue name={{ item.queue_name }} durable={{ item.durable|lower }}
+  run_once: true
+  with_items: rabbitmq_config
+
+- name: rabbitmq_ha_config | setting up ha on queue(s)
+  rabbitmq_policy: name='ha-all' pattern='{{ item.queue_name }}' tags="{{ item.tags }}" state=present
+  run_once: true
+  with_items: rabbitmq_config
+
+- name: rabbitmq_ha_config | creating exchange(s)
+  command: rabbitmqadmin declare exchange name={{ item.exchange_name }} type={{ item.type }}
+  run_once: true
+  with_items: rabbitmq_config
+
+- name: rabbitmq_ha_config | creating binding(s)
+  command: rabbitmqadmin declare binding source={{ item.exchange_name }} destination_type="queue" destination={{ item.queue_name }} routing_key={{ item.routing_key }}
+  run_once: true
+  with_items: rabbitmq_config

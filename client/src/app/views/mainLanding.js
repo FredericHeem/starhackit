@@ -63,7 +63,7 @@ export default React.createClass({
                                 <h4>
                                     <strong>Authentication</strong>
                                 </h4>
-                                <p>Account registration with username and password, or with identity provider such as google, facebook, tweeter, github etc ..</p>
+                                <p>Account registration with username and password, or with identity provider such as Google, Facebook, Twitter, GitHub etc ..</p>
                             </div>
                         </div>
 

@@ -1,2 +1,9 @@
 env_name: dev
+user: vagrant
 home: /home/vagrant
+node_env: development
+mail_service: Mailgun
+mail_user: 
+mail_password:
+facebook_client_id:
+facebook_client_secret:

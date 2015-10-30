@@ -3,7 +3,7 @@ export default function(app, auth, meHttpCtrl){
   let express = require("express");
   let router = new express.Router();
 
-  // get /me
   router.get('/me', auth.isAuthorized, meHttpCtrl.index);
+  router.patch('/me', auth.isAuthorized, meHttpCtrl.patch);
   return router;
 }

@@ -1,8 +1,7 @@
 import when from 'when';
-import {get, post} from 'utils/http';
+import {get, patch} from 'utils/http';
 
 import baseUrl from 'utils/baseUrl';
-
 
 export function getMyProfile() {
     return when(
@@ -12,10 +11,9 @@ export function getMyProfile() {
 
 export function updateMyProfile( packet ) {
     return when(
-        post( baseUrl( 'me' ), {
+        patch( baseUrl( 'me' ), {
             params: {
-                name: packet.name,
-                email: packet.email,
+                username: packet.username,
                 about: packet.about
             }
         } )

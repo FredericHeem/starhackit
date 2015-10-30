@@ -18,6 +18,9 @@ export function del( url, options = {} ) {
     return ajax( url, 'DELETE', options );
 }
 
+export function patch( url, options = {} ) {
+    return ajax( url, 'PATCH', options );
+}
 
 ///////////
 //// PRIVATE

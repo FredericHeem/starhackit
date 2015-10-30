@@ -20,5 +20,17 @@ describe('Users', function() {
       let me = await client.get('v1/me');
       assert(me);
     });
+    it('should patch user', async () => {
+      let data = {
+        username: "Ciccio"
+      };
+      await client.patch('v1/me', data);
+      //assert(me);
+      let dataOld = {
+        username: "alice"
+      };
+      await client.patch('v1/me', dataOld);
+    });
+
   });
 });

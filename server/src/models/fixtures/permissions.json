@@ -43,5 +43,11 @@
    "resource":"/me",
    "description":"Can get my info",
    "GET":true
+ },
+ {
+   "name":"/me patch",
+   "resource":"/me",
+   "description":"patch the user",
+   "PATCH":true
  }
 ]

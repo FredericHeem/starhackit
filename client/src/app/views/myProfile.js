@@ -6,7 +6,6 @@ import formLinkHandlers from 'mixins/formLinkHandlers';
 import ValidateProfileForm from 'services/validateProfileForm';
 
 import meStore from 'stores/me';
-//import authStore from 'stores/auth';
 
 import meActions from 'actions/me';
 
@@ -43,16 +42,15 @@ export default React.createClass({
                     <form className="form-horizontal" onSubmit={ (e) => e.preventDefault() }>
                         <div className="col-sm-11">
                             <div className={this.formClassNames( 'username' )}  >
-                                { this.renderUsername() }
 
-                                <legend>My Name</legend>
+                                <legend>My Username</legend>
                                 <input type="text"
                                        className="form-control"
                                        valueLink={ this.linkStore( meStore, 'username' ) }
                                     />
 
-                                { this.state.errors.name &&
-                                    <span className="label label-danger animate bounceIn">{ this.state.errors.name[ 0 ]}</span>
+                                { this.state.errors.username &&
+                                    <span className="label label-danger animate bounceIn">{ this.state.errors.username[ 0 ]}</span>
                                 }
                             </div>
                             <br/>
@@ -60,6 +58,7 @@ export default React.createClass({
                             <div className={this.formClassNames( 'email' )}  >
                                 <legend>My Email</legend>
                                 <input type="text"
+                                       disabled="true"
                                        className="form-control"
                                        valueLink={ this.linkStore( meStore, 'email' ) }
                                     />
@@ -102,19 +101,6 @@ export default React.createClass({
         );
     },
 
-    renderUsername() {
-        let profile = this.state.profile;
-
-        if ( profile.verifications && profile.verifications.length === 1 ) {
-            return (
-                <div className="username">
-                    <legend>My Username</legend>
-                    <strong>{ profile.verifications[0].provider_id }</strong>
-                </div>
-            );
-        }
-    },
-
     formClassNames( field ) {
         return cx( 'form-group', {
             'has-error': this.state.errors[ field ]
@@ -132,20 +118,16 @@ export default React.createClass({
             .then( successNotification )
             .catch( setErrors );
 
-
-
         function validateForm() {
             return new ValidateProfileForm( {
-                name: this.state.profile.name,
-                email: this.state.profile.email
+                username: this.state.profile.username,
             } )
-                .execute();
+            .execute();
         }
 
         function save() {
             return meActions.updateMyProfile( {
-                name: this.state.profile.name,
-                email: this.state.profile.email,
+                username: this.state.profile.username,
                 about: this.state.profile.about
             } );
         }

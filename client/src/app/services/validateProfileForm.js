@@ -8,8 +8,7 @@ export default class {
 
     execute() {
         let rules = new Checkit( {
-            name: [ 'required', 'minLength:3', 'maxLength:50' ],
-            email: [ 'email' ]
+            username: [ 'required', 'minLength:3', 'maxLength:64' ]
         } );
 
         return rules.run( this.payload );

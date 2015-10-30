@@ -7,5 +7,5 @@
    "/users/:user_id/accounts get"
   ],
   "AdminReadOnly": ["/users get"],
-  "User": ["/me get"]
+  "User": ["/me get", "/me patch"]
 }

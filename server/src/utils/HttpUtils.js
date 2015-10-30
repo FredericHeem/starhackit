@@ -2,11 +2,11 @@ import Log from 'logfilename';
 
 let log = new Log(__filename);
 
-export function respond(me, callback,args,res) {
+export function respond(me, callback, args, res, statusCode = 200) {
     //apply used to pass args to the callback
     callback.apply(me, args)
     .then(function(result){
-      res.send(result);
+      res.status(statusCode).send(result);
     })
     .catch(function(error){
       convertAndRespond(error,res);

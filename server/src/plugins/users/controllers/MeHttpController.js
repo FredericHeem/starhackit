@@ -6,8 +6,12 @@ export default function(app, meApi){
 
   return {
     index: function(req, res){
-      log.debug(req.user);
+      log.debug("get ", req.user);
       respond(meApi, meApi.index, [req.user.id], res);
+    },
+    patch: function(req, res){
+      log.debug("patch ", req.user);
+      respond(meApi, meApi.patch, [req.user.id, req.body], res, 204);
     }
   };
 }

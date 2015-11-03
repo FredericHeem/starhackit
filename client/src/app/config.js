@@ -6,17 +6,16 @@ let config = {
 
     general: {
         title: 'StarHackIt',
-        description: 'StarHackIt is a fullstack boilerplate written in es6/es7'
+        description: 'StarHackIt is a fullstack boilerplate written in es6/es7',
+        apiUrl: '/api/v1/'
     },
 
     development: {
-        homeUrl: 'http://localhost:8080/',
-        baseUrl: 'http://localhost:8080/api/v1/'
+
     },
 
     production: {
-        homeUrl: 'http://starhack.it/',
-        baseUrl: 'http://starhack.it/api/v1/'
+
     }
 };
 

@@ -4,7 +4,8 @@ home: /home/vagrant
 node_env: development
 website_url: "http://localhost:8000"
 mail_service: Mailgun
+mail_from: "StarHackIt Vagrant <notification-vagrant@starhack.it>"
 mail_user:
 mail_password:
-facebook_client_id: 
-facebook_client_secret:
+facebook_client_id:
+facebook_client_secret: 

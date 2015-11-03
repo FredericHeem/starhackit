@@ -14,7 +14,7 @@ var webpackProdConfig = {
     plugins: [
         new webpack.DefinePlugin( {
             'process.env': {
-                NODE_ENV: process.env.NODE_ENV || 'production'
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')
             }
         } ),
         new webpack.optimize.DedupePlugin(),

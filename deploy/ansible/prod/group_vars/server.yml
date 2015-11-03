@@ -1,1 +1,11 @@
+
+env_name: dev
+user: ubuntu
 home: /home/ubuntu
+node_env: production
+website_url: "http://starhack.it"
+mail_service: Mailgun
+mail_user:
+mail_password:
+facebook_client_id:
+facebook_client_secret:

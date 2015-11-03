@@ -2,7 +2,10 @@
 - hosts: all
   remote_user: vagrant
   sudo: true
+  vars_files:
+    - 'vars/nginx-vars.yml'
   roles:
-  #- nodesource.node
-  - mrlesmithjr.rabbitmq
-  - api
+   - nodesource.node
+   - mrlesmithjr.rabbitmq
+   - api
+   - nginx

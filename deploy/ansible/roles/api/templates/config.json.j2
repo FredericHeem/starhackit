@@ -1,5 +1,5 @@
 {
-  "websiteUrl": "http://localhost:8080",
+  "websiteUrl": "{{website_url}}",
   "liveReload":true,
   "db":{
     "driver": "sqlite3",
@@ -16,7 +16,7 @@
     "facebook":{
       "clientID": "{{facebook_client_id}}",
       "clientSecret": "{{facebook_client_secret}}",
-      "callbackURL": "http://localhost:8080/api/v1/auth/facebook/callback"
+      "callbackURL": "{{website_url}}/api/v1/auth/facebook/callback"
     }
   },
   "mail": {

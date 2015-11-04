@@ -1,0 +1,19 @@
+from: node:0.12
+services:
+  - rabbitmq:latest:
+      name: rabbitmq
+      persist: true
+      expose:
+        - 5672:5672
+expose:
+  - 3000:3000
+quiet: false
+forward: true
+tasks:
+  env: env
+  clean: rm -rf node_modules
+  install: npm install
+  test: npm run test
+  lint: npm run lint
+  build: npm run build
+  ci: .lint .test .build

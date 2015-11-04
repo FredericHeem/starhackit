@@ -7,8 +7,9 @@
     "type": "git",
     "url": "git@github.com:FredericHeem/starhackit.git"
   },
-  "license" : "NLPL",
+  "license": "NLPL",
   "scripts": {
+    "devlabinstall":"lab install",
     "prebuild": "npm run lint",
     "build": "./node_modules/.bin/gulp build:production",
     "start": "./node_modules/.bin/gulp",
@@ -80,6 +81,7 @@
     "chalk": "1.1.1",
     "codeclimate-test-reporter": "^0.1.1",
     "coveralls": "~2.11.4",
+    "devlab": "^1.5.1",
     "isparta": "^3.1.0",
     "istanbul": "~0.3.22",
     "mocha": "~2.3.3",

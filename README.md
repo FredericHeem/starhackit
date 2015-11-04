@@ -31,6 +31,8 @@ Technologies:
 * [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/starhackit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/starhackit)
 [![Test Coverage](https://codeclimate.com/github/FredericHeem/starhackit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/starhackit/coverage)
 * [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/starhackit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/starhackit?branch=master)
+* [DevLab](https://github.com/TechnologyAdvice/DevLab): Containerize your development workflow.
+* [Trevor](https://github.com/vdemedes/trevor): Your own Travis CI to run tests locally.
 
 # Workflow
 

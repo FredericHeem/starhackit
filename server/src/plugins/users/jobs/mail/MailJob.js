@@ -4,20 +4,12 @@ import ejs from 'ejs';
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
-
 let log = require('logfilename')(__filename);
-
-const subscriberOptions = {
-  exchange: 'user',
-  queueName: 'user',
-  routingKeys:['user.register', 'user.resetpassword']
-};
 
 export default class MailJob {
   constructor(config) {
-    log.info("MailJob subscriberOptions: ", subscriberOptions);
     this.config = config;
-    this.subscriber = new Subscriber(subscriberOptions);
+    this.subscriber = createSubscriber(config);
     log.debug("MailJob options: ", config.mail);
     if (config.mail && config.mail.smtp) {
       this.transporter = nodemailer.createTransport(config.mail.smtp);
@@ -126,4 +118,19 @@ export default class MailJob {
       return;
     }
   }
+}
+
+const subscriberOptions = {
+  exchange: 'user',
+  queueName: 'user',
+  routingKeys:['user.register', 'user.resetpassword']
+};
+
+function createSubscriber(config){
+  let rabbitmq = config.rabbitmq;
+  if(rabbitmq && rabbitmq.url){
+    subscriberOptions.url = rabbitmq.url;
+  }
+  log.info("createSubscriber: ", subscriberOptions);
+  return new Subscriber(subscriberOptions);
 }

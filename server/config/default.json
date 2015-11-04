@@ -37,7 +37,8 @@
   },
   "mail": {
     /*
-    "email_from": "notification@yourproject.com",
+    "from": "StarHackIt <notification@starhack.it>",
+    "signature": "The StarHackIt Team",
     "options": {
       "service": "Mailgun",
       "auth": {

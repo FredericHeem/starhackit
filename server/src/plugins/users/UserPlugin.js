@@ -31,8 +31,7 @@ export default class UserPlugin {
     log.debug("UserPlugin");
     this.app = app;
     this.auth = setupAuthentication(app);
-
-    this.publisherUser = new Publisher(publisherOption);
+    this.publisherUser = createPublisher();
 
     this.api = {
       me: new MeApi(app),
@@ -95,6 +94,15 @@ export default class UserPlugin {
   }
 }
 
+function createPublisher(){
+  let rabbitmq = config.rabbitmq;
+  if(rabbitmq && rabbitmq.url){
+    publisherOption.url = rabbitmq.url;
+  }
+
+  log.info("createPublisher: ", publisherOption);
+  return new Publisher(publisherOption);
+}
 function setupAuthentication(app) {
   let auth = new PassportAuth(app);
   app.auth = auth;

@@ -11,9 +11,8 @@ describe('MailJob', function () {
   let sandbox;
 
   before(async() => {
-    publisher = new Publisher({
-      exchange: "user"
-    }, config.log);
+    let options = {exchange:"user", url: config.rabbitmq.url};
+    publisher = new Publisher(options, config.log);
     await publisher.start();
   });
 

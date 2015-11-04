@@ -1,0 +1,12 @@
+web:
+  build: ./
+  volumes:
+    - ".:/app"
+  expose:
+    - "3000"
+  links:
+    - "db:rabbitmq"
+  command: npm start
+
+db:
+  image: rabbitmq

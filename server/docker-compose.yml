@@ -5,8 +5,15 @@ web:
   expose:
     - "3000"
   links:
-    - "db:rabbitmq"
+    - "rabbitmq"
+    - "postgres"
   command: npm start
 
-db:
+postgres:
+  image: postgres
+  expose:
+    - "5432"
+rabbitmq:
   image: rabbitmq
+  expose:
+    - "5672"

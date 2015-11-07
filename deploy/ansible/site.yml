@@ -1,6 +1,5 @@
 ---
 - hosts: all
-  remote_user: vagrant
   sudo: true
   vars_files:
     - 'vars/nginx-vars.yml'

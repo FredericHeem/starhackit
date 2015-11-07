@@ -14,7 +14,7 @@ nginx_sites:
  default:
      - listen 8000
      - server_name _
-     - root /home/vagrant/starthackit/client/build
+     - root {{ api_dir }}/client/build
      - index index.html
      - location /api/ {
          proxy_pass http://localhost:3000;

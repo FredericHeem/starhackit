@@ -11,11 +11,11 @@ let config = {
     },
 
     development: {
-
+        env: "development"
     },
 
     production: {
-
+        env: "production"
     }
 };
 

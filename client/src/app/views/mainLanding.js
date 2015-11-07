@@ -25,7 +25,7 @@ export default React.createClass({
                 <div className="header-container">
                     <div className="header clearfix">
                         <div className="text-vertical-center">
-                            <h1>ES7 StarterKit</h1>
+                            <h1>StarHackIt</h1>
                             <h2>A Full Stack Web Application Starter Kit </h2>
                             <h3>Built with React, Node, data backed by SQL</h3>
                             <br />
@@ -52,7 +52,7 @@ export default React.createClass({
                                 <h4>
                                     <strong>Full stack</strong>
                                 </h4>
-                                <p>A complete frontend and backend solution to bootstrap your application</p>
+                                <p>A complete frontend, backend and deployment solution to bootstrap your application</p>
                             </div>
                         </div>
 
@@ -306,6 +306,52 @@ export default React.createClass({
                             </div>
                         </div>
                     </div>
+                </section>
+
+                <section id="tech-stack-tools">
+                    <div className="row">
+                      <div className="col-md-12 text-center">
+                        <h3>
+                            <strong>Deployment Tools</strong>
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/ansible.png" alt='ansible' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="http://www.ansible.com/"><strong>Ansible</strong></a>
+                                </h4>
+                                <p>Deploy apps. Manage systems</p>
+                            </div>
+                        </div>
+                        <div className="col-md-4 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/vagrant.png" alt='vagrant' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="https://www.vagrantup.com/"><strong>Vagrant</strong></a>
+                                </h4>
+                                <p>Create and configure lightweight, reproducible, and portable development environments.</p>
+                            </div>
+                        </div>
+                        <div className="col-md-4 col-sm-6">
+                            <div className="start-item">
+                                <span className="fa-stack fa-4x">
+                                    <img src="assets/img/docker.png" alt='docker' width="64"/>
+                                </span>
+                                <h4>
+                                    <a href="https://www.docker.com/"><strong>Docker</strong></a>
+                                </h4>
+                                <p>An open platform for distributed applications for developers and sysadmins</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </section>
 
                 <section id="info">

@@ -29,7 +29,8 @@ export default React.createClass({
                             <h2>A Full Stack Web Application Starter Kit </h2>
                             <h3>Built with React, Node, data backed by SQL</h3>
                             <br />
-                            <button className="btn btn-primary btn-lg" onClick={ this.scrollTo( '#start' ) }>Find Out More</button>
+                            <a className="btn btn-primary btn-lg" href="https://github.com/FredericHeem/starhackit" target="_blank">
+                                <i className="fa fa-github"/> Clone the code on GitHub </a>
                         </div>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ nginx_http_params:
 
 nginx_sites:
  default:
-     - listen 8000
+     - listen {{ http_port }}
      - server_name _
      - root {{ api_dir }}/client/build
      - index index.html

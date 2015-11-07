@@ -3,6 +3,7 @@ user: vagrant
 home: /home/vagrant
 node_env: development
 website_url: "http://localhost:8000"
+http_port: 8000
 mail_service: Mailgun
 mail_from: "StarHackIt Vagrant <notification-vagrant@starhack.it>"
 mail_user:

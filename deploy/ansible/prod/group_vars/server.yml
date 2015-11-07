@@ -1,9 +1,10 @@
 
-env_name: dev
-user: ubuntu
-home: /home/ubuntu
+env_name: production
+user: ops
+home: /home/ops
 node_env: production
 website_url: "http://starhack.it"
+http_port: 80
 mail_service: Mailgun
 mail_from: "StarHackIt <notification@starhack.it>"
 mail_user:

@@ -78,6 +78,10 @@ To run the frontend webserver:
 
 Now open a browser at `http://localhost:8080`
 
+## Deployment
+
+See [Ansible README.md](deploy/ansible/README.md)
+
 # License
 
 See [LICENSE](LICENSE)

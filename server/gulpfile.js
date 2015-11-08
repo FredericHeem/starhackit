@@ -38,7 +38,7 @@ gulp.task( 'build:watch', function ( done ) {
 } );
 
 gulp.task( 'clean', function () {
-    return gulp.src( 'build/*', { read: false } )
+    return gulp.src( ['build/*', 'coverage'], { read: false } )
         .pipe( clean() );
 } );
 

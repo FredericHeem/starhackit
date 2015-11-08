@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "install": "(cd client && npm install) && (cd server && npm install)",
+    "clean": "(cd client && npm clean) && (cd server && npm clean)",
     "test": "cd server && npm test"
   },
   "repository": {

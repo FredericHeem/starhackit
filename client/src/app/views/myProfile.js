@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import Reflux from 'reflux';
 import cx from 'classnames';
 import DocTitle from 'components/docTitle';
@@ -16,7 +16,7 @@ export default React.createClass({
 
     mixins: [
         Reflux.connect( meStore, 'profile' ),
-        React.addons.LinkedStateMixin,
+        LinkedStateMixin,
         formLinkHandlers
     ],
 

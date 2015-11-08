@@ -1,10 +1,10 @@
-import React from 'react/addons';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 
 export default React.createClass( {
 
     mixins: [
-        React.addons.LinkedStateMixin
+        LinkedStateMixin
     ],
 
     getInitialState() {

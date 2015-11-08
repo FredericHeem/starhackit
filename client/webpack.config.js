@@ -32,7 +32,6 @@ module.exports = function ( options ) {
                 'marked',
                 'moment',
                 'react',
-                'react/addons',
                 'react-bootstrap',
                 'react-cookie',
                 'react-ga',

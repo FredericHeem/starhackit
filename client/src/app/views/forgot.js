@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react/addons';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import { Button } from 'react-bootstrap';
 import DocTitle from 'components/docTitle';
@@ -11,7 +11,7 @@ import ValidateRequiredField from 'services/validateRequiredField';
 export default React.createClass( {
 
     mixins: [
-        React.addons.LinkedStateMixin,
+        LinkedStateMixin,
     ],
 
     getInitialState() {

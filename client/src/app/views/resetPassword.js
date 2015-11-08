@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react/addons';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import { Button } from 'react-bootstrap';
 import DocTitle from 'components/docTitle';
@@ -14,7 +14,7 @@ let debug = new Debug("resetPasword");
 export default React.createClass( {
 
     mixins: [
-        React.addons.LinkedStateMixin,
+        LinkedStateMixin
     ],
 
     getInitialState() {

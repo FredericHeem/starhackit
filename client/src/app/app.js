@@ -3,7 +3,12 @@
 require( '../assets/main.css' );
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Reflux from 'reflux';
+import RefluxPromise from "reflux-promise";
+
+Reflux.use(RefluxPromise(require( 'when' ).promise));
+
 import { Router } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import routes from './routes';
@@ -15,7 +20,5 @@ let debug = new Debug("app");
 
 debug("begins");
 
-Reflux.setPromiseFactory( require( 'when' ).promise );
-
 let mountEl = document.getElementById('application');
-React.render(<Router history={createBrowserHistory()} routes={routes}/>, mountEl);
+ReactDOM.render(<Router history={createBrowserHistory()} routes={routes}/>, mountEl);

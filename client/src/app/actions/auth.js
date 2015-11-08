@@ -1,5 +1,9 @@
 import Reflux from 'reflux';
 
+// TODO find the real entry point, this is called before app.js
+import RefluxPromise from "reflux-promise";
+Reflux.use(RefluxPromise(require( 'when' ).promise));
+
 import {
     signupOrLoginThirdParty,
     signupLocal,
@@ -21,7 +25,6 @@ let actions = Reflux.createActions({
 } );
 
 export default actions;
-
 actions.signupOrLoginThirdParty.listenAndPromise( signupOrLoginThirdParty );
 actions.signupLocal.listenAndPromise( signupLocal );
 actions.verifyEmailCode.listenAndPromise( verifyEmailCode );

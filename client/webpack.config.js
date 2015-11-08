@@ -37,7 +37,6 @@ module.exports = function ( options ) {
                 'react-cookie',
                 'react-ga',
                 'react-doc-meta',
-                'react-pager',
                 'react-portal',
                 'react-router',
                 'react-textarea-autosize',

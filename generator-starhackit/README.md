@@ -1,17 +1,17 @@
-# generator-starthackit
+# generator-starhackit
 
-The starthackit Yeoman generator
+The starhackit Yeoman generator
 
 ## Getting Started
 
-### Installing Yeoman and starthackit yo generator
+### Installing Yeoman and starhackit yo generator
 
 ```bash
-npm install -g yo generator-starthackit
+npm install -g yo generator-starhackit
 ```
 
 Finally, initiate the generator:
 
 ```bash
-yo starthackit
+yo starhackit
 ```

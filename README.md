@@ -49,6 +49,7 @@ npm install -g yo generator-starhackit
 Finally, initiate the generator and answer the questions about your project:
 
 ```bash
+mkdir yourproject && cd $_
 yo starhackit
 ```
 

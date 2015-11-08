@@ -88,12 +88,10 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: {
     app: function () {
-      console.log("destinationPath: ", this.destinationPath());
+      //console.log("destinationPath: ", this.destinationPath());
       this.sourceRoot(path.join(__dirname, '../../../'));
-      console.log("sourceRoot: ", this.sourceRoot());
-      //this.mkdir("server");
+      //console.log("sourceRoot: ", this.sourceRoot());
       this.directory('server');
-      //this.mkdir("client");
       this.directory('client');
       this.directory('deploy');
       this.fs.copy(
@@ -113,6 +111,6 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function () {
-    this.installDependencies();
+    this.installDependencies({bower: false});
   }
 });

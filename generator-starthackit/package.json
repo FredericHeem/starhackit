@@ -1,0 +1,38 @@
+{
+  "name": "generator-starthackit",
+  "version": "0.0.1",
+  "description": "starthackit Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "https://github.com/FredericHeem/starhackit",
+  "author": {
+    "name": "FredericH",
+    "email": "frederic.heem@gmail.com",
+    "url": "https://github.com/FredericHeem"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "generators"
+  ],
+  "keywords": [
+    "yeoman-generator",
+    "boilerplate",
+    "fullstack",
+    "react",
+    "starterkit",
+    "es7"
+  ],
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "inquirer-npm-name": "^1.0.0",
+    "lodash": "^3.10.1",
+    "parse-author": "^0.2.0",
+    "yeoman-generator": "^0.19.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}

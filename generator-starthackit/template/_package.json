@@ -1,0 +1,13 @@
+{
+  "name": "starhackit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "(cd client && npm install) && (cd server && npm install)",
+    "test": "cd server && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:FredericHeem/starhackit.git"
+  }
+}

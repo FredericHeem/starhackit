@@ -6,6 +6,8 @@ var path = require('path');
 var _ = require('lodash');
 var parseAuthor = require('parse-author');
 var askName = require('inquirer-npm-name');
+var extend = require('deep-extend');
+var githubUsername = require('github-username');
 
 module.exports = yeoman.generators.Base.extend({
   constructor: function () {
@@ -16,12 +18,7 @@ module.exports = yeoman.generators.Base.extend({
     this.pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
 
     // Pre set the default props from the information we have at this point
-    this.props = {
-      name: this.pkg.name,
-      description: this.pkg.description,
-      version: this.pkg.version,
-      homepage: this.pkg.homepage
-    };
+    this.props = {};
 
     if (_.isObject(this.pkg.author)) {
       this.props.authorName = this.pkg.author.name;
@@ -62,36 +59,78 @@ module.exports = yeoman.generators.Base.extend({
         done();
       }.bind(this));
     },
+
     askFor: function () {
-      var done = this.async();
+     var done = this.async();
 
-      this.option('name', {
-         type: String,
-         required: false,
-         desc: 'Project name'
-       });
+     var prompts = [{
+       name: 'description',
+       message: 'Description',
+     }, {
+       name: 'homepage',
+       message: 'Project homepage url',
+     }, {
+       name: 'authorName',
+       message: 'Author\'s Name',
+       default: this.user.git.name(),
+       store: true
+     }, {
+       name: 'authorEmail',
+       message: 'Author\'s Email',
+       default: this.user.git.email(),
+       store: true
+     }, {
+       name: 'authorUrl',
+       message: 'Author\'s Homepage',
+       store: true
+     }, {
+       name: 'keywords',
+       message: 'Package keywords (comma to split)',
+       filter: _.words
+     }];
 
-      var prompts = [{
-        type: 'confirm',
-        name: 'someOption',
-        message: 'Would you like to enable this option?',
-        default: true
-      }];
+     this.prompt(prompts, function (props) {
+       this.props = extend(this.props, props);
+       done();
+     }.bind(this));
+   },
+   askForGithubAccount: function () {
+     var done = this.async();
+     githubUsername(this.props.authorEmail, function (err, username) {
+       this.prompt({
+         name: 'githubAccount',
+         message: 'GitHub username or organization',
+         default: username
+       }, function (prompt) {
+         this.props.githubAccount = prompt.githubAccount;
+         done();
+       }.bind(this));
+     }.bind(this));
+   },
+   askForRepoUrl: function () {
+    var done = this.async();
+    console.log("this.options.githubAccount ", this.props.githubAccount)
+    var prompts = [{
+      name: 'repoUrl',
+      message: 'repository url',
+      default: "git@github.com:" + this.props.githubAccount + '/' + this.props.name + ".git",
+      store: true
+    }];
 
-      this.prompt(prompts, function (props) {
-        this.props = props;
-        // To access props later use this.props.someOption;
-
-        done();
-      }.bind(this));
-    }
-  },
-
+    this.prompt(prompts, function (props) {
+      this.props = extend(this.props, props);
+      done();
+    }.bind(this));
+  }
+},
   writing: {
     app: function () {
-      //console.log("destinationPath: ", this.destinationPath());
+      this.sourceRoot(path.join(__dirname, 'template'));
+      this.fs.copy(
+        this.templatePath('_package.json'),
+        this.destinationPath('package.json')
+      );
       this.sourceRoot(path.join(__dirname, '../../../'));
-      //console.log("sourceRoot: ", this.sourceRoot());
       this.directory('server');
       this.directory('client');
       this.directory('deploy');
@@ -99,15 +138,28 @@ module.exports = yeoman.generators.Base.extend({
         this.templatePath('.travis.yml'),
         this.destinationPath('.travis.yml')
       );
-      this.sourceRoot(path.join(__dirname, 'template'));
-      this.fs.copy(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json')
-      );
+
     },
 
     projectfiles: function () {
-
+      var currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
+      console.log("name: ", this.props.name);
+      var pkg = {
+        name: _.kebabCase(this.props.name),
+        version: '0.0.0',
+        description: this.props.description,
+        homepage: this.props.homepage,
+        author: {
+          name: this.props.authorName,
+          email: this.props.authorEmail,
+          url: this.props.authorUrl
+        },
+        keywords: this.props.keywords
+      };
+console.log("name: ", this.props.repoUrl);
+      currentPkg.repository.url = this.props.repoUrl;
+      // Let's extend package.json so we're not overwriting user previous fields
+      this.fs.writeJSON('package.json', extend(currentPkg, pkg));
     }
   },
 

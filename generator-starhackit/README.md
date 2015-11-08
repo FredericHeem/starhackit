@@ -1,6 +1,6 @@
 # generator-starhackit
 
-The starhackit Yeoman generator
+The [starhackit](https://github.com/FredericHeem/starhackit) Yeoman generator
 
 ## Getting Started
 

@@ -6,7 +6,7 @@
     - git-core
     - build-essential
 
-- git: repo={{ git_repo }} dest='{{ api_dir }}' version={{git_version}}
+- git: repo={{ git_repo }} dest='{{ api_dir }}' version={{git_version}} force=yes
   become: yes
   become_user: "{{ ansible_ssh_user }}"
 

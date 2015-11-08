@@ -1,5 +1,6 @@
 {
   "name": "starhackit",
+  "description": "react + node fullstack starter kit with authentication and authorization, data backed by SQL",
   "version": "1.0.0",
   "private": true,
   "scripts": {

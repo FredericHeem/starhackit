@@ -1,7 +1,7 @@
 {
-  "name": "generator-starthackit",
+  "name": "generator-starhackit",
   "version": "0.0.1",
-  "description": "starthackit Yeoman generator",
+  "description": "starhackit Yeoman generator",
   "license": "MIT",
   "main": "app/index.js",
   "repository": "https://github.com/FredericHeem/starhackit",

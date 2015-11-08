@@ -156,7 +156,6 @@ module.exports = yeoman.generators.Base.extend({
         },
         keywords: this.props.keywords
       };
-console.log("name: ", this.props.repoUrl);
       currentPkg.repository.url = this.props.repoUrl;
       // Let's extend package.json so we're not overwriting user previous fields
       this.fs.writeJSON('package.json', extend(currentPkg, pkg));

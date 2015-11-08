@@ -23,7 +23,7 @@
     "react",
     "starterkit",
     "es7",
-    "ansible"
+    "ansible",
     "sequelize"
   ],
   "dependencies": {

@@ -10,8 +10,6 @@ export default Reflux.createStore( {
         this.listenTo( authActions.signupOrLoginThirdParty.completed, analytics.bind( this, 'Users', 'signupOrLoginThirdParty' ) );
         this.listenTo( authActions.signupLocal.completed, analytics.bind( this, 'Users', 'signupLocal' ) );
         this.listenTo( authActions.loginLocal.completed, analytics.bind( this, 'Users', 'loginLocal' ) );
-
-
     }
 } );
 

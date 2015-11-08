@@ -35,35 +35,13 @@ module.exports = yeoman.generators.Base.extend({
     }
   },
   prompting: {
-
-    askFor: function () {
-      var done = this.async();
-
-      this.option('name', {
-         type: String,
-         required: false,
-         desc: 'Project name'
-       });
-
+    say: function () {
       // Have Yeoman greet the user.
       this.log(yosay(
         'Welcome to the sweet ' + chalk.red('Starthackit') + ' generator!'
       ));
-
-      var prompts = [{
-        type: 'confirm',
-        name: 'someOption',
-        message: 'Would you like to enable this option?',
-        default: true
-      }];
-
-      this.prompt(prompts, function (props) {
-        this.props = props;
-        // To access props later use this.props.someOption;
-
-        done();
-      }.bind(this));
     },
+
     askForModuleName: function () {
       if (this.options.name) {
         this.props.name = _.kebabCase(this.options.name);
@@ -81,6 +59,29 @@ module.exports = yeoman.generators.Base.extend({
         }
       }, this, function (name) {
         this.props.name = name;
+        done();
+      }.bind(this));
+    },
+    askFor: function () {
+      var done = this.async();
+
+      this.option('name', {
+         type: String,
+         required: false,
+         desc: 'Project name'
+       });
+
+      var prompts = [{
+        type: 'confirm',
+        name: 'someOption',
+        message: 'Would you like to enable this option?',
+        default: true
+      }];
+
+      this.prompt(prompts, function (props) {
+        this.props = props;
+        // To access props later use this.props.someOption;
+
         done();
       }.bind(this));
     }

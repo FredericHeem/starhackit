@@ -1,0 +1,63 @@
+---
+nginx_redhat_pkg:
+  - nginx
+
+nginx_ubuntu_pkg:
+  - python-selinux
+  - nginx
+
+nginx_freebsd_pkg:
+  - nginx
+
+nginx_suse_pkg:
+  - nginx
+
+yum_epel_repo: epel
+yum_base_repo: base
+
+nginx_official_repo: False
+
+keep_only_specified: False
+
+nginx_installation_type: "packages"
+nginx_binary_name: "nginx"
+nginx_service_name: "{{nginx_binary_name}}"
+nginx_conf_dir: "{% if ansible_os_family == 'FreeBSD' %}/usr/local/etc/nginx{% else %}/etc/nginx{% endif %}"
+
+nginx_user: "{% if ansible_os_family == 'RedHat' or ansible_os_family == 'Suse' %}nginx{% elif ansible_os_family == 'Debian' %}www-data{% elif ansible_os_family == 'FreeBSD' %}www{% endif %}"
+nginx_group: "{{nginx_user}}"
+
+nginx_pid_file: '/var/run/{{nginx_service_name}}.pid'
+
+nginx_worker_processes: "{{ ansible_processor_vcpus }}"
+nginx_worker_rlimit_nofile: 1024
+nginx_log_dir: "/var/log/nginx"
+
+nginx_events_params:
+  - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}512{% endif %}
+
+nginx_http_params:
+  - sendfile "on"
+  - tcp_nopush "on"
+  - tcp_nodelay "on"
+  - keepalive_timeout "65"
+  - access_log "{{nginx_log_dir}}/access.log"
+  - error_log "{{nginx_log_dir}}/error.log"
+  - server_tokens off
+  - types_hash_max_size 2048
+
+nginx_sites:
+  default:
+     - listen 80 default_server
+     - server_name _
+     - root "{% if ansible_os_family == 'FreeBSD' %}/usr/local/www/nginx-dist{% else %}/usr/share/nginx/html{% endif %}"
+     - index index.html
+nginx_remove_sites: []
+
+nginx_configs: {}
+nginx_remove_configs: []
+
+nginx_auth_basic_files: {}
+nginx_remove_auth_basic_files: []
+
+nginx_daemon_mode: "on"

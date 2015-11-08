@@ -1,0 +1,8 @@
+---
+
+nginx_env:
+ RUNLEVEL: 1
+
+nginx_installation_types_using_service: ["packages", "configuration-only"]
+
+nginx_is_el: "{{ ansible_distribution in ['RedHat', 'CentOS'] }}"

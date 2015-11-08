@@ -1,0 +1,10 @@
+#{{ ansible_managed }}
+server {
+{% for v in nginx_sites[item] %}
+{% if v.find('\n') != -1 %}
+   {{v.replace("\n","\n   ")}}
+{% else %}
+   {% if v != "" %}{{ v.replace(";",";\n      ").replace(" {"," {\n      ").replace(" }"," \n   }\n") }}{% if v.find('{') == -1%};
+{% endif %}{% endif %}{% endif %}
+{% endfor %}
+}

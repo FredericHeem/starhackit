@@ -1,7 +1,7 @@
 {
   "name": "generator-starhackit",
   "version": "0.0.1",
-  "description": "starhackit Yeoman generator",
+  "description": "Starhackit Yeoman generator - fullstack startkit based on react and node",
   "license": "MIT",
   "main": "app/index.js",
   "repository": "https://github.com/FredericHeem/starhackit",
@@ -22,7 +22,9 @@
     "fullstack",
     "react",
     "starterkit",
-    "es7"
+    "es7",
+    "ansible"
+    "sequelize"
   ],
   "dependencies": {
     "chalk": "^1.0.0",

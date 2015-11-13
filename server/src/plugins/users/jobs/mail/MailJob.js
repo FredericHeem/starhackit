@@ -21,10 +21,13 @@ export default class MailJob {
   async start() {
     log.info('start');
     await this.subscriber.start(this._onIncomingMessage.bind(this));
+    log.info('started');
   }
 
   async stop() {
+    log.info('stop');
     await this.subscriber.stop();
+    log.info('stopped');
   }
 
   async getTemplate(type){

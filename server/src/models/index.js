@@ -8,7 +8,7 @@ let config = require('config');
 let log = require('logfilename')(__filename);
 let db        = {};
 let dbConfig = config.db;
-let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+let sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, dbConfig);
 fs
   .readdirSync(__dirname)
   .filter(function(file) {

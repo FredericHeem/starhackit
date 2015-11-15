@@ -54,23 +54,19 @@ db.start = function(app){
 db.stop = function(){
   log.info("db stop");
 };
-/*
-db.seedDB = function () {
-  log.info("seedDB");
+
+db.seed = async function (app) {
+  log.info("seed");
   let option = {force:true};
-  return sequelize.sync(option)
-  .then(function() {
-    return seedDefault();
-  })
-  .then(function() {
-    log.info("seeded");
-  });
+  await sequelize.sync(option);
+  await seedDefault(app);
+  log.info("seeded");
 };
-*/
+
 function seedDefault(app){
-  log.debug("seedDefault");
-  assert(app.plugins.users);
-  return app.plugins.users.seedDefault();
+  log.debug("seedDefault ");
+  assert(app.plugins.get().users);
+  return app.plugins.get().users.seedDefault();
 }
 
 db.seedIfEmpty = function (app){

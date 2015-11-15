@@ -27,6 +27,11 @@ export default class App {
     ];
   }
 
+  async seed(){
+    log.info("seed");
+    await this.data.seed(this);
+  }
+
   async start() {
     log.info("start");
     await Promise.each(this.parts, part => part.start(this));

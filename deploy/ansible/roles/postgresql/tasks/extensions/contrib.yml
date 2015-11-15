@@ -1,0 +1,11 @@
+# file: postgresql/tasks/extensions/contrib.yml
+
+- name: PostgreSQL | Extensions | Make sure the postgres contrib extensions are installed
+  apt:
+    name: "postgresql-contrib-{{postgresql_version}}"
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
+  notify:
+    - restart postgresql
+

@@ -9,9 +9,9 @@ api_dir: '{{home}}/{{app_name}}'
 
 mail_signature: "The StarHackIt Team"
 
-dbname:
-dbuser:
-dbpassword:
+db_name:
+db_user:
+db_password:
 
 mail_service: "Mailgun"
 mail_from:

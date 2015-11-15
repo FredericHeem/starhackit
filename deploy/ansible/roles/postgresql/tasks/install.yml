@@ -1,0 +1,56 @@
+# file: postgresql/tasks/install.yml
+
+# The standard ca-certs are needed because  without them apt_key will fail to
+# validate www.postgresql.org (or probably any other source).
+- name: PostgreSQL | Make sure the CA certificates are available
+  apt:
+    pkg: ca-certificates
+    state: present
+
+- name: PostgreSQL | Add PostgreSQL repository apt-key
+  apt_key:
+    id: "{{ postgresql_apt_key_id }}"
+    url: "{{ postgresql_apt_key_url }}"
+    state: present
+  when: postgresql_apt_key_url and postgresql_apt_key_id
+
+- name: PostgreSQL | Add PostgreSQL repository
+  apt_repository:
+    repo: "{{ postgresql_apt_repository }}"
+    state: present
+  when: postgresql_apt_repository
+
+- name: PostgreSQL | Add PostgreSQL repository preferences
+  template:
+    src: etc_apt_preferences.d_apt_postgresql_org_pub_repos_apt.pref.j2
+    dest: /etc/apt/preferences.d/apt_postgresql_org_pub_repos_apt.pref
+  when: postgresql_apt_pin_priority
+
+- name: PostgreSQL | Make sure the dependencies are installed
+  apt:
+    pkg: "{{item}}"
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
+  with_items: ["python-psycopg2", "python-pycurl", "locales"]
+
+- name: PostgreSQL | Install PostgreSQL
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
+  environment: postgresql_env
+  with_items:
+    - "postgresql-{{postgresql_version}}"
+    - "postgresql-client-{{postgresql_version}}"
+    - "postgresql-contrib-{{postgresql_version}}"
+
+- name: PostgreSQL | PGTune
+  apt:
+    name: pgtune
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
+  environment: postgresql_env
+  when: postgresql_pgtune

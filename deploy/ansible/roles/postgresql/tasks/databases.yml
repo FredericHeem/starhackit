@@ -1,0 +1,80 @@
+# file: postgresql/tasks/databases.yml
+
+- name: PostgreSQL | Ensure PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
+
+- name: PostgreSQL | Make sure the PostgreSQL databases are present
+  postgresql_db:
+    name: "{{item.name}}"
+    owner: "{{postgresql_database_owner}}"
+    encoding: "{{postgresql_encoding}}"
+    lc_collate: "{{postgresql_locale}}"
+    lc_ctype: "{{postgresql_locale}}"
+    port: "{{postgresql_port}}"
+    template: "template0"
+    state: present
+    login_user: "{{postgresql_admin_user}}"
+  sudo: yes
+  sudo_user: "{{postgresql_admin_user}}"
+  with_items: postgresql_databases
+  when: postgresql_databases|length > 0
+
+- name: PostgreSQL | Add hstore to the databases with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{postgresql_admin_user}} -c 'CREATE EXTENSION IF NOT EXISTS hstore;'"
+  with_items: postgresql_databases
+  register: hstore_ext_result
+  failed_when: hstore_ext_result.rc != 0 and ("already exists, skipping" not in hstore_ext_result.stderr)
+  changed_when: hstore_ext_result.rc == 0 and ("already exists, skipping" not in hstore_ext_result.stderr)
+  when: item.hstore is defined and item.hstore
+
+- name: PostgreSQL | Add uuid-ossp to the database with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{postgresql_admin_user}} -c 'CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";'"
+  with_items: postgresql_databases
+  register: uuid_ext_result
+  failed_when: uuid_ext_result.rc != 0 and ("already exists, skipping" not in uuid_ext_result.stderr)
+  changed_when: uuid_ext_result.rc == 0 and ("already exists, skipping" not in uuid_ext_result.stderr)
+  when: item.uuid_ossp is defined and item.uuid_ossp
+
+- name: PostgreSQL | Add postgis to the databases with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{postgresql_admin_user}} -c 'CREATE EXTENSION IF NOT EXISTS postgis;'&&psql {{item.name}} -c 'CREATE EXTENSION IF NOT EXISTS postgis_topology;'"
+  with_items: postgresql_databases
+  when: item.gis is defined and item.gis
+
+- name: postgresql | add cube to the database with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{ postgresql_admin_user }} -c 'create extension if not exists cube;'"
+  with_items: postgresql_databases
+  when: item.cube is defined and item.cube
+
+- name: PostgreSQL | Add plpgsql to the database with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{ postgresql_admin_user }} -c 'CREATE EXTENSION IF NOT EXISTS plpgsql;'"
+  with_items: postgresql_databases
+  when: item.plpgsql is defined and item.plpgsql
+
+- name: postgresql | add earthdistance to the database with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{ postgresql_admin_user }} -c 'create extension if not exists earthdistance;'"
+  with_items: postgresql_databases
+  when: item.earthdistance is defined and item.earthdistance
+
+- name: PostgreSQL | Add citext to the database with the requirement
+  sudo: yes
+  sudo_user: "{{ postgresql_service_user }}"
+  shell: "psql {{item.name}} --username {{postgresql_admin_user}} -c 'CREATE EXTENSION IF NOT EXISTS citext;'"
+  with_items: postgresql_databases
+  register: citext_ext_result
+  failed_when: citext_ext_result.rc != 0 and ("already exists, skipping" not in citext_ext_result.stderr)
+  changed_when: citext_ext_result.rc == 0 and ("already exists, skipping" not in citext_ext_result.stderr)
+  when: item.citext is defined and item.citext

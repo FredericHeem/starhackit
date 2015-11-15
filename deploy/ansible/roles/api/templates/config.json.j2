@@ -2,15 +2,14 @@
   "websiteUrl": "{{website_url}}",
   "liveReload":true,
   "db":{
-    "driver": "sqlite3",
-    "dialect":"sqlite",
-    "database": "dev",
-    "user": "user",
-    "password": "password",
+    "driver": "pg",
+    "dialect":"postgres",
+    "database": "{{ db_name }}",
+    "user": "{{ db_user }}",
+    "password": "{{ db_password }}",
     "host": "localhost",
     "port": "5432",
-    "logging": true,
-    "storage": "./db.dev.sqlite"
+    "logging": true
   },
   "authentication":{
     "facebook":{

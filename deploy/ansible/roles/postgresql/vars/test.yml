@@ -1,0 +1,10 @@
+---
+blah: one
+postgresql_databases:
+  - name: foobar
+postgresql_users:
+  - name: baz
+    pass: pass
+postgresql_user_privileges:
+  - name: baz
+    db: foobar

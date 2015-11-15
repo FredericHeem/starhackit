@@ -20,29 +20,19 @@ module.exports = {
         type: Sequelize.TEXT
       },
       POST: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        type: Sequelize.BOOLEAN
       },
       GET: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        type: Sequelize.BOOLEAN
       },
       PUT: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        type: Sequelize.BOOLEAN
       },
       PATCH: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        type: Sequelize.BOOLEAN
       },
       DELETE: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

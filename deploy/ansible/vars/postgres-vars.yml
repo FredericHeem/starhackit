@@ -1,0 +1,10 @@
+---
+postgresql_version: 9.4
+# List of databases to be created (optional)
+postgresql_databases:
+  - name: "{{ db_name }}"
+
+postgresql_users:
+  - name: "{{ db_user }}"
+    pass: "{{ db_password }}"
+    encrypted: no       # denotes if the password is already encrypted.

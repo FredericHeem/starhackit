@@ -1,0 +1,33 @@
+---
+- hosts: db
+  sudo: true
+
+  tasks:
+  - name: install prerequisites
+    sudo: true
+    apt: name={{ item }} state=latest
+    with_items:
+      - libpq-dev
+      - python-psycopg2
+    tags:
+      - packages
+
+  - name: ensure apt cache is up to date
+    apt: update_cache=yes
+
+  - name: ensure postgresql is installed
+    apt: name={{item}}
+    with_items:
+        - postgresql
+
+  - name: ensure database is created
+    postgresql_db: name={{dbname}}
+    become_user: postgres
+
+  - name: ensure user has access to database
+    postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+    become_user: postgres
+
+  - name: ensure user does not have unnecessary privilege
+    postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER
+    become_user: postgres

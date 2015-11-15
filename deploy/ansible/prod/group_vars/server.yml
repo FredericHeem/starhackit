@@ -5,9 +5,13 @@ home: /home/ops
 node_env: production
 website_url: "http://starhack.it"
 http_port: 80
+dbname: "main"
+dbuser: "postgres"
+dbpassword: ""
 mail_service: Mailgun
 mail_from: "StarHackIt <notification@starhack.it>"
-mail_user: postmaster@starhackit.mailgun.org
-mail_password: 1b901d8d9a2806754225ad177fe93a1b
-facebook_client_id: 1643377549272954
-facebook_client_secret: 1da6597bec02ca41f3950641c6e928fe
+mail_user:
+mail_password:
+facebook_client_id:
+facebook_client_secret:
+google_analytics: 

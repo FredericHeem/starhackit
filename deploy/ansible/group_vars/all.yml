@@ -1,7 +1,24 @@
 app_name: starhackit
 title: StarHackIt
 description: StarHackIt is a fullstack boilerplate written in es6/es7
+
 git_repo: https://github.com/FredericHeem/starhackit.git
 git_version: master
+
 api_dir: '{{home}}/{{app_name}}'
+
 mail_signature: "The StarHackIt Team"
+
+dbname:
+dbuser:
+dbpassword:
+
+mail_service: "Mailgun"
+mail_from:
+mail_user:
+mail_password:
+
+facebook_client_id:
+facebook_client_secret:
+
+google_analytics:

@@ -8,3 +8,5 @@
    - mrlesmithjr.rabbitmq
    - api
    - nginx
+
+- include: postgres.yml

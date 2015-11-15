@@ -1,2 +1,8 @@
+#main ansible_host=192.168.33.10 ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/host0/virtualbox/private_key
+
 [server]
+192.168.33.10 ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/host0/virtualbox/private_key
+
+
+[db]
 192.168.33.10 ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/host0/virtualbox/private_key

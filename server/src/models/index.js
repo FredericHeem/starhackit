@@ -38,17 +38,12 @@ db.queryStringToFilter = function(qs, orderBy){
   return filter;
 };
 
-db.start = function(app){
+db.start = async function(app){
   log.info("db start");
   let option = {force:false};
-
-  return sequelize.sync(option)
-  .then(function() {
-       return db.seedIfEmpty(app);
-  })
-  .then(function() {
-       log.info("db started");
-  });
+  await sequelize.sync(option);
+  await db.seedIfEmpty(app);
+  log.info("db started");
 };
 
 db.stop = function(){
@@ -69,16 +64,14 @@ function seedDefault(app){
   return app.plugins.get().users.seedDefault();
 }
 
-db.seedIfEmpty = function (app){
+db.seedIfEmpty = async function (app){
   log.info("seedIfEmpty");
-  return sequelize.models.User.count()
-   .then(function(count){
-     if(count > 0){
-       log.info("isSeeded #users: ", count);
-     } else {
-       return seedDefault(app);
-     }
-   });
+  let count = await sequelize.models.User.count();
+  if(count > 0){
+    log.info("seedIfEmpty #users: ", count);
+  } else {
+    return seedDefault(app);
+  }
 };
 db.upsertRows = function (model, contents) {
   log.debug("upsertRows length ", contents.length);

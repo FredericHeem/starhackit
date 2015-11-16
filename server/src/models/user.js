@@ -137,7 +137,7 @@ module.exports = function(sequelize, DataTypes) {
           let where = {
               resource: resource,
           };
-          where[action.toLowerCase()] = true;
+          where[action.toUpperCase()] = true;
           return this.find({
             include: [
                       {

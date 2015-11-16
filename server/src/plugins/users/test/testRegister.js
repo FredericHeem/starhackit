@@ -1,8 +1,8 @@
 let assert = require('assert');
-let crypto = require('crypto');
 import sinon from 'sinon';
 import {Client} from 'restauth';
 import testMngr from '~/test/testManager';
+let chance = require('chance')();;
 
 describe('UserRegister', function() {
   let app = testMngr.app;
@@ -29,8 +29,7 @@ describe('UserRegister', function() {
   });
 
   function createUsernameRandom() {
-    let sha = crypto.createHash('sha256');
-    let username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    let username = chance.name();
     return username;
   }
 

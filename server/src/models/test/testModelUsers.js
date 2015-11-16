@@ -1,8 +1,8 @@
 import 'mochawait';
 import _ from 'lodash';
 import assert from 'assert';
-import crypto from 'crypto';
 import testMngr from '~/test/testManager';
+let chance = require('chance')();
 
 //let fixtures = require(__dirname + '/../fixtures/models/users');
 
@@ -18,8 +18,7 @@ describe('UserModel', function(){
   });
 
   it('should successfully create an entry', async () => {
-    let sha  = crypto.createHash('sha256');
-    let username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    let username = chance.name();
     let userConfig = {
         username: username,
         password: "password",
@@ -36,7 +35,8 @@ describe('UserModel', function(){
       assert(false);
     } catch(err){
       assert.equal(err.name, "SequelizeUniqueConstraintError");
-      assert.equal(err.errors[0].message, "email must be unique");
+      // mail or username, depending on sqlite or postgres
+      assert(err.errors[0].message.includes("must be unique"));
     }
 
     await userCreated.destroy();
@@ -61,8 +61,7 @@ describe('UserModel', function(){
   });
 
   it('should not create a user with invalid group', async () => {
-    let sha  = crypto.createHash('sha256');
-    let username = "user" + sha.update(crypto.randomBytes(8)).digest('hex');
+    let username = chance.name();
     let userConfig = {
         username: username,
         password: "password",

@@ -57,6 +57,8 @@ export default class UserPlugin {
     };
 
     this.startStop = [this.jobs.mail, this.publisherUser];
+
+    this.registerRouter(app.server);
   }
 
   async start(){

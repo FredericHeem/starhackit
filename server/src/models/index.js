@@ -20,18 +20,21 @@ fs
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(function(modelName) {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.associate = function(){
+  log.debug("associate");
+  Object.keys(db).forEach(function(modelName) {
+    if (db[modelName].associate) {
+      db[modelName].associate(db);
+    }
+  });
+};
+
 db.models = function(){
     return db.sequelize.models;
-}
+};
 
 db.queryStringToFilter = function(qs, orderBy){
   let filter = {

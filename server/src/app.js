@@ -20,6 +20,8 @@ export default class App {
     this.server = new Server(this);
     this.plugins = new Plugins(this);
 
+    this.data.associate();
+
     this.parts = [
       this.data,
       this.server,

@@ -9,10 +9,8 @@ export default class Plugins {
     log.info('ctor');
     this.plugins = {
       users: new UserPlugin(app),
-      ticket: require('./ticket/TicketPlugin')
+      ticket: require('./ticket/TicketPlugin')(app, app.server)
     };
-
-    _.each(this.plugins, plugin => plugin.registerRouter(app.server));
   }
 
   get(){
@@ -20,14 +18,10 @@ export default class Plugins {
   }
 
   async start(){
-    log.info("start");
     await Promise.each(_.values(this.plugins), obj => obj.start(this.app));
-    log.info("started");
   }
 
   async stop(){
-    log.info("stop");
     await Promise.each(_.values(this.plugins), obj => obj.stop(this.app));
-    log.info("stopped");
   }
 }

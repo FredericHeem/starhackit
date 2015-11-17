@@ -3,7 +3,7 @@ let config = require('config');
 
 let log = require('logfilename')(__filename);
 
-export async function verify(models, req, accessToken, refreshToken, profile) {
+export async function verify(models, publisherUser, req, accessToken, refreshToken, profile) {
   log.debug("authentication reply from fb");
   //log.debug(accessToken);
   log.debug(JSON.stringify(profile, null, 4));
@@ -48,12 +48,15 @@ export async function verify(models, req, accessToken, refreshToken, profile) {
   user = await models.User.createUserInGroups(userConfig, ["User"]);
   let userCreated = user.toJSON();
   log.info("register created new user ", userCreated);
+  if(publisherUser){
+    await publisherUser.publish("user.registered", JSON.stringify(userCreated));
+  }
   return {
     user: userCreated
   };
 }
 
-export function register(passport, models) {
+export function register(passport, models, publisherUser) {
 
   let authenticationFbConfig = config.authentication.facebook;
   if (authenticationFbConfig && authenticationFbConfig.clientID) {
@@ -67,7 +70,7 @@ export function register(passport, models) {
       },
       async function (req, accessToken, refreshToken, profile, done) {
         try {
-          let res = await verify(models, req, accessToken, refreshToken, profile);
+          let res = await verify(models, publisherUser, req, accessToken, refreshToken, profile);
           done(res.err, res.user);
         } catch(err){
           done(err);

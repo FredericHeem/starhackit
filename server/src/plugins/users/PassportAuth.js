@@ -3,7 +3,7 @@ import {register as registerlocal} from './auth-strategy/LocalStrategy';
 
 let config = require('config');
 
-export default function(app) {
+export default function(app, publisherUser) {
   let log = require('logfilename')(__filename);
 
   let models = app.data.sequelize.models;
@@ -12,7 +12,7 @@ export default function(app) {
 
   if(config.has('authentication.facebook')) {
     let register = require('./auth-strategy/FacebookStrategy').register;
-    register(passport, models);
+    register(passport, models, publisherUser);
   }
 
   passport.serializeUser(function(user, done) {
@@ -39,6 +39,7 @@ export default function(app) {
 
   function isAuthorized(req, res, next) {
     if (!req.user) {
+      log.warn("isAuthorized user not set");
       return next({error:"UserNotSet"});
     }
     let routePath = req.route.path;

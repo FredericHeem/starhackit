@@ -14,7 +14,6 @@ describe('PasswordReset', function () {
     await testMngr.start();
     sandbox = sinon.sandbox.create();
     publisherUserStub = sinon.stub(app.plugins.get().users.publisherUser, "publish", (key, msg) => {
-      //console.log("publish has been called");
       //assert.equal(key, "user.register");
       assert(msg);
     });

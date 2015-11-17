@@ -29,20 +29,20 @@ describe('Facebook', function(){
   };
 
   it('create a new user, register it', async () => {
-    let res = await verify(models, req, accessToken, refreshToken, profile);
+    let res = await verify(models, null, req, accessToken, refreshToken, profile);
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);
     assert(!res.user.password);
     //console.log("verify again")
-    res = await verify(models, req, accessToken, refreshToken, profile);
+    res = await verify(models, null ,req, accessToken, refreshToken, profile);
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);
     assert(!res.user.password);
 
     profile.id = chance.integer({min: 1000000, max: 1000000000}).toString();
-    res = await verify(models, req, accessToken, refreshToken, profile);
+    res = await verify(models, null, req, accessToken, refreshToken, profile);
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);

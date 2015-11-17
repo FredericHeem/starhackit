@@ -9,6 +9,7 @@ export default class Plugins {
     log.info('ctor');
     this.plugins = {
       users: new UserPlugin(app),
+      ticket: require('./ticket/TicketPlugin')
     };
 
     _.each(this.plugins, plugin => plugin.registerRouter(app.server));

@@ -15,7 +15,7 @@ describe('UserRegister', function() {
       sandbox = sinon.sandbox.create();
       sinon.stub(app.plugins.get().users.publisherUser, "publish", (key, msg) => {
         //console.log("publish has been called");
-        assert.equal(key, "user.register");
+        //assert.equal(key, "user.registered");
         assert(msg);
       });
   });
@@ -72,7 +72,7 @@ describe('UserRegister', function() {
     let user = res.get();
     assert(user.username, userConfig.username);
     assert(user.email, userConfig.email);
-    console.log("user password ", user.password);
+    //console.log("user password ", user.password);
 
     //The user shoud no longer be in the user_pendings table
     res = await models.UserPending.find({

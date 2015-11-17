@@ -125,8 +125,8 @@ export default class MailJob {
 
 const subscriberOptions = {
   exchange: 'user',
-  queueName: 'user',
-  routingKeys:['user.register', 'user.resetpassword']
+  queueName: 'mail',
+  routingKeys:['user.registering', 'user.resetpassword']
 };
 
 function createSubscriber(config){

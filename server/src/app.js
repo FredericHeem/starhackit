@@ -37,6 +37,7 @@ export default class App {
     await Promise.each(this.parts, part => part.start(this));
     log.info("started");
   };
+
   async stop() {
     log.info("stop");
     await Promise.each(this.parts, part => part.stop(this));

@@ -30,8 +30,8 @@ export default class UserPlugin {
   constructor(app){
     log.debug("UserPlugin");
     this.app = app;
-    this.auth = setupAuthentication(app);
     this.publisherUser = createPublisher();
+    this.auth = setupAuthentication(app, this.publisherUser);
 
     this.api = {
       me: new MeApi(app),
@@ -103,8 +103,8 @@ function createPublisher(){
   log.info("createPublisher: ", publisherOption);
   return new Publisher(publisherOption);
 }
-function setupAuthentication(app) {
-  let auth = new PassportAuth(app);
+function setupAuthentication(app, publisherUser) {
+  let auth = new PassportAuth(app, publisherUser);
   app.auth = auth;
   return auth;
 }

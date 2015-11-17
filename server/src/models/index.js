@@ -29,6 +29,10 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.models = function(){
+    return db.sequelize.models;
+}
+
 db.queryStringToFilter = function(qs, orderBy){
   let filter = {
     offset:qs.offset,
@@ -59,7 +63,7 @@ db.seed = async function (app) {
 };
 
 function seedDefault(app){
-  log.debug("seedDefault ");
+  log.debug("seedDefault");
   assert(app.plugins.get().users);
   return app.plugins.get().users.seedDefault();
 }

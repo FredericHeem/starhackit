@@ -35,7 +35,7 @@ describe('MailJob', function () {
     code:'1234567890123456'
   };
 
-  let emailType = 'user.register';
+  let emailType = 'user.registering';
 
   describe('Basic', () => {
     let mailJob;
@@ -106,13 +106,13 @@ describe('MailJob', function () {
     it('publish user.register', async(done) => {
       sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
         //console.log("_sendEmail has been called");
-        assert.equal(type, 'user.register');
+        assert.equal(type, 'user.registering');
         assert(userToSend);
         assert.equal(userToSend.email, user.email);
         done();
       });
 
-      await publisher.publish("user.register", JSON.stringify(user));
+      await publisher.publish("user.registering", JSON.stringify(user));
     });
     it('publish user.resetpassword', async(done) => {
       sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {

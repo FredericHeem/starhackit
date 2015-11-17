@@ -31,7 +31,7 @@ export default function UserApi(app, publisherUser) {
         log.info("createPending code ", userPendingOut.code);
         await models.UserPending.create(userPendingOut);
         delete userPendingOut.password;
-        await publisherUser.publish("user.register", JSON.stringify(userPendingOut));
+        await publisherUser.publish("user.registering", JSON.stringify(userPendingOut));
       } else {
         log.info("already registered", userPendingIn.email);
       }
@@ -59,6 +59,7 @@ export default function UserApi(app, publisherUser) {
           }
         });
         log.debug("verifyEmailCode: user ", user.toJSON());
+        await publisherUser.publish("user.registered", JSON.stringify(user.toJSON()));
         return user.toJSON();
       } else {
         log.warn("verifyEmailCode: no such code ", param.code);

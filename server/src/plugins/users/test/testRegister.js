@@ -13,7 +13,8 @@ describe('UserRegister', function() {
   before(async () => {
       await testMngr.start();
       sandbox = sinon.sandbox.create();
-      sinon.stub(app.plugins.get().users.publisherUser, "publish", (key, msg) => {
+      assert(app.plugins);
+      sinon.stub(app.plugins.get().users.publisher, "publish", (key, msg) => {
         //console.log("publish has been called");
         //assert.equal(key, "user.registered");
         assert(msg);

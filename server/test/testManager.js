@@ -9,16 +9,16 @@ var log = require('logfilename')(__filename);
 
 var TestMngr = function(){
 
-  this.app = new App();
+  this.app = App();
 
-  var users = require(__dirname + '/fixtures/models/users.json');
+  let users = require(__dirname + '/fixtures/models/users.json');
 
   log.debug("TestMngr");
 
-  var clientsMap = {};
+  let clientsMap = {};
 
   _.each(users,function(userConfig, key) {
-    var client = new Client(userConfig);
+    let client = new Client(userConfig);
     clientsMap[key] = client;
   });
 

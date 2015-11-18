@@ -17,55 +17,60 @@ let log = new Log(__filename);
 
 const publisherOption = { exchange: "user" };
 
-export default class UserPlugin {
-  constructor(app){
-    log.debug("UserPlugin");
-    this.app = app;
-    this.publisherUser = createPublisher();
-    this.auth = setupAuthentication(app, this.publisherUser);
+export default function UserPlugin(app){
+  let publisher = createPublisher();
+  let auth = setupAuthentication(app, publisher);
 
-    let router = app.server.baseRouter();
-    let authenticationRouter = AuthenticationRouter(app, this.auth, this.publisherUser);
-    router.use('/auth', authenticationRouter);
+  setupRouter(app, auth, publisher);
 
-    let meRouter = MeRouter(app, app.auth);
-    router.use('/me', this.auth.ensureAuthenticated, meRouter);
+  let models = app.data.sequelize.models;
 
-    let usersRouter = UserRouter(app, app.auth);
-    router.use('/users', this.auth.ensureAuthenticated, usersRouter);
+  let mailJob = new MailJob(config);
 
-    this._models = app.data.sequelize.models;
+  let startStop = [mailJob, publisher];
 
-    this.jobs = {
-      mail: new MailJob(config)
-    };
+  return {
+    publisher:publisher,
+    async start(){
+      await Promise.each(startStop, obj => obj.start(app));
+    },
 
-    this.startStop = [this.jobs.mail, this.publisherUser];
-  }
+    async stop(){
+      await Promise.each(startStop, obj => obj.stop(app));
+    },
 
-  async start(){
-    await Promise.each(this.startStop, obj => obj.start(this.app));
-  }
+    seedDefault(){
+      let seedDefaultFns = [
+        models.Group.seedDefault,
+        models.User.seedDefault,
+        models.Permission.seedDefault,
+        models.GroupPermission.seedDefault
+      ];
+      return Promise.each(seedDefaultFns, fn => fn());
+    },
 
-  async stop(){
-    await Promise.each(this.startStop, obj => obj.stop(this.app));
-  }
+    async isSeeded() {
+      let count = await models.User.count();
+      log.debug("#users ", count);
+      return count;
+    }
+  };
+}
 
-  seedDefault(){
-    let seedDefaultFns = [
-      this._models.Group.seedDefault,
-      this._models.User.seedDefault,
-      this._models.Permission.seedDefault,
-      this._models.GroupPermission.seedDefault
-    ];
-    return Promise.each(seedDefaultFns, fn => fn());
-  }
+function setupRouter(app, auth, publisherUser){
+  let router = app.server.baseRouter();
 
-  async isSeeded() {
-    let count = await this._models.User.count();
-    log.debug("#users ", count);
-    return count;
-  }
+  //Authentication
+  let authenticationRouter = AuthenticationRouter(app, auth, publisherUser);
+  router.use('/auth', authenticationRouter);
+
+  //Me
+  let meRouter = MeRouter(app, auth);
+  router.use('/me', auth.ensureAuthenticated, meRouter);
+
+  //Users
+  let usersRouter = UserRouter(app, auth);
+  router.use('/users', auth.ensureAuthenticated, usersRouter);
 }
 
 function createPublisher(){
@@ -77,6 +82,7 @@ function createPublisher(){
   log.info("createPublisher: ", publisherOption);
   return new Publisher(publisherOption);
 }
+
 function setupAuthentication(app, publisherUser) {
   let auth = new PassportAuth(app, publisherUser);
   app.auth = auth;

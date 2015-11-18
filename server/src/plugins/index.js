@@ -1,12 +1,9 @@
 import Promise from 'bluebird';
-import UserPlugin from './users/UserPlugin';
 import _ from 'lodash';
-import Log from 'logfilename';
-let log = new Log("plugins");
 
 export default function Plugins(app){
   let plugins = {
-    users: new UserPlugin(app),
+    users: require('./users/UserPlugin')(app),
     ticket: require('./ticket/TicketPlugin')(app, app.server)
   };
 

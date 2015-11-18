@@ -1,6 +1,9 @@
-export default function(app, userApi){
+import UserApi from './UserApi';
 
-  let log = require('logfilename')(__filename);
+let log = require('logfilename')(__filename);
+
+export default function(app){
+  let userApi = UserApi(app);
   let respond = app.utils.http.respond;
 
   function index(req, res) {

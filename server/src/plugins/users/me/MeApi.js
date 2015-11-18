@@ -1,9 +1,9 @@
-import Log from 'logfilename';
 import _ from 'lodash';
-let log = new Log(__filename);
+
+let log = require('logfilename')(__filename);
 
 export default function MeApi(app) {
-  let models = app.data.sequelize.models;
+  let models = app.data.models();
 
   return {
     index: function (userId) {
@@ -24,7 +24,6 @@ export default function MeApi(app) {
       });
       log.debug("patch done");
       return data;
-      //return models.User.findByUserId(userId);
     }
   };
 }

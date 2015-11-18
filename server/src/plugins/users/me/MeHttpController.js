@@ -1,9 +1,10 @@
-import Log from 'logfilename';
-let log = new Log(__filename);
+import MeApi from './MeApi';
 
-export default function(app, meApi){
+let log = require('logfilename')(__filename);
+
+export default function(app){
   let respond = app.utils.http.respond;
-
+  let meApi = MeApi(app);
   return {
     index: function(req, res){
       log.debug("get ", req.user);

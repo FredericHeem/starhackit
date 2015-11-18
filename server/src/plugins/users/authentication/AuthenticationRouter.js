@@ -1,10 +1,10 @@
 import passport from 'passport';
-let express = require("express");
+import express from 'express';
+import AuthenticationHttpController from './AuthenticationHttpController';
 
-module.exports = function(app, auth, authenticationHttpCtrl){
-  "use strict";
-
+export default function(app, auth, publisherUser){
   let router = new express.Router();
+  let authenticationHttpCtrl = AuthenticationHttpController(app, publisherUser);
   router.post('/login', passport.authenticate('login'), authenticationHttpCtrl.login);
   router.post('/register', authenticationHttpCtrl.register);
   router.post('/verify_email_code', authenticationHttpCtrl.verifyEmailCode);
@@ -19,4 +19,4 @@ module.exports = function(app, auth, authenticationHttpCtrl){
     authenticationHttpCtrl.loginFacebookCallback);
 
   return router;
-};
+}

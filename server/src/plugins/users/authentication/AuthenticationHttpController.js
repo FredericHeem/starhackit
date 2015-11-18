@@ -1,10 +1,11 @@
-import Log from 'logfilename';
 import assert from 'assert';
 import _ from 'lodash';
+import AuthenticationApi from './AuthenticationApi';
+let log = require('logfilename')(__filename);
 
-export default function(app, userApi){
-  let log = new Log(__filename);
+export default function(app, publisherUser){
   let respond = app.utils.http.respond;
+  let authApi = AuthenticationApi(app, publisherUser);
 
   function login(req, res) {
     log.debug("login",  req.user);
@@ -23,22 +24,22 @@ export default function(app, userApi){
 
   function register(req, res) {
     log.debug("register user ", req.body);
-    respond(userApi, userApi.createPending, [req.body], res);
+    respond(authApi, authApi.createPending, [req.body], res);
   }
 
   function verifyEmailCode(req, res) {
     log.debug("verifyEmailCode: ", req.body);
-    respond(userApi, userApi.verifyEmailCode, [req.body], res);
+    respond(authApi, authApi.verifyEmailCode, [req.body], res);
   }
 
   function resetPassword(req, res) {
     log.debug("resetPassword: ", req.body);
-    respond(userApi, userApi.resetPassword, [req.body], res);
+    respond(authApi, authApi.resetPassword, [req.body], res);
   }
 
   function verifyResetPasswordToken(req, res) {
     log.debug("verifyResetPasswordToken: ", req.body);
-    respond(userApi, userApi.verifyResetPasswordToken, [req.body], res);
+    respond(authApi, authApi.verifyResetPasswordToken, [req.body], res);
   }
 
   return {

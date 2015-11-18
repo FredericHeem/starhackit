@@ -40,7 +40,8 @@ export default function(app, publisherUser) {
   function isAuthorized(req, res, next) {
     if (!req.user) {
       log.warn("isAuthorized user not set");
-      return next({error:"UserNotSet"});
+      res.status(401).send();
+      return;
     }
     let routePath = req.route.path;
     let userId = req.user.id;

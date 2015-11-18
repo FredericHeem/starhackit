@@ -5,22 +5,13 @@ import {Publisher} from 'rabbitmq-pubsub';
 import PassportAuth from './PassportAuth';
 
 import config from 'config';
-// Api
-import MeApi from './api/MeApi';
-import UserApi from './api/UserApi';
-
-// Http Controller
-import UserHttpController from './controllers/UserHttpController';
-import MeHttpController from './controllers/MeHttpController';
-import AuthenticationHttpController from './controllers/AuthenticationHttpController';
-
-// Routes
-import AuthenticationRoutes from './routes/AuthenticationRoutes';
-import UsersRoutes from './routes/UsersRoutes';
-import MeRoutes from './routes/MeRoutes';
 
 // Jobs
 import MailJob from './jobs/mail/MailJob';
+
+import MeRouter from './me/MeRouter';
+import UserRouter from './user/UserRouter';
+import AuthenticationRouter from './authentication/AuthenticationRouter';
 
 let log = new Log(__filename);
 
@@ -33,22 +24,14 @@ export default class UserPlugin {
     this.publisherUser = createPublisher();
     this.auth = setupAuthentication(app, this.publisherUser);
 
-    this.api = {
-      me: new MeApi(app),
-      user: new UserApi(app, this.publisherUser)
-    };
+    let authenticationRouter = AuthenticationRouter(app, this.auth, this.publisherUser);
+    app.server.use('/api/v1/auth', authenticationRouter);
 
-    this.controllers = {
-      user: new UserHttpController(app, this.api.user),
-      me: new MeHttpController(app, this.api.me),
-      authentication: new AuthenticationHttpController(app, this.api.user)
-    };
+    let meRouter = MeRouter(app, app.auth);
+    app.server.use('/api/v1', this.auth.ensureAuthenticated, meRouter);
 
-    this.routers = {
-      users: UsersRoutes(app, this.auth, this.controllers.user),
-      me: MeRoutes(app, this.auth, this.controllers.me),
-      authentication: AuthenticationRoutes(app, this.auth, this.controllers.authentication)
-    };
+    let usersRouter = UserRouter(app, app.auth);
+    app.server.use('/api/v1', this.auth.ensureAuthenticated, usersRouter);
 
     this._models = app.data.sequelize.models;
 
@@ -57,20 +40,14 @@ export default class UserPlugin {
     };
 
     this.startStop = [this.jobs.mail, this.publisherUser];
-
-    this.registerRouter(app.server);
   }
 
   async start(){
-    log.info("start");
     await Promise.each(this.startStop, obj => obj.start(this.app));
-    log.info("started");
   }
 
   async stop(){
-    log.info("stop");
     await Promise.each(this.startStop, obj => obj.stop(this.app));
-    log.info("stopped");
   }
 
   seedDefault(){
@@ -87,12 +64,6 @@ export default class UserPlugin {
     let count = await this._models.User.count();
     log.debug("#users ", count);
     return count;
-  }
-
-  registerRouter(server) {
-    server.use('/api/v1/auth', this.routers.authentication);
-    server.use('/api/v1/', this.auth.ensureAuthenticated, this.routers.users);
-    server.use('/api/v1/', this.auth.ensureAuthenticated, this.routers.me);
   }
 }
 

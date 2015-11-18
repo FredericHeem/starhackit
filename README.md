@@ -1,6 +1,8 @@
 StarHackIt is a ES6/ES7 React/Node starter kit
 ==============================================
 
+[![Join the chat at https://gitter.im/FredericHeem/starhackit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FredericHeem/starhackit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Fullstack web application starter kit written in es6/es7 with react and node.js with the following features:
 
 * Authentication: username/password, facebook, google authentication etc ...

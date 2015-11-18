@@ -1,6 +1,7 @@
 console.log("api server started");
 import App from './app';
-let app = new App();
+let app = App();
+app.displayInfoEnv();
 
 app.start()
 .catch(err => {

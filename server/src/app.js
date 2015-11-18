@@ -2,51 +2,56 @@ import Promise from 'bluebird';
 import Log from 'logfilename';
 import config from 'config';
 import Plugins from './plugins';
-import data from './models';
+import Data from './models';
 import Server from './server';
 import * as HttpUtils from './utils/HttpUtils';
 
 let log = new Log(__filename, config.log);
 
-displayInfoEnv();
+export default function App() {
 
-export default class App {
-  constructor(){
-    this.utils = {
+  let data = Data;
+
+  let app = {
+    data: data,
+    server: Server(),
+    utils:{
       http: HttpUtils
-    };
+    },
+    async seed(){
+      log.info("seed");
+      await data.seed(app);
+    },
 
-    this.data = data;
-    this.server = new Server(this);
-    this.plugins = new Plugins(this);
+    async start() {
+      log.info("start");
+      await action('start');
+      log.info("started");
+    },
 
-    displayRoutes(this.server.baseRouter());
-
-    this.data.associate();
-
-    this.parts = [
-      this.data,
-      this.server,
-      this.plugins
-    ];
-  }
-
-  async seed(){
-    log.info("seed");
-    await this.data.seed(this);
-  }
-
-  async start() {
-    log.info("start");
-    await Promise.each(this.parts, part => part.start(this));
-    log.info("started");
+    async stop() {
+      log.info("stop");
+      await action('stop');
+      log.info("stopped");
+    },
+    displayInfoEnv:displayInfoEnv
   };
 
-  async stop() {
-    log.info("stop");
-    await Promise.each(this.parts, part => part.stop(this));
-    log.info("stopped");
-  };
+  app.plugins = Plugins(app);
+  data.associate();
+  displayRoutes(app.server.baseRouter());
+
+  let parts = [
+    app.data,
+    app.server,
+    app.plugins
+  ];
+
+  async function action(ops){
+    await Promise.each(parts, part => part[ops](app));
+  }
+
+  return app;
 }
 
 function displayRoutes(router){

@@ -7,7 +7,7 @@ let loggerMiddleware = require('./middleware/LoggerMiddleware');
 let sessionMiddleware = require('./middleware/SessionMiddleware');
 let passportMiddleware = require('./middleware/PassportMiddleware');
 
-module.exports = function() {
+export default function() {
   let log = require('logfilename')(__filename);
 
   let expressApp = express();
@@ -29,38 +29,41 @@ module.exports = function() {
 
   let baseRouter = express.Router();
   expressApp.use('/api/v1', baseRouter);
-  expressApp.baseRouter = function(){
-    return baseRouter;
-  };
-  /**
-   * Start the express server
-   */
-  expressApp.start = function() {
-    let configHttp = config.get('http');
-    let port = process.env.PORT || configHttp.port;
 
-    log.info('start express server on port %s', port);
+  return {
+    express: expressApp,
+    baseRouter(){
+      return baseRouter;
+    },
+    /**
+     * Start the express server
+     */
+    async start() {
+      let configHttp = config.get('http');
+      let port = process.env.PORT || configHttp.port;
 
-    return new Promise(function(resolve) {
-      httpHandle = expressApp.listen(port, function() {
-        log.info('express server started');
-        resolve();
+      log.info('start express server on port %s', port);
+
+      return new Promise(function(resolve) {
+        httpHandle = expressApp.listen(port, function() {
+          log.info('express server started');
+          resolve();
+        });
       });
-    });
-  };
+    },
 
-  /**
-   * Stop the express server
-   */
-  expressApp.stop = function() {
-    log.info('stopping web server');
+    /**
+     * Stop the express server
+     */
+    async stop () {
+      log.info('stopping web server');
 
-    return new Promise(function(resolve) {
-      httpHandle.close(function() {
-        log.info('web server is stopped');
-        resolve();
+      return new Promise(function(resolve) {
+        httpHandle.close(function() {
+          log.info('web server is stopped');
+          resolve();
+        });
       });
-    });
+    }
   };
-  return expressApp;
 };

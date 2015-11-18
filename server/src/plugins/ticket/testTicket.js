@@ -14,7 +14,7 @@ describe('Ticket', function() {
   });
 
   it('should get all tickets', async () => {
-    let tickets = await client.get('ticket');
+    let tickets = await client.get('v1/ticket');
     assert(tickets);
   });
 });

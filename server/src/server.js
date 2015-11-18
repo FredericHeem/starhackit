@@ -27,6 +27,11 @@ module.exports = function() {
   sessionMiddleware(expressApp, config);
   passportMiddleware(expressApp, config);
 
+  let baseRouter = express.Router();
+  expressApp.use('/api/v1', baseRouter);
+  expressApp.baseRouter = function(){
+    return baseRouter;
+  };
   /**
    * Start the express server
    */

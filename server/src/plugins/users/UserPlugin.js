@@ -24,14 +24,15 @@ export default class UserPlugin {
     this.publisherUser = createPublisher();
     this.auth = setupAuthentication(app, this.publisherUser);
 
+    let router = app.server.baseRouter();
     let authenticationRouter = AuthenticationRouter(app, this.auth, this.publisherUser);
-    app.server.use('/api/v1/auth', authenticationRouter);
+    router.use('/auth', authenticationRouter);
 
     let meRouter = MeRouter(app, app.auth);
-    app.server.use('/api/v1', this.auth.ensureAuthenticated, meRouter);
+    router.use('/me', this.auth.ensureAuthenticated, meRouter);
 
     let usersRouter = UserRouter(app, app.auth);
-    app.server.use('/api/v1', this.auth.ensureAuthenticated, usersRouter);
+    router.use('/users', this.auth.ensureAuthenticated, usersRouter);
 
     this._models = app.data.sequelize.models;
 

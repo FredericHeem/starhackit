@@ -20,6 +20,8 @@ export default class App {
     this.server = new Server(this);
     this.plugins = new Plugins(this);
 
+    displayRoutes(this.server.baseRouter());
+
     this.data.associate();
 
     this.parts = [
@@ -45,6 +47,21 @@ export default class App {
     await Promise.each(this.parts, part => part.stop(this));
     log.info("stopped");
   };
+}
+
+function displayRoutes(router){
+  router.stack.forEach(function(middleware){
+    if(middleware.name === 'router'){
+      log.info(middleware.pathOriginal);
+      middleware.handle.stack.forEach(function(handler){
+        let route = handler.route;
+        route.stack.forEach(function(r){
+            var method = r.method.toUpperCase();
+            log.info(method ,route.path);
+        });
+      });
+    }
+  });
 }
 
 function displayInfoEnv(){

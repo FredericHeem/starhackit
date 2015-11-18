@@ -43,7 +43,7 @@ export default function(app, publisherUser) {
       res.status(401).send();
       return;
     }
-    let routePath = req.route.path;
+    let routePath = req.baseUrl.replace(/^(\/api\/v1)/,"");
     let userId = req.user.id;
     log.info("isAuthorized: who:%s, resource:%s, method %s", userId, routePath, req.method);
 

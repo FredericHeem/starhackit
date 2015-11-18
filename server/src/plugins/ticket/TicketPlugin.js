@@ -3,8 +3,8 @@ import TicketRouter from './TicketRouter';
 
 export default function ticketPlugin(app, server){
   let ticketRouter = TicketRouter(app, app.auth);
-  server.use('/api/', ticketRouter);
-
+  let router = server.baseRouter();
+  router.use('/ticket', ticketRouter);
   return {
     async start(){
     },

@@ -3,7 +3,7 @@ import Log from 'logfilename';
 import config from 'config';
 import Plugins from './plugins';
 import Data from './models';
-import Server from './server';
+import Server from './server/express/server';
 import * as HttpUtils from './utils/HttpUtils';
 
 let log = new Log(__filename, config.log);

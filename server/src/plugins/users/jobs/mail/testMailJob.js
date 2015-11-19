@@ -125,6 +125,15 @@ describe('MailJob', function () {
 
       await publisher.publish("user.resetpassword", JSON.stringify(user));
     });
+    it('publish a non JSON message', async(done) => {
+      sinon.stub(mailJob, "_sendEmail", () => {
+        assert(false);
+        done();
+      });
+
+      await publisher.publish("user.resetpassword", "not a json");
+      done();
+    });
   });
   describe('Ko', () => {
     it('login failed', async(done) => {

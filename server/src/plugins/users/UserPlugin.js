@@ -25,7 +25,7 @@ export default function UserPlugin(app){
 
   let models = app.data.sequelize.models;
 
-  let mailJob = new MailJob(config);
+  let mailJob = MailJob(config);
 
   let startStop = [mailJob, publisher];
 

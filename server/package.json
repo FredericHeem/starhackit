@@ -17,7 +17,7 @@
     "pretest": "npm run build",
     "test": "npm run coverage",
     "mocha": "mocha ./src/**/test*.js ./test/**/test*.js",
-    "coverage": "istanbul  cover -x '**/test*.js'  _mocha --report text --report html --report lcov ./src/**/test*.js ./test/**/*.js",
+    "coverage": "istanbul  cover -x 'src/**/test*.js' -x 'test/**/test*.js' _mocha --report text --report html --report lcov ./src/**/test*.js ./test/**/*.js",
     "coveralls": "coveralls < coverage/lcov.info",
     "codecov": "./node_modules/codecov.io/bin/codecov.io.js < coverage/lcov.info",
     "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",

@@ -16,7 +16,8 @@ export default function App() {
     data: data,
     server: Server(),
     utils:{
-      http: HttpUtils
+      http: HttpUtils,
+      api: require('./utils/ApiUtils')
     },
     async seed(){
       log.info("seed");
@@ -36,6 +37,7 @@ export default function App() {
     },
     displayInfoEnv:displayInfoEnv
   };
+
 
   app.plugins = Plugins(app);
   data.associate();

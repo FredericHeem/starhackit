@@ -15,7 +15,7 @@ export default function(app, auth, publisherUser){
 
   router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
   router.get('/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/my/profile'}),
+    passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/login'}),
     authenticationHttpCtrl.loginFacebookCallback);
 
   return router;

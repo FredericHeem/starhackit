@@ -1,5 +1,12 @@
 {
+  "stage": 1,
+  "optional": ["runtime"],
   "plugins": [
       "babel-root-import"
-  ]
+  ],
+  "extra": {
+    "babel-root-import":{
+      "root": "build"
+    }
+  }
 }

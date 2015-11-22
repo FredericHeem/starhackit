@@ -2,27 +2,34 @@ import Log from 'logfilename';
 
 let log = new Log(__filename);
 
-export function respond(me, callback, args, res, statusCode = 200) {
+export function respond(context, me, callback, args, statusCode = 200) {
+  log.debug("respond ");
     //apply used to pass args to the callback
-    callback.apply(me, args)
+  return callback.apply(me, args)
     .then(function(result){
-      res.status(statusCode).send(result);
+      log.debug("respond ok");
+      context.status = statusCode;
+      context.body = result;
     })
     .catch(function(error){
-      convertAndRespond(error,res);
+
+      convertAndRespond(context, error);
     });
 }
 
-export function convertAndRespond(error, res) {
+export function convertAndRespond(context, error) {
+  log.warn("respond ", error);
   if (!error.name) {
     log.error('UnknownError', error);
-    res.status(500).send({
+    context.code = 500;
+    context.body = {
         name: 'UnknownError'
-    });
+    };
   }
   else {
     log.error('error name', error);
     let code = error.code || 400;
-    res.status(code).send(error);
+    context.status = code;
+    context.body = error;
   }
 }

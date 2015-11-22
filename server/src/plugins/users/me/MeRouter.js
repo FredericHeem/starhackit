@@ -1,10 +1,28 @@
-import express from 'express';
-import MeHttpController from './MeHttpController';
+import Router from 'koa-66';
+import MeApi from './MeApi';
 
-export default function(app, auth){
-  let router = new express.Router();
+let log = require('logfilename')(__filename);
+
+export function MeHttpController(app){
+  log.debug("MeHttpController");
+  let respond = app.utils.http.respond;
+  let meApi = MeApi(app);
+  return {
+    async get(context) {
+      return respond(context, meApi, meApi.getByUserId, [context.passport.user.id]);
+    },
+    async patch(context) {
+      return respond(context, meApi, meApi.patch, [context.passport.user.id, context.request.body]);
+    }
+  };
+}
+
+export default function MeRouter(app, /*auth*/){
+  let router = new Router();
   let meHttpController = MeHttpController(app);
-  router.get('/', auth.isAuthorized, meHttpController.index);
-  router.patch('/', auth.isAuthorized, meHttpController.patch);
+  router.all(app.server.auth.isAuthenticated);
+  router.get('/', meHttpController.get);
+  router.patch('/', meHttpController.patch);
+  app.server.baseRouter().mount("/me", router);
   return router;
 }

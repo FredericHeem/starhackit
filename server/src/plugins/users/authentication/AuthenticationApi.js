@@ -54,10 +54,10 @@ export default function(app, publisherUser) {
         return user.toJSON();
       } else {
         log.warn("verifyEmailCode: no such code ", param.code);
-        throw ({
+        throw {
           code:422,
           name:"NoSuchCode"
-        });
+        };
       }
     },
     async resetPassword(payload){

@@ -7,7 +7,7 @@ let loggerMiddleware = require('./middleware/LoggerMiddleware');
 let sessionMiddleware = require('./middleware/SessionMiddleware');
 let passportMiddleware = require('./middleware/PassportMiddleware');
 
-export default function() {
+export default function(app) {
   let log = require('logfilename')(__filename);
 
   let expressApp = express();
@@ -25,7 +25,7 @@ export default function() {
 
   defaultMiddleware(expressApp, config);
   sessionMiddleware(expressApp, config);
-  passportMiddleware(expressApp, config);
+  passportMiddleware(app, expressApp, config);
 
   let baseRouter = express.Router();
   expressApp.use('/api/v1', baseRouter);

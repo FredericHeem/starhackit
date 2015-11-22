@@ -36,7 +36,7 @@ db.models = function(){
     return db.sequelize.models;
 };
 
-db.queryStringToFilter = function(qs, orderBy){
+db.queryStringToFilter = function(qs = {}, orderBy){
   let filter = {
     offset:qs.offset,
     limit:qs.limit,

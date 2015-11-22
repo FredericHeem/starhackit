@@ -98,6 +98,7 @@ describe('PasswordReset', function () {
     } catch(res){
       assert(res);
       assert.equal(res.statusCode, 422);
+      //console.log(res);
       assert.equal(res.body.name, 'TokenInvalid');
       done();
     }

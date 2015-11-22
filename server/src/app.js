@@ -3,7 +3,7 @@ import Log from 'logfilename';
 import config from 'config';
 import Plugins from './plugins';
 import Data from './models';
-import Server from './server/express/server';
+import Server from './server/koa/koaServer';
 import * as HttpUtils from './utils/HttpUtils';
 
 let log = new Log(__filename, config.log);
@@ -14,7 +14,6 @@ export default function App() {
 
   let app = {
     data: data,
-    server: Server(),
     utils:{
       http: HttpUtils,
       api: require('./utils/ApiUtils')
@@ -38,10 +37,12 @@ export default function App() {
     displayInfoEnv:displayInfoEnv
   };
 
-
+  app.server = Server(app);
   app.plugins = Plugins(app);
+  //Must be called when all plugins are created.
   data.associate();
-  displayRoutes(app.server.baseRouter());
+  app.server.mountRootRouter();
+  app.server.diplayRoutes();
 
   let parts = [
     app.data,
@@ -54,21 +55,6 @@ export default function App() {
   }
 
   return app;
-}
-
-function displayRoutes(router){
-  router.stack.forEach(function(middleware){
-    if(middleware.name === 'router'){
-      log.info(middleware.pathOriginal);
-      middleware.handle.stack.forEach(function(handler){
-        let route = handler.route;
-        route.stack.forEach(function(r){
-            var method = r.method.toUpperCase();
-            log.info(method ,route.path);
-        });
-      });
-    }
-  });
 }
 
 function displayInfoEnv(){

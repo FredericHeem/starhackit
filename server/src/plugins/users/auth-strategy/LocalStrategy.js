@@ -33,7 +33,9 @@ export async function verifyLogin(models, username, password) {
   }
 }
 
+
 export function register(passport, models) {
+  log.debug("register");
   let loginStrategy = new LocalStrategy({
       usernameField: 'username',
       passwordField: 'password',
@@ -49,5 +51,5 @@ export function register(passport, models) {
     }
   );
 
-  passport.use('login', loginStrategy);
+  passport.use('local', loginStrategy);
 };

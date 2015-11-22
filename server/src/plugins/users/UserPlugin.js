@@ -19,9 +19,9 @@ const publisherOption = { exchange: "user" };
 
 export default function UserPlugin(app){
   let publisher = createPublisher();
-  let auth = setupAuthentication(app, publisher);
+  setupAuthentication(app, publisher);
 
-  setupRouter(app, auth, publisher);
+  setupRouter(app, publisher);
 
   let models = app.data.sequelize.models;
 
@@ -57,20 +57,15 @@ export default function UserPlugin(app){
   };
 }
 
-function setupRouter(app, auth, publisherUser){
-  let router = app.server.baseRouter();
-
+function setupRouter(app, publisherUser){
   //Authentication
-  let authenticationRouter = AuthenticationRouter(app, auth, publisherUser);
-  router.use('/auth', authenticationRouter);
+  AuthenticationRouter(app, publisherUser);
 
   //Me
-  let meRouter = MeRouter(app, auth);
-  router.use('/me', auth.ensureAuthenticated, meRouter);
+  MeRouter(app);
 
   //Users
-  let usersRouter = UserRouter(app, auth);
-  router.use('/users', auth.ensureAuthenticated, usersRouter);
+  UserRouter(app);
 }
 
 function createPublisher(){

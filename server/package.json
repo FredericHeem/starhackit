@@ -94,7 +94,7 @@
     "istanbul": "~0.3.22",
     "mocha": "~2.3.3",
     "mochawait": "^2.0.1",
-    "restauth": "^0.1.0",
+    "restauth": "^0.1.2",
     "sequelize-cli": "~1.9.1",
     "sinon": "~1.17.1",
     "sinon-as-promised": "~4.0.0"

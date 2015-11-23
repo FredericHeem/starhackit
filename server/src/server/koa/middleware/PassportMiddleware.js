@@ -21,9 +21,7 @@ export default function PassportMiddleware(app, kaoApp/*, config*/){
     },
     async isAuthorized(context, next) {
       let request = context.request;
-      let util = require('util');
-      log.debug(util.inspect(context));
-      log.debug(util.inspect(context.passport));
+
       if (!context.passport.user) {
         log.warn("isAuthorized user not set");
         context.status = 401;
@@ -31,7 +29,7 @@ export default function PassportMiddleware(app, kaoApp/*, config*/){
       }
 
       //TODO /api/v1 should be configurable
-      let routePath = context.path.replace(/^(\/api\/v1)/,"");
+      let routePath = context.route.path.replace(/^(\/api\/v1)/,"");
       let userId = context.passport.user.id;
       let method = request.method;
       log.info(`isAuthorized: who:${userId}, resource:${routePath}, method: ${method}`);

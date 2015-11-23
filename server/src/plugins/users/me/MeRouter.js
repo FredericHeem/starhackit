@@ -20,7 +20,7 @@ export function MeHttpController(app){
 export default function MeRouter(app, /*auth*/){
   let router = new Router();
   let meHttpController = MeHttpController(app);
-  router.all(app.server.auth.isAuthenticated);
+  router.use(app.server.auth.isAuthenticated);
   router.get('/', meHttpController.get);
   router.patch('/', meHttpController.patch);
   app.server.baseRouter().mount("/me", router);

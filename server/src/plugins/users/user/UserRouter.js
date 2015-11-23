@@ -25,6 +25,7 @@ export default function UserRouter(app, /*auth*/){
   router.all(app.server.auth.isAuthorized);
   router.get('/', userHttpController.getAll);
   router.get('/:id', userHttpController.getOne);
+
   app.server.baseRouter().mount("/users", router);
   return router;
 }

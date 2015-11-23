@@ -14,8 +14,7 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 Technologies:
 
 * [React](https://facebook.github.io/react/): a facebook library to build user interfaces.
-* [Express](http://expressjs.com/): fast, unopinionated, minimalist web framework for Node.js.
-* [Socket.io](http://socket.io/): real-time bidirectional event-based communication.
+* [Koa](http://koajs.com/): next generation web framework for Node.js.
 * [Sequelize](http://docs.sequelizejs.com/en/latest/): Object Relationship Management (ORM) supporting majors relational SQL database.
 * [PostgreSQL](http://www.postgresql.org/): the world's most advanced open source relational database.
 * [RabbitMq](https://www.rabbitmq.com/): messaging system.
@@ -23,7 +22,6 @@ Technologies:
 * [Winston](https://github.com/winstonjs/winston): a multi-transport async logging library.
 * [Nodemailer](https://github.com/andris9/Nodemailer): send email with various provider.
 * [Babel](https://babeljs.io/): A es6/es7 compiler.
-* [Bower](http://bower.io/): a package manager for the web.
 * [Gulp](http://gulpjs.com/): automate and enhance your workflow.
 * [Webpack](http://webpack.github.io/): module bundler for the browser
 * [Mocha](http://mochajs.org/): test framework.

@@ -9,6 +9,12 @@ services:
 
 addons:
   postgresql: "9.4"
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8
+      - g++-4.8
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres

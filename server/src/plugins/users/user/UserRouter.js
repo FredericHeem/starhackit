@@ -21,8 +21,8 @@ export function UserHttpController(app){
 export default function UserRouter(app, /*auth*/){
   let router = new Router();
   let userHttpController = UserHttpController(app);
-  router.all(app.server.auth.isAuthenticated);
-  router.all(app.server.auth.isAuthorized);
+  router.use(app.server.auth.isAuthenticated);
+  router.use(app.server.auth.isAuthorized);
   router.get('/', userHttpController.getAll);
   router.get('/:id', userHttpController.getOne);
 

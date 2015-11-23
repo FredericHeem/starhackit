@@ -1,4 +1,5 @@
 import Log from 'logfilename';
+import _ from 'lodash';
 
 let log = new Log(__filename);
 
@@ -18,17 +19,15 @@ export function respond(context, me, callback, args, statusCode = 200) {
 }
 
 export function convertAndRespond(context, error) {
-  log.warn("respond ", error);
   if (!error.name) {
     log.error('UnknownError', error);
     context.code = 500;
     context.body = {
         name: 'UnknownError'
     };
-  }
-  else {
-    log.error('error name', error);
-    let code = error.code || 400;
+  } else {
+    log.warn('error name', error);
+    let code = _.isNumber(error.code) ? error.code: 400;
     context.status = code;
     context.body = error;
   }

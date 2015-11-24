@@ -18,6 +18,9 @@ let log = new Log(__filename);
 const publisherOption = { exchange: "user" };
 
 export default function UserPlugin(app){
+
+  app.data.registerModelsFromDir(__dirname, './models');
+
   let publisher = createPublisher();
   setupAuthentication(app, publisher);
 

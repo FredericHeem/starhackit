@@ -4,22 +4,26 @@ let assert = require('assert');
 let fs        = require('fs');
 let path      = require('path');
 let Sequelize = require('sequelize');
-let basename  = path.basename(module.filename);
 let config = require('config');
 let log = require('logfilename')(__filename);
 let db        = {};
 let dbConfig = config.db;
 let sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, dbConfig);
-fs
-  .readdirSync(__dirname)
-  .filter(function(file) {
-    return (file.indexOf('.') !== 0) && (file !== basename);
-  })
-  .forEach(function(file) {
-    if (file.slice(-3) !== '.js') return;
-    let model = sequelize['import'](path.join(__dirname, file));
-    db[model.name] = model;
-  });
+
+db.registerModelsFromDir = function(baseDir, name){
+  log.debug(`registerModelFromDir: ${baseDir} in ${name}`);
+  let dirname = path.join(baseDir, name);
+  fs.readdirSync(dirname)
+    .filter(function(file) {
+      return (file.indexOf('.') !== 0) && (file.slice(-3) === '.js');
+    })
+    .forEach(function(file) {
+      //log.debug("model file: ", file);
+      db.registerModel(dirname, file);
+      //let model = sequelize['import'](path.join(dirname, file));
+      //db[model.name] = model;
+    });
+};
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

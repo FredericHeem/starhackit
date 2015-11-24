@@ -27,6 +27,4 @@ export default function(app, publisherUser) {
     //TODO use redis
     done(null, id);
   });
-
-
 };

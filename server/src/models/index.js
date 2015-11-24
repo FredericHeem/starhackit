@@ -1,4 +1,5 @@
 'use strict';
+let _ = require('lodash');
 let assert = require('assert');
 let fs        = require('fs');
 let path      = require('path');
@@ -22,6 +23,12 @@ fs
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.registerModel = function(dirname, modelFile){
+  log.debug("registerModel ", modelFile);
+  let model = sequelize['import'](path.join(dirname, modelFile));
+  db[model.name] = model;
+};
 
 db.associate = function(){
   log.debug("associate");
@@ -65,10 +72,16 @@ db.seed = async function (app) {
   log.info("seeded");
 };
 
-function seedDefault(app){
+async function seedDefault(app){
   log.debug("seedDefault");
   assert(app.plugins.get().users);
-  return app.plugins.get().users.seedDefault();
+  let plugins = _.values(app.plugins.get());
+  for (let plugin of plugins) {
+    log.debug("seedDefault plugin");
+    if(_.isFunction(plugin.seedDefault)){
+      await plugin.seedDefault();
+    }
+  }
 }
 
 db.seedIfEmpty = async function (app){

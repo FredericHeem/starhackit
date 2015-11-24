@@ -23,7 +23,7 @@ export default function UserPlugin(app){
 
   setupRouter(app, publisher);
 
-  let models = app.data.sequelize.models;
+  let models = app.data.models();
 
   let mailJob = MailJob(config);
 

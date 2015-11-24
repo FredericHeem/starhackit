@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string",
+            "required": true,
+            "minLength": 3,
+            "maxLength": 64
+        },
+        "password": {
+            "type": "string",
+            "required": true,
+            "minLength": 6,
+            "maxLength": 64
+        }
+    }
+}

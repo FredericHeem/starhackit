@@ -6,8 +6,10 @@ let chance = new Chance();
 export default function(app, publisherUser) {
   let models = app.data.sequelize.models;
   let log = new Log(__filename);
+  let validateJson = app.utils.api.validateJson;
   return {
     async createPending(userPendingIn) {
+      validateJson(userPendingIn, require('./schema/createPending.json'));
       log.debug("createPending: ", userPendingIn);
       let user = await models.User.findByEmail(userPendingIn.email);
 
@@ -32,6 +34,7 @@ export default function(app, publisherUser) {
       };
     },
     async verifyEmailCode(param){
+      validateJson(param, require('./schema/verifyEmailCode.json'));
       let res = await models.UserPending.find({
         where: {
           code: param.code
@@ -61,6 +64,7 @@ export default function(app, publisherUser) {
       }
     },
     async resetPassword(payload){
+      validateJson(payload, require('./schema/resetPassword.json'));
       let email = payload.email;
       log.info("resetPassword: ", email);
       let user = await models.User.findByEmail(email);
@@ -88,6 +92,7 @@ export default function(app, publisherUser) {
       };
     },
     async verifyResetPasswordToken(payload){
+      validateJson(payload, require('./schema/verifyResetPasswordToken.json'));
       let {token, password} = payload;
 
       log.info("verifyResetPasswordToken: ", token);

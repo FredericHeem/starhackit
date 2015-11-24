@@ -102,6 +102,27 @@ describe('UserRegister', function() {
       done();
     }
   });
+  it('malformed email code', async () => {
+    try {
+      await client.post('v1/auth/verify_email_code', {code: "123456789012345"});
+      assert(false);
+    } catch(error){
+      assert.equal(error.statusCode, 400);
+      assert.equal(error.body.validation[0].stack, "instance.code does not meet minimum length of 16");
+    }
+  });
+  it('invalid register username too short', async () => {
+    let registerDataKo = {username: "aa", password:"aaaaaa"};
+
+    try {
+      await client.post('v1/auth/register', registerDataKo);
+      assert(false);
+    } catch(error){
+      console.log(error.body);
+      assert.equal(error.statusCode, 400);
+      assert.equal(error.body.validation[0].stack, 'instance.username does not meet minimum length of 3');
+    }
+  });
   it('shoud register twice a user', async () => {
     let username = createUsernameRandom();
     let userConfig = {

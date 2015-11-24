@@ -83,7 +83,22 @@ describe('PasswordReset', function () {
   it.skip('reset password email', async() => {
 
   });
-  it('verify with wrong token', async(done) => {
+  it('reset passord with malformed email', async(done) => {
+    let data = {
+      email: "alic"
+    };
+
+    try {
+      await client.post('v1/auth/reset_password', data);
+      assert(false);
+    } catch(res){
+      assert.equal(res.statusCode, 400);
+      console.log(res.body);
+      //assert.equal(res.body.name, '');
+      done();
+    }
+  });
+  it('verify with wrong token', async() => {
     let email = "alice@mail.com";
 
     // reset the password with the token
@@ -95,12 +110,32 @@ describe('PasswordReset', function () {
 
     try {
       await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
+      assert(false);
     } catch(res){
       assert(res);
       assert.equal(res.statusCode, 422);
       //console.log(res);
       assert.equal(res.body.name, 'TokenInvalid');
-      done();
+    }
+  });
+  it('verify reset password with malformed token', async() => {
+    let email = "alice@mail.com";
+
+    // reset the password with the token
+    let verifyPaswordData = {
+      email,
+      token: "123456789012345",
+      password: "passWordNew"
+    };
+
+    try {
+      await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
+      assert(false);
+    } catch(res){
+      assert(res);
+      assert.equal(res.statusCode, 400);
+      console.log(res.body);
+      assert.equal(res.body.validation[0].stack, 'instance.token does not meet minimum length of 16');
     }
   });
 });

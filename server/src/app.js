@@ -10,7 +10,7 @@ let log = new Log(__filename, config.log);
 
 export default function App() {
 
-  let data = Data;
+  let data = Data(config);
 
   let app = {
     data: data,

@@ -4,6 +4,7 @@ let log = require('logfilename')(__filename);
 
 export default function MeApi(app) {
   let models = app.data.models();
+  let validateJson = app.utils.api.validateJson;
 
   return {
     async getByUserId(userId) {
@@ -13,6 +14,7 @@ export default function MeApi(app) {
       return _.omit(user.toJSON(), 'id');
     },
     async patch(userId, data) {
+      validateJson(data, require('./schema/patch.json'));
       log.debug("patch userId %s, data: ", userId, data);
       await models.User.update({
         username: data.username

@@ -31,6 +31,16 @@ describe('Users', function() {
       };
       await client.patch('v1/me', dataOld);
     });
-
+    it('malformed patch username too short', async () => {
+      let data = {
+        username: "Ci"
+      };
+      try {
+        await client.patch('v1/me', data);
+        assert(false);
+      } catch(res){
+        assert.equal(res.statusCode, 400);
+      }
+    });
   });
 });

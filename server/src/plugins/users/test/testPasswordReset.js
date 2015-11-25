@@ -134,7 +134,7 @@ describe('PasswordReset', function () {
     } catch(res){
       assert(res);
       assert.equal(res.statusCode, 400);
-      console.log(res.body);
+      //console.log(res.body);
       assert.equal(res.body.validation[0].stack, 'instance.token does not meet minimum length of 16');
     }
   });

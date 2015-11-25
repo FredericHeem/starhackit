@@ -2,7 +2,7 @@ import Promise from 'bluebird';
 import Log from 'logfilename';
 import config from 'config';
 import Plugins from './plugins';
-import Data from './models';
+import Data from './models/Data';
 import Server from './server/koa/koaServer';
 import * as HttpUtils from './utils/HttpUtils';
 

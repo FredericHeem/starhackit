@@ -73,8 +73,9 @@ function loginLocal( payload ) {
 }
 
 function setErrors( e ) {
-    debug("setErrors", e);
-    if ( e.name === 'CheckitError' ) {
+    debug("setErrors:", e);
+    if(e.message){
+        //CheckitError TODO find a better way than e.message
         this.setState( {
             errors: e.toJSON()
         } );
@@ -86,7 +87,7 @@ function setErrors( e ) {
         this.setState( {
             errors: e.responseJSON.fields
         } );
-    }else if ( e.status === 401 ) {
+    } else if ( e.status === 401 ) {
         this.setState( {
             badPassword: true
         } );

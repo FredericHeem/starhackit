@@ -1,5 +1,10 @@
+import React from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
+
+import Debug from 'debug';
+
+let debug = new Debug("components:loginForm");
 
 export default React.createClass( {
 
@@ -16,7 +21,6 @@ export default React.createClass( {
     },
 
     render() {
-
         return (
             <div className="local-signin-form">
                 <form action={ this.signup }>

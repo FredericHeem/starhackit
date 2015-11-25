@@ -102,10 +102,9 @@ describe('GroupModel', function() {
             assert(item.get().user_id);
         });
     });
-    function checkUserPermission(param) {
-        return models.User.checkUserPermission(param.userId, param.routePath, param.method).then(authorized => {
-            expect(authorized).to.be.equal(param.authorized);
-        });
+    async function checkUserPermission(param) {
+        let authorized = await models.User.checkUserPermission(param.userId, param.routePath, param.method);
+        expect(authorized).to.be.equal(param.authorized);
     }
     it('should check permission given a user id,  a route path and a method', done => {
         const param = {

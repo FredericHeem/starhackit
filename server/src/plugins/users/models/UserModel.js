@@ -45,12 +45,12 @@ module.exports = function(sequelize, DataTypes) {
    {
      tableName: "users",
       classMethods: {
-        seedDefault: function () {
+         seedDefault: async function () {
           let usersJson = require('./fixtures/users.json');
           log.debug('seedDefault: ', JSON.stringify(usersJson, null, 4));
-          return Promise.each(usersJson, function(userJson){
-            return User.createUserInGroups(userJson, userJson.groups);
-          });
+          for (let userJson of usersJson) {
+            await User.createUserInGroups(userJson, userJson.groups);
+          }
         },
         /**
          * Finds a user by its email
@@ -83,29 +83,16 @@ module.exports = function(sequelize, DataTypes) {
          *
          * @returns {Promise}  Promise user created model
          */
-        createUserInGroups: function(userJson, groups) {
+        createUserInGroups: async function(userJson, groups) {
           log.debug("createUserInGroups user:%s, group: ", userJson, groups);
-          return sequelize.transaction(function(t) {
+          return sequelize.transaction(async function(t) {
             log.info("create user");
-            return models.User.create(userJson, {transaction: t})
-            .then(function(userCreated) {
-              //console.log("create user in group ", groupName)
-              //console.log(userCreated.dataValues.id)
-              return models.UserGroup.addUserIdInGroups(groups,userCreated.get().id, t )
-              .then(function() {
-                return userCreated;
-              });
-            });
-          })
-          .then(function (result) {
-            // Transaction has been committed
-            // result is whatever the result of the promise chain returned to the transaction callback
-            return result;
+            let userCreated = await models.User.create(userJson, {transaction: t});
+            await models.UserGroup.addUserIdInGroups(groups, userCreated.get().id, t );
+            return userCreated;
           })
           .catch(function (err) {
-            // Transaction has been rolled back
-            // err is whatever rejected the promise chain returned to the transaction callback
-            log.error('Error during user creation, rolling back', err);
+            log.error('createUserInGroups: rolling back', err);
             throw err;
           });
         },
@@ -132,13 +119,13 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Boolean} True if the user can perform the action on the resource otherwise false
          */
 
-        checkUserPermission: function(userId,resource,action) {
+        checkUserPermission: async function(userId,resource,action) {
           log.debug('Checking %s permission for %s on %s',action, userId, resource);
           let where = {
               resource: resource,
           };
           where[action.toUpperCase()] = true;
-          return this.find({
+          let res = await this.find({
             include: [
                       {
                       model: models.Group,
@@ -151,12 +138,9 @@ module.exports = function(sequelize, DataTypes) {
             where: {
                 id: userId
               }
-          }).then(function(res) {
-           // //console.log(res)
-           // console.log(res.dataValues.groups[0].dataValues.permissions)
-            if (!res) {return  Promise.resolve(false);}
-            return  Promise.resolve(true);
           });
+          let authorized = res ? true: false;
+          return authorized;
         },
 
         /**

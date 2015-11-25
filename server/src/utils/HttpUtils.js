@@ -7,13 +7,12 @@ export function respond(context, me, callback, args, statusCode = 200) {
   log.debug("respond ");
     //apply used to pass args to the callback
   return callback.apply(me, args)
-    .then(function(result){
+    .then(result => {
       log.debug("respond ok");
       context.status = statusCode;
       context.body = result;
     })
-    .catch(function(error){
-
+    .catch(error => {
       convertAndRespond(context, error);
     });
 }

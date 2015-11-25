@@ -1,9 +1,8 @@
-'use strict';
 let assert = require('assert');
-let Promise = require('bluebird');
+let log = require('logfilename')(__filename);
 
 module.exports = function(sequelize, DataTypes) {
-  let log = require('logfilename')(__filename);
+
   let models = sequelize.models;
   assert(models);
 
@@ -18,16 +17,16 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   /**
-    * Creates in the db userGroup association between groupname and userId
+    * Creates in the db userGroup association between group name and userId
     * @param {Array} groups  - Name of the group for which we want to add the user
     * @param {String} userId   -   userId to be added to the group   *
     * @returns {Promise} returns a  Promise containing the results of the upsert
     */
-   function addUserIdInGroups(groups,userId,t) {
-     log.debug("addUserIdInGroup user:%s, #group:", userId, groups.length);
-     return Promise.each(groups, function(group){
-       return UserGroup.addUserIdInGroup(group, userId, t);
-     });
+   async function addUserIdInGroups(groups, userId, t) {
+     log.debug(`addUserIdInGroup user:${userId}, #${groups.length}`);
+     for (let group of groups) {
+       await UserGroup.addUserIdInGroup(group, userId, t);
+     }
    }
    /**
     * Creates in the db userGroup association between groupname and userId
@@ -35,19 +34,17 @@ module.exports = function(sequelize, DataTypes) {
     * @param {String} userId   -   userId to be added to the group   *
     * @returns {Promise} returns a  Promise containing the results of the upsert
     */
-   function addUserIdInGroup(groupName,userId,t) {
-     log.debug("addUserIdInGroup user:%s, group: %s", userId, groupName);
-     return models.Group.findByName(groupName)
-     .then(function(group) {
-       if (!group) {
-         let err = {name: 'GroupNotFound', message: groupName};
-         throw err;
-       }
-       return UserGroup.upsert({
-         group_id: group.get().id,
-         user_id: userId
-       },{transaction:t});
-     });
+   async function addUserIdInGroup(groupName, userId, t) {
+     log.debug(`addUserIdInGroup user:${userId}, group: ${groupName}`);
+     let group = await models.Group.findByName(groupName);
+     if (!group) {
+       let err = {name: 'GroupNotFound', message: groupName};
+       throw err;
+     };
+     return UserGroup.upsert({
+       group_id: group.get().id,
+       user_id: userId
+     },{transaction:t});
    }
 
   return UserGroup;

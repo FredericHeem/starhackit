@@ -13,23 +13,14 @@ describe('Configure Database', function(){
   });
 
 
-  it.skip('should successfully find the Admin group', function(done){
-    models.Group.findByName("Admin")
-    .then(function(res){
-      chai.assert.typeOf(res.get().id, 'number');
-      chai.assert.equal(res.get().description,'Administrator, can perform any actions');
-    })
-    .then(done)
-    .catch(done);
+  it.skip('should successfully find the Admin group', async function(){
+    let res = models.Group.findByName("Admin");
+    chai.assert.typeOf(res.get().id, 'number');
+    chai.assert.equal(res.get().description,'Administrator, can perform any actions');
   });
-  it('should successfully find the Users crud Permission', function(done){
-    models.Permission.findByName("users_cr")
-    .then(function(/*res*/){
-      //console.log(res.get())
-      //chai.assert.isNotNull(res);
-      //chai.assert.typeOf(res.get().id, 'number');
-      //chai.assert.equal(res.get().description,'Can perform any action on users');
-    })
-    .then(done, done);
+
+  it('should successfully find the Users get /me Permission', async function(){
+    let res = await models.Permission.findByName("/me get");
+    chai.assert(res);
   });
 });

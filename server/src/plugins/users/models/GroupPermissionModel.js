@@ -1,8 +1,8 @@
-'use strict';
+let log = require('logfilename')(__filename);
+let _ = require('lodash');
+
 module.exports = function(sequelize/*, DataTypes*/) {
-  let log = require('logfilename')(__filename);
-  let Promise = require('bluebird');
-  let _ = require('lodash');
+
   let models = sequelize.models;
   let GroupPermission = sequelize.define('GroupPermission', {},
   {
@@ -13,13 +13,13 @@ module.exports = function(sequelize/*, DataTypes*/) {
       }
   });
 
-  function seedDefault() {
+  async function seedDefault() {
     let groupPermissionsJson = require('./fixtures/group_permission.json');
     log.debug('seedDefault: ', JSON.stringify(groupPermissionsJson, null, 4));
     //console.log('creating all groupPermissions:',groupsPermissions)
-    return Promise.each(_.keys(groupPermissionsJson), function(groupName) {
-      return add(groupName, groupPermissionsJson[groupName]);
-    });
+    for (let groupName of _.keys(groupPermissionsJson)) {
+      await add(groupName, groupPermissionsJson[groupName]);
+    }
   }
   /**
    * Creates in the db all the groupPermissions within permissionsNames associated with the groupName
@@ -29,32 +29,28 @@ module.exports = function(sequelize/*, DataTypes*/) {
    *
    * @returns {Promise} returns a list of Promises results
    */
-  function add(groupName, permissionsNames) {
-      log.debug("add: group %s, permissionsNames ", groupName, permissionsNames);
-      return models.Group.findByName(groupName)
-      .then(function(group) {
-        if (!group)  {
-          let err = {name: 'GroupNotFound', message: groupName};
+  async function add(groupName, permissionsNames) {
+      log.debug(`add: group ${groupName}, permissionsNames ${permissionsNames}`);
+      let group = await models.Group.findByName(groupName);
+      if (!group)  {
+        let err = {name: 'GroupNotFound', message: groupName};
+        throw err;
+      };
+      for (let permission of permissionsNames) {
+        log.debug(`check permission: ${permission}`);
+        let permissionFound = await models.Permission.findByName(permission);
+        if (!permissionFound) {
+          log.debug("PermissionNotFound");
+          let err = {name: 'PermissionNotFound', message: permission};
           throw err;
         }
-        log.debug("found group ", group.get());
-        return Promise.map(permissionsNames, function(permission) {
-          log.debug("check permission", permission);
-          return models.Permission.findByName(permission)
-          .then(function(permissionFound) {
-            if (!permissionFound) {
-              log.debug("PermissionNotFound");
-              let err = {name: 'PermissionNotFound', message: permission};
-              throw err;
-            }
-            log.debug("add: groupId %s, permissionsId %s", group.get().id, permissionFound.get().id);
-            return GroupPermission.create({
-              group_id: group.get().id,
-              permission_id: permissionFound.get().id
-            });
-          });
-        }, {concurrency: 1});
-      });
+        log.debug(`add: groupId: ${group.get().id}, permissionsId: ${permissionFound.get().id}`);
+
+        await GroupPermission.create({
+          group_id: group.get().id,
+          permission_id: permissionFound.get().id
+        });
+      };
     }
 
   return GroupPermission;

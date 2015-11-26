@@ -7,7 +7,8 @@
         "browser": true,
         "es6": true,
         "node": false,
-        "jquery": true
+        "jquery": true,
+        "mocha": true
     },
     "ecmaFeatures": {
         "arrowFunctions": true,

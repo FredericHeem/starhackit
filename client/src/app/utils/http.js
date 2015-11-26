@@ -37,7 +37,7 @@ function ajax( url, verb, options ) {
             type: verb,
             dataType: 'json',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
             crossDomain: true,

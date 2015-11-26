@@ -6,6 +6,8 @@
   "page_objects_path" : "",
   "globals_path" : "",
 
+  "test_runner" : "mocha",
+
   "selenium" : {
     "start_process" : false,
     "server_path" : "",

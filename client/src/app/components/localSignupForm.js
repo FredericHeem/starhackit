@@ -1,9 +1,10 @@
 import React from 'react';
-import _ from 'lodash';
+//import _ from 'lodash';
+import Checkit from 'checkit';
 
 import LocalAuthenticationForm from 'components/localAuthenticationForm';
-import ValidateSignupFields from 'services/validateSignupFields';
 import authActions from 'actions/auth';
+import {createError} from 'utils/error';
 
 import Debug from 'debug';
 
@@ -13,7 +14,8 @@ export default React.createClass( {
 
     getInitialState() {
         return {
-            errors: {}
+            errors: {},
+            errorServer:null
         };
     },
 
@@ -23,15 +25,22 @@ export default React.createClass( {
         };
     },
 
+    renderError() {
+        let error = this.state.errorServer;
+        if(!error) return;
 
+        return (
+            <div className="alert alert-danger text-center animate bounceIn" role="alert">
+                <div>An error occured: {error.name}</div>
+                <div>{error.message}</div>
+                <div>Status Code: {error.status}</div>
+            </div>
+        );
+    },
     render() {
         return (
             <div className="local-signup-form">
-              { !_.isEmpty(this.state.errors) &&
-                  <div className="alert alert-danger text-center animate bounceIn" role="alert">
-                      An error occured.
-                  </div>
-              }
+                { this.renderError()}
                 <LocalAuthenticationForm
                     buttonCaption={this.props.buttonCaption || 'Create an account' }
                     errors={ this.state.errors }
@@ -44,7 +53,8 @@ export default React.createClass( {
 
     signup( payload ) {
         this.setState( {
-            errors: {}
+            errors: {},
+            errorServer: null
         } );
 
         validateSignup.call( this, payload )
@@ -60,8 +70,13 @@ export default React.createClass( {
 //////////////////////
 
 function validateSignup( payload ) {
-    return new ValidateSignupFields( payload )
-        .execute();
+    let rules = new Checkit( {
+        username: [ 'required', 'alphaDash', 'minLength:3', 'maxLength:64'],
+        password: [ 'required', 'alphaDash', 'minLength:6', 'maxLength:64' ],
+        email: [ 'required', 'email', 'minLength:6', 'maxLength:64' ]
+    } );
+
+    return rules.run( payload );
 }
 
 function signupLocal( payload ) {
@@ -70,17 +85,5 @@ function signupLocal( payload ) {
 
 function setErrors( e ) {
     debug("setErrors", e);
-    if ( e.name === 'CheckitError' ) { //local validation
-        this.setState( {
-            errors: e.toJSON()
-        } );
-    } else if ( e.status === 422 ) { //server validation
-        this.setState( {
-            errors: e.responseJSON.fields
-        } );
-    } else {
-        this.setState( {
-            errors: {name:"Unhandled error", details:e.toString()}
-        } );
-    }
+    this.setState(createError(e));
 }

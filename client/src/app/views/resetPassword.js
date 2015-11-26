@@ -1,3 +1,4 @@
+import React from 'react';
 import _ from 'lodash';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';

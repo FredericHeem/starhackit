@@ -1,11 +1,30 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
+import fs from 'fs';
+import path from 'path';
+
+let log = require('logfilename')('plugins');
 
 export default function Plugins(app){
-  let plugins = {
-    users: require('./users/UserPlugin')(app),
-    ticket: require('./ticket/TicketPlugin')(app, app.server)
-  };
+
+  let plugins = {};
+
+  function requirePluginDir(pluginPath, name){
+    log.debug(`requirePluginDir: ${pluginPath}, name: ${name}`);
+    fs.readdirSync(pluginPath)
+      .filter( file => file.slice(-9) === 'Plugin.js')
+      .forEach(file => {
+        plugins[name] = require(path.join(pluginPath, file))(app);
+      });
+  }
+
+  function createPlugin(dirname) {
+      fs.readdirSync(__dirname)
+        .filter(file => fs.lstatSync(path.join(dirname, file)).isDirectory())
+        .forEach(file => requirePluginDir(path.join(dirname, file), file));
+  }
+
+  createPlugin(__dirname);
 
   async function action(ops){
     await Promise.each(_.values(plugins), obj => obj[ops](app));

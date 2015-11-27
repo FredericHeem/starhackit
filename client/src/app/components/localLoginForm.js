@@ -1,9 +1,10 @@
-import _ from 'lodash';
 import React from 'react';
 
 import LocalAuthenticationForm from 'components/localAuthenticationForm';
 import ValidateLoginFields from 'services/validateLoginFields';
 import authActions from 'actions/auth';
+import {createError} from 'utils/error';
+import Alert from 'components/alert';
 
 import Debug from 'debug';
 
@@ -24,9 +25,10 @@ export default React.createClass( {
     },
 
     render() {
+        debug('render state:', this.state);
         return (
             <div className="local-login-form">
-
+                <Alert error={this.state.errorServer}/>
                 { this.state.badPassword &&
                     <div className="alert alert-danger text-center animate bounceIn" role="alert">
                         <strong>Username</strong> and <strong>Password</strong> do not match
@@ -74,22 +76,11 @@ function loginLocal( payload ) {
 
 function setErrors( e ) {
     debug("setErrors:", e);
-    if(e.message){
-        //CheckitError TODO find a better way than e.message
-        this.setState( {
-            errors: e.toJSON()
-        } );
-    } else if ( _.get( e.responseJSON, 'errorType' ) === 'BadPasswordError' ) {
+    if ( e.status === 401 ) {
         this.setState( {
             badPassword: true
         } );
-    } else if ( e.status === 422 ) {
-        this.setState( {
-            errors: e.responseJSON.fields
-        } );
-    } else if ( e.status === 401 ) {
-        this.setState( {
-            badPassword: true
-        } );
+    } else {
+        this.setState(createError(e));
     }
 }

@@ -26,6 +26,15 @@ describe('Login', function () {
             .waitForElementVisible('.has-error', 5000)
             .assert.containsText('.has-error span', 'The email is required');
     });
+    it.only('login with incorrect password', function (client) {
+        client
+            .url('http://localhost:8080/login')
+            .waitForElementVisible('#login', 5000)
+            .setValue('input[type=password]', 'wrongpassword')
+            .click('.btn-signup')
+            .waitForElementVisible('.has-error', 5000)
+            .assert.containsText('.has-error span', 'The email is required');
+    });
     it('login ok', function (client) {
         client
             .url('http://localhost:8080/login')

@@ -10,7 +10,7 @@ describe('Register', function () {
     });
     it('register no password', function (client) {
         client
-            .url('http://localhost:8080/signup')
+            .url(`${client.launch_url}/signup`)
             .waitForElementVisible('#signup', 5000)
             .setValue('input[placeholder=Email]', 'alice')
             .click('.btn-signup')

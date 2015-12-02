@@ -81,6 +81,7 @@ module.exports = function ( options ) {
                 stores: pathAppTo( 'stores' ),
                 views: pathAppTo( 'views' ),
                 utils: pathAppTo( 'utils' ),
+                parts: pathAppTo( 'parts' ),
 
                 assets: pathTo( 'assets' ),
                 config: pathAppTo( 'config.js' ),

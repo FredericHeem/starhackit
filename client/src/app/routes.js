@@ -14,6 +14,8 @@ import RegistrationComplete from 'views/registrationComplete';
 import ResetPassword from 'views/resetPassword';
 import MyProfile from 'views/myProfile';
 
+import UsersView from 'parts/admin/usersView';
+
 let routes = (
     <Route component={Application} name="home" path="/">
         <IndexRoute component={MainLanding}/>
@@ -25,6 +27,8 @@ let routes = (
         <Route component={UserProfile} name="userProfile" path="users/:id"/>
         <Route component={RegistrationComplete} name="verifyEmail" path="verifyEmail/:code"/>
         <Route component={ResetPassword} name="ResetPasswordToken" path="resetPassword/:token"/>
+
+        <Route component={UsersView} path="users"/>
 
         <Route component={Account} name="account" path="/my">
             <Route component={MyProfile} path="profile"/>

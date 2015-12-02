@@ -19,8 +19,12 @@ export default function MailJob (config){
   return {
     async start() {
       log.info('start');
-      await subscriber.start(this._onIncomingMessage.bind(this));
-      log.info('started');
+      try {
+        await subscriber.start(this._onIncomingMessage.bind(this));
+        log.info('started');
+      } catch(error){
+        log.error(`cannot start: ${error}, is RabbitMq running ?`);
+      }
     },
 
     async stop() {

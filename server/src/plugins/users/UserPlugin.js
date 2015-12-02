@@ -30,16 +30,22 @@ export default function UserPlugin(app){
 
   let mailJob = MailJob(config);
 
-  let startStop = [mailJob, publisher];
+  let parts = [mailJob, publisher];
 
   return {
     publisher:publisher,
     async start(){
-      await Promise.each(startStop, obj => obj.start(app));
+      try {
+        for (let part of parts) {
+          await part.start(app);
+        };
+      } catch(error){
+        log.error(`cannot start: ${error}`);
+      }
     },
 
     async stop(){
-      await Promise.each(startStop, obj => obj.stop(app));
+      await Promise.each(parts, obj => obj.stop(app));
     },
 
     seedDefault(){

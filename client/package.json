@@ -67,6 +67,7 @@
     "react-router": "1.0.0",
     "react-select": "1.0.0-beta5",
     "react-textarea-autosize": "3.1.0",
+    "reactabular": "0.9.2",
     "reflux": "0.3.0",
     "reflux-core": "0.3.0",
     "reflux-promise": "1.0.2",

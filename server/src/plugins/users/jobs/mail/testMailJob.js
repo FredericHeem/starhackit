@@ -31,7 +31,7 @@ describe('MailJob', function () {
   });
 
   let user = {
-    email: 'frederic.heem@gmail.com',
+    email: 'idonotexist@mail.com',
     code:'1234567890123456'
   };
 

@@ -25,7 +25,7 @@ describe('PasswordReset', function () {
   });
 
   beforeEach(async() => {
-    client = new Client();
+    client = testMngr.createClient();
   });
 
   async function resetPasswordProcedure(email, passwordNew){

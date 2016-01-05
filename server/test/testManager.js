@@ -1,48 +1,53 @@
-import assert from 'assert';
 import Promise from 'bluebird';
 import _ from 'lodash';
 import {Client} from 'restauth';
 
-var App = require('../src/app');
+let App = require('../src/app');
 
-var log = require('logfilename')(__filename);
+let log = require('logfilename')(__filename);
 
-var TestMngr = function(){
-
-  this.app = App();
+let TestMngr = function(){
+  log.debug("TestMngr");
 
   let users = require(__dirname + '/fixtures/models/users.json');
 
-  log.debug("TestMngr");
-
   let clientsMap = {};
 
-  _.each(users,function(userConfig, key) {
-    let client = new Client(userConfig);
+  let testMngr = {
+    app: App(),
+    createClient(userConfig = {}){
+      userConfig.url = 'http://localhost:3000/api/';
+      return new Client(userConfig);
+    },
+
+    client(name){
+      return clientsMap[name];
+    },
+
+    login() {
+      return Promise.map(_.values(clientsMap),function(client) {
+        return client.login({
+          username:client.config.username,
+          password:client.config.password
+        });
+      });
+    },
+
+    start(){
+      return this.app.start();
+    },
+
+    stop(){
+      return this.app.stop();
+    }
+  };
+
+  _.each(users,(userConfig, key) => {
+    let client = testMngr.createClient(userConfig);
     clientsMap[key] = client;
   });
 
-  this.client = function(name){
-    return clientsMap[name];
-  };
-
-  this.login = function() {
-    return Promise.map(_.values(clientsMap),function(client) {
-      return client.login({
-        username:client.config.username,
-        password:client.config.password
-      });
-    });
-  };
-
-  this.start = function(){
-    return this.app.start();
-  };
-
-  this.stop = function(){
-    return this.app.stop();
-  };
-
+  return testMngr;
 };
 
 TestMngr.instance = null;

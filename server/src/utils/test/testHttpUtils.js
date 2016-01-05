@@ -9,7 +9,7 @@ describe('HttpUtils', function(){
     let error = {};
 
     convertAndRespond(context, error);
-    assert.equal(context.code, 500);
+    assert.equal(context.status, 500);
 
   });
 });

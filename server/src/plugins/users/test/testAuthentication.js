@@ -1,5 +1,4 @@
 import assert from 'assert';
-import {Client} from 'restauth';
 import testMngr from '~/test/testManager';
 
 describe('Authentication', function(){
@@ -13,7 +12,7 @@ describe('Authentication', function(){
   });
 
   beforeEach(async () => {
-    client = new Client();
+    client = testMngr.createClient();
   });
 
   describe('After Login', () => {

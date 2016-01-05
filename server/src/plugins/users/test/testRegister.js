@@ -1,6 +1,5 @@
 let assert = require('assert');
 import sinon from 'sinon';
-import {Client} from 'restauth';
 import testMngr from '~/test/testManager';
 let chance = require('chance')();;
 
@@ -26,7 +25,7 @@ describe('UserRegister', function() {
   });
 
   beforeEach(async () => {
-    client = new Client();
+    client = testMngr.createClient();
   });
 
   function createUsernameRandom() {

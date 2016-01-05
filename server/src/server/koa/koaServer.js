@@ -81,8 +81,6 @@ function middlewareInit(app, koaApp, config) {
     log.debug(`${ctx.method} ${ctx.url} begins`);
     await next();
     const ms = new Date - start;
-    log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms`);
-    let util = require('util');
-    log.debug(util.inspect(ctx));
+    log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);
   });
 }

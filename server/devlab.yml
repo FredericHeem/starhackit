@@ -1,4 +1,4 @@
-from: node:0.12
+from: node:4.2
 services:
   - rabbitmq:latest:
       name: rabbitmq

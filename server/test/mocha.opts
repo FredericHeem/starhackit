@@ -1,1 +1,4 @@
---require babel-core/register --timeout 20000
+--require babel-core/register
+--timeout 20000
+--bail
+src/**/test*.js ./test/**/test*.js

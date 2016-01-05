@@ -17,8 +17,8 @@ The configuration file for the api server running on [Travis CI](https://travis-
 ## CodeClimate
 
 When the project is setup with [CodeClimate](https://codeclimate.com), a unique repository token will be created.
-On the Travis project page, go to the settings and set the varialbe **COVERALLS_REPO_TOKEN** to this token
+On the Travis project page, go to the settings and set the variable **CODECLIMATE_REPO_TOKEN** to this token
 
 ## Coveralls
 
-Same apply for [Coveralls](https://coveralls.io), but the variable is called **CODECLIMATE_REPO_TOKEN**
+Same apply for [Coveralls](https://coveralls.io), but the variable is called **COVERALLS_REPO_TOKEN**

@@ -8,7 +8,7 @@ export function respond(context, me, callback, args, statusCode = 200) {
     //apply used to pass args to the callback
   return callback.apply(me, args)
     .then(result => {
-      log.debug("respond ok");
+      log.debug(`respond with code: ${statusCode}`);
       context.status = statusCode;
       context.body = result;
     })
@@ -18,9 +18,16 @@ export function respond(context, me, callback, args, statusCode = 200) {
 }
 
 export function convertAndRespond(context, error) {
-  if (!error.name) {
-    log.error('UnknownError', error);
-    context.code = 500;
+  if (error instanceof TypeError) {
+    log.error('TypeError: ', error.toString());
+    context.status = 500;
+    context.body = {
+      name: error.name,
+      message: error.message
+    };
+  } else if (!error.name) {
+    log.error('UnknownError:', error);
+    context.status = 500;
     context.body = {
         name: 'UnknownError'
     };

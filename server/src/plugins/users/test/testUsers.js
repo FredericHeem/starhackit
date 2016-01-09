@@ -1,4 +1,5 @@
 import assert from 'assert';
+import _ from 'lodash';
 import testMngr from '~/test/testManager';
 
 describe('Users', function() {
@@ -21,6 +22,16 @@ describe('Users', function() {
     it('should get all users', async () => {
       let users = await client.get('v1/users');
       assert(users);
+      assert(Number.isInteger(users.count));
+      assert(users.data);
+
+      console.log(users);
+      for(let user of users.data){
+        let userGetOne = await client.get(`v1/users/${user.id}`);
+        assert(userGetOne);
+        console.log('user ' , userGetOne);
+        _.isEqual(user, userGetOne);
+      }
     });
     it('should get all users with filter ASC', async () => {
       let users = await client.get('v1/users?offset=10&order=ASC&limit=100');

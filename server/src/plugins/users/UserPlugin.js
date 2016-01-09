@@ -10,7 +10,10 @@ import config from 'config';
 import MailJob from './jobs/mail/MailJob';
 
 import MeRouter from './me/MeRouter';
+
 import UserRouter from './user/UserRouter';
+import UserApi from './user/UserApi';
+
 import AuthenticationRouter from './authentication/AuthenticationRouter';
 
 let log = new Log(__filename);
@@ -74,7 +77,8 @@ function setupRouter(app, publisherUser){
   MeRouter(app);
 
   //Users
-  UserRouter(app);
+  let userApi = UserApi(app);
+  UserRouter(app, userApi);
 }
 
 function createPublisher(){

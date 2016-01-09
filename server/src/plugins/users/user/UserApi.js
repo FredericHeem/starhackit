@@ -1,13 +1,29 @@
+import _ from 'lodash';
 let log = require('logfilename')(__filename);
 
 export default function UserApi(app) {
   let models = app.data.models();
 
   return {
-    getAll: function (qs) {
-      log.debug("list qs: ", qs);
-      let filter = app.data.queryStringToFilter(qs, "id");
-      return models.User.findAll(filter);
+    getAll: async function (filter = {}) {
+      _.defaults(filter, {
+        limit: 100,
+        order: 'DESC',
+        offset: 0
+      });
+      log.info('getAll ', filter);
+      let result = await models.User.findAndCountAll({
+        //attributes: ledgerAttr,
+        limit: filter.limit,
+        order: `createdAt ${filter.order}`,
+        offset: filter.offset
+      });
+      log.info(`getAll count: ${result.count}`);
+      let users = _.map(result.rows, user => user.toJSON());
+      return {
+        count: result.count,
+        data: users
+      };
     },
     getOne: function (userId) {
       log.debug("get userId: ", userId);

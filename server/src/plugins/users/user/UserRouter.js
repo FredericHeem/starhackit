@@ -1,15 +1,19 @@
 import Router from 'koa-66';
-import UserApi from './UserApi';
+import Qs from 'qs';
 
 let log = require('logfilename')(__filename);
 
-export function UserHttpController(app){
+export function UserHttpController(app, userApi){
   log.debug("UserHttpController");
-  let userApi = UserApi(app);
+
   let respond = app.utils.http.respond;
   return {
     async getAll(context) {
-      return respond(context, userApi, userApi.getAll, [context.querystring]);
+      return respond(
+        context,
+        userApi,
+        userApi.getAll,
+        [Qs.parse(context.request.querystring)]);
     },
     async getOne(context) {
       let userId = context.params.id;
@@ -18,9 +22,9 @@ export function UserHttpController(app){
   };
 }
 
-export default function UserRouter(app, /*auth*/){
+export default function UserRouter(app, userApi){
   let router = new Router();
-  let userHttpController = UserHttpController(app);
+  let userHttpController = UserHttpController(app, userApi);
 
   router.use(app.server.auth.isAuthenticated);
   router.use(app.server.auth.isAuthorized);

@@ -67,6 +67,7 @@
     "pg": "4.4.2",
     "pg-hstore": "2.3.2",
     "pm2": "0.15.7",
+    "qs": "6.0.1",
     "rabbitmq-pubsub": "0.2.0",
     "run-sequence": "1.1.4",
     "sequelize": "3.13.0",

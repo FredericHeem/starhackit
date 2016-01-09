@@ -1,14 +1,15 @@
 let assert = require('assert');
 import sinon from 'sinon';
 import testMngr from '~/test/testManager';
-let chance = require('chance')();;
+
+import UserUtils from './userUtils';
 
 describe('UserRegister', function() {
   let app = testMngr.app;
-  let models = app.data.sequelize.models;
+  let models = app.data.models();
   let client;
   let sandbox;
-
+  let userUtils = UserUtils();
   before(async () => {
       await testMngr.start();
       sandbox = sinon.sandbox.create();
@@ -28,59 +29,23 @@ describe('UserRegister', function() {
     client = testMngr.createClient();
   });
 
-  function createUsernameRandom() {
-    let username = chance.name();
-    return username;
-  }
-
   it('shoud register a user', async () => {
-    let username = createUsernameRandom();
-    let userConfig = {
-      username: username,
-      password:'password',
-      email: username + "@mail.com"
-    };
 
-    let res = await client.post('v1/auth/register', userConfig);
-    assert(res);
-    assert(res.success);
-    res = await models.UserPending.find({
-      where: {
-        email: userConfig.email
-      }
-    });
-    assert(res);
-    let userPending = res.get();
-    assert(userPending.username, userConfig.username);
-    assert(userPending.email, userConfig.email);
-    assert(userPending.code);
-
-    try {
-      await client.get('v1/me');
-      assert(false);
-    } catch(error){
-      assert(error);
-    }
-
-    await client.post('v1/auth/verify_email_code', {code:userPending.code});
-    res = await models.User.find({
-      where: {
-        email: userConfig.email
-      }
-    });
-    assert(res);
-    let user = res.get();
-    assert(user.username, userConfig.username);
-    assert(user.email, userConfig.email);
-    //console.log("user password ", user.password);
+    let userConfig = await userUtils.registerRandom(models, client);
 
     //The user shoud no longer be in the user_pendings table
-    res = await models.UserPending.find({
+    let res = await models.UserPending.find({
       where: {
         email: userConfig.email
       }
     });
     assert(!res);
+
+    // registering when user is already registered
+    res = await client.post('v1/auth/register', userConfig);
+    assert(res);
+    assert(res.success);
+    assert.equal(res.message, "confirm email");
 
     // Should login now
     let loginParam = {
@@ -123,12 +88,7 @@ describe('UserRegister', function() {
     }
   });
   it('shoud register twice a user', async () => {
-    let username = createUsernameRandom();
-    let userConfig = {
-      username: username,
-      password:'password',
-      email: username + "@mail.com"
-    };
+    let userConfig =  userUtils.createRandomRegisterConfig();
 
     let res = await client.post('v1/auth/register', userConfig);
     assert(res);

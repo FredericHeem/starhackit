@@ -14,7 +14,7 @@
     "path": "../client/build"
   },
   "http": {
-    "port": 3000
+    "port": 9000
   },
   "db":{
      // pg, sqlite3  etc ...

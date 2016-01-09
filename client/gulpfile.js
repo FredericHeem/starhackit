@@ -32,7 +32,7 @@ gulp.task( 'webpack-dev-server', function ( callback ) {
             colors: true
         },
         proxy: {
-            '/api/v1/*': 'http://localhost:3000'
+            '/api/v1/*': 'http://localhost:9000'
         }
     } ).listen( 8080, '0.0.0.0', function ( err ) {
             if ( err ) {

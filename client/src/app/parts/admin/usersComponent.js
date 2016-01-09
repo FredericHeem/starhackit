@@ -1,8 +1,5 @@
-import _ from 'lodash';
 import React from 'react';
-import Reflux from 'reflux';
-import usersStore from './usersStore';
-import usersActions from './usersActions';
+import usersResources from './usersResources';
 import {
     Table
 } from 'reactabular';
@@ -11,17 +8,21 @@ import Paginator from 'react-pagify';
 import Debug from 'debug';
 let debug = new Debug("components:users");
 
+import * as PaginatorStyle from 'react-pagify/style.css';
+
 export default React.createClass({
-    mixins: [Reflux.connect(usersStore, 'users')],
     getInitialState () {
         return {
+            count: 0,
+            data: [],
             columns: [
+                {
+                    property: 'id',
+                    header: 'Id'
+                },
                 {
                     property: 'username',
                     header: 'Username'
-                }, {
-                    property: 'id',
-                    header: 'Id'
                 }, {
                     property: 'fistName',
                     header: 'First Name'
@@ -29,41 +30,55 @@ export default React.createClass({
             ],
             pagination: {
                 page: 0,
-                perPage: 4
+                perPage: 10
             }
         };
     },
     componentDidMount () {
-        usersActions.getUsers();
+        this.onSelectPage(0);
     },
     render () {
         debug('render');
-        let columns = this.state.columns || [];
-        let data = this.state.users || [];
+        let {columns, data, pagination} = this.state.columns;
 
-        let pagination = this.state.pagination;
-        let paginated = Paginator.paginate(data, pagination);
         return (
             <div>
-                <Table className='pure-table pure-table-striped'
+                <Table className='table table-striped'
                     columns={columns}
-                    data={paginated.data}/>
+                    data={data}/>
                 <div className='controls'>
                     <div className='pagination'>
                         <Paginator
-                            page={paginated.page}
-                            pages={paginated.amount}
+                            page={pagination.page}
+                            pages={ Math.ceil(this.state.count / pagination.perPage)}
                             beginPages={3}
                             endPages={3}
-                            onSelect={this.onSelectPaginator}/>
+                            onSelect={this.onSelectPage}/>
                     </div>
                 </div>
             </div>
         );
     },
-    onSelectPaginator (page) {
-        let pagination = this.state.pagination || {};
-        pagination.page = page;
-        this.setState({pagination: pagination});
+    onSelectPage(page){
+        debug('onSelectPage ', page);
+        let pagination = this.state.pagination;
+        usersResources.getAll({
+            offset: pagination.perPage * page,
+            limit: pagination.perPage
+        })
+        .then(result => {
+            pagination.page = page;
+            this.setState({
+                count: result.count,
+                data: result.data,
+                pagination: pagination});
+        })
+        .catch(err => {
+            debug('error: ', err);
+            this.setState({error: err});
+        })
+        .finally(() => {
+            this.setState({loading: false});
+        });
     }
 });

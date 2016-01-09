@@ -34,12 +34,14 @@ describe('Users', function() {
       }
     });
     it('should get all users with filter ASC', async () => {
-      let users = await client.get('v1/users?offset=10&order=ASC&limit=100');
-      assert(users);
+      let res = await client.get('v1/users?offset=1&order=ASC&limit=10');
+      assert.equal(res.data.length, 10);
+      //console.log(res.data[0])
+      assert.equal(res.data[0].id, 2);
     });
     it('should get all users with filter DESC', async () => {
-      let users = await client.get('v1/users?offset=10&order=DESC&limit=100');
-      assert(users);
+      let res = await client.get('v1/users?offset=10&limit=10');
+      assert.equal(res.data.length, 10);
     });
     it('should get one user', async () => {
       let user = await client.get('v1/users/1');

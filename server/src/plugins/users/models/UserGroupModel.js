@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
     * @returns {Promise} returns a  Promise containing the results of the upsert
     */
    async function addUserIdInGroups(groups, userId, t) {
-     log.debug(`addUserIdInGroup user:${userId}, #${groups.length}`);
+     log.debug(`addUserIdInGroups user:${userId}, #groups ${groups.length}`);
      for (let group of groups) {
        await UserGroup.addUserIdInGroup(group, userId, t);
      }
@@ -44,6 +44,7 @@ module.exports = function(sequelize, DataTypes) {
        let err = {name: 'GroupNotFound', message: groupName};
        throw err;
      };
+     //log.debug(`addUserIdInGroup upsert to user:${userId} group: ${group.get().id}`);
      return UserGroup.upsert({
        group_id: group.get().id,
        user_id: userId

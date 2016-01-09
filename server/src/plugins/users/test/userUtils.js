@@ -11,6 +11,7 @@ export default function () {
             let userConfig = await this.registerRandom(models, client);
             next(null, userConfig);
           } catch(err){
+            console.error("error creating user: ", err)
             next(err);
           }
         }, function (err, results) {
@@ -25,7 +26,7 @@ export default function () {
       });
     },
     createRandomRegisterConfig: function(){
-      let username = `${chance.first()}.${chance.last()}`;
+      let username = `${chance.first()}.${chance.first()}.${chance.last()}`;
       let userConfig = {
         username: username,
         password: 'password',
@@ -53,6 +54,7 @@ export default function () {
       assert.equal(userPending.email, userConfig.email);
       assert(userPending.code);
 
+      //console.log("verify user ", userConfig);
       await client.post('v1/auth/verify_email_code', {code:userPending.code});
       res = await models.User.find({
         where: {
@@ -63,7 +65,7 @@ export default function () {
       let user = res.toJSON();
       assert.equal(user.username, userConfig.username);
       assert.equal(user.email, userConfig.email);
-      //console.log("user password ", user.password);
+      //console.log("user created ", user);
       return userConfig;
     }
     /*,

@@ -34,6 +34,7 @@ export default function(app, publisherUser) {
       };
     },
     async verifyEmailCode(param){
+      log.debug("verifyEmailCode: ", param);
       validateJson(param, require('./schema/verifyEmailCode.json'));
       let res = await models.UserPending.find({
         where: {
@@ -52,7 +53,7 @@ export default function(app, publisherUser) {
             code:param.code
           }
         });
-        log.debug("verifyEmailCode: user ", user.toJSON());
+        //log.debug("verifyEmailCode: created user ", user.toJSON());
         await publisherUser.publish("user.registered", JSON.stringify(user.toJSON()));
         return user.toJSON();
       } else {

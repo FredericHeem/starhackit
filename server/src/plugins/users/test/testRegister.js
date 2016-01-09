@@ -33,8 +33,9 @@ describe('UserRegister', function() {
 
     let countBefore = await models.User.count();
     assert(countBefore > 0);
-    let usersToAdd = 2;
-    let limit = 1;
+    let usersToAdd = 100;
+    // Limit to 1 when using sqlite
+    let limit = 50;
     await userUtils.createBulk(models, client, usersToAdd, limit);
     let countAfter = await models.User.count();
     console.log("users to add ", usersToAdd);

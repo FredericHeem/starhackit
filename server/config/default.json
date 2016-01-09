@@ -27,7 +27,11 @@
     "host": "localhost",
     "port": "5432",
     "logging": true,
-    "storage": "./db.dev.sqlite"
+    "storage": "./db.dev.sqlite",
+    "pool": {
+      "maxConnections": 100,
+      "maxIdleTime": 60
+    }
   },
   "authentication":{
     /*

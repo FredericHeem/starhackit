@@ -1,8 +1,29 @@
+import Promise from 'bluebird';
 import assert from 'assert';
 let chance = require('chance')();
-
+import _async from 'async';
 export default function () {
   return {
+    async createBulk(models, client, userCount = 10, limit = 2){
+      return new Promise((resolve, reject) => {
+        _async.timesLimit(userCount, limit, async(i, next) => {
+          try {
+            let userConfig = await this.registerRandom(models, client);
+            next(null, userConfig);
+          } catch(err){
+            next(err);
+          }
+        }, function (err, results) {
+          assert(err === null, err + " passed instead of 'null'");
+          assert(results);
+          if(err){
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      });
+    },
     createRandomRegisterConfig: function(){
       let username = `${chance.first()}.${chance.last()}`;
       let userConfig = {

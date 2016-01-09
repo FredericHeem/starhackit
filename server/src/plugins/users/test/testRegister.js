@@ -6,6 +6,7 @@ import UserUtils from './userUtils';
 
 describe('UserRegister', function() {
   let app = testMngr.app;
+  this.timeout(600e3)
   let models = app.data.models();
   let client;
   let sandbox;
@@ -27,6 +28,21 @@ describe('UserRegister', function() {
 
   beforeEach(async () => {
     client = testMngr.createClient();
+  });
+  it('shoud register up to n users', async () => {
+
+    let countBefore = await models.User.count();
+    assert(countBefore > 0);
+    let usersToAdd = 2;
+    let limit = 1;
+    await userUtils.createBulk(models, client, usersToAdd, limit);
+    let countAfter = await models.User.count();
+    console.log("users to add ", usersToAdd);
+    console.log("#users before ", countBefore);
+    console.log("#users after ", countAfter);
+
+    assert.equal(countBefore + usersToAdd, countAfter);
+
   });
 
   it('shoud register a user', async () => {

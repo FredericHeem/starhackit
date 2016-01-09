@@ -91,6 +91,7 @@ module.exports = function(sequelize, DataTypes) {
             await models.UserGroup.addUserIdInGroups(groups, userCreated.get().id, t );
             return userCreated;
           })
+
           .catch(function (err) {
             log.error('createUserInGroups: rolling back', err);
             throw err;

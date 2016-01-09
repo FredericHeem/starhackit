@@ -78,7 +78,7 @@
     "winston": "1.1.0"
   },
   "devDependencies": {
-    "async": "1.4.2",
+    "async": "1.5.2",
     "chai": "3.3.0",
     "chalk": "1.1.1",
     "codeclimate-test-reporter": "0.1.1",

@@ -36,7 +36,10 @@ module.exports = function(sequelize, DataTypes) {
     */
    async function addUserIdInGroup(groupName, userId, t) {
      log.debug(`addUserIdInGroup user:${userId}, group: ${groupName}`);
-     let group = await models.Group.findByName(groupName);
+     //let group = await models.Group.findByName(groupName);
+     let group = await models.Group.find({
+       where: { name: groupName }
+     }, {transaction:t});
      if (!group) {
        let err = {name: 'GroupNotFound', message: groupName};
        throw err;
@@ -44,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
      return UserGroup.upsert({
        group_id: group.get().id,
        user_id: userId
-     },{transaction:t});
+     }, {transaction:t});
    }
 
   return UserGroup;

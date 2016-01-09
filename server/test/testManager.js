@@ -16,7 +16,7 @@ let TestMngr = function(){
   let testMngr = {
     app: App(),
     createClient(userConfig = {}){
-      userConfig.url = 'http://localhost:3000/api/';
+      userConfig.url = 'http://localhost:9000/api/';
       return new Client(userConfig);
     },
 

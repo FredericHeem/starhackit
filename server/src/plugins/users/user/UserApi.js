@@ -13,7 +13,6 @@ export default function UserApi(app) {
       });
       log.info('getAll ', filter);
       let result = await models.User.findAndCountAll({
-        //attributes: ledgerAttr,
         limit: filter.limit,
         order: `\"createdAt\" ${filter.order}`,
         offset: filter.offset

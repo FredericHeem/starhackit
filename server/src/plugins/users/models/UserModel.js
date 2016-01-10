@@ -189,8 +189,6 @@ module.exports = function(sequelize, DataTypes) {
           let values = this.get({clone: true});
           delete values.password;
           delete values.passwordHash;
-          delete values.createdAt;
-          delete values.updatedAt;
           return values;
         }
       }

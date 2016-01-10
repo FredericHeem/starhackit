@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import usersResources from './usersResources';
 import {
     Table
@@ -23,9 +24,20 @@ export default React.createClass({
                 {
                     property: 'username',
                     header: 'Username'
-                }, {
-                    property: 'fistName',
+                },
+                {
+                    property: 'firstName',
                     header: 'First Name'
+                },
+                {
+                    property: 'createdAt',
+                    header: 'Created At',
+                    cell: (v) => moment.utc(v).format('LLLL')
+                },
+                {
+                    property: 'updatedAt',
+                    header: 'Updated At',
+                    cell: (v) => moment.utc(v).fromNow()
                 }
             ],
             pagination: {
@@ -39,7 +51,7 @@ export default React.createClass({
     },
     render () {
         debug('render');
-        let {columns, data, pagination} = this.state.columns;
+        let {columns, data, pagination} = this.state;
 
         return (
             <div>

@@ -46,6 +46,12 @@ describe('Users', function() {
     it('should get one user', async () => {
       let user = await client.get('v1/users/1');
       assert(user);
+      //console.log('user:', user)
+      assert(user.username);
+      assert(user.createdAt);
+      assert(user.updatedAt);
+      assert(!user.password);
+      assert(!user.passwordHash);
     });
     it.skip('should not create a new user with missing username', async () => {
       try {

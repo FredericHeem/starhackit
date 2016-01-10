@@ -1,10 +1,12 @@
 import React from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import usersResources from './usersResources';
 import {
     Table
 } from 'reactabular';
 import Paginator from 'react-pagify';
+import Spinner from 'components/spinner';
 
 import Debug from 'debug';
 let debug = new Debug("components:users");
@@ -14,6 +16,7 @@ import * as PaginatorStyle from 'react-pagify/style.css';
 export default React.createClass({
     getInitialState () {
         return {
+            loading: false,
             count: 0,
             data: [],
             columns: [
@@ -49,8 +52,21 @@ export default React.createClass({
     componentDidMount () {
         this.onSelectPage(0);
     },
+    renderLoading(){
+        if(this.state.loading){
+            return (<Spinner/>);
+        };
+    },
     render () {
-        debug('render');
+        debug('render ', this.state);
+        return (
+            <div>
+                {this.renderLoading()}
+                {this.renderTable()}
+            </div>
+        );
+    },
+    renderTable () {
         let {columns, data, pagination} = this.state;
 
         return (
@@ -74,23 +90,26 @@ export default React.createClass({
     onSelectPage(page){
         debug('onSelectPage ', page);
         let pagination = this.state.pagination;
+        this.setState({loading: true});
+        let state = {loading: false};
         usersResources.getAll({
             offset: pagination.perPage * page,
             limit: pagination.perPage
         })
         .then(result => {
             pagination.page = page;
-            this.setState({
+            _.extend(state, {
                 count: result.count,
                 data: result.data,
-                pagination: pagination});
+                pagination: pagination
+            });
         })
         .catch(err => {
             debug('error: ', err);
-            this.setState({error: err});
+            _.extend(state, {error: err});
         })
         .finally(() => {
-            this.setState({loading: false});
+            this.setState(state);
         });
     }
 });

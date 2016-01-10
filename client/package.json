@@ -6,7 +6,8 @@
   "license": "NLPL",
   "scripts": {
     "start": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "nightwatch": "cd test/nightwatch/ && nightwatch",
+    "test": "npm run nightwatch",
     "postinstall": "gulp build",
     "build": "gulp build",
     "clean": "gulp clean"
@@ -84,6 +85,8 @@
   "devDependencies": {
     "mocha": "2.3.4",
     "mochawait": "2.0.1",
+    "nightwatch": "0.8.15",
+    "protractor": "3.0.0",
     "webdriverio": "3.3.0"
   }
 }

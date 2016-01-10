@@ -51,6 +51,7 @@
     "lodash": "3.10.1",
     "marked": "0.3.5",
     "moment": "2.10.6",
+    "open-browser-webpack-plugin": "0.0.2",
     "radium": "0.15.3",
     "react": "0.14.3",
     "react-addons-linked-state-mixin": "0.14.3",

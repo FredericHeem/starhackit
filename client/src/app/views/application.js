@@ -6,12 +6,18 @@ import analyticsStore from 'stores/analytics';
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 
+import Debug from 'debug';
+let debug = new Debug("views:app");
+
 export default React.createClass( {
 
     mixins: [
         Reflux.connect( analyticsStore )
     ],
 
+    componentDidMount() {
+        debug('componentDidMount');
+    },
     render() {
         return (
             <div id="application-view">
@@ -22,9 +28,7 @@ export default React.createClass( {
                 </div>
 
                 <Footer />
-
             </div>
         );
     }
-
 } );

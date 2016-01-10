@@ -9,6 +9,9 @@ import DocTitle from 'components/docTitle';
 
 import authStore from 'stores/auth';
 
+import Debug from 'debug';
+let debug = new Debug("views:login");
+
 export default React.createClass( {
 
     mixins: [
@@ -23,11 +26,10 @@ export default React.createClass( {
     },
 
     componentWillUpdate() {
-        //let path = this.props.location.search.nextPath || '/profile';
-        //TODO
-
+        debug("componentWillUpdate ", this.props);
+        let path = this.props.location.query.nextPath || '/app/my/profile';
+        debug("componentWillUpdate next path: ", path);
         if ( authStore.isAuthenticated() ) {
-            let path = '/my/profile';
             this.history.pushState(null, path);
         }
     },

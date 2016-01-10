@@ -13,7 +13,7 @@ import UserProfile from 'views/userProfile';
 import RegistrationComplete from 'views/registrationComplete';
 import ResetPassword from 'views/resetPassword';
 import MyProfile from 'views/myProfile';
-
+import Authenticated from 'components/authenticatedComponent';
 import UsersView from 'parts/admin/usersView';
 
 let routes = (
@@ -24,14 +24,21 @@ let routes = (
         <Route component={Logout} path="logout"/>
         <Route component={Forgot} path="forgot"/>
 
-        <Route component={UserProfile} name="userProfile" path="users/:id"/>
+        
         <Route component={RegistrationComplete} name="verifyEmail" path="verifyEmail/:code"/>
         <Route component={ResetPassword} name="ResetPasswordToken" path="resetPassword/:token"/>
 
-        <Route component={UsersView} path="users"/>
+        <Route path="/admin" component={Authenticated}>
+            <IndexRoute component={UsersView}/>
+            <Route component={UsersView} path="users"/>
+            <Route component={UserProfile} name="userProfile" path="users/:id"/>
+        </Route>
 
-        <Route component={Account} name="account" path="/my">
-            <Route component={MyProfile} path="profile"/>
+        <Route path="/app" component={Authenticated}>
+            <IndexRoute component={Account}/>
+            <Route component={Account} name="account" path="my">
+                <Route component={MyProfile} path="profile"/>
+            </Route>
         </Route>
     </Route>
 );

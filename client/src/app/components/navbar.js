@@ -58,7 +58,7 @@ export default React.createClass( {
                         <span className="caret"></span>
                     </button>
                     <ul className="dropdown-menu">
-                        <NavLink to="/my/profile">Profile</NavLink>
+                        <NavLink to="/app/my/profile">Profile</NavLink>
 
                         <li role="separator" className="divider"></li>
                         <NavLink to="/logout">Logout</NavLink>

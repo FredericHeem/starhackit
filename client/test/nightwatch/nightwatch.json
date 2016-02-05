@@ -9,7 +9,7 @@
   "test_runner" : "mocha",
 
   "selenium" : {
-    "start_process" : false,
+    "start_process" : true,
     "server_path" : "/usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-2.48.2.jar",
     "log_path" : "",
     "host" : "127.0.0.1",

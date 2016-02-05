@@ -33,7 +33,7 @@ describe('Login', function () {
             .waitForElementVisible('.alert-danger', 5000)
             .assert.containsText('.alert-danger', 'do not match');
     });
-    it('login ok', function (client) {
+    it.skip('login ok', function (client) {
         client.page.login().navigate()
             .waitForElementVisible('#login', 5000)
             .setValue('@emailInput', 'alice')

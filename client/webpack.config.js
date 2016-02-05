@@ -36,7 +36,7 @@ module.exports = function ( options ) {
                 'react-cookie',
                 'react-ga',
                 'react-doc-meta',
-                'react-ladda/node_modules/ladda/dist/ladda.min.css',
+                'ladda/dist/ladda.min.css',
                 'react-portal',
                 'react-select/dist/react-select.min.css',
                 'react-router',

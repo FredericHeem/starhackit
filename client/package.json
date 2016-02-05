@@ -9,6 +9,7 @@
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "test": "npm run nightwatch",
     "postinstall": "gulp build",
+    "selenium-install": "webdriver-manager update",
     "build": "gulp build",
     "clean": "gulp clean"
   },

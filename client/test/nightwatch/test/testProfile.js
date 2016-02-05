@@ -11,7 +11,7 @@ describe('Profile', function () {
         });
     });
 
-    it('read profile', function (client) {
+    it.only('read profile', function (client) {
 
         client.page.profile().navigate()
             .waitForElementVisible('#profile', 5000);

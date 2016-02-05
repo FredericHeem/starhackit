@@ -3,19 +3,19 @@ var gulp = require( 'gulp' );
 var nodemon = require( 'gulp-nodemon' );
 var runSequence = require( 'run-sequence' );
 var clean = require( 'gulp-rimraf' );
-var connect = require('gulp-connect');
 var babel = require('gulp-babel');
 var debug = require('gulp-debug');
 
 var paths = {
-  scripts: ['src/**/*.js'],
+  src: ['src/**/*.js'],
+  test: ['src/**/test*.js'],
   build: 'build'
 };
 
-gulp.task( 'default', [ 'watch', 'run', 'server:images' ] );
+gulp.task( 'default', [ 'watch', 'run'] );
 
 gulp.task('build', function () {
-    return gulp.src(paths.scripts)
+    return gulp.src(paths.src)
         .pipe(babel())
         .pipe(gulp.dest(paths.build));
 });
@@ -51,7 +51,7 @@ gulp.task( 'cp:assets', function () {
 } );
 
 gulp.task( 'watch', [ 'build' ], function () {
-  gulp.watch(paths.scripts, ['build:watch']);
+  gulp.watch(paths.src, ['build:watch']);
 } );
 
 gulp.task( 'run', ['build', 'cp:assets'], function () {
@@ -72,10 +72,4 @@ gulp.task( 'run', ['build', 'cp:assets'], function () {
     });
 } );
 
-gulp.task( 'server:images', function () {
-    connect.server({
-        root: '../uploads',
-        host: '0.0.0.0',
-        port: 4000
-    });
-} );
+

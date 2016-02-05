@@ -1,6 +1,7 @@
 import React from 'react';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
+import LaddaButton from 'react-ladda';
 
 import Debug from 'debug';
 
@@ -16,7 +17,8 @@ export default React.createClass( {
         return {
             username: null,
             password: null,
-            email: null
+            email: null,
+            loading:false
         };
     },
 
@@ -60,7 +62,14 @@ export default React.createClass( {
                                 <span className="label label-danger animate bounceIn">{ this.props.errors.password[ 0 ]}</span>
                             }
                         </div>
-                        <button className="btn btn-lg btn-primary btn-signup" onClick={this.signup}>{ this.props.buttonCaption }</button>
+                        <LaddaButton
+                            className='btn btn-lg btn-primary btn-signup'
+                            id='btn-login'
+                            buttonColor='green'
+                            loading={this.state.loading}
+                            progress={.5}
+                            buttonStyle="slide-up"
+                            onClick={this.signup}>{ this.props.buttonCaption }</LaddaButton>
                     </div>
                 </form>
             </div>
@@ -77,11 +86,20 @@ export default React.createClass( {
     signup( e ) {
         e.preventDefault();
 
+        this.setState( {
+            loading: true,
+        } );
+
         this.props.onButtonClick( {
             username: this.state.username,
             password: this.state.password,
             email: this.state.email
-        } );
+        } )
+        .finally(() => {
+            this.setState( {
+                loading: false
+            } );
+        });
     }
 
 } );

@@ -57,7 +57,7 @@ export default React.createClass( {
             errorServer: null
         } );
 
-        validateSignup.call( this, payload )
+        return validateSignup.call( this, payload )
             .with( this )
             .then( signupLocal )
             .then( this.props.onSignedUp )

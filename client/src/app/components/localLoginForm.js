@@ -50,7 +50,7 @@ export default React.createClass( {
             errors: {}
         } );
 
-        validateLogin.call( this, payload )
+        return validateLogin.call( this, payload )
             .with( this )
             .then( loginLocal )
             .then( this.props.onLoggedIn )

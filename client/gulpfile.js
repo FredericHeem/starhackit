@@ -9,6 +9,7 @@ var stylus = require( 'gulp-stylus' );
 var clean = require( 'gulp-rimraf' );
 var runSequence = require( 'run-sequence' );
 var imagemin = require( 'gulp-imagemin' );
+var exec = require('child_process').exec;
 
 function handleError( task ) {
     return function ( err ) {
@@ -45,6 +46,17 @@ gulp.task( 'webpack-dev-server', function ( callback ) {
     //setup stylus watcher
     gulp.watch( [ 'src/assets/stylus/*.styl', 'src/assets/stylus/**/*.styl' ], [ 'stylus:compile' ] );
 } );
+
+gulp.task('selenium:install', function(cb){
+  var env = process.env.NODE_ENV || 'development';
+  if(env === 'development'){
+    return exec('webdriver-manager update', function (err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
+      cb(err);
+    });
+  }
+});
 
 gulp.task( 'stylus:compile', function () {
     return gulp.src( './src/assets/stylus/main.styl' )

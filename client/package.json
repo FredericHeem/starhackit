@@ -8,8 +8,7 @@
     "start": "gulp",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "test": "npm run nightwatch",
-    "postinstall": "gulp build",
-    "selenium-install": "webdriver-manager update",
+    "postinstall": "gulp build && gulp selenium:install",
     "build": "gulp build",
     "clean": "gulp clean"
   },
@@ -44,6 +43,7 @@
     "gulp-debug": "2.1.2",
     "gulp-imagemin": "2.4.0",
     "gulp-rimraf": "0.2.0",
+    "gulp-shell": "0.5.2",
     "gulp-stylus": "2.3.0",
     "gulp-util": "3.0.7",
     "history": "1.17.0",

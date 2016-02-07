@@ -10,7 +10,6 @@ import meStore from 'stores/me';
 
 import meActions from 'actions/me';
 
-import UserAvatar from 'components/userAvatar';
 import MarkdownEditor from 'components/markdownEditor';
 
 export default React.createClass({
@@ -71,12 +70,6 @@ export default React.createClass({
 
                         </div>
 
-                        <div className="col-sm-1">
-                            <UserAvatar
-                                user={ this.state.profile }
-                                />
-                        </div>
-
                         <div className="col-sm-12">
                             <div className="form-group">
                                 <legend>About Me</legend>
@@ -134,7 +127,8 @@ export default React.createClass({
         }
 
         function successNotification() {
-            $.bootstrapGrowl( 'Profile Updated', { type: 'warning', delay: 5000 } );
+            //TODO setup notification system
+            //$.bootstrapGrowl( 'Profile Updated', { type: 'warning', delay: 5000 } );
         }
 
         function setErrors( e ) {

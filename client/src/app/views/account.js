@@ -3,7 +3,7 @@ import React from 'react';
 import authStore from 'stores/auth';
 
 export default React.createClass( {
-
+    //TODO check that
     statics: {
         willTransitionTo( transition ) {
             if ( !(authStore.isAuthenticated()) ) {

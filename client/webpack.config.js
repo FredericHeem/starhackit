@@ -1,6 +1,7 @@
 var _ = require( 'lodash' );
 var path = require( 'path' );
 var webpack = require( 'webpack' );
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var pathAppTo;
 
@@ -14,13 +15,13 @@ module.exports = function ( options ) {
     var config = _.merge( {}, {
         devServer: {
             contentBase: path.join( __dirname, 'src' ),
-            publicPath: '/bundle/',
+            publicPath: '/',
             hot: true,
             historyApiFallback: true,
             stats: {
                 colors: true
             },
-            stats: 'errors-only',
+            //stats: 'errors-only',
             progress: true,
             proxy: {
                 '/api/v1/*': 'http://localhost:9000'
@@ -61,9 +62,8 @@ module.exports = function ( options ) {
         },
 
         output: {
-            path: path.join( __dirname, 'bundle' ),
+            path: path.join( __dirname, 'build' ),
             filename: 'app.js',
-            publicPath: '/bundle/'
         },
         plugins: [
             new webpack.HotModuleReplacementPlugin(),
@@ -73,7 +73,13 @@ module.exports = function ( options ) {
                 $: 'jquery',
                 'window.jQuery': 'jquery'
             } ),
-
+            new CopyWebpackPlugin([
+                { from: './src/index.html'},
+                { from: './src/favicon.ico' },
+                { from: './assets/img/*.png' },
+                { from: './assets/img/*.jpg' },
+                { from: './assets/img/*.svg' }
+            ]),
             new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
         ],
         resolve: {

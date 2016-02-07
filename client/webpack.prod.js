@@ -1,7 +1,7 @@
 var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CompressionPlugin = require('compression-webpack-plugin');
-
+var CleanPlugin = require('clean-webpack-plugin');
 var webpackProdConfig = {
     overrides: {
         entry: {
@@ -12,6 +12,7 @@ var webpackProdConfig = {
     },
 
     plugins: [
+        new CleanPlugin(['./build']),
         new webpack.DefinePlugin( {
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')

@@ -1,6 +1,6 @@
 /* global require */
 //load CSS assets first
-require( '../assets/main.css' );
+require('assets/stylus/main');
 
 import React from 'react';
 import ReactDOM from 'react-dom';

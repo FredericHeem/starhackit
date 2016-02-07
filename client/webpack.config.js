@@ -77,7 +77,7 @@ module.exports = function ( options ) {
             new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
         ],
         resolve: {
-            extensions: [ '', '.js', '.jsx' ],
+            extensions: [ '', '.js', '.jsx', '.styl' ],
             alias: {
                 //application aliases
                 actions: pathAppTo( 'actions' ),
@@ -108,8 +108,11 @@ module.exports = function ( options ) {
                 {
                     test: /\.jpg|\.png|\.mp3/,
                     loader: 'file-loader'
+                },
+                {
+                    test: /\.styl$/,
+                    loader: 'style-loader!css-loader!stylus-loader'
                 }
-
             ]
         },
         resolveLoader: {

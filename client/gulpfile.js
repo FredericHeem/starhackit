@@ -5,7 +5,6 @@ var debug = require('gulp-debug');
 var webpack = require( 'webpack' );
 var gulpWebpack = require( 'webpack-stream' );
 var WebpackDevServer = require( 'webpack-dev-server' );
-var stylus = require( 'gulp-stylus' );
 var clean = require( 'gulp-rimraf' );
 var runSequence = require( 'run-sequence' );
 var imagemin = require( 'gulp-imagemin' );
@@ -19,7 +18,7 @@ function handleError( task ) {
 }
 
 // The development server (the recommended option for development)
-gulp.task( 'default', [ 'webpack-dev-server', 'stylus:compile', 'build:cp' ] );
+gulp.task( 'default', [ 'webpack-dev-server', 'build:cp' ] );
 
 gulp.task( 'webpack-dev-server', function ( callback ) {
     var config = require( './webpack.dev.js' );
@@ -34,8 +33,6 @@ gulp.task( 'webpack-dev-server', function ( callback ) {
             callback();
         } );
 
-    //setup stylus watcher
-    gulp.watch( [ 'src/assets/stylus/*.styl', 'src/assets/stylus/**/*.styl' ], [ 'stylus:compile' ] );
 } );
 
 gulp.task('selenium:install', function(cb){
@@ -48,12 +45,6 @@ gulp.task('selenium:install', function(cb){
     });
   }
 });
-
-gulp.task( 'stylus:compile', function () {
-    return gulp.src( './src/assets/stylus/main.styl' )
-        .pipe( stylus().on( 'error', handleError( 'stylus:compile' ) ) )
-        .pipe( gulp.dest( './src/assets' ) );
-} );
 
 gulp.task( 'clean', function () {
     return gulp.src( 'build/*', { read: false } )
@@ -91,7 +82,7 @@ gulp.task( 'build:webpack', function () {
 gulp.task( 'build', function ( cb ) {
     runSequence(
         'clean',
-        [ 'stylus:compile', 'build:cp' ],
+        'build:cp',
         'build:webpack',
         'build:image:min',
         cb

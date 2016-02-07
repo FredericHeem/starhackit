@@ -59,10 +59,7 @@ module.exports = function ( options ) {
                 $: 'jquery',
                 'window.jQuery': 'jquery'
             } ),
-            new webpack.ProvidePlugin( {
-                React: 'react',
-                'window.React': 'react'
-            } ),
+
             new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
         ],
         resolve: {

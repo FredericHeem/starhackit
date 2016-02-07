@@ -3,6 +3,7 @@ var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var pkg = require('./package.json');
 
 var pathAppTo;
 
@@ -32,35 +33,15 @@ module.exports = function ( options ) {
             port: 8080
         },
         entry: {
-            vendor: [
-                'bootstrap/dist/js/bootstrap.min.js',
+            vendor: _.reject(_.keys(pkg.dependencies), function(v) {
+                return _.includes(['bootstrap-markdown', 'font-awesome'], v)
+            }).concat([
                 'assets/css/bootstrap-cosmo.css',
-                'assets/css/animate.css',
                 'font-awesome/css/font-awesome.min.css',
-                'assets/css/filepicker.css',
-                'checkit',
-                'classnames',
-                'debug',
-                'events',
-                'jquery',
                 'bootstrap-markdown/js/bootstrap-markdown',
-                'load-script',
-                'lodash',
-                'marked',
-                'moment',
-                'react',
-                'react-bootstrap',
-                'react-cookie',
-                'react-ga',
-                'react-doc-meta',
                 'ladda/dist/ladda.min.css',
-                'react-select/dist/react-select.min.css',
-                'react-router',
-                'react-textarea-autosize',
-                'reflux',
-                'url',
-                'when'
-            ]
+                'assets/css/animate.css',
+            ])
         },
 
         output: {

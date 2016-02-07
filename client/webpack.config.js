@@ -17,11 +17,12 @@ module.exports = function ( options ) {
             contentBase: path.join( __dirname, 'src' ),
             publicPath: '/',
             hot: true,
+            inline: true,
             historyApiFallback: true,
             stats: {
                 colors: true
             },
-            //stats: 'errors-only',
+            stats: 'errors-only',
             progress: true,
             proxy: {
                 '/api/v1/*': 'http://localhost:9000'

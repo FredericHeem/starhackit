@@ -40,8 +40,6 @@ The `postinstall` npm script also installs the [Selenium](http://www.seleniumhq.
 * [webpack.dev.js](webpack.dev.js): the configuration for development environment. Thanks to the Webpack plugin `OpenBrowserPlugin`, a new browser page will be opened at the right URL i.e: `http://localhost:8080`
 * [webpack.prod.js](webpack.prod.js): the configuration for production environment. The `DedupePlugin`, `UglifyJsPlugin` and the `CompressionPlugin` plugins are invoked to respectively remove code duplication, obfuscate and compress the code.
 
-*npm* scripts wrap *gulp* tasks that invokes *webpack*.
-
 To run the development web server:
 
     $ npm start

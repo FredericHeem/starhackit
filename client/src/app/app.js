@@ -10,7 +10,8 @@ import routes from './routes';
 import Debug from 'debug';
 import 'utils/ga';
 
-Debug.enable("*,-engine*,-socket*");
+
+Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 

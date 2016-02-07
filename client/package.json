@@ -5,11 +5,11 @@
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
   "scripts": {
-    "start": "gulp",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "test": "npm run nightwatch",
-    "postinstall": "gulp build && gulp selenium:install",
-    "build": "gulp build",
+    "postinstall": "npm run build && gulp selenium:install",
+    "build": "webpack --config webpack.prod.js",
     "clean": "gulp clean"
   },
   "repository": {

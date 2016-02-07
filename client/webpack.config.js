@@ -2,6 +2,7 @@ var _ = require( 'lodash' );
 var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var pathAppTo;
 
@@ -64,9 +65,13 @@ module.exports = function ( options ) {
 
         output: {
             path: path.join( __dirname, 'build' ),
-            filename: 'app.js',
+            filename: '[name].js'
         },
         plugins: [
+            new HtmlWebpackPlugin({
+              template: 'src/index.ejs',
+              inject: false
+            }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoErrorsPlugin(),
             new webpack.ProvidePlugin( {
@@ -75,7 +80,6 @@ module.exports = function ( options ) {
                 'window.jQuery': 'jquery'
             } ),
             new CopyWebpackPlugin([
-                { from: './src/index.html'},
                 { from: './src/favicon.ico' },
                 { from: './assets/img/*.png' },
                 { from: './assets/img/*.jpg' },

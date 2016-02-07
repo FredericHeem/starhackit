@@ -2,13 +2,19 @@ var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CompressionPlugin = require('compression-webpack-plugin');
 var CleanPlugin = require('clean-webpack-plugin');
+
 var webpackProdConfig = {
     overrides: {
         entry: {
             app: [
                 './src/app/app.js'
             ]
-        }
+        },
+        output: {
+            path: path.join( __dirname, 'build' ),
+            filename: '[name].[chunkhash].js',
+            chunkFilename: '[chunkhash].js'
+        },
     },
 
     plugins: [
@@ -19,7 +25,11 @@ var webpackProdConfig = {
             }
         } ),
         new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
         new CompressionPlugin({
             asset: '{file}.gz',
             algorithm: 'gzip',

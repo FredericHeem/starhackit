@@ -39,8 +39,9 @@
 </div>
 
 <!--The application-->
-<script type="text/javascript" src="vendor.js"></script>
-<script type="text/javascript" src="app.js"></script>
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
 
 </body>
 </html>

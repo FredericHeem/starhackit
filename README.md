@@ -70,6 +70,9 @@ ccd9f559fabd        rabbitmq:latest     "/docker-entrypoint.s"   36 minutes ago 
 ```
 ## Backend
 
+Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
+Don't forget to correctly set the *rabbitmq* server location.
+
 To start the backend:
 
     # cd server
@@ -89,7 +92,7 @@ To run the frontend webserver:
 
     # npm start
 
-Now open a browser at `http://localhost:8080`
+For more information about the frontend, see its [README](client/README.md)
 
 ## Deployment
 

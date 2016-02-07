@@ -34,7 +34,10 @@ module.exports = function ( options ) {
         },
         entry: {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
-                return _.includes(['bootstrap-markdown', 'font-awesome'], v)
+                return _.includes([
+                    'bootstrap-markdown',
+                    'font-awesome',
+                ], v)
             }).concat([
                 'assets/css/bootstrap-cosmo.css',
                 'font-awesome/css/font-awesome.min.css',

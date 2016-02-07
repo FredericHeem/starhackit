@@ -1,3 +1,5 @@
+/* global require */
+require('react-pagify/style.css');
 import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
@@ -11,7 +13,7 @@ import Spinner from 'components/spinner';
 import Debug from 'debug';
 let debug = new Debug("components:users");
 
-import * as PaginatorStyle from 'react-pagify/style.css';
+
 
 export default React.createClass({
     getInitialState () {

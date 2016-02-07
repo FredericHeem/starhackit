@@ -1,6 +1,7 @@
 import Reflux from 'reflux';
 
 // TODO find the real entry point, this is called before app.js
+/* global require */
 import RefluxPromise from "reflux-promise";
 Reflux.use(RefluxPromise(require( 'when' ).promise));
 

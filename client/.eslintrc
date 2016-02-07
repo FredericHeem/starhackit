@@ -1,4 +1,5 @@
 {
+    "parser": "babel-eslint",
     "plugins": [
         "react",
         "mocha"
@@ -24,6 +25,7 @@
         "jsx": true
     },
     "rules": {
+        "global-require": 2,
         "consistent-return": [0],
         "key-spacing": [0],
         "quotes": [0, "single", "avoid-escape"],

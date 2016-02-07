@@ -6,10 +6,13 @@
   "license": "NLPL",
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js",
+    "prestart":"npm run lint",
+    "lint": "eslint src --ext .js --ext .jsx",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "test": "npm run nightwatch",
     "postinstall": "npm run build && gulp selenium:install",
     "build": "webpack --config webpack.prod.js",
+    "prebuild":"npm run lint",
     "clean": "gulp clean"
   },
   "repository": {

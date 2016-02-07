@@ -3,10 +3,6 @@ import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import LaddaButton from 'react-ladda';
 
-import Debug from 'debug';
-
-let debug = new Debug("components:loginForm");
-
 export default React.createClass( {
 
     mixins: [

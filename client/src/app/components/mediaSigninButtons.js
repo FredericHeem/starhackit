@@ -1,7 +1,4 @@
-import _ from 'lodash';
 import React from 'react';
-import {Link} from 'react-router';
-import authActions from 'actions/auth';
 
 export default React.createClass({
 

@@ -12,6 +12,22 @@ pathAppTo = _.partial( pathTo, 'app' );
 
 module.exports = function ( options ) {
     var config = _.merge( {}, {
+        devServer: {
+            contentBase: path.join( __dirname, 'src' ),
+            publicPath: '/bundle/',
+            hot: true,
+            historyApiFallback: true,
+            stats: {
+                colors: true
+            },
+            stats: 'errors-only',
+            progress: true,
+            proxy: {
+                '/api/v1/*': 'http://localhost:9000'
+            },
+            host: '0.0.0.0',
+            port: 8080
+        },
         entry: {
             vendor: [
                 'bootstrap/dist/js/bootstrap.min.js',
@@ -103,6 +119,5 @@ module.exports = function ( options ) {
 
     config.module.loaders = _.union( config.module.loaders, options.loaders );
     config.plugins = _.union( config.plugins, options.plugins );
-
     return config;
 };

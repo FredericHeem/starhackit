@@ -22,24 +22,15 @@ function handleError( task ) {
 gulp.task( 'default', [ 'webpack-dev-server', 'stylus:compile', 'build:cp' ] );
 
 gulp.task( 'webpack-dev-server', function ( callback ) {
-    var config = Object.create( require( './webpack.dev.js' ) );
+    var config = require( './webpack.dev.js' );
+    var devServer = config.devServer;
     // Start a webpack-dev-server
-    new WebpackDevServer( webpack( config ), {
-        contentBase: path.join( __dirname, 'src' ),
-        publicPath: config.output.publicPath,
-        hot: true,
-        historyApiFallback: true,
-        stats: {
-            colors: true
-        },
-        proxy: {
-            '/api/v1/*': 'http://localhost:9000'
-        }
-    } ).listen( 8080, '0.0.0.0', function ( err ) {
+    new WebpackDevServer( webpack( config ), devServer)
+    .listen( devServer.port, devServer.host, function ( err ) {
             if ( err ) {
                 throw new gutil.PluginError( 'webpack-dev-server', err );
             }
-            gutil.log( '[webpack-dev-server]', 'http://localhost:8080' );
+            gutil.log( '[webpack-dev-server]', 'port ' + devServer.port);
             callback();
         } );
 

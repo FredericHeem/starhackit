@@ -33,7 +33,7 @@ let routes = (
 
         <Route path="/app" component={Authenticated}>
             <IndexRoute component={Account}/>
-            <Route component={Account} name="account" path="my">
+            <Route name="account" path="my">
                 <Route component={MyProfile} path="profile"/>
             </Route>
         </Route>

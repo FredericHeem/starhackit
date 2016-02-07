@@ -6,6 +6,10 @@
     <meta name="description" content="react + node starter kit. A fullstack boilerplate written in ES6 and ES7 with authentication and authorization">
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
+
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+    <% } %>
 </head>
 
 <body>

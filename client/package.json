@@ -68,6 +68,7 @@
     "eslint-loader": "1.2.1",
     "eslint-plugin-mocha": "1.1.0",
     "eslint-plugin-react": "3.16.1",
+    "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.8.5",
     "gulp": "3.9.0",
     "gulp-rimraf": "0.2.0",

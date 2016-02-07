@@ -3,6 +3,7 @@ var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var pkg = require('./package.json');
 
 var pathAppTo;
@@ -52,6 +53,7 @@ module.exports = function ( options ) {
             filename: '[name].js'
         },
         plugins: [
+            new ExtractTextPlugin('[name].[chunkhash].css'),
             new HtmlWebpackPlugin({
               template: 'src/index.ejs',
               inject: false
@@ -106,7 +108,7 @@ module.exports = function ( options ) {
                 },
                 {
                     test: /\.styl$/,
-                    loader: 'style-loader!css-loader!stylus-loader'
+                    loader: ExtractTextPlugin.extract("css-loader!stylus-loader")
                 }
             ]
         },

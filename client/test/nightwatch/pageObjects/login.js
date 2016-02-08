@@ -3,7 +3,7 @@ var commands = {
     login: function (done) {
         return this.navigate()
             .waitForElementVisible('#login', 5e3)
-            .setValue('@emailInput', 'alice')
+            .setValue('@emailInput', 'admin')
             .setValue('@passwordInput', 'password')
             .click('@submit')
             .waitForElementVisible('#profile', 5e3)

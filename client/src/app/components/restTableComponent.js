@@ -28,11 +28,11 @@ export default React.createClass({
         };
     },
     componentDidMount () {
-        debug('componentDidMount ', this.props);
+        //debug('componentDidMount ', this.props);
         this.onSelectPage(0, this.props);
     },
     componentWillReceiveProps(props){
-        debug('componentWillReceiveProps ', props);
+        //debug('componentWillReceiveProps ', props);
         this.onSelectPage(0, props);
     },
     renderLoading(){
@@ -40,11 +40,23 @@ export default React.createClass({
             return (<Spinner/>);
         };
     },
+    renderError(){
+        let {error} = this.state;
+        if(!error) return;
+        return (
+            <div className="alert alert-danger text-center animate bounceIn" role="alert">
+                <div>An error occured: {error.name}</div>
+                <div>Status: {error.statusText}</div>
+                <div>Status Code: {error.status}</div>
+            </div>
+        );
+    },
     render () {
         debug('render ', this.state);
         return (
             <div>
                 {this.renderLoading()}
+                {this.state.error && this.renderError()}
                 {this.renderTable()}
             </div>
         );
@@ -70,7 +82,7 @@ export default React.createClass({
     },
     renderTable () {
         let {data} = this.state;
-
+        if(this.state.error) return;
         return (
             <div>
                 {this.renderPagination()}

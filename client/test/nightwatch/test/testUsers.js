@@ -1,11 +1,11 @@
-describe.only('Users', function () {
+describe('Users', function () {
     before(function (client, done) {
         client.page.login().login(done);
     });
 
     after(function (client, done) {
         client
-        .pause(0e3)
+        .pause(1e3)
         .end(function () {
             done();
         });

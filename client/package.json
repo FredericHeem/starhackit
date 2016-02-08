@@ -10,7 +10,7 @@
     "lint": "eslint src --ext .js --ext .jsx",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "test": "npm run nightwatch",
-    "postinstall": "npm run build && gulp selenium:install",
+    "postinstall": "gulp selenium:install",
     "build": "webpack --config webpack.prod.js",
     "prebuild":"npm run lint",
     "clean": "gulp clean"
@@ -45,6 +45,7 @@
     "react-dom": "0.14.7",
     "react-ga": "1.2.0",
     "react-helmet": "2.3.1",
+    "react-intl": "2.0.0-beta-1",
     "react-ladda": "4.0.0",
     "react-pagify": "0.11.0",
     "react-router": "1.0.3",

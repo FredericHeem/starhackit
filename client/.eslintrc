@@ -11,6 +11,9 @@
         "jquery": true,
         "mocha": true
     },
+    "globals": {
+        "require": true
+    },
     "ecmaFeatures": {
         "arrowFunctions": true,
         "blockBindings": true,

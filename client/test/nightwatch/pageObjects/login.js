@@ -6,7 +6,7 @@ var commands = {
             .setValue('@emailInput', 'alice')
             .setValue('@passwordInput', 'password')
             .click('@submit')
-            .waitForElementVisible('#account', 5e3)
+            .waitForElementVisible('#profile', 5e3)
             .getLocation('#application', function() {
                 done();
             });

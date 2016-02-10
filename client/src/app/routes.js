@@ -5,7 +5,6 @@ import Login from 'views/login';
 import Signup from 'views/signup';
 import Forgot from 'views/forgot';
 
-import Account from 'views/account';
 import Application from 'views/application';
 import Logout from 'views/logout';
 import MainLanding from 'views/mainLanding';
@@ -32,7 +31,7 @@ let routes = (
         </Route>
 
         <Route path="/app" component={Authenticated}>
-            <IndexRoute component={Account}/>
+            <IndexRoute component={MyProfile}/>
             <Route name="account" path="my">
                 <Route component={MyProfile} path="profile"/>
             </Route>

@@ -9,8 +9,7 @@ import ValidateProfileForm from 'services/validateProfileForm';
 import meStore from 'stores/me';
 
 import meActions from 'actions/me';
-
-import MarkdownEditor from 'components/markdownEditor';
+import TextArea from 'react-textarea-autosize';
 
 export default React.createClass({
 
@@ -73,11 +72,9 @@ export default React.createClass({
                         <div className="col-sm-12">
                             <div className="form-group">
                                 <legend>About Me</legend>
-                                <MarkdownEditor
-                                    className="input-description"
-                                    useCacheForDOMMeasurements
+                                <TextArea
+                                    rows={4}
                                     valueLink={ this.linkStore( meStore, 'about' ) }
-                                    rows={ 2 }
                                     />
                             </div>
                         </div>

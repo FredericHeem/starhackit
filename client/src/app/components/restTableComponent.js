@@ -4,6 +4,7 @@ import {
     Table
 } from 'reactabular';
 import Paginator from 'react-pagify';
+import segmentize from 'segmentize';
 import Spinner from 'components/spinner';
 
 import Debug from 'debug';
@@ -70,12 +71,35 @@ export default React.createClass({
         return (
             <div className='controls'>
                 <div className='pagination'>
-                    <Paginator
-                        page={pagination.page}
-                        pages={pages}
-                        beginPages={3}
-                        endPages={3}
-                        onSelect={this.onSelectPage}/>
+                    <Paginator.Context
+                      className="pagify-pagination"
+                      segments={segmentize({
+                          page: pagination.page,
+                          pages: pages,
+                          beginPages: 3,
+                          endPages: 3,
+                          sidePages: 2
+                      })}
+                      onSelect={this.onSelectPage}>
+                      <Paginator.Button page={pagination.page - 1}>Previous</Paginator.Button>
+
+                      <Paginator.Segment field="beginPages" />
+
+                      <Paginator.Ellipsis className="ellipsis"
+                        previousField="beginPages" nextField="previousPages" />
+
+                      <Paginator.Segment field="previousPages" />
+                      <Paginator.Segment field="centerPage" className="selected" />
+                      <Paginator.Segment field="nextPages" />
+
+                      <Paginator.Ellipsis className="ellipsis"
+                        previousField="nextPages" nextField="endPages" />
+
+                      <Paginator.Segment field="endPages" />
+
+                      <Paginator.Button page={pagination.page + 1}>Next</Paginator.Button>
+                    </Paginator.Context>
+
                 </div>
             </div>
         );

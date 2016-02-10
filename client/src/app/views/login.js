@@ -27,7 +27,7 @@ export default React.createClass( {
 
     componentWillUpdate() {
         debug("componentWillUpdate ", this.props);
-        let path = this.props.location.query.nextPath || '/app/my/profile';
+        let path = this.props.location.query.nextPath || '/app';
         debug("componentWillUpdate next path: ", path);
         if ( authStore.isAuthenticated() ) {
             this.history.pushState(null, path);

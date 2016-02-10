@@ -1,6 +1,6 @@
-/* global process */
 import _ from 'lodash';
 
+/* global process */
 let env = process.env;
 
 let config = {

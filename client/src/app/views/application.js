@@ -23,7 +23,7 @@ export default React.createClass( {
             <div id="application-view">
                 <NavBar />
 
-                <div className="container">
+                <div id='main-container' className="container">
                     {this.props.children}
                 </div>
 

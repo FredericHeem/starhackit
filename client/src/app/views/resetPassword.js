@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
-import { Button } from 'react-bootstrap';
+import RaisedButton from 'material-ui/lib/raised-button';
 import DocTitle from 'components/docTitle';
 import resetActions from 'actions/reset';
 
@@ -70,7 +70,7 @@ export default React.createClass( {
                     </div>
 
                     <div className="spacer">
-                        <Button bsStyle="primary" onClick={ this.resetPassword }>Reset Password</Button>
+                        <RaisedButton onClick={ this.resetPassword } label='Reset Password'/>
                     </div>
                 </div>
             </div>

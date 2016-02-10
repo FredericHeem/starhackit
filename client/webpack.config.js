@@ -36,15 +36,15 @@ module.exports = function ( options ) {
         entry: {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
                 return _.includes([
-                    'bootstrap-markdown',
                     'font-awesome',
+                    'material-ui',
+                    'bootstrap'
                 ], v)
             }).concat([
                 'assets/css/bootstrap-cosmo.css',
                 'font-awesome/css/font-awesome.min.css',
-                'bootstrap-markdown/js/bootstrap-markdown',
                 'ladda/dist/ladda.min.css',
-                'assets/css/animate.css',
+                'react-select/dist/react-select.css'
             ])
         },
 
@@ -60,11 +60,6 @@ module.exports = function ( options ) {
             }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoErrorsPlugin(),
-            new webpack.ProvidePlugin( {
-                jQuery: 'jquery',
-                $: 'jquery',
-                'window.jQuery': 'jquery'
-            } ),
             new CopyWebpackPlugin([
                 { from: './src/favicon.ico' },
                 { from: './assets/img/*.png' },

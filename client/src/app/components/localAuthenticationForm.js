@@ -1,4 +1,5 @@
 import React from 'react';
+import TextField from 'material-ui/lib/text-field';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import LaddaButton from 'react-ladda';
@@ -19,45 +20,40 @@ export default React.createClass( {
     },
 
     render() {
+        let {errors} = this.props;
         return (
             <div className="local-signin-form">
                 <form action={ this.signup }>
                     <div className="signup-options text-center form">
                         { !this.props.hideEmail &&
                             <div className={this.formClassNames('email')}>
-                                <input type="text"
-                                       className="form-control"
-                                       placeholder="Email"
-                                       valueLink={this.linkState( 'email' )}
+                                <TextField
+                                    id='email'
+                                    ref="email"
+                                    hintText='Email'
+                                    errorText={errors.email && errors.email[0]}
                                     />
-
-                                { this.props.errors.email &&
-                                    <span className="label label-danger animate bounceIn">{ this.props.errors.email[ 0 ]}</span>
-                                }
                             </div>
                         }
                         { !this.props.hideUsername &&
                             <div className={this.formClassNames('username')}>
-                                <input type="text"
-                                       className="form-control"
-                                       placeholder="Your Username"
-                                       valueLink={this.linkState( 'username' )}
+                                <TextField
+                                    ref="username"
+                                    hintText='Username'
+                                    errorText={errors.username && errors.username[0]}
                                     />
-                                { this.props.errors.username &&
-                                    <span className="label label-danger animate bounceIn">{ this.props.errors.username[ 0 ]}</span>
-                                }
                             </div>
                         }
                         <div className={this.formClassNames('password')}>
-                            <input type='password'
-                                   className="form-control"
-                                   placeholder="Your Password"
-                                   valueLink={this.linkState( 'password' )}
+                            <TextField
+                                id='password'
+                                ref="password"
+                                hintText='Password'
+                                type='password'
+                                errorText={errors.password && errors.password[0]}
                                 />
-                            { this.props.errors.password &&
-                                <span className="label label-danger animate bounceIn">{ this.props.errors.password[ 0 ]}</span>
-                            }
                         </div>
+
                         <LaddaButton
                             className='btn btn-lg btn-primary btn-signup'
                             id='btn-login'
@@ -85,11 +81,11 @@ export default React.createClass( {
         this.setState( {
             loading: true,
         } );
-
+        let {email, username, password} = this.refs;
         this.props.onButtonClick( {
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email
+            username: username ? username.getValue() : undefined,
+            password: password.getValue(),
+            email: email ? email.getValue() : undefined
         } )
         .finally(() => {
             this.setState( {

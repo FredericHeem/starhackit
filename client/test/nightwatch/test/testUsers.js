@@ -5,11 +5,12 @@ describe('Users', function () {
 
     after(function (client, done) {
         client
-        .pause(1e3)
+        .pause(2e3)
         .end(function () {
             done();
         });
     });
+
 
     it('read users', function (client) {
         client.page.users().navigate()

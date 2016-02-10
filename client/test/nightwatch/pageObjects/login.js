@@ -6,7 +6,7 @@ var commands = {
             .setValue('@emailInput', 'admin')
             .setValue('@passwordInput', 'password')
             .click('@submit')
-            .waitForElementVisible('#profile', 5e3)
+            .waitForElementVisible('#main-container', 5e3)
             .getLocation('#application', function() {
                 done();
             });
@@ -20,10 +20,10 @@ module.exports = {
     },
     elements: {
         emailInput: {
-            selector: 'input[placeholder=Email]',
+            selector: '#email',
         },
         passwordInput: {
-            selector: 'input[type=password]',
+            selector: '#password',
         },
         submit: {
             selector: '.btn-signup',

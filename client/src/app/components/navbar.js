@@ -1,70 +1,75 @@
+import _ from 'lodash';
 import React from 'react';
 import Reflux from 'reflux';
-import {Link, History} from 'react-router';
-
-import NavLink from 'components/navLink';
+import { History } from 'react-router';
+import AppBar from 'material-ui/lib/app-bar';
+import LeftNav from 'material-ui/lib/left-nav';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 import authStore from 'stores/auth';
 import config from 'config';
+import Debug from 'debug';
+let debug = new Debug("views:navbar");
+
+function navLinks(authenticated){
+    if(authenticated){
+        return [
+            {route: '/app', text: 'DASHBOARD'},
+            {route: '/admin', text: 'ADMIN'},
+            {route: '/app/my/profile', text: 'PROFILE'},
+            {route: '/logout', text: 'LOGOUT'},
+        ];
+    } else {
+        return [
+            {route: '/login', text: 'LOGIN'},
+            {route: '/signup', text: 'REGISTER'},
+        ];
+    }
+};
 
 export default React.createClass( {
-
     mixins: [
-        History,
-        Reflux.connect( authStore, 'user' )
+        Reflux.connect( authStore, 'user' ),
+        History
     ],
-
+    getInitialState() {
+        return {
+            open: false
+        };
+    },
+    toggleNav(){
+        debug('toggleNav');
+        this.setState({open: !this.state.open});
+    },
+    handleNavChange(menuItem) {
+        debug('handleNavChange ', menuItem.route);
+        this.history.pushState(null, menuItem.route);
+        this.setState({open: false});
+    },
+    renderMenuItem(){
+        debug('handleNavChange ', this.state.user);
+        return _.map(navLinks(authStore.isAuthenticated()), (menu, key) => {
+            return (
+                <MenuItem key={key} onTouchTap={_.partial(this.handleNavChange, menu)}>
+                    {menu.text}
+                </MenuItem>
+            );
+        });
+    },
     render() {
         return (
-            <nav className="navbar-component navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
-                <div className="container">
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse"
-                                data-target=".navbar-collapse">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <Link to="/" className="navbar-brand">{config.title}</Link>
-                    </div>
-                    <div className="navbar-collapse collapse">
-                        <ul className="nav navbar-nav navbar-left">
-
-                        </ul>
-
-                        { !(authStore.isAuthenticated()) && this.renderGuestNavigation()}
-                        { authStore.isAuthenticated() && this.renderUserNavigation()}
-
-                    </div>
-                </div>
-            </nav>
-        );
-    },
-
-    renderGuestNavigation() {
-        return (
-            <ul className="nav navbar-nav navbar-right">
-                <NavLink to="/login">Login</NavLink>
-                <NavLink to="/signup">Signup</NavLink>
-            </ul>
-        );
-    },
-
-    renderUserNavigation() {
-        return (
-            <ul className="nav navbar-nav navbar-right">
-                <li className="dropdown">
-                    <button type="button" className="btn btn-profile navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span className="caption"><img className="user-avatar" src={authStore.avatarUrl()} /> {authStore.userName()}  </span>
-                        <span className="caret"></span>
-                    </button>
-                    <ul className="dropdown-menu">
-                        <NavLink to="/app/my/profile">Profile</NavLink>
-
-                        <li role="separator" className="divider"></li>
-                        <NavLink to="/logout">Logout</NavLink>
-                    </ul>
-                </li>
-            </ul>
+            <div >
+                <AppBar
+                    id='app-bar'
+                    title={config.title}
+                    onLeftIconButtonTouchTap={this.toggleNav}/>
+                <LeftNav
+                    id='left-nav'
+                    docked={false}
+                    open={this.state.open}
+                    onRequestChange={open => this.setState({open})}>
+                    {this.renderMenuItem()}
+                </LeftNav>
+            </div>
         );
     }
 } );

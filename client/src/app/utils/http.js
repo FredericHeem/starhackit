@@ -1,9 +1,10 @@
-import when from 'when';
+//import when from 'when';
+import Axios from 'axios';
 import Debug from 'debug';
 let debug = new Debug("http");
 
 export function get( url, options = {} ) {
-    return ajax( url, 'GET', options );
+    return ajax( url, 'GET', null, options.params );
 }
 
 export function post( url, options = {} ) {
@@ -25,25 +26,17 @@ export function patch( url, options = {} ) {
 ///////////
 //// PRIVATE
 
-function ajax( url, verb, options ) {
-    let ajaxData;
-    debug("ajax url: %s, verb: %s, options ", url, verb, options);
-    ajaxData = verb === 'GET' ? options.params : JSON.stringify( options.params );
-
-    return when(
-        $.ajax( {
-            url,
-            data: ajaxData,
-            type: verb,
-            dataType: 'json',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            }
-        } )
-    );
+function ajax( url, method, options, params ) {
+    debug("ajax url: %s, method: %s, options %s, params: ", url, method, options, params);
+    let data = options ? JSON.stringify( options.params ) : undefined;
+    return Axios({
+        method: method,
+        url: url,
+        params: params,
+        data: data,
+        withCredentials: true,
+        headers: {'Content-Type': 'application/json'},
+    }).then(res => {
+        return res.data;
+    });
 }

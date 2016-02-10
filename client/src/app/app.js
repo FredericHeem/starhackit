@@ -1,4 +1,5 @@
 /* global require */
+/* eslint global-require: 0*/
 //load CSS assets first
 require('assets/stylus/main');
 
@@ -21,11 +22,26 @@ let debug = new Debug("app");
 
 debug("begins");
 
-require('utils/intl');
+function runMyApp() {
+    //debug("mount react app");
+    let mountEl = document.getElementById('application');
+    ReactDOM.render(
+      <IntlProvider locale='en'>
+        <Router history={createBrowserHistory()} routes={routes}/>
+      </IntlProvider>,
+      mountEl);
+}
 
-let mountEl = document.getElementById('application');
-ReactDOM.render(
-  <IntlProvider locale='en'>
-    <Router history={createBrowserHistory()} routes={routes}/>
-  </IntlProvider>,
-  mountEl);
+if (!window.Intl) {
+    //debug("fetch intl");
+    require.ensure([
+        'intl',
+        'intl/locale-data/jsonp/en.js'
+    ], function (require) {
+        require('intl');
+        require('intl/locale-data/jsonp/en.js');
+        runMyApp();
+    });
+} else {
+    runMyApp();
+}

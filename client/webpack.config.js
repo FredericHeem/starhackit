@@ -38,7 +38,8 @@ module.exports = function ( options ) {
                 return _.includes([
                     'font-awesome',
                     'material-ui',
-                    'bootstrap'
+                    'bootstrap',
+                    'intl'
                 ], v)
             }).concat([
                 'assets/css/bootstrap-cosmo.css',

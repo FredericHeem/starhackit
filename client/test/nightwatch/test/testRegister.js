@@ -12,7 +12,7 @@ describe('Register', function () {
         client
             .url(`${client.launch_url}/signup`)
             .waitForElementVisible('#signup', 5000)
-            .setValue('input[placeholder=Email]', 'alice')
+            .setValue('#email', 'alice')
             .click('.btn-signup')
             .waitForElementVisible('.has-error', 5000)
             //.assert.containsText('.has-error span', 'The email must be a valid email address');

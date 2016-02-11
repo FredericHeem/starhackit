@@ -5,7 +5,7 @@ import ValidateLoginFields from 'services/validateLoginFields';
 import authActions from 'actions/auth';
 import {createError} from 'utils/error';
 import Alert from 'components/alert';
-
+import tr from 'i18next';
 import Debug from 'debug';
 
 let debug = new Debug("components:login");
@@ -35,7 +35,7 @@ export default React.createClass( {
                     </div>
                 }
                 <LocalAuthenticationForm
-                    buttonCaption={ this.props.buttonCaption || 'Log In' }
+                    buttonCaption={tr.t('login') }
                     errors={ this.state.errors }
                     hideUsername = {true}
                     onButtonClick={this.login}

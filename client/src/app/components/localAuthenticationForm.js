@@ -3,9 +3,9 @@ import TextField from 'material-ui/lib/text-field';
 import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import LaddaButton from 'react-ladda';
+import tr from 'i18next';
 
 export default React.createClass( {
-
     mixins: [
         LinkedStateMixin
     ],
@@ -30,7 +30,7 @@ export default React.createClass( {
                                 <TextField
                                     id='email'
                                     ref="email"
-                                    hintText='Email'
+                                    hintText={tr.t('email')}
                                     errorText={errors.email && errors.email[0]}
                                     />
                             </div>
@@ -48,7 +48,7 @@ export default React.createClass( {
                             <TextField
                                 id='password'
                                 ref="password"
-                                hintText='Password'
+                                hintText={tr.t('password')}
                                 type='password'
                                 errorText={errors.password && errors.password[0]}
                                 />

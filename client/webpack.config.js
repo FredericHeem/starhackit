@@ -65,13 +65,17 @@ module.exports = function ( options ) {
                 { from: './src/favicon.ico' },
                 { from: './assets/img/*.png' },
                 { from: './assets/img/*.jpg' },
-                { from: './assets/img/*.svg' }
+                { from: './assets/img/*.svg' },
+                { from: './locales/**/*.json' }
             ]),
             new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
         ],
         resolve: {
             extensions: [ '', '.js', '.jsx', '.styl' ],
             alias: {
+                i18next: 'i18next/lib/index.js',
+                'i18next-browser-languagedetector': 'i18next-browser-languagedetector/lib/index.js',
+                'i18next-localstorage-cache': 'i18next-localstorage-cache/lib/index.js',
                 //application aliases
                 actions: pathAppTo( 'actions' ),
                 components: pathAppTo( 'components' ),

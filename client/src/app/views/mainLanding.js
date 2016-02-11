@@ -2,7 +2,7 @@ import React from 'react';
 import DocMeta from 'react-doc-meta';
 import DocTitle from 'components/docTitle';
 import config from 'config';
-
+//import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("views:main");
 
@@ -13,8 +13,7 @@ export default React.createClass({
     },
 
     render() {
-        debug("render");
-
+        debug("render ");
 
         return (
             <div id="main-landing">
@@ -385,6 +384,4 @@ export default React.createClass({
             {property: 'og:title', content: description}
         ];
     }
-
-
 } );

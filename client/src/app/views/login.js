@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, History } from 'react-router';
 import Reflux from 'reflux';
-
+import tr from 'i18next';
 
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalLoginForm from 'components/localLoginForm';
@@ -41,7 +41,7 @@ export default React.createClass( {
                     title="Login"
                 />
                 <div>
-                    <h2 className="text-center">Log In</h2>
+                    <h2 className="text-center">{tr.t('login')}</h2>
 
                     <div className="row">
                         <div className="col-md-4 col-md-offset-4">
@@ -50,7 +50,7 @@ export default React.createClass( {
                             <div className="strike"><span className="or">OR</span></div>
 
                             <div className="text-center">
-                                <Link to="/forgot" className="btn btn-primary">Forgot Password</Link>
+                                <Link to="/forgot" className="btn btn-primary">{tr.t('forgotPassword')}</Link>
                             </div>
 
                             <div className="strike"><span className="or">OR</span></div>

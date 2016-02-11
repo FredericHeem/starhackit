@@ -1,5 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
+import Paper from 'material-ui/lib/paper';
 import DocTitle from 'components/docTitle';
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalSignupForm from 'components/localSignupForm';
@@ -40,22 +41,22 @@ export default React.createClass( {
     },
     renderRegisterForm(){
         return (
-            <div>
-                <h2 className="text-center">Register An Account</h2>
+            <Paper className="text-center login-view">
+                <h2>Register An Account</h2>
 
-                <p className="text-center">Create a free account</p>
+                <p >Create a free account</p>
 
                 <div className="row">
-                    <div className="col-md-4 col-md-offset-4">
+                    <div>
                         <LocalSignupForm />
 
-                        <div className="strike"><span className="or">OR</span></div>
-
-                        <MediaSigninButtons />
-
+                        <div className="strike"><span className="or"></span></div>
+                        <div>
+                            <MediaSigninButtons />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Paper>
         );
     }
 } );

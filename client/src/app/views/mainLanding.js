@@ -366,13 +366,6 @@ export default React.createClass({
         );
     },
 
-    scrollTo( ref ) {
-        return () => {
-            $( 'html,body' ).animate( {
-                scrollTop: $( ref ).offset().top
-            }, 1000 );
-        };
-    },
 
     tags() {
         let description = config.description;

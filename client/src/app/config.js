@@ -11,6 +11,9 @@ let config = {
         apiUrl: '/api/v1/',
         analytics: {
             google: ""
+        },
+        socialAuth: {
+            facebook: true
         }
     },
 

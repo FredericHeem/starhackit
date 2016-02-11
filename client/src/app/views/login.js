@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, History } from 'react-router';
 import Reflux from 'reflux';
 import tr from 'i18next';
-
+import Paper from 'material-ui/lib/paper';
+import FlatButton from 'material-ui/lib/flat-button';
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalLoginForm from 'components/localLoginForm';
 import DocTitle from 'components/docTitle';
@@ -36,30 +37,29 @@ export default React.createClass( {
 
     render() {
         return (
-            <div id="login">
+            <div>
                 <DocTitle
                     title="Login"
                 />
-                <div>
-                    <h2 className="text-center">{tr.t('login')}</h2>
+                <Paper className="text-center login-view">
+                    <h2 >{tr.t('login')}</h2>
 
                     <div className="row">
-                        <div className="col-md-4 col-md-offset-4">
+                        <div>
                             <LocalLoginForm />
 
-                            <div className="strike"><span className="or">OR</span></div>
+                            <FlatButton
+                                      label={tr.t('forgotPassword')}
+                                      containerElement={<Link to="/forgot" />}
+                                      linkButton={true}
+                                    />
 
-                            <div className="text-center">
-                                <Link to="/forgot" className="btn btn-primary">{tr.t('forgotPassword')}</Link>
+                            <div>
+                                <MediaSigninButtons />
                             </div>
-
-                            <div className="strike"><span className="or">OR</span></div>
-
-                            <MediaSigninButtons />
-
                         </div>
                     </div>
-                </div>
+                </Paper>
 
             </div>
         );

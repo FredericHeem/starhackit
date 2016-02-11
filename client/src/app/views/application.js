@@ -1,7 +1,8 @@
 import React from 'react';
 import Reflux from 'reflux';
-
+import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import analyticsStore from 'stores/analytics';
+import MyRawTheme from './rawTheme';
 
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
@@ -14,7 +15,15 @@ export default React.createClass( {
     mixins: [
         Reflux.connect( analyticsStore )
     ],
+    childContextTypes : {
+        muiTheme: React.PropTypes.object,
+    },
 
+    getChildContext() {
+        return {
+            muiTheme: ThemeManager.getMuiTheme(MyRawTheme),
+        };
+    },
     componentDidMount() {
         debug('componentDidMount');
     },

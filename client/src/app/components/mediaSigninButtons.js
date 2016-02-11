@@ -1,50 +1,32 @@
 import React from 'react';
+import RaisedButton from 'material-ui/lib/raised-button';
+import FontIcon from 'material-ui/lib/font-icon';
+import config from 'config';
 
 export default React.createClass({
-
-    getInitialState() {
-        return {
-            disabledButtons: {
-                facebook: false,
-                google: true,
-                github: true
-            }
-        };
-    },
-
     getDefaultProps() {
         return {
+            socialAuth: config.socialAuth,
             onAuthenticated: () => {}
         };
     },
 
     render() {
-        let disabled = this.state.disabledButtons;
+        let {socialAuth} = this.props;
 
         return (
             <div className="media-signin-buttons">
-                {!disabled.facebook && this.renderFacebook()}
-                {!disabled.google && this.renderGoogle()}
-                {!disabled.github && this.renderGithub()}
+                {socialAuth.facebook && this.renderFacebook()}
             </div>
         );
     },
-    renderGoogle(){
-        return (<div className="action-button">
-                  <a href="/api/v1/auth/google" className="btn btn-primary btn-lg"><i className="fa fa-google"></i> Sign in with Google</a>
-                </div>);
-    },
-    renderGithub(){
-        return (<div className="action-button">
-                  <a href="/api/v1/auth/github" className="btn btn-primary btn-lg"><i className="fa fa-github"></i> Sign in with Github</a>
-                </div>);
 
-    },
     renderFacebook(){
-        return (<div className="action-button">
-                    <a href="/api/v1/auth/facebook" className="btn btn-primary btn-lg"><i className="fa fa-facebook"></i> Sign in with Facebook</a>
-                  </div>);
-    },
-
-
+        return (<RaisedButton
+                  label="Sign in with Facebook"
+                  linkButton={true}
+                  href="/api/v1/auth/facebook"
+                  icon={<FontIcon className="fa fa-facebook"/>}
+                />);
+    }
 } );

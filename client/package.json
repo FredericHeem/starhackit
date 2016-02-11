@@ -13,6 +13,7 @@
     "postinstall": "gulp selenium:install",
     "build": "webpack --config webpack.prod.js",
     "prebuild": "npm run lint",
+    "bundle-size": "webpack --config webpack.prod.js --json | webpack-bundle-size-analyzer",
     "clean": "gulp clean"
   },
   "repository": {
@@ -91,6 +92,7 @@
     "stylus-loader": "1.5.1",
     "url-loader": "0.5.7",
     "webpack": "1.12.13",
+    "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1",
     "webpack-stream": "3.1.0",
     "when": "3.7.7"

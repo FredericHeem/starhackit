@@ -33,6 +33,7 @@
     "i18next": "2.1.0",
     "i18next-browser-languagedetector": "0.0.14",
     "i18next-localstorage-cache": "0.0.4",
+    "i18next-xhr-backend": "0.3.0",
     "intl": "1.0.1",
     "ladda": "0.9.8",
     "lodash": "3.10.1",

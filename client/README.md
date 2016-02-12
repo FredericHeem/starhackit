@@ -23,6 +23,7 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm start`    | Start a development web server  |
 | `npm test`     |  Perform the end to end testing |
 | `npm run build`| Create a production build  |
+| `npm run bundle-size`| Create a report to show the size of each dependencies |
 
 ### Install
 
@@ -78,3 +79,24 @@ Messages can be switch on and off depending on the prefix, see [src/app/app.js](
 To avoid [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) issues, the *webpack* development server is configured to act as a proxy server, requests beginning with `/api/v1/` are forwarded to the api server located at `http://localhost:9000`. See the *gulp* task `webpack-dev-server` in [gulpfile.js](gulpfile.js)
 
 ## Internationalization
+
+The [i18next](http://i18next.com/) provides internationalization support for this project. Translations are retrieved at run time without bloating the application with all translations.
+
+Here are the i18next plugins configured in [src/app/utils/i18n.js](src/app/utils/i18n.js):
+
+* [i18next-browser-languagedetector](https://github.com/i18next/i18next-browser-languageDetector): language detector used in browser environment for i18next
+* [i18next-localstorage-cache](https://github.com/i18next/i18next-localStorage-cache): caching layer for i18next using browsers localStorage
+* [i18next-xhr-backend](https://github.com/i18next/i18next-xhr-backend): backend layer for i18next using browsers xhr
+
+The translation files are located in [locales](locales) directory.
+
+In your *React* component, import the `i18next` package and invoke the `t` function to translate the given key:
+
+
+```
+import tr from 'i18next';
+
+...
+
+    <h2 >{tr.t('login')}</h2>
+```

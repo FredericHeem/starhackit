@@ -1,6 +1,8 @@
 //import when from 'when';
 import Axios from 'axios';
 import Debug from 'debug';
+import Qs from 'qs';
+
 let debug = new Debug("http");
 
 export function get( url, options = {} ) {
@@ -36,6 +38,9 @@ function ajax( url, method, options, params ) {
         data: data,
         withCredentials: true,
         headers: {'Content-Type': 'application/json'},
+        paramsSerializer: function(params) {
+            return Qs.stringify(params, {arrayFormat: 'brackets'});
+        }
     }).then(res => {
         return res.data;
     });

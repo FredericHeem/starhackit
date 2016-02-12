@@ -1,9 +1,14 @@
 import Reflux from 'reflux';
 
+import Debug from 'debug';
+
+let debug = new Debug("action.auth");
+debug('setting reflux promise');
 // TODO find the real entry point, this is called before app.js
 /* global require */
+
 import RefluxPromise from "reflux-promise";
-Reflux.use(RefluxPromise(require( 'when' ).promise));
+Reflux.use(RefluxPromise(window.Promise));
 
 import {
     signupOrLoginThirdParty,

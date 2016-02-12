@@ -22,6 +22,8 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 
+//debug("Promise: ", window.Promise);
+
 debug("begins");
 
 function App() {

@@ -1,7 +1,7 @@
-//import when from 'when';
 import Axios from 'axios';
 import Debug from 'debug';
 import Qs from 'qs';
+import baseUrl from './baseUrl';
 
 let debug = new Debug("http");
 
@@ -33,7 +33,7 @@ function ajax( url, method, options, params ) {
     let data = options ? JSON.stringify( options.params ) : undefined;
     return Axios({
         method: method,
-        url: url,
+        url: baseUrl(url),
         params: params,
         data: data,
         withCredentials: true,

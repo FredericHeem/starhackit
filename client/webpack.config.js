@@ -4,7 +4,6 @@ var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
 
 var pathAppTo;
@@ -59,9 +58,6 @@ module.exports = function ( options ) {
             new HtmlWebpackPlugin({
               template: 'src/index.ejs',
               inject: false
-            }),
-            new purify({
-                basePath: __dirname,
             }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoErrorsPlugin(),

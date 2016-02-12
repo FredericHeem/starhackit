@@ -3,7 +3,7 @@
 //load CSS assets first
 require('assets/stylus/main');
 
-import Promise from 'bluebird';
+import {Promise} from 'es6-promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router} from 'react-router';

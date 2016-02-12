@@ -13,7 +13,7 @@
     "postinstall": "gulp selenium:install",
     "build": "webpack --config webpack.prod.js --progress",
     "prebuild": "npm run lint",
-    "bundle-size": "webpack --config webpack.prod.js --json | webpack-bundle-size-analyzer",
+    "bundle-size": "webpack --config webpack.prod.js --json --progress | webpack-bundle-size-analyzer",
     "clean": "gulp clean"
   },
   "repository": {

@@ -123,26 +123,28 @@ export default React.createClass({
         debug('onSelectPage ', page);
         let {pagination} = this.state;
         this.setState({loading: true});
-        let state = {loading: false};
         props.getData({
             offset: pagination.perPage * page,
             limit: pagination.perPage
         })
         .then(result => {
             pagination.page = page;
-            _.extend(state, {
-                count: result.count,
-                data: result.data,
-                pagination: pagination
-            });
+            if (this.isMounted()) {
+                this.setState({
+                    count: result.count,
+                    data: result.data,
+                    pagination: pagination,
+                    loading: false
+                });
+            }
         })
         .catch(err => {
             debug('error: ', err);
-            _.extend(state, {error: err});
-        })
-        .finally(() => {
             if (this.isMounted()) {
-                this.setState(state);
+                this.setState({
+                    error: err,
+                    loading: false
+                });
             }
         });
     }

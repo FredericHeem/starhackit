@@ -105,9 +105,9 @@ To build the production version:
 
 ```
 Version: webpack 1.12.13
-Time: 112794ms
+Time: 232605ms
                                   Asset       Size  Chunks             Chunk Names
-f775f9cca88e21d45bebe185b27c0e5b.svg.gz     111 kB          [emitted]  
+                           vendor.js.gz     192 kB          [emitted]  
    f4769f9bdb7466be65088239c12046d1.eot    20.1 kB          [emitted]  
   fa2772327f55d8198301fdb8bcfc8158.woff    23.4 kB          [emitted]  
    e18bbf611f2a2e43afc071aa2f4e1512.ttf    45.4 kB          [emitted]  
@@ -117,21 +117,20 @@ f775f9cca88e21d45bebe185b27c0e5b.svg.gz     111 kB          [emitted]
   a35720c2fed2c7f043bc7e4ffb45e073.woff    83.6 kB          [emitted]  
    a3de2170e4e9df77161ea5d3f31b2668.ttf     142 kB          [emitted]  
    f775f9cca88e21d45bebe185b27c0e5b.svg     366 kB          [emitted]  
-            app.eed40199d2a8825dece0.js     294 kB       0  [emitted]  app
-                73ebcf9d7b9014997d10.js    54.3 kB       1  [emitted]  
-                              vendor.js     681 kB       2  [emitted]  vendor
-           app.eed40199d2a8825dece0.css     5.5 kB       0  [emitted]  app
-        vendor.9d779207507930899248.css     132 kB       2  [emitted]  vendor
-             73ebcf9d7b9014997d10.js.gz    14.9 kB          [emitted]  
+            app.3a4a2b4005aa04943b48.js     294 kB       0  [emitted]  app
+                cdb54c2343bdc084a6ba.js    54.3 kB       1  [emitted]  
+                              vendor.js     666 kB       2  [emitted]  vendor
+           app.3a4a2b4005aa04943b48.css     5.5 kB       0  [emitted]  app
+        vendor.66dd96318dba1d00b1f4.css     132 kB       2  [emitted]  vendor
+             cdb54c2343bdc084a6ba.js.gz    14.9 kB          [emitted]  
 e18bbf611f2a2e43afc071aa2f4e1512.ttf.gz    23.4 kB          [emitted]  
 89889688147bd7575d6327160d64e760.svg.gz    26.8 kB          [emitted]  
-     vendor.9d779207507930899248.css.gz    20.5 kB          [emitted]  
-         app.eed40199d2a8825dece0.js.gz    63.6 kB          [emitted]  
+     vendor.66dd96318dba1d00b1f4.css.gz    20.4 kB          [emitted]  
+         app.3a4a2b4005aa04943b48.js.gz    63.6 kB          [emitted]  
 a3de2170e4e9df77161ea5d3f31b2668.ttf.gz    83.6 kB          [emitted]  
-                           vendor.js.gz     197 kB          [emitted]  
+f775f9cca88e21d45bebe185b27c0e5b.svg.gz     111 kB          [emitted]  
  448c34a56d699c29117adc64c43affeb.woff2      18 kB          [emitted]  
                              index.html    1.36 kB          [emitted]  
-                            favicon.ico    1.15 kB          [emitted]
 
 ```
 

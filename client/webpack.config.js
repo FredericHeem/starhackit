@@ -44,8 +44,7 @@ module.exports = function ( options ) {
             }).concat([
                 'assets/css/bootstrap-cosmo.css',
                 'font-awesome/css/font-awesome.min.css',
-                'ladda/dist/ladda.min.css',
-                'react-select/dist/react-select.css'
+                'ladda/dist/ladda.min.css'
             ])
         },
 

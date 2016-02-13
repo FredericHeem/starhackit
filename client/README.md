@@ -105,9 +105,9 @@ To build the production version:
 
 ```
 Version: webpack 1.12.13
-Time: 109053ms
+Time: 112794ms
                                   Asset       Size  Chunks             Chunk Names
-                           vendor.js.gz     205 kB          [emitted]  
+f775f9cca88e21d45bebe185b27c0e5b.svg.gz     111 kB          [emitted]  
    f4769f9bdb7466be65088239c12046d1.eot    20.1 kB          [emitted]  
   fa2772327f55d8198301fdb8bcfc8158.woff    23.4 kB          [emitted]  
    e18bbf611f2a2e43afc071aa2f4e1512.ttf    45.4 kB          [emitted]  
@@ -117,21 +117,21 @@ Time: 109053ms
   a35720c2fed2c7f043bc7e4ffb45e073.woff    83.6 kB          [emitted]  
    a3de2170e4e9df77161ea5d3f31b2668.ttf     142 kB          [emitted]  
    f775f9cca88e21d45bebe185b27c0e5b.svg     366 kB          [emitted]  
-            app.e44c0a3522a3c052b620.js     294 kB       0  [emitted]  app
+            app.eed40199d2a8825dece0.js     294 kB       0  [emitted]  app
                 73ebcf9d7b9014997d10.js    54.3 kB       1  [emitted]  
-                              vendor.js     712 kB       2  [emitted]  vendor
-           app.e44c0a3522a3c052b620.css     5.5 kB       0  [emitted]  app
-        vendor.e5517d1874f7b80daaaa.css     139 kB       2  [emitted]  vendor
+                              vendor.js     681 kB       2  [emitted]  vendor
+           app.eed40199d2a8825dece0.css     5.5 kB       0  [emitted]  app
+        vendor.9d779207507930899248.css     132 kB       2  [emitted]  vendor
              73ebcf9d7b9014997d10.js.gz    14.9 kB          [emitted]  
 e18bbf611f2a2e43afc071aa2f4e1512.ttf.gz    23.4 kB          [emitted]  
 89889688147bd7575d6327160d64e760.svg.gz    26.8 kB          [emitted]  
-     vendor.e5517d1874f7b80daaaa.css.gz    21.7 kB          [emitted]  
+     vendor.9d779207507930899248.css.gz    20.5 kB          [emitted]  
+         app.eed40199d2a8825dece0.js.gz    63.6 kB          [emitted]  
 a3de2170e4e9df77161ea5d3f31b2668.ttf.gz    83.6 kB          [emitted]  
-         app.e44c0a3522a3c052b620.js.gz    63.5 kB          [emitted]  
-f775f9cca88e21d45bebe185b27c0e5b.svg.gz     111 kB          [emitted]  
+                           vendor.js.gz     197 kB          [emitted]  
  448c34a56d699c29117adc64c43affeb.woff2      18 kB          [emitted]  
                              index.html    1.36 kB          [emitted]  
-                            favicon.ico    1.15 kB          [emitted]  
+                            favicon.ico    1.15 kB          [emitted]
 
 ```
 
@@ -140,11 +140,11 @@ To find out exactly the weight of each individual library, the tool [webpack-bun
 ```
 $ npm run bundle-size
 
-react: 635 KB (19.1%)       
+react: 635 KB (19.4%)       
   fbjs: 32.93 KB (5.19%)
     <self>: 32.93 KB (100%)
   <self>: 602.07 KB (94.8%)
-material-ui: 492.71 KB (14.8%)
+material-ui: 492.71 KB (15.1%)
   lodash.merge: 55.98 KB (11.4%)
     lodash._createassigner: 9.88 KB (17.6%)
       lodash._isiterateecall: 3.96 KB (40.1%)
@@ -202,13 +202,13 @@ material-ui: 492.71 KB (14.8%)
   react-addons-update: 45 B (0.00892%)
     <self>: 45 B (100%)
   <self>: 367.95 KB (74.7%)
-moment: 411.37 KB (12.4%)
+moment: 411.37 KB (12.6%)
   <self>: 411.37 KB (100%)
-lodash: 401.81 KB (12.1%)
+lodash: 401.81 KB (12.3%)
   <self>: 401.81 KB (100%)
-intl: 158.28 KB (4.77%)
+intl: 158.28 KB (4.85%)
   <self>: 158.28 KB (100%)
-react-intl: 128.6 KB (3.87%)
+react-intl: 128.6 KB (3.94%)
   intl-messageformat: 54 KB (42.0%)
     intl-messageformat-parser: 36.82 KB (68.2%)
       <self>: 36.82 KB (100%)
@@ -226,7 +226,7 @@ react-intl: 128.6 KB (3.87%)
   intl-messageformat .: 15 B (0.0114%)
     <self>: 15 B (100%)
   <self>: 55.29 KB (43.0%)
-react-pagify: 96.12 KB (2.89%)
+react-pagify: 96.12 KB (2.94%)
   lodash.merge: 87.88 KB (91.4%)
     lodash._stack: 18.16 KB (20.7%)
       lodash._mapcache: 12.38 KB (68.2%)
@@ -248,9 +248,9 @@ react-pagify: 96.12 KB (2.89%)
       <self>: 942 B (100%)
     <self>: 33.13 KB (37.7%)
   <self>: 8.24 KB (8.58%)
-i18next: 82.05 KB (2.47%)
+i18next: 82.05 KB (2.51%)
   <self>: 82.05 KB (100%)
-react-helmet: 77.3 KB (2.33%)
+react-helmet: 77.3 KB (2.37%)
   core-js: 42.9 KB (55.5%)
     <self>: 42.9 KB (100%)
   react-side-effect: 7.08 KB (9.15%)
@@ -260,13 +260,13 @@ react-helmet: 77.3 KB (2.33%)
   deep-equal: 3.8 KB (4.92%)
     <self>: 3.8 KB (100%)
   <self>: 23.53 KB (30.4%)
-react-router: 75.4 KB (2.27%)
+react-router: 75.4 KB (2.31%)
   warning: 1.76 KB (2.34%)
     <self>: 1.76 KB (100%)
   invariant: 1.48 KB (1.96%)
     <self>: 1.48 KB (100%)
   <self>: 72.15 KB (95.7%)
-history: 64.52 KB (1.94%)
+history: 64.52 KB (1.98%)
   deep-equal: 3.8 KB (5.89%)
     <self>: 3.8 KB (100%)
   deep-equal/index.js|/Users/frederic/starhackit/client: 2.98 KB (4.62%)
@@ -280,94 +280,88 @@ history: 64.52 KB (1.94%)
   invariant: 1.48 KB (2.29%)
     <self>: 1.48 KB (100%)
   <self>: 52.88 KB (82.0%)
-when: 60.25 KB (1.81%)
+when: 60.25 KB (1.84%)
   <self>: 60.25 KB (100%)
-react-select: 54.63 KB (1.64%)
-  react-input-autosize: 4.57 KB (8.36%)
-    <self>: 4.57 KB (100%)
-  <self>: 50.06 KB (91.6%)
-reflux-core: 34.18 KB (1.03%)
+reflux-core: 34.18 KB (1.05%)
   eventemitter3: 7 KB (20.5%)
     <self>: 7 KB (100%)
   <self>: 27.18 KB (79.5%)
-es6-promise: 31.55 KB (0.950%)
+es6-promise: 31.55 KB (0.966%)
   <self>: 31.55 KB (100%)
-checkit: 29.91 KB (0.901%)
+checkit: 29.91 KB (0.916%)
   inherits: 672 B (2.19%)
     <self>: 672 B (100%)
   <self>: 29.25 KB (97.8%)
-font-awesome: 29.21 KB (0.879%)
+font-awesome: 29.21 KB (0.894%)
   <self>: 29.21 KB (100%)
-axios: 26.04 KB (0.784%)
+axios: 26.04 KB (0.797%)
   <self>: 26.04 KB (100%)
-ladda: 21.33 KB (0.642%)
+ladda: 21.33 KB (0.653%)
   <self>: 21.33 KB (100%)
-reactabular: 20.3 KB (0.611%)
+reactabular: 20.3 KB (0.622%)
   <self>: 20.3 KB (100%)
-react-textarea-autosize: 13.38 KB (0.403%)
+react-textarea-autosize: 13.38 KB (0.410%)
   <self>: 13.38 KB (100%)
-qs: 13.18 KB (0.397%)
+qs: 13.18 KB (0.404%)
   <self>: 13.18 KB (100%)
-debug: 9.95 KB (0.300%)
+debug: 9.95 KB (0.305%)
   ms: 2.28 KB (22.9%)
     <self>: 2.28 KB (100%)
   <self>: 7.67 KB (77.1%)
-react-ga: 9.91 KB (0.298%)
+react-ga: 9.91 KB (0.303%)
   <self>: 9.91 KB (100%)
-i18next-xhr-backend: 9.7 KB (0.292%)
+i18next-xhr-backend: 9.7 KB (0.297%)
   <self>: 9.7 KB (100%)
-i18next-browser-languagedetector: 9.14 KB (0.275%)
-  <self>: 9.14 KB (100%)
-react-tap-event-plugin: 8.02 KB (0.241%)
+react-tap-event-plugin: 8.02 KB (0.246%)
   fbjs: 1.09 KB (13.6%)
     <self>: 1.09 KB (100%)
   <self>: 6.93 KB (86.4%)
-babel-runtime: 7.4 KB (0.223%)
+babel-runtime: 7.4 KB (0.226%)
   core-js: 5.29 KB (71.5%)
     <self>: 5.29 KB (100%)
   <self>: 2.11 KB (28.5%)
-style-loader: 7.04 KB (0.212%)
+style-loader: 7.04 KB (0.216%)
   <self>: 7.04 KB (100%)
-reflux: 6.09 KB (0.183%)
+reflux: 6.09 KB (0.187%)
   <self>: 6.09 KB (100%)
-react-doc-meta: 5.51 KB (0.166%)
+react-doc-meta: 5.51 KB (0.169%)
   react-side-effect: 3.95 KB (71.7%)
     fbjs: 2.72 KB (68.8%)
       <self>: 2.72 KB (100%)
     <self>: 1.23 KB (31.2%)
   <self>: 1.56 KB (28.3%)
-react-cookie: 5.11 KB (0.154%)
+react-cookie: 5.11 KB (0.157%)
   cookie: 3.29 KB (64.4%)
     <self>: 3.29 KB (100%)
   <self>: 1.82 KB (35.6%)
-reflux-promise: 4.7 KB (0.142%)
+reflux-promise: 4.7 KB (0.144%)
   <self>: 4.7 KB (100%)
-i18next-localstorage-cache: 4.03 KB (0.121%)
+i18next-localstorage-cache: 4.03 KB (0.123%)
   <self>: 4.03 KB (100%)
-webpack: 2.34 KB (0.0703%)
+webpack: 2.34 KB (0.0715%)
   node-libs-browser: 2.01 KB (86.0%)
     <self>: 0 B (0.00%)
   <self>: 336 B (14.0%)
-react-ladda: 2.11 KB (0.0635%)
+react-ladda: 2.11 KB (0.0646%)
   react-addons-pure-render-mixin: 72 B (3.33%)
     <self>: 72 B (100%)
   <self>: 2.04 KB (96.7%)
-css-loader: 1.47 KB (0.0443%)
+css-loader: 1.47 KB (0.0450%)
   <self>: 1.47 KB (100%)
-classnames: 1.08 KB (0.0324%)
+classnames: 1.08 KB (0.0329%)
   <self>: 1.08 KB (100%)
-segmentize: 1 KB (0.0301%)
+segmentize: 1 KB (0.0306%)
   <self>: 1 KB (100%)
-bootstrap: 413 B (0.0121%)
+bootstrap: 413 B (0.0123%)
   <self>: 413 B (100%)
-material-ui/lib/TextField/index.js|/Users/frederic/starhackit/client: 350 B (0.0103%)
+material-ui/lib/TextField/index.js|/Users/frederic/starhackit/client: 350 B (0.0105%)
   <self>: 0 B (0.00%)
-react-dom: 63 B (0.00185%)
+react-dom: 63 B (0.00188%)
   <self>: 63 B (100%)
-react-addons-linked-state-mixin: 55 B (0.00162%)
+react-addons-linked-state-mixin: 55 B (0.00164%)
   <self>: 55 B (100%)
-intl .: 15 B (0.000441%)
+intl .: 15 B (0.000448%)
   <self>: 15 B (100%)
-<self>: 268.78 KB (8.09%)
+<self>: 277.4 KB (8.49%)
 
 ```

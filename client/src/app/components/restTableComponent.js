@@ -21,18 +21,18 @@ export default React.createClass({
             count: 0,
             data: [],
             pagination: {
-                page: 0,
+                page: 1,
                 perPage: 100
             }
         };
     },
     componentDidMount () {
         //debug('componentDidMount ', this.props);
-        this.onSelectPage(0, this.props);
+        this.onSelectPage(1, this.props);
     },
     componentWillReceiveProps(props){
         //debug('componentWillReceiveProps ', props);
-        this.onSelectPage(0, props);
+        this.onSelectPage(1, props);
     },
     renderLoading(){
         if(this.state.loading){
@@ -120,9 +120,12 @@ export default React.createClass({
     setSelectPage(page, props){
         debug('onSelectPage ', page);
         let {pagination} = this.state;
+        if(page <= 0){
+            return;
+        }
         this.setState({loading: true});
         props.getData({
-            offset: pagination.perPage * page,
+            offset: pagination.perPage * (page - 1),
             limit: pagination.perPage
         })
         .then(result => {

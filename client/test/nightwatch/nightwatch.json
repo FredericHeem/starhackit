@@ -10,7 +10,7 @@
 
   "selenium" : {
     "start_process" : true,
-    "server_path" : "/usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-2.48.2.jar",
+    "server_path" : "../../node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar",
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444,

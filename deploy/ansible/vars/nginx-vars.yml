@@ -32,3 +32,4 @@ nginx_configs:
   gzip:
       - gzip on
       - gzip_disable msie6
+      - gzip_static on

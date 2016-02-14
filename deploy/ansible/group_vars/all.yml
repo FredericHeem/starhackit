@@ -19,6 +19,7 @@ mail_from:
 mail_user:
 mail_password:
 
+auth_facebook: true
 facebook_client_id:
 facebook_client_secret:
 

@@ -93,8 +93,6 @@ module.exports = function ( options ) {
                 assets: pathTo( 'assets' ),
                 config: pathAppTo( 'config.js' ),
 
-                //vendor aliases
-                jquery: 'jquery/dist/jquery.min.js'
             }
         },
         module: {

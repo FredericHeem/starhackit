@@ -5,7 +5,6 @@ import {
 import Paginator from 'react-pagify';
 import segmentize from 'segmentize';
 import Spinner from 'components/spinner';
-
 import Debug from 'debug';
 let debug = new Debug("components:resttable");
 
@@ -55,9 +54,9 @@ export default React.createClass({
         debug('render ', this.state);
         return (
             <div>
-                {this.renderLoading()}
                 {this.state.error && this.renderError()}
                 {this.renderTable()}
+                {this.renderLoading()}
             </div>
         );
     },

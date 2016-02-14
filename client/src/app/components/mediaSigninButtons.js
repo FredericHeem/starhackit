@@ -26,7 +26,7 @@ export default React.createClass({
                   label="Sign in with Facebook"
                   linkButton={true}
                   href="/api/v1/auth/facebook"
-                  icon={<FontIcon className="fa fa-facebook"/>}
+                  icon={<FontIcon className="icon-facebook"/>}
                 />);
     }
 } );

@@ -43,6 +43,7 @@ module.exports = function ( options ) {
                 ], v)
             }).concat([
                 'assets/css/bootstrap-cosmo.css',
+                './src/fontello/css/fontello.css',
                 'font-awesome/css/font-awesome.min.css',
                 'ladda/dist/ladda.min.css'
             ])
@@ -97,10 +98,12 @@ module.exports = function ( options ) {
         },
         module: {
             loaders: [
-                { test: /\.css$/,
-                    loader: ExtractTextPlugin.extract('style-loader', 'css-loader') },
-                { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-                { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
+                {
+                    test: /\.css$/,
+                    loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+                },
+                { test: /.(png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+                    loader: 'url-loader?limit=100000' },
                 {
                     test: /\.jpg|\.png|\.mp3/,
                     loader: 'file-loader'

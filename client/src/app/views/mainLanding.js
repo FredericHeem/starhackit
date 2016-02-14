@@ -1,5 +1,7 @@
 import React from 'react';
 import DocMeta from 'react-doc-meta';
+import RaisedButton from 'material-ui/lib/raised-button';
+import FontIcon from 'material-ui/lib/font-icon';
 import DocTitle from 'components/docTitle';
 import config from 'config';
 //import tr from 'i18next';
@@ -28,8 +30,13 @@ export default React.createClass({
                             <h2>A Full Stack Web Application Starter Kit </h2>
                             <h3>Built with React, Node, data backed by SQL</h3>
                             <br />
-                            <a className="btn btn-primary btn-lg" href="https://github.com/FredericHeem/starhackit" target="_blank">
-                                <i className="fa fa-github"/> Clone the code on GitHub </a>
+
+                            <RaisedButton
+                                      label="Clone the code on GitHub"
+                                      linkButton={true}
+                                      href="https://github.com/FredericHeem/starhackit"
+                                      icon={<FontIcon className="icon-github-circled-alt2"/>}
+                                   />
                         </div>
                     </div>
                 </div>
@@ -45,9 +52,11 @@ export default React.createClass({
                     <div className="row">
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
-                                <span className="fa-stack fa-4x">
-                                    <i className="fa fa-stack-exchange fa-stack-1x"></i>
-                                </span>
+                                <FontIcon
+                                    className="icon-stackexchange"
+                                    style={{
+                                        fontSize:'64'
+                                    }}/>
                                 <h4>
                                     <strong>Full stack</strong>
                                 </h4>
@@ -57,9 +66,11 @@ export default React.createClass({
 
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
-                                <span className="fa-stack fa-4x">
-                                    <i className="fa fa-user fa-stack-1x"></i>
-                                </span>
+                                <FontIcon
+                                    className="icon-user"
+                                    style={{
+                                        fontSize:'64'
+                                    }}/>
                                 <h4>
                                     <strong>Authentication</strong>
                                 </h4>
@@ -69,9 +80,11 @@ export default React.createClass({
 
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
-                                <span className="fa-stack fa-4x">
-                                    <i className="fa fa-shield fa-stack-1x"></i>
-                                </span>
+                                <FontIcon
+                                    className="icon-shield"
+                                    style={{
+                                        fontSize:'64'
+                                    }}/>
                                 <h4>
                                     <strong>Authorization</strong>
                                 </h4>
@@ -81,9 +94,11 @@ export default React.createClass({
 
                         <div className="col-md-3 col-sm-6">
                             <div className="start-item">
-                                <span className="fa-stack fa-4x">
-                                    <i className="fa fa-database fa-stack-1x"></i>
-                                </span>
+                                <FontIcon
+                                    className="icon-database"
+                                    style={{
+                                        fontSize:'64'
+                                    }}/>
                                 <h4>
                                     <strong>Relational SQL Database</strong>
                                 </h4>
@@ -105,7 +120,7 @@ export default React.createClass({
                         <div className="col-md-4">
                             <div className="start-item">
                                 <span className="fa-stack fa-4x">
-                                    <img src="assets/img/react.svg" alt='REACT' width="64"/>
+                                    <img src="assets/img/react.svg" alt='REACT' height="64" width="64"/>
                                 </span>
                                 <h4>
                                     <a href="https://facebook.github.io/react/"><strong>React.js</strong></a>
@@ -116,9 +131,11 @@ export default React.createClass({
 
                         <div className="col-md-4">
                             <div className="start-item">
-                                <span className="fa-stack fa-4x">
-                                    <i className="fa fa-retweet fa-stack-1x"></i>
-                                </span>
+                                <FontIcon
+                                    className="icon-retweet"
+                                    style={{
+                                        fontSize:'64'
+                                    }}/>
                                 <h4>
                                     <a href="https://github.com/reflux/refluxjs"><strong>Reflux</strong></a>
                                 </h4>

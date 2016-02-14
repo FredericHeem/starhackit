@@ -36,7 +36,6 @@ module.exports = function ( options ) {
         entry: {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
                 return _.includes([
-                    'font-awesome',
                     'material-ui',
                     'bootstrap',
                     'intl'
@@ -44,7 +43,6 @@ module.exports = function ( options ) {
             }).concat([
                 'assets/css/bootstrap-cosmo.css',
                 './src/fontello/css/fontello.css',
-                'font-awesome/css/font-awesome.min.css',
                 'ladda/dist/ladda.min.css'
             ])
         },

@@ -8,7 +8,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router} from 'react-router';
 import {IntlProvider} from 'react-intl';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { browserHistory } from 'react-router';
 import routes from './routes';
 import Debug from 'debug';
 import 'utils/ga';
@@ -59,7 +59,7 @@ function App() {
         let mountEl = document.getElementById('application');
         ReactDOM.render(
                 <IntlProvider locale='en'>
-                    <Router history={createBrowserHistory()} routes={routes}/>
+                    <Router history={browserHistory} routes={routes}/>
                 </IntlProvider>
                 , mountEl);
     }

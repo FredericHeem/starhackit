@@ -88,9 +88,11 @@ export default React.createClass( {
             email: email ? email.getValue() : undefined
         } )
         .finally(() => {
-            this.setState( {
-                loading: false
-            } );
+            if(this.isMounted()){
+                this.setState( {
+                    loading: false
+                } );
+            }
         });
     }
 

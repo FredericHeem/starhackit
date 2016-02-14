@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, History } from 'react-router';
+import { Link } from 'react-router';
 import Reflux from 'reflux';
 import tr from 'i18next';
 import Paper from 'material-ui/lib/paper';
@@ -16,10 +16,11 @@ let debug = new Debug("views:login");
 export default React.createClass( {
 
     mixins: [
-        History,
         Reflux.connect( authStore, 'auth' )
     ],
-
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     getInitialState() {
         return {
             errors: {}
@@ -27,11 +28,11 @@ export default React.createClass( {
     },
 
     componentWillUpdate() {
-        debug("componentWillUpdate ", this.props);
+        debug("componentWillUpdate props: ", this.props);
         let path = this.props.location.query.nextPath || '/app';
         debug("componentWillUpdate next path: ", path);
         if ( authStore.isAuthenticated() ) {
-            this.history.pushState(null, path);
+            this.context.router.push(path);
         }
     },
 

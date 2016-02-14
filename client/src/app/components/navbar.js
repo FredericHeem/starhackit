@@ -1,9 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import Reflux from 'reflux';
-import {
-    History
-} from 'react-router';
 import AppBar from 'material-ui/lib/app-bar';
 import LeftNav from 'material-ui/lib/left-nav';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -44,10 +41,11 @@ function navLinks(authenticated) {
 
 export default React.createClass({
     mixins: [
-        Reflux.connect(authStore, 'user'), History
+        Reflux.connect(authStore, 'user')
     ],
     contextTypes: {
-        muiTheme: React.PropTypes.object
+        muiTheme: React.PropTypes.object,
+        router: React.PropTypes.object.isRequired
     },
     getInitialState () {
         return {open: false, muiTheme: this.context.muiTheme};
@@ -66,7 +64,7 @@ export default React.createClass({
     },
     handleNavChange (menuItem) {
         debug('handleNavChange ', menuItem.route);
-        this.history.pushState(null, menuItem.route);
+        this.context.router.push(menuItem.route);
         this.setState({open: false});
     },
     renderMenuItem () {

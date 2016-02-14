@@ -1,6 +1,5 @@
 import React from 'react';
 import Reflux from 'reflux';
-import { History } from 'react-router';
 import DocTitle from 'components/docTitle';
 
 import Debug from 'debug';
@@ -11,7 +10,6 @@ import authActions from 'actions/auth';
 
 export default React.createClass( {
     mixins: [
-        History,
         Reflux.connect( authStore, 'auth' )
     ],
 
@@ -28,8 +26,9 @@ export default React.createClass( {
     componentWillUpdate() {
         debug("componentWillUpdate");
         if ( authStore.isEmailCodeVerified() ) {
+            debug("componentDidMount router ", this.router);
             let path = '/login';
-            this.history.pushState(null, path);
+            this.router.push(path);
         }
     },
 

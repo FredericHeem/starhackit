@@ -1,18 +1,18 @@
 import React from 'react';
 import authStore from 'stores/auth';
-import { History } from 'react-router';
 import Debug from 'debug';
 let debug = new Debug("component:authenticated");
 
 export default React.createClass({
-    mixins: [History],
-
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     componentWillMount: function () {
-        debug('componentWillMount ', this.props.location.pathname);
+        debug('componentWillMount pathname: ', this.props.location.pathname);
         let nextPath = this.props.location.pathname;
         if (!authStore.isAuthenticated()) {
             debug('is not authenticated');
-            this.history.pushState(null, `/login?nextPath=${nextPath}`);
+            this.context.router.push(`/login?nextPath=${nextPath}`);
         } else {
             debug('is authenticated');
         }

@@ -1,9 +1,6 @@
 import Reflux from 'reflux';
 
-import {
-    getMyProfile,
-    updateMyProfile
-} from 'resources/me';
+import me from 'resources/me';
 
 let actions = Reflux.createActions( {
     getMyProfile: { asyncResult: true },
@@ -12,5 +9,5 @@ let actions = Reflux.createActions( {
 
 export default actions;
 
-actions.getMyProfile.listenAndPromise( getMyProfile );
-actions.updateMyProfile.listenAndPromise( updateMyProfile );
+actions.getMyProfile.listenAndPromise( me.getMyProfile );
+actions.updateMyProfile.listenAndPromise( me.updateMyProfile );

@@ -1,5 +1,7 @@
-import { get } from 'utils/http';
+import {get} from 'utils/http';
 
-export function getProfile( userId ) {
-    return get(`users/${userId}`);
-}
+export default {
+    getProfile(userId) {
+        return get(`users/${userId}`);
+    }
+};

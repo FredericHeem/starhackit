@@ -4,7 +4,7 @@ import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import RaisedButton from 'material-ui/lib/raised-button';
 import DocTitle from 'components/docTitle';
-import resetActions from 'actions/reset';
+import authActions from 'actions/auth';
 
 import ValidatePassword from 'services/validatePassword';
 
@@ -116,7 +116,7 @@ export default React.createClass( {
         }
 
         function verifyResetPasswordToken() {
-            return resetActions.verifyResetPasswordToken( this.props.params.token, this.password() );
+            return authActions.verifyResetPasswordToken( this.props.params.token, this.password() );
         }
 
         function setNextStep( ) {

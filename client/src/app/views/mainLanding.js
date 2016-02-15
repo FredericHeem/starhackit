@@ -35,8 +35,10 @@ let CardIcon = React.createClass({
     render(){
         let {props} = this;
         return (
-            <div className={props.className}>
-                <Card>
+                <Card
+                    className='flex-items'
+                    style={{
+                    }}>
                   <CardTitle
                     title={props.title}
                   />
@@ -46,7 +48,6 @@ let CardIcon = React.createClass({
                   {props.icon && this.renderIcon(props)}
                   {props.img && this.renderImg(props)}
                 </Card>
-            </div>
         );
     }
 });
@@ -94,24 +95,20 @@ export default React.createClass({
                     </div>
                     <div className="row text-center">
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             icon='icon-stackexchange'
                             title='Full Stack'
                             text='A complete frontend, backend and deployment solution to bootstrap your application'/>
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             icon='icon-user'
                             title='Authentication'
                             text='Account registration with username and password, or with identity provider such as Google, Facebook, Twitter, GitHub etc ..'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             icon='icon-shield'
                             title='Authorization'
                             text='A group and permissions based authorization'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             icon='icon-database'
                             title='Relational SQL Database'
                             text='The data are modeled with sequelize, an ORM which support PostgreSQL, MySQL, MariaDB, SQLite and MSSQL'/>
@@ -128,7 +125,6 @@ export default React.createClass({
                     </div>
                     <div className="row">
                         <CardIcon
-                            className='col-md-4'
                             img='assets/img/react.svg'
                             height='200'
                             title='React'
@@ -136,7 +132,6 @@ export default React.createClass({
                             text='A fast rising javascript library for building user interface.'/>
 
                         <CardIcon
-                            className='col-md-4'
                             img='assets/img/material-ui.svg'
                             title='Material-UI'
                             height='200'
@@ -144,7 +139,6 @@ export default React.createClass({
                             text="A Set of React Components that Implement Google's Material Design"/>
 
                         <CardIcon
-                            className='col-md-4'
                             icon='icon-retweet'
                             title='Reflux'
                             link='https://github.com/reflux/refluxjs'
@@ -161,7 +155,6 @@ export default React.createClass({
                     </div>
                     <div className="row">
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/nodejs.png'
                             title='Node.js'
                             height="120"
@@ -169,7 +162,6 @@ export default React.createClass({
                             text='A scalable javascript application server.'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/sequelize.png'
                             height='120'
                             title='Sequelize'
@@ -177,7 +169,6 @@ export default React.createClass({
                             text='Sequelize is a promise-based ORM for Node.js and io.js. It supports the dialects PostgreSQL, MySQL, MariaDB, SQLite and MSSQL'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/rabbitmq.png'
                             title='RabbitMq'
                             width='200'
@@ -185,7 +176,6 @@ export default React.createClass({
                             text='Robust messaging for applications'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/passportjs.png'
                             title='Passportjs'
                             width='64'
@@ -205,30 +195,27 @@ export default React.createClass({
                     </div>
                     <div className="row">
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/es7.png'
                             title='ES6/ES7 ready'
-                            height='230'
+                            height='220'
                             link='https://github.com/lukehoban/es6features'
                             text='The new javascript ECMAScript 7'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/gulp.png'
                             title='Gulp'
-                            height='220'
+                            height='200'
                             link='http://gulpjs.com/'
                             text='A very popular build system for frontend and backend development'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/eslint.svg'
                             title='ESLint'
+                            height='180'
                             link='http://eslint.org/'
                             text='The pluggable linting utility for JavaScript and JSX, find errors and coding style violation.'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/mocha.svg'
                             title='Mocha'
                             height='230'
@@ -238,32 +225,29 @@ export default React.createClass({
                     </div>
                     <div className="row">
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/webpack.png'
                             title='Webpack'
-                            height='230'
+                            height='160'
                             link='http://webpack.github.io/docs/'
                             text='A bundler for javascript and friends. Packs many modules into a few bundled assets.'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/nodemon.svg'
                             title='Nodemon'
-                            height='230'
+                            height='160'
                             link='http://nodemon.io/'
                             text='Monitors for any changes in your node.js application and automatically restart the server'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/travis.png'
                             title='Travis CI'
                             link='https://travis-ci.org/'
                             text='A continuous integration platform.'/>
 
                         <CardIcon
-                            className='col-md-3 col-sm-6'
                             img='assets/img/codeclimate.png'
                             title='CodeClimate'
+                            height='200'
                             link='https://codeclimate.com/'
                             text='Code Coverage and Code Review'/>
 
@@ -280,7 +264,6 @@ export default React.createClass({
                     </div>
                     <div className="row">
                         <CardIcon
-                            className='col-md-4 col-sm-6'
                             img='assets/img/ansible.png'
                             title='Ansible'
                             width='64'
@@ -288,14 +271,12 @@ export default React.createClass({
                             text='Deploy apps. Manage systems'/>
 
                         <CardIcon
-                            className='col-md-4 col-sm-6'
                             img='assets/img/vagrant.png'
                             title='Vagrant'
                             link='https://www.vagrantup.com/'
                             text='Create and configure lightweight, reproducible, and portable development environments.'/>
 
                         <CardIcon
-                            className='col-md-4 col-sm-6'
                             img='assets/img/docker.png'
                             title='Docker'
                             link='https://www.docker.com/'

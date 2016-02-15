@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
 import FontIcon from 'material-ui/lib/font-icon';
@@ -6,7 +7,7 @@ import config from 'config';
 export default React.createClass({
     getDefaultProps() {
         return {
-            socialAuth: config.socialAuth,
+            socialAuth: _.extend({}, config.socialAuth),
             onAuthenticated: () => {}
         };
     },

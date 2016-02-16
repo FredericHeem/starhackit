@@ -2,6 +2,7 @@
   "login": "Login",
   "logout": "Logout",
   "email": "Email",
+  "username": "username",
   "password": "Password",
   "forgotPassword": "Forgot Password"
 }

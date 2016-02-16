@@ -10,6 +10,11 @@ export default React.createClass( {
         LinkedStateMixin
     ],
 
+    getDefaultProps(){
+        return {
+            errors:[]
+        };
+    },
     getInitialState() {
         return {
             username: null,

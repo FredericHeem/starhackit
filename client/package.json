@@ -38,6 +38,7 @@
     "ladda": "0.9.8",
     "lodash": "3.10.1",
     "material-ui": "0.14.4",
+    "material-ui-country-flags": "1.0.0",
     "moment": "2.11.2",
     "qs": "6.1.0",
     "react": "0.14.7",

@@ -29,7 +29,7 @@ export function patch( url, options = {} ) {
 //// PRIVATE
 
 function ajax( url, method, options, params ) {
-    debug("ajax url: %s, method: %s, options %s, params: ", url, method, options, params);
+    debug("ajax url: %s, method: %s, options %s, params: ", url, method, JSON.stringify(options), params);
     let data = options ? JSON.stringify( options.params ) : undefined;
     return Axios({
         method: method,

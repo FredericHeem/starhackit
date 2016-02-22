@@ -138,7 +138,7 @@ export default React.createClass({
 
         function successNotification() {
         }
-        
+
         function setErrors( e ) {
             debug('setErrors: ', e);
         }

@@ -20,8 +20,6 @@ let actions = Reflux.createActions({
     requestPasswordReset: { asyncResult: true },
     verifyResetPasswordToken: { asyncResult: true },
     //ui actions
-
-    SignedUpToLoggedInToSaveRecipe: {}
 } );
 
 export default actions;

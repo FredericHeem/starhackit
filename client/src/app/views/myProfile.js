@@ -6,8 +6,8 @@ import meStore from 'stores/me';
 import meActions from 'actions/me';
 import ProfileForm from 'components/profileForm';
 
-import Debug from 'debug';
-let debug = new Debug("view:profile");
+//import Debug from 'debug';
+//let debug = new Debug("view:profile");
 
 export default React.createClass({
 

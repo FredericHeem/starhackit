@@ -1,16 +1,19 @@
 import React from 'react';
-import authStore from 'stores/auth';
 import Debug from 'debug';
 let debug = new Debug("component:authenticated");
+import { connect } from 'react-redux'
 
-export default React.createClass({
+export let AuthenticatedView = React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
+    },
+    propTypes:{
+        authenticated: React.PropTypes.bool.isRequired
     },
     componentWillMount: function () {
         debug('componentWillMount pathname: ', this.props.location.pathname);
         let nextPath = this.props.location.pathname;
-        if (!authStore.isAuthenticated()) {
+        if (!this.props.authenticated) {
             debug('is not authenticated');
             this.context.router.push(`/login?nextPath=${nextPath}`);
         } else {
@@ -31,3 +34,10 @@ export default React.createClass({
         );
     }
 });
+
+const mapStateToProps = (state) => ({
+  authenticated: state.auth.authenticated
+});
+
+export default connect((mapStateToProps), {
+})(AuthenticatedView)

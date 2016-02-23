@@ -3,7 +3,6 @@ import React from 'react';
 import Checkit from 'checkit';
 
 import LocalAuthenticationForm from 'components/localAuthenticationForm';
-import authActions from 'actions/auth';
 import {createError} from 'utils/error';
 
 import Debug from 'debug';
@@ -11,7 +10,9 @@ import Debug from 'debug';
 let debug = new Debug("components:signup");
 
 export default React.createClass( {
-
+    propTypes:{
+        signup: React.PropTypes.func.isRequired
+    },
     getInitialState() {
         return {
             errors: {},
@@ -80,7 +81,7 @@ function validateSignup( payload ) {
 }
 
 function signupLocal( payload ) {
-    return authActions.signupLocal( payload.username, payload.password, payload.email );
+    return this.props.signup( payload.username, payload.password, payload.email );
 }
 
 function setErrors( e ) {

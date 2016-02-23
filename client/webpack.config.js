@@ -71,6 +71,7 @@ module.exports = function ( options ) {
             new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
         ],
         resolve: {
+            root: path.join( __dirname, 'src', 'app'),
             extensions: [ '', '.js', '.jsx', '.styl', 'css' ],
             alias: {
                 i18next: 'i18next/lib/index.js',

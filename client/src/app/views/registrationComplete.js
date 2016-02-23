@@ -1,18 +1,13 @@
 import React from 'react';
-import Reflux from 'reflux';
 import DocTitle from 'components/docTitle';
 
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
-import authStore from 'stores/auth';
-import authActions from 'actions/auth';
-
 export default React.createClass( {
-    mixins: [
-        Reflux.connect( authStore, 'auth' )
-    ],
-
+    propTypes:{
+        isEmailCodeVerified: React.PropTypes.bool.isRequired
+    },
     getInitialState() {
         return {
             errors: null
@@ -25,7 +20,7 @@ export default React.createClass( {
 
     componentWillUpdate() {
         debug("componentWillUpdate");
-        if ( authStore.isEmailCodeVerified() ) {
+        if ( this.props.isEmailCodeVerified() ) {
             debug("componentDidMount router ", this.router);
             let path = '/login';
             this.router.push(path);
@@ -63,9 +58,11 @@ export default React.createClass( {
     },
     verifyEmailCode(code) {
         debug("verifyEmailCode ", code);
+        //TODO redux
+        /*
         return authActions.verifyEmailCode(code)
         .then(this.onRegister)
-        .catch(this.setErrors);
+        .catch(this.setErrors);*/
     },
 
     onRegister(){

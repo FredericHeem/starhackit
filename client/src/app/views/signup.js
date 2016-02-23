@@ -1,22 +1,12 @@
 import React from 'react';
-import Reflux from 'reflux';
 import Paper from 'material-ui/lib/paper';
 import DocTitle from 'components/docTitle';
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalSignupForm from 'components/localSignupForm';
 
-import authStore from 'stores/auth';
-
 export default React.createClass( {
-
-    mixins: [
-        Reflux.connect( authStore, 'auth' )
-    ],
-
-    getInitialState() {
-        return {
-            errors: {}
-        };
+    propTypes:{
+        registerCompleted: React.PropTypes.bool.isRequired
     },
 
     render() {
@@ -26,8 +16,8 @@ export default React.createClass( {
                 <DocTitle
                     title="Register"
                 />
-                { authStore.isRegisterCompleted() && this.renderRegisterComplete() }
-                { !authStore.isRegisterCompleted() && this.renderRegisterForm() }
+                { this.props.registerCompleted && this.renderRegisterComplete() }
+                { !this.props.registerCompleted && this.renderRegisterForm() }
 
             </div>
         );

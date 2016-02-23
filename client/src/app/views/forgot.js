@@ -4,7 +4,6 @@ import LinkedStateMixin from 'react-addons-linked-state-mixin';
 import cx from 'classnames';
 import RaisedButton from 'material-ui/lib/raised-button';
 import DocTitle from 'components/docTitle';
-import authActions from 'actions/auth';
 
 import ValidateEmail from 'services/validateEmail';
 import ValidateRequiredField from 'services/validateRequiredField';
@@ -14,7 +13,9 @@ export default React.createClass( {
     mixins: [
         LinkedStateMixin,
     ],
-
+    propTypes:{
+        requestPasswordReset: React.PropTypes.func.isRequired
+    },
     getInitialState() {
         return {
             step: 'SendPasswordResetEmail',
@@ -121,7 +122,7 @@ export default React.createClass( {
         }
 
         function requestReset() {
-            return authActions.requestPasswordReset( this.email() );
+            return this.props.requestPasswordReset( this.email() );
         }
 
         function setNextStep( ) {

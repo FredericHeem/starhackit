@@ -14,7 +14,7 @@ import MyProfile from 'views/myProfile';
 import Authenticated from 'components/authenticatedComponent';
 import UsersView from 'parts/admin/usersView';
 
-let routes = (
+export default (store) => (
     <Route component={Application} name="home" path="/">
         <IndexRoute component={MainLanding}/>
         <Route component={Login} path="login"/>
@@ -38,5 +38,3 @@ let routes = (
         </Route>
     </Route>
 );
-
-export default routes;

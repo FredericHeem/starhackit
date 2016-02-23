@@ -23,8 +23,8 @@ export default React.createClass( {
 */
     render() {
         let error = this.props.error;
-        debug('render ', error);
-        debug('props ', this.props);
+        //debug('render ', error);
+        //debug('props ', this.props);
         if(!error) {
             return (
                 <div></div>

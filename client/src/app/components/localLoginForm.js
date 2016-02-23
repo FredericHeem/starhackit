@@ -1,8 +1,6 @@
 import React from 'react';
-
 import LocalAuthenticationForm from 'components/localAuthenticationForm';
 import ValidateLoginFields from 'services/validateLoginFields';
-import authActions from 'actions/auth';
 import {createError} from 'utils/error';
 import Alert from 'components/alert';
 import tr from 'i18next';
@@ -11,7 +9,9 @@ import Debug from 'debug';
 let debug = new Debug("components:login");
 
 export default React.createClass( {
-
+    propTypes:{
+        login: React.PropTypes.func.isRequired
+    },
     getInitialState() {
         return {
             errors: {}
@@ -71,7 +71,7 @@ function validateLogin( payload ) {
 }
 
 function loginLocal( payload ) {
-    return authActions.loginLocal( payload );
+    return this.props.login( payload );
 }
 
 function setErrors( e ) {

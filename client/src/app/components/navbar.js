@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
-import Reflux from 'reflux';
 import AppBar from 'material-ui/lib/app-bar';
 import LeftNav from 'material-ui/lib/left-nav';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import authStore from 'stores/auth';
 import config from 'config';
 import Debug from 'debug';
-let debug = new Debug("views:navbar");
+let debug = new Debug("component:navbar");
 
 function navLinks(authenticated) {
     if (authenticated) {
@@ -40,12 +38,12 @@ function navLinks(authenticated) {
 };
 
 export default React.createClass({
-    mixins: [
-        Reflux.connect(authStore, 'user')
-    ],
     contextTypes: {
         muiTheme: React.PropTypes.object,
         router: React.PropTypes.object.isRequired
+    },
+    propTypes:{
+        authenticated: React.PropTypes.bool.isRequired
     },
     getInitialState () {
         return {open: false, muiTheme: this.context.muiTheme};
@@ -68,8 +66,8 @@ export default React.createClass({
         this.setState({open: false});
     },
     renderMenuItem () {
-        debug('handleNavChange ', this.state.user);
-        return _.map(navLinks(authStore.isAuthenticated()), (menu, key) => {
+        //debug('handleNavChange ', this.props);
+        return _.map(navLinks(this.props.authenticated), (menu, key) => {
             return (
                 <MenuItem key={key} onTouchTap={_.partial(this.handleNavChange, menu)}>
                     {menu.text}

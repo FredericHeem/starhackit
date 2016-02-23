@@ -1,20 +1,15 @@
 import React from 'react';
-import Reflux from 'reflux';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
-import analyticsStore from 'stores/analytics';
 import MyRawTheme from './rawTheme';
-
+import { connect } from 'react-redux'
 import NavBar from 'components/navbar';
 import Footer from 'components/footer';
 
 import Debug from 'debug';
 let debug = new Debug("views:app");
 
-export default React.createClass( {
+export let AppView = React.createClass( {
 
-    mixins: [
-        Reflux.connect( analyticsStore )
-    ],
     childContextTypes : {
         muiTheme: React.PropTypes.object,
     },
@@ -24,13 +19,19 @@ export default React.createClass( {
             muiTheme: ThemeManager.getMuiTheme(MyRawTheme),
         };
     },
+    getDefaultProps(){
+      return {
+        authenticated: false
+      }
+    },
     componentDidMount() {
         debug('componentDidMount');
     },
     render() {
+        debug('render ', this.props);
         return (
             <div id="application-view">
-                <NavBar />
+                <NavBar authenticated={this.props.authenticated}/>
 
                 <div id='main-container' className="container">
                     {this.props.children}
@@ -40,4 +41,11 @@ export default React.createClass( {
             </div>
         );
     }
-} );
+});
+
+const mapStateToProps = (state) => ({
+  authenticated: state.auth.authenticated
+});
+
+export default connect((mapStateToProps), {
+})(AppView)

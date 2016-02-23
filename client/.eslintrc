@@ -1,8 +1,9 @@
 {
     "parser": "babel-eslint",
     "plugins": [
+        "mocha",
         "react",
-        "mocha"
+        "flow-vars"
     ],
     "env": {
         "browser": true,
@@ -28,7 +29,6 @@
         "jsx": true
     },
     "rules": {
-        "global-require": 2,
         "consistent-return": [0],
         "key-spacing": [0],
         "quotes": [0, "single", "avoid-escape"],
@@ -37,25 +37,26 @@
         "no-multi-spaces": [0],
         "no-shadow": [0],
         "no-unused-vars": [1],
-        "no-undef": 2,
+        "no-undef": 1,
         "no-unused-expressions": 0,
         "no-use-before-define": [2, "nofunc"],
         "no-trailing-spaces": [2],
         "eol-last": [0],
         "no-labels": [2],
-        "indent": 2,
+        "indent": 0,
         "no-mixed-spaces-and-tabs": 0,
         "vars-on-top": 2,
         "camelcase": [2, {"properties": "never"}],
-        "semi": [2, "always"],
+        "semi": [0, "always"],
 
+        "flow-vars/define-flow-type": 1,
+        "flow-vars/use-flow-type": 1,
 
         "react/jsx-no-undef": 2,
         "react/jsx-uses-react": 2,
         "react/jsx-uses-vars": 2,
         "react/no-did-mount-set-state": 1,
         "react/no-did-update-set-state": 1,
-        "react/no-unknown-property": 1,
         "react/wrap-multilines": 1,
         "react/react-in-jsx-scope": 1,
         "react/no-unknown-property": 2

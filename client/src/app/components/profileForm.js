@@ -104,8 +104,8 @@ export default React.createClass({
         debug(`onChange: ${id}: ${e.target.value}`);
         this.setState({[id]: e.target.value});
     },
-    onUpdateProfile(profile) {
-        debug('updateProfile ', profile);
+    onUpdateProfile() {
+        debug('updateProfile ', this.state);
         this.setState( {
             errors: {},
             loading: true

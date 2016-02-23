@@ -1,35 +1,37 @@
 import React from 'react';
-import Reflux from 'reflux';
 
 import DocTitle from 'components/docTitle';
-import meStore from 'stores/me';
-import meActions from 'actions/me';
 import ProfileForm from 'components/profileForm';
 
-//import Debug from 'debug';
-//let debug = new Debug("view:profile");
+import { connect } from 'react-redux'
+import { profileGet, profileUpdate } from 'redux/modules/profile'
 
-export default React.createClass({
+import Debug from 'debug';
+let debug = new Debug("view:profile");
 
-    mixins: [Reflux.connect(meStore, 'profile')],
+export let ProfileView = React.createClass({
 
     componentDidMount () {
-        meActions.getMyProfile();
+        this.props.profileGet()
     },
 
     render () {
-        //debug('render ', this.state);
+        debug('render ', this.props);
         return (
             <div id="profile">
                 <DocTitle title="My Profile"/>
                 <legend>My Profile</legend>
-                <ProfileForm profile={this.state.profile} updateProfile={this.updateProfile}/>
+                <ProfileForm profile={this.props.profile} updateProfile={this.props.profileUpdate}/>
             </div>
         );
-    },
-    updateProfile (profile) {
-        //debug('updateProfile ', profile);
-        return meActions.updateMyProfile(profile);
     }
-
 });
+
+const mapStateToProps = (state) => ({
+  profile: state.profile
+});
+
+export default connect((mapStateToProps), {
+    profileGet,
+    profileUpdate
+})(ProfileView)

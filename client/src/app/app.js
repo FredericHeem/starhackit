@@ -6,10 +6,17 @@ require('assets/stylus/main');
 import {Promise} from 'es6-promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router} from 'react-router';
 import {IntlProvider} from 'react-intl';
-import { browserHistory } from 'react-router';
-import routes from './routes';
+
+import createBrowserHistory from 'history/lib/createBrowserHistory'
+import { useRouterHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
+import makeRoutes from './routes'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router'
+import configureStore from './redux/configureStore'
+import config from 'config';
+
 import Debug from 'debug';
 import 'utils/ga';
 
@@ -25,6 +32,22 @@ let debug = new Debug("app");
 //debug("Promise: ", window.Promise);
 
 debug("begins");
+
+const initialState = window.__INITIAL_STATE__
+const store = configureStore(initialState)
+debug("store: ", store);
+// Configure history for react-router
+const browserHistory = useRouterHistory(createBrowserHistory)({
+  basename: config.basename
+})
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: (state) => state.router
+})
+
+// Now that we have the Redux store, we can create our routes. We provide
+// the store to the route definitions so that routes have access to it for
+// hooks such as `onEnter`.
+const routes = makeRoutes(store)
 
 function App() {
     //debug("App");
@@ -59,7 +82,12 @@ function App() {
         let mountEl = document.getElementById('application');
         ReactDOM.render(
                 <IntlProvider locale='en'>
-                    <Router history={browserHistory} routes={routes}/>
+                    <Provider store={store}>
+                      <div style={{ height: '100%' }}>
+                        <Router history={history} routes={routes} >
+                        </Router>
+                      </div>
+                    </Provider>
                 </IntlProvider>
                 , mountEl);
     }

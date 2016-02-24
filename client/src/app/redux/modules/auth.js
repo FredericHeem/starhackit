@@ -1,32 +1,16 @@
 /* @flow */
-
+import { createAction, createReducer } from 'redux-act';
 import Debug from 'debug';
 let debug = new Debug("redux:auth");
 import auth from 'resources/auths';
 
 // ------------------------------------
-// Constants
-// ------------------------------------
-export const LOGIN_OK = 'LOGIN_OK'
-export const LOGOUT_OK = 'LOGOUT_OK'
-export const PASSWORD_RESET = 'PASSWORD_RESET'
-
-// ------------------------------------
 // Actions
 // ------------------------------------
 
-export const loginOk = (payload) => {
-  return {
-    type: LOGIN_OK,
-    payload
-  };
-}
-
-export const logoutOk = () => {
-  return {
-    type: LOGOUT_OK
-  };
-}
+export const loginOk = createAction('LOGIN_OK');
+export const logoutOk = createAction('LOGOUT_OK');
+export const passwordResetOk = createAction('PASSWORD_RESET');
 
 export const login = (payload) => {
   return (dispatch: Function): Promise => {
@@ -38,12 +22,6 @@ export const login = (payload) => {
       }))
     })
   }
-}
-
-export const passwordResetOk = () => {
-  return {
-    type: PASSWORD_RESET
-  };
 }
 
 export const logout = () => {
@@ -68,29 +46,13 @@ export const requestPasswordReset = (payload) => {
 }
 
 // ------------------------------------
-// Action Handlers
-// ------------------------------------
-const ACTION_HANDLERS = {
-  [LOGIN_OK]: (state, payload) => {
-    return Object.assign({}, state, payload);
-  },
-  [LOGOUT_OK]: () => {
-    return {authenticated: false};
-  }
-}
-
-// ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = {
   authenticated: false,
 };
 
-export default function(state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-  debug(`reduce state: `, state);
-  debug(`reduce action: `, action);
-  let newState = handler ? handler(state, action.payload) : state;
-  debug(`reduce new state: `, state);
-  return newState;
-}
+export default createReducer({
+  [loginOk]: (state, payload) => (Object.assign({}, state, payload)),
+  [logoutOk]: () => ({authenticated: false})
+}, initialState);

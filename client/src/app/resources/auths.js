@@ -10,12 +10,12 @@ export default {
     signupOrLoginThirdParty(provider) {
         return get('auth/' + provider);
     },
-    signupLocal(username, password, email) {
+    signupLocal(payload) {
         return post('auth/register', {
             params: {
-                username,
-                password,
-                email
+                username: payload.username,
+                password: payload.password,
+                email: payload.email
             }
         });
     },

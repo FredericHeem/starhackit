@@ -1,7 +1,5 @@
 /* @flow */
-
-import Debug from 'debug';
-let debug = new Debug("redux:signup");
+import { createAction, createReducer } from 'redux-act';
 
 import auth from 'resources/auths';
 // ------------------------------------
@@ -13,31 +11,17 @@ export const SIGNUP_OK = 'SIGNUP_OK'
 // Actions
 // ------------------------------------
 
-export const signupOk = (payload) => {
-  return {
-    type: SIGNUP_OK,
-    payload
-  };
-}
+export const signupOk = createAction('SIGNUP_OK');
 
 export const signup = (data) => {
   return (dispatch) => {
-    return auth.signup(data)
+    return auth.signupLocal(data)
     .then(() => {
       dispatch(signupOk({registerCompleted: true}))
     })
-    .catch(error => {
-      debug(`signup error`, error);
+    .catch(() => {
+      //debug(`signup error`, error);
     })
-  }
-}
-
-// ------------------------------------
-// Action Handlers
-// ------------------------------------
-const ACTION_HANDLERS = {
-  [SIGNUP_OK]: (state, payload) => {
-    return Object.assign({}, state, payload);
   }
 }
 
@@ -48,11 +32,6 @@ const initialState = {
   registerCompleted: false
 };
 
-export default function(state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type]
-  debug(`reduce state: `, state);
-  debug(`reduce action: `, action);
-  let newState = handler ? handler(state, action.payload) : state;
-  debug(`reduce new state: `, state);
-  return newState;
-}
+export default createReducer({
+  [signupOk]: (state, payload) => (Object.assign({}, state, payload)),
+}, initialState);

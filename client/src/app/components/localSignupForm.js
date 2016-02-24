@@ -75,7 +75,7 @@ function validateSignup( payload ) {
 
 function signupLocal( payload ) {
     debug('signupLocal: ', payload)
-    return this.props.signup( payload.username, payload.password, payload.email );
+    return this.props.signup(payload);
 }
 
 function setErrors( e ) {

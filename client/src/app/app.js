@@ -29,13 +29,10 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 
-//debug("Promise: ", window.Promise);
-
 debug("begins");
 
 const initialState = window.__INITIAL_STATE__
 const store = configureStore(initialState)
-debug("store: ", store);
 // Configure history for react-router
 const browserHistory = useRouterHistory(createBrowserHistory)({
   basename: config.basename

@@ -1,4 +1,5 @@
 /* @flow */
+import Immutable from 'immutable'
 import { createAction, createReducer } from 'redux-act';
 import Debug from 'debug';
 let debug = new Debug("redux:auth");
@@ -48,11 +49,11 @@ export const requestPasswordReset = (payload) => {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {
+const initialState = Immutable.fromJS({
   authenticated: false,
-};
+});
 
 export default createReducer({
-  [loginOk]: (state, payload) => (Object.assign({}, state, payload)),
-  [logoutOk]: () => ({authenticated: false})
+  [loginOk]: (state, payload) => state.merge(payload),
+  [logoutOk]: (state) => state.set({authenticated: false})
 }, initialState);

@@ -7,15 +7,15 @@ import {Promise} from 'es6-promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
+import Immutable from 'immutable'
+import createHistory from 'history/lib/createBrowserHistory';
+import { useRouterHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-import { useRouterHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 import makeRoutes from './routes'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureStore from './redux/configureStore'
-import config from 'config';
 
 import Debug from 'debug';
 import 'utils/ga';
@@ -31,15 +31,16 @@ let debug = new Debug("app");
 
 debug("begins");
 
-const initialState = window.__INITIAL_STATE__
+const initialState = Immutable.fromJS({})
 const store = configureStore(initialState)
-// Configure history for react-router
-const browserHistory = useRouterHistory(createBrowserHistory)({
-  basename: config.basename
-})
+
+const browserHistory = useRouterHistory(createHistory)({
+  basename: ''
+});
+
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: (state) => state.router
-})
+  selectLocationState: (state) => state.get('router').toJS()
+});
 
 // Now that we have the Redux store, we can create our routes. We provide
 // the store to the route definitions so that routes have access to it for

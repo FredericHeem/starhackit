@@ -1,11 +1,8 @@
 /* @flow */
+import Immutable from 'immutable'
 import { createAction, createReducer } from 'redux-act';
 
 import auth from 'resources/auths';
-// ------------------------------------
-// Constants
-// ------------------------------------
-export const SIGNUP_OK = 'SIGNUP_OK'
 
 // ------------------------------------
 // Actions
@@ -28,10 +25,10 @@ export const signup = (data) => {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {
+const initialState = Immutable.fromJS({
   registerCompleted: false
-};
+});
 
 export default createReducer({
-  [signupOk]: (state, payload) => (Object.assign({}, state, payload)),
+  [signupOk]: (state, payload) => state.merge(payload),
 }, initialState);

@@ -1,9 +1,8 @@
 import React from 'react';
 import Debug from 'debug';
 let debug = new Debug("component:authenticated");
-import { connect } from 'react-redux'
 
-export let AuthenticatedView = React.createClass({
+export default React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -34,10 +33,3 @@ export let AuthenticatedView = React.createClass({
         );
     }
 });
-
-const mapStateToProps = (state) => ({
-  authenticated: state.auth.authenticated
-});
-
-export default connect((mapStateToProps), {
-})(AuthenticatedView)

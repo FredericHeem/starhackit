@@ -4,7 +4,7 @@ import SignupView from 'views/signup';
 
 const mapStateToProps = (state) => {
   return {
-    registerCompleted: state.signup.registerCompleted
+    registerCompleted: state.get('signup').get('registerCompleted')
   };
 }
 export default connect(mapStateToProps, {

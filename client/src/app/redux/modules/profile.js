@@ -1,4 +1,5 @@
 /* @flow */
+import Immutable from 'immutable'
 import { createAction, createReducer } from 'redux-act';
 import me from 'resources/me';
 
@@ -31,10 +32,9 @@ export const profileUpdate = (payload) => {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = {
-};
+const initialState = Immutable.fromJS({});
 
 export default createReducer({
-  [profileGetOk]: (state, payload) => (Object.assign({}, state, payload)),
-  [profileUpdateOk]: (state, payload) => (Object.assign({}, state, payload))
+  [profileGetOk]: (state, payload) => state.merge(payload),
+  [profileUpdateOk]: (state, payload) => state.merge(payload)
 }, initialState);

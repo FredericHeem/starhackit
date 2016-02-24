@@ -2,6 +2,7 @@ import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
 import Application from 'redux/views/application';
+import Authenticated from 'redux/views/authenticatedComponent';
 
 import Login from 'redux/views/login';
 import Logout from 'redux/views/logout';
@@ -12,7 +13,7 @@ import MainLanding from 'views/mainLanding';
 import RegistrationComplete from 'views/registrationComplete';
 import ResetPassword from 'views/resetPassword';
 import MyProfile from 'redux/views/myProfile';
-import Authenticated from 'components/authenticatedComponent';
+
 import UsersView from 'parts/admin/usersView';
 
 export default (store) => (

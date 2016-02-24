@@ -3,7 +3,7 @@ import { profileGet, profileUpdate } from '../modules/profile'
 import MyProfileView from 'views/myProfile';
 
 const mapStateToProps = (state) => ({
-  profile: state.profile
+  profile: state.get('profile').toJS()
 });
 
 export default connect((mapStateToProps), {

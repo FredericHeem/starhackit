@@ -3,7 +3,7 @@ import AppView from 'views/application';
 
 const mapStateToProps = (state) => {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.get('auth').get('authenticated')
   };
 }
 

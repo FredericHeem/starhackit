@@ -20,12 +20,6 @@ export default React.createClass( {
         };
     },
 
-    getDefaultProps() {
-        return {
-            onSignedUp: () => {}
-        };
-    },
-
     renderError() {
         let error = this.state.errorServer;
         if(!error) return;
@@ -61,7 +55,6 @@ export default React.createClass( {
         return validateSignup.call( this, payload )
             .with( this )
             .then( signupLocal )
-            .then( this.props.onSignedUp )
             .catch( setErrors );
     }
 
@@ -81,6 +74,7 @@ function validateSignup( payload ) {
 }
 
 function signupLocal( payload ) {
+    debug('signupLocal: ', payload)
     return this.props.signup( payload.username, payload.password, payload.email );
 }
 

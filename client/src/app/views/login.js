@@ -6,13 +6,11 @@ import FlatButton from 'material-ui/lib/flat-button';
 import MediaSigninButtons from 'components/mediaSigninButtons';
 import LocalLoginForm from 'components/localLoginForm';
 import DocTitle from 'components/docTitle';
-import { connect } from 'react-redux';
-import { login } from 'redux/modules/auth'
 
 import Debug from 'debug';
 let debug = new Debug("views:login");
 
-export let LoginView = React.createClass( {
+export default React.createClass( {
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
@@ -59,16 +57,4 @@ export let LoginView = React.createClass( {
             </div>
         );
     }
-
 } );
-
-const mapStateToProps = (state) => {
-  debug(`mapStateToProps `, state)
-  return {
-    authenticated: state.auth.authenticated
-  };
-}
-
-export default connect((mapStateToProps), {
-  login
-})(LoginView)

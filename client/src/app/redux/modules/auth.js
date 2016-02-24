@@ -3,14 +3,13 @@
 import Debug from 'debug';
 let debug = new Debug("redux:auth");
 import auth from 'resources/auths';
+
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_OK = 'LOGIN_OK'
-
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 export const LOGOUT_OK = 'LOGOUT_OK'
+export const PASSWORD_RESET = 'PASSWORD_RESET'
 
 // ------------------------------------
 // Actions
@@ -28,6 +27,7 @@ export const logoutOk = () => {
     type: LOGOUT_OK
   };
 }
+
 export const login = (payload) => {
   return (dispatch: Function): Promise => {
     return auth.loginLocal(payload)
@@ -38,6 +38,12 @@ export const login = (payload) => {
       }))
     })
   }
+}
+
+export const passwordResetOk = () => {
+  return {
+    type: PASSWORD_RESET
+  };
 }
 
 export const logout = () => {
@@ -52,12 +58,15 @@ export const logout = () => {
   }
 }
 
-export const actions = {
-  login,
-  loginOk,
-  logout,
-  logoutOk
+export const requestPasswordReset = (payload) => {
+  return (dispatch: Function): Promise => {
+    return auth.requestPasswordReset(payload)
+    .then(() => {
+      dispatch(passwordResetOk())
+    })
+  }
 }
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
@@ -74,7 +83,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  authenticated: false
+  authenticated: false,
 };
 
 export default function(state = initialState, action) {

@@ -6,7 +6,8 @@ import LocalSignupForm from 'components/localSignupForm';
 
 export default React.createClass( {
     propTypes:{
-        registerCompleted: React.PropTypes.bool.isRequired
+        registerCompleted: React.PropTypes.bool.isRequired,
+        signup: React.PropTypes.func.isRequired
     },
 
     render() {
@@ -38,7 +39,7 @@ export default React.createClass( {
 
                 <div className="row">
                     <div>
-                        <LocalSignupForm />
+                        <LocalSignupForm signup={this.props.signup}/>
 
                         <div className="strike"><span className="or"></span></div>
                         <div>

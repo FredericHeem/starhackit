@@ -1,10 +1,7 @@
 import React from 'react';
 import DocTitle from 'components/docTitle';
 
-import { connect } from 'react-redux'
-import { logout } from 'redux/modules/auth'
-
-export let LogoutView = React.createClass( {
+export default React.createClass( {
 
     componentDidMount () {
         this.props.logout();
@@ -25,10 +22,3 @@ export let LogoutView = React.createClass( {
     }
 
 } );
-
-const mapStateToProps = (state) => ({
-});
-
-export default connect((mapStateToProps), {
-    logout
-})(LogoutView)

@@ -3,13 +3,10 @@ import React from 'react';
 import DocTitle from 'components/docTitle';
 import ProfileForm from 'components/profileForm';
 
-import { connect } from 'react-redux'
-import { profileGet, profileUpdate } from 'redux/modules/profile'
-
 import Debug from 'debug';
 let debug = new Debug("view:profile");
 
-export let ProfileView = React.createClass({
+export default React.createClass({
 
     componentDidMount () {
         this.props.profileGet()
@@ -26,12 +23,3 @@ export let ProfileView = React.createClass({
         );
     }
 });
-
-const mapStateToProps = (state) => ({
-  profile: state.profile
-});
-
-export default connect((mapStateToProps), {
-    profileGet,
-    profileUpdate
-})(ProfileView)

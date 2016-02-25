@@ -7,20 +7,12 @@ import {Promise} from 'es6-promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
-import Immutable from 'immutable'
-import createHistory from 'history/lib/createBrowserHistory';
-import { useRouterHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-
-import makeRoutes from './routes'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router'
-import configureStore from './redux/configureStore'
 
 import Debug from 'debug';
 import 'utils/ga';
 
 import i18n from 'utils/i18n';
+import rootView from './redux/rootView';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -31,21 +23,6 @@ let debug = new Debug("app");
 
 debug("begins");
 
-const initialState = Immutable.fromJS({})
-const store = configureStore(initialState)
-
-const browserHistory = useRouterHistory(createHistory)({
-  basename: ''
-});
-
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: (state) => state.get('router').toJS()
-});
-
-// Now that we have the Redux store, we can create our routes. We provide
-// the store to the route definitions so that routes have access to it for
-// hooks such as `onEnter`.
-const routes = makeRoutes(store)
 
 function App() {
     //debug("App");
@@ -80,12 +57,7 @@ function App() {
         let mountEl = document.getElementById('application');
         ReactDOM.render(
                 <IntlProvider locale='en'>
-                    <Provider store={store}>
-                      <div style={{ height: '100%' }}>
-                        <Router history={history} routes={routes} >
-                        </Router>
-                      </div>
-                    </Provider>
+                    {rootView()}
                 </IntlProvider>
                 , mountEl);
     }

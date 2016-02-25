@@ -13,8 +13,7 @@ var webpackProdConfig = {
         },
         output: {
             path: path.join( __dirname, 'build' ),
-            filename: '[name].[chunkhash].js',
-            chunkFilename: '[chunkhash].js'
+            filename: '[name].[hash].js'
         },
     },
 

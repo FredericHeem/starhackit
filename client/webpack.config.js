@@ -68,7 +68,7 @@ module.exports = function ( options ) {
                 { from: './locales/**/*.json' }
             ]),
             new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(fr|it)$/),
-            new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
+            new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],
         resolve: {
             root: path.join( __dirname, 'src', 'app'),

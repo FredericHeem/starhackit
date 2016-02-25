@@ -1,34 +1,15 @@
 /* @flow */
 import Immutable from 'immutable'
-import { createAction, createReducer } from 'redux-act';
-
+import { createReducer } from 'redux-act';
+import { createActionAsync} from 'redux-act-async';
 import auth from 'resources/auths';
 
-// ------------------------------------
-// Actions
-// ------------------------------------
+export const signup = createActionAsync('SIGNUP', auth.signupLocal);
 
-export const signupOk = createAction('SIGNUP_OK');
-
-export const signup = (data) => {
-  return (dispatch) => {
-    return auth.signupLocal(data)
-    .then(() => {
-      dispatch(signupOk({registerCompleted: true}))
-    })
-    .catch(() => {
-      //debug(`signup error`, error);
-    })
-  }
-}
-
-// ------------------------------------
-// Reducer
-// ------------------------------------
 const initialState = Immutable.fromJS({
   registerCompleted: false
 });
 
 export default createReducer({
-  [signupOk]: (state, payload) => state.merge(payload),
+  [signup.ok]: (state/*, payload*/) => state.merge({registerCompleted:true}),
 }, initialState);

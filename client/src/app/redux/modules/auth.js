@@ -1,59 +1,26 @@
 /* @flow */
 import Immutable from 'immutable'
-import { createAction, createReducer } from 'redux-act';
+import { createReducer } from 'redux-act';
+import { createActionAsync} from 'redux-act-async';
 import Debug from 'debug';
 let debug = new Debug("redux:auth");
 import auth from 'resources/auths';
 
-// ------------------------------------
-// Actions
-// ------------------------------------
+export const login = createActionAsync('LOGIN', auth.loginLocal);
+export const logout = createActionAsync('LOGOUT', auth.logout);
+export const requestPasswordReset = createActionAsync('PASSWORD_RESET', auth.requestPasswordReset);
 
-export const loginOk = createAction('LOGIN_OK');
-export const logoutOk = createAction('LOGOUT_OK');
-export const passwordResetOk = createAction('PASSWORD_RESET');
-
-export const login = (payload) => {
-  return (dispatch: Function): Promise => {
-    return auth.loginLocal(payload)
-    .then((res) => {
-      dispatch(loginOk({
-        authenticated: true,
-        user: res
-      }))
-    })
-  }
-}
-
-export const logout = () => {
-  return (dispatch: Function): Promise => {
-    return auth.logout()
-    .then(() => {
-      dispatch(logoutOk())
-    })
-    .catch(error => {
-      debug(`logout error`, error);
-    })
-  }
-}
-
-export const requestPasswordReset = (payload) => {
-  return (dispatch: Function): Promise => {
-    return auth.requestPasswordReset(payload)
-    .then(() => {
-      dispatch(passwordResetOk())
-    })
-  }
-}
-
-// ------------------------------------
-// Reducer
-// ------------------------------------
 const initialState = Immutable.fromJS({
   authenticated: false,
 });
 
 export default createReducer({
-  [loginOk]: (state, payload) => state.merge(payload),
-  [logoutOk]: (state) => state.set({authenticated: false})
+  [login.ok]: (state, payload) => state.merge({
+    authenticated: true,
+    user: payload
+  }),
+  [logout.ok]: (state) => state.merge({
+    authenticated: false,
+    user: null
+  })
 }, initialState);

@@ -6,33 +6,44 @@ import TextArea from 'react-textarea-autosize';
 import LaddaButton from 'react-ladda';
 import SelectLangage from 'components/selectLanguage';
 import ValidateProfileForm from 'services/validateProfileForm';
+import Spinner from 'components/spinner';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
 
 export default React.createClass({
     propTypes: {
-        profile: React.PropTypes.object.isRequired,
+        loading: React.PropTypes.bool,
+        profile: React.PropTypes.object,
         updateProfile: React.PropTypes.func.isRequired
+    },
+    getDefaultProps(){
+        return {
+            loading: false,
+            profile: {}
+        }
     },
     componentWillReceiveProps(nextProps){
         debug("componentWillReceiveProps", nextProps);
-        this.setState(nextProps.profile);
+        this.setState(nextProps.profile || {});
     },
     getInitialState() {
         debug("getInitialState: props: ", this.props);
         return _.defaults(this.props.profile,
             {
                 language: 'US',
-                loading: false,
+                updating: false,
                 errors: {}
             });
     },
     render() {
         debug("render props: ", this.props);
         debug("state: ", this.state);
-        let {state} = this;
+        let {state, props} = this;
         let {errors} = state;
+        if(props.loading){
+            return <Spinner/>
+        }
         return (
             <form
                 className="form-horizontal col-sm-6"
@@ -86,7 +97,7 @@ export default React.createClass({
                     className='btn btn-lg btn-primary btn-signup'
                     id='btn-update-profile'
                     buttonColor='green'
-                    loading={this.state.loading}
+                    loading={this.state.updating}
                     progress={.5}
                     buttonStyle="slide-up"
                     onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
@@ -108,7 +119,7 @@ export default React.createClass({
         debug('updateProfile ', this.state);
         this.setState( {
             errors: {},
-            loading: true
+            updating: true
         } );
 
         validateForm.call( this )
@@ -121,7 +132,7 @@ export default React.createClass({
             .catch( setErrors )
             .then( () => {
                 this.setState( {
-                    loading: false
+                    updating: false
                 } );
             } );
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import MyRawTheme from './rawTheme';
-import NavBar from 'components/navbar';
-import Footer from 'components/footer';
+import NavBar from '../components/navbar';
+import Footer from '../components/footer';
 
 import Debug from 'debug';
 let debug = new Debug("views:app");

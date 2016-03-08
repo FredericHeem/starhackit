@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { profileGet, profileUpdate } from '../modules/profile'
-import MyProfileView from 'views/myProfile';
+import { profileGet, profileUpdate } from '../reducers/profile'
+import MyProfileView from '../views/myProfile';
 
 const mapStateToProps = (state) => {
   return {

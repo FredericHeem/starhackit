@@ -1,18 +1,18 @@
 import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
-import Application from 'redux/views/application';
-import Authenticated from 'redux/views/authenticatedComponent';
+import Application from 'parts/core/containers/application';
+import MainLanding from 'parts/core/views/mainLanding';
 
-import Login from 'redux/views/login';
-import Logout from 'redux/views/logout';
-import Signup from 'redux/views/signup';
-import Forgot from 'redux/views/forgot';
+import Authenticated from 'parts/auth/containers/authenticatedComponent';
+import Login from 'parts/auth/containers/login';
+import Logout from 'parts/auth/containers/logout';
+import Signup from 'parts/auth/containers/signup';
+import Forgot from 'parts/auth/containers/forgot';
+import RegistrationComplete from 'parts/auth/containers/registrationComplete';
+import ResetPassword from 'parts/auth/views/resetPassword';
 
-import MainLanding from 'views/mainLanding';
-import RegistrationComplete from 'views/registrationComplete';
-import ResetPassword from 'views/resetPassword';
-import MyProfile from 'redux/views/myProfile';
+import MyProfile from 'parts/profile/containers/myProfile';
 
 import UsersView from 'parts/admin/usersView';
 

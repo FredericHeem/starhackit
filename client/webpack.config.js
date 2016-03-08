@@ -77,6 +77,7 @@ module.exports = function ( options ) {
                 i18next: 'i18next/lib/index.js',
                 'i18next-browser-languagedetector': 'i18next-browser-languagedetector/lib/index.js',
                 'i18next-localstorage-cache': 'i18next-localstorage-cache/lib/index.js',
+                'i18next-xhr-backend': 'i18next-xhr-backend/lib/index.js',
                 //application aliases
                 actions: pathAppTo( 'actions' ),
                 components: pathAppTo( 'components' ),

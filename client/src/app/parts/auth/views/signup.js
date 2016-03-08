@@ -1,8 +1,8 @@
 import React from 'react';
 import Paper from 'material-ui/lib/paper';
 import DocTitle from 'components/docTitle';
-import MediaSigninButtons from 'components/mediaSigninButtons';
-import LocalSignupForm from 'components/localSignupForm';
+import MediaSigninButtons from '../components/mediaSigninButtons';
+import LocalSignupForm from '../components/localSignupForm';
 
 export default React.createClass( {
     propTypes:{

@@ -2,8 +2,6 @@
 import Immutable from 'immutable'
 import { createReducer } from 'redux-act';
 import { createActionAsync} from 'redux-act-async';
-import Debug from 'debug';
-let debug = new Debug("redux:auth");
 import auth from 'resources/auths';
 
 export const login = createActionAsync('LOGIN', auth.loginLocal);

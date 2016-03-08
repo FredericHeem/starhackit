@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DocTitle from 'components/docTitle';
-import ProfileForm from 'components/profileForm';
+import ProfileForm from '../components/profileForm';
 
 export default React.createClass({
     propTypes: {

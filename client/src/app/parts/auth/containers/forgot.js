@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { requestPasswordReset } from '../modules/auth'
-import ForgotView from 'views/forgot';
+import { requestPasswordReset } from '../reducers/auth'
+import ForgotView from '../views/forgot';
 
 const mapStateToProps = () => ({});
 

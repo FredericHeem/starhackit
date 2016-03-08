@@ -1,8 +1,7 @@
 import React from 'react';
-//import _ from 'lodash';
 import Checkit from 'checkit';
 
-import LocalAuthenticationForm from 'components/localAuthenticationForm';
+import LocalAuthenticationForm from '../components/localAuthenticationForm';
 import {createError} from 'utils/error';
 
 import Debug from 'debug';

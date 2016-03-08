@@ -6,21 +6,19 @@ let debug = new Debug("views:registrationComplete");
 
 export default React.createClass( {
     propTypes:{
-        isEmailCodeVerified: React.PropTypes.bool.isRequired
+        emailCodeVerified: React.PropTypes.bool.isRequired,
+        verifyEmailCode: React.PropTypes.func.isRequired,
+        error: React.PropTypes.string
     },
-    getInitialState() {
-        return {
-            errors: null
-        };
-    },
+
     componentDidMount(){
         debug("componentDidMount", this.props.params);
-        this.verifyEmailCode(this.props.params.code);
+        this.props.verifyEmailCode(this.props.params.code);
     },
 
     componentWillUpdate() {
         debug("componentWillUpdate");
-        if ( this.props.isEmailCodeVerified() ) {
+        if (this.props.emailCodeVerified) {
             debug("componentDidMount router ", this.router);
             let path = '/login';
             this.router.push(path);
@@ -39,46 +37,21 @@ export default React.createClass( {
         );
     },
     renderError(){
-        if(this.state.errors){
+        if(this.props.error){
             return (
                 <div className="alert alert-danger text-center animate bounceIn" role="alert">
-                    An error occured: {this.state.errors}
+                    An error occured: {this.props.error}
                 </div>
             );
         }
     },
     renderRegistering(){
-        if(!this.state.errors){
+        if(!this.props.error){
             return (
                 <div className="alert alert-info text-center animate bounceIn" role="info">
                     Registering your account.
                 </div>
             );
-        }
-    },
-    verifyEmailCode(code) {
-        debug("verifyEmailCode ", code);
-        //TODO redux
-        /*
-        return authActions.verifyEmailCode(code)
-        .then(this.onRegister)
-        .catch(this.setErrors);*/
-    },
-
-    onRegister(){
-        debug("onRegister");
-    },
-
-    setErrors(error) {
-        debug("setErrors", error);
-        if(error.responseJSON && error.responseJSON.error){
-            this.setState( {
-                errors: error.responseJSON.error.name
-            } );
-        } else {
-            this.setState( {
-                errors: "UnknownError"
-            } );
         }
     }
 } );

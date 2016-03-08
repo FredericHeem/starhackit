@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 import tr from 'i18next';
 import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
-import MediaSigninButtons from 'components/mediaSigninButtons';
-import LocalLoginForm from 'components/localLoginForm';
+import MediaSigninButtons from '../components/mediaSigninButtons';
+import LocalLoginForm from '../components/localLoginForm';
 import DocTitle from 'components/docTitle';
 
 import Debug from 'debug';

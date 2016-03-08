@@ -1,5 +1,5 @@
 import React from 'react';
-import LocalAuthenticationForm from 'components/localAuthenticationForm';
+import LocalAuthenticationForm from '../components/localAuthenticationForm';
 import ValidateLoginFields from 'services/validateLoginFields';
 import {createError} from 'utils/error';
 import Alert from 'components/alert';

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { signup } from '../modules/signup'
-import SignupView from 'views/signup';
+import { signup } from '../reducers/signup'
+import SignupView from '../views/signup';
 
 const mapStateToProps = (state) => {
   return {

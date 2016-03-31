@@ -21,10 +21,11 @@ function logger(){
 
 export default function configureStore(initialState) {
 
+  //TODO broken on firefox and safari
   const store = createStore(
     rootReducer,
     initialState,
-    compose(applyMiddleware(thunk, logger()), devTools())
+    compose(applyMiddleware(thunk, logger())/*, devTools()*/)
   );
 
   /* global module */

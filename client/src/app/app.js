@@ -60,6 +60,7 @@ function App() {
                     {rootView()}
                 </IntlProvider>
                 , mountEl);
+
     }
 }
 

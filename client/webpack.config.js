@@ -74,10 +74,6 @@ module.exports = function ( options ) {
             root: path.join( __dirname, 'src', 'app'),
             extensions: [ '', '.js', '.jsx', '.styl', 'css' ],
             alias: {
-                i18next: 'i18next/lib/index.js',
-                'i18next-browser-languagedetector': 'i18next-browser-languagedetector/lib/index.js',
-                'i18next-localstorage-cache': 'i18next-localstorage-cache/lib/index.js',
-                'i18next-xhr-backend': 'i18next-xhr-backend/lib/index.js',
                 //application aliases
                 actions: pathAppTo( 'actions' ),
                 components: pathAppTo( 'components' ),
@@ -91,10 +87,8 @@ module.exports = function ( options ) {
                 views: pathAppTo( 'views' ),
                 utils: pathAppTo( 'utils' ),
                 parts: pathAppTo( 'parts' ),
-
                 assets: pathTo( 'assets' ),
-                config: pathAppTo( 'config.js' ),
-
+                config: pathAppTo( 'config.js' )
             }
         },
         module: {

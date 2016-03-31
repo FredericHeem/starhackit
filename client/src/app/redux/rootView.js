@@ -9,6 +9,9 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureStore from './configureStore'
 
+import Debug from 'debug';
+let debug = new Debug("rootView");
+
 export default function(){
     const initialState = Immutable.fromJS({})
     const store = configureStore(initialState)
@@ -22,7 +25,7 @@ export default function(){
     });
 
     const routes = makeRoutes(store)
-
+    debug('init');
     return (
         <Provider store={store}>
           <div style={{ height: '100%' }}>

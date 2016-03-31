@@ -1,6 +1,6 @@
 import React from 'react';
-import ThemeManager from 'material-ui/lib/styles/theme-manager';
-import MyRawTheme from './rawTheme';
+//import ThemeManager from 'material-ui/lib/styles/theme-manager';
+//import MyRawTheme from './rawTheme';
 import NavBar from '../components/navbar';
 import Footer from '../components/footer';
 
@@ -8,7 +8,7 @@ import Debug from 'debug';
 let debug = new Debug("views:app");
 
 export default React.createClass( {
-
+/*
     childContextTypes : {
         muiTheme: React.PropTypes.object,
     },
@@ -18,7 +18,7 @@ export default React.createClass( {
             muiTheme: ThemeManager.getMuiTheme(MyRawTheme),
         };
     },
-
+*/
     render() {
         debug('render ', this.props);
         return (

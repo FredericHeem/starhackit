@@ -73,16 +73,17 @@ export default React.createClass({
                             />
                     </div>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="select-language" className="col-sm-3 control-label">Language</label>
-                    <div className="col-sm-9">
-                        <SelectLangage
-                            id='select-language'
-                            language={state.language}
-                            onLanguage={this.onLanguage}/>
+                {/*
+                    <div className="form-group">
+                        <label htmlFor="select-language" className="col-sm-3 control-label">Language</label>
+                        <div className="col-sm-9">
+                            <SelectLangage
+                                id='select-language'
+                                language={state.language}
+                                onLanguage={this.onLanguage}/>
+                        </div>
                     </div>
-                </div>
-
+                    */}
                 <div>
                     <div className="form-group">
                         <legend>About Me</legend>
@@ -101,12 +102,11 @@ export default React.createClass({
                     progress={.5}
                     buttonStyle="slide-up"
                     onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
-
             </form>
-
         );
     },
     onLanguage(language){
+
         debug("onLanguage: ", language);
         this.setState({language:language});
     },

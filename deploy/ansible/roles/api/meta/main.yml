@@ -1,5 +1,4 @@
 # file: roles/api/meta/main.yml
 ---
-
 dependencies: []
-version: 0.0.0
+#version: 0.0.0

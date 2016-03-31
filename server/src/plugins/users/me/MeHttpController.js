@@ -1,7 +1,7 @@
 import MeApi from './MeApi';
 
 let log = require('logfilename')(__filename);
-
+//TODO use context instead of req, res ?
 export default function(app){
   let respond = app.utils.http.respond;
   let meApi = MeApi(app);

@@ -44,14 +44,6 @@ export default function Data(config) {
       models() {
         return sequelize.models;
       },
-      queryStringToFilter(qs = {}, orderBy) {
-        let filter = {
-          offset: qs.offset,
-          limit: qs.limit,
-          order: qs.order ? (orderBy + " " + qs.order) : undefined
-        };
-        return filter;
-      },
       async start(app) {
         log.info("db start");
         let option = {

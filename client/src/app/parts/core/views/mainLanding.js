@@ -136,13 +136,14 @@ export default React.createClass({
                             title='Material-UI'
                             height='200'
                             link='http://www.material-ui.com'
-                            text="A Set of React Components that Implement Google's Material Design"/>
+                            text="A Set of React Components that Implement Google's Material Design."/>
 
                         <CardIcon
-                            icon='icon-retweet'
-                            title='Reflux'
-                            link='https://github.com/reflux/refluxjs'
-                            text='A simple library for uni-directional dataflow application architecture with React extensions inspired by Flux'/>
+                            img='assets/img/redux.png'
+                            title='Redux'
+                            height='200'
+                            link='https://github.com/reactjs/redux'
+                            text='Predictable state container, the most popular flux library.'/>
                     </div>
                 </section>
                 <section id="tech-stack-backend">

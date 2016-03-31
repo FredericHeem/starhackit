@@ -1,8 +1,8 @@
 {
   "name": "starhackit",
   "description": "react + node fullstack starter kit with authentication and authorization, data backed by SQL",
-  "version": "1.1.0",
-  "private": true,
+  "version": "2.0.0",
+  "private": false,
   "scripts": {
     "install": "(cd client && npm install) && (cd server && npm install)",
     "clean": "(cd client && npm clean) && (cd server && npm clean)",

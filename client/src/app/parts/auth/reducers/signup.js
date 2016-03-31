@@ -14,5 +14,6 @@ const initialState = Immutable.fromJS({
 
 export default createReducer({
   [signup.ok]: (state/*, payload*/) => state.merge({registerCompleted: true}),
-  [verifyEmailCode.ok]: (state/*, payload*/) => state.merge({emailCodeVerified: true})
+  [verifyEmailCode.ok]: (state/*, payload*/) => state.merge({emailCodeVerified: true}),
+  [verifyEmailCode.error]: (state, payload) => state.merge({error: payload})
 }, initialState);

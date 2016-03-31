@@ -5,10 +5,13 @@ import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
 export default React.createClass( {
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     propTypes:{
         emailCodeVerified: React.PropTypes.bool.isRequired,
         verifyEmailCode: React.PropTypes.func.isRequired,
-        error: React.PropTypes.string
+        error: React.PropTypes.object
     },
 
     componentDidMount(){
@@ -16,16 +19,18 @@ export default React.createClass( {
         this.props.verifyEmailCode(this.props.params.code);
     },
 
-    componentWillUpdate() {
-        debug("componentWillUpdate");
-        if (this.props.emailCodeVerified) {
-            debug("componentDidMount router ", this.router);
+    componentWillReceiveProps(nextProps) {
+        debug("componentWillReceiveProps next: ", nextProps);
+        debug("componentWillReceiveProps ", this.props);
+        if (nextProps.emailCodeVerified) {
+            debug("componentWillReceiveProps router ", this.context.router);
             let path = '/login';
-            this.router.push(path);
+            this.context.router.push(path);
         }
     },
 
     render() {
+        debug("render ", this.props);
         return (
             <div id="registration-complete">
                 <DocTitle
@@ -37,10 +42,19 @@ export default React.createClass( {
         );
     },
     renderError(){
-        if(this.props.error){
+        let {error} = this.props;
+        if (!error) return;
+        if (error.data && error.data.name === 'NoSuchCode') {
+            return (
+                <div className="alert alert-warning text-center animate bounceIn" role="alert">
+                    The email verification code is no longer valid.
+                </div>
+            );
+        } else {
+            //TODO
             return (
                 <div className="alert alert-danger text-center animate bounceIn" role="alert">
-                    An error occured: {this.props.error}
+                    An error occured
                 </div>
             );
         }

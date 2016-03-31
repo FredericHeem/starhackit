@@ -4,7 +4,7 @@ import Checkit from 'checkit';
 import TextField from 'material-ui/lib/text-field';
 import TextArea from 'react-textarea-autosize';
 import LaddaButton from 'react-ladda';
-import SelectLangage from 'components/selectLanguage';
+//import SelectLangage from 'components/selectLanguage';
 import ValidateProfileForm from 'services/validateProfileForm';
 import Spinner from 'components/spinner';
 import tr from 'i18next';

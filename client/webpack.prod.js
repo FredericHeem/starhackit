@@ -35,7 +35,7 @@ var webpackProdConfig = {
             }
         }),
         new CompressionPlugin({
-            asset: '{file}.gz',
+            asset: '[file].gz[query]',
             algorithm: 'gzip',
             threshold: 10240,
             minRatio: 0.8

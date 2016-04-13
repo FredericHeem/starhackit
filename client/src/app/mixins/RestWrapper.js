@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import Spinner from 'components/spinner';
 import Debug from 'debug';
@@ -19,19 +18,24 @@ export default function (Component) {
         fetch(getData){
             debug(`fetch`);
             this.setState({loading: true});
-            let state = {loading: false};
             getData()
             .then(data => {
                 debug(`fetch got data: `, data);
-                _.extend(state, {data: data, error: null});
+                if (this.isMounted()) {
+                    this.setState({
+                        data: data,
+                        error: null,
+                        loading: false
+                    });
+                }
             })
             .catch(error => {
                 debug('error: ', error);
-                _.extend(state, {error: error});
-            })
-            .finally(() =>{
                 if (this.isMounted()) {
-                    this.setState(state);
+                    this.setState({
+                        error: error,
+                        loading: false
+                    });
                 }
             });
         },

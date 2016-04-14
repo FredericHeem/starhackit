@@ -13,7 +13,8 @@ let config = {
             google: ""
         },
         socialAuth: {
-            facebook: true
+            facebook: true,
+            fidor: true
         }
     },
 

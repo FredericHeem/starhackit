@@ -16,6 +16,11 @@ export default function(app, publisherUser) {
     register(passport, models, publisherUser);
   }
 
+  if(config.has('authentication.fidor')) {
+    let register = require('./auth-strategy/FidorStrategy').register;
+    register(passport, models, publisherUser);
+  }
+
   passport.serializeUser(function(user, done) {
     log.debug("serializeUser ", user);
     //TODO use redis

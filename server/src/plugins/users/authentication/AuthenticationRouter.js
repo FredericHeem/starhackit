@@ -66,6 +66,10 @@ export default function AuthenticationRouter(app, publisherUser){
   router.get('/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/login'}));
 
+  router.get('/fidor', passport.authenticate('fidor', { scope: ['email'] }));
+  router.get('/fidor/callback',
+      passport.authenticate('fidor', { failureRedirect: '/login', successRedirect : '/login'}));
+
   app.server.baseRouter().mount('auth', router);
 
   return router;

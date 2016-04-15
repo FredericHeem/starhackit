@@ -5,26 +5,9 @@ import Debug from 'debug';
 let debug = new Debug("components:alert");
 
 export default React.createClass( {
-    /*
-    propTypes: {
-        error: React.PropTypes.object
-    },
-    */
-    /*
-    getDefaultProps() {
-        return {
-            error: {
-                name:'',
-                message:'',
-                status:''
-            }
-        };
-    },
-*/
+
     render() {
         let error = this.props.error;
-        //debug('render ', error);
-        //debug('props ', this.props);
         if(!error) {
             return (
                 <div></div>

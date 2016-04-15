@@ -15,7 +15,7 @@ export default React.createClass( {
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
-        authenticated: React.PropTypes.bool.isRequired,
+        //authenticated: React.PropTypes.bool.isRequired,
         login: React.PropTypes.func.isRequired
     },
 
@@ -28,7 +28,7 @@ export default React.createClass( {
         }
     },
     render() {
-        //debug('login: ', this.props)
+        debug('login: ', this.props)
         return (
             <div id='login'>
                 <DocTitle

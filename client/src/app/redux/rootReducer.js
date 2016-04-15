@@ -1,13 +1,17 @@
+import _ from 'lodash';
 import { combineReducers } from 'redux-immutable';
 
-import auth from '../parts/auth/reducers/auth'
-import signup from '../parts/auth/reducers/signup'
+import authReducerConfig from '../parts/auth/reducers/reducers';
+
 import profile from '../parts/profile/reducers/profile'
 import router from '../parts/core/reducers/routerRedux'
 
-export default combineReducers({
-  auth,
-  signup,
-  profile,
-  router
-})
+export default combineReducers(
+  _.assign({},
+          authReducerConfig,
+          {
+            profile,
+            router
+          }
+  )
+);

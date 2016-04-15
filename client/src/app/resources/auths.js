@@ -4,11 +4,8 @@ import {
 } from 'utils/http';
 
 export default {
-    getCurrentUser() {
+    me() {
         return get('me');
-    },
-    signupOrLoginThirdParty(provider) {
-        return get('auth/' + provider);
     },
     signupLocal(payload) {
         return post('auth/register', {

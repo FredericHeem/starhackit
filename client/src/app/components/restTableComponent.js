@@ -51,7 +51,7 @@ export default React.createClass({
         );
     },
     render () {
-        debug('render ', this.state);
+        //debug('render ', this.state);
         return (
             <div>
                 {this.state.error && this.renderError()}

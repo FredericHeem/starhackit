@@ -1,9 +1,7 @@
 import { connect } from 'react-redux'
-import { logout } from '../reducers/auth'
+import actions from '../actions';
 import LogoutView from '../views/logout';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => state.get('logout').toJSON()
 
-export default connect((mapStateToProps), {
-    logout
-})(LogoutView)
+export default connect(mapStateToProps, actions)(LogoutView)

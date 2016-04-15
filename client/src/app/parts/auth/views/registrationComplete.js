@@ -9,8 +9,9 @@ export default React.createClass( {
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
-        emailCodeVerified: React.PropTypes.bool.isRequired,
-        verifyEmailCode: React.PropTypes.func.isRequired,
+        //emailCodeVerified: React.PropTypes.bool.isRequired,
+        //verifyEmailCode: React.PropTypes.func.isRequired,
+        data: React.PropTypes.object,
         error: React.PropTypes.object
     },
 
@@ -22,7 +23,7 @@ export default React.createClass( {
     componentWillReceiveProps(nextProps) {
         debug("componentWillReceiveProps next: ", nextProps);
         debug("componentWillReceiveProps ", this.props);
-        if (nextProps.emailCodeVerified) {
+        if (nextProps.data) {
             debug("componentWillReceiveProps router ", this.context.router);
             let path = '/login';
             this.context.router.push(path);

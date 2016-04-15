@@ -1,6 +1,6 @@
 import React from 'react';
 import Debug from 'debug';
-let debug = new Debug("component:authenticated");
+let debug = new Debug("containers:authenticated");
 
 export default React.createClass({
     contextTypes: {

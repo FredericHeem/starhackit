@@ -11,13 +11,16 @@ import Debug from 'debug';
 
 let debug = new Debug("resetPasword");
 
+//TODO use material-ui
+//TODO remove LinkedStateMixin
+
 export default React.createClass( {
 
     mixins: [
         LinkedStateMixin
     ],
     propTypes:{
-        requestPasswordReset: React.PropTypes.func.isRequired
+        //requestPasswordReset: React.PropTypes.func.isRequired
     },
     getInitialState() {
         return {

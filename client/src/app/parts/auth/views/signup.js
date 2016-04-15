@@ -6,7 +6,7 @@ import LocalSignupForm from '../components/localSignupForm';
 
 export default React.createClass( {
     propTypes:{
-        registerCompleted: React.PropTypes.bool.isRequired,
+        //registerCompleted: React.PropTypes.bool.isRequired,
         signup: React.PropTypes.func.isRequired
     },
 
@@ -17,8 +17,8 @@ export default React.createClass( {
                 <DocTitle
                     title="Register"
                 />
-                { this.props.registerCompleted && this.renderRegisterComplete() }
-                { !this.props.registerCompleted && this.renderRegisterForm() }
+            { this.props.data.success && this.renderRegisterComplete() }
+                { !this.props.data.success && this.renderRegisterForm() }
 
             </div>
         );

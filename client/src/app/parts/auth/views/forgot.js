@@ -14,7 +14,7 @@ export default React.createClass( {
         LinkedStateMixin,
     ],
     propTypes:{
-        requestPasswordReset: React.PropTypes.func.isRequired
+        //requestPasswordReset: React.PropTypes.func.isRequired
     },
     getInitialState() {
         return {

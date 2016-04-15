@@ -1,4 +1,3 @@
-import 'mochawait';
 import _ from 'lodash';
 import assert from 'assert';
 import testMngr from '~/test/testManager';

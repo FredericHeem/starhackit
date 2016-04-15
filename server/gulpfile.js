@@ -1,10 +1,12 @@
 var path = require( 'path' );
 var gulp = require( 'gulp' );
-var nodemon = require( 'gulp-nodemon' );
 var runSequence = require( 'run-sequence' );
 var clean = require( 'gulp-rimraf' );
 var babel = require('gulp-babel');
 var debug = require('gulp-debug');
+var pm2 = require('pm2');
+
+require('babel-core/register');
 
 var paths = {
   src: ['src/**/*.js'],
@@ -12,26 +14,35 @@ var paths = {
   build: 'build'
 };
 
-gulp.task( 'default', [ 'watch', 'run'] );
+gulp.task( 'default', function ( done ) {
+    runSequence(
+        'build',
+        'watch',
+        'run',
+        done
+    );
+} );
 
-gulp.task('build', function () {
+gulp.task('build:code', function () {
     return gulp.src(paths.src)
         .pipe(babel())
         .pipe(gulp.dest(paths.build));
 });
 
+
+
 gulp.task( 'build:production', function ( done ) {
     runSequence(
         'clean',
-        'build',
+        'build:code',
         'cp:assets',
         done
     );
 } );
 
-gulp.task( 'build:watch', function ( done ) {
+gulp.task( 'build', function ( done ) {
     runSequence(
-        'build',
+        'build:code',
         'cp:assets',
         done
     );
@@ -50,26 +61,32 @@ gulp.task( 'cp:assets', function () {
     .pipe( gulp.dest( 'build/' ) );
 } );
 
-gulp.task( 'watch', [ 'build' ], function () {
-  gulp.watch(paths.src, ['build:watch']);
+gulp.task( 'build:restart', function ( done ) {
+    runSequence(
+        'build:code',
+        'pm2:restart',
+        done
+    );
 } );
 
-gulp.task( 'run', ['build', 'cp:assets'], function () {
-    nodemon( {
-        verbose: true,
-        execMap: {
-            js: 'node'
-        },
-        script: path.join( __dirname, 'build/index' ),
-        watch:['build/package.json'],
+gulp.task( 'watch', function () {
+  gulp.watch(paths.src, ['build:restart']);
+} );
 
-    } ).on( 'restart', function () {
-        console.log( 'nodemon restarted!' );
-    } ).on('start', function () {
-        console.log( 'nodemon started!' );
-    }).on('change', function () {
-        console.log( 'nodemon change' );
+gulp.task('pm2:restart', function () {
+    pm2.connect(true, function () {
+        pm2.restart('all', function () {
+            console.log('pm2 restart');
+        });
     });
-} );
+});
 
-
+gulp.task('run', function () {
+    pm2.connect(true, function () {
+        var pm2Config = require('./pm2.json');
+        pm2.start(pm2Config, function () {
+            console.log('pm2 started');
+            pm2.streamLogs('all', 0);
+        });
+    });
+});

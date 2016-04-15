@@ -1,4 +1,3 @@
-import 'mochawait';
 import _ from 'lodash';
 import chai from 'chai';
 const expect = chai.expect;

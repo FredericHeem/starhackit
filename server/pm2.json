@@ -1,0 +1,8 @@
+{
+  "apps": [
+  {
+    "name": "api",
+    "script": "build/index.js",
+    "watch": false
+  }]
+}

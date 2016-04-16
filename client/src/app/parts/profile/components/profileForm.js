@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+
 import Checkit from 'checkit';
 import TextField from 'material-ui/lib/text-field';
 import TextArea from 'react-textarea-autosize';
@@ -7,6 +8,7 @@ import LaddaButton from 'react-ladda';
 //import SelectLangage from 'components/selectLanguage';
 import ValidateProfileForm from 'services/validateProfileForm';
 import Spinner from 'components/spinner';
+import OcrView from 'components/ocrView';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
@@ -33,7 +35,8 @@ export default React.createClass({
             {
                 language: 'US',
                 updating: false,
-                errors: {}
+                errors: {},
+                completed:0
             });
     },
     render() {
@@ -45,9 +48,17 @@ export default React.createClass({
             return <Spinner/>
         }
         return (
+            <div>
+            <div className='row'>
+                <legend>Passport or Id</legend>
+                <OcrView/>
+            </div>
+            <div className='row'>
             <form
-                className="form-horizontal col-sm-6"
+                className="form-horizontal"
                 onSubmit={ (e) => e.preventDefault() }>
+
+                <legend>My Profile</legend>
                 <div className="form-group">
                     <label htmlFor="username" className="col-sm-3 control-label">Username</label>
                     <div className="col-sm-9">
@@ -84,6 +95,7 @@ export default React.createClass({
                         </div>
                     </div>
                     */}
+
                 <div>
                     <div className="form-group">
                         <legend>About Me</legend>
@@ -103,10 +115,12 @@ export default React.createClass({
                     buttonStyle="slide-up"
                     onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
             </form>
+            </div>
+            </div>
         );
     },
-    onLanguage(language){
 
+    onLanguage(language){
         debug("onLanguage: ", language);
         this.setState({language:language});
     },

@@ -41,6 +41,7 @@
     "lodash": "4.11.1",
     "material-ui": "0.14.4",
     "moment": "2.12.0",
+    "newtondev-mrz-parser": "1.1.0",
     "qs": "6.1.0",
     "react": "0.14.8",
     "react-cookie": "0.4.5",

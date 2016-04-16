@@ -2,7 +2,10 @@
   "login": "Login",
   "logout": "Logout",
   "email": "Email",
+  "surname": "Surname",
+  "firstname": "Firt name",
   "username": "username",
   "password": "Password",
-  "forgotPassword": "Forgot Password"
+  "forgotPassword": "Forgot Password",
+  "dob": "Date of Birth"
 }

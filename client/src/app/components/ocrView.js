@@ -16,24 +16,32 @@ export default React.createClass( {
                 progress: false
         };
     },
+    renderInputButton(){
+        return (<div>
+                    <RaisedButton
+                              label="Take a picture"
+                              onClick={ this.takePicture }
+                              icon={<FontIcon className=""/>}
+                           />
+                    <input
+                         ref="fileUpload"
+                         type="file"
+                         style={{display : "none"}}
+                         onChange={this.onFileSelected}/>
+                 </div>
+        );
+    },
     render() {
         return (
             <div className="ocr-view">
-                <RaisedButton
-                          label="Take a picture"
-                          onClick={ this.takePicture }
-                          icon={<FontIcon className=""/>}
-                       />
-                <input
-                     ref="fileUpload"
-                     type="file"
-                     style={{display : "none"}}
-                     onChange={this.onFileSelected}/>
 
-                 <OcrResult {...this.state}></OcrResult>
+                {!this.state.loading && this.renderInputButton()}
+
                  <div id='id-image'>
 
                  </div>
+                 <OcrResult {...this.state}></OcrResult>
+
              </div>
      )
     },

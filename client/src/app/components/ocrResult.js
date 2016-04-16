@@ -31,6 +31,8 @@ export default React.createClass( {
         }
         let {lines} = ocr;
         debug('render ', lines);
+        return (<div></div>);
+        /*
         return (
             <div className="">
                 <div>Confidence: {ocr.confidence}</div>
@@ -41,6 +43,7 @@ export default React.createClass( {
 
             </div>
         );
+        */
     }
 
 } );

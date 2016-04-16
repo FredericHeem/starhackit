@@ -63,7 +63,6 @@ export default React.createClass({
 
                 <legend>My Profile</legend>
                 <div className="form-group">
-                    <div className="col-sm-9">
                         <TextField
                             id='username'
                             floatingLabelText={tr.t('username')}
@@ -78,7 +77,6 @@ export default React.createClass({
                             floatingLabelText={tr.t('email')}
                             errorText={errors.email && errors.email[0]}
                             />
-                    </div>
                 </div>
                 <br/>
                 {/*

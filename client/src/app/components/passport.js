@@ -36,7 +36,7 @@ export default React.createClass( {
         for(let i = 0; i < lines.length; i++){
             let line = lines[i].text;
             // 'P' for passport
-            if(line[0] === 'P'){
+            if(line[0] === 'P' && (i != lines.length - 1)){
                 //Check if index is not out of range
                 let fullLine = line + lines[i + 1].text;
                 debug('length: ', fullLine.length);
@@ -71,19 +71,28 @@ export default React.createClass( {
         debug("componentWillReceiveProps", nextProps);
         this.parse(nextProps.ocrResult);
     },
-    render() {
-        debug('render ', this.prop)
+    renderError(){
+        if(!this.state.parsingError){
+            return;
+        }
+        return (<div className="alert alert-warning" role="alert">
+                    <span>{this.state.parsingError}</span>
+                </div>)
+    },
+    renderInfo(parsed) {
         let {state} = this;
-        let {errors, parsed} = state;
+        let {errors} = state;
+        if(!parsed.names.lastName && !this.state.parsingError){
+            return;
+        }
         return (
             <div
                 className="form-horizontal"
                 onSubmit={ (e) => e.preventDefault() }>
 
-                <div>Error: {this.state.parsingError}</div>
-
                 <div className="form-group">
-                    <div className="col-sm-9">
+
+                    <div className="col-sm-12">
                         <TextField
                             id='surname'
                             floatingLabelText={tr.t('surname')}
@@ -107,7 +116,7 @@ export default React.createClass( {
                 </div>
                 <br/>
                 <div className="form-group">
-                    <div className="col-sm-9">
+                    <div className="col-sm-10">
                         <TextField
                             id='nationality'
                             value={state.parsed.nationality.full}
@@ -130,6 +139,13 @@ export default React.createClass( {
                 </div>
             </div>
         )
+    },
+    render() {
+        debug('render ', this.prop)
+        return (<div>
+                    {this.renderError()}
+                    {this.renderInfo(this.state.parsed)}
+                </div>)
     },
     onChange(id, e) {
         debug(`onChange: ${id}: ${e.target.value}`);

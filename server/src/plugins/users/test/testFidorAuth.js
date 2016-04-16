@@ -1,7 +1,7 @@
 import assert from 'assert';
 import testMngr from '~/test/testManager';
 
-describe('Fidor', function(){
+describe.skip('Fidor', function(){
   let client;
 
   before(async () => {
@@ -15,7 +15,7 @@ describe('Fidor', function(){
     client = testMngr.createClient();
   });
 
-  it.only('should login', async () => {
+  it('should login', async () => {
     let res = await client.get("v1/auth/fidor");
     assert(res);
   });

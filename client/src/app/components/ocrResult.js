@@ -35,8 +35,8 @@ export default React.createClass( {
             <div className="">
                 <div>Confidence: {ocr.confidence}</div>
                 <div>{lines.length} lines:</div>
-                {_.map(lines, (line) => {
-                    return <div>{line.text}</div>
+                {_.map(lines, (line, i) => {
+                    return <div key={i}>{line.text}</div>
                 })}
 
             </div>

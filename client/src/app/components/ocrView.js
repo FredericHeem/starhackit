@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import RaisedButton from 'material-ui/lib/raised-button';
 import FontIcon from 'material-ui/lib/font-icon';
 import Debug from 'debug';
-import Ocr from 'components/ocr';
-import Passport from 'components/passport';
+import OcrResult from 'components/ocrResult';
+
 let debug = new Debug("view:ocr");
 
 export default React.createClass( {
@@ -30,12 +30,10 @@ export default React.createClass( {
                      style={{display : "none"}}
                      onChange={this.onFileSelected}/>
 
-                 <Ocr {...this.state}></Ocr>
+                 <OcrResult {...this.state}></OcrResult>
                  <div id='id-image'>
 
                  </div>
-
-                 <Passport/>
              </div>
      )
     },
@@ -80,6 +78,7 @@ export default React.createClass( {
                             }
                         }).then(result => {
                             this.setState({ocr: result, completed: 0, loading: false})
+                            this.props.onResult(result);
                         })
                     }
                 };

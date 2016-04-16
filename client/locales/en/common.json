@@ -3,9 +3,13 @@
   "logout": "Logout",
   "email": "Email",
   "surname": "Surname",
-  "firstname": "Firt name",
+  "lastname": "Last Name",
+  "firstname": "Fisrt name",
   "username": "username",
   "password": "Password",
   "forgotPassword": "Forgot Password",
-  "dob": "Date of Birth"
+  "dob": "Date of Birth",
+  "nationality": "Nationality",
+  "issuer": "Issuer",
+  "documentNumber": "Document Number"
 }

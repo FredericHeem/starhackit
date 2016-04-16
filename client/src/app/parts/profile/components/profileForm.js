@@ -9,6 +9,7 @@ import LaddaButton from 'react-ladda';
 import ValidateProfileForm from 'services/validateProfileForm';
 import Spinner from 'components/spinner';
 import OcrView from 'components/ocrView';
+import Passport from 'components/passport';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
@@ -51,7 +52,9 @@ export default React.createClass({
             <div>
             <div className='row'>
                 <legend>Passport or Id</legend>
-                <OcrView/>
+                <Passport ocrResult={this.state.passportOcrResult}/>
+                <OcrView onResult={result => this.setState({passportOcrResult: result})}/>
+
             </div>
             <div className='row'>
             <form
@@ -60,30 +63,24 @@ export default React.createClass({
 
                 <legend>My Profile</legend>
                 <div className="form-group">
-                    <label htmlFor="username" className="col-sm-3 control-label">Username</label>
                     <div className="col-sm-9">
                         <TextField
                             id='username'
-                            hintText={tr.t('username')}
+                            floatingLabelText={tr.t('username')}
                             value={state.username}
                             onChange={_.partial(this.onChange, 'username')}
                             errorText={errors.username && errors.username[0]}
                             />
-                    </div>
-                </div>
-                <br/>
-                <div className="form-group">
-                    <label htmlFor="email" className="col-sm-3 control-label">Mail</label>
-                    <div className="col-sm-9">
                         <TextField
                             id='email'
                             disabled={true}
                             value={state.email}
-                            hintText={tr.t('email')}
+                            floatingLabelText={tr.t('email')}
                             errorText={errors.email && errors.email[0]}
                             />
                     </div>
                 </div>
+                <br/>
                 {/*
                     <div className="form-group">
                         <label htmlFor="select-language" className="col-sm-3 control-label">Language</label>

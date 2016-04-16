@@ -136,7 +136,7 @@ describe('MailJob', function () {
     });
   });
   describe('Ko', () => {
-    it('login failed', async(done) => {
+    it.skip('login failed', async(done) => {
       let badPasswordConfig = _.clone(config, true);
       //console.log(JSON.stringify(badPasswordConfig));
       badPasswordConfig.mail.smtp.auth.pass = "1234567890";

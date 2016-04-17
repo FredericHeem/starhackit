@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import TextField from 'material-ui/lib/text-field';
+
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:passport");
@@ -71,6 +72,7 @@ export default React.createClass( {
         debug("componentWillReceiveProps", nextProps);
         this.parse(nextProps.ocrResult);
     },
+
     renderError(){
         if(!this.state.parsingError){
             return;

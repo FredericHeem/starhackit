@@ -57,6 +57,7 @@
     "react-router-redux": "4.0.2",
     "react-tap-event-plugin": "0.2.2",
     "react-textarea-autosize": "4.0.0",
+    "react-webcam": "0.0.12",
     "reactabular": "0.12.1",
     "redux": "3.4.0",
     "redux-act": "0.4.0",

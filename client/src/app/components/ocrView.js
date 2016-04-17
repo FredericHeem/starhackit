@@ -21,7 +21,8 @@ export default React.createClass( {
     },
     renderWebcam(){
         if(this.state.webcam){
-            return (<Webcam audio={false} ref='webcam' width='424' height='320' screenshotFormat='image/jpeg'/>)
+            return (<Webcam audio={false}
+                ref='webcam' width='960' height='720' screenshotFormat='image/jpeg'/>)
         } else {
 
         }
@@ -48,6 +49,11 @@ export default React.createClass( {
                                onClick={ this.takePicture }
                                icon={<FontIcon className=""/>}
                             />}
+                    {this.state.screenshot && <RaisedButton
+                              label="Save screenshot to disk"
+                              onClick={ this.saveScreenshot }
+                              icon={<FontIcon className=""/>}
+                           />}
                  </div>
         );
     },
@@ -56,7 +62,7 @@ export default React.createClass( {
             <div className="ocr-view">
 
                 {!this.state.loading && this.renderInputButton()}
-                <OcrResult {...this.state}></OcrResult>
+
                 <img ref='screenshot'
                     className='thumb'
                     onLoad={this.onLoadImage}
@@ -64,8 +70,7 @@ export default React.createClass( {
                     src={this.state.screenshot} />
                 {this.renderWebcam()}
 
-                 <div id='id-image'>
-                 </div>
+                <OcrResult {...this.state}></OcrResult>
              </div>
      )
     },
@@ -80,6 +85,7 @@ export default React.createClass( {
         }).then(result => {
             this.setState({ocr: result, completed: 0, loading: false})
             this.props.onResult(result);
+            //setTimeout(() => this.takePicture(), 1000);
         })
     },
     chooseFile(){
@@ -96,7 +102,12 @@ export default React.createClass( {
         let screenshot = this.refs.webcam.getScreenshot();
         this.setState({screenshot: screenshot, webcam: false});
     },
-
+    saveScreenshot(){
+        debug("saveScreenshot: ");
+        let img = ReactDOM.findDOMNode(this.refs.screenshot);
+        //window.location.href = img.src.replace('image/jpeg', 'image/octet-stream');
+        window.location.href = img.src;
+    },
     onFileSelected(event){
         debug("onFileSelected: ", event.target.value);
 

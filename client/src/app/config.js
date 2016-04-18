@@ -14,7 +14,7 @@ let config = {
         },
         socialAuth: {
             facebook: true,
-            fidor: false
+            fidor: true
         }
     },
 

@@ -36,8 +36,8 @@ FidorStrategy.prototype.userProfile = function(accessToken, done) {
   });
 };
 
-export async function verify(models, publisherUser, req, accessToken, refreshToken, profile) {
-  log.debug(`verify accessToken: ${accessToken}`);
+export async function verify(models, publisherUser, accessToken, refreshToken, profile) {
+  log.debug(`verify accessToken: ${accessToken} refreshToken: ${refreshToken}`);
   //log.debug(accessToken);
   log.debug(JSON.stringify(profile, null, 4));
 
@@ -93,9 +93,11 @@ export function register(passport, models, publisherUser) {
   if (authConfig && authConfig.clientID) {
     log.info("configuring fidor authentication strategy");
     let strategy = new FidorStrategy(authConfig,
-      async function (req, accessToken, refreshToken, profile, done) {
+      async function (accessToken, refreshToken, profile, done) {
         try {
-          let res = await verify(models, publisherUser, req, accessToken, refreshToken, profile);
+          let res = await verify(models, publisherUser, accessToken, refreshToken, profile);
+          //Save it to redis
+          res.user.accessToken = accessToken
           done(res.err, res.user);
         } catch(err){
           done(err);

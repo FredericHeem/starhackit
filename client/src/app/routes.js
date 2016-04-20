@@ -11,9 +11,9 @@ import Signup from 'parts/auth/containers/signup';
 import Forgot from 'parts/auth/containers/forgot';
 import RegistrationComplete from 'parts/auth/containers/registrationComplete';
 import ResetPassword from 'parts/auth/views/resetPassword';
-
+import Identities from 'parts/identity/containers/identitiesContainers';
 import MyProfile from 'parts/profile/containers/myProfile';
-
+import CertifRequest from 'parts/identity/containers/certifRequestContainers';
 import UsersView from 'parts/admin/usersView';
 
 export default (store) => (
@@ -33,7 +33,8 @@ export default (store) => (
         </Route>
 
         <Route path="/app" component={Authenticated}>
-            <IndexRoute component={MyProfile}/>
+            <IndexRoute component={Identities}/>
+            <Route component={CertifRequest} path="certif_request"/>
             <Route name="account" path="my">
                 <Route component={MyProfile} path="profile"/>
             </Route>

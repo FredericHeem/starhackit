@@ -50,19 +50,14 @@ export default React.createClass({
         }
         return (
             <div>
-            <div className='row'>
-                <legend>Passport or Id</legend>
-                <Passport ocrResult={this.state.passportOcrResult}/>
-                <OcrView onResult={result => this.setState({passportOcrResult: result})}/>
 
-            </div>
-            <div className='row'>
+            <div className=''>
             <form
                 className="form-horizontal"
                 onSubmit={ (e) => e.preventDefault() }>
 
                 <legend>My Profile</legend>
-                <div className="form-group">
+                <div className="">
                         <TextField
                             id='username'
                             floatingLabelText={tr.t('username')}
@@ -72,13 +67,18 @@ export default React.createClass({
                             />
                         <TextField
                             id='email'
-                            disabled={true}
                             value={state.email}
                             floatingLabelText={tr.t('email')}
                             errorText={errors.email && errors.email[0]}
                             />
                 </div>
                 <br/>
+                    <div className=''>
+                        <legend>Passport or Id</legend>
+                        <Passport ocrResult={this.state.passportOcrResult}/>
+                        <OcrView onResult={result => this.setState({passportOcrResult: result})}/>
+
+                    </div>
                 {/*
                     <div className="form-group">
                         <label htmlFor="select-language" className="col-sm-3 control-label">Language</label>
@@ -90,7 +90,7 @@ export default React.createClass({
                         </div>
                     </div>
                     */}
-
+{/*
                 <div>
                     <div className="form-group">
                         <legend>About Me</legend>
@@ -101,6 +101,7 @@ export default React.createClass({
                             />
                     </div>
                 </div>
+                */}
                 <LaddaButton
                     className='btn btn-lg btn-primary btn-signup'
                     id='btn-update-profile'
@@ -108,7 +109,7 @@ export default React.createClass({
                     loading={this.state.updating}
                     progress={.5}
                     buttonStyle="slide-up"
-                    onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
+                    onClick={this.onUpdateProfile}>Create Identity</LaddaButton>
             </form>
             </div>
             </div>

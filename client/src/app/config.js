@@ -6,8 +6,8 @@ let env = process.env;
 let config = {
 
     general: {
-        title: 'StarHackIt',
-        description: 'StarHackIt is a fullstack boilerplate written in es6/es7',
+        title: 'IDio',
+        description: 'IDio store and share your identities',
         apiUrl: '/api/v1/',
         analytics: {
             google: ""

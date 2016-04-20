@@ -17,7 +17,6 @@ export default React.createClass({
         return (
             <div id="profile">
                 <DocTitle title="My Profile"/>
-                <legend>My Profile</legend>
                 <ProfileForm
                     loading={props.profile.loading}
                     profile={props.profile.data}

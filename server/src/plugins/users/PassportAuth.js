@@ -1,5 +1,6 @@
 import passport from 'koa-passport';
-import {register as registerlocal} from './auth-strategy/LocalStrategy';
+import registerLocal from './auth-strategy/LocalStrategy';
+import registerJwt from './auth-strategy/JwtStrategy';
 
 let config = require('config');
 
@@ -9,7 +10,8 @@ export default function(app, publisherUser) {
 
   let models = app.data.sequelize.models;
 
-  registerlocal(passport, models);
+  registerJwt(passport, models);
+  registerLocal(passport, models);
 
   if(config.has('authentication.facebook')) {
     let register = require('./auth-strategy/FacebookStrategy').register;

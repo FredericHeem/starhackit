@@ -69,9 +69,11 @@ function middlewareInit(app, koaApp, config) {
   log.debug("middlewareInit");
   const convert = require('koa-convert');
   const session = require('koa-generic-session');
+  const jwt = require('koa-jwt');
   //TODO use secret from config
   koaApp.keys = ['your-super-session-secret'];
   koaApp.use(convert(session()));
+  //koaApp.use(convert(jwt({ secret: 'your-super-session-secret', passthrough: true })));
 
   const bodyParser = require('koa-bodyparser');
   koaApp.use(bodyParser());
@@ -79,6 +81,7 @@ function middlewareInit(app, koaApp, config) {
   koaApp.use(async(ctx, next) => {
     const start = new Date;
     log.debug(`${ctx.method} ${ctx.url} begins`);
+    log.debug(`${JSON.stringify(ctx.header, 4, null)}`);
     await next();
     const ms = new Date - start;
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);

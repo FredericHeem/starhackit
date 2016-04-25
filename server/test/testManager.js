@@ -65,5 +65,4 @@ TestMngr.getInstance = function(){
     return this.instance;
 };
 
-//module.exports = TestMngr.getInstance();
 module.exports = TestMngr.getInstance();

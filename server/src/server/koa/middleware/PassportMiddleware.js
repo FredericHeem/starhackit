@@ -11,13 +11,17 @@ export default function PassportMiddleware(app, kaoApp/*, config*/){
   return {
     isAuthenticated(context, next) {
       log.debug("isAuthenticated ", context.request.url);
-      if (!context.isAuthenticated()) {
-        log.info("isAuthenticated KO: ", context.request.url);
-        context.status = 401;
-        context.body = "Unauthorized";
-      } else {
-        return next();
-      }
+      return passport.authenticate('jwt', user => {
+        if (user === false) {
+          log.debug("isAuthenticated ko");
+          context.status = 401
+          context.body = { error: {name: 'Unauthorized'} }
+        } else {
+          log.debug("isAuthenticated OK, ", user);
+          context.passport.user = user;
+          return next()
+        }
+      })(context);
     },
     async isAuthorized(context, next) {
       let request = context.request;

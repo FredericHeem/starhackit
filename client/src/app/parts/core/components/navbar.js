@@ -30,7 +30,7 @@ function navLinks(authenticated) {
                 route: '/login',
                 text: 'LOGIN'
             }, {
-                route: '/signup',
+                route: '/register',
                 text: 'REGISTER'
             }
         ];

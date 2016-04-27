@@ -1,6 +1,5 @@
 /* global require */
 /* eslint global-require: 0*/
-//load CSS assets first
 require('assets/stylus/main');
 
 import {Promise} from 'es6-promise';
@@ -28,6 +27,14 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 
+async function loadToken(store, parts){
+  let token = localStorage.getItem("JWT");
+  if(token){
+    store.dispatch(parts.auth.actions.setToken(token))
+  }
+  return token;
+}
+
 function App() {
     debug("App begins");
     const rest = Rest();
@@ -44,42 +51,46 @@ function App() {
   }
 
   rest.setJwtSelector(jwtSelector(store));
-    return {
+  return {
         start () {
             debug("start");
             return i18n.load()
             .then(initIntl)
-            .then(render);
+            .then(render)
+            .then(authFromLocalStorage);
         }
-    };
-    function initIntl(){
-        debug("initIntl");
-        return new Promise((resolve) => {
-            if (!window.Intl) {
-                // Safari only
-                debug("fetch intl");
-                require.ensure([
-                    'intl', 'intl/locale-data/jsonp/en.js'
-                ], function(require) {
-                    require('intl');
-                    require('intl/locale-data/jsonp/en.js');
-                    resolve();
-                });
-            } else {
-                resolve();
-            }
-        });
-    };
-    function render() {
-        debug("render");
-        let mountEl = document.getElementById('application');
-        ReactDOM.render(
-                <IntlProvider locale='en'>
-                    {rootView(store, parts)}
-                </IntlProvider>
-                , mountEl);
+  };
+  function authFromLocalStorage(){
+    loadToken(store, parts)
+  }
+  function initIntl(){
+      debug("initIntl");
+      return new Promise((resolve) => {
+          if (!window.Intl) {
+              // Safari only
+              debug("fetch intl");
+              require.ensure([
+                  'intl', 'intl/locale-data/jsonp/en.js'
+              ], function(require) {
+                  require('intl');
+                  require('intl/locale-data/jsonp/en.js');
+                  resolve();
+              });
+          } else {
+              resolve();
+          }
+      });
+  };
+  function render() {
+      debug("render");
+      let mountEl = document.getElementById('application');
+      ReactDOM.render(
+              <IntlProvider locale='en'>
+                  {rootView(store, parts)}
+              </IntlProvider>
+              , mountEl);
 
-    }
+  }
 }
 
 let app = App();

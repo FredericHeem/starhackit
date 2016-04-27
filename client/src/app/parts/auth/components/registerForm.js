@@ -16,7 +16,7 @@ export default React.createClass( {
         };
     },
     renderError(){
-        let {error} = this.props;
+        let {error} = this.props.register;
         if(error){
             return (
                 <div className="alert alert-danger text-center" role="alert">
@@ -85,7 +85,7 @@ export default React.createClass( {
 
         return validateSignup.call( this, payload )
             .with( this )
-            .then( this.props.actions.signup )
+            .then( this.props.actions.register)
             .catch( setErrors );
 
     }

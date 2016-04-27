@@ -53,11 +53,6 @@ let CardIcon = React.createClass({
 });
 
 export default React.createClass({
-
-    componentDidMount() {
-        debug("componentDidMount");
-    },
-
     render() {
         debug("render ");
 

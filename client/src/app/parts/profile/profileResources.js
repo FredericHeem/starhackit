@@ -1,10 +1,10 @@
 export default function(rest){
   return {
     get() {
-        return rest.get('profile');
+        return rest.get('me');
     },
     update(payload) {
-        return rest.update('profile', payload);
+        return rest.update('me', payload);
     }
   }
 };

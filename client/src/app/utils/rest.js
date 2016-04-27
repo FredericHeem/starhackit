@@ -21,8 +21,10 @@ export default function(options = {}){
 
       if(_jwtSelector){
           let jwt = _jwtSelector();
-          console.log("adding jwt: ", jwt);
-          headers.Authorization = 'Bearer ' + jwt;
+          if(jwt){
+              console.log("adding jwt: ", jwt);
+              headers.Authorization = 'Bearer ' + jwt;
+          }
       }
 
       return Axios({

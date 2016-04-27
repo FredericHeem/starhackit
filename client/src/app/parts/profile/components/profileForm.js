@@ -16,7 +16,6 @@ let debug = new Debug("components:profileForm");
 
 export default React.createClass({
     propTypes: {
-        loading: React.PropTypes.bool,
         profile: React.PropTypes.object,
     },
     getDefaultProps(){
@@ -27,24 +26,23 @@ export default React.createClass({
     },
     componentWillReceiveProps(nextProps){
         debug("componentWillReceiveProps", nextProps);
-        this.setState(nextProps.profile || {});
+        this.setState(nextProps.profile.data || {});
     },
     getInitialState() {
         debug("getInitialState: props: ", this.props);
-        return _.defaults(this.props.profile,
-            {
-                language: 'US',
-                updating: false,
-                errors: {},
-                completed:0
-            });
+        return {
+            language: 'US',
+            updating: false,
+            errors: {},
+            completed:0
+        }
     },
     render() {
         debug("render props: ", this.props);
         debug("state: ", this.state);
         let {state, props} = this;
         let {errors} = state;
-        if(props.loading){
+        if(props.profile.loading){
             return <Spinner/>
         }
         return (
@@ -108,7 +106,7 @@ export default React.createClass({
                     loading={this.state.updating}
                     progress={.5}
                     buttonStyle="slide-up"
-                    onClick={this.onUpdateProfile}>Create Identity</LaddaButton>
+                    onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
             </form>
             </div>
             </div>
@@ -153,7 +151,7 @@ export default React.createClass({
         }
 
         function save() {
-            return this.props.updateProfile(this.state);
+            return this.props.actions.update(this.state);
         }
 
         function successNotification() {

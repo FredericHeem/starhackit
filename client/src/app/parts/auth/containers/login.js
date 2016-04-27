@@ -1,5 +1,5 @@
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import actions from '../actions';
 import LoginView from '../views/login';
 
 const mapStateToProps = (state) => {
@@ -9,4 +9,7 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, actions)(LoginView)
+export default function(actions){
+    const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+    return connect(mapStateToProps, mapDispatchToProps)(LoginView);
+}

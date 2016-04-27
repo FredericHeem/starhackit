@@ -1,7 +1,10 @@
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import actions from '../actions';
 import RegistrationCompleteView from '../views/registrationComplete';
 
-const mapStateToProps = (state) => state.get('verifyEmailCode').toJSON();
+const mapStateToProps = (state) => state.get('registrationComplete').toJSON();
 
-export default connect(mapStateToProps, actions)(RegistrationCompleteView)
+export default function(actions){
+    const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+    return connect(mapStateToProps, mapDispatchToProps)(RegistrationCompleteView);
+}

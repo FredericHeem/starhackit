@@ -1,7 +1,7 @@
-import { get } from 'utils/http';
-
-export default {
-    getAll(data) {
-        return get(`users/`, {params: data});
-    }
+export default function(rest){
+  return {
+      getAll(data) {
+          return rest.get(`users/`, {params: data});
+      }
+  }
 };

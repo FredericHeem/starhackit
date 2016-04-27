@@ -8,6 +8,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
 
+import Rest from './utils/rest';
+import configureStore from './configureStore';
+
+import AuthModule from './parts/auth/authModule';
+import CoreModule from './parts/core/coreModule';
+import ProfileModule from './parts/profile/profileModule';
+
 import Debug from 'debug';
 import 'utils/ga';
 
@@ -21,11 +28,22 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 
-debug("begins");
-
-
 function App() {
-    //debug("App");
+    debug("App begins");
+    const rest = Rest();
+    const parts = {
+      auth: AuthModule(rest),
+      core: CoreModule(),
+      profile: ProfileModule(rest)
+    }
+
+    const store = configureStore(parts);
+
+  let jwtSelector = (store) => {
+    return () => store.getState().get('auth').get('token')
+  }
+
+  rest.setJwtSelector(jwtSelector(store));
     return {
         start () {
             debug("start");
@@ -57,7 +75,7 @@ function App() {
         let mountEl = document.getElementById('application');
         ReactDOM.render(
                 <IntlProvider locale='en'>
-                    {rootView()}
+                    {rootView(store, parts)}
                 </IntlProvider>
                 , mountEl);
 

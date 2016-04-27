@@ -18,7 +18,6 @@ export default React.createClass({
     propTypes: {
         loading: React.PropTypes.bool,
         profile: React.PropTypes.object,
-        updateProfile: React.PropTypes.func.isRequired
     },
     getDefaultProps(){
         return {

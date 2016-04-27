@@ -6,8 +6,8 @@ let env = process.env;
 let config = {
 
     general: {
-        title: 'IDio',
-        description: 'IDio store and share your identities',
+        title: 'StartHackIt',
+        description: 'React Redux Node StarterKit',
         apiUrl: '/api/v1/',
         analytics: {
             google: ""

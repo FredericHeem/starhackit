@@ -1,7 +1,10 @@
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import actions from '../actions';
 import ForgotView from '../views/forgot';
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, actions)(ForgotView)
+export default function(actions){
+    const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+    return connect(mapStateToProps, mapDispatchToProps)(ForgotView);
+}

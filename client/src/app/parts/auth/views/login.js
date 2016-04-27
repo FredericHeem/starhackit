@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import tr from 'i18next';
 import Paper from 'material-ui/lib/paper';
 import FlatButton from 'material-ui/lib/flat-button';
+
 import MediaSigninButtons from '../components/mediaSigninButtons';
 import LocalLoginForm from '../components/localLoginForm';
 import DocTitle from 'components/docTitle';
@@ -15,8 +16,6 @@ export default React.createClass( {
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
-        //authenticated: React.PropTypes.bool.isRequired,
-        login: React.PropTypes.func.isRequired
     },
 
     componentWillReceiveProps(nextProps){
@@ -28,7 +27,6 @@ export default React.createClass( {
         }
     },
     render() {
-        debug('login: ', this.props)
         return (
             <div id='login'>
                 <DocTitle
@@ -39,21 +37,21 @@ export default React.createClass( {
 
                     <div className="row">
                         <div>
-                            <LocalLoginForm login={this.props.login}/>
+                            <LocalLoginForm {...this.props}/>
 
+                            <div className="strike"><span className="or"></span></div>
+                            <div>
+                                <MediaSigninButtons />
+                            </div>
+                            <div className="strike"><span className="or"></span></div>
                             <FlatButton
                                       label={tr.t('forgotPassword')}
                                       containerElement={<Link to="/forgot" />}
                                       linkButton={true}
                                     />
-
-                            <div>
-                                <MediaSigninButtons />
-                            </div>
                         </div>
                     </div>
                 </Paper>
-
             </div>
         );
     }

@@ -1,7 +1,10 @@
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux'
-import actions from '../actions';
 import LogoutView from '../views/logout';
 
 const mapStateToProps = (state) => state.get('logout').toJSON()
 
-export default connect(mapStateToProps, actions)(LogoutView)
+export default function(actions){
+    const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+    return connect(mapStateToProps, mapDispatchToProps)(LogoutView);
+}

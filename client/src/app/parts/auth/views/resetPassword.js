@@ -120,7 +120,7 @@ export default React.createClass( {
         }
 
         function verifyResetPasswordToken() {
-            return this.props.verifyResetPasswordToken( this.props.params.token, this.password() );
+            return this.props.actions.verifyResetPasswordToken( this.props.params.token, this.password() );
         }
 
         function setNextStep( ) {

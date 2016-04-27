@@ -9,15 +9,13 @@ export default React.createClass( {
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
-        //emailCodeVerified: React.PropTypes.bool.isRequired,
-        //verifyEmailCode: React.PropTypes.func.isRequired,
         data: React.PropTypes.object,
-        error: React.PropTypes.object
+        //error: React.PropTypes.object
     },
 
     componentDidMount(){
         debug("componentDidMount", this.props.params);
-        this.props.verifyEmailCode(this.props.params.code);
+        this.props.actions.verifyEmailCode(this.props.params.code);
     },
 
     componentWillReceiveProps(nextProps) {

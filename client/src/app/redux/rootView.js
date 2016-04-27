@@ -1,21 +1,17 @@
 import React from 'react';
-import Immutable from 'immutable'
 import createHistory from 'history/lib/createBrowserHistory';
 import { useRouterHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import makeRoutes from '../routes'
+import Routes from '../routes'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
-import configureStore from './configureStore'
 
 import Debug from 'debug';
 let debug = new Debug("rootView");
 
-export default function(){
-    const initialState = Immutable.fromJS({})
-    const store = configureStore(initialState)
-
+export default function(store, modules){
+    console.log("ROOTVIEW")
     const browserHistory = useRouterHistory(createHistory)({
       basename: ''
     });
@@ -24,7 +20,7 @@ export default function(){
       selectLocationState: (state) => state.get('router').toJS()
     });
 
-    const routes = makeRoutes(store)
+    const routes = Routes(store, modules)
     debug('init');
     return (
         <Provider store={store}>

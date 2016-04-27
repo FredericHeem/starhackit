@@ -1,18 +1,26 @@
 import React from 'react';
+import Checkit from 'checkit';
 import TextField from 'material-ui/lib/text-field';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Debug from 'debug';
-let debug = new Debug("components:login");
+
+let debug = new Debug("components:register");
 
 export default React.createClass( {
     propTypes:{
     },
+    getInitialState() {
+        return {
+            errors: {}
+        };
+    },
     renderError(){
-        if(this.props.login.error){
+        let {error} = this.props;
+        if(error){
             return (
                 <div className="alert alert-danger text-center" role="alert">
-                    <strong>Username</strong> and <strong>Password</strong> do not match
+                    <strong>{error.name}</strong>
                 </div>
             )
         }
@@ -20,6 +28,7 @@ export default React.createClass( {
     render() {
         debug('render state:', this.state);
         debug('render props:', this.props);
+        let {errors} = this.state;
         return (
             <div className="local-login-form">
                 <form>
@@ -28,7 +37,15 @@ export default React.createClass( {
                         <div className='form-group username'>
                             <TextField
                                 ref="username"
-                                hintText='Username'
+                                hintText={tr.t('username')}
+                                errorText={errors.username && errors.username[0]}
+                                />
+                        </div>
+                        <div className='form-group email'>
+                            <TextField
+                                ref="email"
+                                hintText={tr.t('email')}
+                                errorText={errors.email && errors.email[0]}
                                 />
                         </div>
                         <div className='form-group password'>
@@ -36,6 +53,7 @@ export default React.createClass( {
                                 id='password'
                                 ref="password"
                                 hintText={tr.t('password')}
+                                errorText={errors.password && errors.password[0]}
                                 type='password'
                                 />
                         </div>
@@ -45,10 +63,10 @@ export default React.createClass( {
                                 className='btn btn-lg btn-primary'
                                 id='btn-login'
                                 buttonColor='green'
-                                loading={this.props.login.loading}
+                                loading={this.props.loading}
                                 progress={.5}
                                 buttonStyle="slide-up"
-                                onClick={this.login}>{ tr.t('login') }</LaddaButton>
+                                onClick={this.register}>{ tr.t('createAccount') }</LaddaButton>
                         </div>
                     </div>
                 </form>
@@ -56,11 +74,36 @@ export default React.createClass( {
         );
     },
 
-    login() {
-        let {username, password} = this.refs;
-        return this.props.actions.login({
+    register(evt) {
+        evt.preventDefault()
+        let {username, email, password} = this.refs;
+        let payload = {
             username: username.getValue(),
+            email: email.getValue(),
             password: password.getValue()
-        })
+        }
+
+        return validateSignup.call( this, payload )
+            .with( this )
+            .then( this.props.actions.signup )
+            .catch( setErrors );
+
     }
 } );
+
+function validateSignup( payload ) {
+    let rules = new Checkit( {
+        username: [ 'required', 'alphaDash', 'minLength:3', 'maxLength:64'],
+        password: [ 'required', 'alphaDash', 'minLength:6', 'maxLength:64' ],
+        email: [ 'required', 'email', 'minLength:6', 'maxLength:64' ]
+    } );
+
+    return rules.run( payload );
+}
+
+function setErrors( error ) {
+    debug("setErrors", error);
+    if ( error instanceof Checkit.Error ) {
+        this.setState({errors: error.toJSON()})
+    };
+}

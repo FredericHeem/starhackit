@@ -1,6 +1,6 @@
+import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import AppView from '../views/application';
-import actions from '../../auth/actions';
 
 const mapStateToProps = (state) => {
   return {
@@ -8,4 +8,6 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, actions)(AppView)
+export default function(actions){
+    return connect(mapStateToProps, actions)(AppView)
+}

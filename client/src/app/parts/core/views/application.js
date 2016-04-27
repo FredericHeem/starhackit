@@ -7,7 +7,8 @@ let debug = new Debug("views:app");
 
 export default React.createClass( {
     componentWillMount () {
-        this.props.me();
+        //TODO
+        //this.props.actions.me();
     },
     render() {
         debug('render ', this.props);

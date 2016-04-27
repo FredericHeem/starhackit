@@ -1,20 +1,15 @@
 import React from 'react';
 import _ from 'lodash';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import cx from 'classnames';
+import Checkit from 'checkit';
 import RaisedButton from 'material-ui/lib/raised-button';
 import DocTitle from 'components/docTitle';
-
-import ValidateEmail from 'services/validateEmail';
-import ValidateRequiredField from 'services/validateRequiredField';
+import TextField from 'material-ui/lib/text-field';
+import tr from 'i18next';
+import Debug from 'debug';
+let debug = new Debug("views:forgot");
 
 export default React.createClass( {
-
-    mixins: [
-        LinkedStateMixin,
-    ],
     propTypes:{
-        //requestPasswordReset: React.PropTypes.func.isRequired
     },
     getInitialState() {
         return {
@@ -41,6 +36,7 @@ export default React.createClass( {
         if ( this.state.step != 'SendPasswordResetEmail' ) {
             return;
         }
+        let {errors} = this.state;
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading">Send Reset Email</div>
@@ -50,15 +46,11 @@ export default React.createClass( {
                     <p>You'll be sent a reset code to change your password.</p>
 
                     <div className="form-inline">
-                        <div className={ this.formClassNames( 'email' ) }>
-                            <label>Email Address</label>
-                            <input className="form-control"
-                                   type="text"
-                                   valueLink={ this.linkState( 'email' ) }
-                                />
-
-                            { this.renderErrorsFor( 'email' ) }
-                        </div>
+                        <TextField
+                            ref="email"
+                            hintText={tr.t('email')}
+                            errorText={errors.email && errors.email[0]}
+                            />
                     </div>
 
                     <div className="spacer">
@@ -73,7 +65,7 @@ export default React.createClass( {
             return;
         }
         return (
-            <div className="panel panel-primary animate bounceIn">
+            <div className="panel panel-primary">
                 <div className="panel-heading">Step 2 - Check Email</div>
                 <div className="panel-body">
                     <p><strong>An email has been sent containing your reset link. Click on this link to proceed.</strong></p>
@@ -86,94 +78,36 @@ export default React.createClass( {
         );
     },
 
-    renderErrorsFor( field ) {
-        if ( this.state.errors[ field ] ) {
-            return (
-                <span className="label label-danger animate bounceIn">{ this.state.errors[ field ]}</span>
-            );
-        }
-    },
-
     requestReset() {
-        this.resetErrors();
+        this.setState( {
+            errors: {}
+        });
 
-        validateEmail.call( this )
-            .with( this )
-            .then( requestReset )
-            .then( setNextStep )
-            .catch( errors );
+        let rules = new Checkit( {
+            email: [ 'email', 'required' ]
+        });
 
-        function validateEmail() {
-
-            return validateExists.call( this )
-                .then( validateFormat.bind( this ) );
-
-
-            function validateFormat() {
-                return new ValidateEmail( this.email() )
-                    .execute();
-            }
-
-            function validateExists() {
-                return new ValidateRequiredField( 'email', this.email() )
-                    .execute();
-
-            }
+        let payload = {
+            email: this.email()
         }
 
-        function requestReset() {
-            return this.props.requestPasswordReset( this.email() );
-        }
+        rules
+          .run(payload)
+          .then(this.props.actions.requestPasswordReset)
+          .then(setNextStep)
+          .catch(Checkit.Error, errors => {
+              this.setState( {
+                  errors: errors.toJSON()
+              } );
+          });
 
         function setNextStep( ) {
             this.setState( {
                 step: 'CheckEmail'
             } );
         }
-
-        function errors( e ) {
-            if ( e.name === 'CheckitError' ) {
-                this.setState( {
-                    errors: e.toJSON()
-                } );
-            } else {
-                let error = e.responseJSON;
-                let message;
-
-                message = error.message;
-
-                this.setState( {
-                    errors: {
-                        email: message
-                    }
-                } );
-            }
-        }
-
     },
-
-
     email() {
-        return _.trim( this.state.email );
-    },
-
-    code() {
-        return _.trim( this.state.code );
-    },
-
-    password() {
-        return _.trim( this.state.password );
-    },
-
-    resetErrors() {
-        this.setState( {
-            errors: {}
-        } );
-    },
-
-    formClassNames( field ) {
-        return cx( 'form-group', {
-            'has-error': this.state.errors[ field ]
-        } );
+        return _.trim(this.refs.email.getValue());
     }
 } );

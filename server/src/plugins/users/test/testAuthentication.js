@@ -126,18 +126,16 @@ describe('Authentication', function(){
 
     let res =  await client.login(postParam);
     assert(res);
-    console.log("login rsp: ", res)
     assert.isString(res.token);
     let {user} = res;
-    console.log("login rsp: ", user)
     assert.equal(user.username, postParam.username);
     assert(!user.password);
     assert(!user.passwordHash);
   });
   it('should login admin with testManager', async () => {
     let clientAdmin = testMngr.client("admin");
-    let user = await clientAdmin.login();
-    assert(user);
-    assert.equal(user.username, "admin");
+    let res = await clientAdmin.login();
+    assert(res);
+    assert.equal(res.user.username, "admin");
   });
 });

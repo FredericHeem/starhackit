@@ -9,9 +9,8 @@ import config from 'config';
 let log = require('logfilename')(__filename);
 
 export default function fidorPlugin(app){
-  let {apiURL} = config.authentication.fidor;
-  log.debug("fidorPlugin ", JSON.stringify(config.authentication.fidor));
-  log.debug("fidorPlugin ", apiURL);
+  let fidorConfig = config.authentication.fidor;
+  log.debug("fidorPlugin ", JSON.stringify(fidorConfig));
 
   async function redirectApi(context, request){
     let accessToken = _.get(context, 'passport.user');
@@ -19,6 +18,12 @@ export default function fidorPlugin(app){
     if(!accessToken){
       context.status = 401;
       context.body = {message: "no access token"};
+      return;
+    }
+    let {apiURL} = fidorConfig;
+    if(!apiURL){
+      context.status = 500;
+      context.body = {message: "not configured"};
       return;
     }
     let url = URI(apiURL).path(request).toString();
@@ -67,6 +72,9 @@ export default function fidorPlugin(app){
   }
 
   function FidorRouter(){
+    if(!fidorConfig){
+      return;
+    }
     let router = new Router();
     let fidorHttpController = FidorHttpController(app);
     router.get('/transactions', fidorHttpController.getTransactions);

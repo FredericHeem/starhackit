@@ -3,8 +3,6 @@ import {Route, IndexRoute} from 'react-router';
 
 import MainLanding from 'parts/core/views/mainLanding';
 
-import MyProfile from 'parts/profile/containers/profileContainer';
-
 export default (store, parts) => (
     <Route component={parts.auth.containers.app()} name="home" path="/">
         <IndexRoute component={MainLanding}/>
@@ -14,9 +12,9 @@ export default (store, parts) => (
             {parts.admin.routes}
 
             <Route path="/app">
-                <IndexRoute component={MyProfile(parts.profile.actions)}/>
+                <IndexRoute component={parts.profile.containers.profile()}/>
                 <Route name="account" path="my">
-                    <Route component={MyProfile(parts.profile.actions)} path="profile"/>
+                    {parts.profile.routes}
                 </Route>
             </Route>
         </Route>

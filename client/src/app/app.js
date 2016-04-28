@@ -13,6 +13,7 @@ import configureStore from './configureStore';
 import AuthModule from './parts/auth/authModule';
 import CoreModule from './parts/core/coreModule';
 import ProfileModule from './parts/profile/profileModule';
+import AdminModule from './parts/admin/adminModule';
 
 import Debug from 'debug';
 import 'utils/ga';
@@ -38,10 +39,12 @@ async function loadToken(store, parts){
 function App() {
     debug("App begins");
     const rest = Rest();
+    let auth = AuthModule(rest);
     const parts = {
-      auth: AuthModule(rest),
+      auth,
       core: CoreModule(),
-      profile: ProfileModule(rest)
+      profile: ProfileModule(rest),
+      admin: AdminModule(rest)
     }
 
     const store = configureStore(parts);

@@ -27,10 +27,10 @@ export default React.createClass( {
                 <DocTitle
                     title="Forgot password"
                 />
-            <Paper className='text-center forgot-view'>
-                { this.renderSendPasswordResetEmail()}
-                { this.renderCheckEmail() }
-            </Paper>
+                <Paper className='text-center view'>
+                    { this.renderSendPasswordResetEmail()}
+                    { this.renderCheckEmail() }
+                </Paper>
 
             </div>
         );

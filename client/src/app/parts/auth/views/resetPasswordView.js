@@ -1,8 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import LinkedStateMixin from 'react-addons-linked-state-mixin';
-import cx from 'classnames';
+import tr from 'i18next';
+import Paper from 'material-ui/lib/paper';
 import RaisedButton from 'material-ui/lib/raised-button';
+import TextField from 'material-ui/lib/text-field';
 import DocTitle from 'components/docTitle';
 
 import ValidatePassword from 'services/validatePassword';
@@ -11,16 +12,9 @@ import Debug from 'debug';
 
 let debug = new Debug("resetPasword");
 
-//TODO use material-ui
-//TODO remove LinkedStateMixin
-
 export default React.createClass( {
 
-    mixins: [
-        LinkedStateMixin
-    ],
     propTypes:{
-        //requestPasswordReset: React.PropTypes.func.isRequired
     },
     getInitialState() {
         return {
@@ -35,18 +29,20 @@ export default React.createClass( {
                 <DocTitle
                     title="Reset password"
                 />
-                <legend>Reset Password</legend>
-                { this.renderError()}
-                { this.renderSetNewPassword()}
-                { this.renderSetNewPasswordDone() }
+                <Paper className='text-center view'>
+                    <h3>Reset Password</h3>
+                    { this.renderError()}
+                    { this.renderSetNewPassword()}
+                    { this.renderSetNewPasswordDone() }
+                </Paper>
             </div>
         );
     },
     renderError() {
-        if(this.state.tokenInvalid){
+        if(this.props.verifyResetPasswordToken.error){
             return (
-                <div className="alert alert-danger text-center animate bounceIn" role="alert">
-                    The token is invalid or expired.
+                <div className="alert alert-danger text-center" role="alert">
+                    The token is invalid or has expired.
                 </div>
             );
         }
@@ -55,27 +51,23 @@ export default React.createClass( {
         if ( this.state.step != 'SetPassword' ) {
             return;
         }
+        let {errors} = this.state;
         return (
-            <div className="panel panel-primary animate bounceIn">
-                <div className="panel-heading">Set a new password</div>
-                <div className="panel-body">
-                    <p><strong>Enter your new password.</strong></p>
+            <div>
+                <p><strong>Enter your new password.</strong></p>
+                <div className='form-group password'>
+                    <TextField
+                        id='password'
+                        ref="password"
+                        hintText={tr.t('password')}
+                        type='password'
+                        errorText={errors.email && errors.email[0]}
+                        />
+                </div>
 
-                    <div className="form-inline">
-                        <div className={ this.formClassNames( 'password' ) }>
-                            <label>Password</label>
-                            <input className="form-control"
-                                   type="text"
-                                   valueLink={ this.linkState( 'password' ) }
-                                />
-                        </div>
 
-                        { this.renderErrorsFor( 'password' ) }
-                    </div>
-
-                    <div className="spacer">
-                        <RaisedButton onClick={ this.resetPassword } label='Reset Password'/>
-                    </div>
+                <div className="spacer">
+                    <RaisedButton onClick={ this.resetPassword } label='Reset Password'/>
                 </div>
             </div>
     );
@@ -85,22 +77,10 @@ export default React.createClass( {
             return;
         }
         return (
-            <div className="panel panel-primary animate bounceIn">
-                <div className="panel-heading">Password Reset Done</div>
-                <div className="panel-body">
-                    <p><strong>The new password has been set.</strong></p>
-
-                </div>
+            <div>
+                <p><strong>The new password has been set.</strong></p>
             </div>
         );
-    },
-
-    renderErrorsFor( field ) {
-        if ( this.state.errors[ field ] ) {
-            return (
-                <span className="label label-danger animate bounceIn">{ this.state.errors[ field ]}</span>
-            );
-        }
     },
 
     resetPassword() {
@@ -120,7 +100,10 @@ export default React.createClass( {
         }
 
         function verifyResetPasswordToken() {
-            return this.props.actions.verifyResetPasswordToken( this.props.params.token, this.password() );
+            return this.props.actions.verifyResetPasswordToken({
+                token: this.props.params.token,
+                password: this.password()
+            });
         }
 
         function setNextStep( ) {
@@ -135,34 +118,18 @@ export default React.createClass( {
                 this.setState( {
                     errors: e.toJSON()
                 } );
-            } else if (e.responseJSON){
-
-                let error = e.responseJSON;
-                if ( error.name === 'TokenInvalid' ){
-                    this.setState( { tokenInvalid: true});
-                } else {
-                    this.setState( { errors: error});
-                }
-            } else {
-                this.setState( { errors: e});
             }
         }
     },
 
     password() {
-        return _.trim( this.state.password );
+        return _.trim(this.refs.password.getValue());
     },
 
     resetErrors() {
         this.setState( {
             errors: {},
             tokenInvalid:false
-        } );
-    },
-
-    formClassNames( field ) {
-        return cx( 'form-group', {
-            'has-error': this.state.errors[ field ]
         } );
     }
 } );

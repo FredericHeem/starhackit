@@ -30,7 +30,7 @@ export default React.createClass( {
     },
     renderRegisterForm(){
         return (
-            <Paper className="text-center login-view">
+            <Paper className="text-center view">
                 <h2>Register An Account</h2>
 
                 <p >Create a free account</p>

@@ -81,9 +81,9 @@ function Reducers(actions){
     me: createReducerAsync(actions.me),
     login: createReducerAsync(actions.login),
     logout: createReducerAsync(actions.logout),
-    requestPasswordReset: createReducerAsync(actions.requestPasswordReset),
     register: createReducerAsync(actions.register),
     verifyEmailCode: createReducerAsync(actions.verifyEmailCode),
+    requestPasswordReset: createReducerAsync(actions.requestPasswordReset),
     verifyResetPasswordToken: createReducerAsync(actions.verifyResetPasswordToken)
   }
 }
@@ -111,11 +111,11 @@ function Containers(actions){
             return connect(mapStateToProps, mapDispatchToProps)(ForgotView);
         },
         resetPassword(){
-            const mapStateToProps = (state) => ({register: state.get('resetPassword').toJSON()})
+            const mapStateToProps = (state) => ({verifyResetPasswordToken: state.get('verifyResetPasswordToken').toJSON()})
             return connect(mapStateToProps, mapDispatchToProps)(ResetPasswordView);
         },
         registrationComplete(){
-            const mapStateToProps = (state) => ({register: state.get('verifyEmailCode').toJSON()})
+            const mapStateToProps = (state) => ({verifyEmailCode: state.get('verifyEmailCode').toJSON()})
             return connect(mapStateToProps, mapDispatchToProps)(RegistrationCompleteView);
         },
         authentication(){

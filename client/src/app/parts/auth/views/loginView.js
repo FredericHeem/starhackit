@@ -32,7 +32,7 @@ export default React.createClass( {
                 <DocTitle
                     title="Login"
                 />
-                <Paper className="text-center login-view">
+                <Paper className="text-center view">
                     <h2 >{tr.t('login')}</h2>
 
                     <div className="row">

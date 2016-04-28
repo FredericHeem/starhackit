@@ -35,7 +35,6 @@ export default React.createClass( {
                 <Paper className="text-center view">
                     <h2 >{tr.t('login')}</h2>
 
-                    <div className="row">
                         <div>
                             <LocalLoginForm {...this.props}/>
 
@@ -50,7 +49,6 @@ export default React.createClass( {
                                       linkButton={true}
                                     />
                         </div>
-                    </div>
                 </Paper>
             </div>
         );

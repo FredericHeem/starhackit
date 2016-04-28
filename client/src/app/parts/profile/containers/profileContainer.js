@@ -4,7 +4,8 @@ import MyProfileView from '../views/myProfile';
 
 const mapStateToProps = (state) => {
   return {
-    profile: state.get('profile').toJS()
+    profile: state.get('profile').toJS(),
+    profileUpdate: state.get('profileUpdate').toJS()
   };
 }
 

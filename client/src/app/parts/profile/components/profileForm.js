@@ -8,8 +8,7 @@ import LaddaButton from 'react-ladda';
 //import SelectLangage from 'components/selectLanguage';
 import ValidateProfileForm from 'services/validateProfileForm';
 import Spinner from 'components/spinner';
-import OcrView from 'components/ocrView';
-import Passport from 'components/passport';
+import Paper from 'material-ui/lib/paper';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
@@ -46,36 +45,32 @@ export default React.createClass({
             return <Spinner/>
         }
         return (
-            <div>
 
-            <div className=''>
+            <Paper className='profile-view view'>
             <form
                 className="form-horizontal"
                 onSubmit={ (e) => e.preventDefault() }>
 
-                <legend>My Profile</legend>
+                <h3>My Profile</h3>
                 <div className="">
                         <TextField
                             id='username'
                             floatingLabelText={tr.t('username')}
                             value={state.username}
+                            disabled={true}
                             onChange={_.partial(this.onChange, 'username')}
                             errorText={errors.username && errors.username[0]}
                             />
                         <TextField
                             id='email'
                             value={state.email}
+                            disabled={true}
                             floatingLabelText={tr.t('email')}
                             errorText={errors.email && errors.email[0]}
                             />
                 </div>
                 <br/>
-                    <div className=''>
-                        <legend>Passport or Id</legend>
-                        <Passport ocrResult={this.state.passportOcrResult}/>
-                        <OcrView onResult={result => this.setState({passportOcrResult: result})}/>
 
-                    </div>
                 {/*
                     <div className="form-group">
                         <label htmlFor="select-language" className="col-sm-3 control-label">Language</label>
@@ -87,29 +82,32 @@ export default React.createClass({
                         </div>
                     </div>
                     */}
-{/*
+
                 <div>
-                    <div className="form-group">
+                    <div>
                         <legend>About Me</legend>
                         <TextArea
+                            style={{width:'100%'}}
+                            classsName='text-center text-area'
                             rows={4}
                             floatingLabelText={tr.t('email')}
                             onChange={_.partial(this.onChange, 'about')}
                             />
                     </div>
                 </div>
-                */}
-                <LaddaButton
-                    className='btn btn-lg btn-primary btn-signup'
-                    id='btn-update-profile'
-                    buttonColor='green'
-                    loading={this.state.updating}
-                    progress={.5}
-                    buttonStyle="slide-up"
-                    onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
+
+                <div className='text-center btn-container'>
+                    <LaddaButton
+                        id='btn-update-profile'
+                        className='btn btn-lg btn-primary'
+                        buttonColor='green'
+                        progress={.5}
+                        loading={this.props.profileUpdate.loading}
+                        buttonStyle="slide-up"
+                        onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
+                    </div>
             </form>
-            </div>
-            </div>
+        </Paper>
         );
     },
 

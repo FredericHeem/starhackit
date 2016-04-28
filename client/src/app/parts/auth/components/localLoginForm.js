@@ -40,7 +40,7 @@ export default React.createClass( {
                                 />
                         </div>
 
-                        <div className='btn-signup'>
+                        <div>
                             <LaddaButton
                                 className='btn btn-lg btn-primary'
                                 id='btn-login'

@@ -69,11 +69,9 @@ function middlewareInit(app, koaApp, config) {
   log.debug("middlewareInit");
   const convert = require('koa-convert');
   const session = require('koa-generic-session');
-  const jwt = require('koa-jwt');
   //TODO use secret from config
   koaApp.keys = ['your-super-session-secret'];
   koaApp.use(convert(session()));
-  //koaApp.use(convert(jwt({ secret: 'your-super-session-secret', passthrough: true })));
 
   const bodyParser = require('koa-bodyparser');
   koaApp.use(bodyParser());

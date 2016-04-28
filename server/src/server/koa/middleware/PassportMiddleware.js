@@ -2,11 +2,24 @@ import passport from 'koa-passport';
 
 let log = require('logfilename')(__filename);
 
-export default function PassportMiddleware(app, kaoApp/*, config*/){
-  kaoApp.use(passport.initialize());
-  kaoApp.use(passport.session());
+export default function PassportMiddleware(app, koaApp/*, config*/){
+  koaApp.use(passport.initialize());
+  koaApp.use(passport.session());
 
   let models = app.data.sequelize.models;
+
+  koaApp.use(async(context, next) => {
+    log.debug(`${context.method} ${context.url} JWT`);
+    return passport.authenticate('jwt', { session: false}, user => {
+      if (user === false) {
+        log.debug("auth JWT KO");
+      } else {
+        log.debug("auth JWT OK, ", user);
+        context.passport.user = user;
+      }
+      return next();
+    })(context);
+  });
 
   return {
     isAuthenticated(context, next) {
@@ -19,21 +32,7 @@ export default function PassportMiddleware(app, kaoApp/*, config*/){
         return next();
       }
     },
-    /*
-    isAuthenticated(context, next) {
-      log.debug("isAuthenticated ", context.request.url);
-      return passport.authenticate('jwt', user => {
-        if (user === false) {
-          log.debug("isAuthenticated ko");
-          context.status = 401
-          context.body = { error: {name: 'Unauthorized'} }
-        } else {
-          log.debug("isAuthenticated OK, ", user);
-          context.passport.user = user;
-          return next()
-        }
-      })(context);
-    },*/
+
     async isAuthorized(context, next) {
       let request = context.request;
 

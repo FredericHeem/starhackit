@@ -56,7 +56,6 @@
     "koa-bodyparser": "3.0.0",
     "koa-convert": "1.2.0",
     "koa-generic-session": "1.10.2",
-    "koa-jwt": "1.2.0",
     "koa-passport": "2.0.1",
     "lodash": "4.10.0",
     "logfilename": "0.1.3",

@@ -3,8 +3,6 @@ import {Route} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import { connect } from 'react-redux';
 import ProfileView from './views/profileView';
 
 function Resources(rest){

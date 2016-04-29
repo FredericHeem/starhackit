@@ -6,7 +6,7 @@ let env = process.env;
 let config = {
 
     general: {
-        title: 'StartHackIt',
+        title: 'StarHackIt',
         description: 'React Redux Node StarterKit',
         apiUrl: '/api/v1/',
         analytics: {
@@ -14,7 +14,7 @@ let config = {
         },
         socialAuth: {
             facebook: true,
-            fidor: true
+            fidor: false
         }
     },
 

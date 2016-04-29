@@ -8,7 +8,7 @@ export default function(app, publisherUser){
   let authApi = AuthenticationApi(app, publisherUser);
 
   function login(req, res) {
-    log.debug("login",  req.user);
+    log.error("login",  req.user);
     res.send(_.omit(req.user, 'id'));
   }
 

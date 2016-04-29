@@ -7,7 +7,7 @@ export default React.createClass({
         return (
             <div id="users-view">
                 <DocTitle title="Users"/>
-                <UsersComponent/>
+                <UsersComponent {...this.props}/>
             </div>
         );
     }

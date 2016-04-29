@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import usersResources from './usersResources';
 import RestTableComponent from 'components/restTableComponent';
 
 import Debug from 'debug';
@@ -38,7 +37,7 @@ export default React.createClass({
             <div className="panel panel-default">
               <div className="panel-heading">Users</div>
               <div className="panel-body">
-                  <RestTableComponent columns={columns} getData={usersResources.getAll}/>
+                  <RestTableComponent columns={columns} getData={this.props.resources.getAll}/>
               </div>
             </div>
         );

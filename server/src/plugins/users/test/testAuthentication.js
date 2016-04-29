@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {assert} from 'chai';
 import testMngr from '~/test/testManager';
 
 describe('Authentication', function(){
@@ -16,11 +16,12 @@ describe('Authentication', function(){
   });
 
   describe('After Login', () => {
+    let postParam = {
+        password:"password",
+        username:"alice@mail.com"
+    };
     beforeEach(async () => {
-      let postParam = {
-          password:"password",
-          username:"alice@mail.com"
-      };
+
 
       await client.login(postParam);
     });
@@ -28,7 +29,8 @@ describe('Authentication', function(){
     it('should logout', async () => {
       await client.post('v1/auth/logout');
       try {
-        await client.get('v1/auth/session');
+        let res = await client.get('v1/me');
+        console.log(res)
         assert(false);
       } catch(err){
         assert(err);
@@ -122,16 +124,18 @@ describe('Authentication', function(){
         email:"alice@mail.com"
     };
 
-    let user =  await client.login(postParam);
-    assert(user);
+    let res =  await client.login(postParam);
+    assert(res);
+    assert.isString(res.token);
+    let {user} = res;
     assert.equal(user.username, postParam.username);
     assert(!user.password);
     assert(!user.passwordHash);
   });
   it('should login admin with testManager', async () => {
     let clientAdmin = testMngr.client("admin");
-    let user = await clientAdmin.login();
-    assert(user);
-    assert.equal(user.username, "admin");
+    let res = await clientAdmin.login();
+    assert(res);
+    assert.equal(res.user.username, "admin");
   });
 });

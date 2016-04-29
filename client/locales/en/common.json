@@ -2,7 +2,15 @@
   "login": "Login",
   "logout": "Logout",
   "email": "Email",
-  "username": "username",
+  "surname": "Surname",
+  "lastname": "Last Name",
+  "firstname": "First name",
+  "username": "Username",
   "password": "Password",
-  "forgotPassword": "Forgot Password"
+  "createAccount": "Create Account",
+  "forgotPassword": "Forgot Password",
+  "dob": "Date of Birth",
+  "nationality": "Nationality",
+  "issuer": "Issuer",
+  "documentNumber": "Document Number"
 }

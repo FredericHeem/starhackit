@@ -24,20 +24,25 @@ export default React.createClass({
     },
 
     renderFacebook(){
-        return (<RaisedButton
-                  className="btn-signup"
+        return (
+            <div className="btn-social-login">
+                <RaisedButton
                   label="Sign in with Facebook"
+                  style={{width: '100%'}}
                   linkButton={true}
                   href="/api/v1/auth/facebook"
                   icon={<FontIcon className="icon-facebook"/>}
-                />);
+                />
+            </div>);
     },
     renderFidor(){
-        return (<RaisedButton
-                  className="btn-signup"
+        return (
+            <div className="btn-social-login">
+                <RaisedButton
+                  style={{width: '100%'}}
                   label="Sign in with Fidor"
                   linkButton={true}
-                  href="/api/v1/auth/fidor"
-                />);
+                  href="/api/v1/auth/fidor"/>
+            </div>);
     }
 } );

@@ -4,7 +4,7 @@ import DocTitle from 'components/docTitle';
 export default React.createClass( {
 
     componentDidMount () {
-        this.props.logout();
+        this.props.actions.logout();
     },
 
     render() {

@@ -1,16 +1,12 @@
 import React from 'react';
-import NavBar from '../components/navbar';
-import Footer from '../components/footer';
-
-import Debug from 'debug';
-let debug = new Debug("views:app");
+import NavBar from '../../core/components/navbar';
+import Footer from '../../core/components/footer';
 
 export default React.createClass( {
     componentWillMount () {
-        this.props.me();
+        this.props.actions.me();
     },
     render() {
-        debug('render ', this.props);
         return (
             <div id="application-view">
                 <NavBar authenticated={this.props.authenticated}/>

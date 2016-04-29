@@ -25,7 +25,7 @@ export default function configureStore(modules, initialState = Immutable.fromJS(
   const store = createStore(
     reducers,
     initialState,
-    compose(applyMiddleware(thunk, modules.auth.middleware, logger())/*, devTools()*/)
+    compose(applyMiddleware(thunk, modules.auth.middleware, logger()), devTools())
   );
 
   return store

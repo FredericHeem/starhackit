@@ -51,7 +51,7 @@ export default function(options = {}){
         _jwtSelector = jwtSelector
     },
     get( url, options = {} ) {
-        return ajax( url, 'GET', null, options.params );
+        return ajax( url, 'GET', null, options );
     },
     post( url, options = {} ) {
         return ajax( url, 'POST', options );

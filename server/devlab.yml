@@ -1,4 +1,4 @@
-from: node:4.2
+from: busybox
 services:
   - rabbitmq:latest:
       name: rabbitmq
@@ -11,8 +11,8 @@ quiet: false
 forward: true
 tasks:
   env: env
-  clean: rm -rf node_modules
-  install: npm install
+  clean: npm run clean
+  install: env
   test: npm run test
   lint: npm run lint
   build: npm run build

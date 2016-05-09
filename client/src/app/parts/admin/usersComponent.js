@@ -31,13 +31,26 @@ const columns = [
 ];
 
 export default React.createClass({
+    contextTypes: {
+        router: React.PropTypes.object.isRequired
+    },
     render () {
         debug('render ', this.state);
+        let {router} = this.context;
+        function rowProps(row){
+            return {
+                onClick: () => router.push(`/admin/users/${row.id}`)
+            };
+        }
         return (
             <div className="panel panel-default">
               <div className="panel-heading">Users</div>
               <div className="panel-body">
-                  <RestTableComponent columns={columns} getData={this.props.resources.getAll}/>
+                  <RestTableComponent
+                      columns={columns}
+                      getData={this.props.resources.getAll}
+                      row={rowProps}
+                      rowKey='id'/>
               </div>
             </div>
         );

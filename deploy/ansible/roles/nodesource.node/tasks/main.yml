@@ -6,7 +6,7 @@
   register: apt_https_transport
 
 - name: Install HTTPS transport for APT
-  apt: 
+  apt:
     pkg: apt-transport-https
     state: installed
   when: not apt_https_transport.stat.exists

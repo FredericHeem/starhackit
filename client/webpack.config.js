@@ -64,6 +64,9 @@ module.exports = function ( options ) {
                 basePath: __dirname,
             }),
             */
+            new webpack.DefinePlugin( {
+                __VERSION__: JSON.stringify(pkg.version)
+            } ),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoErrorsPlugin(),
 

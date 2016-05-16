@@ -1,7 +1,11 @@
 import React from 'react';
 
 export default React.createClass({
-
+    getDefaultProps() {
+        return {
+            version: ""
+        };
+    },
     shouldComponentUpdate() {
         return false;
     },
@@ -17,13 +21,12 @@ export default React.createClass({
                             <div>
                                 Get the source code at <a href="https://github.com/FredericHeem/starhackit" target="_blank">GitHub</a>
                             </div>
-                        </div>
-
-                        <div className="col-md-5 col-sm-12 hidden-sm hidden-xs">
-                            <div className="pull-right">
-
+                            <div>
+                                {this.props.version}
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </footer>

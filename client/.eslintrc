@@ -3,7 +3,8 @@
     "plugins": [
         "mocha",
         "react",
-        "flow-vars"
+        "flow-vars",
+        "jsx-extras"
     ],
     "env": {
         "browser": true,
@@ -59,6 +60,8 @@
         "react/no-did-update-set-state": 1,
         "react/wrap-multilines": 1,
         "react/react-in-jsx-scope": 1,
-        "react/no-unknown-property": 2
+        "react/no-unknown-property": 2,
+
+        "jsx-extras/jsx-no-string-literals": 1
     }
 }

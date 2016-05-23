@@ -1,6 +1,4 @@
-/* global require */
-/* eslint global-require: 0*/
-require('assets/stylus/main');
+import 'assets/stylus/main';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

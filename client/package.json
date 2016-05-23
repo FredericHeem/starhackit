@@ -59,7 +59,7 @@
     "reactabular": "0.12.1",
     "redux": "3.5.2",
     "redux-act": "0.4.0",
-    "redux-act-async": "0.4.2",
+    "redux-act-async": "0.6.0",
     "redux-immutable": "3.0.6",
     "redux-logger": "2.6.1",
     "redux-thunk": "2.0.1",

@@ -2,7 +2,6 @@
 /* eslint global-require: 0*/
 require('assets/stylus/main');
 
-import {Promise} from 'es6-promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
@@ -19,6 +18,7 @@ import Debug from 'debug';
 import 'utils/ga';
 
 import i18n from 'utils/i18n';
+import intl from 'utils/intl';
 import rootView from './redux/rootView';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -28,7 +28,7 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 
-async function loadToken(store, parts){
+async function loadJWT(store, parts){
   let token = localStorage.getItem("JWT");
   if(token){
     store.dispatch(parts.auth.actions.setToken(token))
@@ -55,40 +55,20 @@ function App() {
 
   rest.setJwtSelector(jwtSelector(store));
   return {
-        start () {
+        async start () {
             debug("start");
-            return i18n.load()
-            .then(initIntl)
-            .then(render)
-            .then(authFromLocalStorage);
+            let language = await i18n.load();
+            await intl(language);
+            render(language)
+            loadJWT(store, parts)
         }
   };
-  function authFromLocalStorage(){
-    loadToken(store, parts)
-  }
-  function initIntl(){
-      debug("initIntl");
-      return new Promise((resolve) => {
-          if (!window.Intl) {
-              // Safari only
-              debug("fetch intl");
-              require.ensure([
-                  'intl', 'intl/locale-data/jsonp/en.js'
-              ], function(require) {
-                  require('intl');
-                  require('intl/locale-data/jsonp/en.js');
-                  resolve();
-              });
-          } else {
-              resolve();
-          }
-      });
-  };
-  function render() {
+
+  function render(language) {
       debug("render");
       let mountEl = document.getElementById('application');
       ReactDOM.render(
-              <IntlProvider locale='en'>
+              <IntlProvider locale={language}>
                   {rootView(store, parts)}
               </IntlProvider>
               , mountEl);

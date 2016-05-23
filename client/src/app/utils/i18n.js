@@ -31,6 +31,7 @@ export default {
 
             i18next.on('languageChanged', function(lng) {
                 debug('languageChanged to ', lng);
+                resolve(lng);
             });
 
             i18next.on('initialized', function(option) {
@@ -45,19 +46,17 @@ export default {
                     // have a common namespace used around the full app
                     ns: ['common'],
                     defaultNS: 'common',
-
                     debug: true,
-
                     interpolation: {
                         escapeValue: false // not needed for react!!
                     },
                     detection: languagesDetectorOption
-                }, (err, t) => {
+                }, (err) => {
                     if (err) {
                         debug('error loading i18n: ', err);
+                    } else {
+                        debug('i18n done: ');
                     }
-                    debug('i18n done: ');
-                    resolve(t);
                 });
         });
     }

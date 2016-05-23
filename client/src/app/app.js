@@ -4,7 +4,7 @@ require('assets/stylus/main');
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider} from 'react-intl';
+
 
 import Rest from './utils/rest';
 import configureStore from './configureStore';
@@ -58,20 +58,21 @@ function App() {
         async start () {
             debug("start");
             let language = await i18n.load(store, parts.core.actions);
-            store.dispatch(parts.core.actions.setLanguage(language))
+            store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
-            render(language)
+            render()
             loadJWT(store, parts)
         }
   };
 
-  function render(language) {
+
+  function render() {
       debug("render");
       let mountEl = document.getElementById('application');
       ReactDOM.render(
-              <IntlProvider locale={language}>
+              <div>
                   {rootView(store, parts)}
-              </IntlProvider>
+              </div>
               , mountEl);
 
   }

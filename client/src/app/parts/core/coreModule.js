@@ -1,10 +1,12 @@
 import Immutable from 'immutable';
 import { LOCATION_CHANGE} from 'react-router-redux';
 import {createAction, createReducer} from 'redux-act';
+import {connect} from 'react-redux';
+import IntlComponent from './components/IntlComponent';
 
 function Actions(){
     return {
-        setLanguage: createAction('LANGUAGE_SET'),
+        setLocale: createAction('LOCALE_SET'),
     }
 }
 
@@ -28,8 +30,8 @@ function RouterReducer(){
 
 function LanguageReducer(actions){
   return createReducer({
-      [actions.setLanguage]: (state, payload) => state.set('language', payload),
-  }, Immutable.fromJS({language:'en'}));
+      [actions.setLocale]: (state, payload) => state.set('locale', payload),
+  }, Immutable.fromJS({locale:'en'}));
 }
 
 function Reducers(actions){
@@ -39,13 +41,23 @@ function Reducers(actions){
   }
 }
 
+function Containers(){
+    return {
+        intl(){
+            const mapStateToProps = (state) => ({
+                language: state.get('language').get('locale')
+            })
+            return connect(mapStateToProps)(IntlComponent);
+        }
+    }
+}
+
 // Part
 export default function() {
   let actions = Actions();
-  let reducers = Reducers(actions);
-
   return {
-    reducers,
-    actions
+    actions,
+    reducers: Reducers(actions),
+    containers: Containers(actions)
   }
 }

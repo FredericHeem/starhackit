@@ -10,7 +10,7 @@ import { Router } from 'react-router'
 import Debug from 'debug';
 let debug = new Debug("rootView");
 
-export default function(store, modules){
+export default function(store, parts){
     console.log("ROOTVIEW")
     const browserHistory = useRouterHistory(createHistory)({
       basename: ''
@@ -20,14 +20,18 @@ export default function(store, modules){
       selectLocationState: (state) => state.get('router').toJS()
     });
 
-    const routes = Routes(store, modules)
+    let Intl = parts.core.containers.intl();
+
+    const routes = Routes(store, parts)
     debug('init');
     return (
         <Provider store={store}>
-          <div style={{ height: '100%' }}>
-            <Router history={history} routes={routes} >
-            </Router>
-          </div>
+            <Intl>
+                <div style={{ height: '100%' }}>
+                    <Router history={history} routes={routes} >
+                    </Router>
+                </div>
+            </Intl>
         </Provider>
     )
 }

@@ -57,7 +57,8 @@ function App() {
   return {
         async start () {
             debug("start");
-            let language = await i18n.load();
+            let language = await i18n.load(store, parts.core.actions);
+            store.dispatch(parts.core.actions.setLanguage(language))
             await intl(language);
             render(language)
             loadJWT(store, parts)

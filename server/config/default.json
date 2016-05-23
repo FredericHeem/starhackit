@@ -46,7 +46,7 @@
     /*
     "from": "StarHackIt <notification@starhack.it>",
     "signature": "The StarHackIt Team",
-    "options": {
+    "smtp": {
       "service": "Mailgun",
       "auth": {
         "user": "postmaster@yourproject.mailgun.org",

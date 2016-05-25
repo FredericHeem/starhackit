@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
-import RaisedButton from 'material-ui/lib/raised-button';
-import FontIcon from 'material-ui/lib/font-icon';
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
 import config from 'config';
 
 export default React.createClass({

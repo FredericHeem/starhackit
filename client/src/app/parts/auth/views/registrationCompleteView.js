@@ -1,6 +1,6 @@
 import React from 'react';
 import DocTitle from 'components/docTitle';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import Spinner from 'components/spinner';
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");

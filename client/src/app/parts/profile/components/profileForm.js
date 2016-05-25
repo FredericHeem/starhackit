@@ -2,13 +2,13 @@ import _ from 'lodash';
 import React from 'react';
 
 import Checkit from 'checkit';
-import TextField from 'material-ui/lib/text-field';
+import TextField from 'material-ui/TextField';
 import TextArea from 'react-textarea-autosize';
 import LaddaButton from 'react-ladda';
 //import SelectLangage from 'components/selectLanguage';
 import ValidateProfileForm from 'services/validateProfileForm';
 import Spinner from 'components/spinner';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");

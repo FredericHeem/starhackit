@@ -1,6 +1,6 @@
 import React from 'react';
 import Checkit from 'checkit';
-import TextField from 'material-ui/lib/text-field';
+import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Debug from 'debug';

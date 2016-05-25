@@ -1,5 +1,5 @@
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
+import Paper from 'material-ui/Paper';
 import DocTitle from 'components/docTitle';
 import MediaSigninButtons from '../components/mediaSigninButtons';
 import RegisterForm from '../components/registerForm';

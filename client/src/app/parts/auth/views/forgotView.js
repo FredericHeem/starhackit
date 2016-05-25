@@ -2,9 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import Checkit from 'checkit';
 import tr from 'i18next';
-import Paper from 'material-ui/lib/paper';
-import RaisedButton from 'material-ui/lib/raised-button';
-import TextField from 'material-ui/lib/text-field';
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 
 

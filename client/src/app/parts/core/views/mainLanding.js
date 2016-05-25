@@ -1,17 +1,17 @@
 import React from 'react';
 import DocMeta from 'react-doc-meta';
-import RaisedButton from 'material-ui/lib/raised-button';
-import FontIcon from 'material-ui/lib/font-icon';
+import RaisedButton from 'material-ui/RaisedButton';
+import FontIcon from 'material-ui/FontIcon';
 import DocTitle from 'components/docTitle';
 import config from 'config';
 //import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("views:main");
 
-import Card from 'material-ui/lib/card/card';
-import CardMedia from 'material-ui/lib/card/card-media';
-import CardTitle from 'material-ui/lib/card/card-title';
-import CardText from 'material-ui/lib/card/card-text';
+import Card from 'material-ui/Card/Card';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import CardText from 'material-ui/Card/CardText';
 
 let CardIcon = React.createClass({
     renderIcon(props){
@@ -20,7 +20,7 @@ let CardIcon = React.createClass({
                 <FontIcon
                     className={props.icon}
                     style={{
-                        fontSize:'64'
+                        fontSize:64
                     }}/>
             </CardMedia>
         );

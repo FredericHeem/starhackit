@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
-import LeftNav from 'material-ui/lib/left-nav';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import AppBar from 'material-ui/AppBar';
+import LeftNav from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
 import config from 'config';
 import Debug from 'debug';
 let debug = new Debug("component:navbar");
@@ -39,20 +39,15 @@ function navLinks(authenticated) {
 
 export default React.createClass({
     contextTypes: {
-        muiTheme: React.PropTypes.object,
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
         authenticated: React.PropTypes.bool.isRequired
     },
     getInitialState () {
-        return {open: false, muiTheme: this.context.muiTheme};
+        return {open: false};
     },
     componentWillMount () {
-        let newMuiTheme = this.state.muiTheme;
-        //newMuiTheme.appBar.textColor = Colors.deepPurpleA700;
-
-        this.setState({muiTheme: newMuiTheme});
     },
     toggleNav () {
         debug('toggleNav');

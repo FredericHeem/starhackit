@@ -27,6 +27,7 @@ export default React.createClass( {
                         {this.renderError()}
                         <div className='form-group username'>
                             <TextField
+                                id='username'
                                 ref="username"
                                 hintText='Username'
                                 />

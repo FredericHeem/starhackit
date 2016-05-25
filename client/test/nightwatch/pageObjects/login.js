@@ -20,13 +20,13 @@ module.exports = {
     },
     elements: {
         emailInput: {
-            selector: '#email',
+            selector: '#username',
         },
         passwordInput: {
             selector: '#password',
         },
         submit: {
-            selector: '.btn-signup',
+            selector: '#btn-login',
         }
     }
 };

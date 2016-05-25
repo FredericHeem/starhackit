@@ -3,6 +3,7 @@
     "plugins": [
         "mocha",
         "react",
+        "promise",
         "flow-vars",
         "jsx-extras"
     ],
@@ -62,6 +63,11 @@
         "react/react-in-jsx-scope": 1,
         "react/no-unknown-property": 2,
 
-        "jsx-extras/jsx-no-string-literals": 1
+        "jsx-extras/jsx-no-string-literals": 1,
+
+        "promise/param-names": 1,
+        "promise/always-return": 1,
+        "promise/catch-or-return": 1,
+        "promise/no-native": 1,
     }
 }

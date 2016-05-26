@@ -67,7 +67,6 @@
 
         "promise/param-names": 1,
         "promise/always-return": 1,
-        "promise/catch-or-return": 1,
-        "promise/no-native": 1,
+        "promise/catch-or-return": 1
     }
 }

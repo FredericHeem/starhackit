@@ -9,10 +9,12 @@ export default function(language = 'en'){
             // Safari only
             debug("fetch intl");
             require.ensure([
-                'intl', `intl/locale-data/jsonp/${language}.js`
             ], function(require) {
                 require('intl');
-                require(`intl/locale-data/jsonp/${language}.js`);
+                require(`intl/locale-data/jsonp/en.js`);
+                //require(`intl/locale-data/jsonp/ru.js`);
+                //require(`intl/locale-data/jsonp/de.js`);
+                //require(`intl/locale-data/jsonp/fr.js`);
                 resolve();
             });
         } else {

@@ -30,7 +30,7 @@ export default React.createClass( {
                     title="Reset password"
                 />
                 <Paper className='text-center view'>
-                    <h3>Reset Password</h3>
+                    <h3>{tr.t('Reset Password')}</h3>
                     { this.renderError()}
                     { this.renderSetNewPassword()}
                     { this.renderSetNewPasswordDone() }
@@ -42,7 +42,7 @@ export default React.createClass( {
         if(this.props.verifyResetPasswordToken.error){
             return (
                 <div className="alert alert-danger text-center" role="alert">
-                    The token is invalid or has expired.
+                    {tr.t('The token is invalid or has expired.')}
                 </div>
             );
         }
@@ -54,7 +54,7 @@ export default React.createClass( {
         let {errors} = this.state;
         return (
             <div>
-                <p><strong>Enter your new password.</strong></p>
+                <p><strong>{tr.t('Enter your new password.')}</strong></p>
                 <div className='form-group password'>
                     <TextField
                         id='password'
@@ -78,7 +78,7 @@ export default React.createClass( {
         }
         return (
             <div>
-                <p><strong>The new password has been set.</strong></p>
+                <p><strong>{tr.t('The new password has been set.')}</strong></p>
             </div>
         );
     },

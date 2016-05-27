@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React from 'react';
-
 import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
 import TextArea from 'react-textarea-autosize';
@@ -49,7 +48,7 @@ export default React.createClass({
                 className="form-horizontal"
                 onSubmit={ (e) => e.preventDefault() }>
 
-                <h3>My Profile</h3>
+                <h3>{tr.t('My Profile')}</h3>
                 <div className="">
                         <TextField
                             id='username'
@@ -83,7 +82,7 @@ export default React.createClass({
 
                 <div>
                     <div>
-                        <legend>About Me</legend>
+                        <legend>{tr.t('About Me')}</legend>
                         <TextArea
                             style={{width:'100%'}}
                             classsName='text-center text-area'
@@ -102,7 +101,7 @@ export default React.createClass({
                         progress={.5}
                         loading={this.props.profileUpdate.loading}
                         buttonStyle="slide-up"
-                        onClick={this.onUpdateProfile}>Update Profile</LaddaButton>
+                        onClick={this.onUpdateProfile}>{tr.t('Update Profile')}</LaddaButton>
                     </div>
             </form>
         </Paper>

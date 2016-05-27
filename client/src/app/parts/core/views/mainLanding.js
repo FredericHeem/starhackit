@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import DocTitle from 'components/docTitle';
 import config from 'config';
-//import tr from 'i18next';
+import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("views:main");
 
@@ -65,9 +65,9 @@ export default React.createClass({
                 <div className="header-container">
                     <div className="header clearfix">
                         <div className="text-vertical-center">
-                            <h1>StarHackIt</h1>
-                            <h2>A Full Stack Web Application Starter Kit </h2>
-                            <h3>Built with React, Node, data backed by SQL</h3>
+                            <h1>{tr.t('StarHackIt')}</h1>
+                            <h2>{tr.t('A Full Stack Web Application Starter Kit')}</h2>
+                            <h3>{tr.t('Built with React, Node, data backed by SQL')}</h3>
                             <br />
 
                             <RaisedButton
@@ -84,7 +84,7 @@ export default React.createClass({
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h2>
-                            <strong>Features</strong>
+                            <strong>{tr.t('Features')}</strong>
                         </h2>
                       </div>
                     </div>
@@ -114,7 +114,7 @@ export default React.createClass({
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h2>
-                            <strong>Frontend - User Interface</strong>
+                            <strong>{tr.t('Frontend - User Interface')}</strong>
                         </h2>
                       </div>
                     </div>
@@ -145,7 +145,7 @@ export default React.createClass({
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h2>
-                            <strong>Backend - API Server</strong>
+                            <strong>{tr.t('Backend - API Server')}</strong>
                         </h2>
                       </div>
                     </div>
@@ -185,7 +185,7 @@ export default React.createClass({
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h2>
-                            <strong>Developer Tools</strong>
+                            <strong>{tr.t('Developer Tools')}</strong>
                         </h2>
                       </div>
                     </div>
@@ -254,7 +254,7 @@ export default React.createClass({
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h3>
-                            <strong>Deployment Tools</strong>
+                            <strong>{tr.t('Deployment Tools')}</strong>
                         </h3>
                       </div>
                     </div>

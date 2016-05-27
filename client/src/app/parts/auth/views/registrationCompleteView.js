@@ -1,4 +1,5 @@
 import React from 'react';
+import tr from 'i18next';
 import DocTitle from 'components/docTitle';
 import Paper from 'material-ui/Paper';
 import Spinner from 'components/spinner';
@@ -37,7 +38,7 @@ export default React.createClass( {
                     title="Registering"
                 />
                 <Paper className="text-center view">
-                    <h3>Registering your account...</h3>
+                    <h3>{tr.t('Registering your account...')}</h3>
                     {this.renderError()}
                     {this.renderRegistering()}
                 </Paper>
@@ -51,26 +52,21 @@ export default React.createClass( {
         if (error.data && error.data.name === 'NoSuchCode') {
             return (
                 <div className="alert alert-warning text-center" role="alert">
-                    The email verification code is no longer valid.
+                    {tr.t('The email verification code is no longer valid.')}
                 </div>
             );
         } else {
             //TODO
             return (
                 <div className="alert alert-danger text-center" role="alert">
-                    An error occured
+                    {tr.t('An error occured')}
                 </div>
             );
         }
     },
     renderRegistering(){
         if(!this.props.verifyEmailCode.error){
-            return (
-                <div>
-
-                    <Spinner/>
-                </div>
-            );
+            return <Spinner/>;
         }
     }
 } );

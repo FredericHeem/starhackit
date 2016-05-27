@@ -1,4 +1,5 @@
 import React from 'react';
+import tr from 'i18next';
 import Paper from 'material-ui/Paper';
 import DocTitle from 'components/docTitle';
 import MediaSigninButtons from '../components/mediaSigninButtons';

@@ -7,6 +7,9 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const muiTheme = getMuiTheme(baseTheme);
 
+// eslint-disable-next-line no-undef
+let version = __VERSION__;
+
 export default React.createClass( {
     componentWillMount () {
         this.props.actions.me();
@@ -20,7 +23,7 @@ export default React.createClass( {
                         {this.props.children}
                     </div>
 
-                    <Footer version={`${__VERSION__}`}/>
+                    <Footer version={`${version}`}/>
                 </div>
             </MuiThemeProvider>
         );

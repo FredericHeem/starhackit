@@ -25,16 +25,16 @@ export default React.createClass( {
     renderRegisterComplete(){
         return(
             <div className="alert alert-info text-center" role="alert">
-                A confirmation email has been sent. Click on the link to verify your email address and activate your account.
+                {tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.')}
             </div>
         );
     },
     renderRegisterForm(){
         return (
             <Paper className="text-center view">
-                <h2>Register An Account</h2>
+                <h2>{tr.t('Register An Account')}</h2>
 
-                <p >Create a free account</p>
+                <p>{tr.t('Create a free account')}</p>
 
                 <div>
                     <RegisterForm {...this.props}/>

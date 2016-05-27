@@ -7,13 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 
-
-import Debug from 'debug';
-let debug = new Debug("views:forgot");
-
 export default React.createClass( {
-    propTypes:{
-    },
     getInitialState() {
         return {
             step: 'SendPasswordResetEmail',
@@ -43,10 +37,10 @@ export default React.createClass( {
         let {errors} = this.state;
         return (
             <div className="">
-                <h3>Forgot Password ?</h3>
-                <p><strong>Enter the email address used when you registered with username and password. </strong></p>
+                <h3>{tr.t('Forgot Password ?')}</h3>
+                <p><strong>{tr.t('Enter the email address used when you registered with username and password. ')}</strong></p>
 
-                <p>You'll be sent a reset code to change your password.</p>
+                <p>{tr.t('You\'ll be sent a reset code to change your password.')}</p>
 
                 <div className="form-inline">
                     <TextField
@@ -68,12 +62,12 @@ export default React.createClass( {
         }
         return (
             <div>
-                <h3>Step 2 - Check Email</h3>
-                <p><strong>An email has been sent containing your reset link. Click on this link to proceed.</strong></p>
+                <h3>{tr.t('Step 2 - Check Email')}</h3>
+                <p><strong>{tr.t('An email has been sent containing your reset link. Click on this link to proceed.')}</strong></p>
 
-                <p>Please also check your spam folder just in case the reset email ended up there.</p>
+                <p>{tr.t('Please also check your spam folder just in case the reset email ended up there.')}</p>
 
-                <p>This page can be safely closed.</p>
+                <p>{tr.t('This page can be safely closed.')}</p>
             </div>
         );
     },
@@ -95,7 +89,7 @@ export default React.createClass( {
           .run(payload)
           .then(this.props.actions.requestPasswordReset)
           .then(() => {
-              this.setState( {
+              return this.setState( {
                   step: 'CheckEmail'
               } );
           })

@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Table
 } from 'reactabular';
+import tr from 'i18next';
 import Paginator from 'react-pagify';
 import segmentize from 'segmentize';
 import Spinner from 'components/spinner';
@@ -79,7 +80,7 @@ export default React.createClass({
                           sidePages: 2
                       })}
                       onSelect={this.onSelectPage}>
-                      <Paginator.Button page={pagination.page - 1}>Previous</Paginator.Button>
+                      <Paginator.Button page={pagination.page - 1}>{tr.t('Previous')}</Paginator.Button>
 
                       <Paginator.Segment field="beginPages" />
 
@@ -95,7 +96,7 @@ export default React.createClass({
 
                       <Paginator.Segment field="endPages" />
 
-                      <Paginator.Button page={pagination.page + 1}>Next</Paginator.Button>
+                      <Paginator.Button page={pagination.page + 1}>{tr.t('Next')}</Paginator.Button>
                     </Paginator.Context>
 
                 </div>
@@ -138,6 +139,7 @@ export default React.createClass({
                     loading: false
                 });
             }
+            return true;
         })
         .catch(err => {
             debug('error: ', err);

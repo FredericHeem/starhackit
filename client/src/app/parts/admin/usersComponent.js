@@ -1,4 +1,5 @@
 import React from 'react';
+import tr from 'i18next';
 import moment from 'moment';
 import RestTableComponent from 'components/restTableComponent';
 
@@ -44,7 +45,7 @@ export default React.createClass({
         }
         return (
             <div className="panel panel-default">
-              <div className="panel-heading">Users</div>
+              <div className="panel-heading">{tr.t('Users')}</div>
               <div className="panel-body">
                   <RestTableComponent
                       columns={columns}

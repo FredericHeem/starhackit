@@ -1,4 +1,5 @@
 import React from 'react';
+import tr from 'i18next';
 import DocTitle from 'components/docTitle';
 
 export default React.createClass( {
@@ -14,7 +15,7 @@ export default React.createClass( {
                     title="Logout"
                 />
                 <div className="text-center">
-                    <h1>Logged Out</h1>
+                    <h1>{tr.t('Logged Out')}</h1>
                 </div>
 
             </div>

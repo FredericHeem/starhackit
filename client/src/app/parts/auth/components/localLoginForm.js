@@ -12,7 +12,7 @@ export default React.createClass( {
         if(this.props.login.error){
             return (
                 <div className="alert alert-danger text-center" role="alert">
-                    <strong>Username</strong> and <strong>Password</strong> do not match
+                    {tr.t('Username and Password do not match')}
                 </div>
             )
         }

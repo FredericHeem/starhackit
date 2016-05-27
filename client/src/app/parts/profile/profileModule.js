@@ -35,8 +35,8 @@ function Containers(actions){
     return {
         profile(){
             const mapStateToProps = (state) => ({
-                profile: state.get('profile').toJS(),
-                profileUpdate: state.get('profileUpdate').toJS()
+                profile: state.profile,
+                profileUpdate: state.profileUpdate
             })
             return connect(mapStateToProps, mapDispatchToProps)(ProfileView);
         }

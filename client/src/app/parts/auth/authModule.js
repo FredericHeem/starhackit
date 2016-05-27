@@ -1,5 +1,3 @@
-import _ from 'lodash';
-import Immutable from 'immutable'
 import React from 'react';
 import {Route} from 'react-router';
 import {bindActionCreators} from 'redux';
@@ -63,16 +61,23 @@ const defaultState = {
 
 function AuthReducer(actions){
   return createReducer({
-      [actions.setToken]: (state, payload) => state.set('token', payload),
-      [actions.me.ok]: (state) => state.set('authenticated', true),
-      [actions.login.ok]: (state, payload) => Immutable.fromJS(_.defaults({
+      [actions.setToken]: (state, payload) => ({
+          ...state,
+          token: payload
+      }),
+      [actions.me.ok]: (state) => ({
+          ...state,
+          authenticated: true
+      }),
+      [actions.login.ok]: (state, payload) => ({
+          ...state,
           authenticated: true,
           token: payload.token
-      }, defaultState)),
-      [actions.login.error]: () => Immutable.fromJS(defaultState),
-      [actions.me.error]: () => Immutable.fromJS(defaultState),
-      [actions.logout.ok]: () => Immutable.fromJS(defaultState),
-  }, Immutable.fromJS(defaultState));
+      }),
+      [actions.login.error]: () => defaultState,
+      [actions.me.error]: () => defaultState,
+      [actions.logout.ok]: () => defaultState,
+  }, defaultState);
 }
 
 function Reducers(actions){
@@ -93,13 +98,13 @@ function Containers(actions){
     return {
         login(){
             const mapStateToProps = (state) => ({
-                authenticated: state.get('auth').get('authenticated'),
-                login: state.get('login').toJSON()
+                authenticated: state.auth.authenticated,
+                login: state.login
             })
             return connect(mapStateToProps, mapDispatchToProps)(LoginView);
         },
         register(){
-            const mapStateToProps = (state) => ({register: state.get('register').toJSON()})
+            const mapStateToProps = (state) => ({register: state.register})
             return connect(mapStateToProps, mapDispatchToProps)(RegisterView);
         },
         logout(){
@@ -111,20 +116,20 @@ function Containers(actions){
             return connect(mapStateToProps, mapDispatchToProps)(ForgotView);
         },
         resetPassword(){
-            const mapStateToProps = (state) => ({verifyResetPasswordToken: state.get('verifyResetPasswordToken').toJSON()})
+            const mapStateToProps = (state) => ({verifyResetPasswordToken: state.verifyResetPasswordToken})
             return connect(mapStateToProps, mapDispatchToProps)(ResetPasswordView);
         },
         registrationComplete(){
-            const mapStateToProps = (state) => ({verifyEmailCode: state.get('verifyEmailCode').toJSON()})
+            const mapStateToProps = (state) => ({verifyEmailCode: state.verifyEmailCode})
             return connect(mapStateToProps, mapDispatchToProps)(RegistrationCompleteView);
         },
         authentication(){
-          const mapStateToProps = (state) => ({authenticated: state.get('auth').get('authenticated')})
+          const mapStateToProps = (state) => ({authenticated: state.auth.authenticated})
           return connect(mapStateToProps, mapDispatchToProps)(AuthenticatedComponent);
         },
         app(){
             const mapStateToProps = (state) => ({
-                authenticated: state.get('auth').get('authenticated')
+                authenticated: state.auth.authenticated
             })
             return connect(mapStateToProps, mapDispatchToProps)(AppView);
         }
@@ -132,8 +137,8 @@ function Containers(actions){
 }
 
 function Middleware(actions){
-  const authMiddleware = store => next => action => {
-    console.log('auth action.type: ', action.type)
+  const authMiddleware = (/*store*/) => next => action => {
+    //console.log('auth action.type: ', action.type)
     switch(action.type){
       case actions.login.ok.getType():
         //Save jwt

@@ -8,7 +8,7 @@ export default function(store) {
             return token;
         },
         selector() {
-            return () => store.getState().get('auth').get('token')
+            return () => store.getState().auth.token
         }
     }
 }

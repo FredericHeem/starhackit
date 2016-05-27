@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import {
     combineReducers
-} from 'redux-immutable';
+} from 'redux';
 
 export default function(modules) {
-
     let reducers = {};
     _.each(modules, (module) => {
         if (module.reducers) {

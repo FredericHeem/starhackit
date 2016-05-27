@@ -1,8 +1,6 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger';
-import Immutable from 'immutable';
-import {Iterable} from 'immutable';
 import RootReducer from './rootReducer';
 
 function devTools(){
@@ -10,17 +8,10 @@ function devTools(){
 }
 
 function logger(){
-  const stateTransformer = (state) => {
-    if (Iterable.isIterable(state)) return state.toJS();
-    else return state;
-  };
-
-  return createLogger({
-    stateTransformer,
-  });
+  return createLogger({});
 }
 
-export default function configureStore(modules, initialState = Immutable.fromJS({})) {
+export default function configureStore(modules, initialState = {}) {
   const reducers = RootReducer(modules);
   const store = createStore(
     reducers,

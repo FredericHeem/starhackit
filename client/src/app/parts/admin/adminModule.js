@@ -41,8 +41,8 @@ function Containers(actions, resources){
       },
       user(){
           const mapStateToProps = (state) => ({
-              usersGetOne: state.get('usersGetOne').toJS(),
-              usersGetAll: state.get('usersGetAll').toJS()
+              usersGetOne: state.usersGetOne,
+              usersGetAll: state.usersGetAll
           })
           //const mapStateToProps = () => ({resources})
           return connect(mapStateToProps, mapDispatchToProps)(UserView);

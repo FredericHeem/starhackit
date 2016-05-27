@@ -10,13 +10,13 @@ import Debug from 'debug';
 let debug = new Debug("rootView");
 
 export default function(store, parts){
-    console.log("ROOTVIEW")
+    debug('init');
     const history = syncHistoryWithStore(browserHistory, store)
 
     let Intl = parts.core.containers.intl();
 
     const routes = Routes(store, parts)
-    debug('init');
+
     return (
         <Provider store={store}>
             <Intl>

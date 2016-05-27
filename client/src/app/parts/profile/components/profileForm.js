@@ -19,7 +19,6 @@ export default React.createClass({
     },
     getDefaultProps(){
         return {
-            loading: false,
             profile: {}
         }
     },
@@ -31,7 +30,6 @@ export default React.createClass({
         debug("getInitialState: props: ", this.props);
         return {
             language: 'US',
-            updating: false,
             errors: {},
             completed:0
         }
@@ -123,8 +121,7 @@ export default React.createClass({
     onUpdateProfile() {
         debug('updateProfile ', this.state);
         this.setState( {
-            errors: {},
-            updating: true
+            errors: {}
         } );
 
         validateForm.call( this )
@@ -135,11 +132,6 @@ export default React.createClass({
                 errors: error.toJSON()
             } ))
             .catch( setErrors )
-            .then( () => {
-                this.setState( {
-                    updating: false
-                } );
-            } );
 
         function validateForm() {
             return new ValidateProfileForm( {
@@ -153,10 +145,12 @@ export default React.createClass({
         }
 
         function successNotification() {
+            return true;
         }
 
         function setErrors( e ) {
             debug('setErrors: ', e);
+            //throw e;
         }
     }
 } );

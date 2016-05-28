@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "5"
   - "4"
-  
+
 env:
   - CXX=g++-4.8
 
@@ -22,5 +22,5 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 
 after_script:
-  - cd client && npm run build
+  - cd client && npm run build && npm test
   - cd server && npm run codeclimate && npm run coveralls

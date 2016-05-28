@@ -8,7 +8,7 @@ var webpackProdConfig = {
     overrides: {
         entry: {
             app: [
-                './src/app/app.js'
+                './src/app/index.js'
             ]
         },
         output: {

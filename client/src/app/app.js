@@ -3,7 +3,6 @@ import 'assets/stylus/main';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
 import Rest from './utils/rest';
 import configureStore from './configureStore';
 
@@ -27,7 +26,7 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 let debug = new Debug("app");
 
-function App() {
+export default function() {
     debug("App begins");
     const rest = Rest();
     let auth = AuthModule(rest);
@@ -65,6 +64,3 @@ function App() {
 
     }
 }
-
-let app = App();
-app.start();

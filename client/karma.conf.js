@@ -1,17 +1,19 @@
 var webpack = require('webpack');
+var path = require('path');
 var webpackConfig = require('./webpack.dev');
 webpackConfig.devtool = 'inline-source-map';
 
+function pathAppTo() {
+    return path.join( __dirname, 'src', 'app', path.join.apply( path, arguments ) );
+}
+
 module.exports = function (config) {
   config.set({
-    browsers: ['PhantomJS'], // ['Chrome'] run in Chrome
+    browsers: ['PhantomJS'], // ['Chrome'] run in Chrome, 'PhantomJS'
     singleRun: true,
     frameworks: ['mocha', 'sinon'],
     files: [
       'src/**/*.spec.js'
-    ],
-    plugins: ['karma-chrome-launcher', 'karma-phantomjs-launcher', 'karma-chai', 'karma-mocha', 'karma-sinon',
-      'karma-sourcemap-loader', 'karma-webpack', 'karma-coverage', 'karma-mocha-reporter'
     ],
     preprocessors: {
       'src/**/*.js': ['webpack', 'sourcemap']
@@ -22,21 +24,49 @@ module.exports = function (config) {
         loaders: [{
           test: /\.(js|jsx)$/, exclude: /(node_modules)/,
           loader: 'babel-loader'
-        }],
+        },{
+            test: /\.json$/,
+            loader: 'json',
+          }
+        ],
         postLoaders: [{
           test: /\.(js|jsx)$/, exclude: /(node_modules|tests)/,
           loader: 'istanbul-instrumenter'
+      },
+      {
+          test: /\.css$/,
+          loader: 'style-loader!css-loader'
       },
        {
            test: /\.styl$/,
            loader: "css-loader!stylus-loader"
        }]
        },
+       plugins: [
+         //new webpack.IgnorePlugin(/jsdom$/),
+         new webpack.DefinePlugin( {
+             __VERSION__: JSON.stringify('1.0')
+         } )
+      ],
       externals: {
         cheerio: 'window',
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
+      },
+      resolve: {
+          root: path.join( __dirname, 'src', 'app'),
+          extensions: [ '', '.js', '.jsx', '.styl', 'css' ],
+          alias: {
+              //application aliases
+              components: pathAppTo( 'components' ),
+              resources: pathAppTo( 'resources' ),
+              services: pathAppTo( 'services' ),
+              utils: pathAppTo( 'utils' ),
+              parts: pathAppTo( 'parts' ),
+              assets: path.resolve( __dirname, 'src', 'assets'),
+              config: pathAppTo( 'config.js' )
+          }
       }
     },
     webpackServer: {

@@ -49,18 +49,16 @@ module.exports = function (config) {
          } )
       ],
       externals: {
-        cheerio: 'window',
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
       },
       resolve: {
           root: path.join( __dirname, 'src', 'app'),
-          extensions: [ '', '.js', '.jsx', '.styl', 'css' ],
+          extensions: [ '', '.js', '.jsx', '.styl', '.css', '.json'],
           alias: {
               //application aliases
               components: pathAppTo( 'components' ),
-              resources: pathAppTo( 'resources' ),
               services: pathAppTo( 'services' ),
               utils: pathAppTo( 'utils' ),
               parts: pathAppTo( 'parts' ),
@@ -73,8 +71,15 @@ module.exports = function (config) {
       noInfo: true
     },
     coverageReporter: {
-      type: 'html',
-      dir: 'coverage/'
+      reporters: [
+         {
+             type: 'text-summary',
+         },
+         {
+             type: 'html',
+             dir: 'coverage/',
+         }
+     ]
     }
   });
 };

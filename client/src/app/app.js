@@ -1,8 +1,5 @@
 import 'assets/stylus/main';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 import Rest from './utils/rest';
 import configureStore from './configureStore';
 
@@ -43,24 +40,15 @@ export default function() {
     rest.setJwtSelector(jwt.selector(store));
 
     return {
+        createContainer(){
+            return rootView(store, parts)
+        },
         async start() {
             debug("start");
             let language = await i18n.load(store, parts.core.actions);
             store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
-            render()
             jwt.loadJWT(parts)
         }
     };
-
-    function render() {
-        debug("render");
-        let mountEl = document.getElementById('application');
-        ReactDOM.render(
-                <div>
-                    {rootView(store, parts)}
-                </div>
-                , mountEl);
-
-    }
 }

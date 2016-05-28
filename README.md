@@ -11,9 +11,18 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 * Relational database: postgres, mysql, sqlite, mssql etc, ...
 * Logging
 
-Technologies:
+
+## Frontend Technologies
 
 * [React](https://facebook.github.io/react/): a facebook library to build user interfaces.
+* [Redux](http://redux.js.org/): predictable state container for JavaScript apps.
+* [Webpack](http://webpack.github.io/): module bundler for the browser
+* [Stylus](http://stylus-lang.com/): expressive, dynamic, robust CSS
+* [i18next](http://i18next.com/): internationalization
+
+
+## Backend Technologies
+
 * [Koa](http://koajs.com/): next generation web framework for Node.js.
 * [Sequelize](http://docs.sequelizejs.com/en/latest/): Object Relationship Management (ORM) supporting majors relational SQL database.
 * [PostgreSQL](http://www.postgresql.org/): the world's most advanced open source relational database.
@@ -21,10 +30,14 @@ Technologies:
 * [Passport](http://passportjs.org/): authentication framework with more than 140 authentication strategies: username/password, facebook , google, github etc ...
 * [Winston](https://github.com/winstonjs/winston): a multi-transport async logging library.
 * [Nodemailer](https://github.com/andris9/Nodemailer): send email with various provider.
+
+## Dev Technologies
+
 * [Babel](https://babeljs.io/): A es6/es7 compiler.
 * [Gulp](http://gulpjs.com/): automate and enhance your workflow.
-* [Webpack](http://webpack.github.io/): module bundler for the browser
 * [Mocha](http://mochajs.org/): test framework.
+* [Karma](https://karma-runner.github.io): a productive testing environment to developers
+* [Nightwatch](http://nightwatchjs.org/): End-to-End tests in Node.js quickly and effortlessly that run against a Selenium server
 * [Sinon](http://sinonjs.org/): test spies, stubs and mocks.
 * [Eslint](http://eslint.org/): The pluggable linting utility for JavaScript and JSX.
 * [Travis](https://travis-ci.org/): Test and deploy. [![Build Status](https://travis-ci.org/FredericHeem/starhackit.svg?branch=master)](https://travis-ci.org/FredericHeem/starhackit)

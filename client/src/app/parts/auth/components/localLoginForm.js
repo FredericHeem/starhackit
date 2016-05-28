@@ -4,6 +4,7 @@ import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:login");
+import Alert from 'components/alert';
 
 export default React.createClass( {
     propTypes:{
@@ -11,9 +12,9 @@ export default React.createClass( {
     renderError(){
         if(this.props.login.error){
             return (
-                <div className="alert alert-danger text-center" role="alert">
-                    {tr.t('Username and Password do not match')}
-                </div>
+                <Alert
+                    message={tr.t('Username and Password do not match')}
+                    />
             )
         }
     },

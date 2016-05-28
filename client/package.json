@@ -10,7 +10,6 @@
     "lint": "eslint src --ext .js --ext .jsx",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "test": "npm run unit-test",
-    "postinstall": "gulp selenium:install",
     "build": "webpack --config webpack.prod.js --progress",
     "prebuild": "npm run lint",
     "bundle-size": "webpack --config webpack.prod.js --json --progress | webpack-bundle-size-analyzer",

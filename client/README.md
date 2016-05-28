@@ -20,7 +20,6 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm start`    | Start a development web server  |
 | `npm test`     |  Run the unit tests with Karma |
 | `npm run unit-test-watch` |  watch the code and run the unit test |
-
 | `npm run build`| Create a production build  |
 | `npm run bundle-size`| Create a report to show the size of each dependencies |
 
@@ -48,16 +47,23 @@ To run the development web server:
 
 ### Test
 
-To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
+#### Unit test with Karma
+
+Unit tests are written as `mocha` test and executed thanks to `karma`:
 
     $ npm test
+
+> React components are tested with the [enzyme](http://airbnb.io/enzyme/) library.
+
+#### End to end testing with nightwatch
+
+To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
+
+    $ npm run nightwatch
 
 The end to end tests are executed by [nightwatch](http://nightwatchjs.org/) which uses the *Selenium* driver API.
 
 The test suite can be found in [test/nightwatch](test/nightwatch)
-
-
-
 
 ## Configuration
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
@@ -6,6 +7,11 @@ import Alert from 'components/alert';
 
 export default React.createClass( {
     propTypes:{
+    },
+    getInitialState() {
+        return {
+            errors: {}
+        };
     },
     renderError(){
         if(this.props.login.error){
@@ -19,6 +25,7 @@ export default React.createClass( {
     render() {
         //debug('render state: ', this.state);
         //debug('render props:', this.props);
+        let {errors} = this.state;
         return (
             <div className="local-login-form">
                 <form>
@@ -29,6 +36,7 @@ export default React.createClass( {
                                 id='username'
                                 ref="username"
                                 hintText={tr.t('Username')}
+                                errorText={errors.username && errors.username[0]}
                                 />
                         </div>
                         <div className='form-group password'>
@@ -37,6 +45,7 @@ export default React.createClass( {
                                 ref="password"
                                 hintText={tr.t('password')}
                                 type='password'
+                                errorText={errors.password && errors.password[0]}
                                 />
                         </div>
 
@@ -56,11 +65,33 @@ export default React.createClass( {
         );
     },
 
-    login() {
+    login(evt) {
+        evt.preventDefault()
         let {username, password} = this.refs;
-        return this.props.actions.login({
+        let payload = {
             username: username.getValue(),
             password: password.getValue()
-        })
+        }
+        console.log('login')
+        validateLogin.call( this, payload )
+            .with( this )
+            .then( this.props.actions.login)
+            .catch( setErrors );
     }
 } );
+
+function validateLogin( payload ) {
+    let rules = new Checkit( {
+        username: [ 'required', 'alphaDash', 'minLength:3', 'maxLength:64'],
+        password: [ 'required', 'alphaDash', 'minLength:6', 'maxLength:64' ]
+    } );
+    return rules.run( payload );
+}
+
+function setErrors( error ) {
+    console.log('setErrors ', error)
+    //debug("setErrors", error);
+    if ( error instanceof Checkit.Error ) {
+        this.setState({errors: error.toJSON()})
+    };
+}

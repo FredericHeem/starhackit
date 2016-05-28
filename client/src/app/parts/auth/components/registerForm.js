@@ -30,19 +30,21 @@ export default React.createClass( {
         debug('render props:', this.props);
         let {errors} = this.state;
         return (
-            <div className="local-login-form">
+            <div className="local-login-form register-form">
                 <form>
                     <div className="signup-options text-center form">
                         {this.renderError()}
                         <div className='form-group username'>
                             <TextField
+                                id='username'
                                 ref="username"
-                                hintText={tr.t('username')}
+                                hintText={tr.t('Username')}
                                 errorText={errors.username && errors.username[0]}
                                 />
                         </div>
                         <div className='form-group email'>
                             <TextField
+                                id='email'
                                 ref="email"
                                 hintText={tr.t('email')}
                                 errorText={errors.email && errors.email[0]}
@@ -60,8 +62,7 @@ export default React.createClass( {
 
                         <div className='btn-signup'>
                             <LaddaButton
-                                className='btn btn-lg btn-primary'
-                                id='btn-login'
+                                className='btn btn-lg btn-primary btn-register'
                                 buttonColor='green'
                                 loading={this.props.loading}
                                 progress={.5}

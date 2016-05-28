@@ -8,13 +8,13 @@ describe('Register', function () {
             done();
         });
     });
+
     it('register no password', function (client) {
-        client
-            .url(`${client.launch_url}/signup`)
-            .waitForElementVisible('#signup', 5000)
-            .setValue('#email', 'alice')
-            .click('.btn-signup')
-            .waitForElementVisible('.has-error', 5000)
+        client.page.register().navigate()
+            .waitForElementVisible('.register-form', 5000)
+            .setValue('@emailInput', 'alice')
+            .click('@submit')
+            .waitForElementVisible('.username', 5000)
             //.assert.containsText('.has-error span', 'The email must be a valid email address');
     });
 });

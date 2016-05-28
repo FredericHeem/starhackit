@@ -33,16 +33,6 @@ This command also statically analyze the code with eslint and generate a code co
 
 [sequelize-cli](https://github.com/sequelize/cli) helps to manage the database migration and rollback.
 
-## Database migration
-Run the following command to migrate the database:
-
-    $ ./node_modules/.bin/sequelize db:migrate
-
-## Database rollback
-When the new database update breaks in production, it's very handy to rollback as quick as possible:
-
-    $ ./node_modules/.bin/sequelize db:migrate:undo
-
 ## Creating a new data model
 
 By using the *model:create* command, a new sequelize model is created alongside its migration script for database update and rollback
@@ -58,3 +48,16 @@ By using the *model:create* command, a new sequelize model is created alongside 
   * the sql migration script in the *migrations* directory
 
 Eventually change the sql table name to *underscore_case*
+
+## Database migration
+
+> Database migration are **not** necessary for development environment but only for system already in production when the schema need to be updated.
+
+Run the following command to migrate the database:
+
+    $ ./node_modules/.bin/sequelize db:migrate
+
+### Database rollback
+When the new database update breaks in production, it's very handy to rollback as quick as possible:
+
+    $ ./node_modules/.bin/sequelize db:migrate:undo

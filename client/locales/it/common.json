@@ -2,7 +2,7 @@
   "login": "Entra",
   "logout": "Esci",
   "email": "Email",
-  "username": "Nome utente",
+  "Username": "Nome utente",
   "password": "Parola d'ordine",
   "forgotPassword": "Dimenticato la password ?"
 }

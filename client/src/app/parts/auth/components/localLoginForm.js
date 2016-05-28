@@ -19,8 +19,8 @@ export default React.createClass( {
         }
     },
     render() {
-        debug('render state:', this.state);
-        debug('render props:', this.props);
+        //debug('render state: ', this.state);
+        //debug('render props:', this.props);
         return (
             <div className="local-login-form">
                 <form>
@@ -30,7 +30,7 @@ export default React.createClass( {
                             <TextField
                                 id='username'
                                 ref="username"
-                                hintText='Username'
+                                hintText={tr.t('Username')}
                                 />
                         </div>
                         <div className='form-group password'>

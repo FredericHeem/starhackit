@@ -1,6 +1,6 @@
 import React from 'react';
 import Checkit from 'checkit';
-import tr from 'i18next';
+import Alert from 'components/alert'
 import LocalAuthenticationForm from '../components/localAuthenticationForm';
 import {createError} from 'utils/error';
 
@@ -24,11 +24,11 @@ export default React.createClass( {
         if(!error) return;
 
         return (
-            <div className="alert alert-danger text-center animate bounceIn" role="alert">
-                <div>{tr.t('An error occured')}: {error.name}</div>
-                <div>{error.message}</div>
-                <div>{tr.t('Status Code')}: {error.status}</div>
-            </div>
+            <Alert
+                name={error.name}
+                message={error.message}
+                code={error.status}
+                />
         );
     },
     render() {

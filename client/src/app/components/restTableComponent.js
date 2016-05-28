@@ -6,10 +6,11 @@ import tr from 'i18next';
 import Paginator from 'react-pagify';
 import segmentize from 'segmentize';
 import Spinner from 'components/spinner';
+import Alert from 'components/alert'
 import Debug from 'debug';
 let debug = new Debug("components:resttable");
 
-require('react-pagify/style.css');
+import 'react-pagify/style.css';
 
 export default React.createClass({
     propTypes: {
@@ -44,18 +45,18 @@ export default React.createClass({
         let {error} = this.state;
         if(!error) return;
         return (
-            <div className="alert alert-danger text-center animate bounceIn" role="alert">
-                <div>An error occured: {error.name}</div>
-                <div>Status: {error.statusText}</div>
-                <div>Status Code: {error.status}</div>
-            </div>
+            <Alert
+                name={error.name}
+                message={error.statusText}
+                code={error.status}
+                />
         );
     },
-    render () {
+    render() {
         //debug('render ', this.state);
         return (
             <div>
-                {this.state.error && this.renderError()}
+                {this.renderError()}
                 {this.renderTable()}
                 {this.renderLoading()}
             </div>

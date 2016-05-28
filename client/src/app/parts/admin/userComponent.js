@@ -4,6 +4,9 @@ import Spinner from 'components/spinner';
 import Debug from 'debug';
 let debug = new Debug("components:user");
 
+const Item = ({name, value}) =>(
+    <div><div>{name}</div><div>{value}</div></div>
+)
 export default React.createClass({
     render() {
         debug(`render `, this.props);
@@ -15,10 +18,10 @@ export default React.createClass({
 
         return (
             <div className='user'>
-                <div>{tr.t('id')}: {user.id}</div>
-                <div>{tr.t('username')}: {user.username}</div>
-                <div>{tr.t('email')}: {user.email}</div>
-                <div>{tr.t('first name')}: {user.firstname}</div>
+                <Item name={tr.t('id')} value={user.id}/>
+                <Item name={tr.t('username')} value={user.username}/>
+                <Item name={tr.t('email')} value={user.email}/>
+                <Item name={tr.t('first name')} value={user.firstname}/>
             </div>
         );
     }

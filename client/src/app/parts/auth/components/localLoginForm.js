@@ -2,8 +2,6 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
-import Debug from 'debug';
-let debug = new Debug("components:login");
 import Alert from 'components/alert';
 
 export default React.createClass( {

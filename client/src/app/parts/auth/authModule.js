@@ -6,7 +6,6 @@ import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
 
 import AuthenticatedComponent from './components/authenticatedComponent';
-
 import LoginView from './views/loginView';
 import LogoutView from './views/logoutView';
 import ForgotView from './views/forgotView';

@@ -11,6 +11,7 @@ var webpackDevConfig = {
             app: [
                 'webpack-dev-server/client?http://localhost:8080',
                 'webpack/hot/only-dev-server',
+                'webpack-hud',
                 './src/app/index.js'
             ]
         }
@@ -28,11 +29,14 @@ var webpackDevConfig = {
     loaders: [
         {
             test: /\.jsx?$/,
-            loaders: [ 'react-hot', 'babel' ],
+            loaders: [ 'react-hot', 'babel' ],// TODO Add eslint
             include: path.join( __dirname, 'src', 'app' ),
             exclude: path.join( __dirname, 'node_modules' )
         }
-    ]
+    ],
+    eslint: {
+      emitWarning: false
+    }
 };
 
 module.exports = require( './webpack.config' )( webpackDevConfig );

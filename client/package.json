@@ -136,6 +136,7 @@
     "webpack": "1.13.1",
     "webpack-bundle-size-analyzer": "2.0.1",
     "webpack-dev-server": "1.14.1",
+    "webpack-hud": "0.0.5",
     "webpack-stream": "3.2.0"
   }
 }

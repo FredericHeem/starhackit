@@ -29,13 +29,13 @@ var webpackDevConfig = {
     loaders: [
         {
             test: /\.jsx?$/,
-            loaders: [ 'react-hot', 'babel' ],// TODO Add eslint
+            loaders: [ 'react-hot', 'babel', 'eslint'],
             include: path.join( __dirname, 'src', 'app' ),
             exclude: path.join( __dirname, 'node_modules' )
         }
     ],
     eslint: {
-      emitWarning: false
+      emitWarning: true
     }
 };
 

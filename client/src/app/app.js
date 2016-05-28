@@ -40,12 +40,14 @@ export default function() {
     rest.setJwtSelector(jwt.selector(store));
 
     return {
+        parts,
+        store,
         createContainer(){
             return rootView(store, parts)
         },
         async start() {
             debug("start");
-            let language = await i18n.load(store, parts.core.actions);
+            let language = await i18n.load();
             store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
             jwt.loadJWT(parts)

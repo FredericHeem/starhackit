@@ -18,7 +18,9 @@ These are the main *npm* commands for a normal developer workflow:
 |----------------|----------|
 | `npm install`  | Install dependencies  |
 | `npm start`    | Start a development web server  |
-| `npm test`     |  Perform the end to end testing |
+| `npm test`     |  Run the unit tests with Karma |
+| `npm run unit-test-watch` |  watch the code and run the unit test |
+
 | `npm run build`| Create a production build  |
 | `npm run bundle-size`| Create a report to show the size of each dependencies |
 

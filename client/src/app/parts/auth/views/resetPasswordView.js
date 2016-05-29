@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import tr from 'i18next';
+import Checkit from 'checkit';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -55,6 +56,7 @@ export default React.createClass( {
             return;
         }
         let {errors} = this.state;
+        debug("renderSetNewPassword ", errors);
         return (
             <div>
                 <p><strong>{tr.t('Enter your new password.')}</strong></p>
@@ -64,7 +66,7 @@ export default React.createClass( {
                         ref="password"
                         hintText={tr.t('password')}
                         type='password'
-                        errorText={errors.email && errors.email[0]}
+                        errorText={errors.password && errors.password[0]}
                         />
                 </div>
 
@@ -95,7 +97,11 @@ export default React.createClass( {
             .with( this )
             .then( verifyResetPasswordToken )
             .then( setNextStep )
-            .catch( errors );
+            .catch(Checkit.Error, errors => {
+                this.setState( {
+                    errors: errors.toJSON()
+                } );
+            });
 
         function validatePassword() {
             return new ValidatePassword( this.password() )
@@ -113,15 +119,6 @@ export default React.createClass( {
             this.setState( {
                 step: 'SetNewPasswordDone'
             } );
-        }
-
-        function errors( e ) {
-            debug("errors ", e);
-            if ( e.name === 'CheckitError' ) {
-                this.setState( {
-                    errors: e.toJSON()
-                } );
-            }
         }
     },
 

@@ -5,6 +5,16 @@ services:
       persist: true
       expose:
         - 5672:5672
+  - postgres:latest:
+        name: postgres
+        persist: true
+        env:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=
+        expose:
+          - 5432:5432
+        exec: |
+          psql -c 'create database travis_ci_test;' -U postgres
 expose:
   - 3000:3000
 quiet: false

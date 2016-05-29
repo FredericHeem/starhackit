@@ -1,6 +1,19 @@
 # StarHackIt React Frontend
 
-An ES6 React based Frontend starter kit.
+An ES6 React based frontend starter kit:
+
+* ES6/ES7 with `babel`
+* Internationalization with `i18next` and `react-intl`
+* Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`
+* Hot reloading with `react-hot-loader`
+* Display lint warnings and build errors to directly to the browser with `webpack-hud`
+* Unit tests with `karma`, `mocha` and `enzyme`
+* Code coverage with `istanbul`
+* End to end tests with `nightwatch`
+* Concatenation, minification, obfuscation and compression of javascript and css file
+* Bundle size and dependencies size under control
+* Logging with the `debug` library
+* Configuration depending of the environment: dev, uat, prod etc ...
 
 ## Development and build process
 
@@ -32,8 +45,6 @@ To download and install the dependencies set in [package.json](package.json):
 
     $ npm install
 
-The `postinstall` npm script also installs the [Selenium](http://www.seleniumhq.org/) driver locally for end to end testing.
-
 ### Build & Serve
 
 [Webpack](https://webpack.github.io/) has become the defacto standard for building React frontend, it is configured through 3 files:
@@ -62,6 +73,7 @@ Unit tests are written as `mocha` test and executed thanks to `karma`:
 
 To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
 
+    $ npm run selenium-install
     $ npm run nightwatch
 
 The end to end tests are executed by [nightwatch](http://nightwatchjs.org/) which uses the *Selenium* driver API.

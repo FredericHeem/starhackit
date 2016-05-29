@@ -8,14 +8,15 @@
     "start": "webpack-dev-server --config webpack.dev.js",
     "prestart": "npm run lint",
     "lint": "eslint src --ext .js --ext .jsx",
-    "nightwatch": "cd test/nightwatch/ && nightwatch",
-    "test": "npm run unit-test",
-    "build": "webpack --config webpack.prod.js --progress",
     "prebuild": "npm run lint",
+    "build": "webpack --config webpack.prod.js --progress",
     "bundle-size": "webpack --config webpack.prod.js --json --progress | webpack-bundle-size-analyzer",
-    "clean": "gulp clean",
+    "clean": "rimraf build coverage",
+    "test": "npm run unit-test",
     "unit-test": "karma start --single-run --no-auto-watch karma.conf.js",
-    "unit-test-watch": "karma start --auto-watch --no-single-run karma.conf.js"
+    "unit-test-watch": "karma start --auto-watch --no-single-run karma.conf.js",
+    "e2e": "npm run nightwatch",
+    "nightwatch": "cd test/nightwatch/ && nightwatch"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "redux-act-async": "0.7.0",
     "redux-logger": "2.6.1",
     "redux-thunk": "2.1.0",
+    "rimraf": "2.5.2",
     "segmentize": "0.4.1",
     "when": "3.7.7"
   },

@@ -51,7 +51,7 @@ Eventually change the sql table name to *underscore_case*
 
 ## Database migration
 
-> Database migration are **not** necessary for development environment but only for system already in production when the schema need to be updated.
+> Database migration are **not** necessary for development environment but only for system already in production.
 
 Run the following command to migrate the database:
 

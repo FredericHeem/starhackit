@@ -9,7 +9,7 @@ import { Router } from 'react-router'
 import Debug from 'debug';
 let debug = new Debug("rootView");
 
-export default function(store, parts){
+export default function RootView(store, parts){
     debug('init');
     const history = syncHistoryWithStore(browserHistory, store)
 
@@ -28,3 +28,5 @@ export default function(store, parts){
         </Provider>
     )
 }
+
+RootView.displayName = 'RootView'

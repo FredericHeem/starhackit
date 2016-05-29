@@ -15,20 +15,20 @@ function Resources(rest){
         return rest.get(`users/${id}`, data);
     }
   }
-};
+}
 
 function Actions(rest){
     let users = Resources(rest);
     return {
         getAll: createActionAsync('USER_GETALL', users.getAll),
-        getOne: createActionAsync('USER_GETONE', users.getOne),
+        getOne: createActionAsync('USER_GETONE', users.getOne)
     }
 }
 
 function Reducers(actions){
   return {
     usersGetAll: createReducerAsync(actions.getAll),
-    usersGetOne: createReducerAsync(actions.getOne),
+    usersGetOne: createReducerAsync(actions.getOne)
   }
 }
 

@@ -7,6 +7,7 @@
         "flow-vars",
         "jsx-extras"
     ],
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
     "env": {
         "browser": true,
         "es6": true,
@@ -62,7 +63,7 @@
         "react/wrap-multilines": 1,
         "react/react-in-jsx-scope": 1,
         "react/no-unknown-property": 2,
-
+        "react/no-is-mounted": 0,
         "jsx-extras/jsx-no-string-literals": 1,
 
         "promise/param-names": 1,

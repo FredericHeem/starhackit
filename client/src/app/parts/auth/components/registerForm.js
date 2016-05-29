@@ -9,6 +9,8 @@ let debug = new Debug("components:register");
 
 export default React.createClass( {
     propTypes:{
+        register: React.PropTypes.object.isRequired,
+        actions: React.PropTypes.object.isRequired
     },
     getInitialState() {
         return {
@@ -64,7 +66,7 @@ export default React.createClass( {
                             <LaddaButton
                                 className='btn btn-lg btn-primary btn-register'
                                 buttonColor='green'
-                                loading={this.props.loading}
+                                loading={this.props.register.loading}
                                 progress={.5}
                                 buttonStyle="slide-up"
                                 onClick={this.register}>{ tr.t('createAccount') }</LaddaButton>
@@ -76,6 +78,7 @@ export default React.createClass( {
     },
 
     register(evt) {
+        //TODO trim spaces
         evt.preventDefault()
         let {username, email, password} = this.refs;
         let payload = {
@@ -106,5 +109,5 @@ function setErrors( error ) {
     debug("setErrors", error);
     if ( error instanceof Checkit.Error ) {
         this.setState({errors: error.toJSON()})
-    };
+    }
 }

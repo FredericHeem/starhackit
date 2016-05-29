@@ -3,13 +3,16 @@ import Debug from 'debug';
 let debug = new Debug("containers:authenticated");
 
 export default React.createClass({
+    displayName: 'Authenticated',
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
-        authenticated: React.PropTypes.bool.isRequired
+        authenticated: React.PropTypes.bool.isRequired,
+        location: React.PropTypes.object.isRequired,
+        children: React.PropTypes.node
     },
-    componentWillMount: function () {
+    componentWillMount() {
         debug('componentWillMount pathname: ', this.props.location.pathname);
         let nextPath = this.props.location.pathname;
         if (!this.props.authenticated) {
@@ -19,13 +22,13 @@ export default React.createClass({
             debug('is authenticated');
         }
     },
-    componentDidUpdate: function () {
+    componentDidUpdate() {
         this.componentWillMount();
     },
-    getInitialState: function () {
+    getInitialState() {
         return {};
     },
-    render: function () {
+    render() {
         return (
             <div>
                 {this.props.children}

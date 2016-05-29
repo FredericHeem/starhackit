@@ -39,7 +39,7 @@ export default React.createClass({
     renderLoading(){
         if(this.state.loading){
             return (<Spinner/>);
-        };
+        }
     },
     renderError(){
         let {error} = this.state;
@@ -67,7 +67,7 @@ export default React.createClass({
         let pages = Math.ceil(count / pagination.perPage);
         if(pages <= 1){
             return;
-        };
+        }
         return (
             <div className='controls'>
                 <div className='pagination'>

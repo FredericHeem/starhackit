@@ -15,6 +15,9 @@ let debug = new Debug("resetPasword");
 export default React.createClass( {
 
     propTypes:{
+        verifyResetPasswordToken: React.PropTypes.object.isRequired,
+        params: React.PropTypes.object.isRequired,
+        actions: React.PropTypes.object.isRequired
     },
     getInitialState() {
         return {

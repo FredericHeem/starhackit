@@ -14,7 +14,7 @@ function Resources(rest){
         return rest.patch('me', payload);
     }
   }
-};
+}
 
 function Actions(rest){
     let profile = Resources(rest);
@@ -27,7 +27,7 @@ function Actions(rest){
 function Reducers(actions){
   return {
     profile: createReducerAsync(actions.get),
-    profileUpdate: createReducerAsync(actions.update),
+    profileUpdate: createReducerAsync(actions.update)
   }
 }
 function Containers(actions){

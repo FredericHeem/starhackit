@@ -16,13 +16,12 @@ export default function(options = {}){
   function ajax( url, method, data, params ) {
       debug("ajax url: %s, method: %s, options %s, params: ", url, method, JSON.stringify(options), params);
       let headers = {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
       }
 
       if(_jwtSelector){
           let jwt = _jwtSelector();
           if(jwt){
-              console.log("adding jwt: ", jwt);
               headers.Authorization = 'Bearer ' + jwt;
           }
       }
@@ -41,7 +40,7 @@ export default function(options = {}){
       }).then(res => {
           return res.data;
       }).catch(error => {
-          console.log("ajax error: ", error);
+          debug("ajax error: ", error);
           throw error
       });
   }

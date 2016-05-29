@@ -11,6 +11,11 @@ const muiTheme = getMuiTheme(baseTheme);
 let version = __VERSION__;
 
 export default React.createClass( {
+    propTypes:{
+        authenticated: React.PropTypes.bool.isRequired,
+        actions: React.PropTypes.object.isRequired,
+        children: React.PropTypes.node
+    },
     componentWillMount () {
         this.props.actions.me();
     },

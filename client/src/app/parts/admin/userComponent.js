@@ -7,7 +7,17 @@ let debug = new Debug("components:user");
 const Item = ({name, value}) =>(
     <div><div>{name}</div><div>{value}</div></div>
 )
+
+Item.propTypes = {
+  name: React.PropTypes.string.isRequired,
+  value: React.PropTypes.string.isRequired,
+  code: React.PropTypes.string
+};
+
 export default React.createClass({
+    propTypes:{
+        usersGetOne: React.PropTypes.object.isRequired
+    },
     render() {
         debug(`render `, this.props);
 

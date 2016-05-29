@@ -3,11 +3,14 @@ import DocTitle from 'components/docTitle';
 import UserComponent from './userComponent';
 
 export default React.createClass({
+    propTypes:{
+        params: React.PropTypes.object.isRequired,
+        actions: React.PropTypes.object.isRequired
+    },
     componentDidMount () {
         this.props.actions.getOne(this.props.params.userId)
     },
     render () {
-        //let {userId} = this.props.params.userId;
         return (
             <div id="user-view">
                 <DocTitle title="User"/>

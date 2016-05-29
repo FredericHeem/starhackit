@@ -7,6 +7,7 @@ import RegisterForm from '../components/registerForm';
 
 export default React.createClass( {
     propTypes:{
+        register: React.PropTypes.object.isRequired
     },
 
     render() {

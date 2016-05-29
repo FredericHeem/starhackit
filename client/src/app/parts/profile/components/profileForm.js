@@ -13,8 +13,11 @@ import Debug from 'debug';
 let debug = new Debug("components:profileForm");
 
 export default React.createClass({
+    disaplyName:'ProfileForm',
     propTypes: {
+        profileUpdate: React.PropTypes.object,
         profile: React.PropTypes.object,
+        actions: React.PropTypes.object
     },
     getDefaultProps(){
         return {
@@ -134,7 +137,7 @@ export default React.createClass({
 
         function validateForm() {
             return new ValidateProfileForm( {
-                username: this.state.username,
+                username: this.state.username
             } )
             .execute();
         }

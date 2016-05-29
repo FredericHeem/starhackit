@@ -3,7 +3,9 @@ import tr from 'i18next';
 import DocTitle from 'components/docTitle';
 
 export default React.createClass( {
-
+    propTypes:{
+        actions: React.PropTypes.object
+    },
     componentDidMount () {
         this.props.actions.logout();
     },

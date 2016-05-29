@@ -18,7 +18,7 @@ const languagesDetectorOption = {
     lookupLocalStorage: 'i18nextLng',
 
     // cache user language on
-    caches: ['localStorage', 'cookie'],
+    caches: ['localStorage', 'cookie']
 
     // optional expire and domain for set cookie
     //cookieMinutes: 10,

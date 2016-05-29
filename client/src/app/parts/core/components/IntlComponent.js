@@ -6,4 +6,11 @@ let Intl = ({language, ...props}) => (
     {props.children}
   </IntlProvider>
 )
+
+Intl.propTypes = {
+  children: React.PropTypes.node,
+  language: React.PropTypes.string.isRequired
+};
+
+Intl.displayName = 'Intl';
 export default Intl;

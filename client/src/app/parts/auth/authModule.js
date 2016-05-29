@@ -38,7 +38,7 @@ function Resources(rest){
         return rest.post('auth/verify_reset_password_token', payload);
     }
   }
-};
+}
 
 function Actions(rest){
     let auth = Resources(rest);
@@ -50,12 +50,12 @@ function Actions(rest){
         requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', auth.requestPasswordReset),
         register: createActionAsync('REGISTER', auth.register),
         verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', auth.verifyEmailCode),
-        verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', auth.verifyResetPasswordToken),
+        verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', auth.verifyResetPasswordToken)
     }
 }
 
 const defaultState = {
-  authenticated: false,
+  authenticated: false
 };
 
 function AuthReducer(actions){
@@ -75,7 +75,7 @@ function AuthReducer(actions){
       }),
       [actions.login.error]: () => defaultState,
       [actions.me.error]: () => defaultState,
-      [actions.logout.ok]: () => defaultState,
+      [actions.logout.ok]: () => defaultState
   }, defaultState);
 }
 

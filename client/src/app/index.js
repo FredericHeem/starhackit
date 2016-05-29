@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app'
+import Debug from 'debug';
+
+let debug = new Debug("app.entry");
 
 function render(view){
   let mountEl = document.getElementById('application');
@@ -17,5 +20,5 @@ try {
   let container = app.createContainer();
   render(container)
 } catch (e) {
-  console.error('Error in app:', e);
+  debug('Error in app:', e);
 }

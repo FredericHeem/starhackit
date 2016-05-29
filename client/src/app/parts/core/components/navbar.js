@@ -35,7 +35,7 @@ function navLinks(authenticated) {
             }
         ];
     }
-};
+}
 
 export default React.createClass({
     contextTypes: {

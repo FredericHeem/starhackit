@@ -7,6 +7,8 @@ import Alert from 'components/alert';
 
 export default React.createClass( {
     propTypes:{
+        login: React.PropTypes.object.isRequired,
+        actions: React.PropTypes.object.isRequired
     },
     getInitialState() {
         return {
@@ -68,11 +70,12 @@ export default React.createClass( {
     login(evt) {
         evt.preventDefault()
         let {username, password} = this.refs;
+        // TODO trim spaces
         let payload = {
             username: username.getValue(),
             password: password.getValue()
         }
-        console.log('login')
+        //console.log('login')
         validateLogin.call( this, payload )
             .with( this )
             .then( this.props.actions.login)
@@ -89,9 +92,9 @@ function validateLogin( payload ) {
 }
 
 function setErrors( error ) {
-    console.log('setErrors ', error)
+    //console.log('setErrors ', error)
     //debug("setErrors", error);
     if ( error instanceof Checkit.Error ) {
         this.setState({errors: error.toJSON()})
-    };
+    }
 }

@@ -5,6 +5,9 @@ import FontIcon from 'material-ui/FontIcon';
 import config from 'config';
 
 export default React.createClass({
+    propTypes:{
+        socialAuth: React.PropTypes.object
+    },
     getDefaultProps() {
         return {
             socialAuth: _.extend({}, config.socialAuth),

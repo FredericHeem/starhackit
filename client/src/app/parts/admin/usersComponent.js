@@ -35,6 +35,9 @@ export default React.createClass({
     contextTypes: {
         router: React.PropTypes.object.isRequired
     },
+    propTypes:{
+        resources: React.PropTypes.object.isRequired
+    },
     render () {
         debug('render ', this.state);
         let {router} = this.context;

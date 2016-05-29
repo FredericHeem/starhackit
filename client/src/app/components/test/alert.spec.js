@@ -9,7 +9,7 @@ describe('Alert', () => {
       title='Title'
       name="NoSuchCode"
       message="message"/>);
-      console.log(component.props())
+      //console.log(component.props())
 
     expect(component.props().title).to.equal("Title")
   });

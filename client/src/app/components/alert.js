@@ -4,7 +4,7 @@ import Debug from 'debug';
 
 let debug = new Debug("components:alert");
 
-export default({title, name, message, code}) => {
+export default function Alert({title, name, message, code}){
     debug('name: ', name)
     return (
         <div className="alert alert-danger text-center animate bounceIn" role="alert">
@@ -28,3 +28,10 @@ export default({title, name, message, code}) => {
         </div>
     )
 }
+
+Alert.propTypes = {
+  title: React.PropTypes.string,
+  name: React.PropTypes.string,
+  message: React.PropTypes.string,
+  code: React.PropTypes.string
+};

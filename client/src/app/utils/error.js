@@ -14,7 +14,7 @@ export function createError(errorIn) {
         return {
             errors: errorIn.toJSON()
         };
-    };
+    }
 
     let errorServer = {
         name: errorIn.name,
@@ -28,6 +28,7 @@ export function createError(errorIn) {
             message:errorIn.responseJSON.message
         });
     } else if ( errorIn.statusText ) {
+        errorServer.message = errorIn.statusText
     }  else {
         errorServer.message = errorIn.toString();
     }

@@ -12,7 +12,9 @@ export default React.createClass( {
     },
     propTypes:{
         data: React.PropTypes.object,
-        //error: React.PropTypes.object
+        actions: React.PropTypes.object,
+        params: React.PropTypes.object,
+        verifyEmailCode: React.PropTypes.object
     },
 
     componentDidMount(){

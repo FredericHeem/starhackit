@@ -5,7 +5,7 @@ import { routerReducer } from 'react-router-redux'
 
 function Actions(){
     return {
-        setLocale: createAction('LOCALE_SET'),
+        setLocale: createAction('LOCALE_SET')
     }
 }
 
@@ -14,7 +14,7 @@ function LanguageReducer(actions){
       [actions.setLocale]: (state, payload) => ({
         ...state,
         locale: payload
-      }),
+      })
   }, {locale:'en'});
 }
 

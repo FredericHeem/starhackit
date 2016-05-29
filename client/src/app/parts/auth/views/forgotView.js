@@ -8,6 +8,9 @@ import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 
 export default React.createClass( {
+    propTypes:{
+        actions: React.PropTypes.object.isRequired
+    },
     getInitialState() {
         return {
             step: 'SendPasswordResetEmail',

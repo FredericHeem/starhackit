@@ -50,7 +50,8 @@ export default function() {
             let language = await i18n.load();
             store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
-            jwt.loadJWT(parts)
+            jwt.loadJWT(parts);
+            store.dispatch(parts.auth.actions.me())
         }
     };
 }

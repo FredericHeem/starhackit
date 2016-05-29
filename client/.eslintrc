@@ -32,6 +32,7 @@
         "jsx": true
     },
     "rules": {
+        "no-console": 1,
         "consistent-return": [0],
         "key-spacing": [0],
         "quotes": [0, "single", "avoid-escape"],

@@ -10,27 +10,21 @@ const muiTheme = getMuiTheme(baseTheme);
 // eslint-disable-next-line no-undef
 let version = __VERSION__;
 
-export default React.createClass( {
-    propTypes:{
-        authenticated: React.PropTypes.bool.isRequired,
-        actions: React.PropTypes.object.isRequired,
-        children: React.PropTypes.node
-    },
-    componentWillMount () {
-        this.props.actions.me();
-    },
-    render() {
-        return (
-            <MuiThemeProvider muiTheme={muiTheme}>
-                <div id="application-view">
-                    <NavBar authenticated={this.props.authenticated}/>
-                    <div id='main-container' className="container">
-                        {this.props.children}
-                    </div>
+ApplicationView.propTypes = {
+  authenticated: React.PropTypes.bool.isRequired,
+  children: React.PropTypes.node
+};
 
-                    <Footer version={`${version}`}/>
+export default function ApplicationView({authenticated, ...props}){
+    return (
+        <MuiThemeProvider muiTheme={muiTheme}>
+            <div id="application-view">
+                <NavBar authenticated={authenticated}/>
+                <div id='main-container' className="container">
+                    {props.children}
                 </div>
-            </MuiThemeProvider>
-        );
-    }
-});
+                <Footer version={version}/>
+            </div>
+        </MuiThemeProvider>
+    )
+}

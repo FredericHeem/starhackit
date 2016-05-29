@@ -4,6 +4,13 @@ import Debug from 'debug';
 
 let debug = new Debug("components:alert");
 
+Alert.propTypes = {
+  title: React.PropTypes.string,
+  name: React.PropTypes.string,
+  message: React.PropTypes.string,
+  code: React.PropTypes.string
+};
+
 export default function Alert({title, name, message, code}){
     debug('name: ', name)
     return (
@@ -28,10 +35,3 @@ export default function Alert({title, name, message, code}){
         </div>
     )
 }
-
-Alert.propTypes = {
-  title: React.PropTypes.string,
-  name: React.PropTypes.string,
-  message: React.PropTypes.string,
-  code: React.PropTypes.string
-};

@@ -50,14 +50,31 @@ function Routes(containers){
     )
 }
 
+function Middleware(actions){
+  const middleware = store => next => action => {
+    if(action.type === '@@router/LOCATION_CHANGE'){
+      switch (action.payload.pathname) {
+        case '/app/my/profile':
+          store.dispatch(actions.get())
+          break;
+        default:
+      }
+    }
+
+    return next(action)
+  }
+  return middleware;
+}
+
 export default function(rest) {
     let actions = Actions(rest);
     let containers = Containers(actions)
-    let routes = Routes(containers);
+
     return {
         actions,
         reducers: Reducers(actions),
         containers,
-        routes
+        routes: Routes(containers),
+        middleware: Middleware(actions)
     }
 }

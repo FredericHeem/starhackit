@@ -22,5 +22,3 @@ export default function Routes(store, parts) {
         </Route>
     )
 }
-
-Routes.displayName = 'Routes'

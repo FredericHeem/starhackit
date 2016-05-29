@@ -1,33 +1,55 @@
-Node.js starterkit
+Node.js Starter Kit
 ==================
 
 Backend Starter Kit written in node.js with the following features:
 
 * ES6/ES7 ready: async/await, classes, arrow function, template strings etc ...
-* REST API and Websocket
+* REST API
 * Authentication
 * Authorization
 * Scalable by using a micro services based architecture
 * Relational database.
 * Logging with timestamp and filename.
 
-#Workflow
+# Installation
 
 To install all the dependencies:
 
     # npm install
 
-## Backend
+
+## Docker containers
+
+To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)
+
+
+    # cd server
+    # npm run devlabinstall
+
+To check that the containers are running:
+
+```
+# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                         NAMES
+ccd9f559fabd        rabbitmq:latest     "/docker-entrypoint.s"   36 minutes ago      Up 36 minutes       4369/tcp, 25672/tcp, 0.0.0.0:5672->5672/tcp   devlab_rabbitmq_frederic_1446641005596
+```
+
+## Start
+
+Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
+Don't forget to correctly set the *rabbitmq* server location.
 
 To start the backend:
 
+    # cd server
     # npm start
 
+## Test & Code Coverage
 To test the backend:
 
     # npm test
 
-This command also statically analyze the code with eslint and generate a code coverage in text and html format.
+It will not only test the code, but also checks the source code with eslint and generates a code coverage report located at `coverage/lcov-report/index.html`
 
 # Development
 

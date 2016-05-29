@@ -20,6 +20,7 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 * [Stylus](http://stylus-lang.com/): expressive, dynamic, robust CSS
 * [i18next](http://i18next.com/): internationalization
 
+For more information about the frontend, see its [README](client/README.md)
 
 ## Backend Technologies
 
@@ -31,10 +32,11 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 * [Winston](https://github.com/winstonjs/winston): a multi-transport async logging library.
 * [Nodemailer](https://github.com/andris9/Nodemailer): send email with various provider.
 
+For more information about the backend, see its [README](server/README.md)
+
 ## Dev Technologies
 
 * [Babel](https://babeljs.io/): A es6/es7 compiler.
-* [Gulp](http://gulpjs.com/): automate and enhance your workflow.
 * [Mocha](http://mochajs.org/): test framework.
 * [Karma](https://karma-runner.github.io): a productive testing environment to developers
 * [Nightwatch](http://nightwatchjs.org/): End-to-End tests in Node.js quickly and effortlessly that run against a Selenium server
@@ -49,9 +51,16 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 
 # Workflow
 
+## Clone the source code
+
+To get the latest code, grab it by cloning the repository from GitHub:
+
+    $ git clone https://github.com/FredericHeem/starhackit.git yourproject
+    $ cd yourproject
+
 ## Yeoman generator
 
-The easiest way to bootstrap your application is to use the [Starhackit Yeoman generator](https://github.com/FredericHeem/generator-starhackit).
+Another way to bootstrap your application is to use the [Starhackit Yeoman generator](https://github.com/FredericHeem/generator-starhackit).
 
 First install *yo* and *generator-starhackit* globally:
 
@@ -65,47 +74,6 @@ Finally, initiate the generator and answer the questions about your project:
 mkdir yourproject && cd $_
 yo starhackit
 ```
-
-## Docker containers
-
-To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)
-
-
-    # cd server
-    # npm run devlabinstall
-
-To check that the containers are running:
-
-```
-# docker ps
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                         NAMES
-ccd9f559fabd        rabbitmq:latest     "/docker-entrypoint.s"   36 minutes ago      Up 36 minutes       4369/tcp, 25672/tcp, 0.0.0.0:5672->5672/tcp   devlab_rabbitmq_frederic_1446641005596
-```
-## Backend
-
-Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
-Don't forget to correctly set the *rabbitmq* server location.
-
-To start the backend:
-
-    # cd server
-    # npm start
-
-To test the backend:
-
-    # npm test
-
-It will not only test the code, but also checks the source code with eslint and generates a code coverage report located at `coverage/lcov-report/index.html`
-
-For more information about the backend, see its [README](server/README.md)
-
-## Frontend
-
-To run the frontend webserver:
-
-    # npm start
-
-For more information about the frontend, see its [README](client/README.md)
 
 ## Deployment
 

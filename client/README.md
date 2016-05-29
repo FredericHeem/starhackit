@@ -122,7 +122,7 @@ import tr from 'i18next';
 
 To build the production version:
 
-    $ npm build
+    $ npm run build
 
 *webpack* will produce a report with all the assets and their respective size.
 

@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import AuthenticatedComponent from './components/authenticatedComponent';
 import LoginView from './views/loginView';
@@ -153,6 +154,9 @@ function Middleware(actions){
       case actions.login.error.getType():
         //Remove jwt
         localStorage.removeItem("JWT");
+        break;
+      case actions.verifyEmailCode.ok.getType():
+        browserHistory.push(`/login`);
         break;
       default:
     }

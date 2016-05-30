@@ -7,21 +7,9 @@ import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
 export default React.createClass( {
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
+
     propTypes:{
         verifyEmailCode: React.PropTypes.object.isRequired
-    },
-
-    componentWillReceiveProps(nextProps) {
-        debug("componentWillReceiveProps next: ", nextProps);
-        debug("componentWillReceiveProps ", this.props);
-        if (nextProps.data) {
-            debug("componentWillReceiveProps router ", this.context.router);
-            let path = '/login';
-            this.context.router.push(path);
-        }
     },
 
     render() {

@@ -11,15 +11,7 @@ export default React.createClass( {
         router: React.PropTypes.object.isRequired
     },
     propTypes:{
-        data: React.PropTypes.object,
-        actions: React.PropTypes.object,
-        params: React.PropTypes.object,
-        verifyEmailCode: React.PropTypes.object
-    },
-
-    componentDidMount(){
-        debug("componentDidMount", this.props);
-        this.props.actions.verifyEmailCode({code: this.props.params.code});
+        verifyEmailCode: React.PropTypes.object.isRequired
     },
 
     componentWillReceiveProps(nextProps) {

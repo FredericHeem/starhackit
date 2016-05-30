@@ -169,8 +169,10 @@ function Routes(containers, store, actions){
             <Route component={containers.logout()} path="logout"
               onEnter={() => store.dispatch(actions.logout())}/>
             <Route component={containers.forgot()} path="forgot"/>
-            <Route component={containers.registrationComplete()} name="verifyEmail" path="verifyEmail/:code"/>
-            <Route component={containers.resetPassword()} name="ResetPasswordToken" path="resetPassword/:token"/>
+            <Route component={containers.registrationComplete()}
+              path="verifyEmail/:code"
+              onEnter={nextState => store.dispatch(actions.verifyEmailCode({code: nextState.params.code}))}/>
+            <Route component={containers.resetPassword()} path="resetPassword/:token"/>
         </Route>
     )
 }

@@ -4,25 +4,30 @@ import App from '../../app';
 describe('Auth', function() {
   let app = App();
   let {parts, store} = app;
-  const token = 'ASDFGHJKLL'
+  const token = 'ASDFGHJKLL';
+  let {actions} = parts.auth;
+  let selectState = store => store.getState().auth;
+  let isAuthenticated = store => selectState(store).auth.authenticated;
+  let getToken = store => selectState(store).auth.token;
+
   it('setToken', () => {
-    assert.isUndefined(store.getState().auth.token);
-    store.dispatch(parts.auth.actions.setToken(token));
-    assert.equal(store.getState().auth.token, token);
+    assert.isUndefined(getToken(store));
+    store.dispatch(actions.setToken(token));
+    assert.equal(getToken(store), token);
   });
   it('login', () => {
-    store.dispatch(parts.auth.actions.login.ok({token: token}));
-    assert.equal(store.getState().auth.authenticated, true);
-    assert.equal(store.getState().auth.token, token);
+    store.dispatch(actions.login.ok({token: token}));
+    assert.equal(isAuthenticated(store), true);
+    assert.equal(getToken(store), token);
   });
   it('logout ok', () => {
-    store.dispatch(parts.auth.actions.logout.ok());
-    assert.equal(store.getState().auth.authenticated, false);
+    store.dispatch(actions.logout.ok());
+    assert.equal(isAuthenticated(store), false);
   });
   it('logout error', () => {
-    store.dispatch(parts.auth.actions.login.ok({token: token}));
-    store.dispatch(parts.auth.actions.logout.error());
-    assert.equal(store.getState().auth.authenticated, false);
-
+    store.dispatch(actions.login.ok({token: token}));
+    store.dispatch(actions.logout.error());
+    assert.equal(isAuthenticated(store), false);
+    assert.isUndefined(getToken(store));
   });
 });

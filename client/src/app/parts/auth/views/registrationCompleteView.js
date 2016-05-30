@@ -6,49 +6,44 @@ import Spinner from 'components/spinner';
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
-export default React.createClass( {
+RegistrationError.propTypes = {
+  error: React.PropTypes.object.isRequired
+};
 
-    propTypes:{
-        verifyEmailCode: React.PropTypes.object.isRequired
-    },
-
-    render() {
-        debug("render ", this.props);
+function RegistrationError({error}){
+    if (error.data && error.data.name === 'NoSuchCode') {
         return (
-            <div id="registration-complete">
-                <DocTitle
-                    title="Registering"
-                />
-                <Paper className="text-center view">
-                    <h3>{tr.t('Registering your account...')}</h3>
-                    {this.renderError()}
-                    {this.renderRegistering()}
-                </Paper>
-
+            <div className="alert alert-warning text-center" role="alert">
+                {tr.t('The email verification code is no longer valid.')}
             </div>
         );
-    },
-    renderError(){
-        let {error} = this.props.verifyEmailCode;
-        if (!error) return;
-        if (error.data && error.data.name === 'NoSuchCode') {
-            return (
-                <div className="alert alert-warning text-center" role="alert">
-                    {tr.t('The email verification code is no longer valid.')}
-                </div>
-            );
-        } else {
-            //TODO
-            return (
-                <div className="alert alert-danger text-center" role="alert">
-                    {tr.t('An error occured')}
-                </div>
-            );
-        }
-    },
-    renderRegistering(){
-        if(!this.props.verifyEmailCode.error){
-            return <Spinner/>;
-        }
+    } else {
+        //TODO
+        return (
+            <div className="alert alert-danger text-center" role="alert">
+                {tr.t('An error occured')}
+            </div>
+        );
     }
-} );
+}
+
+RegistrationComplete.propTypes = {
+  verifyEmailCode: React.PropTypes.object.isRequired
+};
+
+export default function RegistrationComplete(props) {
+    debug("render ", props);
+    let {error} = props.verifyEmailCode;
+    return (
+        <div id="registration-complete">
+            <DocTitle
+                title="Registering"
+            />
+            <Paper className="text-center view">
+                <h3>{tr.t('Registering your account')}</h3>
+                {error && <RegistrationError error={error}/>}
+                {!error && <Spinner/>}
+            </Paper>
+        </div>
+    );
+}

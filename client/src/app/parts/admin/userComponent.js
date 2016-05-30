@@ -11,8 +11,7 @@ const Item = ({name, value}) =>(
 
 Item.propTypes = {
   name: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string.isRequired,
-  code: React.PropTypes.string
+  value: React.PropTypes.any.isRequired
 };
 
 export default React.createClass({
@@ -32,7 +31,6 @@ export default React.createClass({
                 <Item name={tr.t('id')} value={user.id}/>
                 <Item name={tr.t('username')} value={user.username}/>
                 <Item name={tr.t('email')} value={user.email}/>
-                <Item name={tr.t('first name')} value={user.firstname}/>
             </div>
         );
     }

@@ -45,12 +45,9 @@ function Containers(actions){
 }
 
 function Routes(containers, store, actions){
-    function profileOnEnter(nextState, replace, next){
-      store.dispatch(actions.get())
-      next()
-    }
     return (
-        <Route component={containers.profile()} path="profile" onEnter={profileOnEnter}/>
+        <Route component={containers.profile()} path="profile"
+            onEnter={() => store.dispatch(actions.get())}/>
     )
 }
 

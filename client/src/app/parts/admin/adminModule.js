@@ -56,20 +56,13 @@ function Containers(actions, resources){
 }
 
 function Routes(containers, store, actions){
-    function usersOnEnter(nextState, replace, next){
-      store.dispatch(actions.getAll())
-      next()
-    }
-    function userOnEnter(nextState, replace, next){
-      store.dispatch(actions.getOne(nextState.params.userId))
-      next()
-    }
-
     return (
         <Route path="/admin">
             <IndexRedirect to="users" />
-            <Route component={containers.users()} path="users" onEnter={usersOnEnter}/>
-            <Route component={containers.user()} path="users/:userId" onEnter={userOnEnter}/>
+            <Route component={containers.users()} path="users"
+              onEnter={() => store.dispatch(actions.getAll())}/>
+            <Route component={containers.user()} path="users/:userId"
+              onEnter={nextState => store.dispatch(actions.getOne(nextState.params.userId))}/>
         </Route>
     )
 }

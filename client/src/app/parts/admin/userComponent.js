@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import tr from 'i18next';
 import Spinner from 'components/spinner';
@@ -22,7 +23,7 @@ export default React.createClass({
         debug(`render `, this.props);
 
         let user = this.props.usersGetOne.data;
-        if(!user){
+        if(_.isEmpty(user)){
             return <Spinner/>
         }
 

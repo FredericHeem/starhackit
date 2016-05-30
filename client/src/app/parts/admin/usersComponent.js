@@ -32,28 +32,22 @@ const columns = [
 ];
 
 export default React.createClass({
-    contextTypes: {
-        router: React.PropTypes.object.isRequired
-    },
     propTypes:{
-        resources: React.PropTypes.object.isRequired
+        resources: React.PropTypes.object.isRequired,
+        actions: React.PropTypes.object.isRequired
     },
     render () {
         debug('render ', this.state);
-        let {router} = this.context;
-        function rowProps(row){
-            return {
-                onClick: () => router.push(`/admin/users/${row.id}`)
-            };
-        }
+        let {props} = this
+
         return (
             <div className="panel panel-default">
               <div className="panel-heading">{tr.t('Users')}</div>
               <div className="panel-body">
                   <RestTableComponent
                       columns={columns}
-                      getData={this.props.resources.getAll}
-                      row={rowProps}
+                      getData={props.resources.getAll}
+                      row={row => ({onClick: () => props.actions.selectOne(row.id)})}
                       rowKey='id'/>
               </div>
             </div>

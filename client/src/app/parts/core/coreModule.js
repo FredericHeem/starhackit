@@ -1,7 +1,12 @@
+import React from 'react';
+import { browserHistory, Router } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
 import IntlComponent from './components/IntlComponent';
-import { routerReducer } from 'react-router-redux'
+import { routerReducer, routerMiddleware} from 'react-router-redux'
+import Debug from 'debug';
+let debug = new Debug("core");
 
 function Actions(){
     return {
@@ -36,12 +41,25 @@ function Containers(){
     }
 }
 
+function createRouter(store, routes){
+    const history = syncHistoryWithStore(browserHistory, store)
+
+    history.listen(location => {
+       debug('routing to ', location)
+    })
+
+    return <Router history={history} routes={routes}/>
+}
+
 // Part
 export default function() {
   let actions = Actions();
+  const middleware = routerMiddleware(browserHistory)
   return {
     actions,
     reducers: Reducers(actions),
-    containers: Containers(actions)
+    containers: Containers(actions),
+    createRouter,
+    middleware: middleware
   }
 }

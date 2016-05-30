@@ -172,12 +172,11 @@ function Routes(containers){
 export default function(rest) {
     let actions = Actions(rest);
     let containers = Containers(actions)
-    let routes = Routes(containers);
     return {
         actions,
         reducers: Reducers(actions),
         middleware: Middleware(actions),
         containers,
-        routes
+        routes: (store) => Routes(containers, store, actions)
     }
 }

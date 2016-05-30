@@ -44,26 +44,14 @@ function Containers(actions){
     }
 }
 
-function Routes(containers){
-    return (
-        <Route component={containers.profile()} path="profile"/>
-    )
-}
-
-function Middleware(actions){
-  const middleware = store => next => action => {
-    if(action.type === '@@router/LOCATION_CHANGE'){
-      switch (action.payload.pathname) {
-        case '/app/my/profile':
-          store.dispatch(actions.get())
-          break;
-        default:
-      }
+function Routes(containers, store, actions){
+    function profileOnEnter(nextState, replace, next){
+      store.dispatch(actions.get())
+      next()
     }
-
-    return next(action)
-  }
-  return middleware;
+    return (
+        <Route component={containers.profile()} path="profile" onEnter={profileOnEnter}/>
+    )
 }
 
 export default function(rest) {
@@ -74,7 +62,6 @@ export default function(rest) {
         actions,
         reducers: Reducers(actions),
         containers,
-        routes: Routes(containers),
-        middleware: Middleware(actions)
+        routes: (store) => Routes(containers, store, actions)
     }
 }

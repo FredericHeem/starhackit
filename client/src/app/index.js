@@ -21,4 +21,5 @@ try {
   render(container)
 } catch (e) {
   debug('Error in app:', e);
+  throw e;
 }

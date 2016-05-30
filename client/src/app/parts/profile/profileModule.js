@@ -30,17 +30,16 @@ function Reducers(actions){
     profileUpdate: createReducerAsync(actions.update)
   }
 }
+
+let selectProfile = state => state.profile;
+
 function Containers(actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
     return {
         profile(){
-            const mapStateToProps = (state) => ({
-                profile: state.profile,
-                profileUpdate: state.profileUpdate
-            })
+            const mapStateToProps = (state) => selectProfile(state)
             return connect(mapStateToProps, mapDispatchToProps)(ProfileView);
         }
-
     }
 }
 

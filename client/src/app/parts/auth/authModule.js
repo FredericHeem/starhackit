@@ -92,24 +92,26 @@ function Reducers(actions){
     verifyResetPasswordToken: createReducerAsync(actions.verifyResetPasswordToken)
   }
 }
+let selectState = state => state.auth;
+let isAuthenticated = state => selectState(state).auth.authenticated;
 
 function Containers(actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
     return {
         login(){
             const mapStateToProps = (state) => ({
-                authenticated: state.auth.authenticated,
-                login: state.login
+                authenticated: isAuthenticated(state),
+                login: selectState(state).login
             })
             return connect(mapStateToProps, mapDispatchToProps)(LoginView);
         },
         register(){
-            const mapStateToProps = (state) => ({register: state.register})
+            const mapStateToProps = (state) => ({register: selectState(state).register})
             return connect(mapStateToProps, mapDispatchToProps)(RegisterView);
         },
         logout(){
             const mapStateToProps = (state) => ({
-                authenticated: state.auth.authenticated
+                authenticated: isAuthenticated(state)
             })
             return connect(mapStateToProps, mapDispatchToProps)(LogoutView);
         },
@@ -118,20 +120,20 @@ function Containers(actions){
             return connect(mapStateToProps, mapDispatchToProps)(ForgotView);
         },
         resetPassword(){
-            const mapStateToProps = (state) => ({verifyResetPasswordToken: state.verifyResetPasswordToken})
+            const mapStateToProps = (state) => ({verifyResetPasswordToken: selectState(state).verifyResetPasswordToken})
             return connect(mapStateToProps, mapDispatchToProps)(ResetPasswordView);
         },
         registrationComplete(){
-            const mapStateToProps = (state) => ({verifyEmailCode: state.verifyEmailCode})
+            const mapStateToProps = (state) => ({verifyEmailCode: selectState(state).verifyEmailCode})
             return connect(mapStateToProps, mapDispatchToProps)(RegistrationCompleteView);
         },
         authentication(){
-          const mapStateToProps = (state) => ({authenticated: state.auth.authenticated})
+          const mapStateToProps = (state) => ({authenticated: isAuthenticated(state)})
           return connect(mapStateToProps, mapDispatchToProps)(AuthenticatedComponent);
         },
         app(){
             const mapStateToProps = (state) => ({
-                authenticated: state.auth.authenticated
+                authenticated: isAuthenticated(state)
             })
             return connect(mapStateToProps, mapDispatchToProps)(AppView);
         }

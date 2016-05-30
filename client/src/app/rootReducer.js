@@ -2,14 +2,17 @@ import _ from 'lodash';
 import {
     combineReducers
 } from 'redux';
+import { routerReducer} from 'react-router-redux';
 
 export default function(modules) {
-    let reducers = {};
-    _.each(modules, (module) => {
+    let reducers = _.reduce(modules, (acc, module, key) => {
         if (module.reducers) {
-            reducers = _.merge(reducers, module.reducers)
+            acc[key] = combineReducers(module.reducers)
         }
-    });
+        return acc;
+    }, {});
 
-    return combineReducers(reducers);
+    reducers.routing = routerReducer;
+
+    return combineReducers(reducers)
 }

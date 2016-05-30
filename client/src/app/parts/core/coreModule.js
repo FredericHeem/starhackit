@@ -4,7 +4,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
 import IntlComponent from './components/IntlComponent';
-import { routerReducer, routerMiddleware} from 'react-router-redux'
+import {routerMiddleware} from 'react-router-redux'
 import Debug from 'debug';
 let debug = new Debug("core");
 
@@ -25,7 +25,6 @@ function LanguageReducer(actions){
 
 function Reducers(actions){
   return {
-    routing: routerReducer,
     language: LanguageReducer(actions)
   }
 }
@@ -34,7 +33,7 @@ function Containers(){
     return {
         intl(){
             const mapStateToProps = (state) => ({
-                language: state.language.locale
+                language: state.core.language.locale
             })
             return connect(mapStateToProps)(IntlComponent);
         }

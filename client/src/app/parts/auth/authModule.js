@@ -73,9 +73,10 @@ function AuthReducer(actions){
           authenticated: true,
           token: payload.token
       }),
-      [actions.login.error]: () => defaultState,
-      [actions.me.error]: () => defaultState,
-      [actions.logout.ok]: () => defaultState
+      [actions.login.error]: () => (defaultState),
+      [actions.me.error]: () => (defaultState),
+      [actions.logout.ok]: () => (defaultState),
+      [actions.logout.error]: () => (defaultState)
   }, defaultState);
 }
 
@@ -107,7 +108,9 @@ function Containers(actions){
             return connect(mapStateToProps, mapDispatchToProps)(RegisterView);
         },
         logout(){
-            const mapStateToProps = () => ({});
+            const mapStateToProps = (state) => ({
+                authenticated: state.auth.authenticated
+            })
             return connect(mapStateToProps, mapDispatchToProps)(LogoutView);
         },
         forgot(){
@@ -156,12 +159,13 @@ function Middleware(actions){
   return authMiddleware;
 }
 
-function Routes(containers){
+function Routes(containers, store, actions){
     return (
         <Route>
             <Route component={containers.login()} path="login"/>
             <Route component={containers.register()} path="register"/>
-            <Route component={containers.logout()} path="logout"/>
+            <Route component={containers.logout()} path="logout"
+              onEnter={() => store.dispatch(actions.logout())}/>
             <Route component={containers.forgot()} path="forgot"/>
             <Route component={containers.registrationComplete()} name="verifyEmail" path="verifyEmail/:code"/>
             <Route component={containers.resetPassword()} name="ResetPasswordToken" path="resetPassword/:token"/>

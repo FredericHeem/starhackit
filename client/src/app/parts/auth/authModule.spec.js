@@ -15,8 +15,13 @@ describe('Auth', function() {
     assert.equal(store.getState().auth.authenticated, true);
     assert.equal(store.getState().auth.token, token);
   });
-  it('logout', () => {
+  it('logout ok', () => {
     store.dispatch(parts.auth.actions.logout.ok());
+    assert.equal(store.getState().auth.authenticated, false);
+  });
+  it('logout error', () => {
+    store.dispatch(parts.auth.actions.login.ok({token: token}));
+    store.dispatch(parts.auth.actions.logout.error());
     assert.equal(store.getState().auth.authenticated, false);
 
   });

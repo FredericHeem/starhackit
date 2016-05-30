@@ -70,9 +70,8 @@ export default React.createClass( {
                         />
                 </div>
 
-
                 <div className="spacer">
-                    <RaisedButton onClick={ this.resetPassword } label='Reset Password'/>
+                    <RaisedButton onClick={ this.resetPassword } label={tr.t('Reset Password')}/>
                 </div>
             </div>
     );

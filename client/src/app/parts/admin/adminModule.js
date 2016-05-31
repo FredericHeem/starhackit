@@ -1,5 +1,3 @@
-import React from 'react';
-import {Route, IndexRedirect} from 'react-router';
 import { browserHistory } from 'react-router';
 import {bindActionCreators} from 'redux';
 import {createAction} from 'redux-act';
@@ -7,8 +5,6 @@ import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
 import UsersView from './usersView';
 import UserView from './userView';
-//import Debug from 'debug';
-//let debug = new Debug("admin");
 
 function Resources(rest){
   return {
@@ -56,15 +52,20 @@ function Containers(actions, resources){
 }
 
 function Routes(containers, store, actions){
-    return (
-        <Route path="/admin">
-            <IndexRedirect to="users" />
-            <Route component={containers.users()} path="users"
-              onEnter={() => store.dispatch(actions.getAll())}/>
-            <Route component={containers.user()} path="users/:userId"
-              onEnter={nextState => store.dispatch(actions.getOne(nextState.params.userId))}/>
-        </Route>
-    )
+    return {
+      path:'admin',
+      component: containers.users(),
+      childRoutes : [
+          {
+              path: 'users',
+              component: containers.users()
+          }, {
+              path: 'user/:userId',
+              component: containers.user(),
+              onEnter: nextState => store.dispatch(actions.getOne(nextState.params.userId))
+          }
+      ]
+    }
 }
 
 function Middleware(actions){

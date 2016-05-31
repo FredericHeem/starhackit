@@ -1,5 +1,3 @@
-import React from 'react';
-import {Route} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
@@ -44,10 +42,11 @@ function Containers(actions){
 }
 
 function Routes(containers, store, actions){
-    return (
-        <Route component={containers.profile()} path="profile"
-            onEnter={() => store.dispatch(actions.get())}/>
-    )
+    return {
+      path:'profile',
+      component: containers.profile(),
+      onEnter: () => store.dispatch(actions.get())
+    }
 }
 
 export default function(rest) {

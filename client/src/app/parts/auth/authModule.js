@@ -1,5 +1,3 @@
-import React from 'react';
-import {Route} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
@@ -166,19 +164,33 @@ function Middleware(actions){
 }
 
 function Routes(containers, store, actions){
-    return (
-        <Route>
-            <Route component={containers.login()} path="login"/>
-            <Route component={containers.register()} path="register"/>
-            <Route component={containers.logout()} path="logout"
-              onEnter={() => store.dispatch(actions.logout())}/>
-            <Route component={containers.forgot()} path="forgot"/>
-            <Route component={containers.registrationComplete()}
-              path="verifyEmail/:code"
-              onEnter={nextState => store.dispatch(actions.verifyEmailCode({code: nextState.params.code}))}/>
-            <Route component={containers.resetPassword()} path="resetPassword/:token"/>
-        </Route>
-    )
+    return {
+      childRoutes : [
+          {
+              path: 'login',
+              component: containers.login()
+          }, {
+              path: 'register',
+              component: containers.register()
+          }, {
+              path: 'logout',
+              component: containers.logout(),
+              onEnter: () => store.dispatch(actions.logout())
+          },{
+              path: 'forgot',
+              component: containers.forgot()
+          },{
+              path: 'resetPassword/:token',
+              component: containers.resetPassword()
+          },{
+              path: 'verifyEmail/:code',
+              component: containers.registrationComplete(),
+              onEnter: nextState => {
+                store.dispatch(actions.verifyEmailCode({code: nextState.params.code}))
+              }
+          }
+      ]
+    }
 }
 
 export default function(rest) {

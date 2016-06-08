@@ -1,0 +1,7 @@
+{
+  "error":{
+    "name":"UsernameAlreadyExist",
+    "message": "The username already exists, please chose another one",
+    "code":422
+  }
+}

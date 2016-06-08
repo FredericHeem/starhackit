@@ -6,7 +6,7 @@ version: v1
 mediaType: application/json
 protocols: [ HTTP, HTTPS ]
 documentation:
- - title: Starhackit User REST API
+ - title: User REST API
    content: 'User REST API documentation'
 
 /auth:
@@ -15,16 +15,64 @@ documentation:
     post:
       body:
         application/json:
-          schema: !include login.in.schema.json
-          example: !include login.in.sample.json
+          schema: !include login/login.in.schema.json
+          example: !include login/login.in.sample.json
       responses:
         200:
           body:
-            example: !include login.out.sample.json
+            example: !include login/login.out.sample.json
         401:
           description: 'Unauthorized'
           body:
-            example: !include login.error.sample.json
+            example: !include login/login.error.sample.json
+
+  /logout:
+    description: Logout
+    post:
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+
+  /register:
+    description: Request the creation of a new account.
+    post:
+      body:
+        application/json:
+          schema: !include register/register.in.schema.json
+          example: !include register/register.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+        422:
+          body:
+            example: !include register/register.error.sample.json
+
+  /verify_email_code:
+    description: Verify the code that was sent by email during the account registration.
+    post:
+      body:
+        application/json:
+          schema: !include verifyEmailCode/verifyEmailCode.in.schema.json
+          example: !include verifyEmailCode/verifyEmailCode.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+
+  /reset_password:
+    description: Start a request to reset the password.
+    post:
+      body:
+        application/json:
+          schema: !include resetPassword/resetPassword.in.schema.json
+          example: !include resetPassword/resetPassword.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+
 
 /me:
   description: Get information about the current authenticated user

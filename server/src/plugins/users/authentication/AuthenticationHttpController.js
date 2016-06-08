@@ -19,6 +19,7 @@ export default function(app, publisherUser){
   function logout(req, res) {
     log.debug("logout");
     req.logout();
+    //TODO change response schema
     res.send({success:true});
   }
 

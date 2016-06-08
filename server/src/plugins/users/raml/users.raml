@@ -73,7 +73,20 @@ documentation:
           body:
             example: !include success.out.json
 
-
+  /verify_reset_password_token:
+    description: Verify the reset password token.
+    post:
+      body:
+        application/json:
+          schema: !include verifyResetPasswordToken/verifyResetPasswordToken.in.schema.json
+          example: !include verifyResetPasswordToken/verifyResetPasswordToken.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+        422:
+          body:
+            example: !include verifyResetPasswordToken/verifyResetPasswordToken.error.sample.json
 /me:
   description: Get information about the current authenticated user
   get:

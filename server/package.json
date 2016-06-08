@@ -24,7 +24,10 @@
     "lint": "eslint src",
     "migrate": "sequelize db:migrate",
     "run": "pm2 start pm2.json",
-    "clean": "gulp clean"
+    "clean": "gulp clean",
+    "mock": "node scripts/mock-server.js",
+    "doc": "raml2html -i src/plugins/users/raml/users.raml -o build/api.html",
+    "postdoc":"open build/api.html"
   },
   "dependencies": {
     "axios": "0.9.1",
@@ -70,6 +73,8 @@
     "pm2": "1.1.1",
     "qs": "6.1.0",
     "rabbitmq-pubsub": "0.2.0",
+    "raml-mocker-server": "0.1.6",
+    "raml2html": "2.4.0",
     "run-sequence": "1.1.5",
     "sequelize": "3.21.0",
     "socket.io": "1.4.5",

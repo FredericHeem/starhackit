@@ -1,0 +1,30 @@
+{
+  "count": 105,
+  "data": [{
+    "id": 107,
+    "username": "Laura.Jennie.Reeves",
+    "email": "Laura.Jennie.Reeves@mail.com",
+    "firstName": null,
+    "lastName": null,
+    "facebookId": null,
+    "githubId": null,
+    "twitterId": null,
+    "googleId": null,
+    "fidorId": null,
+    "createdAt": "2016-05-28T15:00:56.358Z",
+    "updatedAt": "2016-05-28T15:00:56.358Z"
+  }, {
+    "id": 106,
+    "username": "Hilda.Virgie.Young",
+    "email": "Hilda.Virgie.Young@mail.com",
+    "firstName": null,
+    "lastName": null,
+    "facebookId": null,
+    "githubId": null,
+    "twitterId": null,
+    "googleId": null,
+    "fidorId": null,
+    "createdAt": "2016-05-28T15:00:55.922Z",
+    "updatedAt": "2016-05-28T15:00:55.922Z"
+  }]
+}

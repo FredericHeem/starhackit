@@ -1,0 +1,114 @@
+#%RAML 0.8
+---
+title: Starhackit
+baseUri: http://localhost:8080/api/v1
+version: v1
+mediaType: application/json
+protocols: [ HTTP, HTTPS ]
+documentation:
+ - title: User REST API
+   content: 'User REST API documentation'
+
+/auth:
+  /login:
+    description: 'Authenticate with the given username/email and password'
+    post:
+      body:
+        application/json:
+          schema: !include login/login.in.schema.json
+          example: !include login/login.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include login/login.out.sample.json
+        401:
+          description: 'Unauthorized'
+          body:
+            example: !include login/login.error.sample.json
+
+  /logout:
+    description: Logout
+    post:
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+
+  /register:
+    description: Request the creation of a new account.
+    post:
+      body:
+        application/json:
+          schema: !include register/register.in.schema.json
+          example: !include register/register.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+        422:
+          body:
+            example: !include register/register.error.sample.json
+
+  /verify_email_code:
+    description: Verify the code that was sent by email during the account registration.
+    post:
+      body:
+        application/json:
+          schema: !include verifyEmailCode/verifyEmailCode.in.schema.json
+          example: !include verifyEmailCode/verifyEmailCode.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+
+  /reset_password:
+    description: Start a request to reset the password.
+    post:
+      body:
+        application/json:
+          schema: !include resetPassword/resetPassword.in.schema.json
+          example: !include resetPassword/resetPassword.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+
+  /verify_reset_password_token:
+    description: Verify the reset password token.
+    post:
+      body:
+        application/json:
+          schema: !include verifyResetPasswordToken/verifyResetPasswordToken.in.schema.json
+          example: !include verifyResetPasswordToken/verifyResetPasswordToken.in.sample.json
+      responses:
+        200:
+          body:
+            example: !include success.out.json
+        422:
+          body:
+            example: !include verifyResetPasswordToken/verifyResetPasswordToken.error.sample.json
+/me:
+  description: Get information about the current authenticated user
+  get:
+    responses:
+      200:
+        body:
+          example: !include user.out.sample.json
+  patch:
+    responses:
+      204:
+
+/users:
+  description: Get all users
+  get:
+    responses:
+      200:
+        body:
+          example: !include users.out.sample.json
+  /{userId}:
+    description: Get one user
+    get:
+      responses:
+        200:
+          body:
+            example: !include user.out.sample.json

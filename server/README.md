@@ -1,22 +1,30 @@
 Node.js Starter Kit
 ==================
 
-Backend Starter Kit written in node.js with the following features:
+Backend Starter Kit written in Node.js with the following features:
 
-* ES6/ES7 ready: async/await, classes, arrow function, template strings etc ...
-* REST API
-* Authentication
-* Authorization
-* Scalable by using a micro services based architecture
-* Relational database.
-* Logging with timestamp and filename.
+* **ES6/ES7** ready: async/await, classes, arrow function, template strings etc ...
+* REST API designed with [RAML](http://raml.org/), produce a human friendly **API documentation** and a **Mock Server** for frontend developer.
+* [Json Web Token](https://jwt.io/) authentication. 
+* **Social Authentication** with Facebook, Google, etc .. Powered by [passport](http://passportjs.org/)
+* Fined-grained **Authorization** based on users, groups and resources.
+* Scalable by using a **Micro Services** based architecture. Orchestrating with [pm2](http://pm2.keymetrics.io/)
+* **SQL** Relational database support with  [Sequelize](http://docs.sequelizejs.com/en/latest/)
+* **Logging** with timestamp and filename.
 
-# Installation
+# Workflow with npm scripts
 
-To install all the dependencies:
+These are the main *npm* commands during a standard developer workflow:
 
-    # npm install
-
+| npm command    | details  |
+|----------------|----------|
+| `npm install`  | Install dependencies  |
+| `npm run devlabinstall`  | Install services such as Rabbitmq and Postgresql though docker |
+| `npm start`    | Start the backend  |
+| `npm test`     |  Run the tests and generate a code coverage |
+| `npm run mocha`|  Run the tests |
+| `npm run mock`  |  Run a mock server based on the RAML api definition |
+| `npm run doc` |  Generate the API HTML documentation |
 
 ## Docker containers
 

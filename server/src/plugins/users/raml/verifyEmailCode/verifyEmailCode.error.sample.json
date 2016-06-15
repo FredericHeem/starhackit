@@ -1,0 +1,7 @@
+{
+  "error":{
+    "name":"CodeInvalidOrExpired",
+    "message": "The code is invalid or has expired",
+    "code": 422
+  }
+}

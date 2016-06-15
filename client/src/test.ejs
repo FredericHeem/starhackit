@@ -1,0 +1,51 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <title>StarHackIt</title>
+    <meta name="description" content="Testing playground">
+    <meta name="viewport" content="width=device-width">
+    <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
+
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="/<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+    <% } %>
+</head>
+
+<body>
+<!--[if lt IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- application container -->
+<div id="test-app">
+    <style type="text/css">
+        #initializing {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+            height: 30%;
+            width: 50%;
+            margin: -10% 0 0 -10%;
+        }
+
+        #initializing i {
+
+            font-size: 15em;
+            color: silver;
+        }
+    </style>
+    <div id="initializing">
+        <i class="fa fa-cog fa-spin"></i>
+    </div>
+</div>
+
+<!--The application-->
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
+
+</body>
+</html>

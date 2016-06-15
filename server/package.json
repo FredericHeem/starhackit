@@ -34,7 +34,7 @@
     "babel-loader": "5.3.2",
     "babel-root-import": "1.0.1",
     "babel-runtime": "5.8.25",
-    "bcrypt": "0.8.5",
+    "bcrypt": "0.8.7",
     "bignumber.js": "2.3.0",
     "bluebird": "3.3.4",
     "chance": "1.0.1",

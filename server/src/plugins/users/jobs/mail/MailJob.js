@@ -59,6 +59,11 @@ export default function MailJob (config){
         throw {name:"token not set"};
       }
 
+      if(!transporter){
+        log.error("mail config not set");
+        throw {name:"mail config not set"};
+      }
+
       let locals = {
         code: user.code,
         websiteUrl: config.websiteUrl,

@@ -27,7 +27,7 @@
     "clean": "gulp clean",
     "mock": "node scripts/mock-server.js",
     "doc": "raml2html -i src/plugins/users/raml/users.raml -o build/api.html",
-    "postdoc":"open build/api.html"
+    "opendoc":"open build/api.html"
   },
   "dependencies": {
     "axios": "0.9.1",

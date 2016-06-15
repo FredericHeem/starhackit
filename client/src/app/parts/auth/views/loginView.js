@@ -20,7 +20,7 @@ export default React.createClass( {
 
     componentWillReceiveProps(nextProps){
         debug("componentWillReceiveProps", nextProps);
-        let path = nextProps.location.query.nextPath || '/app';
+        let path = nextProps.location.query.nextPath || '/app/profile';
         debug("componentWillReceiveProps next path: ", path);
         if (nextProps.authenticated) {
             this.context.router.push(path);

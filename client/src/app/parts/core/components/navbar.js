@@ -13,11 +13,9 @@ function navLinks(authenticated) {
             {
                 route: '/admin',
                 text: 'ADMIN'
-            }, {
-                route: '/app',
-                text: 'DASHBOARD'
-            }, {
-                route: '/app/my/profile',
+            },
+            {
+                route: '/app/profile',
                 text: 'PROFILE'
             }, {
                 route: '/logout',

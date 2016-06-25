@@ -199,7 +199,7 @@ export default function(rest) {
     return {
         actions,
         reducers: Reducers(actions),
-        middleware: Middleware(actions),
+        middlewares: [Middleware(actions)],
         containers,
         routes: (store) => Routes(containers, store, actions)
     }

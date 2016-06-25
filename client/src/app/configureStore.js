@@ -27,8 +27,8 @@ function createReducers(modules) {
 
 function createMiddlewares(modules){
   return _.reduce(modules, (acc, module) => {
-    if(module.middleware){
-      acc.push(module.middleware)
+    if(module.middlewares){
+      acc = acc.concat(module.middlewares)
     }
     return acc
   }, []);
@@ -37,7 +37,6 @@ function createMiddlewares(modules){
 export default function configureStore(modules, initialState = {}) {
   const reducers = createReducers(modules);
   const middlewares = createMiddlewares(modules)
-
   const store = createStore(
     reducers,
     initialState,

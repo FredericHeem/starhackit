@@ -11,7 +11,7 @@ function navLinks(authenticated) {
     if (authenticated) {
         return [
             {
-                route: '/admin',
+                route: '/admin/users',
                 text: 'ADMIN'
             },
             {

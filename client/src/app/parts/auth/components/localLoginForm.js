@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Alert from 'components/alert';
+import rules from 'services/rules';
 
 export default React.createClass( {
     propTypes:{
@@ -68,33 +69,31 @@ export default React.createClass( {
     },
 
     login(evt) {
-        evt.preventDefault()
+        evt.preventDefault();
+
+        this.setState( {
+            errors: {}
+        });
+
         let {username, password} = this.refs;
         // TODO trim spaces
         let payload = {
             username: username.getValue(),
             password: password.getValue()
         }
+
+        let rulesLogin = new Checkit( {
+            username: rules.username,
+            password: rules.password
+        } );
+
         //console.log('login')
-        validateLogin.call( this, payload )
-            .with( this )
+        rulesLogin.run(payload)
             .then( this.props.actions.login)
-            .catch( setErrors );
+            .catch( errors => {
+                if (errors instanceof Checkit.Error) {
+                    this.setState({errors: errors.toJSON()})
+                }
+            } );
     }
 } );
-
-function validateLogin( payload ) {
-    let rules = new Checkit( {
-        username: [ 'required', 'alphaDash', 'minLength:3', 'maxLength:64'],
-        password: [ 'required', 'alphaDash', 'minLength:6', 'maxLength:64' ]
-    } );
-    return rules.run( payload );
-}
-
-function setErrors( error ) {
-    //console.log('setErrors ', error)
-    //debug("setErrors", error);
-    if ( error instanceof Checkit.Error ) {
-        this.setState({errors: error.toJSON()})
-    }
-}

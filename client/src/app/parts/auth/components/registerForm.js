@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Debug from 'debug';
-
+import rules from 'services/rules';
 let debug = new Debug("components:register");
 
 export default React.createClass( {
@@ -80,34 +80,30 @@ export default React.createClass( {
     register(evt) {
         //TODO trim spaces
         evt.preventDefault()
+        this.setState( {
+            errors: {}
+        });
+
         let {username, email, password} = this.refs;
         let payload = {
             username: username.getValue(),
             email: email.getValue(),
             password: password.getValue()
         }
-
-        return validateSignup.call( this, payload )
-            .with( this )
+        let rulesRegister = new Checkit( {
+            username: rules.username,
+            password: rules.password,
+            email: rules.email
+        } );
+        return rulesRegister.run( payload )
             .then( this.props.actions.register)
-            .catch( setErrors );
+            .catch( errors => {
+                if (errors instanceof Checkit.Error) {
+                    this.setState({errors: errors.toJSON()})
+                } else {
+                    throw errors;
+                }
+            } );
 
     }
 } );
-
-function validateSignup( payload ) {
-    let rules = new Checkit( {
-        username: [ 'required', 'alphaDash', 'minLength:3', 'maxLength:64'],
-        password: [ 'required', 'alphaDash', 'minLength:6', 'maxLength:64' ],
-        email: [ 'required', 'email', 'minLength:6', 'maxLength:64' ]
-    } );
-
-    return rules.run( payload );
-}
-
-function setErrors( error ) {
-    debug("setErrors", error);
-    if ( error instanceof Checkit.Error ) {
-        this.setState({errors: error.toJSON()})
-    }
-}

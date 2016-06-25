@@ -19,7 +19,7 @@ export default React.createClass( {
     },
     renderError(){
         let {error} = this.props.register;
-        if(error){
+        if(error && error.status === 422){
             return (
                 <div className="alert alert-danger text-center" role="alert">
                     <strong>{error.name}</strong>

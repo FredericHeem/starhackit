@@ -82,8 +82,8 @@ function AlertDisplay(payload){
 function MiddlewareAlert(){
   const middleware = (/*store*/) => next => action => {
     if(action.meta === ASYNC_META.ERROR){
-      //TODO exclude 422 too
-      if(action.payload.status !== 401){
+      let {status} = action.payload;
+      if(!_.includes([401, 422], status)){
         AlertDisplay(action.payload);
       }
     }

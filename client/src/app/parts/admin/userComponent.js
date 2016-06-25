@@ -1,37 +1,37 @@
 import _ from 'lodash';
 import React from 'react';
 import tr from 'i18next';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
 import Spinner from 'components/spinner';
 import Debug from 'debug';
 let debug = new Debug("components:user");
 
-const Item = ({name, value}) =>(
-    <div><div>{name}</div><div>{value}</div></div>
-)
-
-Item.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  value: React.PropTypes.any.isRequired
-};
-
 export default React.createClass({
-    propTypes:{
+    propTypes: {
         usersGetOne: React.PropTypes.object.isRequired
     },
     render() {
         debug(`render `, this.props);
 
         let user = this.props.usersGetOne.data;
-        if(_.isEmpty(user)){
+        if (_.isEmpty(user)) {
             return <Spinner/>
         }
 
         return (
-            <div className='user'>
-                <Item name={tr.t('id')} value={user.id}/>
-                <Item name={tr.t('username')} value={user.username}/>
-                <Item name={tr.t('email')} value={user.email}/>
-            </div>
+            <Paper className='text-center view user'>
+                <h3>{tr.t('User')}</h3>
+                <div className="">
+                    <TextField id='id' value={user.id} disabled={true} floatingLabelText={tr.t('Id')}/>
+                </div>
+                <div className="">
+                    <TextField id='username' value={user.username} floatingLabelText={tr.t('Username')} />
+                </div>
+                <div className="">
+                    <TextField id='email' value={user.email} floatingLabelText={tr.t('Email')}/>
+                </div>
+            </Paper>
         );
     }
-} );
+});

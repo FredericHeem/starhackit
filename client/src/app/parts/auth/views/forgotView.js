@@ -48,7 +48,7 @@ export default React.createClass( {
                 <div className="form-inline">
                     <TextField
                         ref="email"
-                        hintText={tr.t('email')}
+                        hintText={tr.t('Email')}
                         errorText={errors.email && errors.email[0]}
                         />
                 </div>

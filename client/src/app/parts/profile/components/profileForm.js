@@ -55,7 +55,7 @@ export default React.createClass({
                 <div className="">
                         <TextField
                             id='username'
-                            floatingLabelText={tr.t('username')}
+                            floatingLabelText={tr.t('Username')}
                             value={state.username}
                             disabled={true}
                             onChange={_.partial(this.onChange, 'username')}
@@ -65,7 +65,7 @@ export default React.createClass({
                             id='email'
                             value={state.email}
                             disabled={true}
-                            floatingLabelText={tr.t('email')}
+                            floatingLabelText={tr.t('Email')}
                             errorText={errors.email && errors.email[0]}
                             />
                 </div>
@@ -90,7 +90,7 @@ export default React.createClass({
                             style={{width:'100%'}}
                             classsName='text-center text-area'
                             rows={4}
-                            floatingLabelText={tr.t('email')}
+                            floatingLabelText={tr.t('Email')}
                             onChange={_.partial(this.onChange, 'about')}
                             />
                     </div>

@@ -33,7 +33,7 @@ export default React.createClass( {
                     title="Login"
                 />
                 <Paper className="text-center view">
-                    <h2 >{tr.t('login')}</h2>
+                    <h2 >{tr.t('Login')}</h2>
 
                         <div>
                             <LocalLoginForm {...this.props}/>
@@ -44,7 +44,7 @@ export default React.createClass( {
                             </div>
                             <div className="strike"><span className="or"></span></div>
                             <FlatButton
-                                      label={tr.t('forgotPassword')}
+                                      label={tr.t('Forgot Password')}
                                       containerElement={<Link to="/forgot" />}
                                       linkButton={true}
                                     />

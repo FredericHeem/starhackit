@@ -1,8 +1,8 @@
 {
-  "login": "Entra",
-  "logout": "Esci",
-  "email": "Email",
+  "Login": "Entra",
+  "Logout": "Esci",
+  "Email": "Email",
   "Username": "Nome utente",
-  "password": "Parola d'ordine",
-  "forgotPassword": "Dimenticato la password ?"
+  "Password": "Parola d'ordine",
+  "Forgot Password": "Dimenticato la password ?"
 }

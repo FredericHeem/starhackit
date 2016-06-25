@@ -45,7 +45,7 @@ export default React.createClass( {
                             <TextField
                                 id='password'
                                 ref="password"
-                                hintText={tr.t('password')}
+                                hintText={tr.t('Password')}
                                 type='password'
                                 errorText={errors.password && errors.password[0]}
                                 />
@@ -59,7 +59,7 @@ export default React.createClass( {
                                 loading={this.props.login.loading}
                                 progress={.5}
                                 buttonStyle="slide-up"
-                                onClick={this.login}>{ tr.t('login') }</LaddaButton>
+                                onClick={this.login}>{ tr.t('Login') }</LaddaButton>
                         </div>
                     </div>
                 </form>

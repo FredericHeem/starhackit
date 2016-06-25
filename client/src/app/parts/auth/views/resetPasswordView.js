@@ -64,7 +64,7 @@ export default React.createClass( {
                     <TextField
                         id='password'
                         ref="password"
-                        hintText={tr.t('password')}
+                        hintText={tr.t('Password')}
                         type='password'
                         errorText={errors.password && errors.password[0]}
                         />

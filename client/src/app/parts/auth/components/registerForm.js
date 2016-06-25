@@ -48,7 +48,7 @@ export default React.createClass( {
                             <TextField
                                 id='email'
                                 ref="email"
-                                hintText={tr.t('email')}
+                                hintText={tr.t('Email')}
                                 errorText={errors.email && errors.email[0]}
                                 />
                         </div>
@@ -56,7 +56,7 @@ export default React.createClass( {
                             <TextField
                                 id='password'
                                 ref="password"
-                                hintText={tr.t('password')}
+                                hintText={tr.t('Password')}
                                 errorText={errors.password && errors.password[0]}
                                 type='password'
                                 />
@@ -69,7 +69,7 @@ export default React.createClass( {
                                 loading={this.props.register.loading}
                                 progress={.5}
                                 buttonStyle="slide-up"
-                                onClick={this.register}>{ tr.t('createAccount') }</LaddaButton>
+                                onClick={this.register}>{ tr.t('Create Account') }</LaddaButton>
                         </div>
                     </div>
                 </form>

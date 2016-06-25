@@ -1,11 +1,12 @@
 {
-  "login": "Se connecter",
-  "logout": "Deconnexion",
-  "email": "Mél",
+  "Id": "Id",
+  "Login": "Se connecter",
+  "Logout": "Deconnexion",
+  "Email": "Mél",
   "Username": "Nom d'utilisateur",
-  "password": "Mot de passe",
-  "forgotPassword": "Mot de passe oublié ?",
+  "Password": "Mot de passe",
+  "Forgot Password": "Mot de passe oublié ?",
   "My Profile": "Mon Profil",
   "About Me": "A propos de moi",
-  "Update Profile": "Mettre à jour profil"
+  "Update Profile": "Mettre à jour mon profil"
 }

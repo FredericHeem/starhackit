@@ -42,10 +42,8 @@ function Containers(actions, resources){
       },
       user(){
           const mapStateToProps = (state) => ({
-              usersGetOne: state.usersGetOne,
-              usersGetAll: state.usersGetAll
+              usersGetOne: state.admin.usersGetOne
           })
-          //const mapStateToProps = () => ({resources})
           return connect(mapStateToProps, mapDispatchToProps)(UserView);
       }
     }
@@ -54,13 +52,13 @@ function Containers(actions, resources){
 function Routes(containers, store, actions){
     return {
       path:'admin',
-      component: containers.users(),
+      //component: containers.users(),
       childRoutes : [
           {
               path: 'users',
               component: containers.users()
           }, {
-              path: 'user/:userId',
+              path: 'users/:userId',
               component: containers.user(),
               onEnter: nextState => store.dispatch(actions.getOne(nextState.params.userId))
           }
@@ -89,6 +87,6 @@ export default function(rest) {
       reducers: Reducers(actions),
       containers,
       routes: (store) => Routes(containers, store, actions),
-      middleware: Middleware(actions)
+      middlewares: [Middleware(actions)]
   }
 }

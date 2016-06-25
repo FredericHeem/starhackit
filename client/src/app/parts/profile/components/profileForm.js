@@ -5,12 +5,17 @@ import TextField from 'material-ui/TextField';
 import TextArea from 'react-textarea-autosize';
 import LaddaButton from 'react-ladda';
 //import SelectLangage from 'components/selectLanguage';
-import ValidateProfileForm from 'services/validateProfileForm';
 import Spinner from 'components/spinner';
 import Paper from 'material-ui/Paper';
 import tr from 'i18next';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
+
+import rules from 'services/rules';
+
+let rulesProfile = new Checkit( {
+    bio: rules.bio
+} );
 
 export default React.createClass({
     disaplyName:'ProfileForm',
@@ -91,7 +96,7 @@ export default React.createClass({
                             classsName='text-center text-area'
                             rows={4}
                             floatingLabelText={tr.t('Email')}
-                            onChange={_.partial(this.onChange, 'about')}
+                            onChange={_.partial(this.onChange, 'bio')}
                             />
                     </div>
                 </div>
@@ -125,34 +130,22 @@ export default React.createClass({
         this.setState( {
             errors: {}
         } );
+        let payload = {
+            bio: this.state.bio
+        }
 
-        validateForm.call( this )
-            .with( this )
-            .then( save )
+        rulesProfile.run(payload)
+            .then( this.props.actions.update )
             .then( successNotification )
-            .catch(Checkit.Error, (error) => this.setState( {
-                errors: error.toJSON()
-            } ))
-            .catch( setErrors )
-
-        function validateForm() {
-            return new ValidateProfileForm( {
-                username: this.state.username
+            .catch( error => {
+                if ( error instanceof Checkit.Error ) {
+                    this.setState({errors: error.toJSON()})
+                }
             } )
-            .execute();
-        }
-
-        function save() {
-            return this.props.actions.update(this.state);
-        }
 
         function successNotification() {
+            debug('updateProfile done');
             return true;
-        }
-
-        function setErrors( e ) {
-            debug('setErrors: ', e);
-            //throw e;
         }
     }
 } );

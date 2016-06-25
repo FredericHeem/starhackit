@@ -6,6 +6,9 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
+import rules from 'services/rules';
+import Debug from 'debug';
+let debug = new Debug("components:forgot");
 
 export default React.createClass( {
     propTypes:{
@@ -19,6 +22,7 @@ export default React.createClass( {
     },
 
     render() {
+        debug('render ', this.state)
         return (
             <div id="forgot">
                 <DocTitle
@@ -80,23 +84,25 @@ export default React.createClass( {
             errors: {}
         });
 
-        let rules = new Checkit( {
-            email: [ 'email', 'required' ]
+        let rulesForgot = new Checkit( {
+            email: rules.email
         });
 
         let payload = {
             email: this.email()
         }
-
-        rules
+        debug('requestReset ', payload)
+        rulesForgot
           .run(payload)
           .then(this.props.actions.requestPasswordReset)
           .then(() => {
+              debug('CheckEmail ')
               return this.setState( {
                   step: 'CheckEmail'
               } );
           })
-          .catch(Checkit.Error, errors => {
+          .catch(errors => {
+              debug('error ', errors)
               this.setState( {
                   errors: errors.toJSON()
               } );

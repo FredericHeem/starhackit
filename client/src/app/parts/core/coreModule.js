@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { browserHistory, Router } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
@@ -42,13 +43,35 @@ function Containers(){
     }
 }
 
+function createHttpError(payload){
+    let {data} = payload;
+    function name(){
+      if(_.isString(payload)){
+        return payload
+      } else {
+        return payload.statusText
+      }
+    }
+    function message(){
+      if(_.isString(data)){
+        return data;
+      } else if(_.isString(data.message)){
+        return data.message
+      }
+    }
+    return {
+        name: name(),
+        code: payload.status,
+        message: message()
+    }
+}
 function AlertDisplay(payload){
   debug('MiddlewareAlert AjaxError', payload)
-
+  let props = createHttpError(payload)
   Alert.error(<Notification
-    name={payload.statusText}
-    code={payload.status}
-    message={payload.data}/>, {
+    name={props.name}
+    code={props.code}
+    message={props.message}/>, {
       position: 'top-right',
       effect: 'slide',
       timeout: 10e3,
@@ -59,7 +82,8 @@ function AlertDisplay(payload){
 function MiddlewareAlert(){
   const middleware = (/*store*/) => next => action => {
     if(action.meta === ASYNC_META.ERROR){
-      if(action.payload.status !== 401){
+      let {status} = action.payload;
+      if(!_.includes([401, 422], status)){
         AlertDisplay(action.payload);
       }
     }

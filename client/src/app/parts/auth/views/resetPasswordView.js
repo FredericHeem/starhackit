@@ -6,8 +6,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
-
-import ValidatePassword from 'services/validatePassword';
+import rules from 'services/rules';
 
 import Debug from 'debug';
 
@@ -91,34 +90,30 @@ export default React.createClass( {
         debug("resetPassword ", this.props.params.token);
 
         this.resetErrors();
-
-        validatePassword.call( this )
-            .with( this )
-            .then( verifyResetPasswordToken )
-            .then( setNextStep )
-            .catch(Checkit.Error, errors => {
+        let rulesPassword = new Checkit( {
+            password: rules.password
+        } );
+        let payload = {
+            password: this.password()
+        }
+        rulesPassword.run(payload)
+            .then( () => {
+                return this.props.actions.verifyResetPasswordToken({
+                    token: this.props.params.token,
+                    password: this.password()
+                });
+            })
+            .then( () => {
+                this.setState( {
+                    step: 'SetNewPasswordDone'
+                } );
+                return true;
+            })
+            .catch(errors => {
                 this.setState( {
                     errors: errors.toJSON()
                 } );
             });
-
-        function validatePassword() {
-            return new ValidatePassword( this.password() )
-                .execute();
-        }
-
-        function verifyResetPasswordToken() {
-            return this.props.actions.verifyResetPasswordToken({
-                token: this.props.params.token,
-                password: this.password()
-            });
-        }
-
-        function setNextStep( ) {
-            this.setState( {
-                step: 'SetNewPasswordDone'
-            } );
-        }
     },
 
     password() {

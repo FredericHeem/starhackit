@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import tr from 'i18next';
 import Paper from 'material-ui/Paper';
@@ -11,14 +12,15 @@ export default React.createClass( {
     },
 
     render() {
-
+        let {register} = this.props;
+        let registerSuccess = _.get(register, 'data.success')
         return (
             <div id="signup">
                 <DocTitle
                     title="Register"
                 />
-            { this.props.register.data.success && this.renderRegisterComplete() }
-                { !this.props.register.data.success && this.renderRegisterForm() }
+            {  registerSuccess&& this.renderRegisterComplete() }
+                { !registerSuccess && this.renderRegisterForm() }
 
             </div>
         );

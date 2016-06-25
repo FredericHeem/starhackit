@@ -89,6 +89,6 @@ export default function(rest) {
       reducers: Reducers(actions),
       containers,
       routes: (store) => Routes(containers, store, actions),
-      middleware: Middleware(actions)
+      middlewares: [Middleware(actions)]
   }
 }

@@ -1,0 +1,4 @@
+languages:
+  - javascript
+files:
+  - "src/**/*.js"

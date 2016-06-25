@@ -6,6 +6,7 @@ An ES6 React based frontend starter kit:
 * Internationalization with `i18next` and `react-intl`
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`
 * Hot reloading with `react-hot-loader`
+* Copy and paste detector with `jscpd`
 * Display lint warnings and build errors to directly to the browser with `webpack-hud`
 * Unit tests with `karma`, `mocha` and `enzyme`
 * Code coverage with `istanbul`
@@ -38,6 +39,8 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm run build`| Create a production build  |
 | `npm run bundle-size`| Create a report to show the size of each dependencies |
 | `npm run clean`| Clean the project |
+| `npm run lint`| Lint the source code |
+| `npm run cpd`| Run the copy and paste detector |
 
 ### Install
 

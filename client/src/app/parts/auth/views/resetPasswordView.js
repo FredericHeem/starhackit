@@ -42,9 +42,10 @@ export default React.createClass( {
         );
     },
     renderError() {
-        if(this.props.verifyResetPasswordToken.error){
+        let {error} = this.props.verifyResetPasswordToken
+        if(_.get(error, 'status') === 422){
             return (
-                <div className="alert alert-danger text-center" role="alert">
+                <div className="alert alert-danger text-center reset-password-error" role="alert">
                     {tr.t('The token is invalid or has expired.')}
                 </div>
             );
@@ -57,7 +58,7 @@ export default React.createClass( {
         let {errors} = this.state;
         debug("renderSetNewPassword ", errors);
         return (
-            <div>
+            <div className='reset-password-view'>
                 <p><strong>{tr.t('Enter your new password.')}</strong></p>
                 <div className='form-group password'>
                     <TextField
@@ -70,17 +71,17 @@ export default React.createClass( {
                 </div>
 
                 <div className="spacer">
-                    <RaisedButton onClick={ this.resetPassword } label={tr.t('Reset Password')}/>
+                    <RaisedButton className='btn-reset-password' onClick={ this.resetPassword } label={tr.t('Reset Password')}/>
                 </div>
             </div>
     );
     },
     renderSetNewPasswordDone() {
-        if ( this.state.step != 'SetNewPasswordDone' ) {
+        if ( !_.get(this.props.verifyResetPasswordToken, 'data.success')) {
             return;
         }
         return (
-            <div>
+            <div className='reset-password-done'>
                 <p><strong>{tr.t('The new password has been set.')}</strong></p>
             </div>
         );
@@ -104,6 +105,7 @@ export default React.createClass( {
                 });
             })
             .then( () => {
+                debug("resetPassword SetNewPasswordDone");
                 this.setState( {
                     step: 'SetNewPasswordDone'
                 } );

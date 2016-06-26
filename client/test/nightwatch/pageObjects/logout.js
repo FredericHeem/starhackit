@@ -5,11 +5,8 @@ var commands = {
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/app/profile';
+        return this.api.launchUrl + '/logout';
     },
     elements: {
-        submit: {
-            selector: '.btn-signup'
-        }
     }
 };

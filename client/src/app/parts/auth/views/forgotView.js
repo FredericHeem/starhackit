@@ -24,7 +24,7 @@ export default React.createClass( {
     render() {
         debug('render ', this.state)
         return (
-            <div id="forgot">
+            <div className="forgot-password-view">
                 <DocTitle
                     title="Forgot password"
                 />
@@ -43,7 +43,7 @@ export default React.createClass( {
         }
         let {errors} = this.state;
         return (
-            <div className="">
+            <div className="forgot-password-form">
                 <h3>{tr.t('Forgot Password ?')}</h3>
                 <p><strong>{tr.t('Enter the email address used when you registered with username and password. ')}</strong></p>
 
@@ -51,6 +51,7 @@ export default React.createClass( {
 
                 <div className="form-inline">
                     <TextField
+                        id='email-input'
                         ref="email"
                         hintText={tr.t('Email')}
                         errorText={errors.email && errors.email[0]}
@@ -58,7 +59,7 @@ export default React.createClass( {
                 </div>
 
                 <div className="btn-forgot-passord">
-                    <RaisedButton onClick={ this.requestReset } label='Send Reset Email'/>
+                    <RaisedButton className='btn-forgot-password' onClick={ this.requestReset } label='Send Reset Email'/>
                 </div>
             </div>
     );
@@ -68,12 +69,10 @@ export default React.createClass( {
             return;
         }
         return (
-            <div>
+            <div className='forgot-password-check-email-view'>
                 <h3>{tr.t('Step 2 - Check Email')}</h3>
                 <p><strong>{tr.t('An email has been sent containing your reset link. Click on this link to proceed.')}</strong></p>
-
                 <p>{tr.t('Please also check your spam folder just in case the reset email ended up there.')}</p>
-
                 <p>{tr.t('This page can be safely closed.')}</p>
             </div>
         );

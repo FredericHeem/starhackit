@@ -33,7 +33,7 @@ LogoutView.propTypes = {
 
 export default function LogoutView({authenticated}) {
     return (
-        <div id="logout">
+        <div className="logout-view">
             <DocTitle title="Logout"/>
             {authenticated ? <LoggingOut/>: <LoggedOut/>}
         </div>

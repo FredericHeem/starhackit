@@ -10,7 +10,7 @@ var commands = {
             .getLocation('#application', function() {
                 done();
             });
-    },
+    }
 };
 
 module.exports = {

@@ -13,7 +13,7 @@ RegistrationError.propTypes = {
 function RegistrationError({error}){
     if (error.data && error.data.name === 'NoSuchCode') {
         return (
-            <div className="alert alert-warning text-center" role="alert">
+            <div className="alert alert-warning text-center registration-code-invalid" role="alert">
                 {tr.t('The email verification code is no longer valid.')}
             </div>
         );
@@ -35,7 +35,7 @@ export default function RegistrationComplete(props) {
     debug("render ", props);
     let {error} = props.verifyEmailCode;
     return (
-        <div id="registration-complete">
+        <div className="registration-complete-page">
             <DocTitle
                 title="Registering"
             />

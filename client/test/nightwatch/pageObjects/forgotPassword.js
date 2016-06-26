@@ -5,11 +5,14 @@ var commands = {
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/app/profile';
+        return this.api.launchUrl + '/forgot';
     },
     elements: {
+        emailInput: {
+            selector: '#email-input'
+        },
         submit: {
-            selector: '.btn-signup'
+            selector: '.btn-forgot-password'
         }
     }
 };

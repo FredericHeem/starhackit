@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import DocTitle from 'components/docTitle';
 import MediaSigninButtons from '../components/mediaSigninButtons';
 import RegisterForm from '../components/registerForm';
+import Alert from 'components/alert';
 
 export default React.createClass( {
     propTypes:{
@@ -27,11 +28,13 @@ export default React.createClass( {
     },
     renderRegisterComplete(){
         return(
-            <div className="alert alert-info text-center registration-request-complete" role="alert">
-                {tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.')}
-            </div>
+            <Alert
+                type='info'
+                className='registration-request-complete'
+                message={tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.')}/>
         );
     },
+
     renderRegisterForm(){
         return (
             <Paper className="text-center view">

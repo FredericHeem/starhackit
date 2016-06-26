@@ -3,6 +3,7 @@ import tr from 'i18next';
 import DocTitle from 'components/docTitle';
 import Paper from 'material-ui/Paper';
 import Spinner from 'components/spinner';
+import Alert from 'components/alert';
 import Debug from 'debug';
 let debug = new Debug("views:registrationComplete");
 
@@ -13,17 +14,17 @@ RegistrationError.propTypes = {
 function RegistrationError({error}){
     if (error.data && error.data.name === 'NoSuchCode') {
         return (
-            <div className="alert alert-warning text-center registration-code-invalid" role="alert">
-                {tr.t('The email verification code is no longer valid.')}
-            </div>
+          <Alert
+              type='warning'
+              className='registration-code-invalid'
+              message={tr.t('The email verification code is no longer valid.')}/>
         );
     } else {
         //TODO
-        return (
-            <div className="alert alert-danger text-center" role="alert">
-                {tr.t('An error occured')}
-            </div>
-        );
+        <Alert
+            type='danger'
+            className='registration-error'
+            message={tr.t('An error occured')}/>
     }
 }
 

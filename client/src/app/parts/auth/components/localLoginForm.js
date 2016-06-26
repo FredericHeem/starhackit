@@ -20,6 +20,7 @@ export default React.createClass( {
         if(this.props.login.error){
             return (
                 <Alert
+                    type="danger"
                     message={tr.t('Username and Password do not match')}
                     />
             )

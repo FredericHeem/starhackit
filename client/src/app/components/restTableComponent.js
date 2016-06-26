@@ -46,6 +46,7 @@ export default React.createClass({
         if(!error) return;
         return (
             <Alert
+                type="danger"
                 name={error.name}
                 message={error.statusText}
                 code={error.status}

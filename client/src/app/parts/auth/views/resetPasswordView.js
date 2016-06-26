@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 import rules from 'services/rules';
+import Alert from 'components/alert';
 
 import Debug from 'debug';
 
@@ -45,9 +46,10 @@ export default React.createClass( {
         let {error} = this.props.verifyResetPasswordToken
         if(_.get(error, 'status') === 422){
             return (
-                <div className="alert alert-danger text-center reset-password-error" role="alert">
-                    {tr.t('The token is invalid or has expired.')}
-                </div>
+                <Alert
+                    type='danger'
+                    className='reset-password-error'
+                    message={tr.t('The token is invalid or has expired.')}/>
             );
         }
     },

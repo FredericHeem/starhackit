@@ -28,7 +28,8 @@ export default function MeApi(app) {
         }
       });
       log.debug("patch done");
-      return data;
+      let updatedUser = await this.getByUserId(userId);
+      return updatedUser;
     }
   };
 }

@@ -4,11 +4,7 @@ describe('Profile', function () {
     });
 
     after(function (client, done) {
-        client
-            .pause(10e3)
-            .end(function () {
-                done();
-            });
+        client.page.logout().logout(done)
     });
 
     it('read and save profile', function (client) {

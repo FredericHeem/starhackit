@@ -1,12 +1,6 @@
 describe('Login', function () {
-    before(function (client, done) {
-        done();
-    });
-
     after(function (client, done) {
-        client.end(function () {
-            done();
-        });
+        client.page.logout().logout(done)
     });
     it('login with no password', function (client) {
         client.page.login().navigate()

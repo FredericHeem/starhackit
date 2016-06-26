@@ -9,7 +9,7 @@ describe('Register', function () {
         });
     });
 
-    it('register no password', function (client) {
+    it('register an account', function (client) {
         client.page.register().navigate()
             .waitForElementVisible('.register-form', 5000)
             .setValue('@emailInput', 'alice@mail.com')

@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Debug from 'debug';
+import Alert from 'components/alert';
 import rules from 'services/rules';
 let debug = new Debug("components:register");
 
@@ -21,9 +22,10 @@ export default React.createClass( {
         let {error} = this.props.register;
         if(error && error.status === 422){
             return (
-                <div className="alert alert-danger text-center" role="alert">
-                    <strong>{error.name}</strong>
-                </div>
+                <Alert
+                    type="danger"
+                    className='register-error-view alert-error'
+                    message={error.message}/>
             )
         }
     },

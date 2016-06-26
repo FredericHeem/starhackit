@@ -2,13 +2,8 @@ describe('Logout', function () {
     before(function (client, done) {
         client.page.login().login(done);
     });
-
     after(function (client, done) {
-        client
-        .pause(2e3)
-        .end(function () {
-            done();
-        });
+        client.page.logout().logout(done)
     });
 
     it('logout, go to profile', function (client) {

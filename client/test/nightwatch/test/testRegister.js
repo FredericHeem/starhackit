@@ -1,13 +1,4 @@
 describe('Register', function () {
-    before(function (client, done) {
-        done();
-    });
-
-    after(function (client, done) {
-        client.end(function () {
-            done();
-        });
-    });
 
     it('register an account', function (client) {
         client.page.register().navigate()

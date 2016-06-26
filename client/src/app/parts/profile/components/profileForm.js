@@ -7,6 +7,7 @@ import LaddaButton from 'react-ladda';
 import Spinner from 'components/spinner';
 import Paper from 'material-ui/Paper';
 import tr from 'i18next';
+import Alert from 'react-s-alert';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
 
@@ -37,7 +38,8 @@ export default React.createClass({
         return {
             language: 'US',
             errors: {},
-            completed:0
+            completed:0,
+            profile: {}
         }
     },
     render() {
@@ -140,6 +142,11 @@ export default React.createClass({
 
         function successNotification() {
             debug('updateProfile done');
+            Alert.info(tr.t('Profile updated'), {
+                position: 'top-right',
+                effect: 'slide',
+                timeout: 3e3
+            });
             return true;
         }
     }

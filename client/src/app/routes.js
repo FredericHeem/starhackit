@@ -18,10 +18,15 @@ export default function Routes(store, parts) {
                     parts.auth.routes(store),
                     {
                         path: 'app',
-                        //component: parts.profile.containers.profile(),
+                        component: parts.auth.containers.authentication(),
                         childRoutes: [parts.profile.routes(store)]
                     },
-                    parts.admin.routes(store)
+                    {
+                        path: 'admin',
+                        component: parts.auth.containers.authentication(),
+                        childRoutes: parts.admin.routes(store, parts).childRoutes
+                    }
+
                 ]
             },
             testRoutes

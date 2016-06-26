@@ -10,7 +10,7 @@ describe('Login', function () {
     });
     it('login with no password', function (client) {
         client.page.login().navigate()
-            .waitForElementVisible('#login', 5000)
+            .waitForElementVisible('.login-page', 5000)
             .setValue('@emailInput', 'alice')
             .click('@submit')
             .waitForElementVisible('.username', 5000)
@@ -18,7 +18,7 @@ describe('Login', function () {
     });
     it('login with no email', function (client) {
         client.page.login().navigate()
-            .waitForElementVisible('#login', 5000)
+            .waitForElementVisible('.login-page', 5000)
             .setValue('@passwordInput', 'password')
             .click('@submit')
             .waitForElementVisible('.password', 5000)
@@ -26,7 +26,7 @@ describe('Login', function () {
     });
     it('login with incorrect password', function (client) {
         client.page.login().navigate()
-            .waitForElementVisible('#login', 5000)
+            .waitForElementVisible('.login-page', 5000)
             .setValue('@emailInput', 'alice')
             .setValue('@passwordInput', 'wrongpassword')
             .click('@submit')
@@ -35,7 +35,7 @@ describe('Login', function () {
     });
     it.skip('login ok', function (client) {
         client.page.login().navigate()
-            .waitForElementVisible('#login', 5000)
+            .waitForElementVisible('.login-page', 5000)
             .setValue('@emailInput', 'alice')
             .setValue('@passwordInput', 'password')
             .click('@submit')

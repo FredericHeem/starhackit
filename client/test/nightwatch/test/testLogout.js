@@ -1,4 +1,4 @@
-describe.only('Logout', function () {
+describe('Logout', function () {
     before(function (client, done) {
         client.page.login().login(done);
     });
@@ -11,8 +11,31 @@ describe.only('Logout', function () {
         });
     });
 
-    it('logout', function (client) {
+    it('logout, go to profile', function (client) {
         client.page.logout().navigate()
-            .waitForElementVisible('.logout-view', 5000);
+            .waitForElementVisible('.logout-page', 5000);
+
+        client.page.profile().navigate()
+            .waitForElementVisible('.login-page', 5000)
+
+        client.page.login()
+            .setValue('@emailInput', 'admin')
+            .setValue('@passwordInput', 'password')
+            .click('@submit')
+            .waitForElementVisible('.profile-page', 5000);
+    });
+
+    it('logout, go to admin', function (client) {
+        client.page.logout().navigate()
+            .waitForElementVisible('.logout-page', 5000);
+
+        client.page.users().navigate()
+            .waitForElementVisible('.login-page', 5000);
+
+        client.page.login()
+            .setValue('@emailInput', 'admin')
+            .setValue('@passwordInput', 'password')
+            .click('@submit')
+            .waitForElementVisible('.users-view', 5000);
     });
 });

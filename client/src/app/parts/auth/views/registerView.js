@@ -15,7 +15,7 @@ export default React.createClass( {
         let {register} = this.props;
         let registerSuccess = _.get(register, 'data.success')
         return (
-            <div id="signup">
+            <div id="register">
                 <DocTitle
                     title="Register"
                 />
@@ -27,7 +27,7 @@ export default React.createClass( {
     },
     renderRegisterComplete(){
         return(
-            <div className="alert alert-info text-center" role="alert">
+            <div className="alert alert-info text-center registration-request-complete" role="alert">
                 {tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.')}
             </div>
         );

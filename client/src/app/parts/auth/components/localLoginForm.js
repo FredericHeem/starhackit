@@ -54,8 +54,7 @@ export default React.createClass( {
 
                         <div>
                             <LaddaButton
-                                className='btn btn-lg btn-primary'
-                                id='btn-login'
+                                className='btn btn-lg btn-primary btn-login'
                                 buttonColor='green'
                                 loading={this.props.login.loading}
                                 progress={.5}

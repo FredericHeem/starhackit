@@ -5,7 +5,7 @@ var commands = {
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/app/my/profile';
+        return this.api.launchUrl + '/app/profile';
     },
     elements: {
 

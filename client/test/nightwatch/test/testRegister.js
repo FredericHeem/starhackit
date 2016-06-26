@@ -12,9 +12,10 @@ describe('Register', function () {
     it('register no password', function (client) {
         client.page.register().navigate()
             .waitForElementVisible('.register-form', 5000)
-            .setValue('@emailInput', 'alice')
+            .setValue('@emailInput', 'alice@mail.com')
+            .setValue('@usernameInput', 'alice')
+            .setValue('@passwordInput', 'password')
             .click('@submit')
-            .waitForElementVisible('.username', 5000)
-            //.assert.containsText('.has-error span', 'The email must be a valid email address');
+            .waitForElementVisible('.registration-request-complete', 5000)
     });
 });

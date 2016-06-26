@@ -2,6 +2,7 @@ import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
 import ProfileView from './views/profileView';
+import {createReducer} from 'redux-act';
 
 function Resources(rest){
   return {
@@ -22,9 +23,21 @@ function Actions(rest){
     }
 }
 
+function ProfileReducer(actions){
+  return createReducer({
+      [actions.get.ok]: (state, payload) => ({
+        data: payload
+      }),
+      [actions.update.ok]: (state, payload) => ({
+        data: payload
+      })
+  }, {});
+}
+
 function Reducers(actions){
   return {
-    profile: createReducerAsync(actions.get),
+    profile: ProfileReducer(actions),
+    profileGet: createReducerAsync(actions.get),
     profileUpdate: createReducerAsync(actions.update)
   }
 }

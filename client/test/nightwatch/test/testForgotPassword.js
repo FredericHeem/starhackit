@@ -1,5 +1,5 @@
 describe('Forgot Password', function () {
-    it('password too small', function (client) {
+    it('email too small', function (client) {
         client.page.forgotPassword().navigate()
             .waitForElementVisible('.forgot-password-view', 5000)
             .setValue('@emailInput', 'not valid')

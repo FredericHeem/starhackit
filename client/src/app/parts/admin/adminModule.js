@@ -51,8 +51,6 @@ function Containers(actions, resources){
 
 function Routes(containers, store, actions){
     return {
-      path:'admin',
-      //component: containers.users(),
       childRoutes : [
           {
               path: 'users',

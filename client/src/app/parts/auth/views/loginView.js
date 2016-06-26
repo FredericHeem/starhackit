@@ -28,7 +28,7 @@ export default React.createClass( {
     },
     render() {
         return (
-            <div id='login'>
+            <div className='login-page'>
                 <DocTitle
                     title="Login"
                 />

@@ -5,7 +5,7 @@ import ProfileForm from '../components/profileForm';
 
 export default function ProfileView(props){
     return (
-        <div id="profile">
+        <div className="profile-page">
             <DocTitle title="My Profile"/>
             <ProfileForm {...props}/>
         </div>

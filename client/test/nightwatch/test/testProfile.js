@@ -12,9 +12,8 @@ describe('Profile', function () {
     });
 
     it('read profile', function (client) {
-
         client.page.profile().navigate()
-            .waitForElementVisible('#profile', 5000);
+            .waitForElementVisible('.profile-page', 5000);
 
     });
 });

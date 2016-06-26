@@ -27,7 +27,7 @@
     "clean": "gulp clean",
     "mock": "node scripts/mock-server.js",
     "doc": "raml2html -i src/plugins/users/raml/users.raml -o build/api.html",
-    "opendoc":"open build/api.html"
+    "opendoc": "open build/api.html"
   },
   "dependencies": {
     "axios": "0.9.1",
@@ -70,6 +70,7 @@
     "passport-oauth2": "1.3.0",
     "pg": "4.5.3",
     "pg-hstore": "2.3.2",
+    "pg-native": "1.10.0",
     "pm2": "1.1.1",
     "qs": "6.1.0",
     "rabbitmq-pubsub": "0.2.0",

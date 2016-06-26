@@ -18,7 +18,17 @@ describe('Users', function() {
     });
     it('should get me', async () => {
       let me = await client.get('v1/me');
+      console.log(me);
       assert(me);
+      assert(me.profile);
+    });
+    it('should patch biography', async () => {
+      let data = {
+        biography: "My biography"
+      };
+      await client.patch('v1/me', data);
+      let me = await client.get('v1/me');
+      assert.equal(me.profile.biography, data.biography);
     });
     it('should patch user', async () => {
       let data = {
@@ -27,7 +37,8 @@ describe('Users', function() {
       await client.patch('v1/me', data);
       //assert(me);
       let dataOld = {
-        username: "alice"
+        username: "alice",
+        biography: "My biography"
       };
       await client.patch('v1/me', dataOld);
     });

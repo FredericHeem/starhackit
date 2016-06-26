@@ -6,8 +6,14 @@
   "page_objects_path" : "pageObjects",
   "globals_path" : "",
 
-  "test_runner" : "mocha",
-
+  "test_runner" : {
+    "type" : "mocha",
+    "options" : {
+      "ui" : "bdd",
+      "reporter" : "nyan",
+      "require": "setup.js"
+    }
+  },
   "selenium" : {
     "start_process" : true,
     "server_path" : "../../node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar",
@@ -25,7 +31,7 @@
       "launch_url" : "http://localhost:8080",
       "selenium_port"  : 4444,
       "selenium_host"  : "localhost",
-      "silent": false,
+      "silent": true,
       "screenshots" : {
         "enabled" : false,
         "path" : ""

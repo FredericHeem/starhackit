@@ -1,7 +1,6 @@
 import React from 'react';
 import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
-import TextArea from 'react-textarea-autosize';
 import LaddaButton from 'react-ladda';
 //import SelectLangage from 'components/selectLanguage';
 import Spinner from 'components/spinner';
@@ -91,12 +90,15 @@ export default React.createClass({
                 <div>
                     <div>
                         <legend>{tr.t('About Me')}</legend>
-                        <TextArea
-                            style={{width:'100%'}}
+                        <TextField
+                            id='biography-input'
                             classsName='text-center text-area'
-                            rows={4}
-                            defaultValue={this.state.profile.biography}
-                            floatingLabelText={tr.t('Biography')}
+                            fullWidth={true}
+                            value={this.state.profile.biography}
+                            errorText={errors.biography && errors.biography[0]}
+                            multiLine={true}
+                            floatingLabelText={tr.t('Enter Biography')}
+                            rows={1}
                             onChange={(e) => this.setState({profile: {biography: e.target.value}})}
                             />
                     </div>
@@ -104,8 +106,7 @@ export default React.createClass({
 
                 <div className='text-center btn-container'>
                     <LaddaButton
-                        id='btn-update-profile'
-                        className='btn btn-lg btn-primary'
+                        className='btn btn-lg btn-primary btn-update-profile'
                         buttonColor='green'
                         progress={.5}
                         loading={this.props.profileUpdate.loading}
@@ -134,9 +135,10 @@ export default React.createClass({
         rulesProfile.run(payload)
             .then( this.props.actions.update )
             .then( successNotification )
-            .catch( error => {
-                if ( error instanceof Checkit.Error ) {
-                    this.setState({errors: error.toJSON()})
+            .catch( errors => {
+                debug('updateProfile errors: ', errors);
+                if ( errors instanceof Checkit.Error ) {
+                    this.setState({errors: errors.toJSON()})
                 }
             } )
 
@@ -145,7 +147,8 @@ export default React.createClass({
             Alert.info(tr.t('Profile updated'), {
                 position: 'top-right',
                 effect: 'slide',
-                timeout: 3e3
+                timeout: 3e3,
+                offset:100
             });
             return true;
         }

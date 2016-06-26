@@ -9,7 +9,10 @@ module.exports = {
     },
     elements: {
         submit: {
-            selector: '.btn-signup'
+            selector: '.btn-update-profile'
+        },
+        biographyInput: {
+            selector: '#biography-input'
         }
     }
 };

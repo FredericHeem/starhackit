@@ -5,15 +5,26 @@ describe('Profile', function () {
 
     after(function (client, done) {
         client
-        .pause(1e3)
-        .end(function () {
-            done();
-        });
+            .pause(10e3)
+            .end(function () {
+                done();
+            });
     });
 
-    it('read profile', function (client) {
+    it('read and save profile', function (client) {
         client.page.profile().navigate()
-            .waitForElementVisible('.profile-page', 5000);
+            .waitForElementVisible('.profile-page', 5000)
+            .assert.title('My Profile - StarHackIt')
+            .setValue('@biographyInput', 'My Bio')
+            .click('@submit')
+
+    });
+
+    it('read and save profile', function (client) {
+        client.page.profile().navigate()
+            .waitForElementVisible('.profile-page', 5000)
+            .setValue('@biographyInput', 'abcdefhigk'.repeat(10))
+            .click('@submit')
 
     });
 });

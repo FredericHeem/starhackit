@@ -58,7 +58,6 @@
     "react-router-redux": "4.0.5",
     "react-s-alert": "1.1.4",
     "react-tap-event-plugin": "1.0.0",
-    "react-textarea-autosize": "4.0.3",
     "reactabular": "0.14.2",
     "redux": "3.5.2",
     "redux-act-async": "0.9.0",

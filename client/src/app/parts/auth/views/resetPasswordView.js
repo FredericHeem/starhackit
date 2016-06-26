@@ -77,7 +77,7 @@ export default React.createClass( {
     );
     },
     renderSetNewPasswordDone() {
-        if ( !this.props.verifyResetPasswordToken.data ) {
+        if ( !_.get(this.props.verifyResetPasswordToken, 'data.success')) {
             return;
         }
         return (

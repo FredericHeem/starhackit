@@ -85,6 +85,19 @@ describe('UserModel', function(){
        assert(user.get().username);
     });
   });
+  it('should find admin user, without attributes', async () => {
+    let adminUsername = 'admin';
+    let res = await userModel.find({
+        include:[
+           {model: models.Profile, as: 'profile'}
+         ],
+          where:{
+             username:adminUsername
+          }
+    });
+    assert(res.get().profile.get());
+    assert(res.get().username);
+  });
   it('should find admin user, with attributes', async () => {
     let adminUsername = 'admin';
     let res = await userModel.find({
@@ -94,5 +107,11 @@ describe('UserModel', function(){
            }
          });
     assert(res.get().username);
+  });
+  it('findByUserId', async () => {
+    let adminUsername = 'admin';
+    let res = await userModel.findByUserId(1);
+    assert(res.toJSON().profile);
+    assert.equal(res.get().username, adminUsername);
   });
 });

@@ -65,7 +65,12 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise} Promise user model
         */
         findByEmail: function(email) {
-          return this.find({where: { email: email } });
+          return this.find({
+            include:[
+               {model: models.Profile, as: 'profile'}
+             ],
+            where: { email: email }
+          });
         },
         /**
          * Finds a user by userid
@@ -76,7 +81,23 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise} Promise user model
         */
         findByUserId: function(userid) {
-          return this.find({where: { id: userid } });
+          return this.find({
+            include:[
+               {model: models.Profile, as: 'profile'}
+             ],
+            where: { id: userid }
+          });
+        },
+        /**
+         * Finds a user by username
+         * returns the model of the  user
+         *
+         * @param {String} userName - Username of the user to find
+         *
+         * @returns {Promise} Promise user model
+         */
+        findByUsername: function  findByUsername(userName) {
+          return this.find({where: { username: userName } });
         },
         /**
          * Creates a user given a json representation and adds it to the group GroupName,
@@ -93,7 +114,8 @@ module.exports = function(sequelize, DataTypes) {
             log.info("create user");
             let userCreated = await models.User.create(userJson, {transaction: t});
             await models.UserGroup.addUserIdInGroups(groups, userCreated.get().id, t );
-            //log.info("user created ", userCreated.get().id);
+            let profile = await models.Profile.create({biography:"", user_id: userCreated.get().id}, {transaction: t});
+            log.info("profile created ", profile.get());
             return userCreated;
           })
           .catch(function (err) {
@@ -102,17 +124,7 @@ module.exports = function(sequelize, DataTypes) {
           });
         },
 
-        /**
-         * Finds a user by username
-         * returns the model of the  user
-         *
-         * @param {String} userName - Username of the user to find
-         *
-         * @returns {Promise} Promise user model
-         */
-        findByUsername: function  findByUsername(userName) {
-          return this.find({where: { username: userName } });
-        },
+
 
         /**
          * Checks whether a user is able to perform an action on a resource

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
@@ -8,13 +7,14 @@ import LaddaButton from 'react-ladda';
 import Spinner from 'components/spinner';
 import Paper from 'material-ui/Paper';
 import tr from 'i18next';
+import Alert from 'react-s-alert';
 import Debug from 'debug';
 let debug = new Debug("components:profileForm");
 
 import rules from 'services/rules';
 
 let rulesProfile = new Checkit( {
-    bio: rules.bio
+    biography: rules.biography
 } );
 
 export default React.createClass({
@@ -38,7 +38,8 @@ export default React.createClass({
         return {
             language: 'US',
             errors: {},
-            completed:0
+            completed:0,
+            profile: {}
         }
     },
     render() {
@@ -63,7 +64,7 @@ export default React.createClass({
                             floatingLabelText={tr.t('Username')}
                             value={state.username}
                             disabled={true}
-                            onChange={_.partial(this.onChange, 'username')}
+                            onChange={(e) => this.setState({username: e.target.value})}
                             errorText={errors.username && errors.username[0]}
                             />
                         <TextField
@@ -71,7 +72,6 @@ export default React.createClass({
                             value={state.email}
                             disabled={true}
                             floatingLabelText={tr.t('Email')}
-                            errorText={errors.email && errors.email[0]}
                             />
                 </div>
                 <br/>
@@ -95,8 +95,9 @@ export default React.createClass({
                             style={{width:'100%'}}
                             classsName='text-center text-area'
                             rows={4}
-                            floatingLabelText={tr.t('Email')}
-                            onChange={_.partial(this.onChange, 'bio')}
+                            defaultValue={this.state.profile.biography}
+                            floatingLabelText={tr.t('Biography')}
+                            onChange={(e) => this.setState({profile: {biography: e.target.value}})}
                             />
                     </div>
                 </div>
@@ -121,17 +122,13 @@ export default React.createClass({
         this.setState({language:language});
     },
 
-    onChange(id, e) {
-        debug(`onChange: ${id}: ${e.target.value}`);
-        this.setState({[id]: e.target.value});
-    },
     onUpdateProfile() {
         debug('updateProfile ', this.state);
         this.setState( {
             errors: {}
         } );
         let payload = {
-            bio: this.state.bio
+            biography: this.state.profile.biography
         }
 
         rulesProfile.run(payload)
@@ -145,6 +142,11 @@ export default React.createClass({
 
         function successNotification() {
             debug('updateProfile done');
+            Alert.info(tr.t('Profile updated'), {
+                position: 'top-right',
+                effect: 'slide',
+                timeout: 3e3
+            });
             return true;
         }
     }

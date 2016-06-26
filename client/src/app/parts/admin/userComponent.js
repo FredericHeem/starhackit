@@ -20,7 +20,7 @@ export default React.createClass({
         }
 
         return (
-            <Paper className='text-center view user'>
+            <Paper className='text-center view user-view'>
                 <h3>{tr.t('User')}</h3>
                 <div className="">
                     <TextField id='id' value={user.id} disabled={true} floatingLabelText={tr.t('Id')}/>

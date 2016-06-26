@@ -4,7 +4,7 @@ import UsersComponent from './usersComponent';
 
 export default function UsersView(props){
     return (
-        <div id="users-view">
+        <div className="users-view">
             <DocTitle title="Users"/>
             <UsersComponent {...props}/>
         </div>

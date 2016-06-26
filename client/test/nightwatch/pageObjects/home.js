@@ -9,8 +9,7 @@ module.exports = {
     },
     elements: {
         leftNavButton: {
-            selector: '#app-bar button',
-        },
-
+            selector: '#app-bar button'
+        }
     }
 };

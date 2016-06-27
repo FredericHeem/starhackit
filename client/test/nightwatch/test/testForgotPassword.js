@@ -1,4 +1,5 @@
 describe('Forgot Password', function () {
+
     it('email too small', function (client) {
         client.page.forgotPassword().navigate()
             .waitForElementVisible('.forgot-password-view', 5000)

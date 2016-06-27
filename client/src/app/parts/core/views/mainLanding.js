@@ -123,7 +123,20 @@ export default function MainLanding(){
                         text='The data are modeled with sequelize, an ORM which support PostgreSQL, MySQL, MariaDB, SQLite and MSSQL'/>
                 </div>
             </section>
-
+            <section id="gifs">
+                <div className="row">
+                  <div className="text-center">
+                    <h2>
+                        <strong>{tr.t('End to End Testing')}</strong>
+                    </h2>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="text-center">
+                    <img alt="functional-testing" src="https://raw.githubusercontent.com/FredericHeem/gifs/master/starhackit-functional-testing.gif"/>
+                  </div>
+                </div>
+            </section>
             <section id="tech-stack-frontend">
                 <div className="row">
                   <div className="col-md-12 text-center">

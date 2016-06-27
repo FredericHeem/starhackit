@@ -6,11 +6,8 @@ import DocTitle from 'components/docTitle';
 import config from 'config';
 import tr from 'i18next';
 
-import Card from 'material-ui/Card/Card';
+import Paper from 'material-ui/Paper';
 import CardMedia from 'material-ui/Card/CardMedia';
-import CardTitle from 'material-ui/Card/CardTitle';
-import CardText from 'material-ui/Card/CardText';
-
 
 MediaIcon.propTypes = {
   icon: React.PropTypes.string.isRequired
@@ -32,8 +29,8 @@ function MediaIcon(props){
 MediaImg.propTypes = {
   img: React.PropTypes.string.isRequired,
   title: React.PropTypes.string.isRequired,
-  height: React.PropTypes.string.isRequired,
-  width: React.PropTypes.string.isRequired
+  height: React.PropTypes.string,
+  width: React.PropTypes.string
 }
 
 function MediaImg(props){
@@ -53,19 +50,19 @@ CardIcon.propTypes = {
 
 function CardIcon(props){
   return (
-          <Card
-              className='flex-items'
-              style={{
-              }}>
-            <CardTitle
-              title={props.title}
-            />
-            <CardText>
-              {props.text}
-            </CardText>
-            {props.icon && <MediaIcon {...props}/>}
-            {props.img && <MediaImg {...props}/>}
-          </Card>
+    <Paper
+        className='card'
+        style={{
+        }}>
+      <div className='card-container'>
+        <div className="card-item"><h2>{props.title}</h2></div>
+        <div className="card-item"><p>{props.text}</p></div>
+        <div className="card-item">
+          {props.icon && <MediaIcon {...props}/>}
+          {props.img && <MediaImg {...props}/>}
+        </div>
+      </div>
+    </Paper>
   );
 }
 
@@ -75,6 +72,7 @@ export default function MainLanding(){
             <DocTitle
                 title="Home"
             />
+
             <DocMeta tags={ tags() } />
             <div className="header-container">
                 <div className="header clearfix">
@@ -123,7 +121,20 @@ export default function MainLanding(){
                         text='The data are modeled with sequelize, an ORM which support PostgreSQL, MySQL, MariaDB, SQLite and MSSQL'/>
                 </div>
             </section>
-
+            <section id="gifs">
+                <div className="row">
+                  <div className="text-center">
+                    <h2>
+                        <strong>{tr.t('End to End Testing')}</strong>
+                    </h2>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="text-center">
+                    <img alt="functional-testing" src="https://raw.githubusercontent.com/FredericHeem/gifs/master/starhackit-functional-testing.gif"/>
+                  </div>
+                </div>
+            </section>
             <section id="tech-stack-frontend">
                 <div className="row">
                   <div className="col-md-12 text-center">
@@ -207,14 +218,14 @@ export default function MainLanding(){
                     <CardIcon
                         img='assets/img/es7.png'
                         title='ES6/ES7 ready'
-                        height='220'
+                        height='180'
                         link='https://github.com/lukehoban/es6features'
                         text='The new javascript ECMAScript 7'/>
 
                     <CardIcon
                         img='assets/img/gulp.png'
                         title='Gulp'
-                        height='200'
+                        height='180'
                         link='http://gulpjs.com/'
                         text='A very popular build system for frontend and backend development'/>
 
@@ -251,6 +262,7 @@ export default function MainLanding(){
                     <CardIcon
                         img='assets/img/travis.png'
                         title='Travis CI'
+                        height='160'
                         link='https://travis-ci.org/'
                         text='A continuous integration platform.'/>
 
@@ -276,9 +288,9 @@ export default function MainLanding(){
                     <CardIcon
                         img='assets/img/ansible.png'
                         title='Ansible'
-                        width='64'
+                        width='128'
                         link='http://www.ansible.com/'
-                        text='Deploy apps. Manage systems'/>
+                        text='Deploy apps. Manage systems. DevOps made easy'/>
 
                     <CardIcon
                         img='assets/img/vagrant.png'

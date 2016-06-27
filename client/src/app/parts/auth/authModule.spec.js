@@ -26,7 +26,7 @@ describe('Auth', function() {
   });
   it('logout error', () => {
     store.dispatch(actions.login.ok({token: token}));
-    store.dispatch(actions.logout.error());
+    store.dispatch(actions.logout.error({status: 401}));
     assert.equal(isAuthenticated(store), false);
     assert.isUndefined(getToken(store));
   });

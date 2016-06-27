@@ -10,7 +10,7 @@
     "type" : "mocha",
     "options" : {
       "ui" : "bdd",
-      "reporter" : "nyan",
+      "reporter" : "spec",
       "require": "setup.js"
     }
   },

@@ -6,7 +6,7 @@ before(function (client, done) {
 });
 
 after(function (client, done) {
-    console.log("after");
+    //console.log("after");
     client.end(function () {
         done();
     });

@@ -43,21 +43,25 @@ function Containers(){
     }
 }
 
-function createHttpError(payload){
+function createHttpError(payload = {}){
     let {data} = payload;
     function name(){
-      if(_.isString(payload)){
+      if(_.isEmpty(payload)){
+        return "Unknown error"
+      } else  if(_.isString(payload)){
         return payload
       } else {
         return payload.statusText
       }
     }
     function message(){
-      if(_.isString(data)){
-        return data;
-      } else if(_.isString(data.message)){
-        return data.message
-      }
+        if(!data){
+            return;
+        } else if(_.isString(data)){
+            return data;
+        } else if(_.isString(data.message)){
+            return data.message
+        }
     }
     return {
         name: name(),
@@ -65,6 +69,7 @@ function createHttpError(payload){
         message: message()
     }
 }
+
 function AlertDisplay(payload){
   debug('MiddlewareAlert AjaxError', payload)
   let props = createHttpError(payload)

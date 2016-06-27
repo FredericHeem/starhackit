@@ -52,6 +52,7 @@ export default function() {
             await intl(language);
             jwt.loadJWT(parts);
             store.dispatch(parts.auth.actions.me())
+
         }
     };
 }

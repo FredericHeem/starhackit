@@ -13,13 +13,16 @@ function render(view){
           </div>
           , mountEl);
 }
-
-try {
-  let app = App(render);
-  app.start();
-  let container = app.createContainer();
-  render(container)
-} catch (e) {
-  debug('Error in app:', e);
-  throw e;
+async function run(){
+  try {
+    let app = App(render);
+    await app.start();
+    let container = app.createContainer();
+    render(container)
+  } catch (e) {
+    debug('Error in app:', e);
+    throw e;
+  }
 }
+
+run();

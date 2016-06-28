@@ -27,8 +27,8 @@ const languagesDetectorOption = {
 
 export default {
     load() {
+        debug('load');
         return new Promise((resolve/*, reject*/) => {
-
             i18next.on('languageChanged', function(lng) {
                 debug('languageChanged to ', lng);
                 resolve(lng);

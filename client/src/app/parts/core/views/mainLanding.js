@@ -278,13 +278,12 @@ export default function MainLanding(){
 
             <section id="tech-stack-tools">
                 <div className="row">
-                  <div className="col-md-12 text-center">
-                    <h3>
-                        <strong>{tr.t('Deployment Tools')}</strong>
-                    </h3>
-                  </div>
-                </div>
-                <div className="row">
+                  <CardIcon
+                      img='assets/img/raml.png'
+                      title='RAML'
+                      link='http://raml.org'
+                      text="RESTful API Modeling Language, model your API, generate html documentation, mock server for frontend, ensure the backend implements the API"/>
+
                     <CardIcon
                         img='assets/img/ansible.png'
                         title='Ansible'

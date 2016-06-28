@@ -129,10 +129,8 @@ export default function MainLanding(){
                     </h2>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="text-center">
-                    <img alt="functional-testing" src="https://raw.githubusercontent.com/FredericHeem/gifs/master/starhackit-functional-testing.gif"/>
-                  </div>
+                <div className="text-center e2e-testing">
+                  <img alt="functional-testing" src="https://raw.githubusercontent.com/FredericHeem/gifs/master/starhackit-functional-testing.gif"/>
                 </div>
             </section>
             <section id="tech-stack-frontend">

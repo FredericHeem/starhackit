@@ -55,8 +55,7 @@ function CardIcon(props){
         style={{
         }}>
       <div className='card-container'>
-        <div className="card-item"><h2>{props.title}</h2></div>
-        <div className="card-item"><p>{props.text}</p></div>
+        <div className="card-item"><h2>{props.title}</h2><p>{props.text}</p></div>
         <div className="card-item">
           {props.icon && <MediaIcon {...props}/>}
           {props.img && <MediaImg {...props}/>}
@@ -235,12 +234,16 @@ export default function MainLanding(){
                         text='The pluggable linting utility for JavaScript and JSX, find errors and coding style violation.'/>
 
                     <CardIcon
-                        img='assets/img/mocha.svg'
+                        img='assets/img/mocha.png'
                         title='Mocha'
-                        height='230'
+                        height='180'
                         link='https://mochajs.org/'
                         text='A rich asynchronous test framework'/>
-
+                    <CardIcon
+                        img='assets/img/nightwatch.png'
+                        title='Nightwatch'
+                        link='http://nightwatchjs.org/'
+                        text='Write End-to-End tests in Node.js quickly and effortlessly that run against a Selenium server.'/>
                 </div>
                 <div className="row">
                     <CardIcon
@@ -276,13 +279,18 @@ export default function MainLanding(){
 
             <section id="tech-stack-tools">
                 <div className="row">
-                  <div className="col-md-12 text-center">
-                    <h3>
-                        <strong>{tr.t('Deployment Tools')}</strong>
-                    </h3>
-                  </div>
-                </div>
-                <div className="row">
+                  <CardIcon
+                      img='assets/img/raml.png'
+                      title='RAML'
+                      link='http://raml.org'
+                      text="RESTful API Modeling Language, model your API, generate html documentation, mock server for frontend, ensure the backend implements the API"/>
+                  <CardIcon
+                      img='assets/img/pm2.png'
+                      title='PM2'
+                      width='200'
+                      link='http://pm2.keymetrics.io/'
+                      text="Advanced, production process manager for Node.js"/>
+
                     <CardIcon
                         img='assets/img/ansible.png'
                         title='Ansible'

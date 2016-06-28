@@ -238,7 +238,7 @@ export default function MainLanding(){
                     <CardIcon
                         img='assets/img/mocha.png'
                         title='Mocha'
-                        height='180'
+                        height='160'
                         link='https://mochajs.org/'
                         text='A rich asynchronous test framework'/>
                     <CardIcon

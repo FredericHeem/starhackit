@@ -63,6 +63,7 @@ It will not only test the code, but also checks the source code with eslint and 
 
 The REST API implemented by this backend is designed and modeled with [RAML](http://raml.org/) which stands for Rest API Modeling Language.
 From a file describing the API such as the [user's API](src/plugins/users/raml/users.raml), several dedicated tools will perform the following benefits:
+
 * `npm run doc`: The [API documentation in HTML](http://starhack.it/api.html)
 * `npm run mock`: A mock server that will responds to web browser according the API specification, useful for frontend developers which can start before the backend is fully implemented.
 * A mock client which verifies that the backend implemented correctly the API.
@@ -70,14 +71,17 @@ From a file describing the API such as the [user's API](src/plugins/users/raml/u
 ## REST API HTML documentation
 
 The REST API HTML documentation is generated with the following command:
+
     # npm run doc
 
 The result can be found at `build/api.html`
 
 Behind the scene `npm run doc` invokes:
+
     # raml2html -i src/plugins/users/raml/users.raml -o build/api.html
 
 To open the documentation, simply run
+
     # npm run opendoc
 
 ## Mock server
@@ -85,10 +89,10 @@ To open the documentation, simply run
 Given the RAML describing of an API, [raml-mocker-server](https://github.com/dmitrisweb/raml-mocker-server) will start responding the web client with data that comply with the API.
 
 To start the mock server, run this npm script:
+
     # npm run mock
 
 This script launches [mock-server.js](scripts/mock-server.js), modify it to eventually change the http port and the `raml` files to select.
-
 
 # Development
 

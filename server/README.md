@@ -4,7 +4,7 @@ Node.js Starter Kit
 Backend Starter Kit written in Node.js with the following features:
 
 * **ES6/ES7** ready: async/await, classes, arrow function, template strings etc ...
-* REST API designed with [RAML](http://raml.org/), produce a human friendly [API documentation](starhack.it/api.html) and a **Mock Server** for frontend developer.
+* REST API designed with [RAML](http://raml.org/), produce a human friendly [API documentation](http://starhack.it/api.html) and a **Mock Server** for frontend developer.
 * [Json Web Token](https://jwt.io/) authentication.
 * **Social Authentication** with Facebook, Google, etc .. Powered by [passport](http://passportjs.org/)
 * Fined-grained **Authorization** based on users, groups and resources.
@@ -63,7 +63,7 @@ It will not only test the code, but also checks the source code with eslint and 
 
 The REST API implemented by this backend is designed and modeled with [RAML](http://raml.org/) which stands for Rest API Modeling Language.
 From a file describing the API such as the [user's API](src/plugins/users/raml/users.raml), several dedicated tools will perform the following benefits:
-* `npm run doc`: The [API documentation in HTML](starhack.it/api.html)
+* `npm run doc`: The [API documentation in HTML](http://starhack.it/api.html)
 * `npm run mock`: A mock server that will responds to web browser according the API specification, useful for frontend developers which can start before the backend is fully implemented.
 * A mock client which verifies that the backend implemented correctly the API.
 

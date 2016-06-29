@@ -41,7 +41,7 @@
         <i class="fa fa-cog fa-spin"></i>
     </div>
 </div>
-
+<script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
 <!--The application-->
 <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
 <script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>

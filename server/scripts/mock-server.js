@@ -1,6 +1,7 @@
 var api = require('raml-mocker-server');
 
 var options = {
+    port: 9000,
     files: ['./src/plugins/users/raml/users.raml'],
     path: null,
     debug: true

@@ -44,6 +44,7 @@ module.exports = function ( options ) {
                 ], v)
             }).concat([
                 'assets/css/bootstrap-cosmo.css',
+                './src/fontello/css/animation.css',
                 './src/fontello/css/fontello.css',
                 'ladda/dist/ladda.min.css'
             ])

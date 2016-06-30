@@ -4,6 +4,7 @@ var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
 
@@ -79,6 +80,7 @@ module.exports = function ( options ) {
                 { from: '../server/build/api.html' }
             ]),
             new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(fr|it)$/),
+            new LodashModuleReplacementPlugin,
             new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],
         resolve: {

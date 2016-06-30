@@ -11,7 +11,7 @@ var webpackDevConfig = {
             app: [
                 'webpack-dev-server/client?http://localhost:8080',
                 'webpack/hot/only-dev-server',
-                'webpack-hud',
+                './node_modules/babel-polyfill/lib/index.js',
                 './src/app/index.js'
             ]
         }

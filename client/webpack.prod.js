@@ -8,6 +8,7 @@ var webpackProdConfig = {
     overrides: {
         entry: {
             app: [
+                './node_modules/babel-polyfill/lib/index.js',
                 './src/app/index.js'
             ]
         },

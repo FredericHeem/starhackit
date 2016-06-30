@@ -1,6 +1,5 @@
 import Debug from 'debug';
 let debug = new Debug("intl");
-import {Promise} from 'es6-promise';
 
 export default function(language = 'en'){
     debug(language);

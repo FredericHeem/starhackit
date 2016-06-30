@@ -1,3 +1,4 @@
+/*eslint-env node */
 var webpack = require('webpack');
 var path = require('path');
 var webpackConfig = require('./webpack.dev');

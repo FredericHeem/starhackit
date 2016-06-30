@@ -1,7 +1,8 @@
+/*eslint-env node */
 var path = require( 'path' );
 var webpack = require( 'webpack' );
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
-var pkg = require('./package.json');
+//var pkg = require('./package.json');
 
 var webpackDevConfig = {
     overrides: {

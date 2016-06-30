@@ -12,7 +12,7 @@
         "browser": true,
         "es6": true,
         "node": false,
-        "jquery": true,
+        "jquery": false,
         "mocha": true
     },
     "globals": {

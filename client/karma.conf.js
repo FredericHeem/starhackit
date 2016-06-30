@@ -27,7 +27,7 @@ module.exports = function (config) {
           loader: 'babel-loader'
         },{
             test: /\.json$/,
-            loader: 'json',
+            loader: 'json'
           }
         ],
         postLoaders: [{
@@ -74,11 +74,11 @@ module.exports = function (config) {
     coverageReporter: {
       reporters: [
          {
-             type: 'text-summary',
+             type: 'text-summary'
          },
          {
              type: 'html',
-             dir: 'coverage/',
+             dir: 'coverage/'
          }
      ]
     }

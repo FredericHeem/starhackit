@@ -1,5 +1,4 @@
 import i18next from 'i18next';
-import {Promise} from 'es6-promise';
 import XHR from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Debug from 'debug';

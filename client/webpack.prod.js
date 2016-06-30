@@ -1,3 +1,4 @@
+/*eslint-env node */
 var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CompressionPlugin = require('compression-webpack-plugin');
@@ -15,7 +16,7 @@ var webpackProdConfig = {
         output: {
             path: path.join( __dirname, 'build' ),
             filename: '[name].[hash].js'
-        },
+        }
     },
 
     plugins: [
@@ -26,7 +27,7 @@ var webpackProdConfig = {
             }
         } ),
         new purify({
-            basePath: __dirname,
+            basePath: __dirname
         }),
         new webpack.optimize.DedupePlugin(),
 

@@ -26,6 +26,7 @@
     "run": "pm2 start pm2.json",
     "clean": "gulp clean",
     "mock": "node scripts/mock-server.js",
+    "api-check": "abao src/plugins/users/raml/users.raml --server http://localhost:9000/api/v1",
     "doc": "raml2html -i src/plugins/users/raml/users.raml -o build/api.html",
     "opendoc": "open build/api.html"
   },
@@ -86,6 +87,7 @@
     "winston": "2.2.0"
   },
   "devDependencies": {
+    "abao": "0.4.0-beta.8",
     "async": "2.0.0-rc.3",
     "chai": "3.5.0",
     "chalk": "1.1.3",

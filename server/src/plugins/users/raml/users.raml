@@ -9,6 +9,8 @@ documentation:
  - title: User REST API
    content: 'User REST API documentation'
 
+traits: !include traits.raml
+
 /auth:
   /login:
     description: 'Authenticate with the given username/email and password'
@@ -108,6 +110,11 @@ documentation:
 /users:
   description: Get all users
   get:
+    is: [
+      searchable: {description: "with valid searchable fields: firtName", example: "[\"firtName\", \"marco\", \"like\"]"},
+      orderable: {fieldsList: "lastName"},
+      pageable
+    ]
     responses:
       200:
         body:

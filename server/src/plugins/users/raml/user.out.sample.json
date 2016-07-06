@@ -2,13 +2,9 @@
   "id": 107,
   "username": "Laura.Jennie.Reeves",
   "email": "Laura.Jennie.Reeves@mail.com",
-  "firstName": null,
-  "lastName": null,
-  "facebookId": null,
-  "githubId": null,
-  "twitterId": null,
-  "googleId": null,
-  "fidorId": null,
+  "firstName": "Laura",
+  "lastName": "Jennie",
+  "facebookId": "1234567890",
   "createdAt": "2016-05-28T15:00:56.358Z",
   "updatedAt": "2016-05-28T15:00:56.358Z"
 }

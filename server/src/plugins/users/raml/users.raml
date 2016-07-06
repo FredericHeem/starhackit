@@ -9,6 +9,8 @@ documentation:
  - title: User REST API
    content: 'User REST API documentation'
 
+traits: !include traits.raml
+
 /auth:
   /login:
     description: 'Authenticate with the given username/email and password'
@@ -20,10 +22,12 @@ documentation:
       responses:
         200:
           body:
+            schema: !include login/login.out.schema.json
             example: !include login/login.out.sample.json
         401:
           description: 'Unauthorized'
           body:
+            schema: !include error.schema.json
             example: !include login/login.error.sample.json
 
   /logout:
@@ -47,6 +51,7 @@ documentation:
             example: !include success.out.json
         422:
           body:
+            schema: !include error.schema.json
             example: !include register/register.error.sample.json
 
   /verify_email_code:
@@ -86,6 +91,7 @@ documentation:
             example: !include success.out.json
         422:
           body:
+            schema: !include error.schema.json
             example: !include verifyResetPasswordToken/verifyResetPasswordToken.error.sample.json
 /me:
   description: Get information about the current authenticated user
@@ -93,14 +99,22 @@ documentation:
     responses:
       200:
         body:
+          schema: !include user.out.schema.json
           example: !include user.out.sample.json
   patch:
     responses:
       204:
-
+        body:
+          schema: !include user.out.schema.json
+          example: !include user.out.sample.json
 /users:
   description: Get all users
   get:
+    is: [
+      searchable: {description: "with valid searchable fields: firtName", example: "[\"firtName\", \"marco\", \"like\"]"},
+      orderable: {fieldsList: "lastName"},
+      pageable
+    ]
     responses:
       200:
         body:

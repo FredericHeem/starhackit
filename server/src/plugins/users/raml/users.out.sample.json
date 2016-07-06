@@ -7,10 +7,6 @@
     "firstName": null,
     "lastName": null,
     "facebookId": null,
-    "githubId": null,
-    "twitterId": null,
-    "googleId": null,
-    "fidorId": null,
     "createdAt": "2016-05-28T15:00:56.358Z",
     "updatedAt": "2016-05-28T15:00:56.358Z"
   }, {
@@ -20,10 +16,6 @@
     "firstName": null,
     "lastName": null,
     "facebookId": null,
-    "githubId": null,
-    "twitterId": null,
-    "googleId": null,
-    "fidorId": null,
     "createdAt": "2016-05-28T15:00:55.922Z",
     "updatedAt": "2016-05-28T15:00:55.922Z"
   }]

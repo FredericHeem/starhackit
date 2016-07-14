@@ -84,7 +84,6 @@ export default function MainLanding(){
 
                         <RaisedButton
                                   label="Clone the code on GitHub"
-                                  linkButton={true}
                                   href="https://github.com/FredericHeem/starhackit"
                                   icon={<FontIcon className="icon-github-circled-alt2"/>}
                                />

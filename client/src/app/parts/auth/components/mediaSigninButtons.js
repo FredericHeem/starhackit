@@ -32,7 +32,6 @@ export default React.createClass({
                 <RaisedButton
                   label="Sign in with Facebook"
                   style={{width: '100%'}}
-                  linkButton={true}
                   href="/api/v1/auth/facebook"
                   icon={<FontIcon className="icon-facebook"/>}
                 />

@@ -26,6 +26,100 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm run mock`  |  Run a mock server based on the RAML api definition |
 | `npm run doc` |  Generate the API HTML documentation |
 
+# Dependencies
+
+## Database
+
+This project can use the most popular SQL databases such as PostgreSQL, MySQL, Oracle, MSSQL and Sqlite. This is achieved with [Sequelize](http://docs.sequelizejs.com/en/latest/), the most popular [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) for Node.js
+
+
+For rapid prototyping, the easiest database to configure is sqlite. In production, StarHackIt is using PostgreSQL.
+
+### Sqlite configuration
+
+```
+"db":{
+  "driver": "sqlite3",
+  "dialect":"sqlite",
+  "database": "dev",
+  "user": "user",
+  "logging": true,
+  "storage": "./db.dev.sqlite"
+}
+
+```
+### Postgresql configuration
+
+Here is an example of the configuration for Postgres:
+
+```
+"db":{
+  "driver": "pg",
+  "dialect":"postgres",
+  "database": "dev",
+  "user": "user",
+  "password": "password",
+  "host": "localhost",
+  "port": "5432",
+  "logging": true,
+  "pool": {
+    "maxConnections": 100,
+    "maxIdleTime": 60
+  }
+}
+```
+
+## Message Queue
+
+A use case for using a RabbitMq in this project is to send an email during registration. It decouples the act of requesting an action and executing it. That solves a bunch of issues,  for instance, when the mail server is not reachable or down, the [job](src/plugins/users/jobs/mail/MailJob.js) who is processing the email expedition can retry until the mail service is restored.
+
+Example of configuration:
+
+```
+"rabbitmq":{
+  "url":"amqp://192.168.99.100"
+}
+```
+
+## Sending Email
+Sending email is a very common task for an application. For instance, an email is send during registration, when a user request a new password etc ...
+
+The project is leveraging [nodemailer](http://nodemailer.com/) which makes sending e-mail easy as cake:
+
+```
+"mail": {
+  "from": "StarHackIt <notification@yourproject.com>",
+  "signature": "The Team",
+  "smtp": {
+    "service": "Mailgun",
+    "auth": {
+      "user": "postmaster@yourproject.mailgun.org",
+      "pass": "2109aef076a992169436141d0aba0450"
+    }
+  }
+}
+```
+
+Please have a look at the [nodemailer documentation](https://github.com/nodemailer/nodemailer) for more information about how to use another mail provider.
+
+## Social authentication
+
+Beside creating an account with username and password, this starter kit supports social authentication such as Facebook, Google, Twitter etc ...
+
+[passportjs](http://passportjs.org/) has more than 300 different strategy to choose from.
+
+Example of configuration for the Facebook authentication:
+
+```
+"authentication":{
+  "facebook":{
+    "clientID":"",
+    "clientSecret":"",
+    "callbackURL": "http://localhost:3000/v1/auth/facebook/callback"
+  }
+}
+```
+
 ## Docker containers
 
 To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)

@@ -2,7 +2,6 @@ import testRoutes from 'test/testRoutes';
 
 export default function Routes(store, parts) {
     return {
-        component: 'div',
         childRoutes: [
             {
                 path: '/',

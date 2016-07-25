@@ -92,7 +92,6 @@ export default React.createClass({
                         <legend>{tr.t('About Me')}</legend>
                         <TextField
                             id='biography-input'
-                            classsName='text-center text-area'
                             fullWidth={true}
                             value={this.state.profile.biography}
                             errorText={errors.biography && errors.biography[0]}

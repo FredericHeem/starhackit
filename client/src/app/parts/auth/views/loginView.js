@@ -46,7 +46,6 @@ export default React.createClass( {
                             <FlatButton
                                       label={tr.t('Forgot Password')}
                                       containerElement={<Link to="/forgot" />}
-                                      linkButton={true}
                                     />
                         </div>
                 </Paper>

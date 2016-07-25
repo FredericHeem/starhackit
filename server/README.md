@@ -82,7 +82,7 @@ Example of configuration:
 ```
 
 ## Sending Email
-Sending email is a very common task for an application. For instance, an email is send during registration, when a user request a new password etc ...
+Sending email is a very common task for an application. For instance, an email is sent during registration, when a user requests a new password etc ...
 
 The project is leveraging [nodemailer](http://nodemailer.com/) which makes sending e-mail easy as cake:
 
@@ -106,7 +106,7 @@ Please have a look at the [nodemailer documentation](https://github.com/nodemail
 
 Beside creating an account with username and password, this starter kit supports social authentication such as Facebook, Google, Twitter etc ...
 
-[passportjs](http://passportjs.org/) has more than 300 different strategy to choose from.
+[passportjs](http://passportjs.org/) has more than 300 different strategies to choose from.
 
 Example of configuration for the Facebook authentication:
 

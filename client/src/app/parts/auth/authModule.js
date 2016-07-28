@@ -70,7 +70,7 @@ function AuthReducer(actions){
       [actions.login.ok]: (state, payload) => ({
           ...state,
           authenticated: true,
-          token: payload.token
+          token: payload.response.token
       }),
       [actions.login.error]: () => (defaultState),
       [actions.me.error]: () => (defaultState),

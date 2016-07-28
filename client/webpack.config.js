@@ -37,11 +37,9 @@ module.exports = function ( options ) {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
                 return _.includes([
                     'material-ui',
-                    'bootstrap',
                     'intl'
                 ], v)
             }).concat([
-                'assets/css/bootstrap-cosmo.css',
                 './src/fontello/css/animation.css',
                 './src/fontello/css/fontello.css',
                 'ladda/dist/ladda.min.css'

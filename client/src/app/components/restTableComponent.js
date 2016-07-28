@@ -111,7 +111,7 @@ export default React.createClass({
         return (
             <div>
                 {this.renderPagination()}
-                <Table className='table table-striped table-hover'
+                <Table className='table'
                     data={data}
                     {...this.props}/>
             </div>

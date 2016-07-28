@@ -26,10 +26,10 @@ function Actions(rest){
 function ProfileReducer(actions){
   return createReducer({
       [actions.get.ok]: (state, payload) => ({
-        data: payload
+        data: payload.response
       }),
       [actions.update.ok]: (state, payload) => ({
-        data: payload
+        data: payload.response
       })
   }, {});
 }

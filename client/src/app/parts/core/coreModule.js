@@ -87,9 +87,10 @@ function AlertDisplay(payload){
 function MiddlewareAlert(){
   const middleware = (/*store*/) => next => action => {
     if(action.meta === ASYNC_META.ERROR){
-      let {status} = action.payload;
+      const {error} = action.payload;
+      let {status} = error;
       if(!_.includes([401, 422], status)){
-        AlertDisplay(action.payload);
+        AlertDisplay(error);
       }
     }
     return next(action)

@@ -1,6 +1,7 @@
 import React from 'react';
 import tr from 'i18next';
 import Debug from 'debug';
+import './alert.styl';
 
 let debug = new Debug("components:alert");
 

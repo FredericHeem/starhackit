@@ -16,17 +16,20 @@ describe('Auth', function() {
     assert.equal(getToken(store), token);
   });
   it('login', () => {
-    store.dispatch(actions.login.ok({token: token}));
+    console.log("DISPATCH:", store.getState());
+
+    store.dispatch(actions.login.ok({response: {token: token}}));
+    console.log("STORE:", store.getState())
     assert.equal(isAuthenticated(store), true);
     assert.equal(getToken(store), token);
   });
   it('logout ok', () => {
-    store.dispatch(actions.logout.ok());
+    store.dispatch(actions.logout.ok({response: {}}));
     assert.equal(isAuthenticated(store), false);
   });
   it('logout error', () => {
-    store.dispatch(actions.login.ok({token: token}));
-    store.dispatch(actions.logout.error({status: 401}));
+    store.dispatch(actions.login.ok({response: {token: token}}));
+    store.dispatch(actions.logout.error({error: {status: 401}}));
     assert.equal(isAuthenticated(store), false);
     assert.isUndefined(getToken(store));
   });

@@ -33,7 +33,7 @@ export default function(options = {}){
           data: data,
           withCredentials: true,
           headers: headers,
-          timeout: 2e3,
+          timeout: 30e3,
           paramsSerializer: function(params) {
               return Qs.stringify(params, {arrayFormat: 'brackets'});
           }

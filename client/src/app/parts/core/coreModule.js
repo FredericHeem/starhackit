@@ -44,18 +44,24 @@ function Containers(){
 }
 
 function createHttpError(payload = {}){
-    let {data} = payload;
+    debug('createHttpError', payload)
+    debug('createHttpError response:', payload.response)
+    debug('createHttpError code:', payload.code)
+    debug('createHttpError config:', payload.config)
+    debug('createHttpError message:', payload.message)
+    const {response = {}} = payload;
     function name(){
-      if(_.isEmpty(payload)){
-        return "Unknown error"
-      } else  if(_.isString(payload)){
-        return payload
+      if(_.isString(response)){
+        return response
       } else {
-        return payload.statusText
+        return response.statusText
       }
     }
     function message(){
-        if(!data){
+        const data = _.get(response, 'data');
+        if(payload.message){
+            return payload.message;
+        } else if(!data){
             return;
         } else if(_.isString(data)){
             return data;
@@ -63,11 +69,13 @@ function createHttpError(payload = {}){
             return data.message
         }
     }
-    return {
-        name: name(),
-        code: payload.status,
-        message: message()
+    const errorOut = {
+      name: name(),
+      code: response.status,
+      message: message()
     }
+    debug('createHttpError out:', errorOut)
+    return errorOut;
 }
 
 function AlertDisplay(payload){
@@ -87,10 +95,10 @@ function AlertDisplay(payload){
 function MiddlewareAlert(){
   const middleware = (/*store*/) => next => action => {
     if(action.meta === ASYNC_META.ERROR){
-      const {error} = action.payload;
-      let {status} = error;
+      const {response = {}} = action.payload.error;
+      let {status} = response;
       if(!_.includes([401, 422], status)){
-        AlertDisplay(error);
+        AlertDisplay(action.payload.error);
       }
     }
     return next(action)

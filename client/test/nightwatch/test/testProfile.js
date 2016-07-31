@@ -16,7 +16,7 @@ describe('Profile', function () {
 
     });
 
-    it('read and save profile', function (client) {
+    it('save biography too long', function (client) {
         client.page.profile().navigate()
             .waitForElementVisible('.profile-page', 5000)
             .setValue('@biographyInput', 'abcdefhigk'.repeat(10))

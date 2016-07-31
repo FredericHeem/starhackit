@@ -70,7 +70,7 @@ export default function(app, publisherUser) {
       log.info("resetPassword: ", email);
       let user = await models.User.findByEmail(email);
       if(user){
-        log.info("resetPassword: find user: ", user.get());
+        log.info("resetPassword: find user id: ", user.get().id);
         let token = createToken();
         let passwordReset = {
           token: token,

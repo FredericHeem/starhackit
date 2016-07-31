@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
   },
    {
      tableName: "users",
-     underscored: true,
+     underscored: false,
       classMethods: {
          seedDefault: async function () {
           let usersJson = require('./fixtures/users.json');

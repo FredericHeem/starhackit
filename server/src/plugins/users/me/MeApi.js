@@ -11,7 +11,7 @@ export default function MeApi(app) {
       log.debug("index userId: ", userId);
       let user = await models.User.findByUserId(userId);
       //log.debug("index user: ", user.get());
-      return _.omit(user.toJSON(), 'id');
+      return user.toJSON();
     },
     async patch(userId, data) {
       validateJson(data, require('./schema/patch.json'));

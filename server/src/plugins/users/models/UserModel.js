@@ -7,6 +7,11 @@ module.exports = function(sequelize, DataTypes) {
   let models = sequelize.models;
 
   let User = sequelize.define('User', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
     username: {
       type: DataTypes.STRING(64),
       unique: true,
@@ -43,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       unique: true
     },
-    password: DataTypes.TEXT,
+    password: DataTypes.VIRTUAL,
     passwordHash: DataTypes.TEXT
   },
    {

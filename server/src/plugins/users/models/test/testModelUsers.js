@@ -110,7 +110,8 @@ describe('UserModel', function(){
   });
   it('findByUserId', async () => {
     let adminUsername = 'admin';
-    let res = await userModel.findByUserId(1);
+    let user = await models.User.findByUsername('admin');
+    let res = await userModel.findByUserId(user.get().id);
     assert(res.toJSON().profile);
     assert.equal(res.get().username, adminUsername);
   });

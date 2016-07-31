@@ -17,8 +17,8 @@ describe('profileModel', function(){
       biography: "Ciao"
     };
     let profile = await profileModel.create(profileData);
-    await profile.setUser(1);
-
+    let user = await models.User.findByUsername('admin');
+    await profile.setUser(user.get().id);
   });
 
   it('should count profiles', async () =>  {

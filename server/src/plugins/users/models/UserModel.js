@@ -208,7 +208,6 @@ module.exports = function(sequelize, DataTypes) {
          */
           toJSON: function () {
           let values = this.get({clone: true});
-          delete values.password;
           delete values.passwordHash;
           return values;
         }

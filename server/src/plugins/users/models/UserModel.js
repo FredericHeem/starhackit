@@ -28,26 +28,6 @@ module.exports = function(sequelize, DataTypes) {
     lastName: {
       type: DataTypes.STRING(64)
     },
-    facebookId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    githubId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    twitterId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    googleId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    fidorId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
     password: DataTypes.VIRTUAL,
     passwordHash: DataTypes.TEXT
   },
@@ -62,20 +42,32 @@ module.exports = function(sequelize, DataTypes) {
           }
         },
         /**
-         * Finds a user by its email
+         * Finds a user by its key/value
          * returns the model of the  user
          *
          * @param {String} email - the user's email address
          *
          * @returns {Promise} Promise user model
         */
-        findByEmail: function(email) {
+        findByKey: function(key, value) {
           return this.find({
             include:[
-               {model: models.Profile, as: 'profile'}
+               {
+                 model: models.Profile,
+                 as: 'profile',
+                 attributes: ['biography']
+               },
+               {
+                 model: models.AuthProvider,
+                 as: 'auth_provider',
+                 attributes: ['name', 'authId']
+               }
              ],
-            where: { email: email }
+            where: { [key]: value }
           });
+        },
+        findByEmail: function(email) {
+          return this.findByKey('email', email);
         },
         /**
          * Finds a user by userid
@@ -86,12 +78,7 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise} Promise user model
         */
         findByUserId: function(userid) {
-          return this.find({
-            include:[
-               {model: models.Profile, as: 'profile'}
-             ],
-            where: { id: userid }
-          });
+          return this.findByKey('id', userid);
         },
         /**
          * Finds a user by username
@@ -102,7 +89,7 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise} Promise user model
          */
         findByUsername: function  findByUsername(userName) {
-          return this.find({where: { username: userName } });
+          return this.findByKey('username', userName);
         },
         /**
          * Creates a user given a json representation and adds it to the group GroupName,
@@ -114,13 +101,23 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise}  Promise user created model
          */
         createUserInGroups: async function(userJson, groups) {
-          log.debug("createUserInGroups user:%s, group: ", userJson, groups);
+          log.info("createUserInGroups user:%s, group: ", userJson, groups);
           return sequelize.transaction(async function(t) {
-            log.info("create user");
             let userCreated = await models.User.create(userJson, {transaction: t});
-            await models.UserGroup.addUserIdInGroups(groups, userCreated.get().id, t );
-            let profile = await models.Profile.create({biography:"", user_id: userCreated.get().id}, {transaction: t});
-            log.info("profile created ", profile.get());
+            const userId = userCreated.get().id;
+            await models.UserGroup.addUserIdInGroups(groups, userId, t );
+            //Create the profile
+            let profile = await models.Profile.create(
+              {...userJson.profile, user_id: userId},
+              {transaction: t});
+            log.debug("profile created ", profile.get());
+            //Create the eventual authentication provider
+            if(userJson.authProvider){
+              await models.AuthProvider.create(
+                {...userJson.authProvider, user_id: userId},
+                {transaction: t});
+            }
+
             return userCreated;
           })
           .catch(function (err) {
@@ -128,9 +125,6 @@ module.exports = function(sequelize, DataTypes) {
             throw err;
           });
         },
-
-
-
         /**
          * Checks whether a user is able to perform an action on a resource
          * Equivalent to: select name from permissions p join group_permissions g on p.id=g.permission_id where g.group_id=(select group_id from users where username='aliceab@example.com') AND p.resource='user' and p.create=true;

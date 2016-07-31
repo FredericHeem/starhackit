@@ -9,32 +9,40 @@
           "type": "integer"
         },
         "username": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
         "email": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
         "firstName": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
         "lastName": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
-        "facebookId": {
-          "type": "string",
-          "minLength": 1
+        "auth_providers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "authId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "authId"
+            ]
+          }
         },
         "createdAt": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
         "updatedAt": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         }
       },
       "required": [
@@ -43,14 +51,13 @@
         "email",
         "firstName",
         "lastName",
-        "facebookId",
+        "auth_providers",
         "createdAt",
         "updatedAt"
       ]
     },
     "token": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     }
   },
   "required": [

@@ -17,11 +17,13 @@ export default function MeApi(app) {
       validateJson(data, require('./schema/patch.json'));
       log.debug("patch userId %s, data: ", userId, data);
       //TODO refactor with nested data
+      //TODO transaction ?
       await models.User.update(data, {
         where: {
           id: userId
         }
       });
+      //TODO upsert ?
       await models.Profile.update(data, {
         where: {
           user_id: userId

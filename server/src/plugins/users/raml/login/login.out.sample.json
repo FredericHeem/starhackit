@@ -5,7 +5,10 @@
     "email": "admin@myapp.com",
     "firstName": "john",
     "lastName": "doe",
-    "facebookId": "1234567890",
+    "auth_providers": [{
+      "name":"facebook",
+      "authId": "1234567890"
+    }],
     "createdAt": "2016-05-28T15:00:42.527Z",
     "updatedAt": "2016-05-28T15:00:42.527Z"
   },

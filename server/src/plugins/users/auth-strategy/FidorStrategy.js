@@ -97,7 +97,7 @@ export function register(passport, models, publisherUser) {
         try {
           let res = await verify(models, publisherUser, accessToken, refreshToken, profile);
           //Save it to redis
-          res.user.accessToken = accessToken
+          res.user.accessToken = accessToken;
           done(res.err, res.user);
         } catch(err){
           done(err);

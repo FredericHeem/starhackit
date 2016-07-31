@@ -16,7 +16,7 @@ describe('Users', function() {
       assert(client);
       await client.login();
     });
-    it.only('get db schema', async () => {
+    it('get db schema', async () => {
       let schema = await client.get('v1/db/schema');
       console.log("got response", JSON.stringify(schema, null, 4));
       assert(schema);

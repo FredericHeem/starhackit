@@ -5,6 +5,8 @@ module.exports = function(sequelize, DataTypes) {
   },
   {
     tableName: "password_resets",
+    underscored: true,
+    timestamps: true,
     classMethods: {
       associate: function(models) {
         models.User.hasOne(PasswordReset,{ foreignKey: "user_id" });

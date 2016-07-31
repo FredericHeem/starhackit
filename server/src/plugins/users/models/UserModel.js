@@ -33,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
   },
    {
      tableName: "users",
+     underscored: true,
       classMethods: {
          seedDefault: async function () {
           let usersJson = require('./fixtures/users.json');
@@ -206,9 +207,6 @@ module.exports = function(sequelize, DataTypes) {
           return values;
         }
       }
-  },
-  {
-    underscored: true
   });
 
   let hashPasswordHook = function(instance, options, done) {

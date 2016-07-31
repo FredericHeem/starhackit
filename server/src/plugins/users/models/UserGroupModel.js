@@ -10,6 +10,8 @@ module.exports = function(sequelize, DataTypes) {
     name: DataTypes.TEXT
   }, {
     tableName:"user_groups",
+    underscored: true,
+    timestamps: false,
     classMethods: {
       addUserIdInGroup:addUserIdInGroup,
       addUserIdInGroups:addUserIdInGroups

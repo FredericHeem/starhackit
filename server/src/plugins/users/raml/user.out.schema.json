@@ -1,10 +1,9 @@
-
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
     "id": {
-      "type": "integer"
+      "type": "string"
     },
     "username": {
       "type": "string"
@@ -18,14 +17,40 @@
     "lastName": {
       "type": "string"
     },
-    "facebookId": {
-      "type": "string"
-    },
     "createdAt": {
       "type": "string"
     },
     "updatedAt": {
       "type": "string"
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "biography": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "biography"
+      ]
+    },
+    "auth_provider": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "authId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "authId"
+        ]
+      }
     }
   },
   "required": [
@@ -34,8 +59,8 @@
     "email",
     "firstName",
     "lastName",
-    "facebookId",
     "createdAt",
-    "updatedAt"
+    "updatedAt",
+    "profile"
   ]
 }

@@ -1,10 +1,16 @@
 {
-  "id": 107,
+  "id": "6fba6aca-db12-4eb1-8ae6-918cf20e0f8c",
   "username": "Laura.Jennie.Reeves",
   "email": "Laura.Jennie.Reeves@mail.com",
   "firstName": "Laura",
   "lastName": "Jennie",
-  "facebookId": "1234567890",
   "createdAt": "2016-05-28T15:00:56.358Z",
-  "updatedAt": "2016-05-28T15:00:56.358Z"
+  "updatedAt": "2016-05-28T15:00:56.358Z",
+  "profile": {
+    "biography": "Ciao"
+  },
+  "auth_provider": [{
+    "name": "facebook",
+    "authId": "1234567890"
+  }]
 }

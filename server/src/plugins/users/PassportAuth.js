@@ -24,14 +24,14 @@ export default function(app, publisherUser) {
   }
 
   passport.serializeUser(function(user, done) {
-    log.debug("serializeUser ", user);
+    log.debug("serializeUser user.id", user.id);
     //TODO use redis
     done(null, user);
   });
 
-  passport.deserializeUser(function(id, done) {
-    log.debug("deserializeUser ", id);
+  passport.deserializeUser(function(user, done) {
+    log.debug("deserializeUser ", user.id);
     //TODO use redis
-    done(null, id);
+    done(null, user);
   });
 };

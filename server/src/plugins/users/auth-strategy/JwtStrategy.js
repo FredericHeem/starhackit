@@ -21,7 +21,7 @@ export async function findUser(models, jwtPayload) {
 export default function register(passport, models) {
   log.debug("register");
 
-  let opts = {}
+  let opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('Bearer');
   opts.secretOrKey = 'secret';
   //opts.issuer = "accounts.examplesoft.com";

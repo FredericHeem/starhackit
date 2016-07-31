@@ -1,7 +1,7 @@
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define('Profile', {
     biography: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING(2048)
     }
   }, {
     tableName: "profile",

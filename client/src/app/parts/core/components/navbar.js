@@ -15,6 +15,10 @@ function navLinks(authenticated) {
                 text: 'ADMIN'
             },
             {
+                route: '/db/schema',
+                text: 'DB SCHEMA'
+            },
+            {
                 route: '/app/profile',
                 text: 'PROFILE'
             }, {

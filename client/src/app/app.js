@@ -7,6 +7,7 @@ import AuthModule from './parts/auth/authModule';
 import CoreModule from './parts/core/coreModule';
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
+import DbModule from './parts/db/dbModule';
 
 import Debug from 'debug';
 import 'utils/ga';
@@ -31,7 +32,8 @@ export default function() {
       auth,
       core: CoreModule(),
       profile: ProfileModule(rest),
-      admin: AdminModule(rest)
+      admin: AdminModule(rest),
+      db: DbModule(rest)
     }
 
     const store = configureStore(parts);
@@ -52,7 +54,6 @@ export default function() {
             await intl(language);
             jwt.loadJWT(parts);
             store.dispatch(parts.auth.actions.me())
-
         }
     };
 }

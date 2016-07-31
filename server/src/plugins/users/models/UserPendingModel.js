@@ -4,14 +4,11 @@ module.exports = function(sequelize, DataTypes) {
   var UserPending = sequelize.define('UserPending', {
     username: DataTypes.STRING(64),
     email: DataTypes.STRING(64),
-    password: DataTypes.STRING(64),
+    password: DataTypes.VIRTUAL,
     passwordHash: DataTypes.STRING,
     code: DataTypes.TEXT(16)
   }, {
-    tableName:"user_pendings",
-    classMethods: {
-
-    }
+    tableName:"user_pendings"
   });
 
   let hashPasswordHook = function(instance, options, done) {

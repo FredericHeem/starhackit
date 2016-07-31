@@ -1,5 +1,4 @@
 import assert from 'assert';
-import _ from 'lodash';
 import testMngr from '~/test/testManager';
 
 describe('Users', function() {

@@ -44,7 +44,7 @@ export default React.createClass( {
     },
     renderError() {
         let {error} = this.props.verifyResetPasswordToken
-        if(_.get(error, 'status') === 422){
+        if(_.get(error, 'response.status') === 422){
             return (
                 <Alert
                     type='danger'
@@ -113,9 +113,10 @@ export default React.createClass( {
                 } );
                 return true;
             })
-            .catch(errors => {
+            .catch(error => {
+                debug("resetPassword error: ", error);
                 this.setState( {
-                    errors: errors.toJSON()
+                    errors: error.toJSON()
                 } );
             });
     },

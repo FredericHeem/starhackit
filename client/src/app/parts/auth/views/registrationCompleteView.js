@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import tr from 'i18next';
 import DocTitle from 'components/docTitle';
@@ -12,7 +13,7 @@ RegistrationError.propTypes = {
 };
 
 function RegistrationError({error}){
-    if (error.data && error.data.name === 'NoSuchCode') {
+    if (_.get(error,'response.data.name') === 'NoSuchCode') {
         return (
           <Alert
               type='warning'

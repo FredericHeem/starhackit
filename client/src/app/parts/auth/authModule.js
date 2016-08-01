@@ -94,7 +94,7 @@ function Reducers(actions){
 let selectState = state => state.auth;
 let isAuthenticated = state => selectState(state).auth.authenticated;
 
-function Containers(actions){
+function Containers(context, actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
     return {
         login(){
@@ -193,9 +193,9 @@ function Routes(containers, store, actions){
     }
 }
 
-export default function(rest) {
+export default function(context, rest) {
     let actions = Actions(rest);
-    let containers = Containers(actions)
+    let containers = Containers(context, actions)
     return {
         actions,
         reducers: Reducers(actions),

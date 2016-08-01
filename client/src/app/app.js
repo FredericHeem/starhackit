@@ -1,5 +1,5 @@
 import 'assets/stylus/main';
-
+import tr from 'i18next';
 import Rest from './utils/rest';
 import configureStore from './configureStore';
 
@@ -26,14 +26,17 @@ let debug = new Debug("app");
 
 export default function() {
     debug("App begins");
+    const context = {
+        tr
+    }
     const rest = Rest();
-    let auth = AuthModule(rest);
+    let auth = AuthModule(context, rest);
     const parts = {
       auth,
-      core: CoreModule(),
-      profile: ProfileModule(rest),
-      admin: AdminModule(rest),
-      db: DbModule(rest)
+      core: CoreModule(context),
+      profile: ProfileModule(context, rest),
+      admin: AdminModule(context, rest),
+      db: DbModule(context, rest)
     }
 
     const store = configureStore(parts);
@@ -49,7 +52,7 @@ export default function() {
         },
         async start() {
             debug("start");
-            let language = await i18n.load();
+            const language = await i18n.load();
             store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
             jwt.loadJWT(parts);

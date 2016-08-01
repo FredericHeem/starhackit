@@ -13,6 +13,8 @@ module.exports = function(sequelize, DataTypes) {
     DELETE: DataTypes.BOOLEAN
   }, {
     tableName: "permissions",
+    underscored: true,
+    timestamps: false,
     classMethods: {
       associate: function(models) {
         Permission.belongsToMany(models.Group,{ through : models.GroupPermission, foreignKey: "permission_id"});

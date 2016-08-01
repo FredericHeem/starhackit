@@ -10,6 +10,8 @@ module.exports = function (sequelize, DataTypes) {
     }
   }, {
     tableName: "auth_provider",
+    underscored: true,
+    timestamps: false,
     classMethods: {
       associate: function (models) {
         models.User.hasMany(models.AuthProvider, {
@@ -19,10 +21,7 @@ module.exports = function (sequelize, DataTypes) {
         models.AuthProvider.belongsTo(models.User, {
           foreignKey: 'user_id'
         });
-
       }
     }
-  }, {
-    underscored: true
   });
 };

@@ -5,6 +5,8 @@ module.exports = function (sequelize, DataTypes) {
     }
   }, {
     tableName: "profile",
+    underscored: true,
+    timestamps: false,
     classMethods: {
       associate: function (models) {
         models.User.hasOne(models.Profile, {
@@ -17,7 +19,5 @@ module.exports = function (sequelize, DataTypes) {
 
       }
     }
-  }, {
-    underscored: true
   });
 };

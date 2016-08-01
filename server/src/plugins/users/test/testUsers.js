@@ -24,11 +24,11 @@ describe('Users', function() {
       assert(Number.isInteger(users.count));
       assert(users.data);
 
-      console.log(users);
+      //console.log(users);
       for(let user of users.data){
         let userGetOne = await client.get(`v1/users/${user.id}`);
         assert(userGetOne);
-        console.log('user ' , userGetOne);
+        //console.log('user ' , userGetOne);
         //assert(_.isEqual(user, userGetOne));
         assert(user);
         //console.log('user:', user)

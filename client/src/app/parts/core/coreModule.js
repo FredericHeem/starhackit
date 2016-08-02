@@ -4,10 +4,9 @@ import { browserHistory, Router } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import {createAction, createReducer} from 'redux-act';
 import {ASYNC_META} from 'redux-act-async';
-import {connect} from 'react-redux';
+//import {connect} from 'react-redux';
 import Alert from 'react-s-alert';
 import Notification from './components/notification';
-import IntlComponent from './components/IntlComponent';
 import Debug from 'debug';
 let debug = new Debug("core");
 
@@ -34,12 +33,6 @@ function Reducers(actions){
 
 function Containers(/*context*/){
     return {
-        intl(){
-            const mapStateToProps = (state) => ({
-                language: state.core.language.locale
-            })
-            return connect(mapStateToProps)(IntlComponent);
-        }
     }
 }
 

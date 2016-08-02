@@ -33,18 +33,18 @@ function Reducers(actions){
   }
 }
 
-function Containers(actions, resources){
+function Containers(context, actions, resources){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
     return {
       users(){
-          const mapStateToProps = () => ({resources})
-          return connect(mapStateToProps, mapDispatchToProps)(UsersView);
+          const mapStateToProps = () => ({})
+          return connect(mapStateToProps, mapDispatchToProps)(UsersView({resources, ...context}));
       },
       user(){
           const mapStateToProps = (state) => ({
               usersGetOne: state.admin.usersGetOne
           })
-          return connect(mapStateToProps, mapDispatchToProps)(UserView);
+          return connect(mapStateToProps, mapDispatchToProps)(UserView(context));
       }
     }
 }
@@ -76,10 +76,10 @@ function Middleware(actions){
   return middleware;
 }
 
-export default function(rest) {
+export default function(context, rest) {
   let resources = Resources(rest)
   let actions = Actions(rest);
-  let containers = Containers(actions, resources)
+  let containers = Containers(context, actions, resources)
   return {
       actions,
       reducers: Reducers(actions),

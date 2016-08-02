@@ -44,12 +44,12 @@ function Reducers(actions){
 
 let selectProfile = state => state.profile;
 
-function Containers(actions){
+function Containers(context, actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
     return {
         profile(){
             const mapStateToProps = (state) => selectProfile(state)
-            return connect(mapStateToProps, mapDispatchToProps)(ProfileView);
+            return connect(mapStateToProps, mapDispatchToProps)(ProfileView(context));
         }
     }
 }
@@ -62,9 +62,9 @@ function Routes(containers, store, actions){
     }
 }
 
-export default function(rest) {
+export default function(context, rest) {
     let actions = Actions(rest);
-    let containers = Containers(actions)
+    let containers = Containers(context, actions)
 
     return {
         actions,

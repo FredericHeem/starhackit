@@ -1,4 +1,4 @@
-describe.only('DbSchema', function () {
+describe('DbSchema', function () {
     before(function (client, done) {
         client.page.login().login(done);
     });

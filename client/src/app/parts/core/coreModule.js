@@ -32,7 +32,7 @@ function Reducers(actions){
   }
 }
 
-function Containers(){
+function Containers(/*context*/){
     return {
         intl(){
             const mapStateToProps = (state) => ({
@@ -120,7 +120,7 @@ function createRouter(store, routes){
 }
 
 // Part
-export default function() {
+export default function(context) {
   let actions = Actions();
   const middlewares = [
     routerMiddleware(browserHistory),
@@ -130,7 +130,7 @@ export default function() {
   return {
     actions,
     reducers: Reducers(actions),
-    containers: Containers(actions),
+    containers: Containers(context, actions),
     createRouter,
     middlewares
   }

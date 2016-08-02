@@ -10,7 +10,7 @@ describe('Users', function () {
         client.page.users().navigate()
             .waitForElementVisible('.users-view', 5000);
     });
-    it('read one users', function (client) {
+    it.skip('read one users', function (client) {
         client.page.users().toUser("1")
             .waitForElementVisible('.user-view', 5000);
     });

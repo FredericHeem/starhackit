@@ -27,7 +27,7 @@ function Reducers(actions){
   }
 }
 
-function Containers(actions){
+function Containers(context, actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
     return {
       schema(){
@@ -61,10 +61,10 @@ function Middleware(actions){
   return middleware;
 }
 
-export default function(rest) {
+export default function(context, rest) {
   let resources = Resources(rest)
   let actions = Actions(rest);
-  let containers = Containers(actions, resources)
+  let containers = Containers(context, actions, resources)
   return {
       actions,
       reducers: Reducers(actions),

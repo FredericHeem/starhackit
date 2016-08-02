@@ -15,7 +15,7 @@ function render(view){
 }
 async function run(){
   try {
-    let app = App(render);
+    let app = App();
     await app.start();
     let container = app.createContainer();
     render(container)

@@ -12,6 +12,7 @@ export default function UserApi(app) {
         offset: 0
       });
       log.info('getAll ', filter);
+      // TODO try to remove the " when setting the order.
       let result = await models.User.findAndCountAll({
         limit: filter.limit,
         order: `\"createdAt\" ${filter.order}`,

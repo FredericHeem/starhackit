@@ -1,5 +1,4 @@
-import React from 'react';
-import tr from 'i18next';
+import React, {PropTypes} from 'react';
 import moment from 'moment';
 import RestTableComponent from 'components/restTableComponent';
 
@@ -31,26 +30,26 @@ const columns = [
     }
 ];
 
-export default React.createClass({
-    propTypes:{
-        resources: React.PropTypes.object.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    render () {
-        debug('render ', this.state);
-        let {props} = this
+export default ({tr, resources}) => {
+    UsersComponent.propTypes = {
+        resources: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired
+    };
 
+    function UsersComponent(props){
+        debug(props);
         return (
             <div className="panel panel-default">
               <div className="panel-heading">{tr.t('Users')}</div>
               <div className="panel-body">
                   <RestTableComponent
                       columns={columns}
-                      getData={props.resources.getAll}
+                      getData={resources.getAll}
                       row={row => ({onClick: () => props.actions.selectOne(row.id)})}
                       rowKey='id'/>
               </div>
             </div>
         );
     }
-});
+    return UsersComponent;
+}

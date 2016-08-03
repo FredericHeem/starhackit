@@ -107,13 +107,19 @@ export default React.createClass({
     },
     renderTable () {
         let {data} = this.state;
+        //console.log("renderTable props:", this.props)
+        //console.log("renderTable state:", this.state)
         if(this.state.error) return;
         return (
             <div>
                 {this.renderPagination()}
-                <Table className='table'
-                    data={data}
-                    {...this.props}/>
+                <Table.Provider
+                  className="table"
+                  columns={this.props.columns}
+                >
+                  <Table.Header />
+                  <Table.Body rows={data} rowKey="id" />
+                </Table.Provider>
             </div>
         );
     },

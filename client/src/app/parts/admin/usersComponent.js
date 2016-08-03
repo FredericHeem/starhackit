@@ -7,32 +7,51 @@ let debug = new Debug("components:users");
 
 const columns = [
     {
-        property: 'id',
-        header: 'Id'
+      header: {
+        label: 'Id'
+      },
+      cell: {
+        property: 'id'
+      }
     },
     {
-        property: 'username',
-        header: 'Username'
+      header: {
+        label: 'Username'
+      },
+      cell: {
+        property: 'username'
+      }
     },
     {
-        property: 'firstName',
-        header: 'First Name'
+      header: {
+        label: 'First Name'
+      },
+      cell: {
+        property: 'firstName'
+      }
     },
     {
+      header: {
+        label: 'Created At'
+      },
+      cell: {
         property: 'createdAt',
-        header: 'Created At',
-        cell: (v) => moment.utc(v).format('LLLL')
+        format: (v) => moment.utc(v).format('LLLL')
+      }
     },
     {
+      header: {
+        label: 'Updated At'
+      },
+      cell: {
         property: 'updatedAt',
-        header: 'Updated At',
-        cell: (v) => moment.utc(v).fromNow()
+        format: (v) => moment.utc(v).format('LLLL')
+      }
     }
 ];
 
 export default ({tr, resources}) => {
     UsersComponent.propTypes = {
-        resources: PropTypes.object.isRequired,
         actions: PropTypes.object.isRequired
     };
 

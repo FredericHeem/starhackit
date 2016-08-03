@@ -4,7 +4,6 @@
         "mocha",
         "react",
         "promise",
-        "flow-vars",
         "jsx-extras"
     ],
     "extends": ["eslint:recommended", "plugin:react/recommended"],
@@ -53,15 +52,12 @@
         "camelcase": [2, {"properties": "never"}],
         "semi": [0, "always"],
 
-        "flow-vars/define-flow-type": 1,
-        "flow-vars/use-flow-type": 1,
-
         "react/jsx-no-undef": 2,
         "react/jsx-uses-react": 2,
         "react/jsx-uses-vars": 2,
         "react/no-did-mount-set-state": 1,
         "react/no-did-update-set-state": 1,
-        "react/wrap-multilines": 1,
+        "react/jsx-wrap-multilines": 1,
         "react/react-in-jsx-scope": 1,
         "react/no-unknown-property": 2,
         "react/no-is-mounted": 0,

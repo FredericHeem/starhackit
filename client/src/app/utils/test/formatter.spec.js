@@ -11,6 +11,11 @@ describe('Formatter', function () {
     it('1000 usd', () => {
       assert.equal(formatter('en').money("1000", "USD"), "$1,000.00")
     });
+    it('setLocale', () => {
+      const fmt = formatter('en');
+      fmt.setLocale('fr')
+      assert.equal(fmt.money("1000", "EUR"), "1 000,00 €")
+    });
     it('all locales', () => {
       _.each(moneyFixtures.default, (fixtures, locale) => {
         _.each(fixtures, fixture => {

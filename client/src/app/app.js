@@ -54,7 +54,7 @@ export default function() {
         async start() {
             debug("start");
             const language = await i18n.load();
-            context.formatter = formatter(language);
+            context.formatter.setLocale(language);
             store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
             jwt.loadJWT(parts);

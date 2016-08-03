@@ -1,12 +1,15 @@
 export default (locale = 'en') => {
   const dateTimeOptions = {year: 'numeric', month: 'short', day: 'numeric'};
-
+  let _locale = locale
   return {
+    setLocale: (newLocale) => {
+        _locale = newLocale
+    },
     dateTime: (date) => {
-      return new Intl.DateTimeFormat(locale, dateTimeOptions).format(new Date(date));
+      return new Intl.DateTimeFormat(_locale, dateTimeOptions).format(new Date(date));
     },
     money: (amount, currency) => {
-      return new Intl.NumberFormat(locale, {
+      return new Intl.NumberFormat(_locale, {
         style: 'currency',
         currency
       }).format(amount);

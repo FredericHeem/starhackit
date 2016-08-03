@@ -10,7 +10,7 @@ function pathAppTo() {
 
 module.exports = function (config) {
   config.set({
-    browsers: ['PhantomJS'], // ['Chrome'] run in Chrome, 'PhantomJS'
+    browsers: ['Chrome'], // ['Chrome'] run in Chrome, 'PhantomJS'
     singleRun: true,
     frameworks: ['mocha', 'sinon'],
     files: [

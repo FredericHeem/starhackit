@@ -11,7 +11,7 @@ import DbModule from './parts/db/dbModule';
 
 import Debug from 'debug';
 import 'utils/ga';
-
+import formatter from 'utils/formatter';
 import i18n from 'utils/i18n';
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
@@ -27,7 +27,8 @@ let debug = new Debug("app");
 export default function() {
     debug("App begins");
     const context = {
-        tr
+        tr,
+        formatter: formatter()
     }
     const rest = Rest();
     let auth = AuthModule(context, rest);
@@ -53,6 +54,7 @@ export default function() {
         async start() {
             debug("start");
             const language = await i18n.load();
+            context.formatter.setLocale(language);
             store.dispatch(parts.core.actions.setLocale(language))
             await intl(language);
             jwt.loadJWT(parts);

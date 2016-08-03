@@ -8,9 +8,9 @@ import CoreModule from './parts/core/coreModule';
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
+import AnalyticsModule from './parts/analytics/analyticsModule';
 
 import Debug from 'debug';
-import 'utils/ga';
 import formatter from 'utils/formatter';
 import i18n from 'utils/i18n';
 import intl from 'utils/intl';
@@ -37,7 +37,8 @@ export default function() {
       core: CoreModule(context),
       profile: ProfileModule(context, rest),
       admin: AdminModule(context, rest),
-      db: DbModule(context, rest)
+      db: DbModule(context, rest),
+      analytics: AnalyticsModule(context)
     }
 
     const store = configureStore(parts);

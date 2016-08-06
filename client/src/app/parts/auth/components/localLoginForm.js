@@ -17,6 +17,7 @@ export default React.createClass( {
         };
     },
     renderError(){
+        //TODO check error code and message
         if(this.props.login.error){
             return (
                 <Alert

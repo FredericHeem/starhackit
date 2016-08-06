@@ -1,6 +1,6 @@
 {
   "name": "starhackit-ui",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "React/Redux starter kit",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
@@ -80,6 +80,7 @@
     "bluebird": "3.4.1",
     "chai": "3.5.0",
     "chalk": "1.1.3",
+    "chance": "1.0.4",
     "clean-webpack-plugin": "0.1.10",
     "compression-webpack-plugin": "0.3.1",
     "copy-webpack-plugin": "3.0.1",

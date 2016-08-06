@@ -6,7 +6,7 @@ import UserUtils from './userUtils';
 
 describe('UserRegister', function() {
   let app = testMngr.app;
-  this.timeout(600e3)
+  this.timeout(300e3);
   let models = app.data.models();
   let client;
   let sandbox;
@@ -38,9 +38,9 @@ describe('UserRegister', function() {
     let limit = 50;
     await userUtils.createBulk(models, client, usersToAdd, limit);
     let countAfter = await models.User.count();
-    console.log("users to add ", usersToAdd);
-    console.log("#users before ", countBefore);
-    console.log("#users after ", countAfter);
+    //console.log("users to add ", usersToAdd);
+    //console.log("#users before ", countBefore);
+    //console.log("#users after ", countAfter);
 
     assert.equal(countBefore + usersToAdd, countAfter);
 
@@ -58,7 +58,17 @@ describe('UserRegister', function() {
     });
     assert(!res);
 
-    // registering when user is already registered
+    try {
+      res = await client.post('v1/auth/register', userConfig);
+      assert(false, "should not be here");
+    } catch(error){
+      //console.log(error);
+      assert.equal(error.statusCode, 422);
+      assert.equal(error.body.name, 'UsernameExists');
+    }
+
+    // registering the same email when user is already registered
+    userConfig.username = "anotherusername";
     res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);
@@ -111,9 +121,26 @@ describe('UserRegister', function() {
     assert(res);
     assert(res.success);
     assert.equal(res.message, "confirm email");
+
+    userConfig.username = "newuser";
     res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);
     assert.equal(res.message, "confirm email");
+  });
+  it('shoud reject a duplicated username', async () => {
+    let userConfig =  userUtils.createRandomRegisterConfig();
+
+    let res = await client.post('v1/auth/register', userConfig);
+    assert.equal(res.message, "confirm email");
+    try {
+      res = await client.post('v1/auth/register', userConfig);
+      assert(false, "should not be here");
+    } catch(error){
+      //console.log(error);
+      assert.equal(error.statusCode, 422);
+      assert.equal(error.body.name, 'UsernameExists');
+    }
+
   });
 });

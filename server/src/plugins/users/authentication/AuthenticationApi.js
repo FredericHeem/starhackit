@@ -11,6 +11,20 @@ export default function(app, publisherUser) {
     async createPending(userPendingIn) {
       validateJson(userPendingIn, require('./schema/createPending.json'));
       log.debug("createPending: ", userPendingIn);
+
+      let userByUsername = await models.User.findByUsername(userPendingIn.username);
+      let userPendingByUsername = await models.UserPending.find({
+        where:{
+          username: userPendingIn.username
+        }
+      });
+      if(userByUsername || userPendingByUsername){
+        throw {
+          code: 422,
+          name: "UsernameExists",
+          message: "The username is already used."
+        };
+      }
       let user = await models.User.findByEmail(userPendingIn.email);
 
       if (!user) {
@@ -23,7 +37,6 @@ export default function(app, publisherUser) {
         };
         log.info("createPending code ", userPendingOut.code);
         await models.UserPending.create(userPendingOut);
-        delete userPendingOut.password;
         await publisherUser.publish("user.registering", JSON.stringify(userPendingOut));
       } else {
         log.info("already registered", userPendingIn.email);

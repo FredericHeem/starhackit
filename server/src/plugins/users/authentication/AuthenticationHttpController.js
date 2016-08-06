@@ -9,6 +9,7 @@ export default function(app, publisherUser){
 
   function login(req, res) {
     log.error("login",  req.user);
+    //TODO id is now uuid so we can return it
     res.send(_.omit(req.user, 'id'));
   }
 

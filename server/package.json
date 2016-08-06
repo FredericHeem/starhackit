@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "0.0.1",
+  "version": "2.3.0",
   "private": false,
   "main": "build/index.js",
   "repository": {

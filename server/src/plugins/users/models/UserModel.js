@@ -46,11 +46,12 @@ module.exports = function(sequelize, DataTypes) {
          * Finds a user by its key/value
          * returns the model of the  user
          *
-         * @param {String} email - the user's email address
+         * @param {String} key - the key: username, email or id
+         * @param {String} value - the value to search
          *
          * @returns {Promise} Promise user model
         */
-        findByKey: function(key, value) {
+        findByKey: async function(key, value) {
           return this.find({
             include:[
                {
@@ -67,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
             where: { [key]: value }
           });
         },
-        findByEmail: function(email) {
+        findByEmail: async function(email) {
           return this.findByKey('email', email);
         },
         /**
@@ -78,7 +79,7 @@ module.exports = function(sequelize, DataTypes) {
          *
          * @returns {Promise} Promise user model
         */
-        findByUserId: function(userid) {
+        findByUserId: async function(userid) {
           return this.findByKey('id', userid);
         },
         /**
@@ -89,8 +90,23 @@ module.exports = function(sequelize, DataTypes) {
          *
          * @returns {Promise} Promise user model
          */
-        findByUsername: function  findByUsername(userName) {
+        findByUsername: async function(userName) {
           return this.findByKey('username', userName);
+        },
+        /**
+         * Finds a user by username or email
+         * returns the model of the  user
+         *
+         * @param {String} userName - Username or email of the user to find
+         *
+         * @returns {Promise} Promise user model
+         */
+        findByUsernameOrEmail: async function(username) {
+          return this.find({
+            where: {
+              $or: [{email: username}, {username: username}]
+            }
+          });
         },
         /**
          * Creates a user given a json representation and adds it to the group GroupName,

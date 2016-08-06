@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
@@ -20,12 +21,12 @@ export default React.createClass( {
     },
     renderError(){
         let {error} = this.props.register;
-        if(error && error.status === 422){
+        if(_.get(error, 'response.status') === 422){
             return (
                 <Alert
                     type="danger"
-                    className='register-error-view alert-error'
-                    message={error.message}/>
+                    className='register-error-view'
+                    message={_.get(error, 'response.data.message')}/>
             )
         }
     },

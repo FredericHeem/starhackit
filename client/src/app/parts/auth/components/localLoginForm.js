@@ -59,7 +59,6 @@ export default React.createClass( {
                                 className='btn btn-lg btn-primary btn-login'
                                 buttonColor='green'
                                 loading={this.props.login.loading}
-                                progress={.5}
                                 buttonStyle="slide-up"
                                 onClick={this.login}>{ tr.t('Login') }</LaddaButton>
                         </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import Debug from 'debug';
 import Alert from './alert';
 
-let debug = new Debug("components:alert");
+let debug = new Debug("components:alertAjax");
 
 AlertAjax.propTypes = {
   className: React.PropTypes.string,
@@ -11,7 +11,7 @@ AlertAjax.propTypes = {
 };
 
 export default function AlertAjax({error, className}){
-    debug('name: ', name)
+    debug('error:', error)
     if(!error){
         return null;
     }

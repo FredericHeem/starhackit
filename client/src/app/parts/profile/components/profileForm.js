@@ -106,7 +106,6 @@ export default ({tr}) => {
                         <LaddaButton
                             className='btn btn-lg btn-primary btn-update-profile'
                             buttonColor='green'
-                            progress={.5}
                             loading={this.props.profileUpdate.loading}
                             buttonStyle="slide-up"
                             onClick={this.onUpdateProfile}>{tr.t('Update Profile')}</LaddaButton>

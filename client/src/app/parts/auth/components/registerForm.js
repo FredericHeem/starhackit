@@ -70,7 +70,6 @@ export default React.createClass( {
                                 className='btn btn-lg btn-primary btn-register'
                                 buttonColor='green'
                                 loading={this.props.register.loading}
-                                progress={.5}
                                 buttonStyle="slide-up"
                                 onClick={this.register}>{ tr.t('Create Account') }</LaddaButton>
                         </div>

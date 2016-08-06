@@ -1,11 +1,10 @@
-import _ from 'lodash';
 import React from 'react';
 import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
 import Debug from 'debug';
-import Alert from 'components/alert';
+import AlertAjax from 'components/alertAjax';
 import rules from 'services/rules';
 let debug = new Debug("components:register");
 
@@ -19,17 +18,6 @@ export default React.createClass( {
             errors: {}
         };
     },
-    renderError(){
-        let {error} = this.props.register;
-        if(_.get(error, 'response.status') === 422){
-            return (
-                <Alert
-                    type="danger"
-                    className='register-error-view'
-                    message={_.get(error, 'response.data.message')}/>
-            )
-        }
-    },
     render() {
         debug('render state:', this.state);
         debug('render props:', this.props);
@@ -38,7 +26,7 @@ export default React.createClass( {
             <div className="local-login-form register-form">
                 <form>
                     <div className="signup-options text-center form">
-                        {this.renderError()}
+                        <AlertAjax error={this.props.register.error} className='register-error-view'/>
                         <div className='form-group username'>
                             <TextField
                                 id='username'

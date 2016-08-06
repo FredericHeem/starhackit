@@ -30,7 +30,9 @@ export function AuthenticationHttpController(app, publisherUser){
         } else {
           ctx.status = 401;
           ctx.body = {
-            success: false
+            error: {
+              message: "Username and Password do not match"
+            }
           };
         }
       })(ctx, next);

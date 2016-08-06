@@ -73,7 +73,8 @@ export default function(app, publisherUser) {
         log.warn("verifyEmailCode: no such code ", param.code);
         throw {
           code:422,
-          name:"NoSuchCode"
+          name:"NoSuchCode",
+          message: "The email verification code is no longer valid."
         };
       }
     },
@@ -134,7 +135,8 @@ export default function(app, publisherUser) {
 
         throw {
           code:422,
-          name:"TokenInvalid"
+          name:"TokenInvalid",
+          message: "The token is invalid or has expired."
         };
       }
     }

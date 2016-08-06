@@ -39,10 +39,9 @@ describe('Users', function() {
       try {
         await client.patch('v1/me', data);
       } catch(error){
-        assert.equal(error.body.name, 'BadRequest');
+        assert.equal(error.body.error.name, 'BadRequest');
         assert.equal(error.statusCode, 400);
-        assert(error.body.validation);
-        assert.equal(error.body.validation[0].stack,
+        assert.equal(error.body.error.validation[0].stack,
           "instance.biography does not meet maximum length of 2000");
       }
 
@@ -68,6 +67,8 @@ describe('Users', function() {
         assert(false);
       } catch(res){
         assert.equal(res.statusCode, 400);
+        assert.equal(res.body.error.validation[0].stack,
+          "instance.username does not meet minimum length of 3");
       }
     });
   });

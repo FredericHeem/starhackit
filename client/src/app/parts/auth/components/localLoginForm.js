@@ -3,7 +3,7 @@ import Checkit from 'checkit';
 import TextField from 'material-ui/TextField';
 import LaddaButton from 'react-ladda';
 import tr from 'i18next';
-import Alert from 'components/alert';
+import AlertAjax from 'components/alertAjax';
 import rules from 'services/rules';
 
 export default React.createClass( {
@@ -16,17 +16,6 @@ export default React.createClass( {
             errors: {}
         };
     },
-    renderError(){
-        //TODO check error code and message
-        if(this.props.login.error){
-            return (
-                <Alert
-                    type="danger"
-                    message={tr.t('Username and Password do not match')}
-                    />
-            )
-        }
-    },
     render() {
         //debug('render state: ', this.state);
         //debug('render props:', this.props);
@@ -35,7 +24,7 @@ export default React.createClass( {
             <div className="local-login-form">
                 <form>
                     <div className="signup-options text-center form">
-                        {this.renderError()}
+                        <AlertAjax error={this.props.login.error} className='login-error-view'/>
                         <div className='form-group username'>
                             <TextField
                                 id='username'

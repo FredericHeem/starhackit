@@ -12,14 +12,15 @@ AlertAjax.propTypes = {
 
 export default function AlertAjax({error, className}){
     debug('error:', error)
-    if(!error){
+
+    const message = _.get(error, 'response.data.error.message');
+    if(!message){
         return null;
     }
-
     return (
         <Alert
             type="danger"
             className={className}
-            message={_.get(error, 'response.data.error.message')}/>
+            message={message}/>
     )
 }

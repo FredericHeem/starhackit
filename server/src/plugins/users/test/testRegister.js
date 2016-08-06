@@ -64,7 +64,7 @@ describe('UserRegister', function() {
     } catch(error){
       //console.log(error);
       assert.equal(error.statusCode, 422);
-      assert.equal(error.body.name, 'UsernameExists');
+      assert.equal(error.body.error.name, 'UsernameExists');
     }
 
     // registering the same email when user is already registered
@@ -89,7 +89,7 @@ describe('UserRegister', function() {
       await client.post('v1/auth/verify_email_code', {code: "1234567890123456"});
     } catch(error){
       assert.equal(error.statusCode, 422);
-      assert.equal(error.body.name, "NoSuchCode");
+      assert.equal(error.body.error.name, "NoSuchCode");
       done();
     }
   });
@@ -99,7 +99,7 @@ describe('UserRegister', function() {
       assert(false);
     } catch(error){
       assert.equal(error.statusCode, 400);
-      assert.equal(error.body.validation[0].stack, "instance.code does not meet minimum length of 16");
+      assert.equal(error.body.error.validation[0].stack, "instance.code does not meet minimum length of 16");
     }
   });
   it('invalid register username too short', async () => {
@@ -111,7 +111,7 @@ describe('UserRegister', function() {
     } catch(error){
       console.log(error.body);
       assert.equal(error.statusCode, 400);
-      assert.equal(error.body.validation[0].stack, 'instance.username does not meet minimum length of 3');
+      assert.equal(error.body.error.validation[0].stack, 'instance.username does not meet minimum length of 3');
     }
   });
   it('shoud register twice a user', async () => {
@@ -139,7 +139,7 @@ describe('UserRegister', function() {
     } catch(error){
       //console.log(error);
       assert.equal(error.statusCode, 422);
-      assert.equal(error.body.name, 'UsernameExists');
+      assert.equal(error.body.error.name, 'UsernameExists');
     }
 
   });

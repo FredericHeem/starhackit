@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 import rules from 'services/rules';
-import Alert from 'components/alert';
+import AlertAjax from 'components/alertAjax';
 
 import Debug from 'debug';
 
@@ -35,24 +35,16 @@ export default React.createClass( {
                 />
                 <Paper className='text-center view'>
                     <h3>{tr.t('Reset Password')}</h3>
-                    { this.renderError()}
+                    <AlertAjax
+                        error={this.props.verifyResetPasswordToken.error}
+                        className='reset-password-error-view'/>
                     { this.renderSetNewPassword()}
                     { this.renderSetNewPasswordDone() }
                 </Paper>
             </div>
         );
     },
-    renderError() {
-        let {error} = this.props.verifyResetPasswordToken
-        if(_.get(error, 'response.status') === 422){
-            return (
-                <Alert
-                    type='danger'
-                    className='reset-password-error'
-                    message={tr.t('The token is invalid or has expired.')}/>
-            );
-        }
-    },
+
     renderSetNewPassword() {
         if ( this.state.step != 'SetPassword' ) {
             return;

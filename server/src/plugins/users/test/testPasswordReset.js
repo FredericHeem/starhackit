@@ -115,7 +115,7 @@ describe('PasswordReset', function () {
       assert(res);
       assert.equal(res.statusCode, 422);
       //console.log(res);
-      assert.equal(res.body.name, 'TokenInvalid');
+      assert.equal(res.body.error.name, 'TokenInvalid');
     }
   });
   it('verify reset password with malformed token', async() => {
@@ -135,7 +135,7 @@ describe('PasswordReset', function () {
       assert(res);
       assert.equal(res.statusCode, 400);
       //console.log(res.body);
-      assert.equal(res.body.validation[0].stack, 'instance.token does not meet minimum length of 16');
+      assert.equal(res.body.error.validation[0].stack, 'instance.token does not meet minimum length of 16');
     }
   });
 });

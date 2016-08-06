@@ -30,7 +30,6 @@
   "dependencies": {
     "axios": "0.13.1",
     "checkit": "0.7.0",
-    "classnames": "2.2.5",
     "debug": "2.2.0",
     "i18next": "3.4.1",
     "i18next-browser-languagedetector": "0.3.0",

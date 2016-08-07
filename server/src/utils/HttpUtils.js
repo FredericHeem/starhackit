@@ -26,6 +26,7 @@ function buildError(error){
 export function convertAndRespond(context, error) {
   if (error instanceof TypeError) {
     log.error('TypeError: ', error.toString());
+    log.error('TypeError stack: ', error.stack);
     context.status = 500;
     context.body = buildError({
       name: error.name,

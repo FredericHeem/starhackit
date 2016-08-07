@@ -11,10 +11,13 @@ AlertAjax.propTypes = {
 };
 
 export default function AlertAjax({error, className}){
-    debug('error:', error)
-
+    if(!error){
+        return null;
+    }
+    debug('error:', error);
+    const status = _.get(error, 'response.status');
     const message = _.get(error, 'response.data.error.message');
-    if(!message){
+    if(!message || status !== 422){
         return null;
     }
     return (

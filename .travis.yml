@@ -8,6 +8,7 @@ env:
 
 services:
   - rabbitmq
+  - redis
 
 addons:
   postgresql: "9.4"

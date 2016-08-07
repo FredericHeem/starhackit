@@ -8,7 +8,7 @@ import CoreModule from './parts/core/coreModule';
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
-import AnalyticsModule from './parts/analytics/analyticsModule';
+import AnalyticsModule from './parts/analytics/AnalyticsModule';
 
 import Debug from 'debug';
 import formatter from 'utils/formatter';

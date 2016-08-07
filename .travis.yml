@@ -24,4 +24,4 @@ before_script:
 
 after_script:
   - cd client && npm run build && npm test
-  - cd server && npm run codeclimate && npm run coveralls
+  - cd ../server && npm run codeclimate && npm run coveralls

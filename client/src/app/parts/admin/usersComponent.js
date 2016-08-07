@@ -64,7 +64,7 @@ export default ({tr, resources}) => {
                   <RestTableComponent
                       columns={columns}
                       getData={resources.getAll}
-                      row={row => ({onClick: () => props.actions.selectOne(row.id)})}
+                      onRow={row => ({onClick: () => props.actions.selectOne(row.id)})}
                       rowKey='id'/>
               </div>
             </div>

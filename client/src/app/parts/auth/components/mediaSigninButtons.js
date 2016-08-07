@@ -3,6 +3,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import config from 'config';
+import './media-signin-buttons.styl';
 
 export default({tr}) => {
   return React.createClass({

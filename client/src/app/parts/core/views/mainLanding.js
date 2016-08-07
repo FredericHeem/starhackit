@@ -9,6 +9,8 @@ import tr from 'i18next';
 import Paper from 'material-ui/Paper';
 import CardMedia from 'material-ui/Card/CardMedia';
 
+import './main-landing.styl';
+
 MediaIcon.propTypes = {
   icon: React.PropTypes.string.isRequired
 };

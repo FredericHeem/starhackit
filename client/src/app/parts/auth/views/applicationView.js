@@ -4,6 +4,7 @@ import footer from '../../core/components/footer';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import './application.styl';
 
 const muiTheme = getMuiTheme(baseTheme);
 

@@ -9,7 +9,7 @@ export default function(config) {
       return client;
     },
     async start(){
-      log.debug("start ", config);
+      log.debug("start ", config.redis);
       return new Promise(function(resolve, reject) {
         if(config.redis){
           client = redis.createClient(config.redis);

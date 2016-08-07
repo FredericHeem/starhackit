@@ -5,13 +5,13 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
 import AuthenticatedComponent from './components/authenticatedComponent';
-import LoginView from './views/loginView';
-import LogoutView from './views/logoutView';
-import ForgotView from './views/forgotView';
-import RegisterView from './views/registerView';
-import RegistrationCompleteView from './views/registrationCompleteView';
-import ResetPasswordView from './views/resetPasswordView';
-import AppView from './views/applicationView';
+import loginView from './views/loginView';
+import logoutView from './views/logoutView';
+import forgotView from './views/forgotView';
+import registerView from './views/registerView';
+import registrationCompleteView from './views/registrationCompleteView';
+import resetPasswordView from './views/resetPasswordView';
+import appView from './views/applicationView';
 
 function Resources(rest){
   return {
@@ -96,35 +96,36 @@ let isAuthenticated = state => selectState(state).auth.authenticated;
 
 function Containers(context, actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+
     return {
         login(){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state),
                 login: selectState(state).login
             })
-            return connect(mapStateToProps, mapDispatchToProps)(LoginView);
+            return connect(mapStateToProps, mapDispatchToProps)(loginView(context));
         },
         register(){
             const mapStateToProps = (state) => ({register: selectState(state).register})
-            return connect(mapStateToProps, mapDispatchToProps)(RegisterView);
+            return connect(mapStateToProps, mapDispatchToProps)(registerView(context));
         },
         logout(){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state)
             })
-            return connect(mapStateToProps, mapDispatchToProps)(LogoutView);
+            return connect(mapStateToProps, mapDispatchToProps)(logoutView(context));
         },
         forgot(){
             const mapStateToProps = () => ({});
-            return connect(mapStateToProps, mapDispatchToProps)(ForgotView);
+            return connect(mapStateToProps, mapDispatchToProps)(forgotView(context));
         },
         resetPassword(){
             const mapStateToProps = (state) => ({verifyResetPasswordToken: selectState(state).verifyResetPasswordToken})
-            return connect(mapStateToProps, mapDispatchToProps)(ResetPasswordView);
+            return connect(mapStateToProps, mapDispatchToProps)(resetPasswordView(context));
         },
         registrationComplete(){
             const mapStateToProps = (state) => ({verifyEmailCode: selectState(state).verifyEmailCode})
-            return connect(mapStateToProps, mapDispatchToProps)(RegistrationCompleteView);
+            return connect(mapStateToProps, mapDispatchToProps)(registrationCompleteView(context));
         },
         authentication(){
           const mapStateToProps = (state) => ({authenticated: isAuthenticated(state)})
@@ -134,7 +135,7 @@ function Containers(context, actions){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state)
             })
-            return connect(mapStateToProps, mapDispatchToProps)(AppView);
+            return connect(mapStateToProps, mapDispatchToProps)(appView(context));
         }
     }
 }

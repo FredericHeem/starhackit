@@ -4,9 +4,8 @@ import { browserHistory, Router } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import {createAction, createReducer} from 'redux-act';
 import {ASYNC_META} from 'redux-act-async';
-//import {connect} from 'react-redux';
 import Alert from 'react-s-alert';
-import Notification from './components/notification';
+import notification from './components/notification';
 import Debug from 'debug';
 let debug = new Debug("core");
 
@@ -71,37 +70,6 @@ function createHttpError(payload = {}){
     return errorOut;
 }
 
-function AlertDisplay(payload){
-  debug('MiddlewareAlert AjaxError', payload)
-  let props = createHttpError(payload)
-  Alert.error(<Notification
-    name={props.name}
-    code={props.code}
-    message={props.message}/>, {
-      position: 'top-right',
-      effect: 'slide',
-      timeout: 10e3,
-      offset: 100
-  });
-}
-
-function MiddlewareAlert(){
-  const middleware = (/*store*/) => next => action => {
-    if(action.meta === ASYNC_META.ERROR){
-      const {response = {}} = action.payload.error;
-      let {status} = response;
-      if(!_.includes([401, 422], status)){
-        AlertDisplay(action.payload.error);
-      }
-    }
-    return next(action)
-  }
-  return middleware;
-}
-
-/*
-
-*/
 function createRouter(store, routes){
     const history = syncHistoryWithStore(browserHistory, store)
 
@@ -119,6 +87,34 @@ export default function(context) {
     routerMiddleware(browserHistory),
     MiddlewareAlert()
   ];
+  const Notification = notification(context);
+  function AlertDisplay(payload){
+    debug('MiddlewareAlert AjaxError', payload)
+    let props = createHttpError(payload)
+    Alert.error(<Notification
+      name={props.name}
+      code={props.code}
+      message={props.message}/>, {
+        position: 'top-right',
+        effect: 'slide',
+        timeout: 10e3,
+        offset: 100
+    });
+  }
+
+  function MiddlewareAlert(){
+    const middleware = (/*store*/) => next => action => {
+      if(action.meta === ASYNC_META.ERROR){
+        const {response = {}} = action.payload.error;
+        let {status} = response;
+        if(!_.includes([401, 422], status)){
+          AlertDisplay(action.payload.error);
+        }
+      }
+      return next(action)
+    }
+    return middleware;
+  }
 
   return {
     actions,

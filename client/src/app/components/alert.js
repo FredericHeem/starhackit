@@ -1,20 +1,11 @@
 import React from 'react';
-import tr from 'i18next';
 import Debug from 'debug';
 import './alert.styl';
 
 let debug = new Debug("components:alert");
 
-Alert.propTypes = {
-  className: React.PropTypes.string,
-  type: React.PropTypes.string,
-  title: React.PropTypes.string,
-  name: React.PropTypes.string,
-  message: React.PropTypes.string,
-  code: React.PropTypes.string
-};
-
-export default function Alert({className, type, title, name, message, code}){
+export default ({tr}) => {
+  function Alert({className, type, title, name, message, code}){
     debug('name: ', name)
     return (
         <div className={`alert alert-${type} text-center ${className}`} role="alert">
@@ -37,4 +28,14 @@ export default function Alert({className, type, title, name, message, code}){
             )}
         </div>
     )
+  }
+  Alert.propTypes = {
+    className: React.PropTypes.string,
+    type: React.PropTypes.string,
+    title: React.PropTypes.string,
+    name: React.PropTypes.string,
+    message: React.PropTypes.string,
+    code: React.PropTypes.string
+  };
+  return Alert;
 }

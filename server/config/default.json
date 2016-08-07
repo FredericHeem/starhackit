@@ -13,9 +13,6 @@
   "frontend": {
     "path": "../client/build"
   },
-  "redis":{
-    "url": "redis://localhost:6379"
-  },
   "http": {
     "port": 9000
   },

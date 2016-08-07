@@ -1,7 +1,7 @@
 import redis from "redis";
 let log = require('logfilename')(__filename);
 
-export default function(config) {
+export default function(config = {}) {
   let client;
 
   return {
@@ -32,6 +32,7 @@ export default function(config) {
           });
         } else {
           log.error("redis not configured");
+          return resolve();
         }
       });
     },

@@ -7,5 +7,9 @@ describe('Redis', function(){
     await store.start();
     await store.stop();
   });
-
+  it('start and stop not configured', async () => {
+    let store = Store({});
+    await store.start();
+    await store.stop();
+  });
 });

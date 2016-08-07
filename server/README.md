@@ -120,6 +120,18 @@ Example of configuration for the Facebook authentication:
 }
 ```
 
+## Redis session store
+
+*Redis* can be used to quickly store and retrieve session data. This allows for zero down time in production when the api server is restarted.
+
+Here is how to configure Redis:
+
+```
+"redis":{
+  "url": "redis://localhost:6379"
+},
+```
+
 ## Docker containers
 
 To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)

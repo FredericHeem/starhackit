@@ -1,0 +1,4 @@
+*.swp
+.kitchen/
+.bundle
+.vagrant

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 let config = require('config');
 let Promise = require('bluebird');
 
@@ -69,9 +70,21 @@ function middlewareInit(app, koaApp, config) {
   log.debug("middlewareInit");
   const convert = require('koa-convert');
   const session = require('koa-generic-session');
+  const redisStore = require('koa-redis');
   //TODO use secret from config
+
   koaApp.keys = ['your-super-session-secret'];
-  koaApp.use(convert(session()));
+  const redisConfig = config.redis;
+  if(app.store.client()){
+    log.debug("middlewareInit use redis ", redisConfig);
+    koaApp.use(convert(session({
+      store: redisStore(app.store.client())
+    })));
+  } else {
+    log.debug("middlewareInit memory session ");
+    koaApp.use(convert(session()));
+  }
+
 
   const bodyParser = require('koa-bodyparser');
   koaApp.use(bodyParser());

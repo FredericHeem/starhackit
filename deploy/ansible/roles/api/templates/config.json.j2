@@ -1,6 +1,5 @@
 {
   "websiteUrl": "{{website_url}}",
-  "liveReload":true,
   "db":{
     "driver": "pg",
     "dialect":"postgres",
@@ -11,6 +10,11 @@
     "port": "5432",
     "logging": true
   },
+{% if redis_url is defined %}
+  "redis":{
+    "url": "{{redis_url}}"
+  },
+{% endif %}
   "authentication":{
     "facebook":{
       "clientID": "{{facebook_client_id}}",

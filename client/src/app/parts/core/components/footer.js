@@ -1,5 +1,5 @@
 import React from 'react';
-import tr from 'i18next';
+
 export default({tr}) => {
   function Footer({version}) {
     return (

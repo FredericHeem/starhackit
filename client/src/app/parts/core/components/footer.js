@@ -1,4 +1,5 @@
 import React from 'react';
+import './footer.styl';
 
 export default({tr}) => {
   function Footer({version}) {

@@ -69,10 +69,11 @@ export default function(app) {
 function middlewareInit(app, koaApp, config) {
   log.debug("middlewareInit");
   const convert = require('koa-convert');
+
+  //TODO create SessionMiddlware
   const session = require('koa-generic-session');
   const redisStore = require('koa-redis');
   //TODO use secret from config
-
   koaApp.keys = ['your-super-session-secret'];
   const redisConfig = config.redis;
   if(app.store.client()){
@@ -85,10 +86,10 @@ function middlewareInit(app, koaApp, config) {
     koaApp.use(convert(session()));
   }
 
-
   const bodyParser = require('koa-bodyparser');
   koaApp.use(bodyParser());
 
+  //TODO create LoggerMiddlware
   koaApp.use(async(ctx, next) => {
     const start = new Date;
     log.debug(`${ctx.method} ${ctx.url} begins`);
@@ -97,4 +98,7 @@ function middlewareInit(app, koaApp, config) {
     const ms = new Date - start;
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);
   });
+
+  //Serve static html files such as the generated api documentation.
+  require('./middleware/StaticMiddleware')(app, koaApp, config);
 }

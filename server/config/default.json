@@ -54,5 +54,7 @@
       }
     }
     */
-  }
+  },
+  "apiBasePath": "/api/v1/",
+  "serveStaticFiles": true
 }

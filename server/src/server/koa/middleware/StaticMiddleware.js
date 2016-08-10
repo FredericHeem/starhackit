@@ -1,4 +1,3 @@
-import path from 'path';
 const serve = require('koa-static');
 const convert = require('koa-convert');
 let log = require('logfilename')(__filename);

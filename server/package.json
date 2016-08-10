@@ -27,7 +27,7 @@
     "clean": "gulp clean",
     "mock": "node scripts/mock-server.js",
     "api-check": "abao src/plugins/users/raml/users.raml --server http://localhost:9000/api/v1",
-    "doc": "raml2html -i src/plugins/users/raml/users.raml -o build/api.html",
+    "doc": "node scripts/apidoc.js",
     "opendoc": "open build/api.html"
   },
   "dependencies": {
@@ -77,7 +77,7 @@
     "qs": "6.2.1",
     "rabbitmq-pubsub": "0.5.0",
     "raml-mocker-server": "0.1.6",
-    "raml2html": "2.4.0",
+    "raml2html": "3.0.0",
     "redis": "2.6.2",
     "run-sequence": "1.2.2",
     "sequelize": "3.23.6",

@@ -72,8 +72,7 @@ module.exports = function ( options ) {
                 { from: './assets/img/*.png' },
                 { from: './assets/img/*.jpg' },
                 { from: './assets/img/*.svg' },
-                { from: './locales/**/*.json' },
-                { from: '../server/build/api.html' }
+                { from: './locales/**/*.json' }
             ]),
             new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(fr|it)$/),
             new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})

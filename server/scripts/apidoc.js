@@ -3,6 +3,7 @@ var raml2html = require('raml2html');
 var fs = require('fs');
 var path = require('path');
 var Promise = require('bluebird');
+var shell = require('shelljs');
 
 var configWithDefaultTemplates = raml2html.getDefaultConfig();
 
@@ -16,7 +17,9 @@ sources = _.map(sources, function(source){
   return path.join(__dirname, '/../src/plugins', source)
 })
 
-var outputPath = 'build';
+var outputPath = 'build/api/v1/doc';
+shell.mkdir('-p', outputPath);
+
 console.log('sources: ', sources);
 Promise.all(_.map(sources, function(source){
   //console.log('raml2html in: ', source);

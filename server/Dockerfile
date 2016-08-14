@@ -1,12 +1,8 @@
-FROM node:4
-
-RUN mkdir /app
-
-WORKDIR /app
-ADD package.json /app/package.json
-RUN npm install -g gulp
-RUN npm install --loglevel warn
-
-EXPOSE 3000
-
-CMD npm start
+FROM node
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install --production
+RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
+WORKDIR /opt/app
+ADD . /opt/app
+EXPOSE 9000
+CMD ["npm", "run", "start:prod"]

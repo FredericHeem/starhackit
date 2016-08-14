@@ -1,5 +1,5 @@
 'use strict';
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 module.exports = function(sequelize, DataTypes) {
   var UserPending = sequelize.define('UserPending', {
     username: DataTypes.STRING(64),

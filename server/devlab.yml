@@ -1,13 +1,11 @@
 from: busybox
 services:
-  - smebberson/alpine-rabbitmq:
+  - gonkulatorlabs/rabbitmq:
       name: rabbitmq
-      persist: true
       expose:
         - 5672:5672
   - kiasaki/alpine-postgres:
         name: postgres
-        persist: true
         env:
           - POSTGRES_USER=postgres
           - POSTGRES_PASSWORD=password
@@ -15,7 +13,9 @@ services:
         expose:
           - 5432:5432
 expose:
-  - 3000:3000
+  - 9000:9000
+  - 5432:5432
+  - 5672:5672
 quiet: false
 forward: true
 tasks:

@@ -17,6 +17,14 @@ services:
       - redis
     environment:
       - NODE_ENV=dev-docker
+  ui:
+    image: starhackit/ui
+    build:
+      context: ../client
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
   postgres:
     image: kiasaki/alpine-postgres
     expose:

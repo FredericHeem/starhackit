@@ -14,8 +14,6 @@ services:
           - 5432:5432
 expose:
   - 9000:9000
-  - 5432:5432
-  - 5672:5672
 quiet: false
 forward: true
 tasks:

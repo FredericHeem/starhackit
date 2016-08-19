@@ -3,7 +3,7 @@ import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-
+import {race, take}  from 'redux-saga/effects'
 import AuthenticatedComponent from './components/authenticatedComponent';
 import loginView from './views/loginView';
 import logoutView from './views/logoutView';
@@ -39,17 +39,16 @@ function Resources(rest){
   }
 }
 
-function Actions(rest){
-    let auth = Resources(rest);
+function Actions(resources){
     return {
         setToken: createAction('TOKEN_SET'),
-        me: createActionAsync('ME', auth.me),
-        login: createActionAsync('LOGIN', auth.login),
-        logout: createActionAsync('LOGOUT', auth.logout),
-        requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', auth.requestPasswordReset),
-        register: createActionAsync('REGISTER', auth.register),
-        verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', auth.verifyEmailCode),
-        verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', auth.verifyResetPasswordToken)
+        me: createActionAsync('ME', resources.me),
+        login: createActionAsync('LOGIN', resources.login),
+        logout: createActionAsync('LOGOUT', resources.logout),
+        requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', resources.requestPasswordReset),
+        register: createActionAsync('REGISTER', resources.register),
+        verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', resources.verifyEmailCode),
+        verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', resources.verifyResetPasswordToken)
     }
 }
 
@@ -140,28 +139,46 @@ function Containers(context, actions){
     }
 }
 
-function Middleware(actions){
-  const authMiddleware = (/*store*/) => next => action => {
-    //console.log('auth action.type: ', action.type)
-    switch(action.type){
-      case actions.login.ok.getType():
-        //Save jwt
-        localStorage.setItem("JWT", action.payload.token);
-        break;
-      case actions.logout.ok.getType():
-      case actions.logout.error.getType():
-      case actions.login.error.getType():
-        //Remove jwt
+function* runSagaActionAsync(actionAsync) {
+  console.log('runSagaActionAsync wait for ', actionAsync.request.getType());
+  yield take(actionAsync.request.getType());
+  console.log('runSagaActionAsync rx ', actionAsync.request.getType());
+  return yield race({
+    ok: take(actionAsync.ok.getType()),
+    error: take(actionAsync.error.getType())
+  })
+}
+
+function Sagas(actions) {
+  return {
+    login: function* saga(...args) {
+      while (true) {
+        const {ok, error} = yield runSagaActionAsync(actions.login)
+        if(ok){
+          console.log('Sagas login race end' , ok);
+          const {token} = ok.payload.response;
+          localStorage.setItem("JWT", token);
+        } else {
+          console.log('Sagas login race end error ' , error);
+          localStorage.removeItem("JWT");
+        }
+      }
+    },
+    logout: function* saga(...args) {
+      while (true) {
+        const {ok, error} = yield runSagaActionAsync(actions.logout)
         localStorage.removeItem("JWT");
-        break;
-      case actions.verifyEmailCode.ok.getType():
-        browserHistory.push(`/login`);
-        break;
-      default:
+      }
+    },
+    verifyEmailCode: function* saga(...args) {
+      while (true) {
+        const {ok, error} = yield runSagaActionAsync(actions.verifyEmailCode)
+        if(ok){
+          browserHistory.push(`/login`);
+        }
+      }
     }
-    return next(action)
   }
-  return authMiddleware;
 }
 
 function Routes(containers, store, actions){
@@ -195,13 +212,14 @@ function Routes(containers, store, actions){
 }
 
 export default function(context, rest) {
-    let actions = Actions(rest);
+    const resources = Resources(rest);
+    let actions = Actions(resources);
     let containers = Containers(context, actions)
     return {
         actions,
         reducers: Reducers(actions),
-        middlewares: [Middleware(actions)],
         containers,
-        routes: (store) => Routes(containers, store, actions)
+        routes: (store) => Routes(containers, store, actions),
+        sagas: Sagas(actions)
     }
 }

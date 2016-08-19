@@ -18,7 +18,9 @@
     "unit-test-watch": "karma start --auto-watch --no-single-run karma.conf.js",
     "selenium-install": "webdriver-manager update",
     "e2e": "npm run nightwatch",
-    "nightwatch": "cd test/nightwatch/ && nightwatch"
+    "nightwatch": "cd test/nightwatch/ && nightwatch",
+    "docker:build": "npm run build && docker build -t starhackit/ui .",
+    "docker:run": "docker run --rm -p 80:80 -p 443:443  --name starhackit-ui starhackit/ui"
   },
   "repository": {
     "type": "git",
@@ -84,7 +86,7 @@
     "copy-webpack-plugin": "3.0.1",
     "css-loader": "0.23.1",
     "enzyme": "2.4.1",
-    "eslint": "3.2.2",
+    "eslint": "3.3.1",
     "eslint-config-standard": "6.0.0-beta.0",
     "eslint-config-standard-react": "3.0.0",
     "eslint-loader": "1.5.0",
@@ -93,7 +95,7 @@
     "eslint-plugin-jsx-extras": "1.2.1",
     "eslint-plugin-mocha": "4.3.0",
     "eslint-plugin-promise": "2.0.1",
-    "eslint-plugin-react": "6.0.0",
+    "eslint-plugin-react": "6.1.2",
     "eslint-plugin-standard": "2.0.0",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.9.0",

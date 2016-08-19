@@ -134,8 +134,8 @@ Here is how to configure Redis:
 
 ## Docker containers
 
+### For develpment
 To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)
-
 
     # cd server
     # npm run devlabinstall
@@ -148,7 +148,14 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 ccd9f559fabd        rabbitmq:latest     "/docker-entrypoint.s"   36 minutes ago      Up 36 minutes       4369/tcp, 25672/tcp, 0.0.0.0:5672->5672/tcp   devlab_rabbitmq_frederic_1446641005596
 ```
 
-## Start
+### For production
+
+To build a production dockerized system, please use `docker-compose` to build, start and stop containers:
+
+    # docker-compose build
+    # docker-compose up
+
+## Start 
 
 Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
 Don't forget to correctly set the *rabbitmq* server location.

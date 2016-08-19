@@ -8,7 +8,7 @@ env HOME={{ home }}
 
 script
     echo $$ > /var/run/api.pid
-    sudo -E -u {{user}} npm run run
+    sudo -E -u {{user}} npm run start:prod
 end script
 
 post-stop script

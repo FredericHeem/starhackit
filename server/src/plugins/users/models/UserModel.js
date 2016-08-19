@@ -1,5 +1,5 @@
 'use strict';
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import Promise from 'bluebird';
 
 module.exports = function(sequelize, DataTypes) {

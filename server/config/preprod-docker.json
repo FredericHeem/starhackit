@@ -1,0 +1,37 @@
+{
+  "websiteUrl": "http://localhost:8080",
+
+  "rabbitmq":{
+    "url":"amqp://rabbitmq"
+  },
+  "redis":{
+    "url": "redis://redis:6379"
+  },
+  "db":{
+    "driver": "pg",
+    "dialect":"postgres",
+    "database": "preprod",
+    "user": "postgres",
+    "password": "password",
+    "host": "postgres",
+    "port": "5432"
+  },
+  "authentication":{
+    "facebook":{
+      "clientID": "1643713485906027",
+      "clientSecret": "c5536ae47ba6ddd89eff88106d3b92db",
+      "callbackURL": "http://localhost:8080/api/v1/auth/facebook/callback"
+    }
+  },
+  "mail": {
+    "from": "StarHackIt Dev <notification-dev@starhack.it>",
+    "signature": "The StarHackIt Team",
+    "smtp": {
+      "service": "Mailgun",
+      "auth": {
+        "user": "postmaster@starhackit.mailgun.org",
+        "pass": "1b901d8d9a2806754225ad177fe93a1b"
+      }
+    }
+  }
+}

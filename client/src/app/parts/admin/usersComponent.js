@@ -7,25 +7,19 @@ let debug = new Debug("components:users");
 
 const columns = [
   {
+    property: 'id',
     header: {
       label: 'Id'
-    },
-    cell: {
-      property: 'id'
     }
   }, {
+    property: 'username',
     header: {
       label: 'Username'
-    },
-    cell: {
-      property: 'username'
     }
   }, {
+    property: 'firstName',
     header: {
       label: 'First Name'
-    },
-    cell: {
-      property: 'firstName'
     }
   }, {
     header: {

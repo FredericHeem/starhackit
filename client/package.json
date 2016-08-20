@@ -57,8 +57,9 @@
     "react-tap-event-plugin": "1.0.0",
     "reactabular": "1.2.1",
     "redux": "3.5.2",
-    "redux-act-async": "0.10.0",
+    "redux-act-async": "0.12.0",
     "redux-logger": "2.6.1",
+    "redux-saga": "0.11.0",
     "redux-thunk": "2.1.0",
     "segmentize": "0.4.1"
   },

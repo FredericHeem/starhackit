@@ -4,7 +4,7 @@ describe('Reset Password', function () {
             .waitForElementVisible('.reset-password-view', 5000)
             .setValue('@passwordInput', 'password')
             .click('@submit')
-            .waitForElementVisible('.reset-password-error', 5000)
+            .waitForElementVisible('.reset-password-error-view', 5000)
     });
 
 });

@@ -148,10 +148,10 @@ function* runSagaActionAsync(actionAsync) {
     error: take(actionAsync.error.getType())
   })
 }
-
+/* eslint no-constant-condition: 0 */
 function Sagas(actions) {
   return {
-    login: function* saga(...args) {
+    login: function* saga() {
       while (true) {
         const {ok, error} = yield runSagaActionAsync(actions.login)
         if(ok){
@@ -164,15 +164,15 @@ function Sagas(actions) {
         }
       }
     },
-    logout: function* saga(...args) {
+    logout: function* saga() {
       while (true) {
-        const {ok, error} = yield runSagaActionAsync(actions.logout)
+        yield runSagaActionAsync(actions.logout)
         localStorage.removeItem("JWT");
       }
     },
-    verifyEmailCode: function* saga(...args) {
+    verifyEmailCode: function* saga() {
       while (true) {
-        const {ok, error} = yield runSagaActionAsync(actions.verifyEmailCode)
+        const {ok} = yield runSagaActionAsync(actions.verifyEmailCode)
         if(ok){
           browserHistory.push(`/login`);
         }

@@ -31,7 +31,6 @@
         "jsx": true
     },
     "rules": {
-        "no-constant-condition": 2,
         "no-debugger": 1,
         "no-console": 0,
         "consistent-return": [0],

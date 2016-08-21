@@ -5,7 +5,7 @@
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "start": "webpack-dashboard -- webpack-dev-server --config webpack.dev.js",
     "prestart": "npm run prebuild",
     "lint": "eslint src --ext .js --ext .jsx",
     "cpd": "jscpd",
@@ -132,6 +132,7 @@
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
     "webpack-bundle-size-analyzer": "2.0.2",
+    "webpack-dashboard": "0.1.6",
     "webpack-dev-server": "1.14.1",
     "webpack-hud": "0.0.9"
   },

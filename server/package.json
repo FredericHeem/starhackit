@@ -11,7 +11,7 @@
   "license": "NLPL",
   "scripts": {
     "devlabinstall": "lab install",
-    "prebuild": "npm run lint",
+    "prestart": "npm run lint",
     "build": "gulp build:production",
     "start": "gulp",
     "pretest": "npm run build",

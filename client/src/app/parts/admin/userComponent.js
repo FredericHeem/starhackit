@@ -17,11 +17,10 @@ export default({tr}) => {
     if (_.isEmpty(user)) {
       return <Spinner/>
     }
-
     return (
       <Paper className='text-center view user-view'>
         <h3>{tr.t('User')}</h3>
-        <div className="">
+        <div>
           <TextField id='id' value={user.id} disabled={true} floatingLabelText={tr.t('Id')}/>
         </div>
         <div className="">

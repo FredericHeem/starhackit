@@ -132,6 +132,26 @@ Here is how to configure Redis:
 },
 ```
 
+## Json Web Token
+
+[Json Web Token](https://jwt.io/) is a modern alternative to HTTP cookie for authentication purposes.
+
+[node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) is the node library which implements such a protocol.
+
+Please change the following configuration according to your need, especially the *secret*.
+
+For a list of all available options, please consult the [node-jsonwebtoken documentation](https://github.com/auth0/node-jsonwebtoken#usage)
+
+```
+"jwt": {
+  "secret": "I love shrimp with mayonnaise",
+  "options": {
+    "expiresIn": "15 days"
+  }
+}
+```
+
+
 ## Docker containers
 
 ### For development
@@ -228,7 +248,7 @@ By using the *model:create* command, a new sequelize model is created alongside 
 
 Eventually change the sql table name to *underscore_case*
 
-##GraphQL
+## GraphQL
 
     # npm install -g postgraphql
     # postgraphql postgres://postgres:password@192.168.99.100:5432/dev --development

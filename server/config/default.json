@@ -33,6 +33,12 @@
       "maxIdleTime": 60
     }
   },
+  "jwt": {
+    "secret": "I love shrimp with mayonnaise",
+    "options": {
+      "expiresIn": "15 days"
+    }
+  },
   "authentication":{
     /*
     "facebook":{

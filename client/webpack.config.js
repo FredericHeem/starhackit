@@ -7,7 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 //var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
-var DashboardPlugin = require('webpack-dashboard/plugin');
+
 
 var pathAppTo;
 
@@ -52,7 +52,6 @@ module.exports = function ( options ) {
             filename: '[name].js'
         },
         plugins: [
-            new DashboardPlugin(),
             new ExtractTextPlugin('[name].[chunkhash].css'),
             new HtmlWebpackPlugin({
               template: 'src/index.ejs',

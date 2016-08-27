@@ -26,6 +26,9 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm run mock`  |  Run a mock server based on the RAML api definition |
 | `npm run doc` |  Generate the API HTML documentation |
 
+# Mind Map
+
+<iframe height=800 width=1000 src="https://atlas.mindmup.com/2016/08/712236d04ecc013446842b9f15b052d7/starhackit_backend/index.html"></iframe>
 # Dependencies
 
 ## Database
@@ -138,11 +141,9 @@ Here is how to configure Redis:
 
 [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) is the node library which implements such a protocol.
 
-
-
 A sequence diagram a worth a thousand words:
 
-![GitHub Logo](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgSldUIEF1dGhlbnRpY2F0aW9uIFNlcXVlbmNlCgpDbGllbnQtPlNlcnZlcjogUE9TVCAvYXV0aC9sb2dpbiBcbnVzZXJuYW1lOiJwaXBwbyJcbnBhc3N3b3JkOiAiAAMIIgoAPAYtPkRCOiBmaW5kIHVzZXIgYnkAAwVuYW1lCkRCAF4KZm91ABsIAFEFCm5vdGUgcmlnaHQgb2YgAIEHCHRva2VuID0gand0LnNpZ24odXNlciwgc2VjcmV0LCBvcHRpb25zKQB0CQCBSQY6IDIwMCBPS1xuADsGOiAiQTFCMkMzRDRFNTY3ODkwIgCBUQY6ewCBVAkgAIFXB319Cg&s=modern-blue)
+![Json Web Token Sequence Diagram](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgSldUIEF1dGhlbnRpY2F0aW9uIFNlcXVlbmNlCgpDbGllbnQtPlNlcnZlcjogUE9TVCAvYXV0aC9sb2dpbiBcbnVzZXJuYW1lOiJwaXBwbyJcbnBhc3N3b3JkOiAiAAMIIgoAPAYtPkRCOiBmaW5kIHVzZXIgYnkAAwVuYW1lCkRCAF4KZm91ABsIAFEFCm5vdGUgcmlnaHQgb2YgAIEHCHRva2VuID0gand0LnNpZ24odXNlciwgc2VjcmV0LCBvcHRpb25zKQB0CQCBSQY6IDIwMCBPS1xuADsGOiAiQTFCMkMzRDRFNTY3ODkwIgCBUQY6ewCBVAkgAIFXB319Cg&s=modern-blue)
 
 Please change the following configuration according to your need, especially the *secret*.
 

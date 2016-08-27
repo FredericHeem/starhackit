@@ -113,17 +113,35 @@ export default function(app, publisherUser) {
           model: models.PasswordReset,
           where: {
             token: token
-          },
+          }
         }]
       });
-      log.info("verifyResetPasswordToken: password ", password);
+      //log.debug("verifyResetPasswordToken: password ", password);
 
       if(user){
-        await user.update({password: password});
-        //TODO delete token
-        return {
-          success:true
-        };
+        const now = new Date();
+        const paswordResetDate = user.get().PasswordReset.get().created_at;
+        // Valid for 24 hours
+        paswordResetDate.setUTCHours(paswordResetDate.getUTCHours() + 24);
+
+        await models.PasswordReset.destroy({
+          where: {
+            token
+          }
+        });
+
+        if(now < paswordResetDate) {
+          await user.update({password: password});
+          return {
+            success:true
+          };
+        } else {
+          throw {
+            code:422,
+            name:"TokenInvalid",
+            message: "The token has expired."
+          };
+        }
       } else {
         log.warn("verifyResetPasswordToken: no such token ", token);
 

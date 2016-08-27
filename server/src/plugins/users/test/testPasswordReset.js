@@ -1,6 +1,5 @@
 let assert = require('assert');
 import sinon from 'sinon';
-import {Client} from 'restauth';
 import testMngr from '~/test/testManager';
 
 describe('PasswordReset', function () {
@@ -64,6 +63,15 @@ describe('PasswordReset', function () {
     res = await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
     assert(res);
 
+    // Verify that the reset token has been deleted
+    const passwordReset = await models.PasswordReset.find({
+      where: {
+        token
+      }
+    });
+    assert(!passwordReset);
+
+    // Now login with the new password
     let loginData = {
       username:email,
       password:passwordNew,
@@ -79,9 +87,53 @@ describe('PasswordReset', function () {
     await resetPasswordProcedure(email, passwordNew);
     await resetPasswordProcedure(email, passwordOld);
   });
+  it('expired token', async() => {
+    let email = "alice@mail.com";
+    let passwordNew = "password";
+    let resetPaswordData = {
+      email
+    };
 
-  it.skip('reset password email', async() => {
+    // Create the reset token
+    let res = await client.post('v1/auth/reset_password', resetPaswordData);
+    assert(res);
 
+    // Verify that the reset token has been created
+    let resUser = await models.User.find({
+      where: {
+        email: email
+      },
+      include: [{
+        model: models.PasswordReset
+      }]
+    });
+
+    let user = resUser.get();
+    assert(user);
+
+    let token = user.PasswordReset.get().token;
+    //console.log(token);
+    assert(token);
+    //Set the token creation date to the past
+    await models.PasswordReset.update({
+      created_at: new Date("2016-08-25").toUTCString()
+    },{
+      where: {token}
+    });
+    // reset the passsword with the token
+    let verifyPaswordData = {
+      email,
+      token,
+      password: passwordNew
+    };
+
+    try {
+      await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
+      assert(false);
+    } catch(error){
+      assert.equal(error.statusCode, 422);
+      assert.equal(error.body.error.name, 'TokenInvalid');
+    }
   });
   it('reset passord with malformed email', async(done) => {
     let data = {

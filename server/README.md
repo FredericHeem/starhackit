@@ -155,7 +155,7 @@ To build a production dockerized system, please use `docker-compose` to build, s
     # docker-compose build
     # docker-compose up
 
-## Start 
+## Start
 
 Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
 Don't forget to correctly set the *rabbitmq* server location.
@@ -226,6 +226,12 @@ By using the *model:create* command, a new sequelize model is created alongside 
   * the sql migration script in the *migrations* directory
 
 Eventually change the sql table name to *underscore_case*
+
+##GraphQL
+
+  # npm install -g postgraphql
+  # postgraphql postgres://postgres:password@192.168.99.100:5432/dev --development
+
 
 ## Database migration
 

@@ -44,7 +44,7 @@
         "no-undef": 2,
         "no-unused-expressions": 0,
         "no-use-before-define": [2, "nofunc"],
-        "no-trailing-spaces": [2],
+        "no-trailing-spaces": [0],
         "eol-last": [0],
         "no-labels": [2],
         "indent": 0,

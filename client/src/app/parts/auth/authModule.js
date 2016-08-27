@@ -3,6 +3,7 @@ import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
+import {parse} from 'query-string'
 import {race, take}  from 'redux-saga/effects'
 import AuthenticatedComponent from './components/authenticatedComponent';
 import loginView from './views/loginView';
@@ -155,9 +156,12 @@ function Sagas(actions) {
       while (true) {
         const {ok, error} = yield runSagaActionAsync(actions.login)
         if(ok){
-          console.log('Sagas login race end' , ok);
           const {token} = ok.payload.response;
           localStorage.setItem("JWT", token);
+
+          const nextPath = parse(window.location.search).nextPath || '/app/profile';
+          //console.log('Sagas login ',  nextPath);
+          browserHistory.push(nextPath);
         } else {
           console.log('Sagas login race end error ' , error);
           localStorage.removeItem("JWT");

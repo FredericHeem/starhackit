@@ -151,6 +151,7 @@ For a list of all available options, please consult the [node-jsonwebtoken docum
 }
 ```
 
+[JSON Web Token Sequence Diagram](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgSldUIEF1dGhlbnRpY2F0aW9uIFNlcXVlbmNlCgpDbGllbnQtPlNlcnZlcjogUE9TVCAvYXV0aC9sb2dpbiBcbnVzZXJuYW1lOiJwaXBwbyJcbnBhc3N3b3JkOiAiAAMIIgoAPAYtPkRCOiBmaW5kIHVzZXIgYnkAAwVuYW1lCkRCAF4KZm91ABsIAFEFCm5vdGUgcmlnaHQgb2YgAIEHCHRva2VuID0gand0LnNpZ24odXNlciwgc2VjcmV0LCBvcHRpb25zKQB0CQCBSQY6IDIwMCBPS1xuADsGOiAiQTFCMkMzRDRFNTY3ODkwIgCBUQY6ewCBVAkgAIFXB319Cg&s=modern-blue)
 
 ## Docker containers
 

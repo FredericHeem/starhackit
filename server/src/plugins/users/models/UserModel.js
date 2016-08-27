@@ -134,7 +134,11 @@ module.exports = function(sequelize, DataTypes) {
                 {...userJson.authProvider, user_id: userId},
                 {transaction: t});
             }
-
+            await models.UserPending.destroy({
+              where: {
+                email: userJson.email
+              }
+            },{transaction: t});
             return userCreated;
           })
           .catch(function (err) {

@@ -59,13 +59,7 @@ export default function(app, publisherUser) {
         let userPending = res.get();
         log.debug("verifyEmailCode: userPending: ", userPending);
         let userToCreate = _.pick(userPending, 'username', 'email', 'passwordHash');
-        //TODO transaction
         let user = await models.User.createUserInGroups(userToCreate, ["User"]);
-        await models.UserPending.destroy({
-          where:{
-            code:param.code
-          }
-        });
         //log.debug("verifyEmailCode: created user ", user.toJSON());
         await publisherUser.publish("user.registered", JSON.stringify(user.toJSON()));
         return user.toJSON();

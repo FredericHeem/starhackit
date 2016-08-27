@@ -28,7 +28,8 @@ These are the main *npm* commands during a standard developer workflow:
 
 # Mind Map
 
-<iframe height=800 width=1000 src="https://atlas.mindmup.com/2016/08/712236d04ecc013446842b9f15b052d7/starhackit_backend/index.html"></iframe>
+![Mind Map BackEnd StarHackit](https://atlas.mindmup.com/2016/08/8fd0abd04ece013446842b9f15b052d7/starhackit_backend/thumb.png)
+
 # Dependencies
 
 ## Database

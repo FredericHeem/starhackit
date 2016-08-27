@@ -46,6 +46,21 @@ export default function() {
 
     rest.setJwtSelector(jwt.selector(store));
 
+    async function i18nInit() {
+      const language = await i18n.load();
+      context.formatter.setLocale(language);
+      store.dispatch(parts.core.actions.setLocale(language))
+      await intl(language);
+    }
+
+    async function preAuth() {
+      let token = localStorage.getItem("JWT");
+      if (token) {
+        store.dispatch(parts.auth.actions.setToken(token))
+        await store.dispatch(parts.auth.actions.me())
+      }
+    }
+
     return {
         parts,
         store,
@@ -54,12 +69,10 @@ export default function() {
         },
         async start() {
             debug("start");
-            const language = await i18n.load();
-            context.formatter.setLocale(language);
-            store.dispatch(parts.core.actions.setLocale(language))
-            await intl(language);
-            jwt.loadJWT(parts);
-            store.dispatch(parts.auth.actions.me())
+            return Promise.all([
+              i18nInit(),
+              preAuth()
+            ]);
         }
     };
 }

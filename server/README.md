@@ -134,7 +134,7 @@ Here is how to configure Redis:
 
 ## Docker containers
 
-### For develpment
+### For development
 To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)
 
     # cd server
@@ -144,8 +144,9 @@ To check that the containers are running:
 
 ```
 # docker ps
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                         NAMES
-ccd9f559fabd        rabbitmq:latest     "/docker-entrypoint.s"   36 minutes ago      Up 36 minutes       4369/tcp, 25672/tcp, 0.0.0.0:5672->5672/tcp   devlab_rabbitmq_frederic_1446641005596
+CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                               NAMES
+290fe4c70fea        kiasaki/alpine-postgres   "/docker-entrypoint.s"   8 days ago          Up 8 days           0.0.0.0:5432->5432/tcp                              devlab_postgres_frederic_1471545611147
+4dfd33e1e48d        gonkulatorlabs/rabbitmq   "/usr/bin/wrapper"       8 days ago          Up 8 days           5671/tcp, 15671-15672/tcp, 0.0.0.0:5672->5672/tcp   devlab_rabbitmq_frederic_1471545611147
 ```
 
 ### For production
@@ -229,8 +230,8 @@ Eventually change the sql table name to *underscore_case*
 
 ##GraphQL
 
-  # npm install -g postgraphql
-  # postgraphql postgres://postgres:password@192.168.99.100:5432/dev --development
+    # npm install -g postgraphql
+    # postgraphql postgres://postgres:password@192.168.99.100:5432/dev --development
 
 
 ## Database migration

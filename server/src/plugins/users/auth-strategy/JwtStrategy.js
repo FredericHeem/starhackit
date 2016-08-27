@@ -1,23 +1,6 @@
 import {Strategy, ExtractJwt} from 'passport-jwt';
 let log = require('logfilename')(__filename);
 
-export async function findUser(models, jwtPayload) {
-  log.debug("findUser: ", jwtPayload);
-  let user = await models.User.find({
-    where: {
-      id: jwtPayload.sub
-    }
-  });
-
-  if (!user) {
-    log.info("findUser no user");
-    return;
-  } else {
-    return user.get();
-  }
-}
-
-
 export default function register(passport, models) {
   log.debug("register");
 

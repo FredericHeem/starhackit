@@ -99,6 +99,9 @@ function middlewareInit(app, koaApp, config) {
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);
   });
 
+  //Cors support
+  require('./middleware/CorsMiddleware')(app, koaApp, config);
+
   //Serve static html files such as the generated api documentation.
   require('./middleware/StaticMiddleware')(app, koaApp, config);
 }

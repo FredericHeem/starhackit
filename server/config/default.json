@@ -39,6 +39,9 @@
       "expiresIn": "15 days"
     }
   },
+  "cors":{
+    "credentials": true
+  },
   "authentication":{
     /*
     "facebook":{

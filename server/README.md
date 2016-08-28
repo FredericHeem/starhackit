@@ -4,13 +4,15 @@ Node.js Starter Kit
 Backend Starter Kit written in Node.js with the following features:
 
 * **ES6/ES7** ready: async/await, classes, arrow function, template strings etc ...
-* REST API designed with [RAML](http://raml.org/), produce a human friendly [API documentation](http://starhack.it/api/v1/doc/api.html) and a **Mock Server** for frontend developer.
+* **SQL** Relational database support with  [Sequelize](http://docs.sequelizejs.com/en/latest/)
+* **Koa** web server, the next generation web server with async/await support.
+* **REST API** designed with [RAML](http://raml.org/), produce a human friendly [API documentation](http://starhack.it/api/v1/doc/api.html) and a **Mock Server** for frontend developer.
 * [Json Web Token](https://jwt.io/) authentication.
 * **Social Authentication** with Facebook, Google, etc .. Powered by [passport](http://passportjs.org/)
 * Fined-grained **Authorization** based on users, groups and resources.
 * Scalable by using a **Micro Services** based architecture. Orchestrating with [pm2](http://pm2.keymetrics.io/)
-* **SQL** Relational database support with  [Sequelize](http://docs.sequelizejs.com/en/latest/)
 * **Logging** with timestamp and filename.
+* **CORS** support with [kcors](https://github.com/koajs/cors)
 
 # Workflow with npm scripts
 
@@ -30,7 +32,7 @@ These are the main *npm* commands during a standard developer workflow:
 
 ![Mind Map BackEnd StarHackit](https://atlas.mindmup.com/2016/08/8fd0abd04ece013446842b9f15b052d7/starhackit_backend/thumb.png)
 
-# Dependencies
+# Configuration
 
 ## Database
 
@@ -159,6 +161,19 @@ For a list of all available options, please consult the [node-jsonwebtoken docum
 }
 ```
 
+## CORS
+[Cross-origin resource sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is implemented with the *koa* middleware [kcors](https://github.com/koajs/cors)
+
+See [kors options](https://github.com/koajs/cors#corsoptions) for the list of all options.
+
+Here is a typical configuration:
+
+```
+"cors":{
+  "credentials": true
+},
+```
+
 ## Docker containers
 
 ### For development
@@ -219,7 +234,7 @@ The result can be found at `build/api.html`
 
 Behind the scene `npm run doc` invokes:
 
-    # raml2html -i src/plugins/users/raml/users.raml -o build/api.html
+    # node scripts/apidoc.js
 
 To open the documentation, simply run
 

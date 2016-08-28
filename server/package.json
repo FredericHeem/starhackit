@@ -54,6 +54,7 @@
     "gulp-util": "3.0.7",
     "jsonschema": "1.1.0",
     "jsonwebtoken": "7.1.6",
+    "kcors": "2.1.1",
     "koa": "2.0.0-alpha.3",
     "koa-66": "1.0.0",
     "koa-bodyparser": "3.1.0",

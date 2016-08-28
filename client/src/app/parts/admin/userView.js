@@ -1,13 +1,16 @@
 import React from 'react';
 import DocTitle from 'components/docTitle';
-import UserComponent from './userComponent';
+import userComponent from './userComponent';
 
-export default function UserView(props){
+export default (context) => {
+  const UserComponent = userComponent(context);
+
+  return function UserView(props) {
     return (
-        <div id="user-view">
-            <DocTitle title="User"/>
-            <UserComponent
-                {...props}/>
-        </div>
+      <div className="user-view">
+        <DocTitle title="User"/>
+        <UserComponent {...props}/>
+      </div>
     );
+  }
 }

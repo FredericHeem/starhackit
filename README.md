@@ -49,6 +49,8 @@ For more information about the backend, see its [README](server/README.md)
 * [DevLab](https://github.com/TechnologyAdvice/DevLab): Containerize your development workflow.
 * [Trevor](https://github.com/vdemedes/trevor): Your own Travis CI to run tests locally.
 
+> The frontend and the backend are two separate projects with their own set of dependencies. One can use the frontend with another existing backend, or use the backend with another frontend stack.
+
 # Workflow
 
 ## Clone the source code

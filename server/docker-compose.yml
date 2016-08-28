@@ -1,19 +1,32 @@
-web:
-  build: ./
-  volumes:
-    - ".:/app"
-  expose:
-    - "3000"
-  links:
-    - "rabbitmq"
-    - "postgres"
-  command: npm start
+version: '2'
 
-postgres:
-  image: postgres
-  expose:
-    - "5432"
-rabbitmq:
-  image: rabbitmq
-  expose:
-    - "5672"
+services:
+  api:
+    image: starhackit/api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      - NODE_ENV=preprod-docker
+    links:
+      - postgres
+      - rabbitmq
+      - redis
+  postgres:
+    image: kiasaki/alpine-postgres
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=preprod
+  rabbitmq:
+    image: gonkulatorlabs/rabbitmq
+    expose:
+      - "5672"
+  redis:
+    image: smebberson/alpine-redis
+    expose:
+      - "6379"

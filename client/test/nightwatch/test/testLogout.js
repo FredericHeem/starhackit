@@ -20,7 +20,7 @@ describe('Logout', function () {
             .waitForElementVisible('.profile-page', 5000);
     });
 
-    it('logout, go to admin', function (client) {
+    it('logout, go to users', function (client) {
         client.page.logout().navigate()
             .waitForElementVisible('.logout-page', 5000);
 

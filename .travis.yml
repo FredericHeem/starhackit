@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "5"
+  - "6"
   - "4"
 
 env:
@@ -8,6 +8,7 @@ env:
 
 services:
   - rabbitmq
+  - redis
 
 addons:
   postgresql: "9.4"
@@ -22,5 +23,10 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 
 after_script:
-  - cd client && npm run build && npm test
-  - cd server && npm run codeclimate && npm run coveralls
+  - cd client
+  - npm run build
+  - npm test
+  - cd ../server
+  - npm test
+  - npm run codeclimate
+  - npm run coveralls

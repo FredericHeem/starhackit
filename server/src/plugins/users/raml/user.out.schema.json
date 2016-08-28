@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "biography": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "biography"
+      ]
+    },
+    "auth_provider": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "authId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "authId"
+        ]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "username",
+    "email",
+    "firstName",
+    "lastName",
+    "createdAt",
+    "updatedAt",
+    "profile"
+  ]
+}

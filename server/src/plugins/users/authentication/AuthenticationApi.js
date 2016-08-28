@@ -11,6 +11,20 @@ export default function(app, publisherUser) {
     async createPending(userPendingIn) {
       validateJson(userPendingIn, require('./schema/createPending.json'));
       log.debug("createPending: ", userPendingIn);
+
+      let userByUsername = await models.User.findByUsername(userPendingIn.username);
+      let userPendingByUsername = await models.UserPending.find({
+        where:{
+          username: userPendingIn.username
+        }
+      });
+      if(userByUsername || userPendingByUsername){
+        throw {
+          code: 422,
+          name: "UsernameExists",
+          message: "The username is already used."
+        };
+      }
       let user = await models.User.findByEmail(userPendingIn.email);
 
       if (!user) {
@@ -23,7 +37,6 @@ export default function(app, publisherUser) {
         };
         log.info("createPending code ", userPendingOut.code);
         await models.UserPending.create(userPendingOut);
-        delete userPendingOut.password;
         await publisherUser.publish("user.registering", JSON.stringify(userPendingOut));
       } else {
         log.info("already registered", userPendingIn.email);
@@ -46,13 +59,7 @@ export default function(app, publisherUser) {
         let userPending = res.get();
         log.debug("verifyEmailCode: userPending: ", userPending);
         let userToCreate = _.pick(userPending, 'username', 'email', 'passwordHash');
-        //TODO transaction
         let user = await models.User.createUserInGroups(userToCreate, ["User"]);
-        await models.UserPending.destroy({
-          where:{
-            code:param.code
-          }
-        });
         //log.debug("verifyEmailCode: created user ", user.toJSON());
         await publisherUser.publish("user.registered", JSON.stringify(user.toJSON()));
         return user.toJSON();
@@ -60,7 +67,8 @@ export default function(app, publisherUser) {
         log.warn("verifyEmailCode: no such code ", param.code);
         throw {
           code:422,
-          name:"NoSuchCode"
+          name:"NoSuchCode",
+          message: "The email verification code is no longer valid."
         };
       }
     },
@@ -70,7 +78,7 @@ export default function(app, publisherUser) {
       log.info("resetPassword: ", email);
       let user = await models.User.findByEmail(email);
       if(user){
-        log.info("resetPassword: find user: ", user.get());
+        log.info("resetPassword: find user id: ", user.get().id);
         let token = createToken();
         let passwordReset = {
           token: token,
@@ -105,23 +113,42 @@ export default function(app, publisherUser) {
           model: models.PasswordReset,
           where: {
             token: token
-          },
+          }
         }]
       });
-      log.info("verifyResetPasswordToken: password ", password);
+      //log.debug("verifyResetPasswordToken: password ", password);
 
       if(user){
-        await user.update({password: password});
-        //TODO delete token
-        return {
-          success:true
-        };
+        const now = new Date();
+        const paswordResetDate = user.get().PasswordReset.get().created_at;
+        // Valid for 24 hours
+        paswordResetDate.setUTCHours(paswordResetDate.getUTCHours() + 24);
+
+        await models.PasswordReset.destroy({
+          where: {
+            token
+          }
+        });
+
+        if(now < paswordResetDate) {
+          await user.update({password: password});
+          return {
+            success:true
+          };
+        } else {
+          throw {
+            code:422,
+            name:"TokenInvalid",
+            message: "The token has expired."
+          };
+        }
       } else {
         log.warn("verifyResetPasswordToken: no such token ", token);
 
         throw {
           code:422,
-          name:"TokenInvalid"
+          name:"TokenInvalid",
+          message: "The token is invalid or has expired."
         };
       }
     }

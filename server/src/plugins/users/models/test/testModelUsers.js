@@ -40,7 +40,26 @@ describe('UserModel', function(){
 
     await userCreated.destroy();
   });
+  it('should successfully create an entry with facebook auth', async () => {
+    let username = chance.name();
+    let userConfig = {
+        username: username,
+        email: username + "@mail.com",
+        authProvider: {
+          name: "facebook",
+          authId: "1234567890"
+        }
+    };
+    let userCreated = await userModel.createUserInGroups(userConfig, ["User"]);
+    assert(userCreated);
+    let userFresh = await userModel.findByUsername(username);
+    assert.equal(userFresh.get().auth_provider[0].name, "facebook");
+    assert.equal(userFresh.get().auth_provider[0].authId, "1234567890");
+    /*console.log('auth_provider',
+      userFresh.get().auth_provider.map(provider => provider.toJSON()));*/
 
+    await userCreated.destroy();
+  });
   it('should not create an empty entry', async() => {
     try {
       await userModel.create({});
@@ -110,7 +129,8 @@ describe('UserModel', function(){
   });
   it('findByUserId', async () => {
     let adminUsername = 'admin';
-    let res = await userModel.findByUserId(1);
+    let user = await models.User.findByUsername('admin');
+    let res = await userModel.findByUserId(user.get().id);
     assert(res.toJSON().profile);
     assert.equal(res.get().username, adminUsername);
   });

@@ -5,13 +5,16 @@ module.exports = function(sequelize/*, DataTypes*/) {
 
   let models = sequelize.models;
   let GroupPermission = sequelize.define('GroupPermission', {},
-  {
-    tableName:"group_permissions",
-    classMethods: {
-        add: add,
-        seedDefault:seedDefault
-      }
-  });
+    {
+      tableName:"group_permissions",
+      underscored: true,
+      timestamps: false,
+      classMethods: {
+          add: add,
+          seedDefault:seedDefault
+        }
+    }
+  );
 
   async function seedDefault() {
     let groupPermissionsJson = require('./fixtures/group_permission.json');

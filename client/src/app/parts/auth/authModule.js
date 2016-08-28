@@ -3,15 +3,16 @@ import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-
+import {parse} from 'query-string'
+import {race, take}  from 'redux-saga/effects'
 import AuthenticatedComponent from './components/authenticatedComponent';
-import LoginView from './views/loginView';
-import LogoutView from './views/logoutView';
-import ForgotView from './views/forgotView';
-import RegisterView from './views/registerView';
-import RegistrationCompleteView from './views/registrationCompleteView';
-import ResetPasswordView from './views/resetPasswordView';
-import AppView from './views/applicationView';
+import loginView from './views/loginView';
+import logoutView from './views/logoutView';
+import forgotView from './views/forgotView';
+import registerView from './views/registerView';
+import registrationCompleteView from './views/registrationCompleteView';
+import resetPasswordView from './views/resetPasswordView';
+import appView from './views/applicationView';
 
 function Resources(rest){
   return {
@@ -39,17 +40,16 @@ function Resources(rest){
   }
 }
 
-function Actions(rest){
-    let auth = Resources(rest);
+function Actions(resources){
     return {
         setToken: createAction('TOKEN_SET'),
-        me: createActionAsync('ME', auth.me),
-        login: createActionAsync('LOGIN', auth.login),
-        logout: createActionAsync('LOGOUT', auth.logout),
-        requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', auth.requestPasswordReset),
-        register: createActionAsync('REGISTER', auth.register),
-        verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', auth.verifyEmailCode),
-        verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', auth.verifyResetPasswordToken)
+        me: createActionAsync('ME', resources.me),
+        login: createActionAsync('LOGIN', resources.login),
+        logout: createActionAsync('LOGOUT', resources.logout),
+        requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', resources.requestPasswordReset),
+        register: createActionAsync('REGISTER', resources.register),
+        verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', resources.verifyEmailCode),
+        verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', resources.verifyResetPasswordToken)
     }
 }
 
@@ -70,7 +70,7 @@ function AuthReducer(actions){
       [actions.login.ok]: (state, payload) => ({
           ...state,
           authenticated: true,
-          token: payload.token
+          token: payload.response.token
       }),
       [actions.login.error]: () => (defaultState),
       [actions.me.error]: () => (defaultState),
@@ -94,37 +94,38 @@ function Reducers(actions){
 let selectState = state => state.auth;
 let isAuthenticated = state => selectState(state).auth.authenticated;
 
-function Containers(actions){
+function Containers(context, actions){
     const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
+
     return {
         login(){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state),
                 login: selectState(state).login
             })
-            return connect(mapStateToProps, mapDispatchToProps)(LoginView);
+            return connect(mapStateToProps, mapDispatchToProps)(loginView(context));
         },
         register(){
             const mapStateToProps = (state) => ({register: selectState(state).register})
-            return connect(mapStateToProps, mapDispatchToProps)(RegisterView);
+            return connect(mapStateToProps, mapDispatchToProps)(registerView(context));
         },
         logout(){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state)
             })
-            return connect(mapStateToProps, mapDispatchToProps)(LogoutView);
+            return connect(mapStateToProps, mapDispatchToProps)(logoutView(context));
         },
         forgot(){
             const mapStateToProps = () => ({});
-            return connect(mapStateToProps, mapDispatchToProps)(ForgotView);
+            return connect(mapStateToProps, mapDispatchToProps)(forgotView(context));
         },
         resetPassword(){
             const mapStateToProps = (state) => ({verifyResetPasswordToken: selectState(state).verifyResetPasswordToken})
-            return connect(mapStateToProps, mapDispatchToProps)(ResetPasswordView);
+            return connect(mapStateToProps, mapDispatchToProps)(resetPasswordView(context));
         },
         registrationComplete(){
             const mapStateToProps = (state) => ({verifyEmailCode: selectState(state).verifyEmailCode})
-            return connect(mapStateToProps, mapDispatchToProps)(RegistrationCompleteView);
+            return connect(mapStateToProps, mapDispatchToProps)(registrationCompleteView(context));
         },
         authentication(){
           const mapStateToProps = (state) => ({authenticated: isAuthenticated(state)})
@@ -134,33 +135,54 @@ function Containers(actions){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state)
             })
-            return connect(mapStateToProps, mapDispatchToProps)(AppView);
+            return connect(mapStateToProps, mapDispatchToProps)(appView(context));
         }
     }
 }
 
-function Middleware(actions){
-  const authMiddleware = (/*store*/) => next => action => {
-    //console.log('auth action.type: ', action.type)
-    switch(action.type){
-      case actions.login.ok.getType():
-        //Save jwt
-        localStorage.setItem("JWT", action.payload.token);
-        break;
-      case actions.logout.ok.getType():
-      case actions.logout.error.getType():
-      case actions.login.error.getType():
-        //Remove jwt
+function* runSagaActionAsync(actionAsync) {
+  console.log('runSagaActionAsync wait for ', actionAsync.request.getType());
+  yield take(actionAsync.request.getType());
+  console.log('runSagaActionAsync rx ', actionAsync.request.getType());
+  return yield race({
+    ok: take(actionAsync.ok.getType()),
+    error: take(actionAsync.error.getType())
+  })
+}
+/* eslint no-constant-condition: 0 */
+function Sagas(actions) {
+  return {
+    login: function* saga() {
+      while (true) {
+        const {ok, error} = yield runSagaActionAsync(actions.login)
+        if(ok){
+          const {token} = ok.payload.response;
+          localStorage.setItem("JWT", token);
+
+          const nextPath = parse(window.location.search).nextPath || '/app/profile';
+          //console.log('Sagas login ',  nextPath);
+          browserHistory.push(nextPath);
+        } else {
+          console.log('Sagas login race end error ' , error);
+          localStorage.removeItem("JWT");
+        }
+      }
+    },
+    logout: function* saga() {
+      while (true) {
+        yield runSagaActionAsync(actions.logout)
         localStorage.removeItem("JWT");
-        break;
-      case actions.verifyEmailCode.ok.getType():
-        browserHistory.push(`/login`);
-        break;
-      default:
+      }
+    },
+    verifyEmailCode: function* saga() {
+      while (true) {
+        const {ok} = yield runSagaActionAsync(actions.verifyEmailCode)
+        if(ok){
+          browserHistory.push(`/login`);
+        }
+      }
     }
-    return next(action)
   }
-  return authMiddleware;
 }
 
 function Routes(containers, store, actions){
@@ -193,14 +215,15 @@ function Routes(containers, store, actions){
     }
 }
 
-export default function(rest) {
-    let actions = Actions(rest);
-    let containers = Containers(actions)
+export default function(context, rest) {
+    const resources = Resources(rest);
+    let actions = Actions(resources);
+    let containers = Containers(context, actions)
     return {
         actions,
         reducers: Reducers(actions),
-        middlewares: [Middleware(actions)],
         containers,
-        routes: (store) => Routes(containers, store, actions)
+        routes: (store) => Routes(containers, store, actions),
+        sagas: Sagas(actions)
     }
 }

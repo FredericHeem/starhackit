@@ -13,16 +13,13 @@ let debug = new Debug("rootView");
 export default function RootView(store, parts){
     debug('init');
     const routes = Routes(store, parts)
-    const Intl = parts.core.containers.intl();
     const Router = parts.core.createRouter(store, routes);
     return (
         <Provider store={store}>
-            <Intl>
-                <div style={{ height: '100%' }}>
-                    {Router}
-                    <Alert stack={{limit: 3}} />
-                </div>
-            </Intl>
+            <div style={{ height: '100%' }}>
+                {Router}
+                <Alert stack={{limit: 3}} />
+            </div>
         </Provider>
     )
 }

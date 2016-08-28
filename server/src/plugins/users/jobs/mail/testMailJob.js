@@ -6,7 +6,7 @@ import config from 'config';
 
 import MailJob from './MailJob';
 
-describe('MailJob', function () {
+describe.skip('MailJob', function () {
   let publisher;
   let sandbox;
 

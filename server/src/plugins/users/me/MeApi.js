@@ -11,17 +11,19 @@ export default function MeApi(app) {
       log.debug("index userId: ", userId);
       let user = await models.User.findByUserId(userId);
       //log.debug("index user: ", user.get());
-      return _.omit(user.toJSON(), 'id');
+      return user.toJSON();
     },
     async patch(userId, data) {
       validateJson(data, require('./schema/patch.json'));
       log.debug("patch userId %s, data: ", userId, data);
       //TODO refactor with nested data
+      //TODO transaction ?
       await models.User.update(data, {
         where: {
           id: userId
         }
       });
+      //TODO upsert ?
       await models.Profile.update(data, {
         where: {
           user_id: userId

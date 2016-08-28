@@ -55,7 +55,7 @@ gulp.task( 'clean', function () {
 
 gulp.task( 'cp:assets', function () {
     return gulp.src( [
-        './package.json', './src/**/*.html', './src/**/*.json'
+        './package.json', './src/**/*.html', './src/**/*.json', './src/**/*.sql'
     ] )
     .pipe(debug())
     .pipe( gulp.dest( 'build/' ) );

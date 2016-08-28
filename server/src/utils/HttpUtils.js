@@ -17,24 +17,31 @@ export function respond(context, me, callback, args, statusCode = 200) {
     });
 }
 
+function buildError(error){
+  return {
+    error: error
+  };
+}
+
 export function convertAndRespond(context, error) {
   if (error instanceof TypeError) {
     log.error('TypeError: ', error.toString());
+    log.error('TypeError stack: ', error.stack);
     context.status = 500;
-    context.body = {
+    context.body = buildError({
       name: error.name,
       message: error.message
-    };
+    });
   } else if (!error.name) {
     log.error('UnknownError:', error);
     context.status = 500;
-    context.body = {
+    context.body = buildError({
         name: 'UnknownError'
-    };
+    });
   } else {
     log.warn('error name', error);
     let code = _.isNumber(error.code) ? error.code: 400;
     context.status = code;
-    context.body = error;
+    context.body = buildError(error);
   }
 }

@@ -1,7 +1,9 @@
+import _ from 'lodash';
 import Router from 'koa-66';
 import passport from 'koa-passport';
 import AuthenticationApi from './AuthenticationApi';
 import jwt from 'jsonwebtoken';
+import config from 'config';
 
 let log = require('logfilename')(__filename);
 
@@ -9,15 +11,15 @@ export function AuthenticationHttpController(app, publisherUser){
   log.debug("AuthenticationHttpController");
   let authApi = AuthenticationApi(app, publisherUser);
   let respond = app.utils.http.respond;
+  const jwtConfig = _.defaults(config.jwt, {secret: "secret"});
   return {
     login(ctx, next) {
       return passport.authenticate('local', function (user, info) {
         log.debug("login %s, %s", JSON.stringify(user), info);
         if (user) {
-          //TODO secret from config file
           ctx.body = {
               user,
-              token: jwt.sign(user, "secret")
+              token: jwt.sign(user, jwtConfig.secret, jwtConfig.options)
           };
           ctx.login(user, error => {
             if(error){
@@ -30,7 +32,9 @@ export function AuthenticationHttpController(app, publisherUser){
         } else {
           ctx.status = 401;
           ctx.body = {
-            success: false
+            error: {
+              message: "Username and Password do not match"
+            }
           };
         }
       })(ctx, next);

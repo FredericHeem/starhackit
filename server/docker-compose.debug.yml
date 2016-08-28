@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+  api:
+    image: starhackit/api:debug
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    ports:
+      - "9000:9000"
+      - "5858:5858"
+    volumes:
+      - .:/src
+    links:
+      - postgres
+      - rabbitmq
+      - redis
+    environment:
+      - NODE_ENV=dev-docker
+  ui:
+    image: starhackit/ui
+    build:
+      context: ../client
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+  postgres:
+    image: kiasaki/alpine-postgres
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=dev
+  rabbitmq:
+    image: gonkulatorlabs/rabbitmq
+    expose:
+      - "5672"
+  redis:
+    image: smebberson/alpine-redis
+    expose:
+      - "6379"

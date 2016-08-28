@@ -4,7 +4,6 @@
         "mocha",
         "react",
         "promise",
-        "flow-vars",
         "jsx-extras"
     ],
     "extends": ["eslint:recommended", "plugin:react/recommended"],
@@ -12,7 +11,7 @@
         "browser": true,
         "es6": true,
         "node": false,
-        "jquery": true,
+        "jquery": false,
         "mocha": true
     },
     "globals": {
@@ -32,6 +31,7 @@
         "jsx": true
     },
     "rules": {
+        "no-debugger": 1,
         "no-console": 0,
         "consistent-return": [0],
         "key-spacing": [0],
@@ -44,7 +44,7 @@
         "no-undef": 2,
         "no-unused-expressions": 0,
         "no-use-before-define": [2, "nofunc"],
-        "no-trailing-spaces": [2],
+        "no-trailing-spaces": [0],
         "eol-last": [0],
         "no-labels": [2],
         "indent": 0,
@@ -53,15 +53,12 @@
         "camelcase": [2, {"properties": "never"}],
         "semi": [0, "always"],
 
-        "flow-vars/define-flow-type": 1,
-        "flow-vars/use-flow-type": 1,
-
         "react/jsx-no-undef": 2,
         "react/jsx-uses-react": 2,
         "react/jsx-uses-vars": 2,
         "react/no-did-mount-set-state": 1,
         "react/no-did-update-set-state": 1,
-        "react/wrap-multilines": 1,
+        "react/jsx-wrap-multilines": 1,
         "react/react-in-jsx-scope": 1,
         "react/no-unknown-property": 2,
         "react/no-is-mounted": 0,

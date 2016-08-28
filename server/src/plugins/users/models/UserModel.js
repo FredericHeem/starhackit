@@ -1,5 +1,5 @@
 'use strict';
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import Promise from 'bluebird';
 
 module.exports = function(sequelize, DataTypes) {
@@ -7,6 +7,11 @@ module.exports = function(sequelize, DataTypes) {
   let models = sequelize.models;
 
   let User = sequelize.define('User', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
     username: {
       type: DataTypes.STRING(64),
       unique: true,
@@ -23,31 +28,12 @@ module.exports = function(sequelize, DataTypes) {
     lastName: {
       type: DataTypes.STRING(64)
     },
-    facebookId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    githubId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    twitterId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    googleId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    fidorId: {
-      type: DataTypes.TEXT,
-      unique: true
-    },
-    password: DataTypes.TEXT,
+    password: DataTypes.VIRTUAL,
     passwordHash: DataTypes.TEXT
   },
    {
      tableName: "users",
+     underscored: false,
       classMethods: {
          seedDefault: async function () {
           let usersJson = require('./fixtures/users.json');
@@ -57,20 +43,33 @@ module.exports = function(sequelize, DataTypes) {
           }
         },
         /**
-         * Finds a user by its email
+         * Finds a user by its key/value
          * returns the model of the  user
          *
-         * @param {String} email - the user's email address
+         * @param {String} key - the key: username, email or id
+         * @param {String} value - the value to search
          *
          * @returns {Promise} Promise user model
         */
-        findByEmail: function(email) {
+        findByKey: async function(key, value) {
           return this.find({
             include:[
-               {model: models.Profile, as: 'profile'}
+               {
+                 model: models.Profile,
+                 as: 'profile',
+                 attributes: ['biography']
+               },
+               {
+                 model: models.AuthProvider,
+                 as: 'auth_provider',
+                 attributes: ['name', 'authId']
+               }
              ],
-            where: { email: email }
+            where: { [key]: value }
           });
+        },
+        findByEmail: async function(email) {
+          return this.findByKey('email', email);
         },
         /**
          * Finds a user by userid
@@ -80,13 +79,8 @@ module.exports = function(sequelize, DataTypes) {
          *
          * @returns {Promise} Promise user model
         */
-        findByUserId: function(userid) {
-          return this.find({
-            include:[
-               {model: models.Profile, as: 'profile'}
-             ],
-            where: { id: userid }
-          });
+        findByUserId: async function(userid) {
+          return this.findByKey('id', userid);
         },
         /**
          * Finds a user by username
@@ -96,8 +90,23 @@ module.exports = function(sequelize, DataTypes) {
          *
          * @returns {Promise} Promise user model
          */
-        findByUsername: function  findByUsername(userName) {
-          return this.find({where: { username: userName } });
+        findByUsername: async function(userName) {
+          return this.findByKey('username', userName);
+        },
+        /**
+         * Finds a user by username or email
+         * returns the model of the  user
+         *
+         * @param {String} userName - Username or email of the user to find
+         *
+         * @returns {Promise} Promise user model
+         */
+        findByUsernameOrEmail: async function(username) {
+          return this.find({
+            where: {
+              $or: [{email: username}, {username: username}]
+            }
+          });
         },
         /**
          * Creates a user given a json representation and adds it to the group GroupName,
@@ -109,13 +118,27 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise}  Promise user created model
          */
         createUserInGroups: async function(userJson, groups) {
-          log.debug("createUserInGroups user:%s, group: ", userJson, groups);
+          log.info("createUserInGroups user:%s, group: ", userJson, groups);
           return sequelize.transaction(async function(t) {
-            log.info("create user");
             let userCreated = await models.User.create(userJson, {transaction: t});
-            await models.UserGroup.addUserIdInGroups(groups, userCreated.get().id, t );
-            let profile = await models.Profile.create({biography:"", user_id: userCreated.get().id}, {transaction: t});
-            log.info("profile created ", profile.get());
+            const userId = userCreated.get().id;
+            await models.UserGroup.addUserIdInGroups(groups, userId, t );
+            //Create the profile
+            let profile = await models.Profile.create(
+              {...userJson.profile, user_id: userId},
+              {transaction: t});
+            log.debug("profile created ", profile.get());
+            //Create the eventual authentication provider
+            if(userJson.authProvider){
+              await models.AuthProvider.create(
+                {...userJson.authProvider, user_id: userId},
+                {transaction: t});
+            }
+            await models.UserPending.destroy({
+              where: {
+                email: userJson.email
+              }
+            },{transaction: t});
             return userCreated;
           })
           .catch(function (err) {
@@ -123,9 +146,6 @@ module.exports = function(sequelize, DataTypes) {
             throw err;
           });
         },
-
-
-
         /**
          * Checks whether a user is able to perform an action on a resource
          * Equivalent to: select name from permissions p join group_permissions g on p.id=g.permission_id where g.group_id=(select group_id from users where username='aliceab@example.com') AND p.resource='user' and p.create=true;
@@ -203,14 +223,10 @@ module.exports = function(sequelize, DataTypes) {
          */
           toJSON: function () {
           let values = this.get({clone: true});
-          delete values.password;
           delete values.passwordHash;
           return values;
         }
       }
-  },
-  {
-    underscored: true
   });
 
   let hashPasswordHook = function(instance, options, done) {

@@ -7,9 +7,18 @@ import testMngr from '~/test/testManager';
 describe('GroupModel', function() {
     const app = testMngr.app;
     const models = app.data.sequelize.models;
-
+    let userId;
     before(async () => {
         await testMngr.start();
+        let users = await models.User.findAll({
+            attributes: [
+                'id'
+            ]
+        });
+        expect(users.length).to.be.above(0);
+        //console.log(users);
+        userId = users[0].get().id;
+        assert(userId);
     });
     after(async () => {
         await testMngr.stop();
@@ -105,9 +114,9 @@ describe('GroupModel', function() {
         let authorized = await models.User.checkUserPermission(param.userId, param.routePath, param.method);
         expect(authorized).to.be.equal(param.authorized);
     }
-    it('should check permission given a user id,  a route path and a method', done => {
+    it('should check permission given a user id, a route path and a method', done => {
         const param = {
-            userId: 1,
+            userId: userId,
             routePath: '/users/:id',
             method: 'get',
             authorized: true
@@ -115,13 +124,10 @@ describe('GroupModel', function() {
         return checkUserPermission(param).then(done, done);
     });
     it('should get all groups for a given user', async () => {
-        const userId = 1;
-
         let res = await models.User.find({
             include: [{ model: models.Group }],
             where: { id: userId }
         });
-        //console.log(res);
         expect(res).to.exist;
         expect(res.get().username).to.exist;
         //console.log(res.get().username);

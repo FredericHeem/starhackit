@@ -8,25 +8,24 @@ export async function verify(models, publisherUser, req, accessToken, refreshTok
   //log.debug(accessToken);
   log.debug(JSON.stringify(profile, null, 4));
 
-  let user = await models.User.find({
+  let authProvider = await models.AuthProvider.find({
     where: {
-      facebookId: profile.id
+      name: 'facebook',
+      authId: profile.id
     }
   });
 
-  if (user) {
-    log.debug("user already exist: ", user.toJSON());
+  if (authProvider) {
+    log.debug("user already exist: auth ", authProvider.toJSON());
+    let user = await models.User.findByUserId(authProvider.get().user_id);
+    //log.debug("user already exist: user ", user.toJSON());
     return {
       user: user.toJSON()
     };
   }
 
   log.debug("no fb profile registered");
-  let userByEmail = await models.User.find({
-    where: {
-      email: profile._json.email
-    }
-  });
+  let userByEmail = await models.User.findByEmail(profile._json.email);
 
   if (userByEmail) {
     log.debug("email already registered");
@@ -38,15 +37,19 @@ export async function verify(models, publisherUser, req, accessToken, refreshTok
 
   //Create user
   let userConfig = {
-    username: `${profile.name.givenName} ${profile.name.middleName} ${profile.name.familyName}`,
+    username: `${profile.name.givenName} ${profile.name.familyName}`,
     email: profile._json.email,
     firstName: profile.name.givenName,
     lastName: profile.name.familyName,
-    facebookId: profile.id
+    authProvider: {
+      name: 'facebook',
+      authId: profile.id
+    }
   };
   log.debug("creating user: ", userConfig);
-  user = await models.User.createUserInGroups(userConfig, ["User"]);
+  let user = await models.User.createUserInGroups(userConfig, ["User"]);
   let userCreated = user.toJSON();
+
   log.info("register created new user ", userCreated);
   if(publisherUser){
     await publisherUser.publish("user.registered", JSON.stringify(userCreated));

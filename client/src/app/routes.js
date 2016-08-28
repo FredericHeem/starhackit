@@ -2,7 +2,6 @@ import testRoutes from 'test/testRoutes';
 
 export default function Routes(store, parts) {
     return {
-        component: 'div',
         childRoutes: [
             {
                 path: '/',
@@ -25,6 +24,11 @@ export default function Routes(store, parts) {
                         path: 'admin',
                         component: parts.auth.containers.authentication(),
                         childRoutes: parts.admin.routes(store, parts).childRoutes
+                    },
+                    {
+                        path: 'db',
+                        component: parts.auth.containers.authentication(),
+                        childRoutes: parts.db.routes(store, parts).childRoutes
                     }
 
                 ]

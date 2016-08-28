@@ -1,3 +1,4 @@
+/*eslint-env node */
 var _ = require( 'lodash' );
 var path = require( 'path' );
 var webpack = require( 'webpack' );
@@ -5,8 +6,9 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-var purify = require("purifycss-webpack-plugin");
+//var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
+
 
 var pathAppTo;
 
@@ -25,9 +27,6 @@ module.exports = function ( options ) {
             hot: true,
             inline: true,
             historyApiFallback: true,
-            stats: {
-                colors: true
-            },
             stats: 'errors-only',
             progress: true,
             proxy: {
@@ -40,11 +39,10 @@ module.exports = function ( options ) {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
                 return _.includes([
                     'material-ui',
-                    'bootstrap',
                     'intl'
                 ], v)
             }).concat([
-                'assets/css/bootstrap-cosmo.css',
+                './src/fontello/css/animation.css',
                 './src/fontello/css/fontello.css',
                 'ladda/dist/ladda.min.css'
             ])
@@ -76,8 +74,7 @@ module.exports = function ( options ) {
                 { from: './assets/img/*.png' },
                 { from: './assets/img/*.jpg' },
                 { from: './assets/img/*.svg' },
-                { from: './locales/**/*.json' },
-                { from: '../server/build/api.html' }
+                { from: './locales/**/*.json' }
             ]),
             new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(fr|it)$/),
             new LodashModuleReplacementPlugin,

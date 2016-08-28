@@ -1,3 +1,4 @@
+/*eslint-env node */
 var webpack = require('webpack');
 var path = require('path');
 var webpackConfig = require('./webpack.dev');
@@ -9,7 +10,7 @@ function pathAppTo() {
 
 module.exports = function (config) {
   config.set({
-    browsers: ['PhantomJS'], // ['Chrome'] run in Chrome, 'PhantomJS'
+    browsers: ['Chrome'], // ['Chrome'] run in Chrome, 'PhantomJS'
     singleRun: true,
     frameworks: ['mocha', 'sinon'],
     files: [
@@ -26,7 +27,7 @@ module.exports = function (config) {
           loader: 'babel-loader'
         },{
             test: /\.json$/,
-            loader: 'json',
+            loader: 'json'
           }
         ],
         postLoaders: [{
@@ -73,11 +74,11 @@ module.exports = function (config) {
     coverageReporter: {
       reporters: [
          {
-             type: 'text-summary',
+             type: 'text-summary'
          },
          {
              type: 'html',
-             dir: 'coverage/',
+             dir: 'coverage/'
          }
      ]
     }

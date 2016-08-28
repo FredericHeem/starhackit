@@ -1,3 +1,4 @@
+import _ from 'lodash';
 let config = require('config');
 let Promise = require('bluebird');
 
@@ -68,14 +69,27 @@ export default function(app) {
 function middlewareInit(app, koaApp, config) {
   log.debug("middlewareInit");
   const convert = require('koa-convert');
+
+  //TODO create SessionMiddlware
   const session = require('koa-generic-session');
+  const redisStore = require('koa-redis');
   //TODO use secret from config
   koaApp.keys = ['your-super-session-secret'];
-  koaApp.use(convert(session()));
+  const redisConfig = config.redis;
+  if(app.store.client()){
+    log.debug("middlewareInit use redis ", redisConfig);
+    koaApp.use(convert(session({
+      store: redisStore(app.store.client())
+    })));
+  } else {
+    log.debug("middlewareInit memory session ");
+    koaApp.use(convert(session()));
+  }
 
   const bodyParser = require('koa-bodyparser');
   koaApp.use(bodyParser());
 
+  //TODO create LoggerMiddlware
   koaApp.use(async(ctx, next) => {
     const start = new Date;
     log.debug(`${ctx.method} ${ctx.url} begins`);
@@ -84,4 +98,10 @@ function middlewareInit(app, koaApp, config) {
     const ms = new Date - start;
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);
   });
+
+  //Cors support
+  require('./middleware/CorsMiddleware')(app, koaApp, config);
+
+  //Serve static html files such as the generated api documentation.
+  require('./middleware/StaticMiddleware')(app, koaApp, config);
 }

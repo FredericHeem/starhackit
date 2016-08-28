@@ -33,6 +33,15 @@
       "maxIdleTime": 60
     }
   },
+  "jwt": {
+    "secret": "I love shrimp with mayonnaise",
+    "options": {
+      "expiresIn": "15 days"
+    }
+  },
+  "cors":{
+    "credentials": true
+  },
   "authentication":{
     /*
     "facebook":{
@@ -54,5 +63,7 @@
       }
     }
     */
-  }
+  },
+  "apiBasePath": "/api/v1/",
+  "serveStaticFiles": true
 }

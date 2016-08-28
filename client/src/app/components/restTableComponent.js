@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {
     Table
 } from 'reactabular';
@@ -14,8 +14,9 @@ import 'react-pagify/style.css';
 
 export default React.createClass({
     propTypes: {
-        getData: React.PropTypes.func.isRequired,
-        columns: React.PropTypes.array.isRequired
+        getData: PropTypes.func.isRequired,
+        columns: PropTypes.array.isRequired,
+        onRow: PropTypes.func
     },
     getInitialState () {
         return {
@@ -107,13 +108,19 @@ export default React.createClass({
     },
     renderTable () {
         let {data} = this.state;
+        //console.log("renderTable props:", this.props)
+        //console.log("renderTable state:", this.state)
         if(this.state.error) return;
         return (
             <div>
                 {this.renderPagination()}
-                <Table className='table table-striped table-hover'
-                    data={data}
-                    {...this.props}/>
+                <Table.Provider
+                  className="table"
+                  columns={this.props.columns}
+                >
+                  <Table.Header />
+                  <Table.Body rows={data} rowKey="id" onRow={this.props.onRow}/>
+                </Table.Provider>
             </div>
         );
     },

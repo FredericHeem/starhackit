@@ -5,6 +5,11 @@ import path from 'path';
 
 let log = require('logfilename')('plugins');
 
+const blackList = [
+  'fidor',
+  //'ticket'
+];
+
 export default function Plugins(app){
 
   let plugins = {};
@@ -21,6 +26,7 @@ export default function Plugins(app){
   function createPlugin(dirname) {
       fs.readdirSync(__dirname)
         .filter(file => fs.lstatSync(path.join(dirname, file)).isDirectory())
+        .filter(file => !_.includes(file, blackList))
         .forEach(file => requirePluginDir(path.join(dirname, file), file));
   }
 

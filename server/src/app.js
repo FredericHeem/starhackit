@@ -3,6 +3,7 @@ import Log from 'logfilename';
 import config from 'config';
 import Plugins from './plugins';
 import Data from './models/Data';
+import Store from './store/Store';
 import Server from './server/koa/koaServer';
 import * as HttpUtils from './utils/HttpUtils';
 
@@ -11,9 +12,11 @@ let log = new Log(__filename, config.log);
 export default function App() {
 
   let data = Data(config);
+  let store = Store(config);
 
   let app = {
     data: data,
+    store,
     utils:{
       http: HttpUtils,
       api: require('./utils/ApiUtils')
@@ -46,6 +49,7 @@ export default function App() {
 
   let parts = [
     app.data,
+    app.store,
     app.server,
     app.plugins
   ];

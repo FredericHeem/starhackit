@@ -1,29 +1,33 @@
 {
   "count": 105,
   "data": [{
-    "id": 107,
+    "id": "6fba6aca-db12-4eb1-8ae6-918cf20e0f8c",
     "username": "Laura.Jennie.Reeves",
     "email": "Laura.Jennie.Reeves@mail.com",
     "firstName": null,
     "lastName": null,
-    "facebookId": null,
-    "githubId": null,
-    "twitterId": null,
-    "googleId": null,
-    "fidorId": null,
+    "profile": {
+      "biography": "Ciao"
+    },
+    "auth_provider": [{
+      "name": "facebook",
+      "authId": "1234567890"
+    }],
     "createdAt": "2016-05-28T15:00:56.358Z",
     "updatedAt": "2016-05-28T15:00:56.358Z"
   }, {
-    "id": 106,
+    "id": "0fba6aca-db12-4eb1-8ae6-918cf20e0f8d",
     "username": "Hilda.Virgie.Young",
     "email": "Hilda.Virgie.Young@mail.com",
     "firstName": null,
     "lastName": null,
-    "facebookId": null,
-    "githubId": null,
-    "twitterId": null,
-    "googleId": null,
-    "fidorId": null,
+    "profile": {
+      "biography": "Ciao"
+    },
+    "auth_provider": [{
+      "name": "facebook",
+      "authId": "1234567890"
+    }],
     "createdAt": "2016-05-28T15:00:55.922Z",
     "updatedAt": "2016-05-28T15:00:55.922Z"
   }]

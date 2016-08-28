@@ -141,9 +141,9 @@ function Containers(context, actions){
 }
 
 function* runSagaActionAsync(actionAsync) {
-  console.log('runSagaActionAsync wait for ', actionAsync.request.getType());
+  //console.log('runSagaActionAsync wait for ', actionAsync.request.getType());
   yield take(actionAsync.request.getType());
-  console.log('runSagaActionAsync rx ', actionAsync.request.getType());
+  //console.log('runSagaActionAsync rx ', actionAsync.request.getType());
   return yield race({
     ok: take(actionAsync.ok.getType()),
     error: take(actionAsync.error.getType())
@@ -154,7 +154,7 @@ function Sagas(actions) {
   return {
     login: function* saga() {
       while (true) {
-        const {ok, error} = yield runSagaActionAsync(actions.login)
+        const {ok} = yield runSagaActionAsync(actions.login)
         if(ok){
           const {token} = ok.payload.response;
           localStorage.setItem("JWT", token);
@@ -163,7 +163,7 @@ function Sagas(actions) {
           //console.log('Sagas login ',  nextPath);
           browserHistory.push(nextPath);
         } else {
-          console.log('Sagas login race end error ' , error);
+          //console.log('Sagas login race end error ' , error);
           localStorage.removeItem("JWT");
         }
       }

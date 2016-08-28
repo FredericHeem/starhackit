@@ -52,7 +52,7 @@
         "vars-on-top": 2,
         "camelcase": [2, {"properties": "never"}],
         "semi": [0, "always"],
-
+        "react/prop-types": 1,
         "react/jsx-no-undef": 2,
         "react/jsx-uses-react": 2,
         "react/jsx-uses-vars": 2,

@@ -1,11 +1,11 @@
-import _ from 'lodash';
-import React from 'react';
+import React, {PropTypes} from 'react';
 import AppBar from 'material-ui/AppBar';
 import LeftNav from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import config from 'config';
-import Debug from 'debug';
-let debug = new Debug("component:navbar");
+import {browserHistory} from 'react-router';
+import mobx from 'mobx';
+import {observer} from 'mobx-react';
 
 function navLinks(authenticated) {
   if (authenticated) {
@@ -38,47 +38,48 @@ function navLinks(authenticated) {
 }
 
 export default () => {
-  return React.createClass({
-    contextTypes: {
-      router: React.PropTypes.object.isRequired
-    },
-    propTypes: {
-      authenticated: React.PropTypes.bool.isRequired
-    },
-    getInitialState() {
-      return {open: false};
-    },
-    componentWillMount() {},
-    toggleNav() {
-      debug('toggleNav');
-      this.setState({
-        open: !this.state.open
-      });
-    },
-    handleNavChange(menuItem) {
-      debug('handleNavChange ', menuItem.route);
-      this.context.router.push(menuItem.route);
-      this.setState({open: false});
-    },
-    renderMenuItem() {
-      //debug('handleNavChange ', this.props);
-      return _.map(navLinks(this.props.authenticated), (menu, key) => {
-        return (
-          <MenuItem key={key} onTouchTap={_.partial(this.handleNavChange, menu)}>
-            {menu.text}
-          </MenuItem>
-        );
-      });
-    },
-    render() {
+
+  const store = mobx.observable({
+    open: false,
+    toggle: mobx.action(function() {
+      this.open = !this.open;
+    }),
+    navChange: mobx.action(function(menuItem) {
+      browserHistory.push(menuItem.route)
+      this.open = false;
+    })
+  })
+
+  function Menu(props){
+      return (
+        <div>
+          {navLinks(props.authenticated).map((menu, key) => (
+              <MenuItem key={key} onTouchTap={() => props.navChange(menu)}>
+                {menu.text}
+              </MenuItem>
+          ))}
+        </div>
+      )
+  }
+
+  Menu.propTypes = {
+    authenticated: PropTypes.bool.isRequired,
+    navChange: PropTypes.func.isRequired,
+  }
+
+  function NavBar({authenticated}){
       return (
         <div >
-          <AppBar style={{}} id='app-bar' title={config.title} onLeftIconButtonTouchTap={this.toggleNav}/>
-          <LeftNav id='left-nav' docked={false} open={this.state.open} onRequestChange={open => this.setState({open})}>
-            {this.renderMenuItem()}
+          <AppBar style={{}} id='app-bar' title={config.title} onLeftIconButtonTouchTap={() => {store.toggle()}}/>
+          <LeftNav id='left-nav' docked={false} open={store.open} onRequestChange={open => {store.open = open}}>
+            <Menu authenticated={authenticated} navChange={(item) => store.navChange(item)}/>
           </LeftNav>
         </div>
       );
-    }
-  });
+  }
+
+  NavBar.propTypes = {
+    authenticated: PropTypes.bool.isRequired
+  }
+  return observer(NavBar);
 }

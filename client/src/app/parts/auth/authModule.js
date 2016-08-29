@@ -99,8 +99,6 @@ let selectState = state => state.auth;
 let isAuthenticated = state => selectState(state).auth.authenticated;
 
 function Containers(context, actions, stores){
-    const mapDispatchToProps = (dispatch) => ({actions: bindActionCreators(actions, dispatch)});
-
     return {
         login(){
             const mapStateToProps = (state) => ({
@@ -108,44 +106,44 @@ function Containers(context, actions, stores){
                 login: selectState(state).login,
                 store: stores.login
             })
-            return connect(mapStateToProps, mapDispatchToProps)(loginView(context));
+            return connect(mapStateToProps)(loginView(context));
         },
         register(){
             const mapStateToProps = (state) => ({
               register: selectState(state).register,
               store: stores.register
             })
-            return connect(mapStateToProps, mapDispatchToProps)(registerView(context));
+            return connect(mapStateToProps)(registerView(context));
         },
         logout(){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state)
             })
-            return connect(mapStateToProps, mapDispatchToProps)(logoutView(context));
+            return connect(mapStateToProps)(logoutView(context));
         },
         forgot(){
             const mapStateToProps = (state) => ({
               requestPasswordReset: selectState(state).requestPasswordReset,
               store: stores.forgotPassword
             });
-            return connect(mapStateToProps, mapDispatchToProps)(forgotView(context));
+            return connect(mapStateToProps)(forgotView(context));
         },
         resetPassword(){
             const mapStateToProps = (state) => ({
               verifyResetPasswordToken: selectState(state).verifyResetPasswordToken,
               store: stores.resetPassword
             })
-            return connect(mapStateToProps, mapDispatchToProps)(resetPasswordView(context));
+            return connect(mapStateToProps)(resetPasswordView(context));
         },
         registrationComplete(){
             const mapStateToProps = (state) => ({verifyEmailCode: selectState(state).verifyEmailCode})
-            return connect(mapStateToProps, mapDispatchToProps)(registrationCompleteView(context));
+            return connect(mapStateToProps)(registrationCompleteView(context));
         },
         app(){
             const mapStateToProps = (state) => ({
                 authenticated: isAuthenticated(state)
             })
-            return connect(mapStateToProps, mapDispatchToProps)(appView(context));
+            return connect(mapStateToProps)(appView(context));
         }
     }
 }

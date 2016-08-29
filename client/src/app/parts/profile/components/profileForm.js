@@ -11,7 +11,7 @@ let debug = new Debug("components:profileForm");
 
 export default ({tr}) => {
 
-  function ProfileForm({store, profileGet, profileUpdate, actions}) {
+  function ProfileForm({store, profileGet, profileUpdate}) {
     debug("render props: ");
     const {errors} = store;
     if (profileGet.loading) {
@@ -63,7 +63,7 @@ export default ({tr}) => {
               buttonColor='green'
               loading={profileUpdate.loading}
               buttonStyle="slide-up"
-              onClick={() => store.update(actions) }>{tr.t('Update Profile') }</LaddaButton>
+              onClick={() => store.update() }>{tr.t('Update Profile') }</LaddaButton>
           </div>
         </form>
       </Paper>

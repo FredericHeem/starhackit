@@ -1,11 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import Checkit from 'checkit';
+import {observer} from 'mobx-react';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
-import rules from 'services/rules';
 import alertAjax from 'components/alertAjax';
 
 import Debug from 'debug';
@@ -15,89 +14,56 @@ let debug = new Debug("resetPasword");
 export default (context) => {
   const {tr} = context;
   const AlertAjax = alertAjax(context);
-  return React.createClass({
-    propTypes: {
-      verifyResetPasswordToken: React.PropTypes.object.isRequired,
-      params: React.PropTypes.object.isRequired,
-      actions: React.PropTypes.object.isRequired
-    },
-    getInitialState() {
-      return {step: 'SetPassword', errors: {}};
-    },
 
-    render() {
-      return (
-        <div id="forgot">
-          <DocTitle title="Reset password"/>
-          <Paper className='text-center view'>
-            <h3>{tr.t('Reset Password')}</h3>
-            <AlertAjax error={this.props.verifyResetPasswordToken.error} className='reset-password-error-view'/> {this.renderSetNewPassword()}
-            {this.renderSetNewPasswordDone()}
-          </Paper>
-        </div>
-      );
-    },
-
-    renderSetNewPassword() {
-      if (this.state.step != 'SetPassword') {
-        return;
-      }
-      let {errors} = this.state;
-      debug("renderSetNewPassword ", errors);
-      return (
-        <div className='reset-password-view'>
-          <p>
-            <strong>{tr.t('Enter your new password.')}</strong>
-          </p>
-          <div className='form-group password'>
-            <TextField id='password' ref="password" hintText={tr.t('Password')} type='password' errorText={errors.password && errors.password[0]}/>
-          </div>
-
-          <div className="spacer">
-            <RaisedButton className='btn-reset-password' onClick={this.resetPassword} label={tr.t('Reset Password')}/>
-          </div>
-        </div>
-      );
-    },
-    renderSetNewPasswordDone() {
-      if (!_.get(this.props.verifyResetPasswordToken, 'data.success')) {
-        return;
-      }
-      return (
-        <div className='reset-password-done'>
-          <p>
-            <strong>{tr.t('The new password has been set.')}</strong>
-          </p>
-        </div>
-      );
-    },
-
-    resetPassword() {
-      debug("resetPassword ", this.props.params.token);
-
-      this.resetErrors();
-      let rulesPassword = new Checkit({password: rules.password});
-      let payload = {
-        password: this.password()
-      }
-      rulesPassword.run(payload).then(() => {
-        return this.props.actions.verifyResetPasswordToken({token: this.props.params.token, password: this.password()});
-      }).then(() => {
-        debug("resetPassword SetNewPasswordDone");
-        this.setState({step: 'SetNewPasswordDone'});
-        return true;
-      }).catch(error => {
-        debug("resetPassword error: ", error);
-        this.setState({errors: error.toJSON()});
-      });
-    },
-
-    password() {
-      return _.trim(this.refs.password.getValue());
-    },
-
-    resetErrors() {
-      this.setState({errors: {}, tokenInvalid: false});
+  function SetNewPasswordDone({verifyResetPasswordToken}) {
+    if (!_.get(verifyResetPasswordToken, 'data.success')) {
+      return null;
     }
-  });
+    return (
+      <div className='reset-password-done'>
+        <p>
+          <strong>{tr.t('The new password has been set.') }</strong>
+        </p>
+      </div>
+    );
+  }
+
+  function SetNewPassword({store, params}) {
+    if (store.step != 'SetPassword') {
+      return null;
+    }
+    let {errors} = store;
+    debug("renderSetNewPassword ", errors);
+    return (
+      <div className='reset-password-view'>
+        <p>
+          <strong>{tr.t('Enter your new password.') }</strong>
+        </p>
+        <div className='form-group password'>
+          <TextField id='password' onChange={(e) => { store.password = e.target.value } } hintText={tr.t('Password') } type='password' errorText={errors.password && errors.password[0]}/>
+        </div>
+
+        <div className="spacer">
+          <RaisedButton className='btn-reset-password' onClick={() => store.resetPassword(params.token) } label={tr.t('Reset Password') }/>
+        </div>
+      </div>
+    );
+  }
+
+  function ResetPasswordForm({store, verifyResetPasswordToken, params}) {
+    const {errors} = store;
+    return (
+      <div id="forgot">
+        <DocTitle title="Reset password"/>
+        <Paper className='text-center view'>
+          <h3>{tr.t('Reset Password') }</h3>
+          <AlertAjax error={verifyResetPasswordToken.error} className='reset-password-error-view'/>
+          <SetNewPassword store={store} params={params}/>
+          <SetNewPasswordDone verifyResetPasswordToken={verifyResetPasswordToken}/>
+        </Paper>
+      </div>
+    );
+  }
+
+  return observer(ResetPasswordForm);
 }

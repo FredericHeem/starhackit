@@ -1,4 +1,3 @@
-import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
 import ProfileView from './views/profileView';
@@ -30,29 +29,6 @@ function Actions(rest) {
   }
 }
 
-function Middleware(store, actions) {
-
-  function merge(profile, response) {
-    profile.username = response.username
-    profile.email = response.email
-    profile.profile = response.profile
-  }
-
-  return () => next => action => {
-    const {payload} = action;
-    switch (action.type) {
-      case actions.get.ok.getType():
-      case actions.update.ok.getType():
-        debug("response ", payload.response);
-        merge(store.profile, payload.response);
-        break;
-      default:
-    }
-
-    return next(action)
-  }
-}
-
 function Reducers(actions) {
   return {
     profileGet: createReducerAsync(actions.get),
@@ -60,62 +36,14 @@ function Reducers(actions) {
   }
 }
 
-function Stores({tr}, actions) {
-
-  const profileStore = mobx.observable({
-    language: 'US',
-    errors: {},
-    username: "",
-    email: "",
-    profile: {
-      biography: ""
-    },
-    update: mobx.action(function(actions) {
-      debug('updateProfile ');
-      this.errors = {};
-      const payload = {
-        biography: this.profile.biography
-      }
-
-      function successNotification() {
-        debug('updateProfile done');
-        Alert.info(tr.t('Profile updated'), {
-          position: 'top-right',
-          effect: 'slide',
-          timeout: 3e3,
-          offset: 100
-        });
-        return true;
-      }
-
-      new Checkit({
-        biography: rules.biography
-      }).run(payload)
-        .then(actions.update)
-        .then(successNotification)
-        .catch(errors => {
-          debug('updateProfile errors: ', errors);
-          if (errors instanceof Checkit.Error) {
-            this.errors = errors.toJSON()
-          }
-        })
-    })
-  })
-
-  return {
-    profile: profileStore
-  }
-}
-
 function Containers(context, actions, stores) {
-  const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
   return {
     profile() {
       const mapStateToProps = (state) => ({
         ...state.profile,
         store: stores.profile
        })
-      return connect(mapStateToProps, mapDispatchToProps)(ProfileView(context));
+      return connect(mapStateToProps)(ProfileView(context));
     }
   }
 }
@@ -128,17 +56,84 @@ function Routes(containers, store, actions) {
   }
 }
 
-export default function (context, rest) {
+export default function ({context, rest}) {
   const actions = Actions(rest);
-  const stores = Stores(context);
-  const containers = Containers(context, actions, stores)
+  let stores;
+
+  function Stores(dispatch, {tr}) {
+    const profileStore = mobx.observable({
+      language: 'US',
+      errors: {},
+      username: "",
+      email: "",
+      profile: {
+        biography: ""
+      },
+      update: mobx.action(function() {
+        debug('updateProfile ');
+        this.errors = {};
+        const payload = {
+          biography: this.profile.biography
+        }
+
+        function successNotification() {
+          debug('updateProfile done');
+          Alert.info(tr.t('Profile updated'), {
+            position: 'top-right',
+            effect: 'slide',
+            timeout: 3e3,
+            offset: 100
+          });
+          return true;
+        }
+
+        new Checkit({
+          biography: rules.biography
+        }).run(payload)
+          .then(dispatch(actions.update(payload)))
+          .then(successNotification)
+          .catch(errors => {
+            debug('updateProfile errors: ', errors);
+            if (errors instanceof Checkit.Error) {
+              this.errors = errors.toJSON()
+            }
+          })
+      })
+    })
+
+    return {
+      profile: profileStore
+    }
+  }
+
+  function Middleware(actions) {
+    function merge(profile, response) {
+      profile.username = response.username
+      profile.email = response.email
+      profile.profile = response.profile
+    }
+
+    return () => next => action => {
+      const {payload} = action;
+      switch (action.type) {
+        case actions.get.ok.getType():
+        case actions.update.ok.getType():
+          merge(stores.profile, payload.response);
+          break;
+        default:
+      }
+      return next(action)
+    }
+  }
+
+  const containers = () => Containers(context, actions, stores)
 
   return {
     actions,
-    stores,
-    middlewares: [Middleware(stores, actions)],
+    createStores: (dispatch) => stores = Stores(dispatch, context),
+    middlewares: [Middleware(actions)],
     reducers: Reducers(actions),
-    containers,
-    routes: (store) => Routes(containers, store, actions)
+    containers: containers,
+    routes: (store) => Routes(containers(), store, actions)
   }
 }

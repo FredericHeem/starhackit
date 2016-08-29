@@ -26,23 +26,29 @@ let debug = new Debug("app");
 
 export default function() {
     debug("App begins");
-    const context = {
-        tr,
-        formatter: formatter()
-    }
+
     const rest = Rest();
-    let auth = AuthModule(context, rest);
+    const context = {
+      tr,
+      formatter: formatter()
+    }
+
+    const partOptions = {
+      context,
+      rest,
+    }
+
     const parts = {
-      auth,
-      core: CoreModule(context),
-      profile: ProfileModule(context, rest),
-      admin: AdminModule(context, rest),
-      db: DbModule(context, rest),
-      analytics: AnalyticsModule(context)
+      auth: AuthModule(partOptions),
+      core: CoreModule(partOptions),
+      profile: ProfileModule(partOptions),
+      admin: AdminModule(partOptions),
+      db: DbModule(partOptions),
+      analytics: AnalyticsModule(partOptions)
     }
 
     const store = configureStore(parts);
-    let jwt = Jwt(store);
+    const jwt = Jwt(store);
 
     rest.setJwtSelector(jwt.selector(store));
 
@@ -57,8 +63,8 @@ export default function() {
       let token = localStorage.getItem("JWT");
       if (token) {
         store.dispatch(parts.auth.actions.setToken(token))
-        await store.dispatch(parts.auth.actions.me())
       }
+      await store.dispatch(parts.auth.actions.me())
     }
 
     return {

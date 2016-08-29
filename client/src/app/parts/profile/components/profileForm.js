@@ -31,7 +31,7 @@ export default ({tr}) => {
               floatingLabelText={tr.t('Username') }
               value={store.username}
               disabled={true}
-              onChange={(e) => this.setState({ username: e.target.value }) }
+              onChange={(e) => { store.username = e.target.value }}
               errorText={errors.username && errors.username[0]}
               />
             <TextField

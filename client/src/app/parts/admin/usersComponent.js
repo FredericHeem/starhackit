@@ -1,47 +1,46 @@
 import React, {PropTypes} from 'react';
-import moment from 'moment';
 import restTableComponent from 'components/restTableComponent';
-
 import Debug from 'debug';
 let debug = new Debug("components:users");
 
-const columns = [
-  {
-    property: 'id',
-    header: {
-      label: 'Id'
-    }
-  }, {
-    property: 'username',
-    header: {
-      label: 'Username'
-    }
-  }, {
-    property: 'firstName',
-    header: {
-      label: 'First Name'
-    }
-  }, {
-    header: {
-      label: 'Created At'
-    },
-    cell: {
-      property: 'createdAt',
-      format: (v) => moment.utc(v).format('LLLL')
-    }
-  }, {
-    header: {
-      label: 'Updated At'
-    },
-    cell: {
-      property: 'updatedAt',
-      format: (v) => moment.utc(v).format('LLLL')
-    }
-  }
-];
-
 export default(context) => {
-  const {tr, resources} = context
+  const {tr, formatter, resources} = context;
+
+    const columns = [
+    {
+      property: 'id',
+      header: {
+        label: 'Id'
+      }
+    }, {
+      property: 'username',
+      header: {
+        label: 'Username'
+      }
+    }, {
+      property: 'firstName',
+      header: {
+        label: 'First Name'
+      }
+    }, {
+      property: 'createdAt',
+      header: {
+        label: 'Created At'
+      },
+      cell: {
+        format: date => formatter.dateTime(date)
+      }
+    }, {
+      property: 'updatedAt',
+      header: {
+        label: 'Updated At'
+      },
+      cell: {
+        format: date => formatter.dateTime(date)
+      }
+    }
+  ];
+
   UsersComponent.propTypes = {
     actions: PropTypes.object.isRequired
   };

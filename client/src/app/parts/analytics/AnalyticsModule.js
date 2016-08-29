@@ -22,7 +22,7 @@ function GoogleAnalyticsMiddleware(){
 }
 
 // Part
-export default function(/*context*/) {
+export default function(/*{context}*/) {
     let analytics = _.get(config, 'analytics.google');
     const middlewares = [];
     if (analytics) {

@@ -61,7 +61,7 @@ function Middleware(actions){
   return middleware;
 }
 
-export default function(context, rest) {
+export default function({context, rest}) {
   let resources = Resources(rest)
   let actions = Actions(rest);
   let containers = Containers(context, actions, resources)

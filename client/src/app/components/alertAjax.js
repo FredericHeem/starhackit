@@ -13,10 +13,9 @@ export default (context) => {
       return null;
     }
     debug('error:', error);
-    const status = _.get(error, 'response.status');
-    const message = _.get(error, 'response.data.error.message');
-    if (!message || !_.includes([401, 422], status)) {
-      return null;
+    let message = _.get(error, 'response.data.error.message');
+    if (!message) {
+      message = error.message
     }
     return (<Alert type="danger" className={className} message={message}/>)
   }

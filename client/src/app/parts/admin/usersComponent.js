@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import moment from 'moment';
-import RestTableComponent from 'components/restTableComponent';
+import restTableComponent from 'components/restTableComponent';
 
 import Debug from 'debug';
 let debug = new Debug("components:users");
@@ -40,10 +40,13 @@ const columns = [
   }
 ];
 
-export default({tr, resources}) => {
+export default(context) => {
+  const {tr, resources} = context
   UsersComponent.propTypes = {
     actions: PropTypes.object.isRequired
   };
+
+  const RestTableComponent = restTableComponent(context, {getData: resources.getAll, columns})
 
   function UsersComponent(props) {
     debug(props);
@@ -51,7 +54,7 @@ export default({tr, resources}) => {
       <div className="panel panel-default">
         <div className="panel-heading">{tr.t('Users')}</div>
         <div className="panel-body">
-          <RestTableComponent columns={columns} getData={resources.getAll} onRow={row => ({
+          <RestTableComponent onRow={row => ({
             onClick: () => props.actions.selectOne(row.id)
           })} rowKey='id'/>
         </div>

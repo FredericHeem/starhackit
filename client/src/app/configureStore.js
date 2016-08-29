@@ -43,6 +43,14 @@ function runSagas(sagaMiddleware, parts){
   })
 }
 
+function setDispatch(parts, dispatch){
+  _.each(parts, part => {
+    if(_.isFunction(part.createStores)){
+      part.createStores(dispatch)
+    }
+  })
+}
+
 export default function configureStore(modules, initialState = {}) {
   const reducers = createReducers(modules);
   const middlewares = createMiddlewares(modules);
@@ -53,6 +61,8 @@ export default function configureStore(modules, initialState = {}) {
     initialState,
     compose(applyMiddleware(thunk, sagaMiddleware, ...middlewares, logger()), devTools())
   );
+
+  setDispatch(modules, store.dispatch);
 
   runSagas(sagaMiddleware, modules);
   return store

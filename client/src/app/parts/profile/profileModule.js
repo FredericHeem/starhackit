@@ -25,7 +25,7 @@ function Actions(rest) {
   let profile = Resources(rest);
   return {
     get: createActionAsync('PROFILE_GET', profile.get),
-    update: createActionAsync('PROFILE_UPDATE', profile.update, { rethrow: true })
+    update: createActionAsync('PROFILE_UPDATE', profile.update)
   }
 }
 

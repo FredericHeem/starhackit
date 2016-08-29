@@ -49,7 +49,7 @@ function Actions(resources) {
     login: createActionAsync('LOGIN', resources.login),
     logout: createActionAsync('LOGOUT', resources.logout),
     requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', resources.requestPasswordReset),
-    register: createActionAsync('REGISTER', resources.register, {rethrow: true}),
+    register: createActionAsync('REGISTER', resources.register),
     verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', resources.verifyEmailCode),
     verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', resources.verifyResetPasswordToken)
   }

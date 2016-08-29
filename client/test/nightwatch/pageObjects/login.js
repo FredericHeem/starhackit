@@ -2,11 +2,11 @@
 var commands = {
     login: function (done) {
         return this.navigate()
-            .waitForElementVisible('.login-page', 5e3)
+            .waitForElementVisible('.login-page', 10e3)
             .setValue('@emailInput', 'admin')
             .setValue('@passwordInput', 'password')
             .click('@submit')
-            .waitForElementVisible('#main-container', 5e3)
+            .waitForElementVisible('#main-container', 10e3)
             .getLocation('#application', function() {
                 done();
             });

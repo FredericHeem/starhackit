@@ -9,8 +9,8 @@ export default(context) => {
   const AlertAjax = alertAjax(context);
 
   LoginForm.propTypes = {
+    store: PropTypes.object.isRequired,
     login: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
   }
 
   function LoginForm({store, login}){

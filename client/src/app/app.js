@@ -64,7 +64,7 @@ export default function() {
       if (token) {
         store.dispatch(parts.auth.actions.setToken(token))
       }
-      await store.dispatch(parts.auth.actions.me())
+      await parts.auth.stores().me.fetch();
     }
 
     return {

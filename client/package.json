@@ -60,7 +60,6 @@
     "redux": "3.5.2",
     "redux-act-async": "0.13.0",
     "redux-logger": "2.6.1",
-    "redux-saga": "0.11.1",
     "redux-thunk": "2.1.0",
     "segmentize": "0.4.1"
   },

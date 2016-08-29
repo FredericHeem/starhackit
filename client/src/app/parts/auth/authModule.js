@@ -45,13 +45,13 @@ function Resources(rest) {
 function Actions(resources) {
   return {
     setToken: createAction('TOKEN_SET'),
-    me: createActionAsync('ME', resources.me, {rethrow: true}),
-    login: createActionAsync('LOGIN', resources.login, {rethrow: true}),
+    me: createActionAsync('ME', resources.me),
+    login: createActionAsync('LOGIN', resources.login),
     logout: createActionAsync('LOGOUT', resources.logout),
-    requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', resources.requestPasswordReset, {rethrow: true}),
+    requestPasswordReset: createActionAsync('REQUEST_PASSWORD_RESET', resources.requestPasswordReset),
     register: createActionAsync('REGISTER', resources.register, {rethrow: true}),
-    verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', resources.verifyEmailCode, {rethrow: true}),
-    verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', resources.verifyResetPasswordToken, {rethrow: true})
+    verifyEmailCode: createActionAsync('VERIFY_EMAIL_CODE', resources.verifyEmailCode),
+    verifyResetPasswordToken: createActionAsync('VERIFY_RESET_PASSWORD_TOKEN', resources.verifyResetPasswordToken)
   }
 }
 

@@ -1,6 +1,5 @@
 import trim from 'lodash/trim';
 import pick from 'lodash/pick';
-import {bindActionCreators} from 'redux';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';

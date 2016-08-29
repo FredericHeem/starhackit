@@ -51,7 +51,6 @@ export default (context) => {
   }
 
   function ResetPasswordForm({store, verifyResetPasswordToken, params}) {
-    const {errors} = store;
     return (
       <div id="forgot">
         <DocTitle title="Reset password"/>

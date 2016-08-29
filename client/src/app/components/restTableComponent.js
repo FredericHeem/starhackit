@@ -108,6 +108,7 @@ export default (context, {getData, columns}) => {
   const TableView = observer(({onRow}) => {
     const {error} = store;
     const data = mobx.toJS(store.data)
+
     if (error) return null;
     return (
       <div>

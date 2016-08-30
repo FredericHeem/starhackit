@@ -5,6 +5,7 @@ var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 //var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
 
@@ -38,7 +39,8 @@ module.exports = function ( options ) {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
                 return _.includes([
                     'material-ui',
-                    'intl'
+                    'intl',
+                    'lodash'
                 ], v)
             }).concat([
                 './src/fontello/css/animation.css',
@@ -75,6 +77,10 @@ module.exports = function ( options ) {
                 { from: './assets/img/*.svg' },
                 { from: './locales/**/*.json' }
             ]),
+            new LodashModuleReplacementPlugin({
+              collections: true,
+              paths: true
+            }),
             new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],
         resolve: {

@@ -45,7 +45,7 @@ export default {
                     // have a common namespace used around the full app
                     ns: ['common'],
                     defaultNS: 'common',
-                    debug: true,
+                    debug: false,
                     interpolation: {
                         escapeValue: false // not needed for react!!
                     },

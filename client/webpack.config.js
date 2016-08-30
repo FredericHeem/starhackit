@@ -76,7 +76,6 @@ module.exports = function ( options ) {
                 { from: './assets/img/*.svg' },
                 { from: './locales/**/*.json' }
             ]),
-            new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(fr|it)$/),
             new LodashModuleReplacementPlugin,
             new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],

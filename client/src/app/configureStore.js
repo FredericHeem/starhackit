@@ -3,7 +3,6 @@ import { applyMiddleware, compose, createStore, combineReducers} from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger';
 import { routerReducer} from 'react-router-redux';
-import createSagaMiddleware from 'redux-saga'
 
 function devTools(){
     return  window.devToolsExtension ? window.devToolsExtension() : f => f
@@ -35,25 +34,25 @@ function createMiddlewares(modules){
   }, []);
 }
 
-function runSagas(sagaMiddleware, parts){
+function setDispatch(parts, dispatch){
   _.each(parts, part => {
-    _.each(part.sagas, saga => {
-      sagaMiddleware.run(saga);
-    })
+    if(_.isFunction(part.createStores)){
+      part.createStores(dispatch)
+    }
   })
 }
 
 export default function configureStore(modules, initialState = {}) {
   const reducers = createReducers(modules);
   const middlewares = createMiddlewares(modules);
-  const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     reducers,
     initialState,
-    compose(applyMiddleware(thunk, sagaMiddleware, ...middlewares, logger()), devTools())
+    compose(applyMiddleware(thunk, ...middlewares, logger()), devTools())
   );
 
-  runSagas(sagaMiddleware, modules);
+  setDispatch(modules, store.dispatch);
+
   return store
 }

@@ -81,7 +81,7 @@ function createRouter(store, routes){
 }
 
 // Part
-export default function(context) {
+export default function({context}) {
   let actions = Actions();
   const middlewares = [
     routerMiddleware(browserHistory),

@@ -77,7 +77,10 @@ module.exports = function ( options ) {
                 { from: './assets/img/*.svg' },
                 { from: './locales/**/*.json' }
             ]),
-            new LodashModuleReplacementPlugin,
+            new LodashModuleReplacementPlugin({
+              collections: true,
+              paths: true
+            }),
             new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],
         resolve: {

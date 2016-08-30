@@ -39,7 +39,8 @@ module.exports = function ( options ) {
             vendor: _.reject(_.keys(pkg.dependencies), function(v) {
                 return _.includes([
                     'material-ui',
-                    'intl'
+                    'intl',
+                    'lodash'
                 ], v)
             }).concat([
                 './src/fontello/css/animation.css',

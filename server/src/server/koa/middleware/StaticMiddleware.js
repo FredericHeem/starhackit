@@ -8,6 +8,6 @@ export default function (app, koaApp, config){
     return;
   }
 
-  log.info("serve static files")
+  log.info("serve static files");
   koaApp.use(convert(serve('build')));
 }

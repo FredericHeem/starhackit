@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {assert} from 'chai';
 import testMngr from '~/test/testManager';
 

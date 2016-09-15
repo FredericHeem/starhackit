@@ -1,5 +1,4 @@
 import assert from 'assert';
-import sinon from 'sinon';
 
 import {convertAndRespond} from '../HttpUtils';
 

@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "2.3.4",
+  "version": "2.4.0",
   "private": false,
   "main": "build/index.js",
   "repository": {
@@ -44,8 +44,8 @@
     "chance": "1.0.4",
     "config": "1.21.0",
     "ejs": "2.5.1",
-    "eslint": "3.3.1",
-    "eslint-plugin-mocha": "4.3.0",
+    "eslint": "3.5.0",
+    "eslint-plugin-mocha": "4.5.1",
     "gulp": "3.9.1",
     "gulp-babel": "5.2.1",
     "gulp-debug": "2.1.2",

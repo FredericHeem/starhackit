@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 let log = require('logfilename')(__filename);
 
 export default function MeApi(app) {

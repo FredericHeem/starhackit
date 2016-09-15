@@ -30,7 +30,7 @@ describe('Authentication', function(){
       await client.post('v1/auth/logout');
       try {
         let res = await client.get('v1/me');
-        console.log(res)
+        console.log(res);
         assert(false);
       } catch(err){
         assert(err);

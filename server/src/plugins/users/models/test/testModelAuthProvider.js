@@ -1,8 +1,5 @@
-import _ from 'lodash';
 import assert from 'assert';
 import testMngr from '~/test/testManager';
-
-//let fixtures = require(__dirname + '/../fixtures/models/users');
 
 describe('AuthProviderModel', function(){
   let models = testMngr.app.data.sequelize.models;

@@ -1,4 +1,3 @@
-import assert from 'assert';
 import App from './app';
 
 describe('App', function(){

@@ -15,6 +15,7 @@ export default function App() {
   let store = Store(config);
 
   let app = {
+    config,
     data: data,
     store,
     utils:{

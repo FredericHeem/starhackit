@@ -1,7 +1,4 @@
-import _ from 'lodash';
-let config = require('config');
 let Promise = require('bluebird');
-
 import Koa from'koa';
 import Router from 'koa-66';
 
@@ -10,7 +7,7 @@ let log = require('logfilename')(__filename);
 export default function(app) {
   let koaApp = new Koa();
   koaApp.experimental = true;
-
+  const {config} = app;
   let httpHandle;
   let rootRouter = new Router();
   let baseRouter = new Router();

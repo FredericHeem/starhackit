@@ -78,7 +78,7 @@
     "rabbitmq-pubsub": "0.5.0",
     "redis": "2.6.2",
     "run-sequence": "1.2.2",
-    "sequelize": "3.24.0",
+    "sequelize": "3.24.3",
     "socket.io": "1.4.8",
     "sqlite3": "3.1.4",
     "urijs": "1.18.1",

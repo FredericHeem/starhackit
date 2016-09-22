@@ -22,7 +22,11 @@ export default function MeApi(app) {
         }
       });
       //TODO upsert ?
-      await models.Profile.update(data, {
+      const profileData = {
+        biography: data.biography || ""
+      };
+
+      await models.Profile.update(profileData, {
         where: {
           user_id: userId
         }

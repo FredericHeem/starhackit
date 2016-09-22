@@ -134,11 +134,22 @@ module.exports = function(sequelize, DataTypes) {
                 {...userJson.authProvider, user_id: userId},
                 {transaction: t});
             }
+            /*
+            sqlite doesn't support this
             await models.UserPending.destroy({
               where: {
                 email: userJson.email
               }
             },{transaction: t});
+            */
+            return userCreated;
+          })
+          .then(async (userCreated) => {
+            await models.UserPending.destroy({
+                where: {
+                  email: userJson.email
+                }
+              });
             return userCreated;
           })
           .catch(function (err) {

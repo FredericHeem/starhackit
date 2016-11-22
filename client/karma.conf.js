@@ -2,7 +2,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var webpackConfig = require('./webpack.dev');
-webpackConfig.devtool = 'inline-source-map';
+webpackConfig.devtool = 'cheap-module-source-map';
 
 function pathAppTo() {
     return path.join( __dirname, 'src', 'app', path.join.apply( path, arguments ) );
@@ -12,6 +12,7 @@ module.exports = function (config) {
   config.set({
     browsers: ['Chrome'], // ['Chrome'] run in Chrome, 'PhantomJS'
     singleRun: true,
+     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'sinon'],
     files: [
       'src/**/*.spec.js'

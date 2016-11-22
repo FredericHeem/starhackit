@@ -30,7 +30,7 @@ var webpackDevConfig = {
     loaders: [
         {
             test: /\.jsx?$/,
-            loaders: [ 'react-hot', 'babel', 'eslint'],
+            loaders: [ 'babel', 'eslint'],
             include: path.join( __dirname, 'src', 'app' ),
             exclude: path.join( __dirname, 'node_modules' )
         }

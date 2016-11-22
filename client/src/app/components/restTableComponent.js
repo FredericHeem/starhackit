@@ -31,6 +31,7 @@ export default (context, {getData, columns}) => {
         return;
       }
       this.loading = true;
+      store.error = null;
 
       try {
         const result = await getData({
@@ -43,6 +44,7 @@ export default (context, {getData, columns}) => {
         this.data = result.data;
         this.loading = false;
       } catch (error) {
+        debug('onSelectPage error ', error);
         this.error = error;
         this.loading = false;
       }
@@ -58,11 +60,12 @@ export default (context, {getData, columns}) => {
   const Error = observer(() => {
     let {error} = store;
     if (!error) return null;
+    debug(error)
     return <AlertAjax error={error} className='rest-table-error-view'/>
   })
 
   const Pagination = observer(() => {
-    console.log("Pagination:", store.count)
+    debug("Pagination:", store.count)
     let {count, pagination} = store;
     let pages = Math.ceil(count / pagination.perPage);
     if (pages <= 1) {

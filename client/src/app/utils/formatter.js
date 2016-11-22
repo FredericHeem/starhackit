@@ -1,5 +1,5 @@
 export default (locale = 'en') => {
-  const dateTimeOptions = {year: 'numeric', month: 'short', day: 'numeric', hour: "numeric", minute: "numeric"};
+  const dateTimeOptions = {year: 'numeric', month: 'short', day: 'numeric'/*, hour: "numeric", minute: "numeric"*/};
   let _locale = locale
   return {
     setLocale: (newLocale) => {

@@ -1,5 +1,4 @@
-import trim from 'lodash/trim';
-import pick from 'lodash/pick';
+import _ from 'lodash';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {createAction, createReducer} from 'redux-act';
 import {connect} from 'react-redux';
@@ -209,12 +208,13 @@ export default function ({context, rest}) {
         login: mobx.action(async function () {
           this.errors = {};
           let payload = {
-            username: trim(this.username),
+            username: _.trim(this.username),
             password: this.password
           }
 
           try {
-            const rule = new Checkit(pick(rules, 'username', 'password'));
+            //console.log(_.pick(rules, 'username', 'password'))
+            const rule = new Checkit(_.pick(rules, 'username', 'password'));
             await rule.run(payload);
             const {response} = await dispatch(actions.login(payload));
             const {token} = response;
@@ -237,12 +237,12 @@ export default function ({context, rest}) {
         register: mobx.action(async function () {
           this.errors = {};
           let payload = {
-            username: trim(this.username),
-            email: trim(this.email),
+            username: _.trim(this.username),
+            email: _.trim(this.email),
             password: this.password
           }
           try {
-            const rule = new Checkit(pick(rules, 'username', 'email', 'password'));
+            const rule = new Checkit(_.pick(rules, 'username', 'email', 'password'));
             await rule.run(payload);
             await dispatch(actions.register(payload));
           } catch (errors) {
@@ -275,12 +275,12 @@ export default function ({context, rest}) {
         resetPassword: mobx.action(async function (token) {
           this.errors = {};
           let payload = {
-            password: trim(this.password),
+            password: _.trim(this.password),
             token: token
           }
 
           try {
-            const rule = new Checkit(pick(rules, 'password'));
+            const rule = new Checkit(_.pick(rules, 'password'));
             await rule.run(payload);
             await dispatch(actions.verifyResetPasswordToken(payload));
             this.step = "SetNewPasswordDone";
@@ -298,11 +298,11 @@ export default function ({context, rest}) {
         requestPasswordReset: mobx.action(async function () {
           this.errors = {};
           let payload = {
-            email: trim(this.email)
+            email: _.trim(this.email)
           }
 
           try {
-            const rule = new Checkit(pick(rules, 'email'));
+            const rule = new Checkit(_.pick(rules, 'email'));
             await rule.run(payload);
             await dispatch(actions.requestPasswordReset(payload));
             this.step = "CheckEmail";

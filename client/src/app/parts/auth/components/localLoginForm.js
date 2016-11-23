@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import TextField from 'material-ui/TextField';
-import LaddaButton from 'react-ladda';
+import LaddaButton, { L, SLIDE_UP } from 'react-ladda';
 import {observer} from 'mobx-react';
 import alertAjax from 'components/alertAjax';
 
@@ -25,7 +25,7 @@ export default(context) => {
           <TextField id='password' onChange={(e) => {store.password = e.target.value}} hintText={tr.t('Password')} type='password' errorText={errors.password && errors.password[0]}/>
         </div>
         <div>
-          <LaddaButton className='btn btn-lg btn-primary btn-login' buttonColor='green' loading={login.loading} buttonStyle="slide-up" onClick={() => store.login()}>{tr.t('Login')}</LaddaButton>
+          <LaddaButton className='btn btn-lg btn-primary btn-login' data-size={L} data-style={SLIDE_UP} data-spinner-size={30} loading={login.loading} onClick={() => store.login()}>{tr.t('Login')}</LaddaButton>
         </div>
       </form>
     );

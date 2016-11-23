@@ -9,7 +9,7 @@ function pathAppTo() {
 }
 
 module.exports = function (config) {
-  config.set({
+  var configuration = {
     browsers: ['Chrome'], // ['Chrome'] run in Chrome, 'PhantomJS'
     singleRun: true,
      // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -82,6 +82,17 @@ module.exports = function (config) {
              dir: 'coverage/'
          }
      ]
-    }
-  });
+    },
+    customLaunchers: {
+        Chrome_travis_ci: {
+            base: 'Chrome',
+            flags: ['--no-sandbox']
+        }
+    },
+  };
+
+  if (process.env.TRAVIS) {
+      configuration.browsers = ['Chrome_travis_ci'];
+  }
+  config.set(configuration)
 };

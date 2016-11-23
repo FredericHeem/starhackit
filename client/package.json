@@ -1,6 +1,6 @@
 {
   "name": "starhackit-ui",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "React/Redux starter kit",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
@@ -20,7 +20,8 @@
     "e2e": "npm run nightwatch",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "docker:build": "npm run build && docker build -t starhackit/ui .",
-    "docker:run": "docker run --rm -p 80:80 -p 443:443  --name starhackit-ui starhackit/ui"
+    "docker:run": "docker run --rm -p 80:80 -p 443:443  --name starhackit-ui starhackit/ui",
+    "version": "npm test"
   },
   "repository": {
     "type": "git",

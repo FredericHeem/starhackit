@@ -1,7 +1,7 @@
 import React from 'react';
 
 import TextField from 'material-ui/TextField';
-import LaddaButton from 'react-ladda';
+import LaddaButton, { L, SLIDE_UP } from 'react-ladda';
 import Spinner from 'components/spinner';
 import Paper from 'material-ui/Paper';
 import {observer} from 'mobx-react';
@@ -60,9 +60,9 @@ export default ({tr}) => {
           <div className='text-center btn-container'>
             <LaddaButton
               className='btn btn-lg btn-primary btn-update-profile'
-              buttonColor='green'
               loading={profileUpdate.loading}
-              buttonStyle="slide-up"
+              data-size={L}
+              data-style={SLIDE_UP}
               onClick={() => store.update() }>{tr.t('Update Profile') }</LaddaButton>
           </div>
         </form>

@@ -22,6 +22,7 @@
     "port" : 4444,
     "cli_args" : {
       "webdriver.chrome.driver" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25",
+      "webdriver.gecko.driver" :"../../node_modules/protractor/node_modules/webdriver-manager/selenium/geckodriver-v0.11.1",
       "webdriver.ie.driver" : ""
     }
   },
@@ -37,7 +38,7 @@
         "path" : ""
       },
       "desiredCapabilities": {
-        "browserName": "google",
+        "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }

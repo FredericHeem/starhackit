@@ -7,11 +7,11 @@ SchemaView.propTypes = {
 };
 
 export default function SchemaView(props){
-  console.log('SchemaView: ', props)
+    //console.log('SchemaView: ', props)
     return (
         <div className="schema-view">
             <DocTitle title="Database Schema"/>
-            <SchemaComponent schema={props.schema.data}/>
+            <SchemaComponent loading={props.schema.loading} schema={props.schema.data}/>
         </div>
     );
 }

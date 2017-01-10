@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import tr from 'i18next';
 import Paper from 'material-ui/Paper';
+import Spinner from 'components/spinner'
 import './schema.styl';
 
 ColumnItem.propTypes = {
@@ -10,7 +11,7 @@ ColumnItem.propTypes = {
 };
 
 function ColumnItem({column, columnName}){
-  console.log('ColumnItem: ', column.column_name)
+  //console.log('ColumnItem: ', column.column_name)
   return (
     <tr key={columnName}>
       <td><em>{`${column.column_name}: `}</em></td>
@@ -25,8 +26,8 @@ TableItem.propTypes = {
 };
 
 function TableItem({table, tableName}){
-  console.log('TableItem: ', table)
-  const columns = _.map(table.columns, (column, columnName) => <ColumnItem column={column} columnName={columnName}/>)
+  //console.log('TableItem: ', table)
+  const columns = _.map(table.columns, (column, columnName) => <ColumnItem key={columnName} column={column} columnName={columnName}/>)
   return (
     <Paper className='db-table panel panel-default' key={tableName}>
       <div className='db-table-name panel-heading'><strong>{tableName}</strong></div>
@@ -43,15 +44,14 @@ SchemaComponent.propTypes = {
   schema: React.PropTypes.object
 };
 
-export default function SchemaComponent({schema}){
-    console.log('SchemaComponent: ', schema)
-    const {tables} = schema;
+export default function SchemaComponent({schema, loading}){
+    //console.log('SchemaComponent: ', loading)
     return (
         <div className="schema-view">
             <h3>{tr.t("Tables")}</h3>
-
+            {loading && <Spinner/>}
             <div className='db-tables'>
-              {_.map(tables, (table, tableName) => <TableItem table={table} tableName={tableName}/>)}
+              {schema && _.map(schema.tables, (table, tableName) => <TableItem key={tableName} table={table} tableName={tableName}/>)}
             </div>
         </div>
     );

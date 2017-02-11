@@ -3,7 +3,7 @@
 
 ## NODE_CONFIG
 
-The configuration file for the api server running on [Travis CI](https://travis-ci.org) will be given through the envirorment variable **NODE_CONFIG**
+The configuration file for the api server running on [Travis CI](https://travis-ci.org) will be given through the environment variable **NODE_CONFIG**
 
 * Create a new config file called _config/travis.json_ from the _config/default.json_
 * Change this config with the relevant credentials regarding the mail, facebook configuration.

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import Debug from 'debug';
-import alert from './alert';
+import alert from '../alert';
 
 let debug = new Debug("components:alertAjax");
 
@@ -13,6 +13,11 @@ export default (context) => {
       return null;
     }
     debug('error:', error);
+    const status = _.get(error, 'response.status');
+    debug('error status :', status);
+    if(status !== 422){
+      return null;
+    }
     let message = _.get(error, 'response.data.error.message');
     if (!message) {
       message = error.message

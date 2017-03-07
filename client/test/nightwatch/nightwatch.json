@@ -16,13 +16,13 @@
   },
   "selenium" : {
     "start_process" : true,
-    "server_path" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-2.53.1.jar",
+    "server_path" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.2.0.jar",
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.25",
-      "webdriver.gecko.driver" :"../../node_modules/protractor/node_modules/webdriver-manager/selenium/geckodriver-v0.11.1",
+      "webdriver.chrome.driver" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.27",
+      "webdriver.gecko.driver" :"../../node_modules/protractor/node_modules/webdriver-manager/selenium/geckodriver-v0.14.0",
       "webdriver.ie.driver" : ""
     }
   },

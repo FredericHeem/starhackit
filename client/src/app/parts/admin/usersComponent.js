@@ -28,7 +28,7 @@ export default(context) => {
         label: 'Created At'
       },
       cell: {
-        format: date => formatter.dateTime(date)
+        formatters:[date => formatter.dateTime(date)]
       }
     }, {
       property: 'updatedAt',
@@ -36,7 +36,7 @@ export default(context) => {
         label: 'Updated At'
       },
       cell: {
-        format: date => formatter.dateTime(date)
+        formatters:[date => formatter.dateTime(date)]
       }
     }
   ];

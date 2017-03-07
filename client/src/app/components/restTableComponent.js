@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Table
-} from 'reactabular';
+import * as Table from 'reactabular-table';
 import mobx from 'mobx';
 import {observer} from 'mobx-react';
 import Paginator from 'react-pagify';
@@ -103,7 +101,7 @@ export default (context, {getData, columns}) => {
             <Paginator.Button page={pagination.page + 1}>{tr.t('Next') }</Paginator.Button>
           </Paginator.Context>
 
-        </div>
+          </div>
       </div>
     );
   })
@@ -119,9 +117,9 @@ export default (context, {getData, columns}) => {
         <Table.Provider
           className="table"
           columns={columns}
-          >
-          <Table.Header />
-          {data && <Table.Body rows={data} rowKey="id" onRow={onRow}/>}
+          style={{ overflowX: 'auto' }}>
+          <Table.Header/>
+          <Table.Body onRow={onRow} rows={data} rowKey="id" />
         </Table.Provider>
       </div>
     );

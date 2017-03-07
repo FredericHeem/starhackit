@@ -57,7 +57,7 @@
     "react-router-redux": "4.0.8",
     "react-s-alert": "1.2.2",
     "react-tap-event-plugin": "2.0.1",
-    "reactabular": "7.0.0",
+    "reactabular-table": "8.6.0",
     "redux": "3.6.0",
     "redux-act-async": "1.4.0",
     "redux-logger": "2.8.2",

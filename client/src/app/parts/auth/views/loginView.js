@@ -11,7 +11,6 @@ export default(context) => {
   const {tr} = context;
   const LocalLoginForm = localLoginForm(context);
   const MediaSigninButtons = mediaSigninButtons(context);
-
   return function LoginView(props){
       return (
         <div className='login-page'>

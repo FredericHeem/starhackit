@@ -4,10 +4,6 @@ var path = require('path');
 var webpackConfig = require('./webpack.dev');
 webpackConfig.devtool = 'cheap-module-source-map';
 
-function pathAppTo() {
-    return path.join( __dirname, 'src', 'app', path.join.apply( path, arguments ) );
-}
-
 module.exports = function (config) {
   var configuration = {
     browsers: ['Chrome'], // ['Chrome'] run in Chrome, 'PhantomJS'
@@ -23,26 +19,31 @@ module.exports = function (config) {
     reporters: ['mocha', 'coverage'],
     webpack: {
       module: {
-        loaders: [{
-          test: /\.(js|jsx)$/, exclude: /(node_modules)/,
-          loader: 'babel-loader'
+        rules: [{
+          test: /\.(js|jsx)$/,
+          exclude: /(node_modules)/,
+          use: ['babel-loader']
         },{
             test: /\.json$/,
-            loader: 'json'
+            use: ['json-loader']
           }
-        ],
-        postLoaders: [{
-          test: /\.(js|jsx)$/, exclude: /(node_modules|tests)/,
-          loader: 'istanbul-instrumenter'
-      },
-      {
-          test: /\.css$/,
-          loader: 'style-loader!css-loader'
-      },
-       {
-           test: /\.styl$/,
-           loader: "css-loader!stylus-loader"
-       }]
+        ,
+        {
+            test: /\.css$/,
+            use: [
+              'style-loader',
+              'css-loader'
+            ]
+        },
+        {
+            test: /\.styl$/,
+            use: [
+              'style-loader',
+              'css-loader',
+              'stylus-loader'
+            ]
+        }
+        ]
        },
        plugins: [
          //new webpack.IgnorePlugin(/jsdom$/),
@@ -55,19 +56,7 @@ module.exports = function (config) {
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true
       },
-      resolve: {
-          root: path.join( __dirname, 'src', 'app'),
-          extensions: [ '', '.js', '.jsx', '.styl', '.css', '.json'],
-          alias: {
-              //application aliases
-              components: pathAppTo( 'components' ),
-              services: pathAppTo( 'services' ),
-              utils: pathAppTo( 'utils' ),
-              parts: pathAppTo( 'parts' ),
-              assets: path.resolve( __dirname, 'src', 'assets'),
-              config: pathAppTo( 'config.js' )
-          }
-      }
+      resolve: webpackConfig.resolve
     },
     webpackServer: {
       noInfo: true

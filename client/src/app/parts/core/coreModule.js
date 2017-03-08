@@ -89,7 +89,7 @@ export default function({context}) {
   ];
   const Notification = notification(context);
   function AlertDisplay(payload){
-    debug('MiddlewareAlert AjaxError', payload)
+    debug('MiddlewareAlert error ', payload)
     let props = createHttpError(payload)
     Alert.error(<Notification
       name={props.name}

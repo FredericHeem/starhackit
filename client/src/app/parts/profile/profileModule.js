@@ -69,12 +69,13 @@ export default function ({context, rest}) {
       profile: {
         biography: ""
       },
-      update: mobx.action(function() {
+      update: mobx.action(async function() {
         debug('updateProfile ');
         this.errors = {};
         const payload = {
-          biography: this.profile.biography
+          biography: this.profile.biography || ""
         }
+        debug('updateProfile ', payload);
 
         function successNotification() {
           debug('updateProfile done');
@@ -86,18 +87,18 @@ export default function ({context, rest}) {
           });
           return true;
         }
-
-        new Checkit({
-          biography: rules.biography
-        }).run(payload)
-          .then(dispatch(actions.update(payload)))
-          .then(successNotification)
-          .catch(errors => {
-            debug('updateProfile errors: ', errors);
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON()
-            }
-          })
+        try {
+          const rule = new Checkit({
+            biography: rules.biography
+           });
+          await rule.run(payload);
+          await dispatch(actions.update(payload));
+          successNotification();
+        } catch (errors) {
+          if (errors instanceof Checkit.Error) {
+            this.errors = errors.toJSON()
+          }
+        }
       })
     })
 

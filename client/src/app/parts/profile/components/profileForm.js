@@ -48,7 +48,7 @@ export default ({tr}) => {
             <TextField
               id='biography-input'
               fullWidth={true}
-              value={store.profile.biography}
+              value={store.profile.biography || ""}
               errorText={errors.biography && errors.biography[0]}
               multiLine={true}
               floatingLabelText={tr.t('Enter Biography') }

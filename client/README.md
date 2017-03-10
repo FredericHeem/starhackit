@@ -130,22 +130,26 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Version: webpack 1.12.13
-Time: 97299ms
-                                  Asset       Size  Chunks             Chunk Names
-   89889688147bd7575d6327160d64e760.svg     109 kB          [emitted]
-                7a861be0091fbbaa4f64.js    55.4 kB       1  [emitted]
-                              vendor.js     547 kB       2  [emitted]  vendor
-           app.95220f341cac6905303b.css    3.19 kB       0  [emitted]  app
-        vendor.1e522f46db71337f5a73.css     318 kB       2  [emitted]  vendor
-             7a861be0091fbbaa4f64.js.gz    15.2 kB          [emitted]
-89889688147bd7575d6327160d64e760.svg.gz    26.8 kB          [emitted]
-         app.95220f341cac6905303b.js.gz    66.2 kB          [emitted]
-     vendor.1e522f46db71337f5a73.css.gz     123 kB          [emitted]
-                           vendor.js.gz     159 kB          [emitted]
-                             index.html    1.36 kB          [emitted]
-                            favicon.ico    1.15 kB          [emitted]
-            app.95220f341cac6905303b.js     304 kB       0  [emitted]  app
+Version: webpack 2.2.1
+Time: 74733ms
+                                Asset       Size  Chunks                    Chunk Names
+                assets/img/docker.png    10.3 kB          [emitted]
+            0.2716be6c69da840b0f12.js    65.3 kB       0  [emitted]
+          app.2716be6c69da840b0f12.js     493 kB       2  [emitted]  [big]  app
+       vendor.2716be6c69da840b0f12.js     693 kB       3  [emitted]  [big]  vendor
+        0.2716be6c69da840b0f12.js.map     470 kB       0  [emitted]
+        1.2716be6c69da840b0f12.js.map    57.9 kB       1  [emitted]
+      app.2716be6c69da840b0f12.js.map    3.39 MB       2  [emitted]         app
+   vendor.2716be6c69da840b0f12.js.map    4.89 MB       3  [emitted]         vendor
+         1.2716be6c69da840b0f12.js.gz    3.66 kB          [emitted]
+     1.2716be6c69da840b0f12.js.map.gz    9.31 kB          [emitted]
+         0.2716be6c69da840b0f12.js.gz    18.2 kB          [emitted]
+       app.2716be6c69da840b0f12.js.gz     105 kB          [emitted]
+     0.2716be6c69da840b0f12.js.map.gz     105 kB          [emitted]
+    vendor.2716be6c69da840b0f12.js.gz     181 kB          [emitted]
+   app.2716be6c69da840b0f12.js.map.gz     627 kB          [emitted]  [big]
+vendor.2716be6c69da840b0f12.js.map.gz    1.07 MB          [emitted]  [big]
+
 
 ```
 

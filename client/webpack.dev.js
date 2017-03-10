@@ -6,7 +6,7 @@ var DashboardPlugin = require('webpack-dashboard/plugin');
 
 var webpackDevConfig = {
     overrides: {
-        devtool: 'eval-cheap-module-source-map',
+        devtool: 'source-map',
         entry: {
             app: [
                 'webpack-dev-server/client?http://localhost:8080',
@@ -18,7 +18,7 @@ var webpackDevConfig = {
     },
 
     plugins: [
-        //new DashboardPlugin(),
+        new DashboardPlugin(),
         new webpack.DefinePlugin( {
             'process.env': {
                 NODE_ENV: JSON.stringify( 'development' )

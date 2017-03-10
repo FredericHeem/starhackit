@@ -7,6 +7,7 @@ var purify = require("purifycss-webpack-plugin");
 
 var webpackProdConfig = {
     overrides: {
+        devtool: 'source-map',
         entry: {
             app: [
                 './src/app/index.js'

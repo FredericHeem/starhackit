@@ -6,8 +6,7 @@ var DashboardPlugin = require('webpack-dashboard/plugin');
 
 var webpackDevConfig = {
     overrides: {
-        devtool: 'eval',
-        debug: true,
+        devtool: 'eval-cheap-module-source-map',
         entry: {
             app: [
                 'webpack-dev-server/client?http://localhost:8080',
@@ -19,7 +18,7 @@ var webpackDevConfig = {
     },
 
     plugins: [
-        new DashboardPlugin(),
+        //new DashboardPlugin(),
         new webpack.DefinePlugin( {
             'process.env': {
                 NODE_ENV: JSON.stringify( 'development' )
@@ -28,11 +27,11 @@ var webpackDevConfig = {
         new OpenBrowserPlugin({ url: 'http://localhost:8080' })
     ],
 
-    loaders: [
+    rules: [
         {
             test: /\.jsx?$/,
-            loaders: [ 'babel', 'eslint'],
-            include: path.join( __dirname, 'src', 'app' ),
+            use: [ 'babel-loader', 'eslint-loader'],
+            include: path.join( __dirname, 'src'),
             exclude: path.join( __dirname, 'node_modules' )
         }
     ],

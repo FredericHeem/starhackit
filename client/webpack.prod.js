@@ -28,12 +28,9 @@ var webpackProdConfig = {
         new purify({
             basePath: __dirname
         }),
-        new webpack.optimize.DedupePlugin(),
 
         new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
+            sourceMap: true
         }),
         new CompressionPlugin({
             asset: '[file].gz[query]',
@@ -43,11 +40,11 @@ var webpackProdConfig = {
         })
     ],
 
-    loaders: [
+    rules: [
         {
             test: /\.jsx?$/,
-            loaders: [ 'babel' ],
-            include: path.join( __dirname, 'src', 'app' ),
+            use: [ 'babel-loader' ],
+            include: path.join( __dirname, 'src'),
             exclude: path.join( __dirname, 'node_modules' )
         }
     ]

@@ -2,14 +2,11 @@
 <html class="no-js">
 <head>
     <meta charset="utf-8">
-    <title>StarHackIt</title>
-    <meta name="description" content="react + node starter kit. A fullstack boilerplate written in ES6 and ES7 with authentication and authorization">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
 
-    <% for (var css in htmlWebpackPlugin.files.css) { %>
-    <link href="/<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
-    <% } %>
 </head>
 
 <body>
@@ -39,7 +36,7 @@
         }
     </style>
     <div id="initializing">
-       <h1>Starhack.it</h1>
+       <h1><%= htmlWebpackPlugin.options.title %></h1>
       <i class="icon-spin1 animate-spin"></i>
     </div>
 </div>
@@ -48,10 +45,6 @@
 <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
 <![endif]-->
 
-<!--The application-->
-<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
-<script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
-<% } %>
 
 </body>
 </html>

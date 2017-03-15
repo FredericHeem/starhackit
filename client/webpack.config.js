@@ -54,7 +54,8 @@ module.exports = function ( options ) {
             //new ExtractTextPlugin('[name].[chunkhash].css'),
             new HtmlWebpackPlugin({
               template: 'src/index.ejs',
-              inject: false
+              title: pkg.title,
+              description: pkg.description
             }),
             new webpack.DefinePlugin( {
                 __VERSION__: JSON.stringify(pkg.version)

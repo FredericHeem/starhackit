@@ -4,8 +4,8 @@
 .animate-spin {
   -moz-animation: spin 2s infinite linear;
   -o-animation: spin 2s infinite linear;
-  -webkit-animation: spin 2s infinite linear;
-  animation: spin 2s infinite linear;
+  -webkit-animation: spin 10s infinite linear;
+  animation: spin 10s infinite linear;
   display: inline-block;
 }
 @-moz-keyframes spin {

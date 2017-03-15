@@ -1,6 +1,6 @@
 {
   "name": "starhackit-ui",
-  "title": "StartHack.It",
+  "title": "StarHack.It",
   "version": "2.5.0",
   "description": "React + node starter kit. A fullstack boilerplate written in ES6/7 with authentication and authorisation",
   "homepage": "https://github.com/FredericHeem/starhackit",

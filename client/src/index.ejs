@@ -6,7 +6,6 @@
     <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
-
 </head>
 
 <body>
@@ -27,24 +26,49 @@
         }
 
         #initializing {
-            text-align:center;
+          text-align:center;
         }
 
-        #initializing i {
-            font-size: 10em;
-            height: 200px;
+        .animate-spin {
+          -moz-animation: spin 2s infinite linear;
+          -o-animation: spin 2s infinite linear;
+          -webkit-animation: spin 10s infinite linear;
+          animation: spin 10s infinite linear;
+          display: inline-block;
         }
+
+        @keyframes spin {
+          0% {
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+
+          100% {
+            -moz-transform: rotate(359deg);
+            -o-transform: rotate(359deg);
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+          }
+        }
+
     </style>
     <div id="initializing">
-       <h1><%= htmlWebpackPlugin.options.title %></h1>
-      <i class="icon-spin1 animate-spin"></i>
+        <h1><%= htmlWebpackPlugin.options.title %></h1>
+
+        <svg style="width: 230px; height: 230px;" viewBox="0 0 42 42" class="animate-spin">
+          <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
+          <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="black" stroke-width="3"></circle>
+          <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="rgb(0, 188, 212)" stroke-width="3" stroke-dasharray="3.1" stroke-dashoffset="0"></circle>
+        </svg>
+
     </div>
 </div>
 
 <!--[if IE]>
 <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
 <![endif]-->
-
 
 </body>
 </html>

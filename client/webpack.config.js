@@ -40,7 +40,6 @@ module.exports = function ( options ) {
                     'lodash'
                 ], v)
             }).concat([
-                './src/fontello/css/animation.css',
                 './src/fontello/css/fontello.css',
                 'ladda/dist/ladda.min.css'
             ])

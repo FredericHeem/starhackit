@@ -3,7 +3,7 @@ import React from 'react';
 import Debug from 'debug';
 import alert from '../alert';
 
-let debug = new Debug("components:alertAjax");
+const debug = new Debug("components:alertAjax");
 
 // A component to display Axios errors
 
@@ -24,7 +24,7 @@ export default (context) => {
     if (!message) {
       message = error.message
     }
-    return (<Alert type="danger" className={className} message={message}/>)
+    return (<Alert type="danger" className={className} message={message} />)
   }
 
   AlertAjax.propTypes = {

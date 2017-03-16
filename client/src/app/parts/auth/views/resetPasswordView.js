@@ -9,7 +9,7 @@ import alertAjax from 'components/alertAjax';
 
 import Debug from 'debug';
 
-let debug = new Debug("resetPasword");
+const debug = new Debug("resetPasword");
 
 export default (context) => {
   const {tr} = context;
@@ -29,10 +29,10 @@ export default (context) => {
   }
 
   function SetNewPassword({store, params}) {
-    if (store.step != 'SetPassword') {
+    if (store.step !== 'SetPassword') {
       return null;
     }
-    let {errors} = store;
+    const {errors} = store;
     debug("renderSetNewPassword ", errors);
     return (
       <div className='reset-password-view'>
@@ -40,11 +40,11 @@ export default (context) => {
           <strong>{tr.t('Enter your new password.') }</strong>
         </p>
         <div className='form-group password'>
-          <TextField id='password' onChange={(e) => { store.password = e.target.value } } hintText={tr.t('Password') } type='password' errorText={errors.password && errors.password[0]}/>
+          <TextField id='password' onChange={(e) => { store.password = e.target.value }} hintText={tr.t('Password')} type='password' errorText={errors.password && errors.password[0]} />
         </div>
 
         <div className="spacer">
-          <RaisedButton className='btn-reset-password' onClick={() => store.resetPassword(params.token) } label={tr.t('Reset Password') }/>
+          <RaisedButton className='btn-reset-password' onClick={() => store.resetPassword(params.token)} label={tr.t('Reset Password')} />
         </div>
       </div>
     );
@@ -53,12 +53,12 @@ export default (context) => {
   function ResetPasswordForm({store, verifyResetPasswordToken, params}) {
     return (
       <div id="forgot">
-        <DocTitle title="Reset password"/>
+        <DocTitle title="Reset password" />
         <Paper className='text-center view'>
           <h3>{tr.t('Reset Password') }</h3>
-          <AlertAjax error={verifyResetPasswordToken.error} className='reset-password-error-view'/>
-          <SetNewPassword store={store} params={params}/>
-          <SetNewPasswordDone verifyResetPasswordToken={verifyResetPasswordToken}/>
+          <AlertAjax error={verifyResetPasswordToken.error} className='reset-password-error-view' />
+          <SetNewPassword store={store} params={params} />
+          <SetNewPasswordDone verifyResetPasswordToken={verifyResetPasswordToken} />
         </Paper>
       </div>
     );

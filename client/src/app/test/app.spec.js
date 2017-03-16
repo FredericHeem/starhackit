@@ -3,20 +3,20 @@ import App from '../app';
 import { render } from 'enzyme';
 
 describe('App', function() {
-  let app = App();
+  const app = App();
   it('start', async () => {
     await app.start();
-    let container = app.createContainer()
-    let wrapper = render(container);
+    const container = app.createContainer()
+    const wrapper = render(container);
     assert(wrapper)
   });
   it('parts', async () => {
-    let {parts} = app;
+    const {parts} = app;
     assert.isAbove(Object.keys(parts).length, 2)
     assert(parts.core)
   });
   it('store', async () => {
-    let {store} = app;
+    const {store} = app;
     assert(store.getState())
   });
 });

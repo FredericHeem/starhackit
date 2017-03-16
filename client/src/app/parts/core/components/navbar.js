@@ -24,7 +24,7 @@ function navLinks(authenticated) {
         text: 'LOGOUT'
       }
     ];
-  } else {
+  }
     return [
       {
         route: '/login',
@@ -34,7 +34,7 @@ function navLinks(authenticated) {
         text: 'REGISTER'
       }
     ];
-  }
+
 }
 
 export default () => {
@@ -50,13 +50,13 @@ export default () => {
     })
   })
 
-  function Menu(props){
+  function Menu({authenticated, navChange}){
       return (
         <div>
-          {navLinks(props.authenticated).map((menu, key) => (
-              <MenuItem key={key} onTouchTap={() => props.navChange(menu)}>
-                {menu.text}
-              </MenuItem>
+          {navLinks(authenticated).map((menu, key) => (
+            <MenuItem key={key} onTouchTap={() => navChange(menu)}>
+              {menu.text}
+            </MenuItem>
           ))}
         </div>
       )
@@ -70,9 +70,9 @@ export default () => {
   function NavBar({authenticated}){
       return (
         <div >
-          <AppBar style={{}} id='app-bar' title={config.title} onLeftIconButtonTouchTap={() => {store.toggle()}}/>
+          <AppBar style={{}} id='app-bar' title={config.title} onLeftIconButtonTouchTap={() => {store.toggle()}} />
           <LeftNav id='left-nav' docked={false} open={store.open} onRequestChange={open => {store.open = open}}>
-            <Menu authenticated={authenticated} navChange={(item) => store.navChange(item)}/>
+            <Menu authenticated={authenticated} navChange={(item) => store.navChange(item)} />
           </LeftNav>
         </div>
       );

@@ -7,10 +7,10 @@ export default (context) => {
     const ProfileForm = profileForm(context);
     function ProfileView(props){
         return (
-            <div className="profile-page">
-                <DocTitle title={context.tr.t("My Profile")}/>
-                <ProfileForm {...props}/>
-            </div>
+          <div className="profile-page">
+            <DocTitle title={context.tr.t("My Profile")} />
+            <ProfileForm {...props} />
+          </div>
         );
     }
     return ProfileView;

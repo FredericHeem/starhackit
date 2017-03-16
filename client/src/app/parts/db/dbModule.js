@@ -14,7 +14,7 @@ function Resources(rest){
 }
 
 function Actions(rest){
-    let schema = Resources(rest);
+    const schema = Resources(rest);
     return {
         selectTable: createAction("SELECT_TABLE"),
         getSchema: createActionAsync('SCHEMA_GET', schema.getSchema)
@@ -52,7 +52,7 @@ function Routes(containers, store, actions){
 function Middleware(actions){
   const middleware = () => next => action => {
     if(action.type === actions.selectTable.getType()){
-      let tableName = action.payload;
+      const tableName = action.payload;
       browserHistory.push(`/admin/db/table${tableName}`)
     }
 
@@ -62,9 +62,9 @@ function Middleware(actions){
 }
 
 export default function({context, rest}) {
-  let resources = Resources(rest)
-  let actions = Actions(rest);
-  let containers = Containers(context, actions, resources)
+  const resources = Resources(rest)
+  const actions = Actions(rest);
+  const containers = Containers(context, actions, resources)
   return {
       actions,
       reducers: Reducers(actions),

@@ -1,14 +1,14 @@
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
-import ProfileView from './views/profileView';
 import mobx from 'mobx';
 import Alert from 'react-s-alert';
 import Checkit from 'checkit';
-
 import rules from 'services/rules';
-
 import Debug from 'debug';
-let debug = new Debug("profile");
+
+import ProfileView from './views/profileView';
+
+const debug = new Debug("profile");
 
 function Resources(rest) {
   return {
@@ -22,7 +22,7 @@ function Resources(rest) {
 }
 
 function Actions(rest) {
-  let profile = Resources(rest);
+  const profile = Resources(rest);
   return {
     get: createActionAsync('PROFILE_GET', profile.get),
     update: createActionAsync('PROFILE_UPDATE', profile.update)
@@ -131,10 +131,10 @@ export default function ({context, rest}) {
 
   return {
     actions,
-    createStores: (dispatch) => stores = Stores(dispatch, context),
+    createStores: (dispatch) => {stores = Stores(dispatch, context)},
     middlewares: [Middleware(actions)],
     reducers: Reducers(actions),
-    containers: containers,
+    containers,
     routes: (store) => Routes(containers(), store, actions)
   }
 }

@@ -10,11 +10,9 @@ export default (locale = 'en') => {
 
       return new Intl.DateTimeFormat(_locale, dateTimeOptions).format(new Date(date));
     },
-    money: (amount, currency) => {
-      return new Intl.NumberFormat(_locale, {
+    money: (amount, currency) => new Intl.NumberFormat(_locale, {
         style: 'currency',
         currency
-      }).format(amount);
-    }
+      }).format(amount)
   }
 }

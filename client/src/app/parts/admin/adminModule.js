@@ -18,7 +18,7 @@ function Resources(rest){
 }
 
 function Actions(rest){
-    let users = Resources(rest);
+    const users = Resources(rest);
     return {
         selectOne: createAction('USER_SELECT'),
         getAll: createActionAsync('USER_GETALL', users.getAll),
@@ -67,7 +67,7 @@ function Routes(containers, store, actions){
 function Middleware(actions){
   const middleware = () => next => action => {
     if(action.type === actions.selectOne.getType()){
-      let userId = action.payload;
+      const userId = action.payload;
       browserHistory.push(`/admin/users/${userId}`)
     }
 
@@ -77,9 +77,9 @@ function Middleware(actions){
 }
 
 export default function({context, rest}) {
-  let resources = Resources(rest)
-  let actions = Actions(rest);
-  let containers = Containers(context, actions, resources)
+  const resources = Resources(rest)
+  const actions = Actions(rest);
+  const containers = Containers(context, actions, resources)
   return {
       actions,
       reducers: Reducers(actions),

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import restTableComponent from 'components/restTableComponent';
 import Debug from 'debug';
-let debug = new Debug("components:users");
+const debug = new Debug("components:users");
 
 export default(context) => {
   const {tr, formatter, resources} = context;
@@ -53,9 +53,11 @@ export default(context) => {
       <div className="panel panel-default">
         <div className="panel-heading">{tr.t('Users')}</div>
         <div className="panel-body">
-          <RestTableComponent onRow={row => ({
+          <RestTableComponent
+            onRow={row => ({
             onClick: () => props.actions.selectOne(row.id)
-          })} rowKey='id'/>
+          })} rowKey='id'
+          />
         </div>
       </div>
     );

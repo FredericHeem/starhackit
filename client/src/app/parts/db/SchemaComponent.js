@@ -27,7 +27,7 @@ TableItem.propTypes = {
 
 function TableItem({table, tableName}){
   //console.log('TableItem: ', table)
-  const columns = _.map(table.columns, (column, columnName) => <ColumnItem key={columnName} column={column} columnName={columnName}/>)
+  const columns = _.map(table.columns, (column, columnName) => <ColumnItem key={columnName} column={column} columnName={columnName} />)
   return (
     <Paper className='db-table panel panel-default' key={tableName}>
       <div className='db-table-name panel-heading'><strong>{tableName}</strong></div>
@@ -47,12 +47,12 @@ SchemaComponent.propTypes = {
 export default function SchemaComponent({schema, loading}){
     //console.log('SchemaComponent: ', loading)
     return (
-        <div className="schema-view">
-            <h3>{tr.t("Tables")}</h3>
-            {loading && <Spinner/>}
-            <div className='db-tables'>
-              {schema && _.map(schema.tables, (table, tableName) => <TableItem key={tableName} table={table} tableName={tableName}/>)}
-            </div>
+      <div className="schema-view">
+        <h3>{tr.t("Tables")}</h3>
+        {loading && <Spinner />}
+        <div className='db-tables'>
+          {schema && _.map(schema.tables, (table, tableName) => <TableItem key={tableName} table={table} tableName={tableName} />)}
         </div>
+      </div>
     );
 }

@@ -3,6 +3,6 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 export default function Spinner() {
     return (
-        <CircularProgress size={36}/>
+      <CircularProgress size={36} />
     );
 }

@@ -15,10 +15,13 @@
 <![endif]-->
 
 <!-- application container -->
-<div id="application">
+
+<div id="loading">
     <style type="text/css">
-        #application {
+        #loading {
+          position:fixed;
           font-family: sans-serif;
+          width:100vw;
           height: 100vh;
           display: flex;
           align-items: center;
@@ -52,7 +55,11 @@
             transform: rotate(359deg);
           }
         }
-
+        .m-fadeOut {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s linear 300ms, opacity 300ms;
+        }
     </style>
     <div id="initializing">
         <h1><%= htmlWebpackPlugin.options.title %></h1>
@@ -63,9 +70,10 @@
           <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="rgb(0, 188, 212)" stroke-width="3" stroke-dasharray="3.1" stroke-dashoffset="0"></circle>
         </svg>
 
-    </div>
-</div>
-
+  </div>
+  </div>
+  <div id="application">
+  </div>
 <!--[if IE]>
 <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
 <![endif]-->

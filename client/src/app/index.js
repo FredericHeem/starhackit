@@ -13,11 +13,18 @@ function render(view){
           </div>
           , mountEl);
 }
+
+function hideLoading(){
+  const loadingEl = document.getElementById('loading');
+  loadingEl.classList.add("m-fadeOut");
+}
+
 async function run(){
   try {
     let app = App();
     await app.start();
     let container = app.createContainer();
+    hideLoading();
     render(container)
   } catch (e) {
     debug('Error in app:', e);

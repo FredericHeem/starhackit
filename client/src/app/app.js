@@ -22,7 +22,7 @@ injectTapEventPlugin();
 
 Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
-let debug = new Debug("app");
+const debug = new Debug("app");
 
 export default function() {
     debug("App begins");
@@ -60,7 +60,7 @@ export default function() {
     }
 
     async function preAuth() {
-      let token = localStorage.getItem("JWT");
+      const token = localStorage.getItem("JWT");
       if (token) {
         store.dispatch(parts.auth.actions.setToken(token))
       }

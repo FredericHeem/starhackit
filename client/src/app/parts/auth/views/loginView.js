@@ -14,20 +14,20 @@ export default(context) => {
   return function LoginView(props){
       return (
         <div className='login-page'>
-          <DocTitle title="Login"/>
+          <DocTitle title="Login" />
           <Paper className="text-center view">
             <h2 >{tr.t('Login')}</h2>
             <div>
-              <LocalLoginForm {...props}/>
+              <LocalLoginForm {...props} />
 
               <div className="strike">
-                <span className="or"></span>
+                <span className="or" />
               </div>
-              <MediaSigninButtons/>
+              <MediaSigninButtons />
               <div className="strike">
-                <span className="or"></span>
+                <span className="or" />
               </div>
-              <FlatButton label={tr.t('Forgot Password')} containerElement={<Link to = "/forgot" />}/>
+              <FlatButton label={tr.t('Forgot Password')} containerElement={<Link to="/forgot" />} />
             </div>
           </Paper>
         </div>

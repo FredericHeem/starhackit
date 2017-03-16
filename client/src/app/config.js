@@ -1,9 +1,9 @@
 import _ from 'lodash';
 
 /* global process */
-let env = process.env;
+const env = process.env;
 
-let config = {
+const config = {
 
     general: {
         title: 'StarHackIt',
@@ -28,4 +28,4 @@ let config = {
     }
 };
 
-export default _.extend( {}, config.general, config[ env.NODE_ENV ] );
+export default _.extend({}, config.general, config[env.NODE_ENV]);

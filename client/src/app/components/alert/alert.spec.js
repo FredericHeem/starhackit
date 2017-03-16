@@ -4,7 +4,7 @@ import {mount} from 'enzyme';
 import {expect} from 'chai';
 
 describe('Alert', () => {
-  let Alert = alert({
+  const Alert = alert({
     tr: {
       t: (text) => text
     }
@@ -13,7 +13,8 @@ describe('Alert', () => {
     const component = mount(<Alert
       title='Title'
       name="NoSuchCode"
-      message="message"/>);
+      message="message"
+    />);
       //console.log(component.props())
 
     expect(component.props().title).to.equal("Title")

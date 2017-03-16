@@ -16,13 +16,13 @@ export default(context) => {
   function LoginForm({store, login}){
     const {errors} = store;
     return (
-      <form className="local-login-form text-center form" onSubmit={ e => e.preventDefault() }>
-        <AlertAjax error={login.error} className='login-error-view'/>
+      <form className="local-login-form text-center form" onSubmit={e => e.preventDefault()}>
+        <AlertAjax error={login.error} className='login-error-view' />
         <div className='form-group username'>
-          <TextField id='username' onChange={(e) => {store.username = e.target.value}} hintText={tr.t('Username')} errorText={errors.username && errors.username[0]}/>
+          <TextField id='username' onChange={(e) => {store.username = e.target.value}} hintText={tr.t('Username')} errorText={errors.username && errors.username[0]} />
         </div>
         <div className='form-group password'>
-          <TextField id='password' onChange={(e) => {store.password = e.target.value}} hintText={tr.t('Password')} type='password' errorText={errors.password && errors.password[0]}/>
+          <TextField id='password' onChange={(e) => {store.password = e.target.value}} hintText={tr.t('Password')} type='password' errorText={errors.password && errors.password[0]} />
         </div>
         <div>
           <LaddaButton className='btn btn-lg btn-primary btn-login' data-size={L} data-style={SLIDE_UP} data-spinner-size={30} loading={login.loading} onClick={() => store.login()}>{tr.t('Login')}</LaddaButton>

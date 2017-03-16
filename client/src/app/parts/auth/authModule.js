@@ -92,8 +92,8 @@ function Reducers(actions) {
     verifyResetPasswordToken: createReducerAsync(actions.verifyResetPasswordToken)
   }
 }
-let selectState = state => state.auth;
-let isAuthenticated = state => selectState(state).auth.authenticated;
+const selectState = state => state.auth;
+const isAuthenticated = state => selectState(state).auth.authenticated;
 
 function Containers(context, actions, stores) {
   return {
@@ -182,7 +182,7 @@ function Routes(containers, stores) {
 
 export default function ({context, rest}) {
   const resources = Resources(rest);
-  let actions = Actions(resources);
+  const actions = Actions(resources);
   let stores;
 
   function Stores(dispatch) {
@@ -207,7 +207,7 @@ export default function ({context, rest}) {
         errors: {},
         login: mobx.action(async function () {
           this.errors = {};
-          let payload = {
+          const payload = {
             username: _.trim(this.username),
             password: this.password
           }
@@ -236,7 +236,7 @@ export default function ({context, rest}) {
         errors: {},
         register: mobx.action(async function () {
           this.errors = {};
-          let payload = {
+          const payload = {
             username: _.trim(this.username),
             email: _.trim(this.email),
             password: this.password
@@ -274,9 +274,9 @@ export default function ({context, rest}) {
         errors: {},
         resetPassword: mobx.action(async function (token) {
           this.errors = {};
-          let payload = {
+          const payload = {
             password: _.trim(this.password),
-            token: token
+            token
           }
 
           try {
@@ -297,7 +297,7 @@ export default function ({context, rest}) {
         errors: {},
         requestPasswordReset: mobx.action(async function () {
           this.errors = {};
-          let payload = {
+          const payload = {
             email: _.trim(this.email)
           }
 
@@ -322,7 +322,7 @@ export default function ({context, rest}) {
   return {
     actions,
     stores: () => stores,
-    createStores: (dispatch) => stores = Stores(dispatch, context),
+    createStores: (dispatch) => {stores = Stores(dispatch, context)},
     reducers: Reducers(actions),
     containers,
     routes: () => Routes(containers(), stores)

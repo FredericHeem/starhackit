@@ -8,8 +8,8 @@ export default (context) => {
   return function UserView(props) {
     return (
       <div className="user-view">
-        <DocTitle title="User"/>
-        <UserComponent {...props}/>
+        <DocTitle title="User" />
+        <UserComponent {...props} />
       </div>
     );
   }

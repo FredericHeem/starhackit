@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import App from './app'
 import Debug from 'debug';
 
-let debug = new Debug("app.entry");
+const debug = new Debug("app.entry");
 
 function render(view){
-  let mountEl = document.getElementById('application');
+  const mountEl = document.getElementById('application');
   ReactDOM.render(
-          <div>
-              {view}
-          </div>
+    <div>
+      {view}
+    </div>
           , mountEl);
 }
 
@@ -21,9 +21,9 @@ function hideLoading(){
 
 async function run(){
   try {
-    let app = App();
+    const app = App();
     await app.start();
-    let container = app.createContainer();
+    const container = app.createContainer();
     hideLoading();
     render(container)
   } catch (e) {

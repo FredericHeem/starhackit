@@ -7,7 +7,7 @@ import segmentize from 'segmentize';
 import Spinner from 'components/spinner';
 import alertAjax from 'components/alertAjax';
 import Debug from 'debug';
-let debug = new Debug("components:resttable");
+const debug = new Debug("components:resttable");
 
 import 'react-pagify/style.css';
 
@@ -51,21 +51,19 @@ export default (context, {getData, columns}) => {
 
   store.selectPage(1);
 
-  const Loading = observer(() => {
-    return store.loading ? <Spinner/> : null;
-  })
+  const Loading = observer(() => (store.loading ? <Spinner /> : null))
 
   const Error = observer(() => {
-    let {error} = store;
+    const {error} = store;
     if (!error) return null;
     debug(error)
-    return <AlertAjax error={error} className='rest-table-error-view'/>
+    return <AlertAjax error={error} className='rest-table-error-view' />
   })
 
   const Pagination = observer(() => {
     debug("Pagination:", store.count)
-    let {count, pagination} = store;
-    let pages = Math.ceil(count / pagination.perPage);
+    const {count, pagination} = store;
+    const pages = Math.ceil(count / pagination.perPage);
     if (pages <= 1) {
       return null;
     }
@@ -76,32 +74,37 @@ export default (context, {getData, columns}) => {
             className="pagify-pagination"
             segments={segmentize({
               page: pagination.page,
-              pages: pages,
+              pages,
               beginPages: 3,
               endPages: 3,
               sidePages: 2
-            }) }
-            onSelect={page => store.selectPage(page, getData)}>
+            })}
+            onSelect={page => store.selectPage(page, getData)}
+          >
             <Paginator.Button page={pagination.page - 1}>{tr.t('Previous') }</Paginator.Button>
 
             <Paginator.Segment field="beginPages" />
 
-            <Paginator.Ellipsis className="ellipsis"
-              previousField="beginPages" nextField="previousPages" />
+            <Paginator.Ellipsis
+              className="ellipsis"
+              previousField="beginPages" nextField="previousPages"
+            />
 
             <Paginator.Segment field="previousPages" />
             <Paginator.Segment field="centerPage" className="selected" />
             <Paginator.Segment field="nextPages" />
 
-            <Paginator.Ellipsis className="ellipsis"
-              previousField="nextPages" nextField="endPages" />
+            <Paginator.Ellipsis
+              className="ellipsis"
+              previousField="nextPages" nextField="endPages"
+            />
 
             <Paginator.Segment field="endPages" />
 
             <Paginator.Button page={pagination.page + 1}>{tr.t('Next') }</Paginator.Button>
           </Paginator.Context>
 
-          </div>
+        </div>
       </div>
     );
   })
@@ -113,12 +116,13 @@ export default (context, {getData, columns}) => {
     if (error) return null;
     return (
       <div>
-        <Pagination/>
+        <Pagination />
         <Table.Provider
           className="table"
           columns={columns}
-          style={{ overflowX: 'auto' }}>
-          <Table.Header/>
+          style={{ overflowX: 'auto' }}
+        >
+          <Table.Header />
           <Table.Body onRow={onRow} rows={data} rowKey="id" />
         </Table.Provider>
       </div>
@@ -129,9 +133,9 @@ export default (context, {getData, columns}) => {
     debug('RestTable: ', props)
     return (
       <div>
-        <Error/>
-        <Loading/>
-        <TableView {...props}/>
+        <Error />
+        <Loading />
+        <TableView {...props} />
       </div>
     )
   }

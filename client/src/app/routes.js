@@ -13,11 +13,9 @@ export default function Routes(store, parts) {
         path: '/',
         component: parts.auth.containers().app(),
         indexRoute: {
-          getComponent: (nextState, cb) => {
-            return require.ensure([], (require) => {
+          getComponent: (nextState, cb) => require.ensure([], (require) => {
               cb(null, require('parts/core/views/mainLanding').default)
             })
-          }
         },
         childRoutes: [
           parts.auth.routes(store),

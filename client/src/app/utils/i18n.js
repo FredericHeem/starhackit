@@ -3,7 +3,7 @@ import XHR from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Debug from 'debug';
 
-let debug = new Debug("i18n");
+const debug = new Debug("i18n");
 
 debug('navigator.languages: ', navigator.languages);
 

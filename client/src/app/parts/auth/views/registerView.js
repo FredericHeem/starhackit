@@ -15,12 +15,12 @@ export default(context) => {
   function RegisterFormComponent(props) {
     return (
       <div>
-        <RegisterForm {...props}/>
+        <RegisterForm {...props} />
         <div className="strike">
-          <span className="or"></span>
+          <span className="or" />
         </div>
         <div>
-          <MediaSigninButtons/>
+          <MediaSigninButtons />
         </div>
       </div>
     );
@@ -30,7 +30,8 @@ export default(context) => {
     return (<Alert
       type='info'
       className='registration-request-complete'
-      message={tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.') }/>
+      message={tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.')}
+    />
     );
   }
 
@@ -39,16 +40,16 @@ export default(context) => {
   }
 
   function RegisterView(props) {
-    let {register} = props;
-    let registerSuccess = _.get(register, 'data.success')
+    const {register} = props;
+    const registerSuccess = _.get(register, 'data.success')
     return (
       <div id="register">
-        <DocTitle title={tr.t("Register") }/>
+        <DocTitle title={tr.t("Register")} />
         <Paper className="text-center view">
           <h2>{tr.t('Register An Account') }</h2>
           <p>{tr.t('Create a free account') }</p>
 
-          {!registerSuccess ? <RegisterFormComponent {...props}/> : <RegisterComplete/>}
+          {!registerSuccess ? <RegisterFormComponent {...props} /> : <RegisterComplete />}
         </Paper>
       </div>
     );

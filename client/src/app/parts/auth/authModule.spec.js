@@ -2,13 +2,13 @@ import {assert} from 'chai';
 import App from '../../app';
 
 describe('Auth', function() {
-  let app = App();
-  let {parts, store} = app;
+  const app = App();
+  const {parts, store} = app;
   const token = 'ASDFGHJKLL';
-  let {actions} = parts.auth;
-  let selectState = store => store.getState().auth;
-  let isAuthenticated = store => selectState(store).auth.authenticated;
-  let getToken = store => selectState(store).auth.token;
+  const {actions} = parts.auth;
+  const selectState = store => store.getState().auth;
+  const isAuthenticated = store => selectState(store).auth.authenticated;
+  const getToken = store => selectState(store).auth.token;
 
   it('setToken', () => {
     assert.isUndefined(getToken(store));
@@ -20,7 +20,7 @@ describe('Auth', function() {
   it('login', () => {
     //console.log("DISPATCH:", JSON.stringify(store.getState()));
 
-    store.dispatch(actions.login.ok({response: {token: token}}));
+    store.dispatch(actions.login.ok({response: {token}}));
     //console.log("STORE:", store.getState())
     assert.equal(isAuthenticated(store), true);
     assert.equal(getToken(store), token);
@@ -30,7 +30,7 @@ describe('Auth', function() {
     assert.equal(isAuthenticated(store), false);
   });
   it('logout error', () => {
-    store.dispatch(actions.login.ok({response: {token: token}}));
+    store.dispatch(actions.login.ok({response: {token}}));
     store.dispatch(actions.logout.error({error: {response: {status: 401}}}));
     assert.equal(isAuthenticated(store), false);
     assert.isUndefined(getToken(store));

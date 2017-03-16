@@ -10,7 +10,7 @@ export default({tr}) => {
     return (
       <Paper className="view text-center">
         <h1>{tr.t('Logging Out')}</h1>
-        <Spinner/>
+        <Spinner />
       </Paper>
     )
   }
@@ -19,16 +19,16 @@ export default({tr}) => {
       <Paper className="view text-center">
         <h1>{tr.t('Logged Out')}</h1>
         <p>{tr.t('Successfully logged out, see you soon.')}</p>
-        <RaisedButton primary={true} label={tr.t('Login')} containerElement={< Link to = "/login" />}/>
+        <RaisedButton primary label={tr.t('Login')} containerElement={< Link to="/login" />} />
       </Paper>
     )
   }
   function LogoutView({authenticated}) {
     return (
       <div className="logout-page">
-        <DocTitle title={tr.t("Logout")}/> {authenticated
-          ? <LoggingOut/>
-          : <LoggedOut/>}
+        <DocTitle title={tr.t("Logout")} /> {authenticated
+          ? <LoggingOut />
+          : <LoggedOut />}
       </div>
     );
   }

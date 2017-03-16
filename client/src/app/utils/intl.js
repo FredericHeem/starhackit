@@ -1,5 +1,6 @@
 import Debug from 'debug';
-let debug = new Debug("intl");
+
+const debug = new Debug("intl");
 
 export default function(language = 'en'){
     debug(language);

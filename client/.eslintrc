@@ -6,7 +6,7 @@
         "promise",
         "jsx-extras"
     ],
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": ["airbnb"],
     "env": {
         "browser": true,
         "es6": true,
@@ -49,23 +49,43 @@
         "no-labels": [2],
         "indent": 0,
         "no-mixed-spaces-and-tabs": 0,
-        "vars-on-top": 2,
         "camelcase": [2, {"properties": "never"}],
         "semi": [0, "always"],
-        "react/prop-types": 0,
-        "react/jsx-no-undef": 2,
-        "react/jsx-uses-react": 2,
-        "react/jsx-uses-vars": 2,
-        "react/no-did-mount-set-state": 2,
-        "react/no-did-update-set-state": 2,
-        "react/jsx-wrap-multilines": 1,
-        "react/react-in-jsx-scope": 1,
-        "react/no-unknown-property": 2,
-        "react/no-is-mounted": 2,
+
         "jsx-extras/jsx-no-string-literals": 1,
 
         "promise/param-names": 1,
         "promise/always-return": 1,
-        "promise/catch-or-return": 1
+        "promise/catch-or-return": 1,
+
+        "comma-dangle": 0,
+        "spaced-comment": 0,
+        "space-before-function-paren": 0,
+        "keyword-spacing": 0,
+        "func-names": 0,
+        "object-curly-spacing": 0,
+        "arrow-parens": 0,
+        "space-before-blocks": 0,
+
+        "import/no-extraneous-dependencies": 0,
+        "import/extensions": 0,
+        "import/first": 0,
+        "import/newline-after-import": 0,
+        "import/no-unresolved": 0,
+
+        "react/prop-types": 0,
+        "jsx-quotes": 0,
+        "react/jsx-tag-spacing": 0,
+        "react/forbid-prop-types": 0,
+        "react/jsx-filename-extension": 0,
+        "react/require-default-props": 0,
+        "react/no-array-index-key": 0,
+
+        "block-spacing": 0,
+        "no-param-reassign": 0,
+        "no-underscore-dangle": 0,
+        "padded-blocks": 0,
+        "prefer-arrow-callback": 0,
+        "max-len": 0
     }
 }

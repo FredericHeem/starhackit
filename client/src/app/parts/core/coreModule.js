@@ -7,7 +7,7 @@ import {ASYNC_META} from 'redux-act-async';
 import Alert from 'react-s-alert';
 import notification from './components/notification';
 import Debug from 'debug';
-let debug = new Debug("core");
+const debug = new Debug("core");
 
 function Actions(){
     return {
@@ -45,19 +45,17 @@ function createHttpError(payload = {}){
     function name(){
       if(_.isString(response)){
         return response
-      } else {
-        return response.statusText
       }
+        return response.statusText
+
     }
     function message(){
         const data = _.get(response, 'data');
         if(payload.message){
             return payload.message;
-        } else if(!data){
-            return;
         } else if(_.isString(data)){
             return data;
-        } else if(_.isString(data.message)){
+        } else if(data && _.isString(data.message)){
             return data.message
         }
     }
@@ -77,12 +75,12 @@ function createRouter(store, routes){
        debug('routing to ', location)
     })
 
-    return <Router history={history} routes={routes}/>
+    return <Router history={history} routes={routes} />
 }
 
 // Part
 export default function({context}) {
-  let actions = Actions();
+  const actions = Actions();
   const middlewares = [
     routerMiddleware(browserHistory),
     MiddlewareAlert()
@@ -90,11 +88,12 @@ export default function({context}) {
   const Notification = notification(context);
   function AlertDisplay(payload){
     debug('MiddlewareAlert error ', payload)
-    let props = createHttpError(payload)
+    const props = createHttpError(payload)
     Alert.error(<Notification
       name={props.name}
       code={props.code}
-      message={props.message}/>, {
+      message={props.message}
+    />, {
         position: 'top-right',
         effect: 'slide',
         timeout: 10e3,
@@ -106,7 +105,7 @@ export default function({context}) {
     const middleware = (/*store*/) => next => action => {
       if(action.meta === ASYNC_META.ERROR){
         const {response = {}} = action.payload.error;
-        let {status} = response;
+        const {status} = response;
         if(!_.includes([401, 422], status)){
           AlertDisplay(action.payload.error);
         }

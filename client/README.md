@@ -131,25 +131,24 @@ To build the production version:
 
 ```
 Version: webpack 2.2.1
-Time: 74733ms
+Time: 75371ms
                                 Asset       Size  Chunks                    Chunk Names
-                assets/img/docker.png    10.3 kB          [emitted]
-            0.2716be6c69da840b0f12.js    65.3 kB       0  [emitted]
-          app.2716be6c69da840b0f12.js     493 kB       2  [emitted]  [big]  app
-       vendor.2716be6c69da840b0f12.js     693 kB       3  [emitted]  [big]  vendor
-        0.2716be6c69da840b0f12.js.map     470 kB       0  [emitted]
-        1.2716be6c69da840b0f12.js.map    57.9 kB       1  [emitted]
-      app.2716be6c69da840b0f12.js.map    3.39 MB       2  [emitted]         app
-   vendor.2716be6c69da840b0f12.js.map    4.89 MB       3  [emitted]         vendor
-         1.2716be6c69da840b0f12.js.gz    3.66 kB          [emitted]
-     1.2716be6c69da840b0f12.js.map.gz    9.31 kB          [emitted]
-         0.2716be6c69da840b0f12.js.gz    18.2 kB          [emitted]
-       app.2716be6c69da840b0f12.js.gz     105 kB          [emitted]
-     0.2716be6c69da840b0f12.js.map.gz     105 kB          [emitted]
-    vendor.2716be6c69da840b0f12.js.gz     181 kB          [emitted]
-   app.2716be6c69da840b0f12.js.map.gz     627 kB          [emitted]  [big]
-vendor.2716be6c69da840b0f12.js.map.gz    1.07 MB          [emitted]  [big]
-
+                   assets/img/es7.png    7.54 kB          [emitted]
+            0.69345a87444cda514c02.js    65.3 kB       0  [emitted]
+          app.69345a87444cda514c02.js     493 kB       2  [emitted]  [big]  app
+       vendor.69345a87444cda514c02.js     681 kB       3  [emitted]  [big]  vendor
+        0.69345a87444cda514c02.js.map     470 kB       0  [emitted]
+        1.69345a87444cda514c02.js.map    57.9 kB       1  [emitted]
+      app.69345a87444cda514c02.js.map    3.39 MB       2  [emitted]         app
+   vendor.69345a87444cda514c02.js.map    4.74 MB       3  [emitted]         vendor
+         1.69345a87444cda514c02.js.gz    3.67 kB          [emitted]
+     1.69345a87444cda514c02.js.map.gz    9.31 kB          [emitted]
+         0.69345a87444cda514c02.js.gz    18.2 kB          [emitted]
+       app.69345a87444cda514c02.js.gz     105 kB          [emitted]
+    vendor.69345a87444cda514c02.js.gz     177 kB          [emitted]
+     0.69345a87444cda514c02.js.map.gz     105 kB          [emitted]
+   app.69345a87444cda514c02.js.map.gz     627 kB          [emitted]  [big]
+vendor.69345a87444cda514c02.js.map.gz    1.04 MB          [emitted]  [big]
 
 ```
 
@@ -158,86 +157,86 @@ To find out exactly the weight of each individual library, the tool [webpack-bun
 ```
 $ npm run bundle-size
 
-lodash: 720.69 KB (21.9%)
-react-dom: 508.77 KB (15.5%)
-material-ui: 339.14 KB (10.3%)
-intl: 192.53 KB (5.85%)
-react: 121.45 KB (3.69%)
-mobx: 109.18 KB (3.32%)
-react-s-alert: 80.04 KB (2.43%)
-i18next: 77.8 KB (2.36%)
-react-router: 75.15 KB (2.28%)
-core-js: 58.33 KB (1.77%)
-lodash.defaultsdeep: 58.29 KB (1.77%)
-inline-style-prefixer: 56.87 KB (1.73%)
-lodash.merge: 56.82 KB (1.73%)
-history: 46.82 KB (1.42%)
-react-redux: 36.2 KB (1.10%)
-mobx-react: 35.19 KB (1.07%)
-axios: 35.04 KB (1.06%)
-reactabular-table: 31.45 KB (0.955%)
-checkit: 31.25 KB (0.949%)
-fbjs: 30.12 KB (0.915%)
-regenerator-runtime: 24.22 KB (0.736%)
-react-helmet: 23.75 KB (0.721%)
-ladda: 23.56 KB (0.715%)
-redux: 20.35 KB (0.618%)
-qs: 16.67 KB (0.506%)
-bowser: 16.56 KB (0.503%)
-react-ga: 15.65 KB (0.475%)
-lodash.throttle: 13 KB (0.395%)
-redux-logger: 12.79 KB (0.388%)
-redux-act: 12.72 KB (0.386%)
-deep-diff: 11.21 KB (0.340%)
-react-router-redux: 11.05 KB (0.336%)
-react-pagify: 9.7 KB (0.295%)
-i18next-browser-languagedetector: 9.08 KB (0.276%)
-debug: 8.86 KB (0.269%)
-react-event-listener: 8.2 KB (0.249%)
-babel-runtime: 7.81 KB (0.237%)
-recompose: 7.49 KB (0.227%)
-react-tap-event-plugin: 7.29 KB (0.221%)
-react-ladda: 7.27 KB (0.221%)
-style-loader: 6.74 KB (0.205%)
-lodash.keys: 6.46 KB (0.196%)
-i18next-xhr-backend: 6.33 KB (0.192%)
-lodash-es: 5.74 KB (0.174%)
-lodash.isarguments: 5.58 KB (0.169%)
-react-doc-meta: 5.51 KB (0.167%)
+llodash: 720.69 KB (22.3%)
+react-dom: 508.77 KB (15.7%)
+material-ui: 339.14 KB (10.5%)
+intl: 192.53 KB (5.95%)
+react-router: 121.97 KB (3.77%)
+  history: 46.82 KB (38.4%)
+  <self>: 75.15 KB (61.6%)
+react: 121.45 KB (3.76%)
+mobx: 109.18 KB (3.38%)
+react-s-alert: 80.04 KB (2.48%)
+i18next: 77.8 KB (2.41%)
+core-js: 58.33 KB (1.80%)
+inline-style-prefixer: 56.87 KB (1.76%)
+lodash.merge: 56.82 KB (1.76%)
+react-redux: 36.2 KB (1.12%)
+mobx-react: 35.19 KB (1.09%)
+axios: 35.04 KB (1.08%)
+reactabular-table: 31.45 KB (0.973%)
+checkit: 31.25 KB (0.966%)
+fbjs: 30.12 KB (0.932%)
+regenerator-runtime: 24.22 KB (0.749%)
+react-helmet: 23.75 KB (0.735%)
+ladda: 23.56 KB (0.729%)
+redux: 20.35 KB (0.629%)
+qs: 16.67 KB (0.515%)
+bowser: 16.56 KB (0.512%)
+react-ga: 15.65 KB (0.484%)
+redux-act: 13.15 KB (0.407%)
+lodash.throttle: 13 KB (0.402%)
+redux-logger: 12.79 KB (0.396%)
+deep-diff: 11.21 KB (0.347%)
+react-router-redux: 11.05 KB (0.342%)
+react-pagify: 9.7 KB (0.300%)
+i18next-browser-languagedetector: 9.08 KB (0.281%)
+debug: 8.86 KB (0.274%)
+react-event-listener: 8.2 KB (0.253%)
+babel-runtime: 7.81 KB (0.242%)
+recompose: 7.49 KB (0.232%)
+react-tap-event-plugin: 7.29 KB (0.225%)
+react-ladda: 7.27 KB (0.225%)
+style-loader: 6.74 KB (0.209%)
+lodash.keys: 6.46 KB (0.200%)
+i18next-xhr-backend: 6.33 KB (0.196%)
+lodash-es: 5.74 KB (0.177%)
+lodash.isarguments: 5.58 KB (0.173%)
+react-doc-meta: 5.51 KB (0.170%)
   fbjs: 2.72 KB (49.3%)
   react-side-effect: 1.23 KB (22.3%)
   <self>: 1.56 KB (28.3%)
-redux-act-async: 5.18 KB (0.157%)
-process: 5.17 KB (0.157%)
-i18next-localstorage-cache: 5.15 KB (0.156%)
-lodash.isarray: 5.04 KB (0.153%)
-react-side-effect: 4.62 KB (0.140%)
-query-string: 4.15 KB (0.126%)
-deep-equal: 3.8 KB (0.115%)
-lodash._getnative: 3.78 KB (0.115%)
-keycode: 2.7 KB (0.0819%)
-ms: 2.65 KB (0.0806%)
-object-assign: 2.06 KB (0.0625%)
-warning: 1.76 KB (0.0536%)
-invariant: 1.48 KB (0.0450%)
-css-loader: 1.42 KB (0.0432%)
-hoist-non-react-statics: 1.35 KB (0.0411%)
-shallowequal: 1.16 KB (0.0351%)
-symbol-observable: 1.12 KB (0.0341%)
-webpack: 1.09 KB (0.0330%)
-classnames: 1.08 KB (0.0327%)
-segmentize: 1 KB (0.0304%)
-exenv: 863 B (0.0256%)
-inherits: 672 B (0.0199%)
-redux-thunk: 529 B (0.0157%)
-hyphenate-style-name: 339 B (0.0101%)
-simple-assign: 281 B (0.00833%)
-strict-uri-encode: 182 B (0.00540%)
-react-addons-transition-group: 59 B (0.00175%)
-react-addons-create-fragment: 59 B (0.00175%)
-react-addons-shallow-compare: 53 B (0.00157%)
-intl .: 15 B (0.000445%)
-<self>: 229.11 KB (6.96%)
+redux-act-async: 5.38 KB (0.167%)
+process: 5.17 KB (0.160%)
+i18next-localstorage-cache: 5.15 KB (0.159%)
+lodash.isarray: 5.04 KB (0.156%)
+react-side-effect: 4.62 KB (0.143%)
+query-string: 4.15 KB (0.128%)
+deep-equal: 3.8 KB (0.118%)
+lodash._getnative: 3.78 KB (0.117%)
+keycode: 2.7 KB (0.0834%)
+ms: 2.65 KB (0.0820%)
+object-assign: 2.06 KB (0.0637%)
+warning: 1.76 KB (0.0546%)
+invariant: 1.48 KB (0.0458%)
+css-loader: 1.42 KB (0.0440%)
+hoist-non-react-statics: 1.35 KB (0.0419%)
+shallowequal: 1.16 KB (0.0358%)
+symbol-observable: 1.12 KB (0.0348%)
+webpack: 1.09 KB (0.0336%)
+classnames: 1.08 KB (0.0333%)
+segmentize: 1 KB (0.0310%)
+exenv: 863 B (0.0261%)
+inherits: 672 B (0.0203%)
+redux-thunk: 529 B (0.0160%)
+hyphenate-style-name: 339 B (0.0102%)
+simple-assign: 281 B (0.00849%)
+strict-uri-encode: 182 B (0.00550%)
+react-addons-transition-group: 59 B (0.00178%)
+react-addons-create-fragment: 59 B (0.00178%)
+react-addons-shallow-compare: 53 B (0.00160%)
+intl .: 15 B (0.000453%)
+<self>: 227.6 KB (7.04%)
 
 
 ```

@@ -4,9 +4,7 @@
   "version": "2.6.0",
   "private": false,
   "scripts": {
-    "install": "(cd client && npm install) && (cd server && npm install)",
-    "clean": "(cd client && npm clean) && (cd server && npm clean)",
-    "test": "cd client && npm test",
+    "install": "echo \"Run the command \"npm install\" in the client and in the server\"",
     "version": "npm test",
     "postversion": "git push && git push --tags"
   },

@@ -4,7 +4,7 @@ An ES6 React based frontend starter kit:
 
 * ES6/ES7 with `babel`
 * Internationalization with `i18next` and `react-intl`
-* Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`
+* Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
 * Hot reloading with `react-hot-loader`
 * Copy and paste detector with `jscpd`
 * Display lint warnings and build errors to directly to the browser with `webpack-hud`
@@ -33,14 +33,15 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm install`  | Install dependencies  |
 | `npm start`    | Start a development web server  |
 | `npm test`     |  Run the unit tests with Karma |
-| `npm run e2e`  |  Intall the Selenium driver for end to end testing |
-| `npm run selenium-install`  |  Run the end to end tests with Nigthwatch/Selenium |
-| `npm run unit-test-watch` |  Watch the code and run the unit test |
+| `npm run test:watch` |  Watch the code and run the unit test |
+| `npm run selenium-install`  |  Intall the Selenium driver for end to end testing |
+| `npm run e2e`  |  Run the end to end tests with Nigthwatch/Selenium |
 | `npm run build`| Create a production build  |
+| `npm run start:prod`| start a web server to serve the production build  |
 | `npm run bundle-size`| Create a report to show the size of each dependencies |
-| `npm run clean`| Clean the project |
 | `npm run lint`| Lint the source code |
 | `npm run cpd`| Run the copy and paste detector |
+| `npm run clean`| Clean the project |
 
 ### Install
 
@@ -77,7 +78,7 @@ Unit tests are written as `mocha` test and executed thanks to `karma`:
 To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
 
     $ npm run selenium-install
-    $ npm run nightwatch
+    $ npm run e2e
 
 The end to end tests are executed by [nightwatch](http://nightwatchjs.org/) which uses the *Selenium* driver API.
 

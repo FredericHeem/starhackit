@@ -12,7 +12,6 @@ import AnalyticsModule from './parts/analytics/AnalyticsModule';
 
 import Debug from 'debug';
 import formatter from 'utils/formatter';
-import i18n from 'utils/i18n';
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
 import rootView from './redux/rootView';
@@ -24,7 +23,7 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 const debug = new Debug("app");
 
-export default function() {
+export default function({language}) {
     debug("App begins");
 
     const rest = Rest();
@@ -53,7 +52,6 @@ export default function() {
     rest.setJwtSelector(jwt.selector(store));
 
     async function i18nInit() {
-      const language = await i18n.load();
       context.formatter.setLocale(language);
       store.dispatch(parts.core.actions.setLocale(language))
       await intl(language);

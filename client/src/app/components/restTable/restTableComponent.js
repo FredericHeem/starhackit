@@ -7,51 +7,17 @@ import segmentize from 'segmentize';
 import Spinner from 'components/spinner';
 import alertAjax from 'components/alertAjax';
 import Debug from 'debug';
-const debug = new Debug("components:resttable");
+
+const debug = new Debug("restTableComponent");
 
 import 'react-pagify/style.css';
 
-export default (context, {getData, columns}) => {
+export default (context, store, {columns}) => {
   const {tr} = context;
+
   const AlertAjax = alertAjax(context);
-  const store = mobx.observable({
-    loading: false,
-    count: 0,
-    data: [],
-    error: null,
-    pagination: {
-      page: 1,
-      perPage: 100
-    },
-    selectPage: mobx.action(async function (page) {
-      debug('onSelectPage ', page);
-      if (page <= 0) {
-        return;
-      }
-      this.loading = true;
-      store.error = null;
 
-      try {
-        const result = await getData({
-          offset: this.pagination.perPage * (page - 1),
-          limit: this.pagination.perPage
-        })
-        console.log("rx DATA ", result.data.length)
-        this.pagination.page = page;
-        this.count = result.count;
-        this.data = result.data;
-        this.loading = false;
-      } catch (error) {
-        debug('onSelectPage error ', error);
-        this.error = error;
-        this.loading = false;
-      }
-    }),
-  })
-
-  store.selectPage(1);
-
-  const Loading = observer(() => (store.loading ? <Spinner /> : null))
+  const Loading = observer((loading) => (loading === true ? <Spinner /> : null));
 
   const Error = observer(() => {
     const {error} = store;
@@ -79,7 +45,7 @@ export default (context, {getData, columns}) => {
               endPages: 3,
               sidePages: 2
             })}
-            onSelect={page => store.selectPage(page, getData)}
+            onSelect={page => store.selectPage(page)}
           >
             <Paginator.Button page={pagination.page - 1}>{tr.t('Previous') }</Paginator.Button>
 
@@ -112,7 +78,6 @@ export default (context, {getData, columns}) => {
   const TableView = observer(({onRow}) => {
     const {error} = store;
     const data = mobx.toJS(store.data)
-
     if (error) return null;
     return (
       <div>
@@ -130,11 +95,11 @@ export default (context, {getData, columns}) => {
   })
 
   function RestTable(props) {
-    debug('RestTable: ', props)
+    debug('RestTable: ', props, store);
     return (
       <div>
         <Error />
-        <Loading />
+        <Loading loading={store.loading} />
         <TableView {...props} />
       </div>
     )

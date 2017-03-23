@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import panel from 'components/panel';
 import DocTitle from 'components/docTitle';
 import restTable from 'components/restTable';
 import columns from './usersColumns';
@@ -7,6 +8,7 @@ export default function (context, {getAll}) {
   const {tr} = context;
 
   const RestTable = restTable(context, {getData: getAll, columns: columns(context)});
+  const Panel = panel(context);
 
   UsersView.propTypes = {
       actions: PropTypes.object.isRequired
@@ -16,16 +18,13 @@ export default function (context, {getAll}) {
     return (
       <div className="users-view">
         <DocTitle title="Users" />
-        <div className="panel panel-default">
-          <div className="panel-heading">{tr.t('Users')}</div>
-          <div className="panel-body">
-            <RestTable.view
-              onRow={row => ({
-              onClick: () => actions.selectOne(row.id)
-            })} rowKey='id'
-            />
-          </div>
-        </div>
+        <Panel title={tr.t('Users')}>
+          <RestTable.view
+            onRow={row => ({
+            onClick: () => actions.selectOne(row.id)
+          })} rowKey='id'
+          />
+        </Panel>
       </div>
     );
   }

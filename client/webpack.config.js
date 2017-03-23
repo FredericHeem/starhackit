@@ -54,6 +54,7 @@ module.exports = function ( options ) {
             new HtmlWebpackPlugin({
               template: 'src/index.ejs',
               title: pkg.title,
+              inject: false,
               description: pkg.description
             }),
             new webpack.DefinePlugin( {

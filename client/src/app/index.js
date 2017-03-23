@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import i18n from 'utils/i18n';
 import App from './app'
 import Debug from 'debug';
 
@@ -21,7 +22,8 @@ function hideLoading(){
 
 async function run(){
   try {
-    const app = App();
+    const language = await i18n.load();
+    const app = App({language});
     await app.start();
     const container = app.createContainer();
     hideLoading();

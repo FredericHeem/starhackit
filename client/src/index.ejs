@@ -6,6 +6,9 @@
     <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="/<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+    <% } %>
 </head>
 
 <body>
@@ -89,6 +92,10 @@
 <!--[if IE]>
 <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
 <![endif]-->
+
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
 
 </body>
 </html>

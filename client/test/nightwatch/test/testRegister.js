@@ -20,6 +20,7 @@ describe('Register', function () {
             .setValue('@usernameInput', "alice")
             .setValue('@passwordInput', 'password')
             .click('@submit')
+            .waitForElementVisible('.register-error-view', 5000)
 
         client.assert.containsText('.register-form', 'The username is already used')
     });

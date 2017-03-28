@@ -9,6 +9,6 @@ describe('DbSchema', function () {
 
     it('view the db schema', function (client) {
         client.page.dbSchema().navigate()
-            .waitForElementVisible('.schema-view', 5000)
+            .waitForElementVisible('.schema-view', 10e3)
     });
 });

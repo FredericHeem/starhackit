@@ -46,7 +46,7 @@ export default () => {
 
   function Card({title, text, icon, img, height, width}){
     return (
-      <Paper className='card'>
+      <Paper className='card grow'>
         <div className='card-container'>
           <div className="card-item">
             <h2>{title}</h2><p>{text}</p>

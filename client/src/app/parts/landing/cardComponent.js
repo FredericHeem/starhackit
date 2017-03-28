@@ -9,11 +9,11 @@ export default () => {
     icon: PropTypes.string.isRequired
   };
 
-  function MediaIcon(props){
+  function MediaIcon({icon}){
       return (
         <CardMedia>
           <FontIcon
-            className={props.icon}
+            className={icon}
             style={{fontSize:64}}
           />
         </CardMedia>
@@ -27,10 +27,10 @@ export default () => {
     width: PropTypes.string
   }
 
-  function MediaImg(props){
+  function MediaImg({img, title, height, width}){
       return (
         <div>
-          <img src={props.img} alt={props.title} height={props.height} width={props.width} />
+          <img src={img} alt={title} height={height} width={width} />
         </div>
       );
   }
@@ -38,20 +38,22 @@ export default () => {
   Card.propTypes = {
     title: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
+    width: PropTypes.string,
+    height: PropTypes.string,
     img: PropTypes.string,
     icon: PropTypes.string
   }
 
-  function Card(props){
+  function Card({title, text, icon, img, height, width}){
     return (
       <Paper className='card'>
         <div className='card-container'>
           <div className="card-item">
-            <h2>{props.title}</h2><p>{props.text}</p>
+            <h2>{title}</h2><p>{text}</p>
           </div>
           <div className="card-item">
-            {props.icon && <MediaIcon {...props} />}
-            {props.img && <MediaImg {...props} />}
+            {icon && <MediaIcon icon={icon} />}
+            {img && <MediaImg title={title} img={img} height={height} width={width} />}
           </div>
         </div>
       </Paper>

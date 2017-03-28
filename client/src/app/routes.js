@@ -1,4 +1,4 @@
-export default function Routes(store, parts) {
+export default function Routes(context, store, parts) {
 
   function isAuthenticated(param, replaceState) {
     if(!store.getState().auth.auth.authenticated){
@@ -14,7 +14,8 @@ export default function Routes(store, parts) {
         component: parts.auth.containers().app(),
         indexRoute: {
           getComponent: (nextState, cb) => require.ensure([], (require) => {
-              cb(null, require('parts/core/views/mainLanding').default)
+              const component = require('parts/landing/landingScreen').default(context);
+              cb(null, component);
             })
         },
         childRoutes: [

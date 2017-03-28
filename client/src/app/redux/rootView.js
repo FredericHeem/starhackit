@@ -10,9 +10,9 @@ import Routes from '../routes'
 import Debug from 'debug';
 const debug = new Debug("rootView");
 
-export default function RootView(store, parts){
+export default function RootView(context, store, parts){
     debug('init');
-    const routes = Routes(store, parts)
+    const routes = Routes(context, store, parts)
     const Router = parts.core.createRouter(store, routes);
     return (
       <Provider store={store}>

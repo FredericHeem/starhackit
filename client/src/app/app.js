@@ -5,6 +5,7 @@ import configureStore from './configureStore';
 
 import AuthModule from './parts/auth/authModule';
 import CoreModule from './parts/core/coreModule';
+
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
@@ -69,7 +70,7 @@ export default function({language}) {
         parts,
         store,
         createContainer(){
-            return rootView(store, parts)
+            return rootView(context, store, parts)
         },
         async start() {
             debug("start");

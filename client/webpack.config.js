@@ -107,7 +107,7 @@ module.exports = function ( options ) {
                     use: ['url-loader']
                 },
                 {
-                    test: /\.jpg|\.png|\.mp3/,
+                    test: /\.jpg/,
                     use: ['file-loader']
                 },
                 {

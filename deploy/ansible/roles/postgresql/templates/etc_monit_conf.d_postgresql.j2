@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 check process postgresql with pidfile /var/run/postgresql/{{postgresql_version}}-{{postgresql_cluster_name}}.pid
   group database
   start program = "/etc/init.d/postgresql start"

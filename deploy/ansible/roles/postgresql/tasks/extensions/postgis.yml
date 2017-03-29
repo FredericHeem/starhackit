@@ -9,6 +9,6 @@
   with_items:
     - libgeos-c1
     - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}"
-    - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}-scripts"
+    - "postgresql-{{postgresql_version}}-postgis-scripts"
   notify:
     - restart postgresql

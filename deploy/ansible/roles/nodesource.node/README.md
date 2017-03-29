@@ -1,45 +1,66 @@
-# ansible-nodejs-role
+# Ansible Role: Node.js
 
-This is an Ansible role which adds the the NodeSource APT repository and installs Node.js.
+[![Build Status](https://travis-ci.org/geerlingguy/ansible-role-nodejs.svg?branch=master)](https://travis-ci.org/geerlingguy/ansible-role-nodejs)
 
-Currently this role supports the following operating systems and releases.
+Installs Node.js on RHEL/CentOS or Debian/Ubuntu.
 
-* **Ubuntu 12.04 LTS** (Precise Pangolin)
-* **Ubuntu 14.04 LTS** (Trusty Tahr)
+## Requirements
 
-## Usage
-
-Install the playbook via Ansible Galaxy:
-
-```text
-$ ansible-galaxy install nodesource.node
-```
-
-Then configure it as follows:
-
-```yaml
-- hosts: servers
-  roles:
-     - nodesource.node
-```
+Requires the EPEL repository on RedHat/CentOS (you can install it by simply adding the `geerlingguy.repo-epel` role to your playbook).
 
 ## Role Variables
 
-- `nodejs_nodesource_pin_priority`: Pin-Priority of the NodeSource repository (default: `500`).
-- `nodejs_version`: Set Node version (options: `0.10` or `0.12` or `4.4`, default: `4.4`)
+Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-## Testing
+    nodejs_version: "0.12"
 
-To test this role using Docker:
+The Node.js version to install. "0.12" is the default and works on all supported OSes. Other versions such as "0.10", "4.x", "5.x", and "6.x" should work on the latest versions of Debian/Ubuntu and RHEL/CentOS.
 
-```
-$ docker build .
-```
+    nodejs_install_npm_user: "{{ ansible_ssh_user }}"
 
-## Author
+The user for whom the npm packages will be installed can be set here, this defaults to ansible_user
 
-Mark Wolfe <mark@wolfe.id.au>
+    npm_config_prefix: "~/.npm-global"
+
+The global installation directory. This should be writeable by the nodejs_install_npm_user.
+
+    npm_config_unsafe_perm: "false"
+
+Set to true to suppress the UID/GID switching when running package scripts. If set explicitly to false, then installing as a non-root user will fail.
+
+    nodejs_npm_global_packages: []
+
+Add a list of npm packages with a `name` and (optional) `version` to be installed globally. For example:
+
+    nodejs_npm_global_packages:
+      # Install a specific version of a package.
+      - name: jslint
+        version: 0.9.3
+      # Install the latest stable release of a package.
+      - name: node-sass
+
+## Dependencies
+
+None.
+
+## Example Playbook
+
+    - hosts: utility
+      vars_files:
+        - vars/main.yml
+      roles:
+        - geerlingguy.nodejs
+
+*Inside `vars/main.yml`*:
+
+    nodejs_npm_global_packages:
+      - name: jslint
+      - name: node-sass
 
 ## License
 
-This code is Copyright (c) 2014 NodeSource and Mark Wolfe and licenced under the MIT licence. All rights not explicitly granted in the MIT license are reserved. See the included [LICENSE.md](./LICENSE.md) file for more details.
+MIT / BSD
+
+## Author Information
+
+This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).

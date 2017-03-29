@@ -1,18 +1,27 @@
 ---
-galaxy_info:
-  author: Mark Wolfe
-  description: Installs the NodeSource Node.js binary packages
-  company: NodeSource
-  license: MIT
-  min_ansible_version: 1.2
-  platforms:
-   - name: Ubuntu
-     versions:
-       - precise
-       - trusty
-  categories:
-   - development
-   - networking
-   - packaging
-   - web
 dependencies: []
+
+galaxy_info:
+  author: geerlingguy
+  description: Node.js installation for Linux
+  company: "Midwestern Mac, LLC"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.9
+  platforms:
+    - name: EL
+      versions:
+      - 6
+      - 7
+    - name: Debian
+      versions:
+      - all
+    - name: Ubuntu
+      versions:
+      - precise
+      - raring
+      - saucy
+      - trusty
+      - xenial
+  galaxy_tags:
+    - development
+    - web

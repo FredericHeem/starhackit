@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 # PostgreSQL Client Authentication Configuration File
 # ===================================================
 #
@@ -18,7 +19,9 @@
 
 # Default:
 {% for connection in postgresql_pg_hba_default %}
+{% if connection.comment is defined %}
 # {{connection.comment}}
+{% endif %}
 {{connection.type}}  {{connection.database}}  {{connection.user}}  {{connection.address}}  {{connection.method}}
 {% endfor %}
 
@@ -34,6 +37,8 @@ host  all  all  {{host}}  trust
 
 # User custom
 {% for connection in postgresql_pg_hba_custom %}
+{% if connection.comment is defined %}
 # {{connection.comment}}
+{% endif %}
 {{connection.type}}  {{connection.database}}  {{connection.user}}  {{connection.address}}  {{connection.method}}
 {% endfor %}

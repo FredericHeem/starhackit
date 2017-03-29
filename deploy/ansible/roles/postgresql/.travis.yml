@@ -1,23 +1,55 @@
 ---
+
 language: python
 python: "2.7"
+services:
+  - docker
 
 env:
-  - POSTGRESQL_VERSION=9.3
-  - POSTGRESQL_VERSION=9.4
+  global:
+    - ROLE_GLOBALS="postgresql_shared_buffers=32MB"
+  matrix:
+    - ROLE_OPTIONS="postgresql_version=9.1" ANSIBLE_VERSION="1.9.4"
+    - ROLE_OPTIONS="postgresql_version=9.2" ANSIBLE_VERSION="1.9.4"
+    - ROLE_OPTIONS="postgresql_version=9.3" ANSIBLE_VERSION="1.9.4"
+    - ROLE_OPTIONS="postgresql_version=9.4" ANSIBLE_VERSION="1.9.4"
+    - ROLE_OPTIONS="postgresql_version=9.5" ANSIBLE_VERSION="1.9.4"
+    - ROLE_OPTIONS="postgresql_version=9.6" ANSIBLE_VERSION="1.9.4"
+    - ROLE_OPTIONS="postgresql_version=9.1" ANSIBLE_VERSION="2.1.2.0"
+    - ROLE_OPTIONS="postgresql_version=9.2" ANSIBLE_VERSION="2.1.2.0"
+    - ROLE_OPTIONS="postgresql_version=9.3" ANSIBLE_VERSION="2.1.2.0"
+    - ROLE_OPTIONS="postgresql_version=9.4" ANSIBLE_VERSION="2.1.2.0"
+    - ROLE_OPTIONS="postgresql_version=9.5" ANSIBLE_VERSION="2.1.2.0"
+    - ROLE_OPTIONS="postgresql_version=9.6" ANSIBLE_VERSION="2.1.2.0"
 
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq python-apt python-pycurl locales
+  # Remove the PostgreSQL installed by Travis
+  - sudo apt-get purge pgdg-keyring '^postgresql.*' -y
+  - sudo apt-get autoremove -y -qq
+  - sudo rm -rf /etc/postgresql
+  - sudo rm -rf /var/lib/postgresql
+  - sudo rm -f /etc/apt/sources.list.d/pgdg-source.list
+  # Install some dependencies
+  - sudo apt-get update -qq -y
+  - sudo apt-get install -qq -y python-apt python-pycurl locales
   - echo 'en_US.UTF-8 UTF-8' | sudo tee /var/lib/locales/supported.d/local
+
 install:
-  - pip install ansible==1.8.4
+  - pip install ansible=="$ANSIBLE_VERSION"
+
 script:
   - echo localhost > inventory
-  - ansible-playbook -i inventory test.yml --syntax-check
-  - ansible-playbook -i inventory test.yml --connection=local --sudo -e "postgresql_version=$POSTGRESQL_VERSION"
-  - >
-    ansible-playbook -i inventory test.yml --connection=local --sudo -e "postgresql_version=$POSTGRESQL_VERSION"
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+
+  # Syntax check
+  - ansible-playbook -i inventory tests/playbook.yml --syntax-check
+
+  # Play test
+  - ansible-playbook -i inventory tests/playbook.yml --connection=local --sudo -e "$ROLE_GLOBALS $ROLE_OPTIONS"
+
+  # Idempotence test
+  - ansible-playbook -i inventory tests/playbook.yml --connection=local --sudo -e "$ROLE_GLOBALS $ROLE_OPTIONS" > idempotence_out
+  - ./tests/idempotence_check.sh idempotence_out
+
+  # Testing with docker (experimental)
+  - docker build -f tests/Dockerfile-ubuntu14.04 -t postgres_ubuntu14.04 .
+  - docker build -f tests/Dockerfile-centos6     -t postgres_centos6     .

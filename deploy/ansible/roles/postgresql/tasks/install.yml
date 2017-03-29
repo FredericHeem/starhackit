@@ -18,7 +18,7 @@
   apt_repository:
     repo: "{{ postgresql_apt_repository }}"
     state: present
-  when: postgresql_apt_repository
+  when: postgresql_apt_repository | default('') != ''
 
 - name: PostgreSQL | Add PostgreSQL repository preferences
   template:
@@ -40,7 +40,7 @@
     state: present
     update_cache: yes
     cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
-  environment: postgresql_env
+  environment: "{{postgresql_env}}"
   with_items:
     - "postgresql-{{postgresql_version}}"
     - "postgresql-client-{{postgresql_version}}"
@@ -52,5 +52,5 @@
     state: present
     update_cache: yes
     cache_valid_time: "{{apt_cache_valid_time | default (3600)}}"
-  environment: postgresql_env
+  environment: "{{postgresql_env}}"
   when: postgresql_pgtune

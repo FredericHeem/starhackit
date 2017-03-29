@@ -1,39 +1,50 @@
-# Install Node.js using packages crafted by NodeSource
 ---
-- name: Ensure the system can use the HTTPS transport for APT
-  stat:
-    path: /usr/lib/apt/methods/https
-  register: apt_https_transport
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: Install HTTPS transport for APT
-  apt:
-    pkg: apt-transport-https
-    state: installed
-  when: not apt_https_transport.stat.exists
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
 
-- name: Import the NodeSource GPG key into apt
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
+- name: Define nodejs_install_npm_user
+  set_fact:
+    nodejs_install_npm_user: "{{ ansible_user }}"
+  when: nodejs_install_npm_user is not defined
 
-- name: Add NodeSource deb repository
-  apt_repository:
-    repo: 'deb https://deb.nodesource.com/node_{{ debian_repo_version }} {{ ansible_distribution_release }} main'
-    state: present
+- name: Create npm global directory
+  file:
+    path: "{{ npm_config_prefix }}"
+    owner: "{{ nodejs_install_npm_user }}"
+    group: "{{ nodejs_install_npm_user }}"
+    state: directory
 
-- name: Add NodeSource deb-src repository
-  apt_repository:
-    repo: 'deb-src https://deb.nodesource.com/node_{{ debian_repo_version }} {{ ansible_distribution_release }} main'
-    state: present
-
-- name: Add NodeSource repository preferences
+- name: Add npm_config_prefix bin directory to global $PATH.
   template:
-    src: etc/apt/preferences.d/deb_nodesource_com_node.pref.2
-    dest: /etc/apt/preferences.d/deb_nodesource_com_node.pref
+    src: npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    mode: 0644
 
-- name: Install Node.js
-  apt:
-    pkg:
-      - nodejs={{ nodejs_version }}*
-    state: installed
-    update_cache: yes
+# TODO: Remove this task after Ansible 2.x npm module bug is fixed. See:
+# https://github.com/ansible/ansible-modules-extras/issues/1375
+- name: Ensure npm global packages are installed.
+  npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default('latest') }}"
+    global: yes
+    state: present
+  environment:
+    NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
+    NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
+    NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm }}"
+  with_items: "{{ nodejs_npm_global_packages }}"
+
+- name: Ensure npm global packages are at the latest release.
+  npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default('latest') }}"
+    global: yes
+    state: latest
+  environment:
+    NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
+    NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
+    NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm }}"
+  with_items: "{{ nodejs_npm_global_packages }}"

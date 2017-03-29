@@ -2,17 +2,18 @@
 
 - name: PostgreSQL | Ensure PostgreSQL is running
   service:
-    name: postgresql
+    name: "{{ postgresql_service_name }}"
     state: started
 
 - name: PostgreSQL | Make sure the PostgreSQL users are present
   postgresql_user:
     name: "{{item.name}}"
-    password: "{{item.pass | default('pass')}}"
+    password: "{{ item.pass | default(omit) }}"
+    encrypted: "{{ item.encrypted | default(omit) }}"
     port: "{{postgresql_port}}"
     state: present
     login_user: "{{postgresql_admin_user}}"
-  sudo: yes
-  sudo_user: "{{postgresql_admin_user}}"
-  with_items: postgresql_users
+  become: yes
+  become_user: "{{postgresql_admin_user}}"
+  with_items: "{{postgresql_users}}"
   when: postgresql_users|length > 0

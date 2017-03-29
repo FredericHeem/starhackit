@@ -10,7 +10,7 @@
     login_host: "{{item.host | default(omit)}}"
     login_user: "{{postgresql_admin_user}}"
     role_attr_flags: "{{item.role_attr_flags | default(omit)}}"
-  sudo: yes
-  sudo_user: "{{postgresql_admin_user}}"
-  with_items: postgresql_user_privileges
+  become: yes
+  become_user: "{{postgresql_admin_user}}"
+  with_items: "{{postgresql_user_privileges}}"
   when: postgresql_users|length > 0

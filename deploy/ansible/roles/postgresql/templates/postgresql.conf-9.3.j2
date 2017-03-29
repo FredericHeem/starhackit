@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 # -----------------------------
 # PostgreSQL configuration file
 # -----------------------------
@@ -514,7 +515,11 @@ timezone_abbreviations = '{{postgresql_timezone_abbreviations}}'     # Select th
 					# You can create your own file in
 					# share/timezonesets/.
 extra_float_digits = {{postgresql_extra_float_digits}}			# min -15, max 3
+{% if not postgresql_client_encoding %}
+#client_encoding = sql_ascii		# actually, defaults to database
+{% else %}
 client_encoding = {{postgresql_client_encoding}}		# actually, defaults to database
+{% endif %}
 					# encoding
 
 # These settings are initialized by initdb, but they can be changed.

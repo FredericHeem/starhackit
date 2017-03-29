@@ -1,6 +1,17 @@
 # file: postgresql/tasks/main.yml
 
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_os_family }}.yml"
+    - "../vars/empty.yml"
+  tags: [always]
+
 - include: install.yml
+  when: ansible_pkg_mgr == "apt"
+  tags: [postgresql, postgresql-install]
+
+- include: install_yum.yml
+  when: ansible_pkg_mgr == "yum"
   tags: [postgresql, postgresql-install]
 
 - include: extensions.yml

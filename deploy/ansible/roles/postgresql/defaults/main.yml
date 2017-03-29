@@ -3,7 +3,14 @@
 # Basic settings
 postgresql_version: 9.3
 postgresql_encoding: 'UTF-8'
-postgresql_locale: 'en_US.UTF-8'
+postgresql_locale_parts:
+  - 'en_US' # Locale
+  - 'UTF-8' # Encoding
+postgresql_locale: "{{ postgresql_locale_parts | join('.') }}"
+postgresql_ctype_parts:
+  - 'en_US' # Locale
+  - 'UTF-8' # Encoding
+postgresql_ctype: "{{ postgresql_ctype_parts | join('.') }}"
 
 postgresql_admin_user: "postgres"
 postgresql_default_auth_method: "trust"
@@ -11,6 +18,7 @@ postgresql_default_auth_method: "trust"
 # The user/group that will run postgresql process or service
 postgresql_service_user: "{{ postgresql_admin_user }}"
 postgresql_service_group: "{{ postgresql_admin_user }}"
+postgresql_service_enabled: true
 
 postgresql_cluster_name: "main"
 postgresql_cluster_reset: false
@@ -25,6 +33,9 @@ postgresql_ext_postgis_version: "2.1" # be careful: check whether the postgresql
 
 # List of databases to be created (optional)
 postgresql_databases: []
+
+# List of database extensions to be created (optional)
+postgresql_database_extensions: []
 
 # List of users to be created (optional)
 postgresql_users: []
@@ -57,9 +68,11 @@ postgresql_hba_file: "{{postgresql_conf_directory}}/pg_hba.conf"
 # Ident configuration file
 postgresql_ident_file: "{{postgresql_conf_directory}}/pg_ident.conf"
 # Use data in another directory
-postgresql_data_directory: "/var/lib/postgresql/{{postgresql_version}}/{{postgresql_cluster_name}}"
+postgresql_varlib_directory_name: "postgresql"
+postgresql_data_directory: "/var/lib/{{ postgresql_varlib_directory_name }}/{{postgresql_version}}/{{postgresql_cluster_name}}"
+postgresql_pid_directory: "/var/run/postgresql"
 # If external_pid_file is not explicitly set, on extra PID file is written
-postgresql_external_pid_file: "/var/run/postgresql/{{postgresql_version}}-{{postgresql_cluster_name}}.pid"
+postgresql_external_pid_file: "{{ postgresql_pid_directory }}/{{postgresql_version}}-{{postgresql_cluster_name}}.pid"
 
 #------------------------------------------------------------------------------
 # CONNECTIONS AND AUTHENTICATION
@@ -72,8 +85,9 @@ postgresql_port: 5432
 postgresql_max_connections: 100
 postgresql_superuser_reserved_connections: 3
 
-postgresql_unix_socket_directories:
-  - /var/run/postgresql
+postgresql_unix_socket_directory: ''    # (<= 9.2)
+postgresql_unix_socket_directories:     # (>= 9.3)
+  - "{{ postgresql_pid_directory }}"
 postgresql_unix_socket_group: ''
 postgresql_unix_socket_permissions: '0777' # begin with 0 to use octal notation
 
@@ -98,12 +112,13 @@ postgresql_ssl_ciphers:
 postgresql_ssl_prefer_server_ciphers: on
 postgresql_ssl_ecdh_curve: 'prime256v1'
 postgresql_ssl_renegotiation_limit: 512MB # amount of data between renegotiations
-postgresql_ssl_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
-postgresql_ssl_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
-postgresql_ssl_ca_file: ''
-postgresql_ssl_crl_file: ''
+postgresql_ssl_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem  # (>= 9.2)
+postgresql_ssl_key_file: /etc/ssl/private/ssl-cert-snakeoil.key # (>= 9.2)
+postgresql_ssl_ca_file: ''                                      # (>= 9.2)
+postgresql_ssl_crl_file: ''                                     # (>= 9.2)
 postgresql_password_encryption: on
 postgresql_db_user_namespace: off
+postgresql_row_security: off # (>= 9.5)
 
 # Kerberos and GSSAPI
 postgresql_krb_server_keyfile: ''
@@ -126,16 +141,15 @@ postgresql_shared_buffers:       128MB # min 128kB
 postgresql_huge_pages:           try   # on, off, or try
 postgresql_temp_buffers:         8MB   # min 800kB
 
-# Note:  Increasing max_prepared_transactions costs ~600 bytes of shared memory
-# per transaction slot, plus lock space (see max_locks_per_transaction).
-# It is not advisable to set max_prepared_transactions nonzero unless you
-# actively intend to use prepared transactions.
+# Caution: it is not advisable to set max_prepared_transactions nonzero unless
+# you actively intend to use prepared transactions.
 postgresql_max_prepared_transactions: 0 # zero disables the feature
 
-postgresql_work_mem:             1MB   # min 64kB
-postgresql_maintenance_work_mem: 16MB  # min 1MB
-postgresql_autovacuum_work_mem:  -1    # min 1MB, or -1 to use maintenance_work_mem
-postgresql_max_stack_depth:      2MB   # min 100kB
+postgresql_work_mem:                   1MB      # min 64kB
+postgresql_maintenance_work_mem:       16MB     # min 1MB
+postgresql_replacement_sort_tuples:    150000   # (>= 9.6) limits use of replacement selection sort
+postgresql_autovacuum_work_mem:        -1       # min 1MB, or -1 to use maintenance_work_mem
+postgresql_max_stack_depth:            2MB      # min 100kB
 postgresql_dynamic_shared_memory_type: posix    # the default is the first option
                                                 # supported by the operating system:
                                                 #   posix
@@ -147,7 +161,7 @@ postgresql_dynamic_shared_memory_type: posix    # the default is the first optio
 
 # - Disk -
 
-# limits per-session temp file space in kB, or -1 for no limit
+# limits per-process temp file space in kB, or -1 for no limit (>= 9.2)
 postgresql_temp_file_limit: -1
 
 
@@ -170,13 +184,19 @@ postgresql_vacuum_cost_limit:      200     # 1-10000 credits
 
 postgresql_bgwriter_delay:          200ms  # 10-10000ms between rounds
 postgresql_bgwriter_lru_maxpages:   100    # 0-1000 max buffers written/round
-postgresql_bgwriter_lru_multiplier: 2.0    # 0-10.0 multipler on buffers scanned/round
+postgresql_bgwriter_lru_multiplier: 2.0    # 0-10.0 multiplier on buffers scanned/round
+postgresql_bgwriter_flush_after:    0      # (>= 9.6) 0 disables,
+                                           # default is 512kB on linux, 0 otherwise
 
 
 # - Asynchronous Behavior -
 
-postgresql_effective_io_concurrency: 1     # 1-1000; 0 disables prefetching
-postgresql_max_worker_processes: 8
+postgresql_effective_io_concurrency:        1   # 1-1000; 0 disables prefetching
+postgresql_max_worker_processes:            8   # (change requires restart)
+postgresql_max_parallel_workers_per_gather: 0   # (>= 9.6) taken from max_worker_processes
+postgresql_old_snapshot_threshold:          -1  # (>= 9.6) 1min-60d; -1 disables; 0 is immediate
+                                                # (change requires restart)
+postgresql_backend_flush_after:             0   # (>= 9.6) 0 disables, default is 0
 
 
 #------------------------------------------------------------------------------
@@ -185,15 +205,18 @@ postgresql_max_worker_processes: 8
 
 # - Settings -
 
-postgresql_wal_level: minimal  # minimal, archive, hot_standby, or logical
-postgresql_fsync: on  # turns forced synchronization on or off
+postgresql_wal_level: minimal     # minimal, archive (<= 9.5), hot_standby (<= 9.5), replica (>= 9.6), or logical
+postgresql_fsync:     on          # flush data to disk for crash safety
+                                          # (turning this off can cause
+                                          # unrecoverable data corruption)
 
 # Synchronization level:
 # - off
 # - local
 # - remote_write
+# - remote_apply (>= 9.6)
 # - on
-postgresql_synchronous_commit: on
+postgresql_synchronous_commit: "on"
 
 # The default is the first option supported by the operating system:
 # - open_datasync
@@ -205,18 +228,24 @@ postgresql_wal_sync_method: fsync
 
 # recover from partial page writes
 postgresql_full_page_writes: on
+postgresql_wal_compression: off     # (>= 9.5)
 postgresql_wal_log_hints: off       # also do full page writes of non-critical updates
 
-postgresql_wal_buffers:      -1     # min 32kB, -1 sets based on shared_buffers
-postgresql_wal_writer_delay: 200ms  # 1-10000 milliseconds
-postgresql_commit_delay:     0      # range 0-100000, in microseconds
-postgresql_commit_siblings:  5      # range 1-1000
+postgresql_wal_buffers:            -1     # min 32kB, -1 sets based on shared_buffers
+postgresql_wal_writer_delay:       200ms  # 1-10000 milliseconds
+postgresql_wal_writer_flush_after: 1MB    # (>= 9.6) 0 disables
+postgresql_commit_delay:           0      # range 0-100000, in microseconds
+postgresql_commit_siblings:        5      # range 1-1000
 
 
 # - Checkpoints -
 
-postgresql_checkpoint_segments:          3     # in logfile segments, min 1, 16MB each
-postgresql_checkpoint_timeout:           5min  # range 30s-1h
+postgresql_checkpoint_segments:          3     # (<= 9.4) in logfile segments, min 1, 16MB each
+postgresql_max_wal_size:                 1GB   # (>= 9.5)
+postgresql_min_wal_size:                 80MB  # (>= 9.5)
+postgresql_checkpoint_flush_after:       0     # (>= 9.6) 0 disables,
+                                               # default is 256kB on linux, 0 otherwise
+postgresql_checkpoint_timeout:           5min  # range 30s-1d
 postgresql_checkpoint_completion_target: 0.5   # checkpoint target duration, 0.0 - 1.0
 postgresql_checkpoint_warning:           30s   # 0 disables
 
@@ -246,18 +275,22 @@ postgresql_archive_timeout: 0
 
 # max number of walsender processes
 postgresql_max_wal_senders: 0
+postgresql_wal_sender_delay: 1s     # walsender cycle time, 1-10000 milliseconds (<= 9.1)
 
 postgresql_wal_keep_segments:  0    # in logfile segments, 16MB each; 0 disables
-postgresql_wal_sender_timeout: 60s  # in milliseconds; 0 disables
+postgresql_replication_timeout: 60s # in milliseconds; 0 disables (<= 9.2)
+postgresql_wal_sender_timeout: 60s  # in milliseconds; 0 disables (>= 9.3)
 postgresql_max_replication_slots: 0 # max number of replication slots
 
+postgresql_track_commit_timestamp: off # (>= 9.5)
 
 # - Master Server -
 
 # These settings are ignored on a standby server.
 
-# Standby servers that provide sync rep.
-# Comma-separated list of application_name from standby(s)
+# standby servers that provide sync rep.
+# number of sync standbys (>= 9.6) and comma-separated list of application_name from standby(s)
+postgresql_synchronous_standby_num_sync: ''
 postgresql_synchronous_standby_names: [] # '*' means 'all'
 
 # number of xacts by which cleanup is delayed
@@ -278,7 +311,8 @@ postgresql_wal_receiver_status_interval: 10s # 0 disables
 postgresql_hot_standby_feedback: off
 #time that receiver waits for communication from master in milliseconds
 postgresql_wal_receiver_timeout: 60s
-
+# time to wait before retrying to retrieve WAL after a failed attempt
+postgresql_wal_retrieve_retry_interval: 5s # (>= 9.5)
 
 #------------------------------------------------------------------------------
 # QUERY TUNING
@@ -286,47 +320,51 @@ postgresql_wal_receiver_timeout: 60s
 
 # - Planner Method Configuration -
 
-postgresql_enable_bitmapscan:         on
-postgresql_enable_hashagg:            on
-postgresql_enable_hashjoin:           on
-postgresql_enable_indexscan:          on
-postgresql_enable_indexonlyscan:      on
-postgresql_enable_material:           on
-postgresql_enable_mergejoin:          on
-postgresql_enable_nestloop:           on
-postgresql_enable_seqscan:            on
-postgresql_enable_sort:               on
-postgresql_enable_tidscan:            on
+postgresql_enable_bitmapscan:          on
+postgresql_enable_hashagg:             on
+postgresql_enable_hashjoin:            on
+postgresql_enable_indexscan:           on
+postgresql_enable_indexonlyscan:       on
+postgresql_enable_material:            on
+postgresql_enable_mergejoin:           on
+postgresql_enable_nestloop:            on
+postgresql_enable_seqscan:             on
+postgresql_enable_sort:                on
+postgresql_enable_tidscan:             on
 
 
 # - Planner Cost Constants -
 
-postgresql_seq_page_cost:             1.0     # measured on an arbitrary scale
-postgresql_random_page_cost:          4.0     # same scale as above
-postgresql_cpu_tuple_cost:            0.01    # same scale as above
-postgresql_cpu_index_tuple_cost:      0.005   # same scale as above
-postgresql_cpu_operator_cost:         0.0025  # same scale as above
-postgresql_effective_cache_size:      128MB
+postgresql_seq_page_cost:              1.0     # measured on an arbitrary scale
+postgresql_random_page_cost:           4.0     # same scale as above
+postgresql_cpu_tuple_cost:             0.01    # same scale as above
+postgresql_cpu_index_tuple_cost:       0.005   # same scale as above
+postgresql_cpu_operator_cost:          0.0025  # same scale as above
+postgresql_parallel_tuple_cost:        0.1     # same scale as above (>= 9.6)
+postgresql_parallel_setup_cost:        1000.0  # same scale as above (>= 9.6)
+postgresql_min_parallel_relation_size: 8MB     # (>= 9.6)
+postgresql_effective_cache_size:       128MB
 
 
 # - Genetic Query Optimizer -
 
-postgresql_geqo:                      on
-postgresql_geqo_threshold:            12
-postgresql_geqo_effort:               5    # range 1-10
-postgresql_geqo_pool_size:            0    # selects default based on effort
-postgresql_geqo_generations:          0    # selects default based on effort
-postgresql_geqo_selection_bias:       2.0  # range 1.5-2.0
-postgresql_geqo_seed:                 0.0  # range 0.0-1.0
+postgresql_geqo:                       on
+postgresql_geqo_threshold:             12
+postgresql_geqo_effort:                5    # range 1-10
+postgresql_geqo_pool_size:             0    # selects default based on effort
+postgresql_geqo_generations:           0    # selects default based on effort
+postgresql_geqo_selection_bias:        2.0  # range 1.5-2.0
+postgresql_geqo_seed:                  0.0  # range 0.0-1.0
 
 
 # - Other Planner Options -
 
-postgresql_default_statistics_target: 100        # range 1-10000
-postgresql_constraint_exclusion:      partition  # on, off, or partition
-postgresql_cursor_tuple_fraction:     0.1        # range 0.0-1.0
-postgresql_from_collapse_limit:       8
-postgresql_join_collapse_limit:       8          # 1 disables collapsing of explicit
+postgresql_default_statistics_target:  100        # range 1-10000
+postgresql_constraint_exclusion:       partition  # on, off, or partition
+postgresql_cursor_tuple_fraction:      0.1        # range 0.0-1.0
+postgresql_from_collapse_limit:        8
+postgresql_join_collapse_limit:        8          # 1 disables collapsing of explicit
+postgresql_force_parallel_mode:        off        # (>= 9.6)
 
 
 #------------------------------------------------------------------------------
@@ -337,34 +375,36 @@ postgresql_join_collapse_limit:       8          # 1 disables collapsing of expl
 
 # Valid values are combinations of stderr, csvlog, syslog, and eventlog.
 # depending on platform. Csvlog requires logging_collector to be on.
-postgresql_log_destination: stderr
+postgresql_log_destination:            stderr
 
 # Enable capturing of stderr and csvlog into log files.
 # Required to be on for csvlogs.
-postgresql_logging_collector: off
+postgresql_logging_collector:          off
 
 # These are only used if logging_collector is on:
 
 # Directory where log files are written, can be absolute or relative to PGDATA
-postgresql_log_directory: pg_log
+postgresql_log_directory:              pg_log
 # Log file name pattern, can include strftime() escapes
-postgresql_log_filename: postgresql-%Y-%m-%d_%H%M%S.log
-postgresql_log_file_mode: '0600' # begin with 0 to use octal notation
+postgresql_log_filename:               postgresql-%Y-%m-%d_%H%M%S.log
+postgresql_log_file_mode:              '0600' # begin with 0 to use octal notation
 # If on, an existing log file with the same name as the new log file will be
 # truncated rather than appended to. But such truncation only occurs on
 # time-driven rotation, not on restarts or size-driven rotation. Default is
 # off, meaning append to existing files in all cases.
-postgresql_log_truncate_on_rotation: off
+postgresql_log_truncate_on_rotation:   off
 # Automatic rotation of logfiles will happen after that time.
-postgresql_log_rotation_age: 1d
+postgresql_log_rotation_age:           1d
 # Automatic rotation of logfiles will happen after that much log output.
-postgresql_log_rotation_size: 10MB
+postgresql_log_rotation_size:          10MB
 
 # These are relevant when logging to syslog:
-postgresql_syslog_facility: LOCAL0
-postgresql_syslog_ident: postgres
-# This is only relevant when logging to eventlog (win32):
-postgresql_event_source: PostgreSQL
+postgresql_syslog_facility:            LOCAL0
+postgresql_syslog_ident:               postgres
+postgresql_syslog_sequence_numbers:    on         # (>= 9.6)
+postgresql_syslog_split_messages:      on         # (>= 9.6)
+# This is only relevant when logging to eventlog (win32) (>= 9.2):
+postgresql_event_source:               PostgreSQL
 
 
 # - When to Log -
@@ -438,6 +478,7 @@ postgresql_log_hostname:          off
 #   %p = process ID
 #   %t = timestamp without milliseconds
 #   %m = timestamp with milliseconds
+#   %n = timestamp with milliseconds (as a Unix epoch)
 #   %i = command tag
 #   %e = SQL state
 #   %c = session ID
@@ -466,7 +507,7 @@ postgresql_log_timezone:   UTC
 
 postgresql_track_activities:          on
 postgresql_track_counts:              on
-postgresql_track_io_timing:           off
+postgresql_track_io_timing:           off   # (>= 9.2)
 postgresql_track_functions:           none # none, pl, all
 postgresql_track_activity_query_size: 1024
 postgresql_update_process_title:      on
@@ -504,7 +545,7 @@ postgresql_autovacuum_vacuum_scale_factor: 0.2
 postgresql_autovacuum_analyze_scale_factor: 0.1
 # maximum XID age before forced vacuum
 postgresql_autovacuum_freeze_max_age: 200000000
-# maximum Multixact age before forced vacuum
+# maximum Multixact age before forced vacuum (>= 9.3)
 postgresql_autovacuum_multixact_freeze_max_age: 400000000
 # default vacuum cost delay for autovacuum, in milliseconds
 postgresql_autovacuum_vacuum_cost_delay: 20ms
@@ -530,16 +571,18 @@ postgresql_default_transaction_read_only:  off
 postgresql_default_transaction_deferrable: off
 postgresql_session_replication_role:       origin
 
-postgresql_statement_timeout:       0  # in milliseconds, 0 is disabled
-postgresql_lock_timeout:            0  # in milliseconds, 0 is disabled
-postgresql_vacuum_freeze_min_age:   50000000
-postgresql_vacuum_freeze_table_age: 150000000
-postgresql_vacuum_multixact_freeze_min_age: 5000000
-postgresql_vacuum_multixact_freeze_table_age: 150000000
+postgresql_statement_timeout:                     0           # in milliseconds, 0 is disabled
+postgresql_lock_timeout:                          0           # in milliseconds, 0 is disabled (>= 9.3)
+postgresql_idle_in_transaction_session_timeout:   0           # in milliseconds, 0 is disabled (>= 9.6)
+postgresql_vacuum_freeze_min_age:                 50000000
+postgresql_vacuum_freeze_table_age:               150000000
+postgresql_vacuum_multixact_freeze_min_age:       5000000     # (>= 9.3)
+postgresql_vacuum_multixact_freeze_table_age:     150000000   # (>= 9.3)
 
 postgresql_bytea_output: hex  # hex, escape
 postgresql_xmlbinary:    base64
 postgresql_xmloption:    content
+postgresql_gin_fuzzy_search_limit:  0   # (<= 9.2)
 
 
 # - Locale and Formatting -
@@ -558,18 +601,19 @@ postgresql_timezone:           UTC
 postgresql_timezone_abbreviations: Default
 
 postgresql_extra_float_digits: 0          # min -15, max 3
-postgresql_client_encoding:    sql_ascii  # 'sql_ascii' actually defaults to database encoding
+postgresql_client_encoding:    False  # actually defaults to database encoding
+                                      # 'sql_ascii', 'UTF8', ...
 
 # These settings are initialized by initdb, but they can be changed.
 
 # locale for system error message
-postgresql_lc_messages: en_US.UTF-8
+postgresql_lc_messages: "{{ postgresql_locale }}"
 # locale for monetary formatting
-postgresql_lc_monetary: en_US.UTF-8
+postgresql_lc_monetary: "{{ postgresql_locale }}"
 # locale for number formatting
-postgresql_lc_numeric: en_US.UTF-8
+postgresql_lc_numeric: "{{ postgresql_locale }}"
 # locale for time formatting
-postgresql_lc_time: en_US.UTF-8
+postgresql_lc_time: "{{ postgresql_locale }}"
 
 postgresql_default_text_search_config: pg_catalog.english
 
@@ -645,6 +689,50 @@ postgresql_env:
 # APT settings
 postgresql_apt_key_id: ACCC4CF8
 postgresql_apt_key_url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
-postgresql_apt_repository: 'deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main'
+postgresql_apt_repository: 'deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main {{postgresql_version}}'
 # Pin-Priority of PGDG repository
 postgresql_apt_pin_priority: 500
+
+# Yum settings
+postgresql_pgdg_dists:
+  RedHat: redhat
+  CentOS: centos
+  Scientific: sl
+  SLC: sl
+  OracleLinux: oraclelinux
+postgresql_pgdg_releases:
+  redhat: {
+      9.1: 8,
+      9.2: 9,
+      9.3: 3,
+      9.4: 3,
+      9.5: 3,
+      9.6: 3,
+  }
+  centos: {
+      9.1: 7,
+      9.2: 8,
+      9.3: 3,
+      9.4: 3,
+      9.5: 3,
+      9.6: 3,
+  }
+  sl: {
+      9.1: 8,
+      9.2: 9,
+      9.3: 3,
+      9.4: 3,
+      9.5: 3,
+      9.6: 3,
+  }
+  oraclelinux: {
+      9.1: 8,
+      9.2: 9,
+      9.3: 3,
+      9.4: 3,
+      9.5: 3,
+      9.6: 3,
+  }
+postgresql_version_terse: "{{ postgresql_version | replace('.', '') }}"
+postgresql_yum_repository_base_url: "http://yum.postgresql.org"
+postgresql_yum_repository_url: "{{ postgresql_yum_repository_base_url }}/{{ postgresql_version }}/{{ ansible_os_family | lower }}/rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-{{ postgresql_pgdg_dists[ansible_distribution] }}{{ postgresql_version_terse }}-{{ postgresql_version }}-{{ postgresql_pgdg_releases.get(postgresql_pgdg_dists[ansible_distribution]).get(postgresql_version) }}.noarch.rpm"

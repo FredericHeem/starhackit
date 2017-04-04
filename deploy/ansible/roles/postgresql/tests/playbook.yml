@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+  remote_user: root
+  become: yes
+  vars_files:
+    - ./vars.yml
+  roles:
+    - postgresql

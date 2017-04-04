@@ -1,0 +1,14 @@
+---
+# Using a different cluster name could cause problems with SELinux.
+# See /usr/lib/systemd/system/postgresql-*.service
+postgresql_cluster_name: "data"
+postgresql_service_name: "postgresql-{{ postgresql_version }}"
+
+postgresql_varlib_directory_name: "pgsql"
+
+# Used to execute initdb
+postgresql_bin_directory: "/usr/pgsql-{{postgresql_version}}/bin"
+
+postgresql_unix_socket_directories:
+  - "{{ postgresql_pid_directory }}"
+  - /tmp

@@ -1,0 +1,623 @@
+# {{ ansible_managed }}
+# -----------------------------
+# PostgreSQL configuration file
+# -----------------------------
+#
+# This file consists of lines of the form:
+#
+#   name = value
+#
+# (The "=" is optional.)  Whitespace may be used.  Comments are introduced with
+# "#" anywhere on a line.  The complete list of parameter names and allowed
+# values can be found in the PostgreSQL documentation.
+#
+# The commented-out settings shown in this file represent the default values.
+# Re-commenting a setting is NOT sufficient to revert it to the default value;
+# you need to reload the server.
+#
+# This file is read on server startup and when the server receives a SIGHUP
+# signal.  If you edit the file on a running system, you have to SIGHUP the
+# server for the changes to take effect, or use "pg_ctl reload".  Some
+# parameters, which are marked below, require a server shutdown and restart to
+# take effect.
+#
+# Any parameter can also be given as a command-line option to the server, e.g.,
+# "postgres -c log_connections=on".  Some parameters can be changed at run time
+# with the "SET" SQL command.
+#
+# Memory units:  kB = kilobytes        Time units:  ms  = milliseconds
+#                MB = megabytes                     s   = seconds
+#                GB = gigabytes                     min = minutes
+#                TB = terabytes                     h   = hours
+#                                                   d   = days
+
+
+#------------------------------------------------------------------------------
+# FILE LOCATIONS
+#------------------------------------------------------------------------------
+
+# The default values of these variables are driven from the -D command-line
+# option or PGDATA environment variable, represented here as ConfigDir.
+
+data_directory = '{{postgresql_data_directory}}'		# use data in another directory
+					# (change requires restart)
+hba_file = '{{postgresql_hba_file}}'	# host-based authentication file
+					# (change requires restart)
+ident_file = '{{postgresql_ident_file}}'	# ident configuration file
+					# (change requires restart)
+
+# If external_pid_file is not explicitly set, no extra PID file is written.
+external_pid_file = '{{postgresql_external_pid_file}}'			# write an extra PID file
+					# (change requires restart)
+
+
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+
+# - Connection Settings -
+
+listen_addresses = '{{postgresql_listen_addresses|join(',')}}'		# what IP address(es) to listen on;
+					# comma-separated list of addresses;
+					# defaults to 'localhost'; use '*' for all
+					# (change requires restart)
+port = {{postgresql_port}}				# (change requires restart)
+max_connections = {{postgresql_max_connections}}			# (change requires restart)
+# Note:  Increasing max_connections costs ~400 bytes of shared memory per
+# connection slot, plus lock space (see max_locks_per_transaction).
+superuser_reserved_connections = {{postgresql_superuser_reserved_connections}}	# (change requires restart)
+unix_socket_directories = '{{postgresql_unix_socket_directories|join(',')}}'	# comma-separated list of directories
+					# (change requires restart)
+unix_socket_group = '{{postgresql_unix_socket_group}}'			# (change requires restart)
+unix_socket_permissions = {{postgresql_unix_socket_permissions}}		# begin with 0 to use octal notation
+					# (change requires restart)
+bonjour = {{'on' if postgresql_bonjour else 'off'}}				# advertise server via Bonjour
+					# (change requires restart)
+bonjour_name = '{{postgresql_bonjour_name}}'			# defaults to the computer name
+					# (change requires restart)
+
+# - Security and Authentication -
+
+authentication_timeout = {{postgresql_authentication_timeout}}		# 1s-600s
+ssl = {{'on' if postgresql_ssl else 'off'}}				# (change requires restart)
+ssl_ciphers = '{{postgresql_ssl_ciphers|join(':')}}'	# allowed SSL ciphers
+					# (change requires restart)
+ssl_prefer_server_ciphers = {{postgresql_ssl_prefer_server_ciphers}}		# (change requires restart)
+ssl_ecdh_curve = '{{postgresql_ssl_ecdh_curve}}'		# (change requires restart)
+ssl_cert_file = '{{postgresql_ssl_cert_file}}'		# (change requires restart)
+ssl_key_file = '{{postgresql_ssl_key_file}}'		# (change requires restart)
+ssl_ca_file = '{{postgresql_ssl_ca_file}}'			# (change requires restart)
+ssl_crl_file = '{{postgresql_ssl_crl_file}}'			# (change requires restart)
+password_encryption = {{'on' if postgresql_password_encryption else 'off'}}
+db_user_namespace = {{'on' if postgresql_db_user_namespace else 'off'}}
+row_security = {{'on' if postgresql_row_security else 'off'}}
+
+# GSSAPI using Kerberos
+krb_server_keyfile = '{{postgresql_krb_server_keyfile}}'
+krb_caseins_users = {{'on' if postgresql_db_user_namespace else 'off'}}
+
+# - TCP Keepalives -
+# see "man 7 tcp" for details
+
+tcp_keepalives_idle = {{postgresql_tcp_keepalives_idle}}		# TCP_KEEPIDLE, in seconds;
+					# 0 selects the system default
+tcp_keepalives_interval = {{postgresql_tcp_keepalives_interval}}		# TCP_KEEPINTVL, in seconds;
+					# 0 selects the system default
+tcp_keepalives_count = {{postgresql_tcp_keepalives_count}}		# TCP_KEEPCNT;
+					# 0 selects the system default
+
+
+#------------------------------------------------------------------------------
+# RESOURCE USAGE (except WAL)
+#------------------------------------------------------------------------------
+
+# - Memory -
+
+shared_buffers = {{postgresql_shared_buffers}}			# min 128kB
+					# (change requires restart)
+huge_pages = {{postgresql_huge_pages}}			# on, off, or try
+					# (change requires restart)
+temp_buffers = {{postgresql_temp_buffers}}			# min 800kB
+max_prepared_transactions = {{postgresql_max_prepared_transactions}}		# zero disables the feature
+					# (change requires restart)
+# Note:  Increasing max_prepared_transactions costs ~600 bytes of shared memory
+# per transaction slot, plus lock space (see max_locks_per_transaction).
+# It is not advisable to set max_prepared_transactions nonzero unless you
+# actively intend to use prepared transactions.
+work_mem = {{postgresql_work_mem}}				# min 64kB
+maintenance_work_mem = {{postgresql_maintenance_work_mem}}		# min 1MB
+autovacuum_work_mem = {{postgresql_autovacuum_work_mem}}		# min 1MB, or -1 to use maintenance_work_mem
+max_stack_depth = {{postgresql_max_stack_depth}}			# min 100kB
+dynamic_shared_memory_type = {{postgresql_dynamic_shared_memory_type}}	# the default is the first option
+					# supported by the operating system:
+					#   posix
+					#   sysv
+					#   windows
+					#   mmap
+					# use none to disable dynamic shared memory
+
+# - Disk -
+
+temp_file_limit = {{postgresql_temp_file_limit}}			# limits per-session temp file space
+					# in kB, or -1 for no limit
+
+# - Kernel Resource Usage -
+
+max_files_per_process = {{postgresql_max_files_per_process}}		# min 25
+					# (change requires restart)
+shared_preload_libraries = '{{postgresql_shared_preload_libraries|join(',')}}'		# (change requires restart)
+
+# - Cost-Based Vacuum Delay -
+
+vacuum_cost_delay = {{postgresql_vacuum_cost_delay}}			# 0-100 milliseconds
+vacuum_cost_page_hit = {{postgresql_vacuum_cost_page_hit}}		# 0-10000 credits
+vacuum_cost_page_miss = {{postgresql_vacuum_cost_page_miss}}		# 0-10000 credits
+vacuum_cost_page_dirty = {{postgresql_vacuum_cost_page_dirty}}		# 0-10000 credits
+vacuum_cost_limit = {{postgresql_vacuum_cost_limit}}		# 1-10000 credits
+
+# - Background Writer -
+
+bgwriter_delay = {{postgresql_bgwriter_delay}}			# 10-10000ms between rounds
+bgwriter_lru_maxpages = {{postgresql_bgwriter_lru_maxpages}}		# 0-1000 max buffers written/round
+bgwriter_lru_multiplier = {{postgresql_bgwriter_lru_multiplier}}		# 0-10.0 multipler on buffers scanned/round
+
+# - Asynchronous Behavior -
+
+effective_io_concurrency = {{postgresql_effective_io_concurrency}}		# 1-1000; 0 disables prefetching
+max_worker_processes = {{postgresql_max_worker_processes}}
+
+
+#------------------------------------------------------------------------------
+# WRITE AHEAD LOG
+#------------------------------------------------------------------------------
+
+# - Settings -
+
+wal_level = {{postgresql_wal_level}}			# minimal, archive, hot_standby, or logical
+					# (change requires restart)
+fsync = {{'on' if postgresql_fsync else 'off'}}				# turns forced synchronization on or off
+synchronous_commit = {{postgresql_synchronous_commit}}		# synchronization level;
+					# off, local, remote_write, or on
+wal_sync_method = {{postgresql_wal_sync_method}}		# the default is the first option
+					# supported by the operating system:
+					#   open_datasync
+					#   fdatasync (default on Linux)
+					#   fsync
+					#   fsync_writethrough
+					#   open_sync
+full_page_writes = {{'on' if postgresql_full_page_writes else 'off'}}			# recover from partial page writes
+wal_compression = {{ 'on' if postgresql_wal_compression else 'off' }}
+wal_log_hints = {{postgresql_wal_log_hints}}			# also do full page writes of non-critical updates
+					# (change requires restart)
+wal_buffers = {{postgresql_wal_buffers}}			# min 32kB, -1 sets based on shared_buffers
+					# (change requires restart)
+wal_writer_delay = {{postgresql_wal_writer_delay}}		# 1-10000 milliseconds
+
+commit_delay = {{postgresql_commit_delay}}			# range 0-100000, in microseconds
+commit_siblings  = {{postgresql_commit_siblings}}			# range 1-1000
+
+# - Checkpoints -
+
+checkpoint_timeout = {{postgresql_checkpoint_timeout}}		# range 30s-1h
+max_wal_size = {{ postgresql_max_wal_size if postgresql_max_wal_size or '1G' }}
+min_wal_size = {{ postgresql_min_wal_size if postgresql_min_wal_size or '80MB' }}
+checkpoint_completion_target = {{postgresql_checkpoint_completion_target}}	# checkpoint target duration, 0.0 - 1.0
+checkpoint_warning = {{postgresql_checkpoint_warning}}		# 0 disables
+
+# - Archiving -
+
+archive_mode = {{'on' if postgresql_archive_mode else 'off'}} # enables archiving; off, on, or always
+archive_command = '{{postgresql_archive_command}}'            # command to use to archive a logfile segment
+				# placeholders: %p = path of file to archive
+				#               %f = file name only
+				# e.g. 'test ! -f /mnt/server/archivedir/%f && cp %p /mnt/server/archivedir/%f'
+archive_timeout = {{postgresql_archive_timeout}}		# force a logfile segment switch after this
+				# number of seconds; 0 disables
+
+
+#------------------------------------------------------------------------------
+# REPLICATION
+#------------------------------------------------------------------------------
+
+# - Sending Server(s) -
+
+# Set these on the master and on any standby that will send replication data.
+
+max_wal_senders = {{postgresql_max_wal_senders}}		# max number of walsender processes
+				# (change requires restart)
+wal_keep_segments = {{postgresql_wal_keep_segments}}		# in logfile segments, 16MB each; 0 disables
+wal_sender_timeout = {{postgresql_wal_sender_timeout}}	# in milliseconds; 0 disables
+
+max_replication_slots = {{postgresql_max_replication_slots}}	# max number of replication slots
+				# (change requires restart)
+
+track_commit_timestamp = {{'on' if postgresql_track_commit_timestamp else 'off' }}
+
+# - Master Server -
+
+# These settings are ignored on a standby server.
+
+synchronous_standby_names = '{{postgresql_synchronous_standby_names|join(',')}}'	# standby servers that provide sync rep
+				# comma-separated list of application_name
+				# from standby(s); '*' = all
+vacuum_defer_cleanup_age = {{postgresql_vacuum_defer_cleanup_age}}	# number of xacts by which cleanup is delayed
+
+# - Standby Servers -
+
+# These settings are ignored on a master server.
+
+hot_standby = {{'on' if postgresql_hot_standby else 'off'}}			# "on" allows queries during recovery
+					# (change requires restart)
+max_standby_archive_delay = {{postgresql_max_standby_archive_delay}}	# max delay before canceling queries
+					# when reading WAL from archive;
+					# -1 allows indefinite delay
+max_standby_streaming_delay = {{postgresql_max_standby_streaming_delay}}	# max delay before canceling queries
+					# when reading streaming WAL;
+					# -1 allows indefinite delay
+wal_receiver_status_interval = {{postgresql_wal_receiver_status_interval}}	# send replies at least this often
+					# 0 disables
+hot_standby_feedback = {{'on' if postgresql_hot_standby_feedback or 'off'}}		# send info from standby to prevent
+					# query conflicts
+wal_receiver_timeout = {{postgresql_wal_receiver_timeout}}		# time that receiver waits for
+					# communication from master
+					# in milliseconds; 0 disables
+
+wal_retrieve_retry_interval = {{postgresql_wal_retrieve_retry_interval}}
+
+#------------------------------------------------------------------------------
+# QUERY TUNING
+#------------------------------------------------------------------------------
+
+# - Planner Method Configuration -
+
+enable_bitmapscan = {{'on' if postgresql_enable_bitmapscan else 'off'}}
+enable_hashagg = {{'on' if postgresql_enable_hashagg else 'off'}}
+enable_hashjoin = {{'on' if postgresql_enable_hashjoin else 'off'}}
+enable_indexscan = {{'on' if postgresql_enable_indexscan else 'off'}}
+enable_indexonlyscan = {{'on' if postgresql_enable_indexonlyscan else 'off'}}
+enable_material = {{'on' if postgresql_enable_material else 'off'}}
+enable_mergejoin = {{'on' if postgresql_enable_mergejoin else 'off'}}
+enable_nestloop = {{'on' if postgresql_enable_nestloop else 'off'}}
+enable_seqscan = {{'on' if postgresql_enable_seqscan else 'off'}}
+enable_sort = {{'on' if postgresql_enable_sort else 'off'}}
+enable_tidscan = {{'on' if postgresql_enable_tidscan else 'off'}}
+
+# - Planner Cost Constants -
+
+seq_page_cost = {{postgresql_seq_page_cost}}			# measured on an arbitrary scale
+random_page_cost = {{postgresql_random_page_cost}}			# same scale as above
+cpu_tuple_cost = {{postgresql_cpu_tuple_cost}}			# same scale as above
+cpu_index_tuple_cost = {{postgresql_cpu_index_tuple_cost}}		# same scale as above
+cpu_operator_cost = {{postgresql_cpu_operator_cost}}		# same scale as above
+effective_cache_size = {{postgresql_effective_cache_size}}
+
+# - Genetic Query Optimizer -
+
+geqo = {{'on' if postgresql_enable_tidscan else 'off'}}
+geqo_threshold = {{postgresql_geqo_threshold}}
+geqo_effort = {{postgresql_geqo_effort}}			# range 1-10
+geqo_pool_size = {{postgresql_geqo_pool_size}}			# selects default based on effort
+geqo_generations = {{postgresql_geqo_generations}}			# selects default based on effort
+geqo_selection_bias = {{postgresql_geqo_selection_bias}}		# range 1.5-2.0
+geqo_seed = {{postgresql_geqo_seed}}			# range 0.0-1.0
+
+# - Other Planner Options -
+
+default_statistics_target = {{postgresql_default_statistics_target}}	# range 1-10000
+constraint_exclusion = {{postgresql_constraint_exclusion}}	# on, off, or partition
+cursor_tuple_fraction = {{postgresql_cursor_tuple_fraction}}		# range 0.0-1.0
+from_collapse_limit = {{postgresql_from_collapse_limit}}
+join_collapse_limit = {{postgresql_join_collapse_limit}}		# 1 disables collapsing of explicit
+					# JOIN clauses
+
+
+#------------------------------------------------------------------------------
+# ERROR REPORTING AND LOGGING
+#------------------------------------------------------------------------------
+
+# - Where to Log -
+
+log_destination = '{{postgresql_log_destination}}'		# Valid values are combinations of
+					# stderr, csvlog, syslog, and eventlog,
+					# depending on platform.  csvlog
+					# requires logging_collector to be on.
+
+# This is used when logging to stderr:
+logging_collector = {{'on' if postgresql_logging_collector else 'off'}}		# Enable capturing of stderr and csvlog
+					# into log files. Required to be on for
+					# csvlogs.
+					# (change requires restart)
+
+# These are only used if logging_collector is on:
+log_directory = '{{postgresql_log_directory}}'		# directory where log files are written,
+					# can be absolute or relative to PGDATA
+log_filename = '{{postgresql_log_filename}}'	# log file name pattern,
+					# can include strftime() escapes
+log_file_mode = {{postgresql_log_file_mode}}			# creation mode for log files,
+					# begin with 0 to use octal notation
+log_truncate_on_rotation = {{'on' if postgresql_log_truncate_on_rotation else 'off'}}		# If on, an existing log file with the
+					# same name as the new log file will be
+					# truncated rather than appended to.
+					# But such truncation only occurs on
+					# time-driven rotation, not on restarts
+					# or size-driven rotation.  Default is
+					# off, meaning append to existing files
+					# in all cases.
+log_rotation_age = {{postgresql_log_rotation_age}}			# Automatic rotation of logfiles will
+					# happen after that time.  0 disables.
+log_rotation_size = {{postgresql_log_rotation_size}}		# Automatic rotation of logfiles will
+					# happen after that much log output.
+					# 0 disables.
+
+# These are relevant when logging to syslog:
+syslog_facility = '{{postgresql_syslog_facility}}'
+syslog_ident = '{{postgresql_syslog_ident}}'
+
+# This is only relevant when logging to eventlog (win32):
+event_source = '{{postgresql_event_source}}'
+
+# - When to Log -
+
+client_min_messages = {{postgresql_client_min_messages}}		# values in order of decreasing detail:
+					#   debug5
+					#   debug4
+					#   debug3
+					#   debug2
+					#   debug1
+					#   log
+					#   notice
+					#   warning
+					#   error
+
+log_min_messages = {{postgresql_log_min_messages}}		# values in order of decreasing detail:
+					#   debug5
+					#   debug4
+					#   debug3
+					#   debug2
+					#   debug1
+					#   info
+					#   notice
+					#   warning
+					#   error
+					#   log
+					#   fatal
+					#   panic
+					#
+log_min_error_statement = {{postgresql_log_min_error_statement}}	# values in order of decreasing detail:
+					#   debug5
+					#   debug4
+					#   debug3
+					#   debug2
+					#   debug1
+					#   info
+					#   notice
+					#   warning
+					#   error
+					#   log
+					#   fatal
+					#   panic (effectively off)
+
+log_min_duration_statement = {{postgresql_log_min_duration_statement}}	# -1 is disabled, 0 logs all statements
+					# and their durations, > 0 logs only
+					# statements running at least this number
+					# of milliseconds
+
+
+# - What to Log -
+
+debug_print_parse = {{'on' if postgresql_debug_print_parse else 'off'}}
+debug_print_rewritten = {{'on' if postgresql_debug_print_rewritten else 'off'}}
+debug_print_plan = {{'on' if postgresql_debug_print_plan else 'off'}}
+debug_pretty_print = {{'on' if postgresql_debug_pretty_print else 'off'}}
+log_checkpoints = {{'on' if postgresql_log_checkpoints else 'off'}}
+log_connections = {{'on' if postgresql_log_connections else 'off'}}
+log_disconnections = {{'on' if postgresql_log_disconnections else 'off'}}
+log_duration = {{'on' if postgresql_log_duration else 'off'}}
+log_error_verbosity = {{postgresql_log_error_verbosity}}		# terse, default, or verbose messages
+log_hostname = {{'on' if postgresql_log_duration else 'off'}}
+log_line_prefix = '{{postgresql_log_line_prefix}}'			# special values:
+					#   %a = application name
+					#   %u = user name
+					#   %d = database name
+					#   %r = remote host and port
+					#   %h = remote host
+					#   %p = process ID
+					#   %t = timestamp without milliseconds
+					#   %m = timestamp with milliseconds
+					#   %i = command tag
+					#   %e = SQL state
+					#   %c = session ID
+					#   %l = session line number
+					#   %s = session start timestamp
+					#   %v = virtual transaction ID
+					#   %x = transaction ID (0 if none)
+					#   %q = stop here in non-session
+					#        processes
+					#   %% = '%'
+					# e.g. '<%u%%%d> '
+log_lock_waits = {{'on' if postgresql_log_lock_waits else 'off'}}			# log lock waits >= deadlock_timeout
+log_statement = '{{postgresql_log_statement}}'			# none, ddl, mod, all
+log_temp_files = {{postgresql_log_temp_files}}			# log temporary files equal or larger
+					# than the specified size in kilobytes;
+					# -1 disables, 0 logs all temp files
+log_timezone = '{{postgresql_log_timezone}}'
+
+
+#------------------------------------------------------------------------------
+# RUNTIME STATISTICS
+#------------------------------------------------------------------------------
+
+# - Query/Index Statistics Collector -
+
+track_activities = {{'on' if postgresql_track_activities else 'off'}}
+track_counts = {{'on' if postgresql_track_counts else 'off'}}
+track_io_timing = {{'on' if postgresql_track_io_timing else 'off'}}
+track_functions = {{postgresql_track_functions}}			# none, pl, all
+track_activity_query_size = {{postgresql_track_activity_query_size}}	# (change requires restart)
+update_process_title = {{'on' if postgresql_update_process_title else 'off'}}
+stats_temp_directory = '{{postgresql_stats_temp_directory}}'
+
+
+# - Statistics Monitoring -
+
+log_parser_stats = {{'on' if postgresql_log_parser_stats else 'off'}}
+log_planner_stats = {{'on' if postgresql_log_planner_stats else 'off'}}
+log_executor_stats = {{'on' if postgresql_log_executor_stats else 'off'}}
+log_statement_stats = {{'on' if postgresql_log_statement_stats else 'off'}}
+
+
+#------------------------------------------------------------------------------
+# AUTOVACUUM PARAMETERS
+#------------------------------------------------------------------------------
+
+autovacuum = {{'on' if postgresql_autovacuum else 'off'}}			# Enable autovacuum subprocess?  'on'
+					# requires track_counts to also be on.
+log_autovacuum_min_duration = {{postgresql_log_autovacuum_min_duration}}	# -1 disables, 0 logs all actions and
+					# their durations, > 0 logs only
+					# actions running at least this number
+					# of milliseconds.
+autovacuum_max_workers = {{postgresql_autovacuum_max_workers}}		# max number of autovacuum subprocesses
+					# (change requires restart)
+autovacuum_naptime = {{postgresql_autovacuum_naptime}}		# time between autovacuum runs
+autovacuum_vacuum_threshold = {{postgresql_autovacuum_vacuum_threshold}}	# min number of row updates before
+					# vacuum
+autovacuum_analyze_threshold = {{postgresql_autovacuum_analyze_threshold}}	# min number of row updates before
+					# analyze
+autovacuum_vacuum_scale_factor = {{postgresql_autovacuum_vacuum_scale_factor}}	# fraction of table size before vacuum
+autovacuum_analyze_scale_factor = {{postgresql_autovacuum_analyze_scale_factor}}	# fraction of table size before analyze
+autovacuum_freeze_max_age = {{postgresql_autovacuum_freeze_max_age}}	# maximum XID age before forced vacuum
+					# (change requires restart)
+autovacuum_multixact_freeze_max_age = {{postgresql_autovacuum_multixact_freeze_max_age}}	# maximum multixact age
+					# before forced vacuum
+					# (change requires restart)
+autovacuum_vacuum_cost_delay = {{postgresql_autovacuum_vacuum_cost_delay}}	# default vacuum cost delay for
+					# autovacuum, in milliseconds;
+					# -1 means use vacuum_cost_delay
+autovacuum_vacuum_cost_limit = {{postgresql_autovacuum_vacuum_cost_limit}}	# default vacuum cost limit for
+					# autovacuum, -1 means use
+					# vacuum_cost_limit
+
+
+#------------------------------------------------------------------------------
+# CLIENT CONNECTION DEFAULTS
+#------------------------------------------------------------------------------
+
+# - Statement Behavior -
+
+search_path = '{{postgresql_search_path|join(',')}}'		# schema names
+default_tablespace = '{{postgresql_default_tablespace}}'		# a tablespace name, '' uses the default
+temp_tablespaces = '{{postgresql_temp_tablespaces|join(',')}}'			# a list of tablespace names, '' uses
+					# only default tablespace
+check_function_bodies = {{'on' if postgresql_check_function_bodies else 'off'}}
+default_transaction_isolation = '{{postgresql_default_transaction_isolation}}'
+default_transaction_read_only = {{'on' if postgresql_default_transaction_read_only else 'off'}}
+default_transaction_deferrable = {{'on' if postgresql_default_transaction_deferrable else 'off'}}
+session_replication_role = '{{postgresql_session_replication_role}}'
+statement_timeout = {{postgresql_statement_timeout}}			# in milliseconds, 0 is disabled
+lock_timeout = {{postgresql_lock_timeout}}			# in milliseconds, 0 is disabled
+vacuum_freeze_min_age = {{postgresql_vacuum_freeze_min_age}}
+vacuum_freeze_table_age = {{postgresql_vacuum_freeze_table_age}}
+vacuum_multixact_freeze_min_age = {{postgresql_vacuum_multixact_freeze_min_age}}
+vacuum_multixact_freeze_table_age = {{postgresql_vacuum_multixact_freeze_table_age}}
+bytea_output = '{{postgresql_bytea_output}}'			# hex, escape
+xmlbinary = '{{postgresql_xmlbinary}}'
+xmloption = '{{postgresql_xmloption}}'
+
+# - Locale and Formatting -
+
+datestyle = '{{postgresql_datestyle|join(',')}}'
+intervalstyle = '{{postgresql_intervalstyle}}'
+timezone = '{{postgresql_timezone}}'
+timezone_abbreviations = '{{postgresql_timezone_abbreviations}}'     # Select the set of available time zone
+					# abbreviations.  Currently, there are
+					#   Default
+					#   Australia (historical usage)
+					#   India
+					# You can create your own file in
+					# share/timezonesets/.
+extra_float_digits = {{postgresql_extra_float_digits}}			# min -15, max 3
+{% if not postgresql_client_encoding %}
+#client_encoding = sql_ascii		# actually, defaults to database
+{% else %}
+client_encoding = {{postgresql_client_encoding}}		# actually, defaults to database
+{% endif %}
+					# encoding
+
+# These settings are initialized by initdb, but they can be changed.
+lc_messages = '{{postgresql_lc_messages}}'			# locale for system error message
+					# strings
+lc_monetary = '{{postgresql_lc_monetary}}'			# locale for monetary formatting
+lc_numeric = '{{postgresql_lc_numeric}}'			# locale for number formatting
+lc_time = '{{postgresql_lc_time}}'				# locale for time formatting
+
+# default configuration for text search
+default_text_search_config = '{{postgresql_default_text_search_config}}'
+
+# - Other Defaults -
+
+dynamic_library_path = '{{postgresql_dynamic_library_path}}'
+local_preload_libraries = '{{postgresql_local_preload_libraries|join(',')}}'
+session_preload_libraries = '{{postgresql_session_preload_libraries|join(',')}}'
+
+
+#------------------------------------------------------------------------------
+# LOCK MANAGEMENT
+#------------------------------------------------------------------------------
+
+deadlock_timeout = {{postgresql_deadlock_timeout}}
+max_locks_per_transaction = {{postgresql_max_locks_per_transaction}}		# min 10
+					# (change requires restart)
+# Note:  Each lock table slot uses ~270 bytes of shared memory, and there are
+# max_locks_per_transaction * (max_connections + max_prepared_transactions)
+# lock table slots.
+max_pred_locks_per_transaction = {{postgresql_max_pred_locks_per_transaction}}	# min 10
+					# (change requires restart)
+
+
+#------------------------------------------------------------------------------
+# VERSION/PLATFORM COMPATIBILITY
+#------------------------------------------------------------------------------
+
+# - Previous PostgreSQL Versions -
+
+array_nulls = {{'on' if postgresql_array_nulls else 'off'}}
+backslash_quote = {{postgresql_backslash_quote}}	# on, off, or safe_encoding
+default_with_oids = {{'on' if postgresql_default_with_oids else 'off'}}
+escape_string_warning = {{'on' if postgresql_escape_string_warning else 'off'}}
+lo_compat_privileges = {{'on' if postgresql_lo_compat_privileges else 'off'}}
+quote_all_identifiers = {{'on' if postgresql_quote_all_identifiers else 'off'}}
+sql_inheritance = {{'on' if postgresql_sql_inheritance else 'off'}}
+standard_conforming_strings = {{'on' if postgresql_standard_conforming_strings else 'off'}}
+synchronize_seqscans = {{'on' if postgresql_synchronize_seqscans else 'off'}}
+
+# - Other Platforms and Clients -
+
+transform_null_equals = {{'on' if postgresql_transform_null_equals else 'off'}}
+
+
+#------------------------------------------------------------------------------
+# ERROR HANDLING
+#------------------------------------------------------------------------------
+
+exit_on_error = {{'on' if postgresql_exit_on_error else 'off'}}			# terminate session on any error?
+restart_after_crash = {{'on' if postgresql_restart_after_crash else 'off'}}		# reinitialize after backend crash?
+
+
+#------------------------------------------------------------------------------
+# CONFIG FILE INCLUDES
+#------------------------------------------------------------------------------
+
+# These options allow settings to be loaded from files other than the
+# default postgresql.conf.
+
+include_dir = 'conf.d'			# include files ending in '.conf' from
+					# directory 'conf.d'
+#include_if_exists = 'exists.conf'	# include file only if it exists
+#include = 'special.conf'		# include file
+
+
+#------------------------------------------------------------------------------
+# CUSTOMIZED OPTIONS
+#------------------------------------------------------------------------------
+
+# Add settings for extensions here

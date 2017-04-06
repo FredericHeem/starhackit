@@ -111,7 +111,7 @@ export default function ({context, rest}) {
     function merge(profile, response) {
       profile.username = response.username
       profile.email = response.email
-      profile.profile = response.profile
+      profile.profile = response.profile || {biography: ""}
     }
 
     return () => next => action => {

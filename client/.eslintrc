@@ -50,7 +50,7 @@
         "no-labels": [2],
         "indent": 0,
         "no-mixed-spaces-and-tabs": 0,
-        "camelcase": [2, {"properties": "never"}],
+        "camelcase": 0,
         "semi": [0, "always"],
 
         "jsx-extras/jsx-no-string-literals": 1,

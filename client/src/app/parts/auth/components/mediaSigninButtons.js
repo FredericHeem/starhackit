@@ -30,12 +30,25 @@ export default ({tr}) => {
     );
   }
 
+  function OpenBank() {
+    return (
+      <div className="btn-social-login">
+        <RaisedButton
+          style={{
+          width: '100%'
+        }} label={`${tr.t("Sign in with")} OpenBank`} linkButton href="/api/v1/crossbank/login"
+        />
+      </div>
+    );
+  }
+
   function MediaSignin() {
     const {socialAuth = {}} = config;
     return (
       <div className="media-signin-buttons">
         {socialAuth.facebook && <Facebook />}
         {socialAuth.fidor && <Fidor />}
+        {socialAuth.crossbank && <OpenBank />}
       </div>
     )
   }

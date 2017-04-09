@@ -114,7 +114,9 @@ Beside creating an account with username and password, this starter kit supports
 
 [passportjs](http://passportjs.org/) has more than 300 different strategies to choose from.
 
-Example of configuration for the Facebook authentication:
+### Facebook authentication
+
+Here is the configuration for the Facebook authentication:
 
 ```
 "authentication":{
@@ -122,6 +124,26 @@ Example of configuration for the Facebook authentication:
     "clientID":"",
     "clientSecret":"",
     "callbackURL": "http://localhost:3000/v1/auth/facebook/callback"
+  }
+}
+```
+
+### Open banking authentication
+
+Get ready to create a new Fintech application with the [Open Banking API](https://github.com/OpenBankProject/OBP-API)
+
+OAuth and direct authentication as well as the basics operations (banks, accounts transactions) are already implemented and tested.
+
+As an application developer, create an account and API keys at the [banking open project sandbox](https://apisandbox.openbankproject.com/)
+
+```
+"authentication":{
+  "crossBank": {
+    "apiHost": "https://apisandbox.openbankproject.com",
+    "consumerKey": "",
+    "consumerSecret": "",
+    "callbackURL": "http://127.0.0.1:9000/api/v1/crossBank/authCallback",
+    "redirectTo": "http://127.0.0.1:8080/crossbank"
   }
 }
 ```

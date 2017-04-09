@@ -19,12 +19,10 @@ export default ({tr}) => {
     }
 
     return (
-      <Paper className='profile-view view'>
+      <Paper className='view'>
         <form
-          className="form-horizontal"
           onSubmit={(e) => e.preventDefault()}
         >
-
           <h3>{tr.t('My Profile') }</h3>
           <div>
             <TextField
@@ -32,8 +30,6 @@ export default ({tr}) => {
               floatingLabelText={tr.t('Username')}
               value={store.username}
               disabled
-              onChange={(e) => { store.username = e.target.value }}
-              errorText={errors.username && errors.username[0]}
             />
             <TextField
               id='email'

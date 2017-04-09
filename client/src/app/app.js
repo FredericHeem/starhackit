@@ -9,6 +9,7 @@ import CoreModule from './parts/core/coreModule';
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
+import CrossBankModule from './parts/crossbank/crossBankModule';
 import AnalyticsModule from './parts/analytics/AnalyticsModule';
 
 import Debug from 'debug';
@@ -44,7 +45,8 @@ export default function({language}) {
       profile: ProfileModule(partOptions),
       admin: AdminModule(partOptions),
       db: DbModule(partOptions),
-      analytics: AnalyticsModule(partOptions)
+      analytics: AnalyticsModule(partOptions),
+      crossbank: CrossBankModule(partOptions)
     }
 
     const store = configureStore(parts);

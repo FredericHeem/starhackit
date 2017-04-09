@@ -14,7 +14,7 @@ const config = {
         },
         socialAuth: {
             facebook: true,
-            fidor: false
+            crossbank: true
         }
     },
 

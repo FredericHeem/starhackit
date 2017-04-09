@@ -9,7 +9,7 @@ let log = require('logfilename')(__filename);
 
 export default function CrossBankPlugin(app){
   const crossBankConfig = _.get(config, 'authentication.crossBank', {});
-  const {apiHost, consumerKey, consumerSecret, callbackURL, redirectTo} = crossBankConfig;
+  const {apiHost, consumerKey, consumerSecret, callbackURL} = crossBankConfig;
   log.debug(`crossBankPlugin apiHost: ${apiHost}`);
   //TODO replace SHA1 ?
   const consumer = new oauth.OAuth(
@@ -103,6 +103,13 @@ export default function CrossBankPlugin(app){
           });
     });
   }
+  function resetAccessToken(session){
+    session.oauthRequestToken = undefined;
+    session.oauthRequestTokenSecret = undefined;
+    session.oauthAccessToken = undefined;
+    session.oauthAccessTokenSecret = undefined;
+  }
+
   function CrossBankHttpController(){
     return {
       async getCurrentUser(context) {
@@ -144,6 +151,8 @@ export default function CrossBankPlugin(app){
       },
       async loginOAuth(context) {
         log.debug('loginOAuth: ');
+        const {session} = context;
+        resetAccessToken(session);
         return new Promise((resolve) => {
           consumer.getOAuthRequestToken(function(error, oauthToken, oauthTokenSecret/*, results*/){
             if (error) {
@@ -151,9 +160,9 @@ export default function CrossBankPlugin(app){
               context.status = 500;
               context.body = {error};
             } else {
-              //log.debug('loginOAuth ok: ', oauthToken);
-              context.session.oauthRequestToken = oauthToken;
-              context.session.oauthRequestTokenSecret = oauthTokenSecret;
+              session.oauthRequestToken = oauthToken;
+              session.oauthRequestTokenSecret = oauthTokenSecret;
+              log.debug('loginOAuth session: ', session);
               context.redirect(url.resolve(apiHost, `/oauth/authorize?oauth_token=${oauthToken}`));
             }
             resolve();
@@ -163,26 +172,30 @@ export default function CrossBankPlugin(app){
 
       async authCallback(context) {
         return new Promise(resolve => {
-          log.debug(`authCallback: `, context.query);
+          const {session, query} = context;
+          //log.debug(`authCallback: query `, query);
+          //log.debug(`authCallback: session `, session);
+          if(!session.oauthRequestToken){
+            log.error('authCallback no oauthRequestToken');
+          }
           consumer.getOAuthAccessToken(
-            context.session.oauthRequestToken,
-            context.session.oauthRequestTokenSecret,
-            context.query.oauth_verifier,
+            session.oauthRequestToken,
+            session.oauthRequestTokenSecret,
+            query.oauth_verifier,
             function(error, oauthAccessToken, oauthAccessTokenSecret/*, result*/) {
               log.debug('authCallback oauthAccessToken: ', oauthAccessToken);
               if (error) {
                 log.error('authCallback error: ', error);
+                resetAccessToken(session);
                 context.status = 401;
                 context.body = {
                   error: error
                 };
-                context.session.oauthAccessToken = undefined;
-                context.session.oauthAccessTokenSecret = undefined;
               } else {
                 log.debug('authCallback ok: ');
-                context.session.oauthAccessToken = oauthAccessToken;
-                context.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
-                context.redirect(redirectTo);
+                session.oauthAccessToken = oauthAccessToken;
+                session.oauthAccessTokenSecret = oauthAccessTokenSecret;
+                context.status = 200;
               }
               resolve();
             }

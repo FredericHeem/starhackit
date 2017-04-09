@@ -1,6 +1,7 @@
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
 import mobx from 'mobx';
+import {browserHistory} from 'react-router';
 import dashboardScreen from './dashboardScreen';
 
 export default function({context, rest}) {
@@ -9,6 +10,9 @@ export default function({context, rest}) {
     return {
       getCurrentUser() {
           return rest.get(`crossBank/getCurrentUser`);
+      },
+      authCallback(query) {
+          return rest.get(`crossBank/authCallback`, query);
       }
     }
   }
@@ -17,7 +21,8 @@ export default function({context, rest}) {
 
   function Actions(resources){
       return {
-          getCurrentUser: createActionAsync('GET_CURRENT_USER', resources.getCurrentUser)
+          getCurrentUser: createActionAsync('GET_CURRENT_USER', resources.getCurrentUser),
+          authCallback: createActionAsync('AUTH_CALLBACK', resources.authCallback)
       }
   }
 
@@ -43,13 +48,21 @@ export default function({context, rest}) {
       user: mobx.observable({
         data: {},
         get: mobx.action(async function () {
-          console.log("user get")
           try {
             const {response} = await dispatch(actions.getCurrentUser());
-            console.log("user get response", response)
+            //console.log("user get response", response)
             this.data = response;
           } catch (error) {
             console.error("cannot get user ", error);
+          }
+        }),
+        authCallback: mobx.action(async function (query) {
+          try {
+            await dispatch(actions.authCallback(query));
+            browserHistory.replace(`/crossbank/dashboard`);
+          } catch (error) {
+            console.error("cannot get authCallback ", error);
+            browserHistory.push(`/login`);
           }
         }),
       }),
@@ -58,13 +71,16 @@ export default function({context, rest}) {
   function Routes(containers, stores){
       return {
         path: 'crossbank',
-        component: containers.dashboard(),
-        onEnter: () => stores.user.get(),
         childRoutes : [
             {
-                //path: '/dashboard',
-                //component: containers.dashboard(),
-                //onEnter: () => users.store.selectPage(1)
+                path: 'dashboard',
+                component: containers.dashboard(),
+                onEnter: () => stores.user.get(),
+            },
+            {
+                path: 'authCallback',
+                component: containers.dashboard(),
+                onEnter: (nextState) => stores.user.authCallback(nextState.location.query)
             }
         ]
       }

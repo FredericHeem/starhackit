@@ -142,8 +142,7 @@ As an application developer, create an account and API keys at the [banking open
     "apiHost": "https://apisandbox.openbankproject.com",
     "consumerKey": "",
     "consumerSecret": "",
-    "callbackURL": "http://127.0.0.1:9000/api/v1/crossBank/authCallback",
-    "redirectTo": "http://127.0.0.1:8080/crossbank"
+    "callbackURL": "http://localhost:8080/crossbank/authCallback",
   }
 }
 ```

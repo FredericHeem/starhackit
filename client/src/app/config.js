@@ -12,10 +12,7 @@ const config = {
         analytics: {
             google: ""
         },
-        socialAuth: {
-            facebook: true,
-            crossbank: true
-        }
+        socialAuth: ["facebook", "crossbank"],
     },
 
     development: {

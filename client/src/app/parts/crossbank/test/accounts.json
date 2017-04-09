@@ -1,0 +1,79 @@
+[
+  {
+    "id": "01010199",
+    "label": "Oumayma test account",
+    "bank_id": "erste-test",
+    "views_available": [
+      {
+        "id": "owner",
+        "short_name": "Owner",
+        "is_public": true
+      },
+      {
+        "id": "nameofviewtocreate",
+        "short_name": "Name of view to create",
+        "is_public": true
+      }
+    ]
+  },
+  {
+    "id": "PeterMoedlID1",
+    "label": null,
+    "bank_id": "erste-test",
+    "views_available": [
+      {
+        "id": "nameofviewtocreate",
+        "short_name": "Name of view to create",
+        "is_public": true
+      }
+    ]
+  },
+  {
+    "id": "1234567888",
+    "label": "Label",
+    "bank_id": "gh.29.uk",
+    "views_available": [
+      {
+        "id": "raju",
+        "short_name": "Raju ",
+        "is_public": true
+      }
+    ]
+  },
+  {
+    "id": "01010199",
+    "label": null,
+    "bank_id": "rbs",
+    "views_available": [
+      {
+        "id": "owner",
+        "short_name": "Owner",
+        "is_public": true
+      }
+    ]
+  },
+  {
+    "id": "999777555",
+    "label": null,
+    "bank_id": "rbs",
+    "views_available": [
+      {
+        "id": "nameofviewtocreate",
+        "short_name": "Name of view to create",
+        "is_public": true
+      }
+    ]
+  },
+  {
+    "id": "Raju",
+    "label": "New label",
+    "bank_id": "rbs",
+    "views_available": [
+      {
+        "id": "nameofviewtocreate",
+        "short_name": "Name of view to create",
+        "is_public": true
+      }
+    ]
+  }
+]

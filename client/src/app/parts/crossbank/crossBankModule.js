@@ -6,42 +6,33 @@ import dashboardScreen from './dashboardScreen';
 
 export default function({context, rest}) {
 
-  function Resources(rest){
-    return {
-      getCurrentUser() {
-          return rest.get(`crossBank/getCurrentUser`);
-      },
-      authCallback(query) {
-          return rest.get(`crossBank/authCallback`, query);
-      }
-    }
-  }
+  const Resources = (rest) => ({
+       getCurrentUser: () => rest.get(`crossBank/getCurrentUser`),
+       getAccounts: () => rest.get(`crossBank/accounts`),
+       authCallback: (query) => rest.get(`crossBank/authCallback`, query)
+  })
 
   const resources = Resources(rest);
 
-  function Actions(resources){
-      return {
+  const Actions = (resources) => ({
           getCurrentUser: createActionAsync('GET_CURRENT_USER', resources.getCurrentUser),
+          getAccounts: createActionAsync('GET_ACCOUNT', resources.getAccounts),
           authCallback: createActionAsync('AUTH_CALLBACK', resources.authCallback)
-      }
-  }
+  })
 
-  function Reducers(actions){
-    return {
-      getCurrentUser: createReducerAsync(actions.getCurrentUser)
-    }
-  }
+  const Reducers = (actions) => ({
+      getCurrentUser: createReducerAsync(actions.getCurrentUser),
+      getAccounts: createReducerAsync(actions.getAccounts)
+  })
 
-  function Containers(context, stores){
-      return {
-        dashboard(){
+  const Containers = (context, stores) => ({
+        dashboard: () => {
             const mapStateToProps = () => ({
-              user: stores.user
+              ...stores
             })
             return connect(mapStateToProps)(dashboardScreen(context));
         }
-      }
-  }
+  })
 
   function Stores(dispatch, actions) {
     return {
@@ -66,25 +57,39 @@ export default function({context, rest}) {
           }
         }),
       }),
+      accounts: mobx.observable({
+        data: [],
+        get: mobx.action(async function () {
+          try {
+            const {response} = await dispatch(actions.getAccounts());
+            console.log("accounts get response", response)
+            this.data = response;
+          } catch (error) {
+            console.error("cannot get accounts ", error);
+          }
+        })
+      })
     }
   }
-  function Routes(containers, stores){
-      return {
-        path: 'crossbank',
-        childRoutes : [
-            {
-                path: 'dashboard',
-                component: containers.dashboard(),
-                onEnter: () => stores.user.get(),
-            },
-            {
-                path: 'authCallback',
-                component: containers.dashboard(),
-                onEnter: (nextState) => stores.user.authCallback(nextState.location.query)
-            }
-        ]
-      }
-  }
+
+  const Routes = (containers, stores) => ({
+      path: 'crossbank',
+      childRoutes : [
+          {
+              path: 'dashboard',
+              component: containers.dashboard(),
+              onEnter: () => {
+                stores.user.get();
+                stores.accounts.get();
+              }
+          },
+          {
+              path: 'authCallback',
+              component: containers.dashboard(), //TODO Loading
+              onEnter: (nextState) => stores.user.authCallback(nextState.location.query)
+          }
+      ]
+  })
 
   let stores; //Mobx stores
   const actions = Actions(resources);

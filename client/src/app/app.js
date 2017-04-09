@@ -25,7 +25,7 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 const debug = new Debug("app");
 
-export default function({language}) {
+export default function({language = 'en'}) {
     debug("App begins");
 
     const rest = Rest();

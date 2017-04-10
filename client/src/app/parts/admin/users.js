@@ -18,13 +18,16 @@ export default function (context, {getAll}) {
     return (
       <div className="users-view">
         <DocTitle title="Users" />
-        <Panel title={tr.t('Users')}>
-          <RestTable.view
-            onRow={row => ({
-            onClick: () => actions.selectOne(row.id)
-          })} rowKey='id'
-          />
-        </Panel>
+        <Panel.Panel>
+          <Panel.Header>{tr.t('Users')}</Panel.Header>
+          <Panel.Body>
+            <RestTable.view
+              onRow={row => ({
+              onClick: () => actions.selectOne(row.id)
+            })} rowKey='id'
+            />
+          </Panel.Body>
+        </Panel.Panel>
       </div>
     );
   }

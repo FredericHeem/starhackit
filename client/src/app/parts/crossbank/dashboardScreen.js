@@ -7,15 +7,18 @@ import accounts from './accounts';
 export default function(context) {
   const {tr} = context
   const Accounts = accounts(context);
+  const Panel = require('components/panel').default(context);
 
   function UserFullView({email, user_id, provider}) {
     return (
-      <div>
-        <h1>{tr.t('Dashboard')}</h1>
-        <TextField floatingLabelText={tr.t('Email')} value={email} disabled />
-        <TextField floatingLabelText={tr.t('User Id')} value={user_id} disabled />
-        <TextField floatingLabelText={tr.t('Provider')} value={provider} disabled />
-      </div>
+      <Panel.Panel>
+        <Panel.Header>{tr.t('User Information')}</Panel.Header>
+        <Panel.Body>
+          <TextField floatingLabelText={tr.t('Email')} value={email} disabled />
+          <TextField floatingLabelText={tr.t('User Id')} value={user_id} disabled />
+          <TextField floatingLabelText={tr.t('Provider')} value={provider} disabled />
+        </Panel.Body>
+      </Panel.Panel>
     );
   }
 
@@ -24,9 +27,8 @@ export default function(context) {
     return (
       <div className="view">
         <DocTitle title="Dashboard" />
-
-        <UserFullView {...user.data} />
         <Accounts accounts={accounts.data} />
+        <UserFullView {...user.data} />
       </div>
     );
   });

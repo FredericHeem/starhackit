@@ -17,6 +17,7 @@ import formatter from 'utils/formatter';
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
 import rootView from './redux/rootView';
+import theme from './theme';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -30,6 +31,7 @@ export default function({language = 'en'}) {
 
     const rest = Rest();
     const context = {
+      theme: theme(),
       tr,
       formatter: formatter()
     }

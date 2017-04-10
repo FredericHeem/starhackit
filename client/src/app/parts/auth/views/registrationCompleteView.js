@@ -10,9 +10,9 @@ export default (context) => {
   const {tr} = context;
   const AlertAjax = alertAjax(context);
 
-  function RegistrationComplete(props) {
-    debug("render ", props);
-    const {error} = props.verifyEmailCode;
+  function RegistrationComplete({verifyEmailCode}) {
+    debug("render ", verifyEmailCode);
+    const {error} = verifyEmailCode;
     return (
       <div className="registration-complete-page">
         <DocTitle title={tr.t("Registering")} />
@@ -23,8 +23,5 @@ export default (context) => {
       </div>
     );
   }
-  RegistrationComplete.propTypes = {
-    verifyEmailCode: React.PropTypes.object.isRequired
-  };
   return RegistrationComplete;
 }

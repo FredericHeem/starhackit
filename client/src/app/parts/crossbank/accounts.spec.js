@@ -2,7 +2,7 @@ import _ from 'lodash';
 import {assert} from 'chai';
 import accountsSample from './test/accounts.json';
 
-describe.only('AcccountByBank', function() {
+describe('AcccountByBank', function() {
   it('groupByBank', () => {
     //console.log("#accounts ", accountsSample.length);
     assert(accountsSample.length);

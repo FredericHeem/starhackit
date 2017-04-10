@@ -1,71 +1,58 @@
 import React from 'react';
-
 import TextField from 'material-ui/TextField';
-import LaddaButton, { L, SLIDE_UP } from 'react-ladda';
 import Spinner from 'components/spinner';
 import Paper from 'material-ui/Paper';
-import {observer} from 'mobx-react';
+import { observer } from 'mobx-react';
 
-import Debug from 'debug';
-const debug = new Debug("components:profileForm");
+export default context => {
+  const { tr } = context;
+  const ButtonLoading = require('components/buttonLoading').default(context);
 
-export default ({tr}) => {
-
-  function ProfileForm({store, profileGet, profileUpdate}) {
-    debug("render props: ");
-    const {errors} = store;
+  function ProfileForm({ store, profileGet, profileUpdate }) {
+    const { errors } = store;
     if (profileGet.loading) {
-      return <Spinner />
+      return <Spinner />;
     }
 
     return (
       <Paper className='view'>
-        <form
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <h3>{tr.t('My Profile') }</h3>
+        <form onSubmit={e => e.preventDefault()}>
+          <h3>{tr.t('My Profile')}</h3>
           <div>
             <TextField
-              id='username'
+              id="username"
               floatingLabelText={tr.t('Username')}
               value={store.username}
               disabled
             />
-            <TextField
-              id='email'
-              value={store.email}
-              disabled
-              floatingLabelText={tr.t('Email')}
-            />
+            <TextField id="email" value={store.email} disabled floatingLabelText={tr.t('Email')} />
           </div>
           <br />
 
           <div>
-            <legend>{tr.t('About Me') }</legend>
+            <legend>{tr.t('About Me')}</legend>
             <TextField
-              id='biography-input'
+              id="biography-input"
               fullWidth
-              value={store.profile.biography || ""}
+              value={store.profile.biography || ''}
               errorText={errors.biography && errors.biography[0]}
               multiLine
               floatingLabelText={tr.t('Enter Biography')}
               rows={1}
-              onChange={(e) => { store.profile.biography = e.target.value }}
+              onChange={e => {
+                store.profile.biography = e.target.value;
+              }}
             />
           </div>
 
-          <div className='text-center btn-container'>
-            <LaddaButton
-              className='btn btn-lg btn-primary btn-update-profile'
-              loading={profileUpdate.loading}
-              data-size={L}
-              data-style={SLIDE_UP}
-              onClick={() => store.update()}
-            >{tr.t('Update Profile') }</LaddaButton>
+          <div className="btn-update-profile">
+            <ButtonLoading loading={profileUpdate.loading} onClick={() => store.update()}>
+              {tr.t('Update Profile')}
+            </ButtonLoading>
           </div>
         </form>
       </Paper>
     );
   }
   return observer(ProfileForm);
-}
+};

@@ -19,7 +19,12 @@ export default function Plugins(app){
     fs.readdirSync(pluginPath)
       .filter( file => file.slice(-9) === 'Plugin.js')
       .forEach(file => {
-        plugins[name] = require(path.join(pluginPath, file))(app);
+        const plugin = require(path.join(pluginPath, file))(app);
+        if(plugin){
+          plugins[name] =  plugin;
+        } else {
+          log.warn(`Plugin ${name} disabled`);
+        }
       });
   }
 
@@ -33,7 +38,7 @@ export default function Plugins(app){
   createPlugin(__dirname);
 
   async function action(ops){
-    await Promise.each(_.values(plugins), obj => obj[ops](app));
+    await Promise.each(_.values(plugins), obj => obj[ops] && obj[ops](app));
   }
 
   return {

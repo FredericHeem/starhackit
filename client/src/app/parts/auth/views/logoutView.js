@@ -32,8 +32,5 @@ export default({tr}) => {
       </div>
     );
   }
-  LogoutView.propTypes = {
-    authenticated: React.PropTypes.bool.isRequired
-  };
   return LogoutView;
 }

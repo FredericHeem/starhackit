@@ -27,9 +27,5 @@ export default (context) => {
     return (<Alert type="danger" className={className} message={message} />)
   }
 
-  AlertAjax.propTypes = {
-    className: React.PropTypes.string,
-    error: React.PropTypes.object
-  };
   return AlertAjax;
 }

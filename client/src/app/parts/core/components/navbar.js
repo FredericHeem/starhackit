@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import LeftNav from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -62,11 +62,6 @@ export default () => {
       )
   }
 
-  Menu.propTypes = {
-    authenticated: PropTypes.bool.isRequired,
-    navChange: PropTypes.func.isRequired,
-  }
-
   function NavBar({authenticated}){
       return (
         <div >
@@ -78,8 +73,5 @@ export default () => {
       );
   }
 
-  NavBar.propTypes = {
-    authenticated: PropTypes.bool.isRequired
-  }
   return observer(NavBar);
 }

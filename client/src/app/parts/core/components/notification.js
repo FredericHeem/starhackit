@@ -10,11 +10,5 @@ export default({tr}) => {
     )
   }
 
-  Notification.propTypes = {
-    name: React.PropTypes.string,
-    message: React.PropTypes.string,
-    code: React.PropTypes.number
-  };
-
   return Notification;
 }

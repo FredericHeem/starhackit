@@ -15,6 +15,3 @@ export default function DocTitle({title}){
   )
 }
 
-DocTitle.propTypes = {
-  title: React.PropTypes.string
-};

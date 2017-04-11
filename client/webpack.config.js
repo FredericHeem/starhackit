@@ -5,7 +5,7 @@ var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 //var ExtractTextPlugin = require("extract-text-webpack-plugin");
-//var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 //var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
 
@@ -69,11 +69,12 @@ module.exports = function ( options ) {
                 { from: './assets/img/*.svg' },
                 { from: './locales/**/*.json' }
             ]),
-            /*
             new LodashModuleReplacementPlugin({
+              cloning: true,
               collections: true,
               paths: true
-            }),*/
+            }),
+
             new webpack.NamedModulesPlugin(),
             new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],

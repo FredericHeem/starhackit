@@ -1,4 +1,9 @@
 {
-  "presets": ["es2015", "react", "stage-0"],
-  "plugins": ["react-hot-loader/babel", "transform-runtime",/* "lodash"*/]
+  "presets": [["es2015", { "modules": false }], "react", "stage-0"],
+  "plugins": ["transform-runtime", "lodash"],
+  "env": {
+    "production": {
+      "plugins": ["transform-react-remove-prop-types"]
+    }
+  }
 }

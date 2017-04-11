@@ -64,7 +64,7 @@ function OBClient(param){
   };
 }
 
-describe('CrossBank', function() {
+describe.skip('CrossBank', function() {
   let client;
   this.timeout(120e3);
   const obConfig = {

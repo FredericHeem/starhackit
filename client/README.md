@@ -131,25 +131,30 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Version: webpack 2.2.1
-Time: 75371ms
+Version: webpack 2.3.3
+Time: 50829ms
                                 Asset       Size  Chunks                    Chunk Names
-                   assets/img/es7.png    7.54 kB          [emitted]
-            0.69345a87444cda514c02.js    65.3 kB       0  [emitted]
-          app.69345a87444cda514c02.js     493 kB       2  [emitted]  [big]  app
-       vendor.69345a87444cda514c02.js     681 kB       3  [emitted]  [big]  vendor
-        0.69345a87444cda514c02.js.map     470 kB       0  [emitted]
-        1.69345a87444cda514c02.js.map    57.9 kB       1  [emitted]
-      app.69345a87444cda514c02.js.map    3.39 MB       2  [emitted]         app
-   vendor.69345a87444cda514c02.js.map    4.74 MB       3  [emitted]         vendor
-         1.69345a87444cda514c02.js.gz    3.67 kB          [emitted]
-     1.69345a87444cda514c02.js.map.gz    9.31 kB          [emitted]
-         0.69345a87444cda514c02.js.gz    18.2 kB          [emitted]
-       app.69345a87444cda514c02.js.gz     105 kB          [emitted]
-    vendor.69345a87444cda514c02.js.gz     177 kB          [emitted]
-     0.69345a87444cda514c02.js.map.gz     105 kB          [emitted]
-   app.69345a87444cda514c02.js.map.gz     627 kB          [emitted]  [big]
-vendor.69345a87444cda514c02.js.map.gz    1.04 MB          [emitted]  [big]
+       app.7017b85c0e955a527a46.js.gz     112 kB          [emitted]
+            0.7017b85c0e955a527a46.js     204 kB       0  [emitted]
+          app.7017b85c0e955a527a46.js     559 kB       2  [emitted]  [big]  app
+       vendor.7017b85c0e955a527a46.js     730 kB       3  [emitted]  [big]  vendor
+        0.7017b85c0e955a527a46.js.map     442 kB       0  [emitted]
+        1.7017b85c0e955a527a46.js.map     470 kB       1  [emitted]
+      app.7017b85c0e955a527a46.js.map    2.91 MB       2  [emitted]         app
+   vendor.7017b85c0e955a527a46.js.map    5.08 MB       3  [emitted]         vendor
+         1.7017b85c0e955a527a46.js.gz    18.1 kB          [emitted]
+         0.7017b85c0e955a527a46.js.gz     122 kB          [emitted]
+            1.7017b85c0e955a527a46.js    65.1 kB       1  [emitted]
+     1.7017b85c0e955a527a46.js.map.gz     105 kB          [emitted]
+    vendor.7017b85c0e955a527a46.js.gz     195 kB          [emitted]
+     0.7017b85c0e955a527a46.js.map.gz     249 kB          [emitted]
+   app.7017b85c0e955a527a46.js.map.gz     564 kB          [emitted]  [big]
+vendor.7017b85c0e955a527a46.js.map.gz    1.13 MB          [emitted]  [big]
+                           index.html    3.01 kB          [emitted]
+                          favicon.ico    1.15 kB          [emitted]
+               locales/fr/common.json  314 bytes          [emitted]
+               locales/en/common.json  410 bytes          [emitted]
+               locales/it/common.json  175 bytes          [emitted]
 
 ```
 

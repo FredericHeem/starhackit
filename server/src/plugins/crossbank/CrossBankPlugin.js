@@ -11,6 +11,10 @@ export default function CrossBankPlugin(app){
   const crossBankConfig = _.get(config, 'authentication.crossBank', {});
   const {apiHost, consumerKey, consumerSecret, callbackURL} = crossBankConfig;
   log.debug(`crossBankPlugin apiHost: ${apiHost}`);
+  if(!apiHost){
+    log.warn(`crossBankPlugin not configured`);
+    return;
+  }
   //TODO replace SHA1 ?
   const consumer = new oauth.OAuth(
     url.resolve(apiHost,'/oauth/initiate'),

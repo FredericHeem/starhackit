@@ -4,55 +4,60 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger';
 import { routerReducer} from 'react-router-redux';
 
-function devTools(){
-    return  window.devToolsExtension ? window.devToolsExtension() : f => f
-}
+export default function({debug}) {
+  function devTools(){
+      return  window.devToolsExtension ? window.devToolsExtension() : f => f
+  }
 
-function logger(){
-  return createLogger({});
-}
+  function createReducers(modules) {
+      const reducers = _.reduce(modules, (acc, module, key) => {
+          if (module.reducers) {
+              acc[key] = combineReducers(module.reducers)
+          }
+          return acc;
+      }, {});
 
-function createReducers(modules) {
-    const reducers = _.reduce(modules, (acc, module, key) => {
-        if (module.reducers) {
-            acc[key] = combineReducers(module.reducers)
-        }
-        return acc;
-    }, {});
+      reducers.routing = routerReducer;
 
-    reducers.routing = routerReducer;
+      return combineReducers(reducers)
+  }
 
-    return combineReducers(reducers)
-}
+  function createMiddlewares(modules){
+    const middlewares = _.reduce(modules, (acc, module) => {
+      if(module.middlewares){
+        acc = acc.concat(module.middlewares)
+      }
+      return acc
+    }, []);
 
-function createMiddlewares(modules){
-  return _.reduce(modules, (acc, module) => {
-    if(module.middlewares){
-      acc = acc.concat(module.middlewares)
+    if(debug){
+      middlewares.push(createLogger({}))
     }
-    return acc
-  }, []);
-}
+    return middlewares;
+  }
 
-function setDispatch(parts, dispatch){
-  _.each(parts, part => {
-    if(_.isFunction(part.createStores)){
-      part.createStores(dispatch)
+  function setDispatch(parts, dispatch){
+    _.each(parts, part => {
+      if(_.isFunction(part.createStores)){
+        part.createStores(dispatch)
+      }
+    })
+  }
+  return {
+    create(modules, initialState = {}) {
+      const reducers = createReducers(modules);
+      const middlewares = createMiddlewares(modules);
+
+      const store = createStore(
+        reducers,
+        initialState,
+        compose(applyMiddleware(thunk, ...middlewares), devTools())
+      );
+
+      setDispatch(modules, store.dispatch);
+
+      return store
     }
-  })
+  }
 }
 
-export default function configureStore(modules, initialState = {}) {
-  const reducers = createReducers(modules);
-  const middlewares = createMiddlewares(modules);
-
-  const store = createStore(
-    reducers,
-    initialState,
-    compose(applyMiddleware(thunk, ...middlewares, logger()), devTools())
-  );
-
-  setDispatch(modules, store.dispatch);
-
-  return store
-}

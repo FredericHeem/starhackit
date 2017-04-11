@@ -1,12 +1,10 @@
 import React from 'react';
 import DocTitle from 'components/docTitle';
-import SchemaComponent from './SchemaComponent';
 
-SchemaView.propTypes = {
-  schema: React.PropTypes.object
-};
+export default (context) => {
+  const SchemaComponent = require('./SchemaComponent').default(context);
 
-export default function SchemaView(props){
+  function SchemaView(props) {
     //console.log('SchemaView: ', props)
     return (
       <div className="schema-view">
@@ -14,4 +12,6 @@ export default function SchemaView(props){
         <SchemaComponent loading={props.schema.loading} schema={props.schema.data} />
       </div>
     );
-}
+  }
+  return SchemaView
+};

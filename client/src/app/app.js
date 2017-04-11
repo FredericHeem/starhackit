@@ -9,6 +9,7 @@ import CoreModule from './parts/core/coreModule';
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
+import CrossBankModule from './parts/crossbank/crossBankModule';
 import AnalyticsModule from './parts/analytics/AnalyticsModule';
 
 import Debug from 'debug';
@@ -16,6 +17,7 @@ import formatter from 'utils/formatter';
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
 import rootView from './redux/rootView';
+import theme from './theme';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -24,11 +26,12 @@ Debug.enable("*,-engine*,-sockjs-client*,-socket*");
 
 const debug = new Debug("app");
 
-export default function({language}) {
+export default function({language = 'en'}) {
     debug("App begins");
 
     const rest = Rest();
     const context = {
+      theme: theme(),
       tr,
       formatter: formatter()
     }
@@ -44,7 +47,8 @@ export default function({language}) {
       profile: ProfileModule(partOptions),
       admin: AdminModule(partOptions),
       db: DbModule(partOptions),
-      analytics: AnalyticsModule(partOptions)
+      analytics: AnalyticsModule(partOptions),
+      crossbank: CrossBankModule(partOptions)
     }
 
     const store = configureStore(parts);

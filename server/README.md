@@ -8,7 +8,7 @@ Backend Starter Kit written in Node.js with the following features:
 * **Koa** web server, the next generation web server with async/await support.
 * **REST API** designed with [RAML](http://raml.org/), produce a human friendly [API documentation](http://starhack.it/api/v1/doc/api.html) and a **Mock Server** for frontend developer.
 * [Json Web Token](https://jwt.io/) authentication.
-* **Social Authentication** with Facebook, Google, etc .. Powered by [passport](http://passportjs.org/)
+* **Social Authentication** with Facebook, Open Banking, Fidor etc .. Powered by [passport](http://passportjs.org/)
 * Fined-grained **Authorization** based on users, groups and resources.
 * Scalable by using a **Micro Services** based architecture. Orchestrating with [pm2](http://pm2.keymetrics.io/)
 * **Logging** with timestamp and filename.
@@ -114,7 +114,9 @@ Beside creating an account with username and password, this starter kit supports
 
 [passportjs](http://passportjs.org/) has more than 300 different strategies to choose from.
 
-Example of configuration for the Facebook authentication:
+### Facebook authentication
+
+Here is the configuration for the Facebook authentication:
 
 ```
 "authentication":{

@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import App from '../../app';
 
 describe('Auth', function() {
-  const app = App();
+  const app = App({});
   const {parts, store} = app;
   const token = 'ASDFGHJKLL';
   const {actions} = parts.auth;

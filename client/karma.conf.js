@@ -19,31 +19,7 @@ module.exports = function (config) {
     reporters: ['mocha', 'coverage'],
     webpack: {
       module: {
-        rules: [{
-          test: /\.(js|jsx)$/,
-          exclude: /(node_modules)/,
-          use: ['babel-loader']
-        },{
-            test: /\.json$/,
-            use: ['json-loader']
-          }
-        ,
-        {
-            test: /\.css$/,
-            use: [
-              'style-loader',
-              'css-loader'
-            ]
-        },
-        {
-            test: /\.styl$/,
-            use: [
-              'style-loader',
-              'css-loader',
-              'stylus-loader'
-            ]
-        }
-        ]
+        rules: webpackConfig.module.rules
        },
        plugins: [
          //new webpack.IgnorePlugin(/jsdom$/),

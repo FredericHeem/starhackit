@@ -20,6 +20,7 @@ export default function Routes(context, store, parts) {
         },
         childRoutes: [
           parts.auth.routes(store),
+          parts.crossbank.routes(store),
           {
             path: 'app',
             onEnter: isAuthenticated,

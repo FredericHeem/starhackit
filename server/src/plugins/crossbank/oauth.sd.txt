@@ -1,0 +1,19 @@
+note over FE: Go to login page
+note over FE: Click on Sign in with Open Bank
+FE->BE: GET /api/v1/crossbank/login
+BE->OB: getOAuthRequestToken
+OB->BE: requestToken, requestTokenSecret
+BE->FE: 302 Redirect
+FE->OB: GET /oauth/authorize with oauth_token
+OB->FE: Html Login page
+FE->OB: POST /login
+OB->FE: 302 Redirect
+FE->OB: GET /oauth/authorize with oauth_token
+OB->FE: 302 Redirect
+FE->OB: GET /oauth/thanks with redirectUrl, oauth_token and oauth_verifier
+note over FE: /crossbank/authCallback with oauth_token and oauth_verifier
+FE->BE: GET /api/v1/crossbank/authCallback
+BE->OB: getOAuthAccessToken
+OB->BE: accessToken and accessTokenSecrect
+BE->FE: 200 OK
+note over FE: redirect to /dashboard

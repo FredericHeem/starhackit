@@ -130,9 +130,8 @@ describe('GroupModel', function() {
         });
         expect(res).to.exist;
         expect(res.get().username).to.exist;
-        //console.log(res.get().username);
         expect(res.get().Groups).to.exist;
-        expect(res.get().Groups.length).to.be.above(1);
+        expect(res.get().Groups.length).to.be.above(0);
         _.each(res.get().Groups, item => {
             //console.log('group: ', item.get().name);
             assert(item.get().name);

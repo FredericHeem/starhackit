@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import panel from 'components/panel';
 import DocTitle from 'components/docTitle';
 import restTable from 'components/restTable';
@@ -9,10 +9,6 @@ export default function (context, {getAll}) {
 
   const RestTable = restTable(context, {getData: getAll, columns: columns(context)});
   const Panel = panel(context);
-
-  UsersView.propTypes = {
-      actions: PropTypes.object.isRequired
-  };
 
   function UsersView({actions}) {
     return (

@@ -22,8 +22,5 @@ export default({tr}) => {
       </footer>
     )
   }
-  Footer.propTypes = {
-    version: React.PropTypes.string.isRequired
-  };
   return Footer;
 }

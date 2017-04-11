@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, {PropTypes} from 'react';
+import React from 'react';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Spinner from 'components/spinner';
@@ -7,9 +7,6 @@ import Debug from 'debug';
 const debug = new Debug("components:user");
 
 export default({tr}) => {
-  UserComponent.propTypes = {
-    usersGetOne: PropTypes.object.isRequired
-  };
 
   function UserComponent(props) {
     debug(props);

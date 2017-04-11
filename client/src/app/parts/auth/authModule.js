@@ -214,7 +214,7 @@ export default function ({context, rest}) {
 
           try {
             //console.log(_.pick(rules, 'username', 'password'))
-            const rule = new Checkit(_.pick(rules, 'username', 'password'));
+            const rule = new Checkit(_.pick(rules, ['username', 'password']));
             await rule.run(payload);
             const {response} = await dispatch(actions.login(payload));
             const {token} = response;
@@ -242,7 +242,7 @@ export default function ({context, rest}) {
             password: this.password
           }
           try {
-            const rule = new Checkit(_.pick(rules, 'username', 'email', 'password'));
+            const rule = new Checkit(_.pick(rules, ['username', 'email', 'password']));
             await rule.run(payload);
             await dispatch(actions.register(payload));
           } catch (errors) {
@@ -280,7 +280,7 @@ export default function ({context, rest}) {
           }
 
           try {
-            const rule = new Checkit(_.pick(rules, 'password'));
+            const rule = new Checkit(_.pick(rules, ['password']));
             await rule.run(payload);
             await dispatch(actions.verifyResetPasswordToken(payload));
             this.step = "SetNewPasswordDone";
@@ -302,7 +302,7 @@ export default function ({context, rest}) {
           }
 
           try {
-            const rule = new Checkit(_.pick(rules, 'email'));
+            const rule = new Checkit(_.pick(rules, ['email']));
             await rule.run(payload);
             await dispatch(actions.requestPasswordReset(payload));
             this.step = "CheckEmail";

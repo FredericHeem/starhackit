@@ -29,13 +29,5 @@ export default ({tr}) => {
       </div>
     )
   }
-  Alert.propTypes = {
-    className: React.PropTypes.string,
-    type: React.PropTypes.string,
-    title: React.PropTypes.string,
-    name: React.PropTypes.string,
-    message: React.PropTypes.string,
-    code: React.PropTypes.string
-  };
   return Alert;
 }

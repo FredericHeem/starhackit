@@ -32,9 +32,5 @@ export default(context) => {
     )
   }
 
-  ApplicationView.propTypes = {
-    authenticated: React.PropTypes.bool.isRequired,
-    children: React.PropTypes.node
-  };
   return ApplicationView
 }

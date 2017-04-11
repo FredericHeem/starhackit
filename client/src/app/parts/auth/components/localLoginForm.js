@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import TextField from 'material-ui/TextField';
 import { observer } from 'mobx-react';
 import alertAjax from 'components/alertAjax';
@@ -7,10 +7,6 @@ export default context => {
   const { tr } = context;
   const AlertAjax = alertAjax(context);
   const ButtonLoading = require('components/buttonLoading').default(context);
-  LoginForm.propTypes = {
-    store: PropTypes.object.isRequired,
-    login: PropTypes.object.isRequired,
-  };
 
   function LoginForm({ store, login }) {
     const { errors } = store;

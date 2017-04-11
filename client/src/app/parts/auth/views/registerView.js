@@ -35,10 +35,6 @@ export default(context) => {
     );
   }
 
-  RegisterView.propTypes = {
-    register: React.PropTypes.object.isRequired
-  }
-
   function RegisterView(props) {
     const {register} = props;
     const registerSuccess = _.get(register, 'data.success')

@@ -24,6 +24,7 @@ var webpackDevConfig = {
                 NODE_ENV: JSON.stringify( 'development' )
             }
         } ),
+        new webpack.HotModuleReplacementPlugin(),
         new OpenBrowserPlugin({ url: 'http://localhost:8080' })
     ],
 

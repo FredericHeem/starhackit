@@ -3,7 +3,6 @@ var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CompressionPlugin = require('compression-webpack-plugin');
 var CleanPlugin = require('clean-webpack-plugin');
-var purify = require("purifycss-webpack-plugin");
 
 var webpackProdConfig = {
     overrides: {
@@ -26,9 +25,6 @@ var webpackProdConfig = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')
             }
         } ),
-        new purify({
-            basePath: __dirname
-        }),
 
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true

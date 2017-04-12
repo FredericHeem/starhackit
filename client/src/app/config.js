@@ -13,10 +13,20 @@ const config = {
             google: ""
         },
         socialAuth: ["facebook", "crossbank"],
+        debug: {
+          log: false,
+          redux: false,
+          i18n: false
+        }
     },
 
     development: {
-        env: "development"
+        env: "development",
+        debug: {
+          log: false,
+          redux: true,
+          i18n: false
+        }
     },
 
     production: {

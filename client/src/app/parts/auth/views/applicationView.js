@@ -7,7 +7,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import './application.styl';
 
 const muiTheme = getMuiTheme(baseTheme);
-console.log("theme: ", baseTheme);
+//console.log("theme: ", baseTheme);
+
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 

@@ -1,7 +1,7 @@
 import 'assets/stylus/main';
 import tr from 'i18next';
 import Rest from './utils/rest';
-import configureStore from './configureStore';
+import Store from './configureStore';
 
 import AuthModule from './parts/auth/authModule';
 import CoreModule from './parts/core/coreModule';
@@ -16,24 +16,24 @@ import Debug from 'debug';
 import formatter from 'utils/formatter';
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
+
 import rootView from './redux/rootView';
 import theme from './theme';
 
+//Needed by material-ui
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-Debug.enable("*,-engine*,-sockjs-client*,-socket*");
-
 const debug = new Debug("app");
 
-export default function({language = 'en'}) {
+export default function({language = 'en', config}) {
     debug("App begins");
 
     const rest = Rest();
     const context = {
       theme: theme(),
       tr,
-      formatter: formatter()
+      formatter: formatter(language)
     }
 
     const partOptions = {
@@ -51,7 +51,7 @@ export default function({language = 'en'}) {
       crossbank: CrossBankModule(partOptions)
     }
 
-    const store = configureStore(parts);
+    const store = Store({debug: config.debug.redux}).create(parts);
     const jwt = Jwt(store);
 
     rest.setJwtSelector(jwt.selector(store));

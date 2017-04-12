@@ -24,7 +24,7 @@ const languagesDetectorOption = {
     //cookieDomain: 'myDomain'
 };
 
-export default {
+export default (config) => ({
     load() {
         debug('load');
         return new Promise((resolve/*, reject*/) => {
@@ -45,7 +45,7 @@ export default {
                     // have a common namespace used around the full app
                     ns: ['common'],
                     defaultNS: 'common',
-                    debug: false,
+                    debug: config.debug,
                     interpolation: {
                         escapeValue: false // not needed for react!!
                     },
@@ -59,4 +59,4 @@ export default {
                 });
         });
     }
-};
+});

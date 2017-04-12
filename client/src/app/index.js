@@ -1,35 +1,35 @@
-
 import 'babel-polyfill';
-import React from 'react';
 import ReactDOM from 'react-dom';
-import i18n from 'utils/i18n';
-import App from './app'
+import I18n from 'utils/i18n';
+import App from './app';
 import Debug from 'debug';
+import config from 'config';
+import Log from 'utils/log';
 
-const debug = new Debug("app.entry");
+Log({enable: config.debug.log});
 
-function render(view){
+const debug = new Debug('app.entry');
+
+function render(view) {
   const mountEl = document.getElementById('application');
-  ReactDOM.render(
-    <div>
-      {view}
-    </div>
-          , mountEl);
+  ReactDOM.render(view, mountEl);
 }
 
-function hideLoading(){
+function hideLoading() {
   const loadingEl = document.getElementById('loading');
-  loadingEl.classList.add("m-fadeOut");
+  loadingEl.classList.add('m-fadeOut');
 }
 
-async function run(){
+async function run() {
   try {
+    const i18n = I18n({debug: config.debug.i18n});
+
     const language = await i18n.load();
-    const app = App({language});
+    const app = App({ language, config });
     await app.start();
     const container = app.createContainer();
     hideLoading();
-    render(container)
+    render(container);
   } catch (e) {
     debug('Error in app:', e);
     throw e;

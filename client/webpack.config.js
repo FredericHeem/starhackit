@@ -37,7 +37,8 @@ module.exports = function ( options ) {
                 return _.includes([
                     'material-ui',
                     'intl',
-                    'lodash'
+                    'lodash',
+                    'glamorous'
                 ], v)
             }).concat([
                 './src/fontello/css/fontello.css',

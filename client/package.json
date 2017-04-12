@@ -48,7 +48,7 @@
     "material-ui": "0.17.3",
     "mobx": "3.1.9",
     "mobx-react": "4.1.7",
-    "prop-types": "15.5.6",
+    "prop-types": "15.5.7",
     "qs": "6.4.0",
     "react": "15.5.3",
     "react-dom": "15.5.3",

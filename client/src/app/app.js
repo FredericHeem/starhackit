@@ -32,26 +32,23 @@ export default function({language = 'en', config}) {
     debug("App begins");
 
     const rest = Rest();
+
     const context = {
+      rest,
       theme: theme(),
       tr,
       formatter: formatter(language),
       notification : notification()
     }
 
-    const partOptions = {
-      context,
-      rest,
-    }
-
     const parts = {
-      auth: AuthModule(partOptions),
-      core: CoreModule(partOptions),
-      profile: ProfileModule(partOptions),
-      admin: AdminModule(partOptions),
-      db: DbModule(partOptions),
-      analytics: AnalyticsModule(partOptions),
-      crossbank: CrossBankModule(partOptions)
+      auth: AuthModule(context),
+      core: CoreModule(context),
+      profile: ProfileModule(context),
+      admin: AdminModule(context),
+      db: DbModule(context),
+      analytics: AnalyticsModule(context),
+      crossbank: CrossBankModule(context)
     }
 
     const store = Store({debug: config.debug.redux}).create(parts);

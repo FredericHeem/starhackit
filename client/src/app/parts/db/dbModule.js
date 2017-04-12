@@ -4,8 +4,8 @@ import {createAction} from 'redux-act';
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
 
-export default function({context, rest}) {
-
+export default function(context) {
+  const {rest} = context;
   const SchemaView = require('./SchemaView').default(context);
 
   function Resources(rest){

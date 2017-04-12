@@ -36,7 +36,7 @@ function Containers(/*context*/){
 }
 
 // Part
-export default function({context}) {
+export default function(context) {
   const actions = Actions();
   const middlewares = [
     routerMiddleware(browserHistory),

@@ -180,7 +180,8 @@ function Routes(containers, stores) {
   }
 }
 
-export default function ({context, rest}) {
+export default function (context) {
+  const {rest} = context;
   const resources = Resources(rest);
   const actions = Actions(resources);
   let stores;

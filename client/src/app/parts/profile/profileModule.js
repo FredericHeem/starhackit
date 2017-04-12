@@ -55,7 +55,8 @@ function Routes(containers, store, actions) {
   }
 }
 
-export default function ({context, rest}) {
+export default function (context) {
+  const {rest} = context;
   const {notification} = context;
   const actions = Actions(rest);
   let stores;

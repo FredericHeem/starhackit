@@ -6,8 +6,8 @@ import {connect} from 'react-redux';
 import UserView from './userView';
 import Users from './users';
 
-export default function({context, rest}) {
-
+export default function(context) {
+  const {rest} = context;
   function Resources(rest){
     return {
       getAll(data) {

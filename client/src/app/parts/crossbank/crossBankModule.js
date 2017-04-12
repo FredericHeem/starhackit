@@ -4,8 +4,8 @@ import mobx from 'mobx';
 import {browserHistory} from 'react-router';
 import dashboardScreen from './dashboardScreen';
 
-export default function({context, rest}) {
-
+export default function(context) {
+  const {rest} = context;
   const Resources = (rest) => ({
        getCurrentUser: () => rest.get(`crossBank/getCurrentUser`),
        getAccounts: () => rest.get(`crossBank/accounts`),

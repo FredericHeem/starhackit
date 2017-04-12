@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
-import { browserHistory, Router } from 'react-router';
-import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
+import { browserHistory } from 'react-router';
+import { routerMiddleware } from 'react-router-redux';
 import {createAction, createReducer} from 'redux-act';
 import {ASYNC_META} from 'redux-act-async';
 import notificationMsg from './components/notificationMsg';
@@ -33,16 +33,6 @@ function Reducers(actions){
 function Containers(/*context*/){
     return {
     }
-}
-
-function createRouter(store, routes){
-    const history = syncHistoryWithStore(browserHistory, store)
-
-    history.listen(location => {
-       debug('routing to ', location)
-    })
-
-    return <Router history={history} routes={routes} />
 }
 
 // Part
@@ -78,7 +68,6 @@ export default function({context}) {
     actions,
     reducers: Reducers(actions),
     containers: Containers(context, actions),
-    createRouter,
     middlewares
   }
 }

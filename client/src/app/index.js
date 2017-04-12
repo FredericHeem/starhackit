@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import 'fontello/css/fontello.css'
 import ReactDOM from 'react-dom';
 import I18n from 'utils/i18n';
 import App from './app';

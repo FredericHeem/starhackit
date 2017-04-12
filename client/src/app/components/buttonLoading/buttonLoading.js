@@ -1,5 +1,6 @@
 import React from 'react';
 import LaddaButton, { L, SLIDE_UP } from 'react-ladda';
+import 'ladda/dist/ladda.min.css';
 
 export default function(/*context*/) {
   return function({ loading, onClick, children }) {

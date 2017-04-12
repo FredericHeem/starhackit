@@ -33,17 +33,6 @@ module.exports = function ( options ) {
             port: 8080
         },
         entry: {
-            vendor: _.reject(_.keys(pkg.dependencies), function(v) {
-                return _.includes([
-                    'material-ui',
-                    'intl',
-                    'lodash',
-                    'glamorous'
-                ], v)
-            }).concat([
-                './src/fontello/css/fontello.css',
-                'ladda/dist/ladda.min.css'
-            ])
         },
 
         output: {
@@ -77,7 +66,6 @@ module.exports = function ( options ) {
             }),
 
             new webpack.NamedModulesPlugin(),
-            new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],
         resolve: {
             modules: [

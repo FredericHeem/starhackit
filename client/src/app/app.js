@@ -20,6 +20,8 @@ import Jwt from 'utils/jwt';
 import rootView from './redux/rootView';
 import theme from './theme';
 
+import notification from './utils/notification';
+
 //Needed by material-ui
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -33,7 +35,8 @@ export default function({language = 'en', config}) {
     const context = {
       theme: theme(),
       tr,
-      formatter: formatter(language)
+      formatter: formatter(language),
+      notification : notification()
     }
 
     const partOptions = {

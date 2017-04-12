@@ -1,7 +1,6 @@
 import {createActionAsync, createReducerAsync} from 'redux-act-async';
 import {connect} from 'react-redux';
 import mobx from 'mobx';
-import Alert from 'react-s-alert';
 import Checkit from 'checkit';
 import rules from 'services/rules';
 import Debug from 'debug';
@@ -57,6 +56,7 @@ function Routes(containers, store, actions) {
 }
 
 export default function ({context, rest}) {
+  const {notification} = context;
   const actions = Actions(rest);
   let stores;
 
@@ -79,12 +79,7 @@ export default function ({context, rest}) {
 
         function successNotification() {
           debug('updateProfile done');
-          Alert.info(tr.t('Profile updated'), {
-            position: 'top-right',
-            effect: 'slide',
-            timeout: 3e3,
-            offset: 100
-          });
+          notification.info(tr.t('Profile updated'));
           return true;
         }
         try {

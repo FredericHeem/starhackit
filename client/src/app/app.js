@@ -17,7 +17,7 @@ import formatter from 'utils/formatter';
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
 
-import rootView from './redux/rootView';
+import rootView from './rootView';
 import theme from './theme';
 
 import notification from './utils/notification';

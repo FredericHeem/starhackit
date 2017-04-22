@@ -25,7 +25,7 @@
     "migrate": "sequelize db:migrate",
     "start:prod": "pm2 start pm2.json --no-daemon",
     "clean": "gulp clean",
-    "mock": "node scripts/mock-server.js",
+    "mocker": "node scripts/mocker-server.js",
     "api-check": "abao src/plugins/users/raml/users.raml --server http://localhost:9000/api/v1",
     "doc": "node scripts/apidoc.js",
     "opendoc": "open build/api.html"
@@ -88,7 +88,7 @@
     "winston": "2.2.0"
   },
   "devDependencies": {
-    "abao": "0.4.0-beta.8",
+    "abao": "0.5.0",
     "async": "2.0.1",
     "chai": "3.5.0",
     "chalk": "1.1.3",

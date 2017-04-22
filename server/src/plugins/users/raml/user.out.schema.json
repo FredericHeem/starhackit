@@ -6,22 +6,27 @@
       "type": "string"
     },
     "username": {
-      "type": "string"
+      "type": "string",
+      "format": "username"
     },
     "email": {
-      "type": "string"
+      "type": "string",
+      "format": "email"
     },
     "firstName": {
-      "type": "string"
+      "type": "string",
+      "format": "firstName"
     },
     "lastName": {
       "type": "string"
     },
     "createdAt": {
-      "type": "string"
+      "type": "string",
+      "format": "datePast"
     },
     "updatedAt": {
-      "type": "string"
+      "type": "string",
+      "format": "datePast"
     },
     "profile": {
       "type": "object",

@@ -5,7 +5,7 @@ import DocTitle from 'components/docTitle';
 
 import cardComponent from './cardComponent';
 
-//import './main-landing.styl';
+import './landing.styl';
 import Content from './content';
 
 export default context => {

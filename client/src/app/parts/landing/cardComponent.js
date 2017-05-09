@@ -1,43 +1,65 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import CardMedia from 'material-ui/Card/CardMedia';
+import glamorous from 'glamorous';
 import FontIcon from 'material-ui/FontIcon';
 
 export default () => {
-
-  function MediaIcon({icon}){
-      return (
-        <CardMedia>
-          <FontIcon
-            className={icon}
-            style={{fontSize:64}}
-          />
-        </CardMedia>
-      );
-  }
-
-  function MediaImg({img, title, height, width}){
-      return (
-        <div>
-          <img src={img} alt={title} height={height} width={width} />
-        </div>
-      );
-  }
-
-  function Card({title, text, icon, img, height, width}){
+  function MediaIcon({ icon }) {
     return (
-      <Paper className='card grow'>
-        <div className='card-container'>
-          <div className="card-item">
+      <div>
+        <FontIcon className={icon} style={{ fontSize: 64 }} />
+      </div>
+    );
+  }
+
+  function MediaImg({ img, title, height, width }) {
+    return (
+      <div>
+        <img src={img} alt={title} height={height} width={width} />
+      </div>
+    );
+  }
+
+  const CardView = glamorous.div({
+    width: '250',
+    flexGrow: 1,
+    flexShrink: 0,
+    flexBasis: '150',
+    padding: 10,
+    margin: 10,
+    boxShadow: '2px 2px 2px 2px lightgrey',
+  });
+
+  const CardContainer = glamorous.div({
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    alignContent: 'space-between',
+    alignItems: 'center',
+  });
+
+  const CardItem = glamorous.div({
+    order: 0,
+    flex: '0 1 auto',
+    boxSizing: 'border-box',
+    maxWidth: '100%',
+  });
+
+  function Card({ title, text, icon, img, height, width }) {
+    return (
+      <CardView className="grow">
+        <CardContainer>
+          <CardItem>
             <h2>{title}</h2><p>{text}</p>
-          </div>
-          <div className="card-item">
+          </CardItem>
+          <CardItem>
             {icon && <MediaIcon icon={icon} />}
             {img && <MediaImg title={title} img={img} height={height} width={width} />}
-          </div>
-        </div>
-      </Paper>
+          </CardItem>
+        </CardContainer>
+      </CardView>
     );
   }
   return Card;
-}
+};

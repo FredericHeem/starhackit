@@ -2,14 +2,15 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import DocTitle from 'components/docTitle';
-
+import Row from 'components/Row';
+import Title from 'components/Title';
 import cardComponent from './cardComponent';
 
 import './landing.styl';
 import Content from './content';
 
 export default context => {
-  const {tr} = context;
+  const { tr } = context;
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
@@ -36,25 +37,21 @@ export default context => {
         </section>
 
         <section id="start">
-          <div className="row">
-            <div className="text-center">
-              <h2>
-                <strong>{tr.t('Features')}</strong>
-              </h2>
-            </div>
-          </div>
-          <div className="row text-center">
+          <Row>
+            <Title>
+              {tr.t('Features')}
+            </Title>
+          </Row>
+          <Row className="text-center">
             {features.map((card, key) => <CardIcon key={key} {...card} />)}
-          </div>
+          </Row>
         </section>
         <section id="gifs">
-          <div className="row">
-            <div className="text-center">
-              <h2>
-                <strong>{tr.t('End to End Testing')}</strong>
-              </h2>
-            </div>
-          </div>
+          <Row>
+            <Title>
+              {tr.t('End to End Testing')}
+            </Title>
+          </Row>
           <div className="text-center e2e-testing">
             <img
               alt="functional-testing"
@@ -63,40 +60,34 @@ export default context => {
           </div>
         </section>
         <section id="tech-stack-frontend">
-          <div className="row">
-            <div className="text-center">
-              <h2>
-                <strong>{tr.t('Frontend - User Interface')}</strong>
-              </h2>
-            </div>
-          </div>
-          <div className="row">
+          <Row>
+            <Title>
+              {tr.t('Frontend - User Interface')}
+            </Title>
+          </Row>
+          <Row>
             {frontend.map((card, key) => <CardIcon key={key} {...card} />)}
-          </div>
+          </Row>
         </section>
         <section id="tech-stack-backend">
-          <div className="row">
-            <div className="text-center">
-              <h2>
-                <strong>{tr.t('Backend - API Server')}</strong>
-              </h2>
-            </div>
-          </div>
-          <div className="row">
+          <Row>
+            <Title>
+              {tr.t('Backend - API Server')}
+            </Title>
+          </Row>
+          <Row>
             {backend.map((card, key) => <CardIcon key={key} {...card} />)}
-          </div>
+          </Row>
         </section>
         <section id="tech-stack-tools">
-          <div className="row">
-            <div className="text-center">
-              <h2>
-                <strong>{tr.t('Developer Tools')}</strong>
-              </h2>
-            </div>
-          </div>
-          <div className="row">
+          <Row>
+            <Title>
+              {tr.t('Developer Tools')}
+            </Title>
+          </Row>
+          <Row>
             {tools.map((card, key) => <CardIcon key={key} {...card} />)}
-          </div>
+          </Row>
         </section>
       </div>
     );

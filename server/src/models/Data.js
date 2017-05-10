@@ -4,9 +4,9 @@ let assert = require('assert');
 let fs = require('fs');
 let path = require('path');
 let Sequelize = require('sequelize');
-let log = require('logfilename')(__filename);
 
 export default function Data(config) {
+  let log = require('logfilename')(__filename);
   let dbConfig = config.db;
   let sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, dbConfig);
   let modelsMap = {};

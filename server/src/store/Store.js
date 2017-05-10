@@ -1,7 +1,8 @@
 import redis from "redis";
-let log = require('logfilename')(__filename);
+
 
 export default function(config = {}) {
+  let log = require('logfilename')(__filename);
   let client;
 
   return {

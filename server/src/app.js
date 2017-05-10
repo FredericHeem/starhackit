@@ -1,13 +1,13 @@
 import Promise from 'bluebird';
 import Log from 'logfilename';
 import config from 'config';
+let log = new Log(__filename, config.log);
+
 import Plugins from './plugins';
 import Data from './models/Data';
 import Store from './store/Store';
 import Server from './server/koa/koaServer';
 import * as HttpUtils from './utils/HttpUtils';
-
-let log = new Log(__filename, config.log);
 
 export default function App() {
 

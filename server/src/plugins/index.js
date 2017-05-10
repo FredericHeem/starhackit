@@ -3,15 +3,13 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 
-let log = require('logfilename')('plugins');
-
 const blackList = [
   'fidor',
   //'ticket'
 ];
 
 export default function Plugins(app){
-
+  let log = require('logfilename')('plugins');
   let plugins = {};
 
   function requirePluginDir(pluginPath, name){

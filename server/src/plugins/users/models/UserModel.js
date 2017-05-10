@@ -118,7 +118,7 @@ module.exports = function(sequelize, DataTypes) {
          * @returns {Promise}  Promise user created model
          */
         createUserInGroups: async function(userJson, groups) {
-          log.info("createUserInGroups user:%s, group: ", userJson, groups);
+          log.debug("createUserInGroups user:%s, group: ", userJson, groups);
           return sequelize.transaction(async function(t) {
             let userCreated = await models.User.create(userJson, {transaction: t});
             const userId = userCreated.get().id;

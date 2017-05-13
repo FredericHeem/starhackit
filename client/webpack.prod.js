@@ -3,6 +3,7 @@ var path = require( 'path' );
 var webpack = require( 'webpack' );
 var CompressionPlugin = require('compression-webpack-plugin');
 var CleanPlugin = require('clean-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var webpackProdConfig = {
     overrides: {
@@ -34,6 +35,9 @@ var webpackProdConfig = {
             algorithm: 'gzip',
             threshold: 10240,
             minRatio: 0.8
+        }),
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static'
         })
     ],
 

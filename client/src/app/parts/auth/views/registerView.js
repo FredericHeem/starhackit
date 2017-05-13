@@ -1,13 +1,15 @@
 import _ from 'lodash';
 import React from 'react';
-import Paper from 'material-ui/Paper';
+import Paper from 'components/Paper';
 import DocTitle from 'components/docTitle';
 import mediaSigninButtons from '../components/mediaSigninButtons';
 import registerForm from '../components/registerForm';
 import alert from 'components/alert';
+import Strike from 'components/Strike';
+import Page from 'components/Page';
 
-export default(context) => {
-  const {tr} = context;
+export default context => {
+  const { tr } = context;
   const RegisterForm = registerForm(context);
   const MediaSigninButtons = mediaSigninButtons(context);
   const Alert = alert(context);
@@ -16,39 +18,38 @@ export default(context) => {
     return (
       <div>
         <RegisterForm {...props} />
-        <div className="strike">
-          <span className="or" />
-        </div>
-        <div>
-          <MediaSigninButtons />
-        </div>
+        <Strike />
+        <MediaSigninButtons />
       </div>
     );
   }
 
   function RegisterComplete() {
-    return (<Alert
-      type='info'
-      className='registration-request-complete'
-      message={tr.t('A confirmation email has been sent. Click on the link to verify your email address and activate your account.')}
-    />
+    return (
+      <Alert
+        type="info"
+        className="registration-request-complete"
+        message={tr.t(
+          'A confirmation email has been sent. Click on the link to verify your email address and activate your account.',
+        )}
+      />
     );
   }
 
   function RegisterView(props) {
-    const {register} = props;
-    const registerSuccess = _.get(register, 'data.success')
+    const { register } = props;
+    const registerSuccess = _.get(register, 'data.success');
     return (
-      <div id="register">
-        <DocTitle title={tr.t("Register")} />
-        <Paper className="text-center view">
-          <h2>{tr.t('Register An Account') }</h2>
-          <p>{tr.t('Create a free account') }</p>
+      <Page className="register-page text-center">
+        <DocTitle title={tr.t('Register')} />
+        <Paper>
+          <h2>{tr.t('Register An Account')}</h2>
+          <p>{tr.t('Create a free account')}</p>
 
           {!registerSuccess ? <RegisterFormComponent {...props} /> : <RegisterComplete />}
         </Paper>
-      </div>
+      </Page>
     );
   }
   return RegisterView;
-}
+};

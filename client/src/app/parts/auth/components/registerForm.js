@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import { observer } from 'mobx-react';
 import alertAjax from 'components/alertAjax';
+import FormGroup from 'components/FormGroup';
 
 export default context => {
   const { tr } = context;
@@ -10,9 +11,9 @@ export default context => {
   function RegisterForm({ store, register }) {
     const { errors } = store;
     return (
-      <form className="register-form text-center form" onSubmit={e => e.preventDefault()}>
+      <form className="register-form text-center" onSubmit={e => e.preventDefault()}>
         <AlertAjax error={register.error} className="register-error-view" />
-        <div className="form-group username">
+        <FormGroup className="username">
           <TextField
             id="username"
             onChange={e => {
@@ -21,8 +22,8 @@ export default context => {
             hintText={tr.t('Username')}
             errorText={errors.username && errors.username[0]}
           />
-        </div>
-        <div className="form-group email">
+        </FormGroup>
+        <FormGroup className="email">
           <TextField
             id="email"
             onChange={e => {
@@ -31,8 +32,8 @@ export default context => {
             hintText={tr.t('Email')}
             errorText={errors.email && errors.email[0]}
           />
-        </div>
-        <div className="form-group password">
+        </FormGroup>
+        <FormGroup className="password">
           <TextField
             id="password"
             onChange={e => {
@@ -42,7 +43,7 @@ export default context => {
             errorText={errors.password && errors.password[0]}
             type="password"
           />
-        </div>
+        </FormGroup>
 
         <div className="btn-register">
           <ButtonLoading

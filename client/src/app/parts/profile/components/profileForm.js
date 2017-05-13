@@ -1,7 +1,8 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import Spinner from 'components/spinner';
-import Paper from 'material-ui/Paper';
+import Paper from 'components/Paper';
+
 import { observer } from 'mobx-react';
 
 export default context => {
@@ -15,7 +16,7 @@ export default context => {
     }
 
     return (
-      <Paper className='view'>
+      <Paper>
         <form onSubmit={e => e.preventDefault()}>
           <h3>{tr.t('My Profile')}</h3>
           <div>

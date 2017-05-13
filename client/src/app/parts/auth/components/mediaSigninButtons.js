@@ -1,8 +1,8 @@
 import React from 'react';
+import glamorous from 'glamorous';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import config from 'config';
-import './media-signin-buttons.styl';
 
 export default ({ tr }) => {
   const socialAuthMap = {
@@ -21,9 +21,14 @@ export default ({ tr }) => {
     },
   };
 
+  const SocialButtonView = glamorous.div({
+    margin: '20px auto 20px auto',
+    width: 256,
+  });
+
   function SocialButton({ label, href, icon }) {
     return (
-      <div className="btn-social-login">
+      <SocialButtonView>
         <RaisedButton
           style={{
             width: '100%',
@@ -32,14 +37,14 @@ export default ({ tr }) => {
           href={href}
           icon={icon ? <FontIcon className={icon} /> : null}
         />
-      </div>
+      </SocialButtonView>
     );
   }
 
   function MediaSignin() {
     const { socialAuth = [] } = config;
     return (
-      <div className="media-signin-buttons">
+      <div>
         {socialAuth.map(name => {
           const auth = socialAuthMap[name];
           if (!auth) return null;

@@ -1,7 +1,8 @@
 import glamorous from 'glamorous';
 
 export default glamorous.div({
-  boxShadow: '2px 2px 2px 2px lightgrey',
-  padding: 10,
-  margin: 20
+  maxWidth: 600,
+  width: '100%',
+  margin: 'auto',
+  padding: 20,
 });

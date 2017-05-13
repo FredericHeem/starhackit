@@ -1,7 +1,6 @@
 //console.log("SETUP");
 
 before(function (client, done) {
-    //console.log("BEFORE");
     done()
 });
 

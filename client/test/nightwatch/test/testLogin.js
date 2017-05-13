@@ -1,4 +1,4 @@
-describe('Login', function () {
+  describe('Login', function () {
     after(function (client, done) {
         client.page.logout().logout(done)
     });

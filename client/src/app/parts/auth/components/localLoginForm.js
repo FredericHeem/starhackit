@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import { observer } from 'mobx-react';
 import alertAjax from 'components/alertAjax';
+import FormGroup from 'components/FormGroup';
 
 export default context => {
   const { tr } = context;
@@ -13,7 +14,7 @@ export default context => {
     return (
       <form className="local-login-form text-center" onSubmit={e => e.preventDefault()}>
         <AlertAjax error={login.error} className="login-error-view" />
-        <div className="form-group username">
+        <FormGroup className="username">
           <TextField
             id="username"
             onChange={e => {
@@ -22,8 +23,8 @@ export default context => {
             hintText={tr.t('Username')}
             errorText={errors.username && errors.username[0]}
           />
-        </div>
-        <div className="form-group password">
+        </FormGroup>
+        <FormGroup className="password">
           <TextField
             id="password"
             onChange={e => {
@@ -33,7 +34,7 @@ export default context => {
             type="password"
             errorText={errors.password && errors.password[0]}
           />
-        </div>
+        </FormGroup>
         <div className='btn-login'>
           <ButtonLoading  loading={login.loading} onClick={() => store.login()}>
             {tr.t('Login')}

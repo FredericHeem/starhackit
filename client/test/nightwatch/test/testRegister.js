@@ -1,8 +1,8 @@
-let chance = require('chance')();
+const chance = require('chance')();
 
 describe('Register', function () {
-    let username = `${chance.first()}${chance.first()}${chance.last()}`;
-    let email = `${username}@mail.com`;
+    const username = `${chance.first()}${chance.first()}${chance.last()}`;
+    const email = `${username}@mail.com`;
     it('register an account', function (client) {
         client.page.register().navigate()
             .waitForElementVisible('.register-form', 5000)

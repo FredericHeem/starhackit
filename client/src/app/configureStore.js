@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { applyMiddleware, compose, createStore, combineReducers} from 'redux'
 import thunk from 'redux-thunk'
-import createLogger from 'redux-logger';
+import {createLogger} from 'redux-logger';
 import { routerReducer} from 'react-router-redux';
 
 export default function({debug}) {

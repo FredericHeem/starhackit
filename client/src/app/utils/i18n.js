@@ -9,8 +9,8 @@ debug('navigator.languages: ', navigator.languages);
 
 const languagesDetectorOption = {
   // order and from where user language should be detected
-    order: ['localStorage', 'navigator', 'querystring', 'cookie'],
-    //order: ['navigator'],
+    //order: ['localStorage', 'navigator', 'querystring', 'cookie'],
+    order: ['navigator'],
     // keys or params to lookup language from
     lookupQuerystring: 'lng',
     lookupCookie: 'i18next',
@@ -55,6 +55,7 @@ export default (config) => ({
                         debug('error loading i18n: ', err);
                     } else {
                         debug('i18n done: ');
+
                     }
                 });
         });

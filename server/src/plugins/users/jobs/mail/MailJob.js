@@ -4,9 +4,25 @@ import ejs from 'ejs';
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
-let log = require('logfilename')(__filename);
+
+const subscriberOptions = {
+  exchange: 'user',
+  queueName: 'mail',
+  routingKeys:['user.registering', 'user.resetpassword']
+};
 
 export default function MailJob (config){
+  let log = require('logfilename')(__filename);
+
+  function createSubscriber(){
+    let rabbitmq = config.rabbitmq;
+    if(rabbitmq && rabbitmq.url){
+      subscriberOptions.url = rabbitmq.url;
+    }
+    log.debug("createSubscriber: ", subscriberOptions);
+    return new Subscriber(subscriberOptions, config.log);
+  }
+
   let subscriber = createSubscriber(config);
   log.debug("MailJob options: ", config.mail);
   let transporter;
@@ -21,16 +37,16 @@ export default function MailJob (config){
       log.info('start');
       try {
         await subscriber.start(this._onIncomingMessage.bind(this));
-        log.info('started');
+        log.debug('started');
       } catch(error){
         log.error(`cannot start: ${error}, is RabbitMq running ?`);
       }
     },
 
     async stop() {
-      log.info('stop');
+      log.debug('stop');
       await subscriber.stop();
-      log.info('stopped');
+      log.debug('stopped');
     },
 
     async getTemplate(type){
@@ -48,7 +64,7 @@ export default function MailJob (config){
     },
 
     async _sendEmail(type, user) {
-      log.info("sendEmail %s to user ", type, user);
+      log.debug("sendEmail %s to user ", type, user);
       if(!user.email){
         log.error("email not set");
         throw {name:"email not set"};
@@ -100,8 +116,8 @@ export default function MailJob (config){
     },
 
     async _onIncomingMessage(message) {
-      log.info("onIncomingMessage content: ", message.content.toString());
-      log.info("onIncomingMessage fields: ", JSON.stringify(message.fields));
+      log.debug("onIncomingMessage content: ", message.content.toString());
+      log.debug("onIncomingMessage fields: ", JSON.stringify(message.fields));
       let user;
 
       if(!transporter){
@@ -132,17 +148,6 @@ export default function MailJob (config){
   };
 }
 
-const subscriberOptions = {
-  exchange: 'user',
-  queueName: 'mail',
-  routingKeys:['user.registering', 'user.resetpassword']
-};
 
-function createSubscriber(config){
-  let rabbitmq = config.rabbitmq;
-  if(rabbitmq && rabbitmq.url){
-    subscriberOptions.url = rabbitmq.url;
-  }
-  log.info("createSubscriber: ", subscriberOptions);
-  return new Subscriber(subscriberOptions);
-}
+
+

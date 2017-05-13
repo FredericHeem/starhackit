@@ -4,11 +4,11 @@ import _ from 'lodash';
 let log = new Log(__filename);
 
 export function respond(context, me, callback, args, statusCode = 200) {
-  log.debug("respond ");
+  //log.debug("respond ");
     //apply used to pass args to the callback
   return callback.apply(me, args)
     .then(result => {
-      log.debug(`respond with code: ${statusCode}`);
+      //log.debug(`respond with code: ${statusCode}`);
       context.status = statusCode;
       context.body = result;
     })

@@ -1,8 +1,9 @@
 import passport from 'koa-passport';
 
-let log = require('logfilename')(__filename);
 
 export default function PassportMiddleware(app, koaApp/*, config*/){
+  let log = require('logfilename')(__filename);
+
   koaApp.use(passport.initialize());
   koaApp.use(passport.session());
 
@@ -46,11 +47,11 @@ export default function PassportMiddleware(app, koaApp/*, config*/){
       let routePath = context.route.path.replace(/^(\/api\/v1)/,"");
       let userId = context.passport.user.id;
       let method = request.method;
-      log.info(`isAuthorized: who:${userId}, resource:${routePath}, method: ${method}`);
+      log.debug(`isAuthorized: who:${userId}, resource:${routePath}, method: ${method}`);
 
       try {
         let authorized = await models.User.checkUserPermission(userId, routePath, method);
-        log.info("isAuthorized ", authorized);
+        log.debug("isAuthorized ", authorized);
         if (authorized) {
           return next();
         } else {

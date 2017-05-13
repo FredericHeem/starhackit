@@ -35,7 +35,7 @@ export default function(app, publisherUser) {
           email: userPendingIn.email,
           password: userPendingIn.password
         };
-        log.info("createPending code ", userPendingOut.code);
+        log.debug("createPending code ", userPendingOut.code);
         await models.UserPending.create(userPendingOut);
         await publisherUser.publish("user.registering", JSON.stringify(userPendingOut));
       } else {

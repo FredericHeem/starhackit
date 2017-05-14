@@ -1,7 +1,7 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
+import FontIcon from 'components/FontIcon';
 import config from 'config';
 
 export default ({ tr }) => {

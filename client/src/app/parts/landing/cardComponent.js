@@ -1,6 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import FontIcon from 'material-ui/FontIcon';
+import FontIcon from 'components/FontIcon';
 
 export default () => {
   function MediaIcon({ icon }) {

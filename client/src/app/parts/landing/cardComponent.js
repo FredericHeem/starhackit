@@ -20,7 +20,7 @@ export default () => {
   }
 
   const CardView = glamorous.div({
-    width: '250',
+    width: '150',
     flexGrow: 1,
     flexShrink: 0,
     flexBasis: '150',

@@ -131,30 +131,26 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Version: webpack 2.3.3
-Time: 50829ms
-                                Asset       Size  Chunks                    Chunk Names
-       app.7017b85c0e955a527a46.js.gz     112 kB          [emitted]
-            0.7017b85c0e955a527a46.js     204 kB       0  [emitted]
-          app.7017b85c0e955a527a46.js     559 kB       2  [emitted]  [big]  app
-       vendor.7017b85c0e955a527a46.js     730 kB       3  [emitted]  [big]  vendor
-        0.7017b85c0e955a527a46.js.map     442 kB       0  [emitted]
-        1.7017b85c0e955a527a46.js.map     470 kB       1  [emitted]
-      app.7017b85c0e955a527a46.js.map    2.91 MB       2  [emitted]         app
-   vendor.7017b85c0e955a527a46.js.map    5.08 MB       3  [emitted]         vendor
-         1.7017b85c0e955a527a46.js.gz    18.1 kB          [emitted]
-         0.7017b85c0e955a527a46.js.gz     122 kB          [emitted]
-            1.7017b85c0e955a527a46.js    65.1 kB       1  [emitted]
-     1.7017b85c0e955a527a46.js.map.gz     105 kB          [emitted]
-    vendor.7017b85c0e955a527a46.js.gz     195 kB          [emitted]
-     0.7017b85c0e955a527a46.js.map.gz     249 kB          [emitted]
-   app.7017b85c0e955a527a46.js.map.gz     564 kB          [emitted]  [big]
-vendor.7017b85c0e955a527a46.js.map.gz    1.13 MB          [emitted]  [big]
-                           index.html    3.01 kB          [emitted]
-                          favicon.ico    1.15 kB          [emitted]
-               locales/fr/common.json  314 bytes          [emitted]
-               locales/en/common.json  410 bytes          [emitted]
-               locales/it/common.json  175 bytes          [emitted]
+Version: webpack 2.5.1
+Time: 884790ms
+                             Asset       Size  Chunks                    Chunk Names
+  0.f235e61ffd20e753c023.js.map.gz     246 kB          [emitted]
+         0.f235e61ffd20e753c023.js     200 kB       0  [emitted]
+       app.f235e61ffd20e753c023.js    1.26 MB       2  [emitted]  [big]  app
+     0.f235e61ffd20e753c023.js.map     428 kB       0  [emitted]
+     1.f235e61ffd20e753c023.js.map     470 kB       1  [emitted]
+   app.f235e61ffd20e753c023.js.map    7.96 MB       2  [emitted]         app
+      1.f235e61ffd20e753c023.js.gz    18.1 kB          [emitted]
+      0.f235e61ffd20e753c023.js.gz     121 kB          [emitted]
+         1.f235e61ffd20e753c023.js    65.1 kB       1  [emitted]
+  1.f235e61ffd20e753c023.js.map.gz     105 kB          [emitted]
+    app.f235e61ffd20e753c023.js.gz     301 kB          [emitted]  [big]
+app.f235e61ffd20e753c023.js.map.gz    1.68 MB          [emitted]  [big]
+                        index.html    3.01 kB          [emitted]
+                       favicon.ico    1.15 kB          [emitted]
+            locales/en/common.json  410 bytes          [emitted]
+            locales/fr/common.json  314 bytes          [emitted]
+            locales/it/common.json  175 bytes          [emitted]
 
 ```
 

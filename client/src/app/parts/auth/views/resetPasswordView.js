@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { observer } from 'mobx-react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
+import button from 'components/button';
 import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 import alertAjax from 'components/alertAjax';
@@ -15,6 +15,7 @@ const debug = new Debug('resetPasword');
 
 export default context => {
   const { tr } = context;
+  const Button = button(context);
   const AlertAjax = alertAjax(context);
 
   function SetNewPasswordDone({ verifyResetPasswordToken }) {
@@ -54,7 +55,7 @@ export default context => {
         </FormGroup>
 
         <div className="spacer">
-          <RaisedButton
+          <Button
             className="btn-reset-password"
             onClick={() => store.resetPassword(params.token)}
             label={tr.t('Reset Password')}

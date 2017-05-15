@@ -1,6 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import RaisedButton from 'material-ui/RaisedButton';
+import button from 'components/button';
 import FontIcon from 'components/FontIcon';
 import DocTitle from 'components/docTitle';
 import Row from 'components/Row';
@@ -11,6 +11,7 @@ import Content from './content';
 
 export default context => {
   const { tr } = context;
+  const Button = button(context);
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
@@ -30,7 +31,7 @@ export default context => {
         <h2>{tr.t('A Full Stack Web Application Starter Kit')}</h2>
         <h3>{tr.t('Built with React, Node, data backed by SQL')}</h3>
 
-        <RaisedButton
+        <Button
           label="Clone the code on GitHub"
           href="https://github.com/FredericHeem/starhackit"
           icon={<FontIcon className="icon-github-circled-alt2" />}

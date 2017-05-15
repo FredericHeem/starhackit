@@ -1,74 +1,27 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import LeftNav from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import drawer from 'components/drawer';
 import config from 'config';
 import { browserHistory } from 'react-router';
 import mobx from 'mobx';
 import { observer } from 'mobx-react';
-
-function navLinks(authenticated) {
-  if (authenticated) {
-    return [
-      {
-        route: '/admin/users',
-        text: 'ADMIN',
-      },
-      {
-        route: '/db/schema',
-        text: 'DB SCHEMA',
-      },
-      {
-        route: '/app/profile',
-        text: 'PROFILE',
-      },
-      {
-        route: '/logout',
-        text: 'LOGOUT',
-      },
-    ];
-  }
-  return [
-    {
-      route: '/login',
-      text: 'LOGIN',
-    },
-    {
-      route: '/register',
-      text: 'REGISTER',
-    },
-    {
-      route: '/theme/view',
-      text: 'THEME',
-    },
-  ];
-}
+import menu from './menu';
 
 export default context => {
   const { tr, theme } = context;
+  const Drawer = drawer(context);
+  const Menu = menu(context);
 
   const store = mobx.observable({
     open: false,
-    toggle: mobx.action(function() {
+    toggle(){
       this.open = !this.open;
-    }),
+    },
     navChange: mobx.action(function(menuItem) {
       browserHistory.push(menuItem.route);
       this.open = false;
     }),
   });
-
-  function Menu({ authenticated, navChange }) {
-    return (
-      <div>
-        {navLinks(authenticated).map((menu, key) => (
-          <MenuItem key={key} onTouchTap={() => navChange(menu)}>
-            {menu.text}
-          </MenuItem>
-        ))}
-      </div>
-    );
-  }
 
   const ButtonLeftView = glamorous('button')({
     margin: 10,
@@ -126,16 +79,9 @@ export default context => {
             store.toggle();
           }}
         />
-        <LeftNav
-          id="left-nav"
-          docked={false}
-          open={store.open}
-          onRequestChange={open => {
-            store.open = open;
-          }}
-        >
+        <Drawer open={store.open} store={store}>
           <Menu authenticated={authenticated} navChange={item => store.navChange(item)} />
-        </LeftNav>
+        </Drawer>
       </div>
     );
   }

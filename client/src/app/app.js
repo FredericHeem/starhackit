@@ -1,5 +1,6 @@
 import 'assets/stylus/main';
 import tr from 'i18next';
+import {browserHistory} from 'react-router';
 import Rest from './utils/rest';
 import Store from './configureStore';
 
@@ -38,7 +39,8 @@ export default function({language = 'en', config}) {
       theme: theme(),
       tr,
       formatter: formatter(language),
-      notification : notification()
+      notification : notification(),
+      history: browserHistory
     }
 
     const parts = {

@@ -42,7 +42,7 @@ export default context => {
           <br />
 
           <div>
-            <legend>{tr.t("About Me")}</legend>
+            <h4>{tr.t("About Me")}</h4>
             <BioInput
               id="biography-input"
               fullWidth

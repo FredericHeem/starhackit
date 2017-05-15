@@ -1,21 +1,18 @@
 import React from 'react';
 import navBar from '../../core/components/navbar';
 import footer from '../../core/components/footer';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { ThemeProvider } from 'glamorous';
 import './application.styl';
-
-const muiTheme = getMuiTheme(baseTheme);
-//console.log("theme: ", baseTheme);
 
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
 export default context => {
+  const {theme} = context;
   const NavBar = navBar(context);
   const Footer = footer(context);
+
+  console.log("theme: ", theme);
 
   function ApplicationView(
     {
@@ -24,17 +21,15 @@ export default context => {
     },
   ) {
     return (
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <ThemeProvider theme={muiTheme}>
-          <div id="application-view">
-            <NavBar authenticated={authenticated} />
-            <div id="main-container" className="container">
-              {props.children}
-            </div>
-            <Footer version={version} />
+      <ThemeProvider theme={theme}>
+        <div id="application-view">
+          <NavBar authenticated={authenticated} />
+          <div id="main-container" className="container">
+            {props.children}
           </div>
-        </ThemeProvider>
-      </MuiThemeProvider>
+          <Footer version={version} />
+        </div>
+      </ThemeProvider>
     );
   }
 

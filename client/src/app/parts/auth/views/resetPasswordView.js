@@ -4,11 +4,10 @@ import { observer } from 'mobx-react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
 import button from 'components/button';
-import TextField from 'material-ui/TextField';
 import DocTitle from 'components/docTitle';
 import alertAjax from 'components/alertAjax';
 import FormGroup from 'components/FormGroup';
-
+import input from 'components/input';
 import Debug from 'debug';
 
 const debug = new Debug('resetPasword');
@@ -17,7 +16,7 @@ export default context => {
   const { tr } = context;
   const Button = button(context);
   const AlertAjax = alertAjax(context);
-
+  const PasswordInput = input(context);
   function SetNewPasswordDone({ verifyResetPasswordToken }) {
     if (!_.get(verifyResetPasswordToken, 'data.success')) {
       return null;
@@ -43,12 +42,12 @@ export default context => {
           <strong>{tr.t('Enter your new password.')}</strong>
         </p>
         <FormGroup className="password">
-          <TextField
+          <PasswordInput
             id="password"
             onChange={e => {
               store.password = e.target.value;
             }}
-            hintText={tr.t('Password')}
+            label={tr.t('Password')}
             type="password"
             errorText={errors.password && errors.password[0]}
           />

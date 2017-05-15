@@ -1,45 +1,49 @@
 import React from 'react';
-import TextField from 'material-ui/TextField';
 import { observer } from 'mobx-react';
 import alertAjax from 'components/alertAjax';
 import FormGroup from 'components/FormGroup';
+import input from 'components/input';
 
 export default context => {
   const { tr } = context;
   const AlertAjax = alertAjax(context);
   const ButtonLoading = require('components/buttonLoading').default(context);
+  const UserNameInput = input(context);
+  const EmailInput = input(context);
+  const PasswordInput = input(context);
+
   function RegisterForm({ store, register }) {
     const { errors } = store;
     return (
       <form className="register-form text-center" onSubmit={e => e.preventDefault()}>
         <AlertAjax error={register.error} className="register-error-view" />
         <FormGroup className="username">
-          <TextField
+          <UserNameInput
             id="username"
             onChange={e => {
               store.username = e.target.value;
             }}
-            hintText={tr.t('Username')}
+            label={tr.t('Username')}
             errorText={errors.username && errors.username[0]}
           />
         </FormGroup>
         <FormGroup className="email">
-          <TextField
+          <EmailInput
             id="email"
             onChange={e => {
               store.email = e.target.value;
             }}
-            hintText={tr.t('Email')}
+            label={tr.t('Email')}
             errorText={errors.email && errors.email[0]}
           />
         </FormGroup>
         <FormGroup className="password">
-          <TextField
+          <PasswordInput
             id="password"
             onChange={e => {
               store.password = e.target.value;
             }}
-            hintText={tr.t('Password')}
+            label={tr.t('Password')}
             errorText={errors.password && errors.password[0]}
             type="password"
           />

@@ -6,6 +6,6 @@ const IconView = glamorous('i')({
   color: theme.palette.textColor
 }))
 
-export default function FontIcon({className, color}){
-    return <IconView color={color} className={className} />
+export default function FontIcon({className, style, color}){
+    return <IconView css={style} color={color} className={className} />
   }

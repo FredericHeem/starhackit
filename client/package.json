@@ -14,7 +14,7 @@
     "cpd": "jscpd",
     "prebuild": "npm run lint && npm run cpd",
     "build": "webpack --config webpack.prod.js --progress",
-    "bundle-size": "webpack --config webpack.prod.js --json --progress | webpack-bundle-size-analyzer",
+    "bundle-size": "webpack --config webpack.prod.js --json | webpack-bundle-size-analyzer",
     "clean": "rimraf build coverage",
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
     "test:watch": "karma start --auto-watch --no-single-run karma.conf.js",

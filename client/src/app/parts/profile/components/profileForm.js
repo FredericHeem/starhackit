@@ -1,13 +1,17 @@
-import React from 'react';
-import TextField from 'material-ui/TextField';
-import Spinner from 'components/spinner';
-import Paper from 'components/Paper';
+import React from "react";
+import input from "components/input";
+import Spinner from "components/spinner";
+import Paper from "components/Paper";
+import FormGroup from "components/FormGroup";
 
-import { observer } from 'mobx-react';
+import { observer } from "mobx-react";
 
 export default context => {
   const { tr } = context;
-  const ButtonLoading = require('components/buttonLoading').default(context);
+  const ButtonLoading = require("components/buttonLoading").default(context);
+  const UsernameInput = input(context);
+  const EmailInput = input(context);
+  const BioInput = input(context);
 
   function ProfileForm({ store, profileGet, profileUpdate }) {
     const { errors } = store;
@@ -18,27 +22,34 @@ export default context => {
     return (
       <Paper>
         <form onSubmit={e => e.preventDefault()}>
-          <h3>{tr.t('My Profile')}</h3>
-          <div>
-            <TextField
+          <h3>{tr.t("My Profile")}</h3>
+          <FormGroup>
+            <UsernameInput
               id="username"
-              floatingLabelText={tr.t('Username')}
+              label={tr.t("Username")}
               value={store.username}
               disabled
             />
-            <TextField id="email" value={store.email} disabled floatingLabelText={tr.t('Email')} />
-          </div>
+          </FormGroup>
+          <FormGroup>
+            <EmailInput
+              id="email"
+              value={store.email}
+              disabled
+              label={tr.t("Email")}
+            />
+          </FormGroup>
           <br />
 
           <div>
-            <legend>{tr.t('About Me')}</legend>
-            <TextField
+            <legend>{tr.t("About Me")}</legend>
+            <BioInput
               id="biography-input"
               fullWidth
-              value={store.profile.biography || ''}
+              value={store.profile.biography || ""}
               errorText={errors.biography && errors.biography[0]}
               multiLine
-              floatingLabelText={tr.t('Enter Biography')}
+              label={tr.t("Enter Biography")}
               rows={1}
               onChange={e => {
                 store.profile.biography = e.target.value;
@@ -47,8 +58,11 @@ export default context => {
           </div>
 
           <div className="btn-update-profile">
-            <ButtonLoading loading={profileUpdate.loading} onClick={() => store.update()}>
-              {tr.t('Update Profile')}
+            <ButtonLoading
+              loading={profileUpdate.loading}
+              onClick={() => store.update()}
+            >
+              {tr.t("Update Profile")}
             </ButtonLoading>
           </div>
         </form>

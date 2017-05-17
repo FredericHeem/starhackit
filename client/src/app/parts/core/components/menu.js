@@ -1,8 +1,10 @@
 import React from "react";
 import glamorous from "glamorous";
+import button from 'components/button';
 
-export default ({ theme }) => {
-  const { palette } = theme;
+export default (context) => {
+  //const {theme} = context
+  //const { palette } = theme;
 
   function menus(authenticated) {
     if (authenticated) {
@@ -42,22 +44,15 @@ export default ({ theme }) => {
   }
 
   const MenuItemView = glamorous("div")({
-    padding: 12,
-    ":hover": {
-      backgroundColor: palette.accent2Color
-    }
-  });
-
-  const A = glamorous("a")({
-    textDecoration: "none",
-    fontWeight: "bold",
-    color: palette.textColor
+    width: '100%',
+    minWidth: 150
   });
 
   function MenuItem({ menu, navChange }) {
+    const Button = button(context);
     return (
       <MenuItemView>
-        <A onClick={() => navChange(menu)} href={menu.route}>{menu.text}</A>
+        <Button style={{width:'100%', textAlign: 'start'}} flat label={menu.text} onClick={() => navChange(menu)} />
       </MenuItemView>
     );
   }

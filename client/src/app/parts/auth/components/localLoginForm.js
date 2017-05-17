@@ -23,7 +23,7 @@ export default context => {
               store.username = e.target.value;
             }}
             label={tr.t('Username')}
-            errorText={errors.username && errors.username[0]}
+            error={errors.username && errors.username[0]}
           />
         </FormGroup>
         <FormGroup className="password">
@@ -34,7 +34,7 @@ export default context => {
             }}
             label={tr.t('Password')}
             type="password"
-            errorText={errors.password && errors.password[0]}
+            error={errors.password && errors.password[0]}
           />
         </FormGroup>
         <div className='btn-login'>

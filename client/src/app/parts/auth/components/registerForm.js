@@ -24,7 +24,7 @@ export default context => {
               store.username = e.target.value;
             }}
             label={tr.t('Username')}
-            errorText={errors.username && errors.username[0]}
+            error={errors.username && errors.username[0]}
           />
         </FormGroup>
         <FormGroup className="email">
@@ -34,7 +34,7 @@ export default context => {
               store.email = e.target.value;
             }}
             label={tr.t('Email')}
-            errorText={errors.email && errors.email[0]}
+            error={errors.email && errors.email[0]}
           />
         </FormGroup>
         <FormGroup className="password">
@@ -44,7 +44,7 @@ export default context => {
               store.password = e.target.value;
             }}
             label={tr.t('Password')}
-            errorText={errors.password && errors.password[0]}
+            error={errors.password && errors.password[0]}
             type="password"
           />
         </FormGroup>

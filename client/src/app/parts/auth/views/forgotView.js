@@ -48,7 +48,7 @@ export default (context) => {
               store.email = e.target.value;
             }}
             label={tr.t('Email')}
-            errorText={errors.email && errors.email[0]}
+            error={errors.email && errors.email[0]}
           />
         </FormGroup>
 

@@ -49,7 +49,7 @@ export default context => {
             }}
             label={tr.t('Password')}
             type="password"
-            errorText={errors.password && errors.password[0]}
+            error={errors.password && errors.password[0]}
           />
         </FormGroup>
 

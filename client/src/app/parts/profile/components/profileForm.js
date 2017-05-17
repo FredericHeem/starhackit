@@ -47,7 +47,7 @@ export default context => {
               id="biography-input"
               fullWidth
               value={store.profile.biography || ""}
-              errorText={errors.biography && errors.biography[0]}
+              error={errors.biography && errors.biography[0]}
               multiLine
               label={tr.t("Enter Biography")}
               rows={1}

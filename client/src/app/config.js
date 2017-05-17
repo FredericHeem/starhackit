@@ -24,7 +24,7 @@ const config = {
         env: "development",
         debug: {
           log: true,
-          redux: true,
+          redux: false,
           i18n: false
         }
     },

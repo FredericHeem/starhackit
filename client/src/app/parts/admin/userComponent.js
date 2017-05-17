@@ -2,13 +2,18 @@ import _ from 'lodash';
 import React from 'react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
-import TextField from 'material-ui/TextField';
+import input from 'components/input';
 import Spinner from 'components/spinner';
 import FormGroup from 'components/FormGroup';
 import Debug from 'debug';
 const debug = new Debug('components:user');
 
-export default ({ tr }) => {
+export default (context) => {
+  const { tr } = context
+  const UserIdInput = input(context);
+  const UsernameInput = input(context);
+  const EmailInput = input(context);
+
   function UserComponent(props) {
     debug(props);
     const user = props.usersGetOne.data;
@@ -20,13 +25,13 @@ export default ({ tr }) => {
         <Paper>
           <h3>{tr.t('User')}</h3>
           <FormGroup>
-            <TextField id="id" value={user.id} disabled floatingLabelText={tr.t('Id')} />
+            <UserIdInput id="id" value={user.id} disabled label={tr.t('Id')} />
           </FormGroup>
           <FormGroup>
-            <TextField id="username" value={user.username} floatingLabelText={tr.t('Username')} />
+            <UsernameInput id="username" value={user.username} disabled label={tr.t('Username')} />
           </FormGroup>
           <FormGroup>
-            <TextField id="email" value={user.email} floatingLabelText={tr.t('Email')} />
+            <EmailInput id="email" value={user.email} disabled label={tr.t('Email')} />
           </FormGroup>
         </Paper>
       </Page>

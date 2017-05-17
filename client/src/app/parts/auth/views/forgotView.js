@@ -1,15 +1,16 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-
+import button from 'components/button';
+import input from 'components/input';
 import DocTitle from 'components/docTitle';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
 import FormGroup from 'components/FormGroup';
 
-export default ({ tr }) => {
+export default (context) => {
+  const { tr } = context;
+  const Button = button(context);
+  const EmailInput = input(context);
   const CheckEmail = observer(() => (
     <div className="forgot-password-check-email-view">
       <h3>{tr.t('Step 2 - Check Email')}</h3>
@@ -41,18 +42,18 @@ export default ({ tr }) => {
         <p>{tr.t('You will be sent a reset code to change your password.')}</p>
 
         <FormGroup>
-          <TextField
+          <EmailInput
             id="email-input"
             onChange={e => {
               store.email = e.target.value;
             }}
-            hintText={tr.t('Email')}
-            errorText={errors.email && errors.email[0]}
+            label={tr.t('Email')}
+            error={errors.email && errors.email[0]}
           />
         </FormGroup>
 
         <div className="btn-forgot-password">
-          <RaisedButton
+          <Button
             onClick={() => store.requestPasswordReset()}
             label={tr.t("Reset Password")}
           />

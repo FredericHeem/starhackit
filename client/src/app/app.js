@@ -1,5 +1,6 @@
 import 'assets/stylus/main';
 import tr from 'i18next';
+import {browserHistory} from 'react-router';
 import Rest from './utils/rest';
 import Store from './configureStore';
 
@@ -11,7 +12,7 @@ import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
 import CrossBankModule from './parts/crossbank/crossBankModule';
 import AnalyticsModule from './parts/analytics/AnalyticsModule';
-
+import ThemeModule from './parts/theme/ThemeModule';
 import Debug from 'debug';
 import formatter from 'utils/formatter';
 import intl from 'utils/intl';
@@ -38,10 +39,12 @@ export default function({language = 'en', config}) {
       theme: theme(),
       tr,
       formatter: formatter(language),
-      notification : notification()
+      notification : notification(),
+      history: browserHistory
     }
 
     const parts = {
+      theme: ThemeModule(context),
       auth: AuthModule(context),
       core: CoreModule(context),
       profile: ProfileModule(context),

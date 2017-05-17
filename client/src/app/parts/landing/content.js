@@ -24,24 +24,38 @@ export default () => ({
   frontend: [
     {
       img: require('./img/react.svg'),
-      height: '200',
+      height: '100',
       title: 'React',
       link: 'https://facebook.github.io/react/',
       text: 'A fast rising javascript library for building user interface.',
     },
     {
-      img: require('./img/material-ui.svg'),
-      title: 'Material-UI',
-      height: '200',
-      link: 'http://www.material-ui.com',
-      text: "A Set of React Components that Implement Google's Material Design.",
-    },
-    {
       img: require('./img/redux.svg'),
       title: 'Redux',
-      height: '200',
+      height: '100',
       link: 'https://github.com/reactjs/redux',
       text: 'Predictable state container, the most popular flux library.',
+    },
+    {
+      img: require('./img/mobx.svg'),
+      title: 'Mobx',
+      height: '100',
+      link: 'https://mobx.js.org/',
+      text: "Simple, scalable state management",
+    },
+    {
+      img: require('./img/glamorous.png'),
+      title: 'Glamorous',
+      height: '150',
+      link: 'https://github.com/paypal/glamorous',
+      text: 'Style React Components with Style.',
+    },
+    {
+      img: require('./img/i18next.svg'),
+      title: 'i18next',
+      width: '180',
+      link: 'http://i18next.com/',
+      text: 'Internationalisation matters',
     },
   ],
   backend: [

@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
-import RaisedButton from 'material-ui/FlatButton';
+import button from 'components/button';
 import DocTitle from 'components/docTitle';
 import Spinner from 'components/spinner';
 
-export default ({ tr }) => {
+export default (context) => {
+  const { tr, history } = context;
+  const Button = button(context);
   function LoggingOut() {
     return (
       <Paper>
@@ -20,7 +21,7 @@ export default ({ tr }) => {
       <Paper>
         <h1>{tr.t('Logged Out')}</h1>
         <p>{tr.t('Successfully logged out, see you soon.')}</p>
-        <RaisedButton primary label={tr.t('Login')} containerElement={<Link to="/login" />} />
+        <Button primary label={tr.t('Login')} onClick={() => history.push(`/login`)} />
       </Paper>
     );
   }

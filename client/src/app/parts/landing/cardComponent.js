@@ -1,6 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import FontIcon from 'material-ui/FontIcon';
+import FontIcon from 'components/FontIcon';
 
 export default () => {
   function MediaIcon({ icon }) {
@@ -20,7 +20,7 @@ export default () => {
   }
 
   const CardView = glamorous.div({
-    width: '250',
+    width: '150',
     flexGrow: 1,
     flexShrink: 0,
     flexBasis: '150',

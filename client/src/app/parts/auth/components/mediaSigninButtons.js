@@ -1,10 +1,13 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
+import button from 'components/button';
+import FontIcon from 'components/FontIcon';
 import config from 'config';
 
-export default ({ tr }) => {
+
+export default (context) => {
+  const { tr } = context;
+  const Button = button(context);
   const socialAuthMap = {
     facebook: {
       label: `${tr.t('Sign in with')} Facebook`,
@@ -29,8 +32,8 @@ export default ({ tr }) => {
   function SocialButton({ label, href, icon }) {
     return (
       <SocialButtonView>
-        <RaisedButton
-          style={{
+        <Button
+          css={{
             width: '100%',
           }}
           label={label}

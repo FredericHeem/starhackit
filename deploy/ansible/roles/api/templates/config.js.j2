@@ -12,8 +12,11 @@ let config = {
         analytics: {
             google: '{{google_analytics}}'
         },
-        socialAuth: {
-            facebook: '{{auth_facebook}}'
+        socialAuth: ['{{auth_facebook}}'],
+        debug: {
+          log: false,
+          redux: false,
+          i18n: false
         }
     },
 

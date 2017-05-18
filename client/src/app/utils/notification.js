@@ -1,11 +1,11 @@
 import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
-import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import 'react-s-alert/dist/s-alert-css-effects/scale.css';
 
 export default () => {
   const config = {
     position: 'top-right',
-    effect: 'slide',
+    effect: 'scale',
     timeout: 10e3,
     offset: 100,
   };

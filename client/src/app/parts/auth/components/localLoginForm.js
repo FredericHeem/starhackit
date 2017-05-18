@@ -1,15 +1,15 @@
-import React from 'react';
-import { observer } from 'mobx-react';
-import alertAjax from 'components/alertAjax';
-import FormGroup from 'components/FormGroup';
-import input from 'components/input';
+import React from "react";
+import { observer } from "mobx-react";
+import alertAjax from "components/alertAjax";
+import FormGroup from "components/FormGroup";
+import input from "components/input";
 
 export default context => {
   const { tr } = context;
   const UserNameInput = input(context);
   const PasswordInput = input(context);
   const AlertAjax = alertAjax(context);
-  const ButtonLoading = require('components/buttonLoading').default(context);
+  const ButtonLoading = require("components/button").default(context);
 
   function LoginForm({ store, login }) {
     const { errors } = store;
@@ -22,7 +22,7 @@ export default context => {
             onChange={e => {
               store.username = e.target.value;
             }}
-            label={tr.t('Username')}
+            label={tr.t("Username")}
             error={errors.username && errors.username[0]}
           />
         </FormGroup>
@@ -32,16 +32,20 @@ export default context => {
             onChange={e => {
               store.password = e.target.value;
             }}
-            label={tr.t('Password')}
+            label={tr.t("Password")}
             type="password"
             error={errors.password && errors.password[0]}
           />
         </FormGroup>
-        <div className='btn-login'>
-          <ButtonLoading  loading={login.loading} onClick={() => store.login()}>
-            {tr.t('Login')}
-          </ButtonLoading>
-        </div>
+        <FormGroup>
+          <ButtonLoading
+            primary
+            css={{ width: 256 }}
+            label={tr.t("Login")}
+            loading={login.loading}
+            onClick={() => store.login()}
+          />
+        </FormGroup>
       </form>
     );
   }

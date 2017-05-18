@@ -34,6 +34,8 @@ export default ({ theme }) => {
   const styles = {
     root: {
       padding: '0.5rem',
+      height: 36,
+      fontWeight: 500,
       backgroundColor: palette.canvasColor,
       display: 'inline-flex',
       alignItems: 'center',
@@ -56,6 +58,10 @@ export default ({ theme }) => {
     flat: {
       borderWidth: 0,
     },
+    primary: {
+      backgroundColor: palette.primary1Color,
+      color: palette.alternateTextColor
+    },
     raised: {
       border: `1px solid ${palette.borderColor}`,
       boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 6px, rgba(0, 0, 0, 0.1) 0px 1px 4px',
@@ -73,9 +79,10 @@ export default ({ theme }) => {
   const IconView = glamorous('span')(styles.icon);
 
   return function Button(props) {
-    const { flat, label, href, icon, ...otherProps } = props;
+    const { primary, raised, flat, label, href, icon, ...otherProps } = props;
     const TheButton = glamorous(href ? AnchorView : ButtonView)(
-      flat ? styles.flat : styles.raised,
+      raised ? styles.raised : styles.flat,
+      primary && styles.primary,
       ripple,
     );
 

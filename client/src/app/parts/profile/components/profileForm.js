@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 
 export default context => {
   const { tr } = context;
-  const ButtonLoading = require("components/buttonLoading").default(context);
+  const ButtonLoading = require("components/button").default(context);
   const UsernameInput = input(context);
   const EmailInput = input(context);
   const BioInput = input(context);
@@ -41,7 +41,7 @@ export default context => {
           </FormGroup>
           <br />
 
-          <div>
+          <FormGroup>
             <h4>{tr.t("About Me")}</h4>
             <BioInput
               id="biography-input"
@@ -55,16 +55,17 @@ export default context => {
                 store.profile.biography = e.target.value;
               }}
             />
-          </div>
+          </FormGroup>
 
-          <div className="btn-update-profile">
+          <FormGroup>
             <ButtonLoading
+              primary
+              css={{ width: 256 }}
               loading={profileUpdate.loading}
               onClick={() => store.update()}
-            >
-              {tr.t("Update Profile")}
-            </ButtonLoading>
-          </div>
+              label={tr.t("Update Profile")}
+            />
+          </FormGroup>
         </form>
       </Paper>
     );

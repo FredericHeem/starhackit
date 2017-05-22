@@ -1,5 +1,6 @@
 import glamorous from 'glamorous';
 
 export default glamorous.div({
-  marginBottom: 10,
+  marginTop: 20,
+  marginBottom: 20,
 });

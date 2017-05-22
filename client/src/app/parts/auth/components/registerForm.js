@@ -7,7 +7,7 @@ import input from 'components/input';
 export default context => {
   const { tr } = context;
   const AlertAjax = alertAjax(context);
-  const ButtonLoading = require('components/buttonLoading').default(context);
+  const ButtonLoading = require('components/button').default(context);
   const UserNameInput = input(context);
   const EmailInput = input(context);
   const PasswordInput = input(context);
@@ -49,15 +49,15 @@ export default context => {
           />
         </FormGroup>
 
-        <div className="btn-register">
+        <FormGroup>
           <ButtonLoading
+            primary
+            css={{ width: 256 }}
             loading={register.loading}
-            data-spinner-size={30}
             onClick={() => store.register()}
-          >
-            {tr.t('Create Account')}
-          </ButtonLoading>
-        </div>
+            label={tr.t('Create Account')}
+          />
+        </FormGroup>
       </form>
     );
   }

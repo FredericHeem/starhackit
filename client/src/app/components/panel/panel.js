@@ -3,7 +3,7 @@ import glamorous from 'glamorous';
 export default function({theme}){
   const {palette} = theme;
   const Panel = glamorous.div({
-    borderBottom: `1px solid ${palette.accent2Color}`,
+    borderBottom: `1px solid ${palette.primaryDark}`,
     padding: '0.5rem',
   });
 
@@ -11,12 +11,12 @@ export default function({theme}){
     fontSize: '2rem',
     fontWeight: 'bold',
     padding: '0.5rem',
-    backgroundColor: palette.accent3Color
+    backgroundColor: palette.primaryLight
   });
 
   const Body = glamorous.div({
     padding: '0.5rem',
-    backgroundColor: palette.accent2Color
+    backgroundColor: palette.background
   });
 
   return {

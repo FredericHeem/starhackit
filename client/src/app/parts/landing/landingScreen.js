@@ -1,6 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 import FontIcon from 'components/FontIcon';
 import DocTitle from 'components/docTitle';
 import Row from 'components/Row';
@@ -32,6 +32,7 @@ export default context => {
         <h3>{tr.t('Built with React, Node, data backed by SQL')}</h3>
 
         <Button
+          raised
           label="Clone the code on GitHub"
           href="https://github.com/FredericHeem/starhackit"
           icon={<FontIcon className="icon-github-circled-alt2" />}

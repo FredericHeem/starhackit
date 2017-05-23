@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { observer } from 'mobx-react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 import DocTitle from 'components/docTitle';
 import alertAjax from 'components/alertAjax';
 import FormGroup from 'components/FormGroup';
@@ -55,6 +55,7 @@ export default context => {
 
         <div className="spacer">
           <Button
+            raised
             className="btn-reset-password"
             onClick={() => store.resetPassword(params.token)}
             label={tr.t('Reset Password')}

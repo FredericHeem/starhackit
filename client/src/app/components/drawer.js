@@ -7,7 +7,7 @@ export default ({ theme }) => {
     zIndex: 2,
     position: 'absolute',
     border: `1px solid ${palette.borderColor}`,
-    backgroundColor: `${palette.canvasColor}`,
+    backgroundColor: `${palette.backgroundColor}`,
     top: 0,
     left: 0,
     height: '100%',
@@ -17,7 +17,7 @@ export default ({ theme }) => {
   const DrawerOverlayView = glamorous('div')({
     zIndex: -1,
     position: 'absolute',
-    backgroundColor: `${palette.canvasColor}`,
+    backgroundColor: `${palette.backgroundColor}`,
     opacity: 0,
     top: 0,
     left: 0,

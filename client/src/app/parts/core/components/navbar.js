@@ -59,8 +59,8 @@ export default context => {
     justifyContent: 'flex-start',
     alignItems: 'center',
   }, (props, theme) => ({
-    backgroundColor: theme.palette.primary1Color,
-    color: theme.palette.alternateTextColor
+    backgroundColor: theme.palette.primary1,
+    color: theme.palette.textPrimaryOnPrimary
   }));
 
   function AppBar({ onLeftIconButtonTouchTap }) {

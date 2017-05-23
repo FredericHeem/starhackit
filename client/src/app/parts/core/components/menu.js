@@ -1,6 +1,6 @@
 import React from "react";
 import glamorous from "glamorous";
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 
 export default (context) => {
   //const {theme} = context

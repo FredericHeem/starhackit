@@ -1,7 +1,7 @@
 import React from 'react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 import DocTitle from 'components/docTitle';
 import Spinner from 'components/spinner';
 

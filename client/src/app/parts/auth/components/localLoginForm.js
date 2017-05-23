@@ -9,7 +9,7 @@ export default context => {
   const UserNameInput = input(context);
   const PasswordInput = input(context);
   const AlertAjax = alertAjax(context);
-  const ButtonLoading = require("components/button").default(context);
+  const ButtonLoading = require("mdlean/lib/button").default(context);
 
   function LoginForm({ store, login }) {
     const { errors } = store;
@@ -39,7 +39,8 @@ export default context => {
         </FormGroup>
         <FormGroup>
           <ButtonLoading
-            primary
+            accent
+            raised
             css={{ width: 256 }}
             label={tr.t("Login")}
             loading={login.loading}

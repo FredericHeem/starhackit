@@ -1,6 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 import FontIcon from 'components/FontIcon';
 import config from 'config';
 
@@ -33,9 +33,7 @@ export default (context) => {
     return (
       <SocialButtonView>
         <Button
-          css={{
-            width: '100%',
-          }}
+          fullWidth
           label={label}
           href={href}
           icon={icon ? <FontIcon className={icon} /> : null}

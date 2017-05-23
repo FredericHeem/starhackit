@@ -7,7 +7,7 @@ import input from 'components/input';
 export default context => {
   const { tr } = context;
   const AlertAjax = alertAjax(context);
-  const ButtonLoading = require('components/button').default(context);
+  const ButtonLoading = require('mdlean/lib/button').default(context);
   const UserNameInput = input(context);
   const EmailInput = input(context);
   const PasswordInput = input(context);
@@ -51,7 +51,8 @@ export default context => {
 
         <FormGroup>
           <ButtonLoading
-            primary
+            accent
+            raised
             css={{ width: 256 }}
             loading={register.loading}
             onClick={() => store.register()}

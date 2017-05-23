@@ -1,6 +1,6 @@
 import React from 'react';
 
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 import mediaSigninButtons from '../components/mediaSigninButtons';
 import localLoginForm from '../components/localLoginForm';
 import Paper from 'components/Paper';
@@ -24,7 +24,7 @@ export default context => {
             <Strike />
             <MediaSigninButtons />
             <Strike />
-            <Button flat label={tr.t('Forgot Password')} onClick={() => history.push(`/forgot`)} />
+            <Button label={tr.t('Forgot Password')} onClick={() => history.push(`/forgot`)} />
           </div>
         </Paper>
       </Page>

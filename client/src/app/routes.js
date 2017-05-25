@@ -1,3 +1,5 @@
+import ComponentGuide from 'components/componentGuide';
+
 export default function Routes(context, store, parts) {
 
   function isAuthenticated(param, replaceState) {
@@ -39,7 +41,11 @@ export default function Routes(context, store, parts) {
             path: 'db',
             onEnter: isAuthenticated,
             childRoutes: parts.db.routes(store, parts).childRoutes
-          }
+          },
+          {
+            path: 'guide',
+            component: ComponentGuide(context)
+          },
 
         ]
       },

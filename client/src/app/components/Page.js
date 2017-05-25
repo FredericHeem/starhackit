@@ -1,6 +1,8 @@
 import glamorous from 'glamorous';
 
 export default glamorous.div({
-  minWidth: 400,
-  maxWidth: 600
+  maxWidth: 600,
+  '@media(min-width: 600px)': {
+    width: '100%',
+  }
 });

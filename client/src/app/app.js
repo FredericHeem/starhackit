@@ -41,7 +41,8 @@ export default function({language = 'en', config}) {
       analytics: AnalyticsModule(context),
       crossbank: CrossBankModule(context)
     }
-
+    context.parts = parts;
+    
     const store = Store({debug: _.get(config, 'debug.redux')}).create(parts);
     const jwt = Jwt(store);
 

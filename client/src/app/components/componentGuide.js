@@ -10,7 +10,8 @@ export default context => {
   const Alerts = alerts(context);
   const Panels = panels(context);
   const Inputs = inputs(context);
-  
+  const LoginView = context.parts.auth.containers().login();
+
   return function ComponentGuide() {
     return (
       <div>
@@ -22,6 +23,7 @@ export default context => {
         <Inputs />
         <Spinners />
         <Panels />
+        <LoginView />
       </div>
     );
   };

@@ -1,12 +1,10 @@
 import 'assets/stylus/main';
-import tr from 'i18next';
-import {browserHistory} from 'react-router';
-import Rest from './utils/rest';
+import _ from 'lodash';
+import Context from './context';
 import Store from './configureStore';
 
 import AuthModule from './parts/auth/authModule';
 import CoreModule from './parts/core/coreModule';
-
 import ProfileModule from './parts/profile/profileModule';
 import AdminModule from './parts/admin/adminModule';
 import DbModule from './parts/db/dbModule';
@@ -14,14 +12,11 @@ import CrossBankModule from './parts/crossbank/crossBankModule';
 import AnalyticsModule from './parts/analytics/AnalyticsModule';
 //import ThemeModule from './parts/theme/ThemeModule';
 import Debug from 'debug';
-import formatter from 'utils/formatter';
+
 import intl from 'utils/intl';
 import Jwt from 'utils/jwt';
 
 import rootView from './rootView';
-import theme from './theme';
-
-import notification from './utils/notification';
 
 //Needed by material-ui
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -32,16 +27,8 @@ const debug = new Debug("app");
 export default function({language = 'en', config}) {
     debug("App begins");
 
-    const rest = Rest();
-
-    const context = {
-      rest,
-      theme: theme(),
-      tr,
-      formatter: formatter(language),
-      notification : notification(),
-      history: browserHistory
-    }
+    const context = Context({language})
+    const {rest} = context;
 
     const parts = {
       //theme: ThemeModule(context),
@@ -54,7 +41,7 @@ export default function({language = 'en', config}) {
       crossbank: CrossBankModule(context)
     }
 
-    const store = Store({debug: config.debug.redux}).create(parts);
+    const store = Store({debug: _.get(config, 'debug.redux')}).create(parts);
     const jwt = Jwt(store);
 
     rest.setJwtSelector(jwt.selector(store));

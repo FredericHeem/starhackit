@@ -26,11 +26,11 @@ export default ({ theme }) => {
       root: {
         fontSize: '0.9rem',
         position: 'relative',
-        color: palette.secondaryTextColor,
+        color: palette.textSecondary,
         transition: 'color 1s',
       },
       focus: {
-        color: palette.primary1Color,
+        color: palette.primary,
       },
     },
     input: {
@@ -59,7 +59,7 @@ export default ({ theme }) => {
         transform: 'scaleX(1)',
       },
       focusOff: {
-        borderColor: palette.primary1Color,
+        borderColor: palette.primary,
       },
       errorOff: {
         borderColor: 'red',

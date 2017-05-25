@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import button from 'components/button';
+import button from 'mdlean/lib/button';
 import input from 'components/input';
 import DocTitle from 'components/docTitle';
 import Page from 'components/Page';
@@ -54,6 +54,7 @@ export default (context) => {
 
         <div className="btn-forgot-password">
           <Button
+            raised
             onClick={() => store.requestPasswordReset()}
             label={tr.t("Reset Password")}
           />

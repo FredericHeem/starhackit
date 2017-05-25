@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 
 export default context => {
   const { tr } = context;
-  const ButtonLoading = require("components/button").default(context);
+  const ButtonLoading = require("mdlean/lib/button").default(context);
   const UsernameInput = input(context);
   const EmailInput = input(context);
   const BioInput = input(context);
@@ -59,7 +59,7 @@ export default context => {
 
           <FormGroup>
             <ButtonLoading
-              primary
+              raised
               css={{ width: 256 }}
               loading={profileUpdate.loading}
               onClick={() => store.update()}

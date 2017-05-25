@@ -4,14 +4,11 @@ import alerts from "./alert/alert.examples";
 import panels from "./panel/panel.examples";
 import inputs from "./input/input.examples";
 
-export default context => {
-  const { tr } = context;
-  const Spinners = spinners(context);
-  const Alerts = alerts(context);
-  const Panels = panels(context);
-  const Inputs = inputs(context);
-  const LoginView = context.parts.auth.containers().login();
+const h = React.createElement;
 
+export default context => {
+  const { tr, parts } = context;
+        
   return function ComponentGuide() {
     return (
       <div>
@@ -19,11 +16,16 @@ export default context => {
         <h2>
           {tr.t("A showroom to display components with various properties")}
         </h2>
-        <Alerts />
-        <Inputs />
-        <Spinners />
-        <Panels />
-        <LoginView />
+        {h(alerts(context))}
+        {h(inputs(context))}
+        {h(spinners(context))}
+        {h(panels(context))}
+        {h(parts.auth.containers().login())}
+        {h(parts.auth.containers().register())}
+        {h(parts.auth.containers().logout())}
+        {h(parts.auth.containers().forgot())}
+        {h(parts.auth.containers().resetPassword())}
+        {h(parts.profile.containers().profile())}
       </div>
     );
   };

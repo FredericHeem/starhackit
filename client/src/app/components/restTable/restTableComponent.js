@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {createElement as h} from 'react';
 import * as Table from 'reactabular-table';
 import mobx from 'mobx';
 import {observer} from 'mobx-react';
 import Paginator from 'react-pagify';
 import segmentize from 'segmentize';
-import Spinner from 'components/spinner';
+import spinner from 'components/spinner';
 import alertAjax from 'components/alertAjax';
 import Debug from 'debug';
 
@@ -17,7 +17,7 @@ export default (context, store, {columns}) => {
 
   const AlertAjax = alertAjax(context);
 
-  const Loading = observer((loading) => (loading === true ? <Spinner /> : null));
+  const Loading = observer((loading) => (loading === true ? h(spinner(context)) : null));
 
   const Error = observer(() => {
     const {error} = store;

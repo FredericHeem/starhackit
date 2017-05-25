@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import React from 'react';
-import Spinner from 'components/spinner';
+import React, {createElement as h} from 'react';
+import spinner from 'components/spinner';
 import './schema.styl';
 
 export default context => {
@@ -40,7 +40,7 @@ export default context => {
     return (
       <div className="schema-view">
         <h3>{tr.t('Tables')}</h3>
-        {loading && <Spinner />}
+        {loading && h(spinner(context))}
         <div className="db-tables">
           {schema &&
             _.map(schema.tables, (table, tableName) => (

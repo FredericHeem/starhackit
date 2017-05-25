@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import React from 'react';
+import React, {createElement as h} from 'react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
 import input from 'components/input';
-import Spinner from 'components/spinner';
+import spinner from 'components/spinner';
 import FormGroup from 'components/FormGroup';
 import Debug from 'debug';
 const debug = new Debug('components:user');
@@ -18,7 +18,7 @@ export default (context) => {
     debug(props);
     const user = props.usersGetOne.data;
     if (_.isEmpty(user)) {
-      return <Spinner />;
+      return h(spinner(context));
     }
     return (
       <Page className="user-view text-center">

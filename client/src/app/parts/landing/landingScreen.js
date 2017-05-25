@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createElement as h} from 'react';
 import glamorous from 'glamorous';
 import button from 'mdlean/lib/button';
 import FontIcon from 'components/FontIcon';
@@ -6,7 +6,7 @@ import DocTitle from 'components/docTitle';
 import Row from 'components/Row';
 import Title from 'components/Title';
 import cardComponent from './cardComponent';
-
+import guide from 'components/componentGuide'
 import Content from './content';
 
 export default context => {
@@ -119,11 +119,13 @@ export default context => {
         <DocTitle title="Home" />
 
         <Header />
+        
         <Features />
         <End2End />
         <Frontend />
         <Backend />
         <Tools />
+        {h(guide(context))}
       </div>
     );
   };

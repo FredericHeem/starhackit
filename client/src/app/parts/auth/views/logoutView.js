@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {createElement as h} from 'react';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
 import button from 'mdlean/lib/button';
 import DocTitle from 'components/docTitle';
-import Spinner from 'components/spinner';
+import spinner from 'components/spinner';
 
 export default (context) => {
   const { tr, history } = context;
@@ -12,7 +12,7 @@ export default (context) => {
     return (
       <Paper>
         <h1>{tr.t('Logging Out')}</h1>
-        <Spinner />
+        {h(spinner(context))}
       </Paper>
     );
   }

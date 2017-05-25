@@ -1,6 +1,6 @@
-import React from "react";
+import React, {createElement as h} from "react";
 import input from "components/input";
-import Spinner from "components/spinner";
+import spinner from "components/spinner";
 import Paper from "components/Paper";
 import FormGroup from "components/FormGroup";
 
@@ -16,7 +16,7 @@ export default context => {
   function ProfileForm({ store, profileGet, profileUpdate }) {
     const { errors } = store;
     if (profileGet.loading) {
-      return <Spinner />;
+      return h(spinner(context));
     }
 
     return (

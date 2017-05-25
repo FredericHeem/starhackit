@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {createElement as h}  from 'react';
 import DocTitle from 'components/docTitle';
 import Page from 'components/Page';
 import Paper from 'components/Paper';
-import Spinner from 'components/spinner';
+import spinner from 'components/spinner';
 import alertAjax from 'components/alertAjax';
 import Debug from 'debug';
 const debug = new Debug('views:registrationComplete');
@@ -21,7 +21,7 @@ export default context => {
           <h3>{tr.t('Registering your account')}</h3>
           <AlertAjax error={error} className="register-complete-error-view" />
           {' '}
-          {!error && <Spinner />}
+          {!error && h(spinner(context))}
         </Paper>
       </Page>
     );

@@ -1,11 +1,22 @@
 import React from 'react';
+import glamorous, { ThemeProvider } from 'glamorous';
 import navBar from '../../core/components/navbar';
 import footer from '../../core/components/footer';
-import { ThemeProvider } from 'glamorous';
-import './application.styl';
 
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
+
+const AppView = glamorous('div')({
+
+})
+
+const MainView = glamorous('div')({
+  paddingTop: 20,
+  paddingBottom: 20,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+})
 
 export default context => {
   const {theme} = context;
@@ -22,13 +33,13 @@ export default context => {
   ) {
     return (
       <ThemeProvider theme={theme}>
-        <div id="application-view">
+        <AppView>
           <NavBar authenticated={authenticated} />
-          <div id="main-container" className="container">
+          <MainView>
             {props.children}
-          </div>
+          </MainView>
           <Footer version={version} />
-        </div>
+        </AppView>
       </ThemeProvider>
     );
   }

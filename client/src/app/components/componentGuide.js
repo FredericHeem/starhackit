@@ -4,6 +4,7 @@ import spinners from "./spinner/spinner.examples";
 import alerts from "./alert/alert.examples";
 import panels from "./panel/panel.examples";
 import inputs from "./input/input.examples";
+import button from './button/button.examples'
 
 export default context => {
   const { tr, parts } = context;
@@ -28,6 +29,7 @@ export default context => {
         <ViewContainer>
           {h(alerts(context))}
           {h(inputs(context))}
+          {h(button(context))}
           {h(spinners(context))}
           {h(panels(context))}
         </ViewContainer>

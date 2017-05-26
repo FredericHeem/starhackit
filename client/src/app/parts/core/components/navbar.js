@@ -25,10 +25,9 @@ export default context => {
     })
   });
 
-  const ButtonLeftView = glamorous("button")({
-    margin: 10,
-    background: "transparent",
-    border: 0
+  const BurgerButton = glamorous(button(context))({
+    height: 50,
+    width: 50,
   });
 
   function BurgerIcon() {
@@ -50,9 +49,9 @@ export default context => {
 
   function IconLeft({ onDrawerClick }) {
     return (
-      <ButtonLeftView onClick={onDrawerClick}>
+      <BurgerButton ripple onClick={onDrawerClick}>
         <BurgerIcon />
-      </ButtonLeftView>
+      </BurgerButton>
     );
   }
 

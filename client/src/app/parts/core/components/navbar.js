@@ -10,7 +10,7 @@ import button from "mdlean/lib/button";
 
 export default context => {
   const { tr, theme } = context;
-  //const palette = {theme};
+  const {palette} = theme;
   const Drawer = drawer(context);
   const Menu = menu(context);
   const store = mobx.observable({
@@ -61,7 +61,7 @@ export default context => {
     fontSize: 34,
     fontWeight: "bold",
     margin: 10,
-    color: theme.palette.textPrimaryOnPrimary
+    color: palette.textPrimaryOnPrimary
   });
 
   const AppBarView = glamorous("div")({
@@ -69,8 +69,8 @@ export default context => {
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: theme.palette.primary,
-    color: theme.palette.textPrimaryOnPrimary
+    backgroundColor: palette.primary,
+    color: palette.textPrimaryOnPrimary
   });
 
   function AppBar({ onDrawerClick, onTitleClick }) {

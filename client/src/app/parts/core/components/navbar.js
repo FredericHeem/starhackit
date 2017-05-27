@@ -1,6 +1,6 @@
 import React from "react";
 import glamorous from "glamorous";
-import drawer from "components/drawer";
+import drawer from "mdlean/lib/drawer";
 import config from "config";
 import { browserHistory } from "react-router";
 import mobx from "mobx";
@@ -13,11 +13,13 @@ export default context => {
   //const palette = {theme};
   const Drawer = drawer(context);
   const Menu = menu(context);
-  const TitleButton = button(context);
   const store = mobx.observable({
     open: false,
     toggle() {
       this.open = !this.open;
+    },
+    close() {
+      store.open = false;
     },
     navChange: mobx.action(function(menuItem) {
       browserHistory.push(menuItem.route);
@@ -27,7 +29,7 @@ export default context => {
 
   const BurgerButton = glamorous(button(context))({
     height: 50,
-    width: 50,
+    width: 50
   });
 
   function BurgerIcon() {
@@ -37,7 +39,7 @@ export default context => {
         version="1.1"
         viewBox="0 0 32 32"
         width="40px"
-        height="50px"
+        height="40px"
       >
         <path
           fill={theme.palette.textPrimaryOnPrimary}
@@ -55,28 +57,27 @@ export default context => {
     );
   }
 
-  const TitleView = glamorous(TitleButton)({
+  const TitleView = glamorous(button(context))({
     fontSize: 34,
     fontWeight: "bold",
     margin: 10,
     color: theme.palette.textPrimaryOnPrimary
   });
 
-  const AppBarView = glamorous("div")(
-    (props, theme) => ({
-      display: "flex",
-      justifyContent: "flex-start",
-      alignItems: "center",
-      backgroundColor: theme.palette.primary,
-      color: theme.palette.textPrimaryOnPrimary
-    })
-  );
+  const AppBarView = glamorous("div")({
+    height: 80,
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: theme.palette.primary,
+    color: theme.palette.textPrimaryOnPrimary
+  });
 
   function AppBar({ onDrawerClick, onTitleClick }) {
     return (
       <AppBarView>
         <IconLeft onDrawerClick={onDrawerClick} />
-        <TitleView onClick={onTitleClick}>{tr.t(config.title)}</TitleView>
+        <TitleView onClick={onTitleClick} label={tr.t(config.title)} />
       </AppBarView>
     );
   }
@@ -84,14 +85,10 @@ export default context => {
     return (
       <div>
         <AppBar
-          onDrawerClick={() => {
-            store.toggle();
-          }}
-          onTitleClick={() => {
-            store.navChange({ route: "/" });
-          }}
+          onDrawerClick={() => store.toggle()}
+          onTitleClick={() => store.navChange({ route: "/" })}
         />
-        <Drawer open={store.open} store={store}>
+        <Drawer open={store.open} onClose={() => store.close()}>
           <Menu
             authenticated={authenticated}
             navChange={item => store.navChange(item)}

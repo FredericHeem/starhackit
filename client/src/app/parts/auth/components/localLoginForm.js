@@ -39,6 +39,7 @@ export default context => {
         </FormGroup>
         <FormGroup>
           <ButtonLoading
+            className='btn-login'
             accent
             raised
             css={{ width: 256 }}

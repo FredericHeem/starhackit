@@ -75,6 +75,23 @@ Here is an example of the configuration for Postgres:
 }
 ```
 
+Install and configure Postgres on a mac:
+
+    $ brew install postgres
+
+Start postgres:
+
+    $ brew services start postgres
+
+Create a user
+
+    $ createuser --interactive
+
+Create a database:
+
+    $ createdb dev
+
+    
 ## Message Queue
 
 A use case for using a RabbitMq in this project is to send an email during registration. It decouples the act of requesting an action and executing it. That solves a bunch of issues,  for instance, when the mail server is not reachable or down, the [job](src/plugins/users/jobs/mail/MailJob.js) who is processing the email expedition can retry until the mail service is restored.

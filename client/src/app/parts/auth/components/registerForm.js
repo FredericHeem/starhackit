@@ -51,6 +51,7 @@ export default context => {
 
         <FormGroup>
           <ButtonLoading
+            className='btn-register'
             accent
             raised
             css={{ width: 256 }}

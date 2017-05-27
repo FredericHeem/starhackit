@@ -44,7 +44,7 @@ export default context => {
           <FormGroup>
             <h4>{tr.t("About Me")}</h4>
             <BioInput
-              id="biography-input"
+              className="biography-input"
               fullWidth
               value={store.profile.biography || ""}
               error={errors.biography && errors.biography[0]}
@@ -59,6 +59,7 @@ export default context => {
 
           <FormGroup>
             <ButtonLoading
+              className='btn-update-profile'
               raised
               css={{ width: 256 }}
               loading={profileUpdate.loading}

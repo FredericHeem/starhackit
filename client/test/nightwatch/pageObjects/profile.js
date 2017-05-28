@@ -12,7 +12,7 @@ module.exports = {
             selector: '.btn-update-profile'
         },
         biographyInput: {
-            selector: '#biography-input'
+            selector: '.biography-input'
         }
     }
 };

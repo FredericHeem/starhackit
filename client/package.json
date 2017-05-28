@@ -1,7 +1,7 @@
 {
   "name": "starhackit-ui",
   "title": "StarHack.It",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "React + node starter kit. A fullstack boilerplate written in ES6/7 with authentication and authorisation",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
@@ -45,7 +45,7 @@
     "i18next-xhr-backend": "1.4.1",
     "intl": "1.2.5",
     "lodash": "4.17.4",
-    "mdlean": "0.2.0",
+    "mdlean": "0.7.0",
     "mobx": "3.1.9",
     "mobx-react": "4.1.8",
     "prop-types": "15.5.10",

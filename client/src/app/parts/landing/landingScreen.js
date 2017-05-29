@@ -1,37 +1,38 @@
-import React, {createElement as h} from 'react';
-import glamorous from 'glamorous';
-import button from 'mdlean/lib/button';
-import fontIcon from 'components/FontIcon';
-import DocTitle from 'components/docTitle';
-import Row from 'components/Row';
-import Title from 'components/Title';
-import cardComponent from './cardComponent';
-import guide from 'components/componentGuide'
-import Content from './content';
+import React, { createElement as h } from "react";
+import glamorous from "glamorous";
+import button from "mdlean/lib/button";
+import fontIcon from "components/FontIcon";
+import DocTitle from "components/docTitle";
+import Row from "components/Row";
+import Title from "components/Title";
+import cardComponent from "./cardComponent";
+import guide from "components/componentGuide";
+import Content from "./content";
 
 export default context => {
-  const { tr } = context;
+  const { tr, theme } = context;
+  const { palette } = theme;
   const FontIcon = fontIcon(context);
-  const Button = button(context);
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
-  const Section = glamorous.section({
-    borderTop: `1px solid lightgrey`,
-    paddingBottom:30
-  });
+  const Section = glamorous.section(() => ({
+    borderTop: `1px solid ${palette.borderColor}`,
+    paddingBottom: 30
+  }));
 
   const HeaderView = glamorous.section({
-    padding: 20,
+    padding: 20
   });
 
   function Header() {
+    const Button = button(context);
     return (
       <HeaderView>
-        <h1>{tr.t('StarHackIt')}</h1>
-        <h2>{tr.t('A Full Stack Web Application Starter Kit')}</h2>
-        <h3>{tr.t('Built with React, Node, data backed by SQL')}</h3>
-
+        <h1>{tr.t("StarHackIt")}</h1>
+        <h2>{tr.t("A Full Stack Web Application Starter Kit")}</h2>
+        <h3>{tr.t("Built with React, Node, data backed by SQL")}</h3>
+        
         <Button
           raised
           label="Clone the code on GitHub"
@@ -47,7 +48,7 @@ export default context => {
     return (
       <Section>
         <Title>
-          {tr.t('Features')}
+          {tr.t("Features")}
         </Title>
         <Row className="text-center">
           {features.map((card, key) => <CardIcon key={key} {...card} />)}
@@ -57,15 +58,15 @@ export default context => {
   }
 
   const E2eImg = glamorous.img({
-    width: '100%',
-    maxWidth: '1200',
+    width: "100%",
+    maxWidth: "1200"
   });
 
   function End2End() {
     return (
       <Section>
         <Title>
-          {tr.t('End to End Testing')}
+          {tr.t("End to End Testing")}
         </Title>
         <E2eImg
           alt="functional-testing"
@@ -79,7 +80,7 @@ export default context => {
     return (
       <Section>
         <Title>
-          {tr.t('Frontend - User Interface')}
+          {tr.t("Frontend - User Interface")}
         </Title>
         <Row>
           {frontend.map((card, key) => <CardIcon key={key} {...card} />)}
@@ -92,7 +93,7 @@ export default context => {
     return (
       <Section>
         <Title>
-          {tr.t('Backend - API Server')}
+          {tr.t("Backend - API Server")}
         </Title>
         <Row>
           {backend.map((card, key) => <CardIcon key={key} {...card} />)}
@@ -105,7 +106,7 @@ export default context => {
     return (
       <Section>
         <Title>
-          {tr.t('Developer Tools')}
+          {tr.t("Developer Tools")}
         </Title>
         <Row>
           {tools.map((card, key) => <CardIcon key={key} {...card} />)}
@@ -120,7 +121,7 @@ export default context => {
         <DocTitle title="Home" />
 
         <Header />
-        
+
         <Features />
         <End2End />
         <Frontend />

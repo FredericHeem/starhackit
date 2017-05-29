@@ -1,77 +1,86 @@
-import React from 'react';
-import DocTitle from 'components/docTitle';
-import glamorous from 'glamorous';
-const { Div } = glamorous;
+import React from "react";
+import { observable } from "mobx";
+import { observer} from 'mobx-react';
+import glamorous from "glamorous";
+import { SketchPicker } from "react-color";
+import deepForceUpdate from 'react-deep-force-update';
+
 
 export default context => {
-  const { tr, theme } = context;
+  const { theme } = context;
   const { palette } = theme;
-  const ColorListView = glamorous('div')({
-    width: 400,
+  //console.log("theme primary", palette.primary);
+
+  const store = observable({
+    showPicker: false
+  });
+  const ColorListView = glamorous("div")({
+    width: 250
   });
 
-  const ColorRowView = glamorous('div')({
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'stretch',
-    alignItems: 'stretch',
-    height: 60,
+  const ColorRowView = glamorous("div")({
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    margin: 10,
+    cursor: "pointer"
   });
 
+  const Color = glamorous('div')({
+    height: 40,
+    width: 40,
+    background: 'black'
+  });
+  function onSelectColor(event) {
+    console.log("onSelectColor ", event.hex);
+    palette[store.colorName] = event.hex;
+    deepForceUpdate(context.rootInstance);
+    store.showPicker = false;
+  }
+  function onShowPicker(colorName) {
+    console.log("onShowPicker ", colorName);
+    store.showPicker = true;
+    store.colorName = colorName
+  }
   function ColorRow({ colorName }) {
     return (
-      <ColorRowView>
-        <Div
-          flexGrow={1}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          border={`8px solid ${palette[colorName]}`}
-        >
-          {colorName}
-        </Div>
-        <Div
-          width={200}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          backgroundColor={palette[colorName]}
-        >
-          {palette[colorName]}
-        </Div>
+      <ColorRowView onClick={() => onShowPicker(colorName)}>
+        <strong>{colorName}</strong>
+
+        <Color css={{background: palette[colorName]}} />
       </ColorRowView>
     );
   }
 
   const colors = [
-    'primary1Color',
-    'primary2Color',
-    'primary3Color',
-    'accent1Color',
-    'accent2Color',
-    'accent3Color',
-    'secondaryTextColor',
-    'alternateTextColor',
-    'borderColor',
-    'canvasColor',
-    'clockCircleColor',
-    'disabledColor',
-    'pickerHeaderColor',
-    'textColor',
-    'shadowColor',
+    "primaryDark",
+    "primary",
+    "primaryLight",
+    "accent",
+    "background",
+    "textPrimary",
+    "textPrimaryOnPrimary",
+    "textPrimaryOnAccent",
+    "textSecondary",
+    "borderColor"
   ];
 
   function ThemeView() {
-    console.log('theme: ', theme);
+    console.log("ThemeView: ", theme);
     return (
       <div className="theme-view">
-        <DocTitle title="Theme Editor" />
-        <h1>{tr.t('Theme Editor')}</h1>
         <ColorListView>
+          {store.showPicker &&
+            <SketchPicker
+              color={store.colorValue}
+              onChange={event => onSelectColor(event)}
+            />}
           {colors.map((color, key) => <ColorRow colorName={color} key={key} />)}
         </ColorListView>
       </div>
     );
   }
-  return ThemeView;
+  return observer(ThemeView);
 };

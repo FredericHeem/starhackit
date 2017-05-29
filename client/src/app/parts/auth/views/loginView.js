@@ -12,10 +12,10 @@ export default context => {
   const { tr, history } = context;
   const Paper = paper(context);
   const Page = page(context);
-  const Button = button(context);
   const LocalLoginForm = localLoginForm(context);
   const MediaSigninButtons = mediaSigninButtons(context);
   return function LoginView(props) {
+    const Button = button(context);
     return (
       <Page className="login-page text-center">
         <DocTitle title="Login" />

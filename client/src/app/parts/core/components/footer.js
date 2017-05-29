@@ -1,14 +1,15 @@
 import React from 'react';
 import glamorous from 'glamorous';
 
-export default ({ tr }) => {
-  const FooterView = glamorous('footer')({
+export default ({ tr, theme }) => {
+  const {palette} = theme;
+  const FooterView = glamorous('footer')(() => ({
     position: 'absolute',
     bottom: 0,
-    paddingTop: 5,
+    paddingTop: 20,
     width: '100%',
-    boxShadow: '0px -1px 1px rgba(0, 0, 0, 0.3)'
-  });
+    background: palette.primaryLight
+  }));
   function Footer({ version }) {
     return (
       <FooterView className="hidden-print">

@@ -9,7 +9,7 @@ import menu from "./menu";
 import button from "mdlean/lib/button";
 
 export default context => {
-  const { tr, theme } = context;
+  const { tr, theme, parts } = context;
   const {palette} = theme;
   const Drawer = drawer(context);
   const Menu = menu(context);
@@ -57,23 +57,24 @@ export default context => {
     );
   }
 
-  const TitleView = glamorous(button(context))({
+  const TitleView = glamorous(button(context))(() => ({
     fontSize: 34,
     fontWeight: "bold",
     margin: 10,
     color: palette.textPrimaryOnPrimary
-  });
+  }));
 
-  const AppBarView = glamorous("div")({
+  const AppBarView = glamorous("div")(() => ({
     height: 80,
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: palette.primary,
     color: palette.textPrimaryOnPrimary
-  });
+  }));
 
   function AppBar({ onDrawerClick, onTitleClick }) {
+    console.log("AppBar ", palette.primary)
     return (
       <AppBarView>
         <IconLeft onDrawerClick={onDrawerClick} />
@@ -81,7 +82,14 @@ export default context => {
       </AppBarView>
     );
   }
+
+  function themeSideBar(){
+    parts.theme.stores().sideBar.toogle()
+    store.toggle();
+  }
+
   function NavBar({ authenticated }) {
+    console.log("NAVBAR ", palette.primary)
     return (
       <div>
         <AppBar
@@ -92,6 +100,7 @@ export default context => {
           <Menu
             authenticated={authenticated}
             navChange={item => store.navChange(item)}
+            themeSideBar={themeSideBar}
           />
         </Drawer>
       </div>

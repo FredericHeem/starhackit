@@ -3,6 +3,8 @@ import glamorous from 'glamorous';
 import fontIcon from 'components/FontIcon';
 
 export default (context) => {
+  const { theme } = context;
+  const { palette } = theme;
   const FontIcon = fontIcon(context);
   function MediaIcon({ icon }) {
     return (
@@ -20,15 +22,15 @@ export default (context) => {
     );
   }
 
-  const CardView = glamorous.div({
+  const CardView = glamorous.div(() => ({
     width: '150',
     flexGrow: 1,
     flexShrink: 0,
     flexBasis: '150',
     padding: 10,
     margin: 10,
-    boxShadow: '2px 2px 2px 2px lightgrey',
-  });
+    boxShadow: `2px 2px 2px 2px ${palette.borderColor}`,
+  }));
 
   const CardContainer = glamorous.div({
     height: '100%',

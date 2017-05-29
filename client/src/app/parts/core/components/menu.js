@@ -1,9 +1,9 @@
 import React from "react";
 import glamorous from "glamorous";
-import button from 'mdlean/lib/button';
+import button from "mdlean/lib/button";
 
-export default (context) => {
-  //const {theme} = context
+export default context => {
+  const { tr } = context;
   //const { palette } = theme;
 
   function menus(authenticated) {
@@ -35,16 +35,19 @@ export default (context) => {
       {
         route: "/register",
         text: "REGISTER"
-      },
-      {
-        route: "/theme/view",
-        text: "THEME"
       }
     ];
   }
 
+  const menuCommon = [
+    {
+      route: "/guide",
+      text: "COMPONENT GUIDE"
+    }
+  ];
+
   const MenuItemView = glamorous("div")({
-    width: '100%',
+    width: "100%",
     minWidth: 150
   });
 
@@ -52,7 +55,11 @@ export default (context) => {
     const Button = button(context);
     return (
       <MenuItemView>
-        <Button style={{width:'100%', textAlign: 'start'}} flat label={menu.text} onClick={() => navChange(menu)} />
+        <Button
+          style={{ width: "100%", textAlign: "start" }}
+          label={menu.text}
+          onClick={() => navChange(menu)}
+        />
       </MenuItemView>
     );
   }
@@ -61,12 +68,20 @@ export default (context) => {
     padding: 0
   });
 
-  function Menu({ authenticated, navChange }) {
+  function Menu({ authenticated, themeSideBar, navChange }) {
+    const Button = button(context);
     return (
       <MenuView>
-        {menus(authenticated).map((menu, key) => (
-          <MenuItem navChange={navChange} menu={menu} key={key} />
-        ))}
+        {menus(authenticated)
+          .concat(menuCommon)
+          .map((menu, key) => (
+            <MenuItem navChange={navChange} menu={menu} key={key} />
+          ))}
+        <Button
+          style={{ width: "100%", textAlign: "start" }}
+          label={tr.t("THEME")}
+          onClick={() => themeSideBar()}
+        />
       </MenuView>
     );
   }

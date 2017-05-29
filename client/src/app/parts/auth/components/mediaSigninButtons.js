@@ -7,7 +7,7 @@ import config from 'config';
 export default (context) => {
   const { tr } = context;
   const FontIcon = fontIcon(context);
-  const Button = button(context);
+  
   const socialAuthMap = {
     facebook: {
       label: `${tr.t('Sign in with')} Facebook`,
@@ -30,6 +30,7 @@ export default (context) => {
   });
 
   function SocialButton({ label, href, icon }) {
+    const Button = button(context);
     return (
       <SocialButtonView>
         <Button

@@ -1,7 +1,7 @@
 import React, {createElement as h} from 'react';
 import glamorous from 'glamorous';
 import button from 'mdlean/lib/button';
-import FontIcon from 'components/FontIcon';
+import fontIcon from 'components/FontIcon';
 import DocTitle from 'components/docTitle';
 import Row from 'components/Row';
 import Title from 'components/Title';
@@ -11,6 +11,7 @@ import Content from './content';
 
 export default context => {
   const { tr } = context;
+  const FontIcon = fontIcon(context);
   const Button = button(context);
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();

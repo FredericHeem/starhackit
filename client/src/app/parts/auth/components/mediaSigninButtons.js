@@ -1,12 +1,12 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import button from 'mdlean/lib/button';
-import FontIcon from 'components/FontIcon';
+import fontIcon from 'components/FontIcon';
 import config from 'config';
-
 
 export default (context) => {
   const { tr } = context;
+  const FontIcon = fontIcon(context);
   const Button = button(context);
   const socialAuthMap = {
     facebook: {

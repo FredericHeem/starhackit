@@ -6,7 +6,7 @@ describe('App', function() {
   const app = App({});
   it('start', async () => {
     await app.start();
-    const container = app.createContainer()
+    const container = app.createRootView()
     const wrapper = render(container);
     assert(wrapper)
   });

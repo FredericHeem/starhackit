@@ -1,7 +1,7 @@
 import React, {createElement as h}  from 'react';
 import DocTitle from 'components/docTitle';
 import Page from 'components/Page';
-import Paper from 'components/Paper';
+import paper from 'components/Paper';
 import spinner from 'components/spinner';
 import alertAjax from 'components/alertAjax';
 import Debug from 'debug';
@@ -13,6 +13,7 @@ export default context => {
 
   function RegistrationComplete({ verifyEmailCode }) {
     debug('render ', verifyEmailCode);
+    const Paper = paper(context);
     const { error } = verifyEmailCode;
     return (
       <Page className="registration-complete-page text-center">

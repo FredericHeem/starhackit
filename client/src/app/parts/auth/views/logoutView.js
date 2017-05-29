@@ -1,12 +1,13 @@
 import React, {createElement as h} from 'react';
 import Page from 'components/Page';
-import Paper from 'components/Paper';
+import paper from 'components/Paper';
 import button from 'mdlean/lib/button';
 import DocTitle from 'components/docTitle';
 import spinner from 'components/spinner';
 
 export default (context) => {
   const { tr, history } = context;
+  const Paper = paper(context);
   const Button = button(context);
   function LoggingOut() {
     return (

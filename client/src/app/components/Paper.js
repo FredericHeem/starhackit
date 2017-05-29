@@ -1,7 +1,7 @@
-import glamorous from 'glamorous';
+import glamorous from "glamorous";
 
-export default glamorous.div({
-  boxShadow: '2px 2px 2px 2px lightgrey',
-  padding: 10,
-  margin: 20
-});
+export default ({ theme } = context) => glamorous.div({
+    boxShadow: `2px 2px 2px 2px ${theme.palette.borderColor}`,
+    padding: 10,
+    margin: 20
+  });

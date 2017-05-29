@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { observer } from 'mobx-react';
 import Page from 'components/Page';
-import Paper from 'components/Paper';
+import paper from 'components/Paper';
 import button from 'mdlean/lib/button';
 import DocTitle from 'components/docTitle';
 import alertAjax from 'components/alertAjax';
@@ -14,6 +14,7 @@ const debug = new Debug('resetPasword');
 
 export default context => {
   const { tr } = context;
+  const Paper = paper(context);
   const Button = button(context);
   const AlertAjax = alertAjax(context);
   const PasswordInput = input(context);

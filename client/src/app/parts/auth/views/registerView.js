@@ -1,15 +1,16 @@
 import _ from 'lodash';
-import React from 'react';
-import Paper from 'components/Paper';
+import React, {createElement as h} from 'react';
+import paper from 'components/Paper';
 import DocTitle from 'components/docTitle';
 import mediaSigninButtons from '../components/mediaSigninButtons';
 import registerForm from '../components/registerForm';
 import alert from 'components/alert';
-import Strike from 'components/Strike';
+import strike from 'components/Strike';
 import Page from 'components/Page';
 
 export default context => {
   const { tr } = context;
+  const Paper = paper(context);
   const RegisterForm = registerForm(context);
   const MediaSigninButtons = mediaSigninButtons(context);
   const Alert = alert(context);
@@ -18,7 +19,8 @@ export default context => {
     return (
       <div>
         <RegisterForm {...props} />
-        <Strike />
+        {h(strike(context))}
+        
         <MediaSigninButtons />
       </div>
     );

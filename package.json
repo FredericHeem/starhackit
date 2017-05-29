@@ -5,7 +5,7 @@
   "private": false,
   "scripts": {
     "install": "echo \"Run the command \"npm install\" in the client and in the server\"",
-    "version": "npm test",
+    "version": "cd client && npm test",
     "postversion": "git push && git push --tags"
   },
   "repository": {

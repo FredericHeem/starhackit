@@ -1,11 +1,21 @@
 ---
-nginx_pkgs:
+nginx_redhat_pkg:
   - nginx
 
-nginx_install_epel_repo: True
+nginx_ubuntu_pkg:
+  - python-selinux
+  - nginx
+
+nginx_freebsd_pkg:
+  - nginx
+
+nginx_suse_pkg:
+  - nginx
+
+yum_epel_repo: epel
+yum_base_repo: base
 
 nginx_official_repo: False
-nginx_official_repo_mainline: False
 
 keep_only_specified: False
 
@@ -19,18 +29,22 @@ nginx_group: "{{nginx_user}}"
 
 nginx_pid_file: '/var/run/{{nginx_service_name}}.pid'
 
-nginx_worker_processes: "{% if ansible_processor_vcpus is defined %}{{ ansible_processor_vcpus }}{% else %}auto{% endif %}"
+nginx_worker_processes: "{{ ansible_processor_vcpus }}"
 nginx_worker_rlimit_nofile: 1024
 nginx_log_dir: "/var/log/nginx"
-nginx_error_log_level: "error"
 
-nginx_extra_root_params: []
 nginx_events_params:
   - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}512{% endif %}
 
-nginx_http_params: "{{ nginx_http_default_params }}"
-
-nginx_stream_params: []
+nginx_http_params:
+  - sendfile "on"
+  - tcp_nopush "on"
+  - tcp_nodelay "on"
+  - keepalive_timeout "65"
+  - access_log "{{nginx_log_dir}}/access.log"
+  - error_log "{{nginx_log_dir}}/error.log"
+  - server_tokens off
+  - types_hash_max_size 2048
 
 nginx_sites:
   default:
@@ -41,10 +55,7 @@ nginx_sites:
 nginx_remove_sites: []
 
 nginx_configs: {}
-nginx_snippets: {}
-nginx_stream_configs: {}
 nginx_remove_configs: []
-nginx_remove_snippets: []
 
 nginx_auth_basic_files: {}
 nginx_remove_auth_basic_files: []

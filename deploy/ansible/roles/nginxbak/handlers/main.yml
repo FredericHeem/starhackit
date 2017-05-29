@@ -15,10 +15,10 @@
     - reload nginx - after config check
 
 - name: check nginx configuration
-  command: "{{ nginx_binary_name }} -t"
+  shell: "{{ nginx_binary_name }} -t"
   register: result
   changed_when: "result.rc != 0"
-  check_mode: no
+  always_run: yes
   when: nginx_installation_type in nginx_installation_types_using_service
 
 - name: restart nginx - after config check

@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+upstream backend {
+  server 10.0.0.101;
+}
+server {
+  server_name {{ item.value.server_name }};
+  location / {
+    proxy_pass http://backend;
+  }
+}

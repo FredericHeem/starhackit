@@ -1,0 +1,18 @@
+---
+- name: Ensure APT official nginx key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+  tags: [packages,nginx]
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure APT official nginx repository
+  apt_repository: repo="deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx"
+  tags: [packages,nginx]
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure RPM official nginx key
+  rpm_key: key=http://nginx.org/keys/nginx_signing.key
+  when: ansible_os_family == 'RedHat'
+
+- name: Ensure YUM official nginx repository
+  template: src=nginx.repo.j2 dest=/etc/yum.repos.d/nginx.repo
+  when: ansible_os_family == 'RedHat'

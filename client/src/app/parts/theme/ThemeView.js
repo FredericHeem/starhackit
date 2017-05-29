@@ -1,10 +1,12 @@
 import React from "react";
 import { observable } from "mobx";
-import { observer} from 'mobx-react';
+import { observer } from "mobx-react";
 import glamorous from "glamorous";
-import { SketchPicker } from "react-color";
-import deepForceUpdate from 'react-deep-force-update';
+import ColorPicker from "react-color/lib/components/sketch/Sketch";
+//import ColorPicker from "react-color/lib/components/photoshop/Photoshop";
+import deepForceUpdate from "react-deep-force-update";
 
+const {Div} = glamorous;
 
 export default context => {
   const { theme } = context;
@@ -21,17 +23,25 @@ export default context => {
   const ColorRowView = glamorous("div")({
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
     margin: 10,
-    cursor: "pointer"
+    cursor: "pointer",
+    border: `1px dotted grey`
   });
-
-  const Color = glamorous('div')({
+  const ColorTextView = glamorous("div")({
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    margin: 10,
+    cursor: "pointer",
+  });
+  const Color = glamorous("div")({
     height: 40,
     width: 40,
-    background: 'black'
+    margin: 6,
+    background: "black"
   });
   function onSelectColor(event) {
     console.log("onSelectColor ", event.hex);
@@ -42,40 +52,65 @@ export default context => {
   function onShowPicker(colorName) {
     console.log("onShowPicker ", colorName);
     store.showPicker = true;
-    store.colorName = colorName
+    store.colorName = colorName;
   }
   function ColorRow({ colorName }) {
     return (
       <ColorRowView onClick={() => onShowPicker(colorName)}>
+        <Color css={{ background: palette[colorName] }} />
         <strong>{colorName}</strong>
-
-        <Color css={{background: palette[colorName]}} />
       </ColorRowView>
     );
   }
-
-  const colors = [
-    "primaryDark",
-    "primary",
-    "primaryLight",
-    "accent",
-    "background",
-    "textPrimary",
-    "textPrimaryOnPrimary",
-    "textPrimaryOnAccent",
-    "textSecondary",
-    "borderColor"
-  ];
+  function ColorGroupLightDark({ colorName, display }) {
+    return (
+      <ColorRowView onClick={() => onShowPicker(colorName)}>
+        <Color css={{ background: palette[`${colorName}Dark`] }} />
+        <Color css={{ background: palette[colorName] }} />
+        <Color css={{ background: palette[`${colorName}Light`] }} />
+        <strong>{display}</strong>
+      </ColorRowView>
+    );
+  }
+  function ColorGroupText({ colorName, display}) {
+    return (
+      <Div flex={1} flexDirection='column' border={`1px dotted grey`} margin='10'> 
+        <ColorTextView onClick={() => onShowPicker(colorName)}>
+          <Color css={{ background: palette[colorName] }} />
+          <strong>{display}</strong>
+        </ColorTextView>
+        <ColorTextView onClick={() => onShowPicker(`${colorName}OnPrimary`)}>
+          <Color
+            title={`${colorName}OnPrimary`}
+            css={{ background: palette[`${colorName}OnPrimary`] }}
+          />
+          <strong>{`${display} On Primary`}</strong>
+        </ColorTextView>
+        <ColorTextView onClick={() => onShowPicker(`${colorName}OnSecondary`)}>
+          <Color
+            title={`${colorName}OnSecondary`}
+            css={{ background: palette[`${colorName}OnSecondary`] }}
+          />
+          <strong>{`${display} On Secondary`}</strong>
+        </ColorTextView>
+      </Div>
+    );
+  }
+  const colors = ["background", "borderColor"];
 
   function ThemeView() {
     console.log("ThemeView: ", theme);
     return (
       <div className="theme-view">
+        <ColorGroupLightDark colorName="primary" display='Primary' />
+        <ColorGroupLightDark colorName="accent" display='Accent' />
+        <ColorGroupText colorName="textPrimary" display='Text Primary' />
+        <ColorGroupText colorName="textSecondary" display='Text Secondary' />
         <ColorListView>
           {store.showPicker &&
-            <SketchPicker
+            <ColorPicker
               color={store.colorValue}
-              onChange={event => onSelectColor(event)}
+              onChangeComplete={event => onSelectColor(event)}
             />}
           {colors.map((color, key) => <ColorRow colorName={color} key={key} />)}
         </ColorListView>

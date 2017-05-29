@@ -1,4 +1,0 @@
-[nginx]
-name=nginx repo
-baseurl=http://nginx.org/packages/{{"rhel" if ansible_distribution == "RedHat" else "centos"}}/{{ansible_distribution_version.split('.')[0]}}/{{ansible_architecture}}/
-enabled=1

@@ -8,8 +8,9 @@ export default context => {
     return (
       <div>
         <h3>{tr.t("Alert")}</h3>
-        <Alert type="danger" message="Alert danger" />
-        <Alert type="info" message="Alert info" />
+        <Alert.Danger type="danger" message="Alert danger" />
+        <Alert.Warning message="Alert warning" />
+        <Alert.Info message="Alert info message" title="My Title" code="500" />
       </div>
     );
   };

@@ -11,7 +11,8 @@ import DbModule from './parts/db/dbModule';
 import CrossBankModule from './parts/crossbank/crossBankModule';
 import AnalyticsModule from './parts/analytics/AnalyticsModule';
 
-//import ThemeModule from './parts/theme/ThemeModule';
+import ThemeModule from './parts/theme/themeModule';
+
 import Debug from 'debug';
 
 import intl from 'utils/intl';
@@ -32,7 +33,7 @@ export default function({language = 'en', config}) {
     const {rest} = context;
 
     const parts = {
-      //theme: ThemeModule(context),
+      theme: ThemeModule(context),
       auth: AuthModule(context),
       core: CoreModule(context),
       profile: ProfileModule(context),

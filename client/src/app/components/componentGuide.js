@@ -1,10 +1,10 @@
-import React, {createElement as h} from "react";
+import React, { createElement as h } from "react";
 import glamorous from "glamorous";
 import spinners from "./spinner/spinner.examples";
 import alerts from "./alert/alert.examples";
 import panels from "./panel/panel.examples";
 import inputs from "./input/input.examples";
-import button from './button/button.examples'
+import button from "./button/button.examples";
 
 export default context => {
   const { tr, parts } = context;
@@ -27,6 +27,7 @@ export default context => {
           {tr.t("Components")}
         </h2>
         <ViewContainer>
+          {h(parts.theme.containers().theme())}
           {h(alerts(context))}
           {h(inputs(context))}
           {h(button(context))}

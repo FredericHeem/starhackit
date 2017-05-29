@@ -17,13 +17,13 @@ export default function(context) {
       childRoutes: [
         {
           path: 'view',
-          component: containers.theme(),
+          component: containers().theme(),
         },
       ],
     };
   }
 
-  const containers = Containers(context);
+  const containers = () => Containers(context);
   return {
     containers,
     routes: () => /*store*/ Routes(containers),

@@ -1,21 +1,21 @@
-import React from 'react';
-import DocTitle from 'components/docTitle';
-import glamorous from 'glamorous';
+import React from "react";
+import glamorous from "glamorous";
 const { Div } = glamorous;
 
 export default context => {
-  const { tr, theme } = context;
+  const { theme } = context;
   const { palette } = theme;
-  const ColorListView = glamorous('div')({
-    width: 400,
+  const ColorListView = glamorous("div")({
+    width: 250
   });
 
-  const ColorRowView = glamorous('div')({
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'stretch',
-    alignItems: 'stretch',
+  const ColorRowView = glamorous("div")({
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "stretch",
+    alignItems: "stretch",
     height: 60,
+    margin : 10
   });
 
   function ColorRow({ colorName }) {
@@ -44,29 +44,22 @@ export default context => {
   }
 
   const colors = [
-    'primary1Color',
-    'primary2Color',
-    'primary3Color',
-    'accent1Color',
-    'accent2Color',
-    'accent3Color',
-    'secondaryTextColor',
-    'alternateTextColor',
-    'borderColor',
-    'canvasColor',
-    'clockCircleColor',
-    'disabledColor',
-    'pickerHeaderColor',
-    'textColor',
-    'shadowColor',
+    "primaryDark",
+    "primary",
+    "primaryLight",
+    "accent",
+    "background",
+    "textPrimary",
+    "textPrimaryOnPrimary",
+    "textPrimaryOnAccent",
+    "textSecondary",
+    "borderColor"
   ];
 
   function ThemeView() {
-    console.log('theme: ', theme);
+    console.log("theme: ", theme);
     return (
       <div className="theme-view">
-        <DocTitle title="Theme Editor" />
-        <h1>{tr.t('Theme Editor')}</h1>
         <ColorListView>
           {colors.map((color, key) => <ColorRow colorName={color} key={key} />)}
         </ColorListView>

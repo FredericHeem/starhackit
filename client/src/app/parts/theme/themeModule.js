@@ -7,7 +7,7 @@ export default function(context) {
 
   function Stores() {
     const sideBarStore = observable({
-      open: false,
+      open: true,
       toogle(){
         this.open = !this.open
       }

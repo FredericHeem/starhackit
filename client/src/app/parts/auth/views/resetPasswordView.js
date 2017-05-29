@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { observer } from 'mobx-react';
-import Page from 'components/Page';
+import page from 'components/Page';
 import paper from 'components/Paper';
 import button from 'mdlean/lib/button';
 import DocTitle from 'components/docTitle';
@@ -16,6 +16,7 @@ export default (context) => {
   const { tr } = context;
   
   const FormGroup = formGroup(context);
+  const Page = page(context);
   const Paper = paper(context);
   const Button = button(context);
   const AlertAjax = alertAjax(context);

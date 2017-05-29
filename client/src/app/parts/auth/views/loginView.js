@@ -6,11 +6,12 @@ import localLoginForm from '../components/localLoginForm';
 import paper from 'components/Paper';
 import DocTitle from 'components/docTitle';
 import strike from 'components/Strike';
-import Page from 'components/Page';
+import page from 'components/Page';
 
 export default context => {
   const { tr, history } = context;
   const Paper = paper(context);
+  const Page = page(context);
   const Button = button(context);
   const LocalLoginForm = localLoginForm(context);
   const MediaSigninButtons = mediaSigninButtons(context);

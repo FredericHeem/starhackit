@@ -6,11 +6,12 @@ import mediaSigninButtons from '../components/mediaSigninButtons';
 import registerForm from '../components/registerForm';
 import alert from 'components/alert';
 import strike from 'components/Strike';
-import Page from 'components/Page';
+import page from 'components/Page';
 
 export default context => {
   const { tr } = context;
   const Paper = paper(context);
+  const Page = page(context);
   const RegisterForm = registerForm(context);
   const MediaSigninButtons = mediaSigninButtons(context);
   const Alert = alert(context);

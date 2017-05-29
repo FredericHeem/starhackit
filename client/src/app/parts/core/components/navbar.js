@@ -64,16 +64,17 @@ export default context => {
     color: palette.textPrimaryOnPrimary
   });
 
-  const AppBarView = glamorous("div")({
+  const AppBarView = glamorous("div")(() => ({
     height: 80,
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: palette.primary,
     color: palette.textPrimaryOnPrimary
-  });
+  }));
 
   function AppBar({ onDrawerClick, onTitleClick }) {
+    console.log("AppBar ", palette.primary)
     return (
       <AppBarView>
         <IconLeft onDrawerClick={onDrawerClick} />
@@ -82,6 +83,7 @@ export default context => {
     );
   }
   function NavBar({ authenticated }) {
+    console.log("NAVBAR ", palette.primary)
     return (
       <div>
         <AppBar

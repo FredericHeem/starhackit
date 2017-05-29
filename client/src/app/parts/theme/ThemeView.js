@@ -1,10 +1,19 @@
 import React from "react";
+import { observable } from "mobx";
+import { observer} from 'mobx-react';
 import glamorous from "glamorous";
-const { Div } = glamorous;
+import { SketchPicker } from "react-color";
+import deepForceUpdate from 'react-deep-force-update';
+
 
 export default context => {
   const { theme } = context;
   const { palette } = theme;
+  //console.log("theme primary", palette.primary);
+
+  const store = observable({
+    showPicker: false
+  });
   const ColorListView = glamorous("div")({
     width: 250
   });
@@ -12,33 +21,35 @@ export default context => {
   const ColorRowView = glamorous("div")({
     display: "flex",
     flexDirection: "row",
-    alignContent: "stretch",
-    alignItems: "stretch",
-    height: 60,
-    margin : 10
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    margin: 10,
+    cursor: "pointer"
   });
 
+  const Color = glamorous('div')({
+    height: 40,
+    width: 40,
+    background: 'black'
+  });
+  function onSelectColor(event) {
+    console.log("onSelectColor ", event.hex);
+    palette[store.colorName] = event.hex;
+    deepForceUpdate(context.rootInstance);
+    store.showPicker = false;
+  }
+  function onShowPicker(colorName) {
+    console.log("onShowPicker ", colorName);
+    store.showPicker = true;
+    store.colorName = colorName
+  }
   function ColorRow({ colorName }) {
     return (
-      <ColorRowView>
-        <Div
-          flexGrow={1}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          border={`8px solid ${palette[colorName]}`}
-        >
-          {colorName}
-        </Div>
-        <Div
-          width={200}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          backgroundColor={palette[colorName]}
-        >
-          {palette[colorName]}
-        </Div>
+      <ColorRowView onClick={() => onShowPicker(colorName)}>
+        <strong>{colorName}</strong>
+
+        <Color css={{background: palette[colorName]}} />
       </ColorRowView>
     );
   }
@@ -57,14 +68,19 @@ export default context => {
   ];
 
   function ThemeView() {
-    console.log("theme: ", theme);
+    console.log("ThemeView: ", theme);
     return (
       <div className="theme-view">
         <ColorListView>
+          {store.showPicker &&
+            <SketchPicker
+              color={store.colorValue}
+              onChange={event => onSelectColor(event)}
+            />}
           {colors.map((color, key) => <ColorRow colorName={color} key={key} />)}
         </ColorListView>
       </div>
     );
   }
-  return ThemeView;
+  return observer(ThemeView);
 };

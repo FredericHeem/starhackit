@@ -15,6 +15,7 @@ export default context => {
   });
 
   return function ComponentGuide() {
+    //console.log("ComponentGuide")
     return (
       <div>
         <h1>{tr.t("The component guide.")}</h1>

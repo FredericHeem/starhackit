@@ -1,8 +1,9 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import FontIcon from 'components/FontIcon';
+import fontIcon from 'components/FontIcon';
 
-export default () => {
+export default (context) => {
+  const FontIcon = fontIcon(context);
   function MediaIcon({ icon }) {
     return (
       <div>

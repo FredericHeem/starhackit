@@ -1,15 +1,18 @@
 import _ from 'lodash';
 import React, {createElement as h} from 'react';
-import Page from 'components/Page';
-import Paper from 'components/Paper';
+import page from 'components/Page';
+import paper from 'components/Paper';
 import input from 'components/input';
 import spinner from 'components/spinner';
-import FormGroup from 'components/FormGroup';
+import formGroup from 'components/FormGroup';
 import Debug from 'debug';
 const debug = new Debug('components:user');
 
 export default (context) => {
-  const { tr } = context
+  const { tr } = context;
+  const FormGroup = formGroup(context);
+  const Page = page(context);
+  const Paper = paper(context);
   const UserIdInput = input(context);
   const UsernameInput = input(context);
   const EmailInput = input(context);

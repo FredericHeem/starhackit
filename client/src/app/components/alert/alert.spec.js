@@ -10,7 +10,7 @@ describe('Alert', () => {
     }
   })
   it('alert ok', () => {
-    const component = mount(<Alert
+    const component = mount(<Alert.Warning
       title='Title'
       name="NoSuchCode"
       message="message"

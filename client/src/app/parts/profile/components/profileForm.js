@@ -1,13 +1,15 @@
-import React, {createElement as h} from "react";
+import React, { createElement as h } from "react";
 import input from "components/input";
 import spinner from "components/spinner";
-import Paper from "components/Paper";
-import FormGroup from "components/FormGroup";
+import paper from "components/Paper";
+import formGroup from "components/FormGroup";
 
 import { observer } from "mobx-react";
 
 export default context => {
   const { tr } = context;
+  const FormGroup = formGroup(context);
+  const Paper = paper(context);
   const ButtonLoading = require("mdlean/lib/button").default(context);
   const UsernameInput = input(context);
   const EmailInput = input(context);
@@ -59,7 +61,7 @@ export default context => {
 
           <FormGroup>
             <ButtonLoading
-              className='btn-update-profile'
+              className="btn-update-profile"
               raised
               css={{ width: 256 }}
               loading={profileUpdate.loading}

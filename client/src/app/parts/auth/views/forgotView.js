@@ -3,12 +3,15 @@ import { observer } from 'mobx-react';
 import button from 'mdlean/lib/button';
 import input from 'components/input';
 import DocTitle from 'components/docTitle';
-import Page from 'components/Page';
-import Paper from 'components/Paper';
-import FormGroup from 'components/FormGroup';
+import page from 'components/Page';
+import paper from 'components/Paper';
+import formGroup from 'components/FormGroup';
 
 export default (context) => {
   const { tr } = context;
+  const FormGroup = formGroup(context);
+  const Page = page(context);
+  const Paper = paper(context);
   const Button = button(context);
   const EmailInput = input(context);
   const CheckEmail = observer(() => (

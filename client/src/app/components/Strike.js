@@ -1,7 +1,6 @@
-import glamorous from 'glamorous';
-
-export default glamorous.div({
-  position: 'relative',
-  borderBottom: '1px #ddd solid',
-  marginBottom: 20,
-});
+import glamorous from "glamorous";
+export default ({ theme } = context) => glamorous.div({
+    position: "relative",
+    borderBottom: `1px solid ${theme.palette.borderColor}`,
+    marginBottom: 20
+  });

@@ -1,11 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import alertAjax from 'components/alertAjax';
-import FormGroup from 'components/FormGroup';
+import formGroup from 'components/FormGroup';
 import input from 'components/input';
 
 export default context => {
   const { tr } = context;
+  const FormGroup = formGroup(context);
   const AlertAjax = alertAjax(context);
   const ButtonLoading = require('mdlean/lib/button').default(context);
   const UserNameInput = input(context);

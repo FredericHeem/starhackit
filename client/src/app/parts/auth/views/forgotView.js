@@ -5,10 +5,11 @@ import input from 'components/input';
 import DocTitle from 'components/docTitle';
 import Page from 'components/Page';
 import paper from 'components/Paper';
-import FormGroup from 'components/FormGroup';
+import formGroup from 'components/FormGroup';
 
 export default (context) => {
   const { tr } = context;
+  const FormGroup = formGroup(context);
   const Paper = paper(context);
   const Button = button(context);
   const EmailInput = input(context);

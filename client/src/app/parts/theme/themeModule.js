@@ -1,5 +1,4 @@
 import { observable } from "mobx";
-import { connect } from "react-redux";
 
 export default function(context) {
   const ThemeView = require("./ThemeView").default(context);
@@ -20,8 +19,7 @@ export default function(context) {
   function Containers() {
     return {
       theme() {
-        const mapStateToProps = () => ({});
-        return connect(mapStateToProps)(ThemeView);
+        return ThemeView;
       }
     };
   }

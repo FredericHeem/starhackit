@@ -11,7 +11,6 @@ import button from "mdlean/lib/button";
 export default context => {
   const { tr, theme, parts } = context;
   const {palette} = theme;
-  const Button = button(context);
   const Drawer = drawer(context);
   const Menu = menu(context);
   const store = mobx.observable({
@@ -88,6 +87,7 @@ export default context => {
     parts.theme.stores().sideBar.toogle()
     store.toggle();
   }
+
   function NavBar({ authenticated }) {
     console.log("NAVBAR ", palette.primary)
     return (
@@ -100,8 +100,8 @@ export default context => {
           <Menu
             authenticated={authenticated}
             navChange={item => store.navChange(item)}
+            themeSideBar={themeSideBar}
           />
-          <Button style={{width:'100%', textAlign: 'start'}} flat label={tr.t("THEME")} onClick={() => themeSideBar()}  />
         </Drawer>
       </div>
     );

@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
+import button from "mdlean/lib/button";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "components/input";
@@ -10,10 +11,11 @@ export default (context) => {
   const UserNameInput = input(context);
   const PasswordInput = input(context);
   const AlertAjax = alertAjax(context);
-  const ButtonLoading = require("mdlean/lib/button").default(context);
+  const SubmitButton = button(context);
 
   function LoginForm({ store, login }) {
     const { errors } = store;
+    console.log("LoginForm")
     return (
       <form className="local-login-form" onSubmit={e => e.preventDefault()}>
         <AlertAjax error={login.error} className="login-error-view" />
@@ -39,7 +41,7 @@ export default (context) => {
           />
         </FormGroup>
         <FormGroup>
-          <ButtonLoading
+          <SubmitButton
             className='btn-login'
             accent
             raised

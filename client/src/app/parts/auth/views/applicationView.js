@@ -1,48 +1,60 @@
-import React from 'react';
-import glamorous, { ThemeProvider } from 'glamorous';
-import navBar from '../../core/components/navbar';
-import footer from '../../core/components/footer';
-
+import React from "react";
+import { observer } from "mobx-react";
+import glamorous, { ThemeProvider } from "glamorous";
+import navBar from "../../core/components/navbar";
+import footer from "../../core/components/footer";
+import themer from "../../theme/ThemeView";
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
-const AppView = glamorous('div')({
-
-})
-
-const MainView = glamorous('div')({
-  paddingTop: 20,
-  paddingBottom: 20,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
-
 export default context => {
-  const {theme} = context;
+  const { theme } = context;
+  const { palette } = theme;
   const NavBar = navBar(context);
   const Footer = footer(context);
+  const Themer = themer(context);
 
-  console.log("theme: ", theme);
+  const AppRoot = glamorous("div")({
+    height: "100vh",
+    display: "flex"
+  });
 
-  function ApplicationView(
-    {
-      authenticated,
-      ...props
-    },
-  ) {
+  const AppView = glamorous("div")(() => ({
+    flex: "1 1 auto",
+    overflow: "auto",
+    color: palette.textPrimary
+  }));
+
+  const MainView = glamorous("div")({
+    paddingTop: 20,
+    paddingBottom: 20,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  });
+
+  function ApplicationView({
+    authenticated,
+    themeStore,
+    children
+  }) {
+    console.log("App View: ");
     return (
       <ThemeProvider theme={theme}>
-        <AppView>
-          <NavBar authenticated={authenticated} />
-          <MainView>
-            {props.children}
-          </MainView>
-          <Footer version={version} />
-        </AppView>
+        <AppRoot>
+          <AppView>
+            <NavBar authenticated={authenticated} />
+            <MainView>
+              {children}
+            </MainView>
+            <Footer version={version} />
+          </AppView>
+          {themeStore.open && <Themer />}
+        </AppRoot>
+
       </ThemeProvider>
     );
   }
 
-  return ApplicationView;
+  return observer(ApplicationView);
 };

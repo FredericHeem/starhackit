@@ -9,8 +9,9 @@ import menu from "./menu";
 import button from "mdlean/lib/button";
 
 export default context => {
-  const { tr, theme } = context;
+  const { tr, theme, parts } = context;
   const {palette} = theme;
+  const Button = button(context);
   const Drawer = drawer(context);
   const Menu = menu(context);
   const store = mobx.observable({
@@ -57,12 +58,12 @@ export default context => {
     );
   }
 
-  const TitleView = glamorous(button(context))({
+  const TitleView = glamorous(button(context))(() => ({
     fontSize: 34,
     fontWeight: "bold",
     margin: 10,
     color: palette.textPrimaryOnPrimary
-  });
+  }));
 
   const AppBarView = glamorous("div")(() => ({
     height: 80,
@@ -82,6 +83,11 @@ export default context => {
       </AppBarView>
     );
   }
+
+  function themeSideBar(){
+    parts.theme.stores().sideBar.toogle()
+    store.toggle();
+  }
   function NavBar({ authenticated }) {
     console.log("NAVBAR ", palette.primary)
     return (
@@ -95,6 +101,7 @@ export default context => {
             authenticated={authenticated}
             navChange={item => store.navChange(item)}
           />
+          <Button style={{width:'100%', textAlign: 'start'}} flat label={tr.t("THEME")} onClick={() => themeSideBar()}  />
         </Drawer>
       </div>
     );

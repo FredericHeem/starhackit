@@ -35,10 +35,6 @@ export default (context) => {
       {
         route: "/register",
         text: "REGISTER"
-      },
-      {
-        route: "/theme/view",
-        text: "THEME"
       }
     ];
   }

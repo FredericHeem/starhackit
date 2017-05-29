@@ -10,16 +10,17 @@ import guide from 'components/componentGuide'
 import Content from './content';
 
 export default context => {
-  const { tr } = context;
+  const { tr, theme } = context;
+  const { palette } = theme;
   const FontIcon = fontIcon(context);
   const Button = button(context);
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
-  const Section = glamorous.section({
-    borderTop: `1px solid lightgrey`,
+  const Section = glamorous.section(() => ({
+    borderTop: `1px solid ${palette.borderColor}`,
     paddingBottom:30
-  });
+  }));
 
   const HeaderView = glamorous.section({
     padding: 20,

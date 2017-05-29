@@ -64,12 +64,14 @@ export default function({ language = "en", config }) {
     await parts.auth.stores().me.fetch();
   }
 
+  const createRootView = () => rootView(context, store, parts);
   return {
     parts,
     store,
+    createRootView,
     render() {
       context.rootInstance = ReactDOM.render(
-        rootView(context, store, parts),
+        createRootView(),
         document.getElementById("application")
       );
     },

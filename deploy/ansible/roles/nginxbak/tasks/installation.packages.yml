@@ -1,0 +1,42 @@
+---
+- name: Install the selinux python module
+  yum: name=libselinux-python state=present
+  when: ansible_os_family == "RedHat"
+  tags: [packages,nginx]
+
+- name: Install the epel packages
+  yum: name=epel-release state=present
+  when: nginx_is_el|bool
+  tags: [packages,nginx]
+
+- name: Install the nginx packages
+  yum: name={{ item }} state=present disablerepo='*' enablerepo={{ "nginx," if nginx_official_repo else "" }}{{ yum_epel_repo }},{{ yum_base_repo }}
+  with_items: nginx_redhat_pkg
+  when:  nginx_is_el|bool
+  tags: [packages,nginx]
+
+- name: Install the nginx packages
+  yum: name={{ item }} state=present
+  with_items: nginx_redhat_pkg
+  when: ansible_os_family == "RedHat" and not nginx_is_el|bool
+  tags: [packages,nginx]
+
+- name: Install the nginx packages
+  apt: name={{ item }} state=present
+  with_items: nginx_ubuntu_pkg
+  environment: nginx_env
+  when: ansible_os_family == "Debian"
+  tags: [packages,nginx]
+
+- name: Install the nginx packages
+  pkgng: name={{ item }} state=present
+  with_items: nginx_freebsd_pkg
+  environment: nginx_env
+  when: ansible_os_family == "FreeBSD"
+  tags: [packages,nginx]
+
+- name: Install the nginx packages
+  zypper: name={{ item }} state=present 
+  with_items: nginx_suse_pkg
+  when: ansible_os_family == "Suse"
+  tags: [packages,nginx]

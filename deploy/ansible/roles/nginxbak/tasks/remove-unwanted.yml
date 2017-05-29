@@ -1,0 +1,24 @@
+---
+- name: Remove unwanted sites
+  file: path={{nginx_conf_dir}}/{{ item[0] }}/{{ item[1] }}.conf state=absent
+  with_nested: 
+    - [ 'sites-enabled', 'sites-available']
+    - nginx_remove_sites
+  notify:
+   - reload nginx
+  tags: [configuration,nginx]
+
+- name: Remove unwanted conf
+  file: path={{nginx_conf_dir}}/conf.d/{{ item[1] }}.conf state=absent
+  with_items: nginx_remove_configs
+  notify:
+   - reload nginx
+  tags: [configuration,nginx]
+
+- name: Remove unwanted auth_basic_files
+  file: path={{nginx_conf_dir}}/auth_basic/{{ item[1] }} state=absent
+  with_items: nginx_remove_auth_basic_files
+  notify:
+   - reload nginx
+  tags: [configuration,nginx]
+  

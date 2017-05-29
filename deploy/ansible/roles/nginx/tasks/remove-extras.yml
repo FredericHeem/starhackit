@@ -1,31 +1,30 @@
 ---
 - name: Find enabled sites
-  shell: ls -1 {{nginx_conf_dir}}/sites-enabled
+  shell: ls -1 {{nginx_conf_dir}}/sites-enabled || true
   register: enabled_sites
   changed_when: False
-  tags: [configuration,nginx]
 
 - name: Disable unmanaged sites
-  file: path={{nginx_conf_dir}}/sites-enabled/{{ item }} state=absent
-  with_items: enabled_sites.stdout_lines
+  file:
+    path: "{{nginx_conf_dir}}/sites-enabled/{{ item }}"
+    state: absent
+  with_items: "{{ enabled_sites.stdout_lines | default([]) }}"
   # 'item.conf' => 'item'
   when: item[:-5] not in nginx_sites.keys()
   notify:
    - reload nginx
-  tags: [configuration,nginx]
 
 - name: Find config files
-  shell: ls -1 {{nginx_conf_dir}}/conf.d
+  shell: find {{nginx_conf_dir}}/conf.d -maxdepth 1 -type f -name '*.conf' -exec basename {} \;
   register: config_files
   changed_when: False
-  tags: [configuration,nginx]
 
 - name: Remove unmanaged config files
-  file: name={{nginx_conf_dir}}/conf.d/{{ item }} state=absent
-  with_items: config_files.stdout_lines
+  file:
+    name: "{{nginx_conf_dir}}/conf.d/{{ item }}"
+    state: absent
+  with_items: "{{ config_files.stdout_lines | default([]) }}"
   # 'item.conf' => 'item'
   when: item[:-5] not in nginx_configs.keys()
   notify:
    - reload nginx
-  tags: [configuration,nginx]
-

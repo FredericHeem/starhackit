@@ -4,19 +4,21 @@ import spinners from "./spinner/spinner.examples";
 import alerts from "./alert/alert.examples";
 import panels from "./panel/panel.examples";
 import inputs from "./input/input.examples";
-import button from "./button/button.examples";
+import buttons from "./button/button.examples";
 
 export default context => {
   const { tr, parts } = context;
+
   const ViewContainer = glamorous("div")({
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "center"
+    justifyContent: "flex-start"
   });
 
   const GuideView = glamorous("div")({
     //height: "100vh",
-    display: "flex"
+    display: "flex",
+    margin: 20
   });
 
   const Content = glamorous("div")({
@@ -26,6 +28,7 @@ export default context => {
 
   return function ComponentGuide() {
     //console.log("ComponentGuide")
+    
     return (
       <GuideView>
         <Content>
@@ -40,9 +43,9 @@ export default context => {
             {tr.t("Components")}
           </h2>
           <ViewContainer>
-            {h(alerts(context))}
+            {h(buttons(context))}
             {h(inputs(context))}
-            {h(button(context))}
+            {h(alerts(context))}
             {h(spinners(context))}
             {h(panels(context))}
           </ViewContainer>

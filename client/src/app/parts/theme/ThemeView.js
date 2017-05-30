@@ -13,7 +13,9 @@ export default context => {
   //console.log("theme primary", palette.primary);
 
   const store = observable({
-    showPicker: false
+    showPicker: false,
+    colorValue: '',
+    colorName: ''
   });
   const ColorListView = glamorous("div")({
     width: 300
@@ -50,14 +52,13 @@ export default context => {
   }
   function onAcceptColor(event) {
     console.log("onAcceptColor ", event.hex);
-    //palette[store.colorName] = event.hex;
-    //deepForceUpdate(context.rootInstance);
     store.showPicker = false;
   }
   function onShowPicker(colorName) {
     console.log("onShowPicker ", colorName);
-    store.showPicker = true;
     store.colorName = colorName;
+    store.colorValue = palette[colorName]
+    store.showPicker = true;
   }
 
   function onCancelColor(){
@@ -113,12 +114,14 @@ export default context => {
   const colors = ["background", "borderColor"];
 
   function ThemeView() {
-    console.log("ThemeView: ", theme);
+    //console.log("ThemeView: ", theme, store.colorValue);
+    //console.log("ThemeView: colorValue ", store.colorValue);
     return (
       <div className="theme-view">
         {store.showPicker &&
           <ColorPicker
             color={store.colorValue}
+            header={store.colorName}
             onChange={event => onChangeColor(event)}
             onAccept={event => onAcceptColor(event)}
             onCancel={event => onCancelColor(event)}

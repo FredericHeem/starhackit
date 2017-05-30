@@ -40,9 +40,9 @@ export default context => {
             {tr.t("Components")}
           </h2>
           <ViewContainer>
-            {h(alerts(context))}
-            {h(inputs(context))}
             {h(button(context))}
+            {h(inputs(context))}
+            {h(alerts(context))}
             {h(spinners(context))}
             {h(panels(context))}
           </ViewContainer>

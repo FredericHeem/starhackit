@@ -3,7 +3,7 @@ import ComponentGuide from 'components/componentGuide';
 export default function Routes(context, store, parts) {
 
   function isAuthenticated(param, replaceState) {
-    if(!store.getState().auth.auth.authenticated){
+    if(!parts.auth.stores().auth.authenticated){
       const nextPath = param.location.pathname;
       replaceState(`/login?nextPath=${nextPath}`)
     }

@@ -27,10 +27,10 @@ export default (context) => {
       </Paper>
     );
   }
-  function LogoutView({ authenticated }) {
+  function LogoutView({ authStore }) {
     return (
       <Page className="logout-page text-center">
-        <DocTitle title={tr.t('Logout')} /> {authenticated ? <LoggingOut /> : <LoggedOut />}
+        <DocTitle title={tr.t('Logout')} /> {authStore.authenticated ? <LoggingOut /> : <LoggedOut />}
       </Page>
     );
   }

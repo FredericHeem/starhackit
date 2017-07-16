@@ -34,7 +34,7 @@ export default context => {
   });
 
   function ApplicationView({
-    authenticated,
+    authStore,
     themeStore,
     children
   }) {
@@ -43,7 +43,7 @@ export default context => {
       <ThemeProvider theme={theme}>
         <AppRoot>
           <AppView>
-            <NavBar authenticated={authenticated} />
+            <NavBar authenticated={authStore.authenticated} />
             <MainView>
               {children}
             </MainView>

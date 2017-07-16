@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import App from '../../app';
 
-describe('Auth', function() {
+describe.skip('Auth', function() {
   const app = App({});
   const {parts, store} = app;
   const token = 'ASDFGHJKLL';

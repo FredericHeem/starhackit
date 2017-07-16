@@ -1,7 +1,6 @@
 import _ from "lodash";
-//import React, { createElement as h } from "react";
 import { createActionAsync, createReducerAsync } from "redux-act-async";
-import { createAction, createReducer } from "redux-act";
+import { createAction } from "redux-act";
 import { connect } from "react-redux";
 import { browserHistory } from "react-router";
 import { parse } from "query-string";
@@ -64,38 +63,8 @@ function Actions(resources) {
   };
 }
 
-const defaultState = {
-  authenticated: false
-};
-
-function AuthReducer(actions) {
-  return createReducer(
-    {
-      [actions.setToken]: (state, payload) => ({
-        ...state,
-        token: payload
-      }),
-      [actions.me.ok]: state => ({
-        ...state,
-        authenticated: true
-      }),
-      [actions.login.ok]: (state, payload) => ({
-        ...state,
-        authenticated: true,
-        token: payload.response.token
-      }),
-      [actions.login.error]: () => defaultState,
-      [actions.me.error]: () => defaultState,
-      [actions.logout.ok]: () => defaultState,
-      [actions.logout.error]: () => defaultState
-    },
-    defaultState
-  );
-}
-
 function Reducers(actions) {
   return {
-    auth: AuthReducer(actions),
     me: createReducerAsync(actions.me),
     login: createReducerAsync(actions.login),
     logout: createReducerAsync(actions.logout),
@@ -108,13 +77,11 @@ function Reducers(actions) {
   };
 }
 const selectState = state => state.auth;
-const isAuthenticated = state => selectState(state).auth.authenticated;
 
 function Containers(context, actions, stores) {
   return {
     login() {
       const mapStateToProps = state => ({
-        authenticated: isAuthenticated(state),
         login: selectState(state).login,
         store: stores.login
       });
@@ -128,8 +95,8 @@ function Containers(context, actions, stores) {
       return connect(mapStateToProps)(registerView(context));
     },
     logout() {
-      const mapStateToProps = state => ({
-        authenticated: isAuthenticated(state)
+      const mapStateToProps = () => ({
+        authStore: stores.auth,
       });
       return connect(mapStateToProps)(logoutView(context));
     },
@@ -154,8 +121,8 @@ function Containers(context, actions, stores) {
       return connect(mapStateToProps)(registrationCompleteView(context));
     },
     app() {
-      const mapStateToProps = state => ({
-        authenticated: isAuthenticated(state),
+      const mapStateToProps = () => ({
+        authStore: stores.auth,
         themeStore: context.parts.theme.stores().sideBar
       }); 
       return connect(mapStateToProps)(appView(context));
@@ -203,18 +170,40 @@ function Routes(containers, stores) {
   };
 }
 
-export default function(context) {
+export default function (context) {
   const { rest } = context;
   const resources = Resources(rest);
   const actions = Actions(resources);
   let stores;
 
   function Stores(dispatch) {
+    const authStore = mobx.observable({
+      authenticated: false,
+      token: "",
+      setAuthenticated() {
+        authStore.authenticated = true;
+      },
+      setToken(token) {
+        authStore.authenticated = true;
+        authStore.token = token;
+        localStorage.setItem("JWT", token);
+      },
+      getToken() {
+        return authStore.token;
+      },
+      reset() {
+        authStore.authenticated = false;
+        authStore.token = ""
+      }
+    });
+
     return {
+      auth: authStore,
       me: mobx.observable({
-        fetch: mobx.action(async function() {
+        fetch: mobx.action(async function () {
           try {
             await dispatch(actions.me());
+            authStore.setAuthenticated()
             const pathname = window.location.pathname;
             if (pathname === "/login") {
               // From social login
@@ -229,10 +218,10 @@ export default function(context) {
         username: "",
         password: "",
         errors: {},
-        login: mobx.action(async function() {
+        login: mobx.action(async function () {
           this.errors = {};
           const payload = {
-            username: _.trim(this.username),
+            username: this.username.trim(),
             password: this.password
           };
 
@@ -242,12 +231,13 @@ export default function(context) {
             await rule.run(payload);
             const { response } = await dispatch(actions.login(payload));
             const { token } = response;
-            localStorage.setItem("JWT", token);
+            authStore.setToken(token);
             redirect();
           } catch (errors) {
             if (errors instanceof Checkit.Error) {
               this.errors = errors.toJSON();
             } else {
+              console.error("login ", errors)
               localStorage.removeItem("JWT");
             }
           }
@@ -258,11 +248,11 @@ export default function(context) {
         email: "",
         password: "",
         errors: {},
-        register: mobx.action(async function() {
+        register: mobx.action(async function () {
           this.errors = {};
           const payload = {
-            username: _.trim(this.username),
-            email: _.trim(this.email),
+            username: this.username.trim(),
+            email: this.email.trim(),
             password: this.password
           };
           try {
@@ -279,13 +269,13 @@ export default function(context) {
         })
       }),
       logout: mobx.observable({
-        execute: mobx.action(async function() {
+        execute: mobx.action(async function () {
           localStorage.removeItem("JWT");
           await dispatch(actions.logout());
         })
       }),
       verifyEmailCode: mobx.observable({
-        execute: mobx.action(async function(param) {
+        execute: mobx.action(async function (param) {
           try {
             await dispatch(actions.verifyEmailCode(param));
             browserHistory.push(`/login`);
@@ -298,10 +288,10 @@ export default function(context) {
         step: "SetPassword",
         password: "",
         errors: {},
-        resetPassword: mobx.action(async function(token) {
+        resetPassword: mobx.action(async function (token) {
           this.errors = {};
           const payload = {
-            password: _.trim(this.password),
+            password: this.password,
             token
           };
 
@@ -321,10 +311,10 @@ export default function(context) {
         step: "SendPasswordResetEmail",
         email: "",
         errors: {},
-        requestPasswordReset: mobx.action(async function() {
+        requestPasswordReset: mobx.action(async function () {
           this.errors = {};
           const payload = {
-            email: _.trim(this.email)
+            email: this.email.trim()
           };
 
           try {

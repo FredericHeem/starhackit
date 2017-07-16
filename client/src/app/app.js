@@ -17,7 +17,6 @@ import ThemeModule from "./parts/theme/themeModule";
 import Debug from "debug";
 
 import intl from "utils/intl";
-import Jwt from "utils/jwt";
 
 import rootView from "./rootView";
 
@@ -42,9 +41,8 @@ export default function({ language = "en", config }) {
   context.parts = parts;
 
   const store = Store({ debug: _.get(config, "debug.redux") }).create(parts);
-  const jwt = Jwt(store);
 
-  rest.setJwtSelector(jwt.selector(store));
+  rest.setJwtSelector(parts.auth.stores().auth.getToken);
 
   async function i18nInit() {
     context.formatter.setLocale(language);
@@ -55,7 +53,7 @@ export default function({ language = "en", config }) {
   async function preAuth() {
     const token = localStorage.getItem("JWT");
     if (token) {
-      store.dispatch(parts.auth.actions.setToken(token));
+      parts.auth.stores().auth.setToken(token);
     }
     await parts.auth.stores().me.fetch();
   }

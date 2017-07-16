@@ -272,6 +272,7 @@ export default function (context) {
         execute: mobx.action(async function () {
           localStorage.removeItem("JWT");
           await dispatch(actions.logout());
+          authStore.authenticated = false;
         })
       }),
       verifyEmailCode: mobx.observable({

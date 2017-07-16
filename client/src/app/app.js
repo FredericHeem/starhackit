@@ -21,10 +21,6 @@ import Jwt from "utils/jwt";
 
 import rootView from "./rootView";
 
-//Needed by material-ui
-import injectTapEventPlugin from "react-tap-event-plugin";
-injectTapEventPlugin();
-
 const debug = new Debug("app");
 
 export default function({ language = "en", config }) {

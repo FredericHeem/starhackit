@@ -72,6 +72,9 @@ module.exports = function ( options ) {
             ],
             extensions: ['.js', '.jsx', '.styl', 'css' ],
             alias: {
+                'react': 'preact-compat',
+                'react-dom': 'preact-compat',
+                'create-react-class': 'preact-compat/lib/create-react-class',
                 //application aliases
                 components: pathAppTo( 'components' ),
                 utils: pathAppTo( 'utils' ),

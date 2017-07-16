@@ -14,10 +14,11 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 
 ## Frontend Technologies
 
-* [React](https://facebook.github.io/react/): a facebook library to build user interfaces.
+* [React](https://facebook.github.io/react/) or [Preact](https://github.com/developit/preact): libraries to build user interfaces.
+* [Mobx](https://mobx.js.org/): Simple, scalable state management
 * [Redux](http://redux.js.org/): predictable state container for JavaScript apps.
 * [Webpack](http://webpack.github.io/): module bundler for the browser
-* [Stylus](http://stylus-lang.com/): expressive, dynamic, robust CSS
+* [Glamorous](https://github.com/paypal/glamorous): solving react component styling.
 * [i18next](http://i18next.com/): internationalization
 
 For more information about the frontend, see its [README](client/README.md)
@@ -59,23 +60,6 @@ To get the latest code, grab it by cloning the repository from GitHub:
 
     $ git clone https://github.com/FredericHeem/starhackit.git yourproject
     $ cd yourproject
-
-## Yeoman generator
-
-Another way to bootstrap your application is to use the [Starhackit Yeoman generator](https://github.com/FredericHeem/generator-starhackit).
-
-First install *yo* and *generator-starhackit* globally:
-
-```bash
-npm install -g yo generator-starhackit
-```
-
-Finally, initiate the generator and answer the questions about your project:
-
-```bash
-mkdir yourproject && cd $_
-yo starhackit
-```
 
 ## Deployment
 

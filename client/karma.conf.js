@@ -1,10 +1,12 @@
 /*eslint-env node */
+var _ = require("lodash");
 var webpack = require('webpack');
 var path = require('path');
 var webpackConfig = require('./webpack.dev');
 webpackConfig.devtool = 'cheap-module-source-map';
 
 module.exports = function (config) {
+  webpackConfig.resolve.alias = _.omit(webpackConfig.resolve.alias, ['react', 'react-dom', 'create-react-class']);
   var configuration = {
     browsers: ['Chrome'], // ['Chrome'] run in Chrome, 'PhantomJS'
     singleRun: true,

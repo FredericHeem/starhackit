@@ -1,7 +1,6 @@
 import React, { createElement as h } from "react";
 import glamorous from "glamorous";
 import button from "mdlean/lib/button";
-import fontIcon from "components/FontIcon";
 import DocTitle from "components/docTitle";
 import Row from "components/Row";
 import Title from "components/Title";
@@ -12,7 +11,6 @@ import Content from "./content";
 export default context => {
   const { tr, theme } = context;
   const { palette } = theme;
-  const FontIcon = fontIcon(context);
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
@@ -37,7 +35,7 @@ export default context => {
           raised
           label="Clone the code on GitHub"
           href="https://github.com/FredericHeem/starhackit"
-          icon={<FontIcon className="icon-github-circled-alt2" />}
+          icon={<img src={require('icons/github.svg')} width={20} alt="github" />}
         />
         <br />
       </HeaderView>

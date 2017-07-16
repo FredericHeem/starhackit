@@ -1,18 +1,17 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import button from 'mdlean/lib/button';
-import fontIcon from 'components/FontIcon';
 import config from 'config';
+import FbSvg from 'icons/facebook.svg';
 
 export default (context) => {
   const { tr } = context;
-  const FontIcon = fontIcon(context);
-  
+
   const socialAuthMap = {
     facebook: {
       label: `${tr.t('Sign in with')} Facebook`,
       href: 'api/v1/auth/facebook',
-      icon: 'icon-facebook',
+      icon: <img src={FbSvg} alt="facebook" width={20} />,
     },
     fidor: {
       label: `${tr.t('Sign in with')} Fidor`,
@@ -37,7 +36,7 @@ export default (context) => {
           fullWidth
           label={label}
           href={href}
-          icon={icon ? <FontIcon className={icon} /> : null}
+          icon={icon || null}
         />
       </SocialButtonView>
     );

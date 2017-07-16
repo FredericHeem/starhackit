@@ -33,8 +33,8 @@
             .setValue('@emailInput', 'alice')
             .setValue('@passwordInput', 'wrongpassword')
             .click('@submit')
-            .waitForElementVisible('.alert-danger', 5000)
-            .assert.containsText('.alert-danger', 'do not match');
+            .waitForElementVisible('.login-error-view', 5000)
+            .assert.containsText('.login-error-view', 'do not match');
     });
     it('login ok', function (client) {
         client.page.login().navigate()

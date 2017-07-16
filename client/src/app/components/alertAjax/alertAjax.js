@@ -24,7 +24,8 @@ export default (context) => {
     if (!message) {
       message = error.message
     }
-    return (<Alert type="danger" className={className} message={message} />)
+    
+    return (<Alert.Danger className={className} message={message} />)
   }
 
   return AlertAjax;

@@ -28,9 +28,9 @@ export default ({ tr }) => {
   });
 
   function createAlert(AlertView) {
-    return function Alert({ title, name, message, code }) {
+    return function Alert({ title, name, message, code, className }) {
       return (
-        <AlertView role="alert">
+        <AlertView role="alert" className={className} >
           {title && <h3>{title}</h3>}
           {name &&
             <div>

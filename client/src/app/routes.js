@@ -40,7 +40,7 @@ export default function Routes(context, store, parts) {
           {
             path: 'db',
             onEnter: isAuthenticated,
-            childRoutes: parts.db.routes(store, parts).childRoutes
+            childRoutes: parts.db.routes(store, parts)
           },
           {
             path: 'guide',

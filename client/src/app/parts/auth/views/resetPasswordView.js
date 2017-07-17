@@ -21,8 +21,9 @@ export default (context) => {
   const Button = button(context);
   const AlertAjax = alertAjax(context);
   const PasswordInput = input(context);
-  function SetNewPasswordDone({ verifyResetPasswordToken }) {
-    if (!_.get(verifyResetPasswordToken, 'data.success')) {
+  const SetNewPasswordDone = observer(function SetNewPasswordDone({ store }) {
+    console.log("SetNewPasswordDone ", store.op)
+    if (!_.get(store.op, 'data.success')) {
       return null;
     }
     return (
@@ -32,7 +33,7 @@ export default (context) => {
         </p>
       </div>
     );
-  }
+  })
 
   const SetNewPassword = observer(function SetNewPassword({ store, params }) {
     if (store.step !== 'SetPassword') {
@@ -69,15 +70,16 @@ export default (context) => {
     );
   })
 
-  function ResetPasswordForm({ store, verifyResetPasswordToken, params }) {
+  function ResetPasswordForm({ store, params }) {
+    console.log("ResetPasswordForm ", store.op)
     return (
       <Page className="reset-password-page text-center">
         <DocTitle title="Reset password" />
         <Paper>
           <h3>{tr.t('Reset Password')}</h3>
-          <AlertAjax error={verifyResetPasswordToken.error} className="reset-password-error-view" />
+          <AlertAjax error={store.op.error} className="reset-password-error-view" />
           <SetNewPassword store={store} params={params} />
-          <SetNewPasswordDone verifyResetPasswordToken={verifyResetPasswordToken} />
+          <SetNewPasswordDone store={store} />
         </Paper>
       </Page>
     );

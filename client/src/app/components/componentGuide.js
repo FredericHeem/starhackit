@@ -53,11 +53,7 @@ export default context => {
             {tr.t("Authentication")}
           </h2>
           <ViewContainer>
-            {h(parts.auth.containers().login())}
-            {h(parts.auth.containers().register())}
-            {h(parts.auth.containers().logout())}
-            {h(parts.auth.containers().forgot())}
-            {h(parts.auth.containers().resetPassword())}
+            {parts.auth.routes().childRoutes.map(route => route.component())}
           </ViewContainer>
 
           <h2>

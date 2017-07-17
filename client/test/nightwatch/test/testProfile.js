@@ -23,7 +23,7 @@ describe('Profile', function() {
     client.page
       .profile()
       .navigate()
-      .waitForElementVisible('.profile-page', 15e3)
+      .waitForElementVisible('@biographyInput', 15e3)
       .setValue('@biographyInput', 'abcdefhigk'.repeat(10))
       .click('@submit')
       .waitForElementVisible('.s-alert-box', 15e3)

@@ -13,11 +13,11 @@ export default context => {
   const EmailInput = input(context);
   const PasswordInput = input(context);
 
-  function RegisterForm({ store, register }) {
+  function RegisterForm({ store }) {
     const { errors } = store;
     return (
       <form className="register-form text-center" onSubmit={e => e.preventDefault()}>
-        <AlertAjax error={register.error} className="register-error-view" />
+        <AlertAjax error={store.op.error} className="register-error-view" />
         <FormGroup className="username">
           <UserNameInput
             id="username"
@@ -56,7 +56,7 @@ export default context => {
             accent
             raised
             css={{ width: 256 }}
-            loading={register.loading}
+            loading={store.op.loading}
             onClick={() => store.register()}
             label={tr.t('Create Account')}
           />

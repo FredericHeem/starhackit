@@ -61,7 +61,6 @@ export default function (context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
   const resources = Resources(rest);
-  let stores;
 
   function Stores() {
     const authStore = mobx.observable({
@@ -264,14 +263,11 @@ export default function (context) {
       ]
     };
   }
-
+  const stores = Stores();
   const containers = () => Containers(context, stores);
 
   return {
     stores: () => stores,
-    createStores: dispatch => {
-      stores = Stores(dispatch, context);
-    },
     containers,
     routes: () => Routes(containers(), stores)
   };

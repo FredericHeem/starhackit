@@ -89,7 +89,6 @@ export default context => {
   }
 
   function NavBar({ authenticated }) {
-    console.log("NAVBAR ", palette.primary)
     return (
       <div>
         <AppBar

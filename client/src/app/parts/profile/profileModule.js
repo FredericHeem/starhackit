@@ -7,10 +7,9 @@ import AsyncOp from 'utils/asyncOp';
 import profileView from './views/profileView';
 
 export default function (context) {
-  const { rest } = context;
+  const { rest, tr } = context;
   const { notification } = context;
   const asyncOpCreate = AsyncOp(context);
-  let stores;
 
   function Routes(stores) {
     return [{
@@ -26,7 +25,7 @@ export default function (context) {
     profile.profile = response.profile || { biography: "" }
   }
 
-  function Stores({ tr }) {
+  function Stores() {
     const profileStore = mobx.observable({
       language: 'US',
       errors: {},
@@ -68,9 +67,10 @@ export default function (context) {
     }
   }
 
+  const stores = Stores(context);
+
   return {
     stores: () => stores,
-    createStores: () => { stores = Stores(context) },
     routes: () => Routes(stores)
   }
 }

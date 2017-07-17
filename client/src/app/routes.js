@@ -1,6 +1,6 @@
 import ComponentGuide from 'components/componentGuide';
 
-export default function Routes(context, store, parts) {
+export default function Routes(context, parts) {
 
   function isAuthenticated(param, replaceState) {
     if(!parts.auth.stores().auth.authenticated){
@@ -21,26 +21,25 @@ export default function Routes(context, store, parts) {
             })
         },
         childRoutes: [
-          parts.auth.routes(store),
-          parts.crossbank.routes(store),
+          parts.auth.routes(),
           {
             path: 'theme',
-            childRoutes: parts.theme.routes(store, parts).childRoutes
+            childRoutes: parts.theme.routes()
           },
           {
             path: 'app',
             onEnter: isAuthenticated,
-            childRoutes: parts.profile.routes(store)
+            childRoutes: parts.profile.routes()
           },
           {
             path: 'admin',
             onEnter: isAuthenticated,
-            childRoutes: parts.admin.routes(store, parts)
+            childRoutes: parts.admin.routes()
           },
           {
             path: 'db',
             onEnter: isAuthenticated,
-            childRoutes: parts.db.routes(store, parts)
+            childRoutes: parts.db.routes()
           },
           {
             path: 'guide',

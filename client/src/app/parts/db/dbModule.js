@@ -5,7 +5,6 @@ import AsyncOp from 'utils/asyncOp';
 export default function (context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
-  let stores;
   const SchemaView = require('./SchemaView').default(context);
 
   function Stores() {
@@ -29,10 +28,10 @@ export default function (context) {
       }
     ]
   }
-
+  
+  const stores = Stores();
   return {
     stores: () => stores,
-    createStores: () => { stores = Stores(context) },
     routes: () => Routes(stores)
   }
 }

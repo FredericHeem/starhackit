@@ -1,67 +1,32 @@
-import {createActionAsync, createReducerAsync} from 'redux-act-async';
-import {connect} from 'react-redux';
 import mobx from 'mobx';
+import { createElement as h } from 'react';
 import Checkit from 'checkit';
 import rules from 'services/rules';
-import Debug from 'debug';
+import AsyncOp from 'utils/asyncOp';
 
-import ProfileView from './views/profileView';
-
-const debug = new Debug("profile");
-
-function Resources(rest) {
-  return {
-    get() {
-      return rest.get('me');
-    },
-    update(payload) {
-      return rest.patch('me', payload);
-    }
-  }
-}
-
-function Actions(rest) {
-  const profile = Resources(rest);
-  return {
-    get: createActionAsync('PROFILE_GET', profile.get),
-    update: createActionAsync('PROFILE_UPDATE', profile.update)
-  }
-}
-
-function Reducers(actions) {
-  return {
-    profileGet: createReducerAsync(actions.get),
-    profileUpdate: createReducerAsync(actions.update)
-  }
-}
-
-function Containers(context, actions, stores) {
-  return {
-    profile() {
-      const mapStateToProps = (state) => ({
-        ...state.profile,
-        store: stores.profile
-       })
-      return connect(mapStateToProps)(ProfileView(context));
-    }
-  }
-}
-
-function Routes(containers, store, actions) {
-  return {
-    path: 'profile',
-    component: containers.profile(),
-    onEnter: () => store.dispatch(actions.get())
-  }
-}
+import profileView from './views/profileView';
 
 export default function (context) {
-  const {rest} = context;
-  const {notification} = context;
-  const actions = Actions(rest);
+  const { rest } = context;
+  const { notification } = context;
+  const asyncOpCreate = AsyncOp(context);
   let stores;
 
-  function Stores(dispatch, {tr}) {
+  function Routes(stores) {
+    return [{
+      path: 'profile',
+      component: () => h(profileView(context), { store: stores.profile }),
+      onEnter: () => stores.profile.get()
+    }]
+  }
+
+  function merge(profile, response) {
+    profile.username = response.username
+    profile.email = response.email
+    profile.profile = response.profile || { biography: "" }
+  }
+
+  function Stores({ tr }) {
     const profileStore = mobx.observable({
       language: 'US',
       errors: {},
@@ -70,26 +35,26 @@ export default function (context) {
       profile: {
         biography: ""
       },
-      update: mobx.action(async function() {
-        debug('updateProfile ');
+      opGet: asyncOpCreate(() => rest.get('me')),
+      get: mobx.action(async function () {
+        const response = await this.opGet.fetch();
+        merge(profileStore, response);
+      }),
+      opUpdate: asyncOpCreate((payload) => rest.patch('me', payload)),
+      update: mobx.action(async function () {
         this.errors = {};
         const payload = {
           biography: this.profile.biography || ""
         }
-        debug('updateProfile ', payload);
 
-        function successNotification() {
-          debug('updateProfile done');
-          notification.info(tr.t('Profile updated'));
-          return true;
-        }
         try {
           const rule = new Checkit({
             biography: rules.biography
-           });
+          });
           await rule.run(payload);
-          await dispatch(actions.update(payload));
-          successNotification();
+          const response = await this.opUpdate.fetch(payload);
+          merge(profileStore, response);
+          notification.info(tr.t('Profile updated'));
         } catch (errors) {
           if (errors instanceof Checkit.Error) {
             this.errors = errors.toJSON()
@@ -103,34 +68,9 @@ export default function (context) {
     }
   }
 
-  function Middleware(actions) {
-    function merge(profile, response) {
-      profile.username = response.username
-      profile.email = response.email
-      profile.profile = response.profile || {biography: ""}
-    }
-
-    return () => next => action => {
-      const {payload} = action;
-      switch (action.type) {
-        case actions.get.ok.getType():
-        case actions.update.ok.getType():
-          merge(stores.profile, payload.response);
-          break;
-        default:
-      }
-      return next(action)
-    }
-  }
-
-  const containers = () => Containers(context, actions, stores)
-
   return {
-    actions,
-    createStores: (dispatch) => {stores = Stores(dispatch, context)},
-    middlewares: [Middleware(actions)],
-    reducers: Reducers(actions),
-    containers,
-    routes: (store) => Routes(containers(), store, actions)
+    stores: () => stores,
+    createStores: () => { stores = Stores(context) },
+    routes: () => Routes(stores)
   }
 }

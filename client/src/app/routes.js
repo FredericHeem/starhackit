@@ -30,7 +30,7 @@ export default function Routes(context, store, parts) {
           {
             path: 'app',
             onEnter: isAuthenticated,
-            childRoutes: [parts.profile.routes(store)]
+            childRoutes: parts.profile.routes(store)
           },
           {
             path: 'admin',

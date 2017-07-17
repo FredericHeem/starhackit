@@ -60,7 +60,7 @@ export default context => {
             {tr.t("Profile")}
           </h2>
           <ViewContainer>
-            {h(parts.profile.containers().profile())}
+            {parts.profile.routes().map(route => route.component())}
           </ViewContainer>
         </Content>
       </GuideView>

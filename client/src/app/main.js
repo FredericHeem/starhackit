@@ -1,4 +1,3 @@
-import 'fontello/css/fontello.css'
 import I18n from 'utils/i18n';
 import App from './app';
 import Debug from 'debug';

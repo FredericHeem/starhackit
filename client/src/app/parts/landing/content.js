@@ -1,24 +1,28 @@
 export default () => ({
   features: [
     {
-      icon: 'icon-stackexchange',
+      img: require('./img/stack.svg'),
       title: 'Full Stack',
       text: 'A complete frontend, backend and deployment solution to bootstrap your application',
+      height: '100',
     },
     {
-      icon: 'icon-user',
+      img: require('./img/users.svg'),
       title: 'Authentication',
       text: 'Account registration with username and password, or with identity provider such as Google, Facebook, Twitter, GitHub etc ..',
+      height: '100',
     },
     {
-      icon: 'icon-shield',
+      img: require('./img/protection.svg'),
       title: 'Authorization',
       text: 'A group and permissions based authorization',
+      height: '100',
     },
     {
-      icon: 'icon-database',
+      img: require('./img/database.svg'),
       title: 'Relational SQL Database',
       text: 'The data are modeled with sequelize, an ORM which support PostgreSQL, MySQL, MariaDB, SQLite and MSSQL',
+      height: '100',
     },
   ],
   frontend: [

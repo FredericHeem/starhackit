@@ -4,13 +4,13 @@ import DocTitle from 'components/docTitle';
 import restTable from 'components/restTable';
 import columns from './usersColumns';
 
-export default function (context, {getAll}) {
+export default function (context, {getAll, selectOne}) {
   const {tr} = context;
 
   const RestTable = restTable(context, {getData: getAll, columns: columns(context)});
   const Panel = panel(context);
 
-  function UsersView({actions}) {
+  function UsersView() {
     return (
       <div className="users-view">
         <DocTitle title="Users" />
@@ -19,7 +19,7 @@ export default function (context, {getAll}) {
           <Panel.Body>
             <RestTable.view
               onRow={row => ({
-              onClick: () => actions.selectOne(row.id)
+              onClick: () => selectOne(row.id)
             })} rowKey='id'
             />
           </Panel.Body>

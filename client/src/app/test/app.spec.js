@@ -15,8 +15,4 @@ describe('App', function() {
     assert.isAbove(Object.keys(parts).length, 2)
     assert(parts.core)
   });
-  it('store', async () => {
-    const {store} = app;
-    assert(store.getState())
-  });
 });

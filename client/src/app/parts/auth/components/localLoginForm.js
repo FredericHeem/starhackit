@@ -13,12 +13,12 @@ export default (context) => {
   const AlertAjax = alertAjax(context);
   const SubmitButton = button(context);
 
-  function LoginForm({ store, login }) {
+  function LoginForm({ store }) {
     const { errors } = store;
     console.log("LoginForm")
     return (
       <form className="local-login-form" onSubmit={e => e.preventDefault()}>
-        <AlertAjax error={login.error} className="login-error-view" />
+        <AlertAjax error={store.op.error} className="login-error-view" />
         <FormGroup className="username">
           <UserNameInput
             id="username"
@@ -47,7 +47,7 @@ export default (context) => {
             raised
             css={{ width: 256 }}
             label={tr.t("Login")}
-            loading={login.loading}
+            loading={store.op.loading}
             onClick={() => store.login()}
           />
         </FormGroup>

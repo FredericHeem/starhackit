@@ -15,9 +15,9 @@ export default context => {
   const EmailInput = input(context);
   const BioInput = input(context);
 
-  function ProfileForm({ store, profileGet, profileUpdate }) {
+  function ProfileForm({ store }) {
     const { errors } = store;
-    if (profileGet.loading) {
+    if (store.opGet.loading) {
       return h(spinner(context));
     }
 
@@ -64,7 +64,7 @@ export default context => {
               className="btn-update-profile"
               raised
               css={{ width: 256 }}
-              loading={profileUpdate.loading}
+              loading={store.opUpdate.loading}
               onClick={() => store.update()}
               label={tr.t("Update Profile")}
             />

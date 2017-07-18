@@ -1,4 +1,5 @@
 import React, {createElement as h} from 'react';
+import {observer} from 'mobx-react';
 import page from 'components/Page';
 import paper from 'components/Paper';
 import button from 'mdlean/lib/button';
@@ -27,12 +28,11 @@ export default (context) => {
       </Paper>
     );
   }
-  function LogoutView({ authenticated }) {
+  return observer(function LogoutView({ authStore }) {
     return (
       <Page className="logout-page text-center">
-        <DocTitle title={tr.t('Logout')} /> {authenticated ? <LoggingOut /> : <LoggedOut />}
+        <DocTitle title={tr.t('Logout')} /> {authStore.authenticated ? <LoggingOut /> : <LoggedOut />}
       </Page>
     );
-  }
-  return LogoutView;
+  })
 };

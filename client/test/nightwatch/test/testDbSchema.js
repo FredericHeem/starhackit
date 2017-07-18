@@ -1,4 +1,4 @@
-describe('DbSchema', function() {
+describe.skip('DbSchema', function() {
   before(function(client, done) {
     this.timeout(40e3);
     client.page.login().login(done);

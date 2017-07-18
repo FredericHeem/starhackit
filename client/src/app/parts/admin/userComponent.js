@@ -1,12 +1,10 @@
-import _ from 'lodash';
 import React, {createElement as h} from 'react';
+import {observer} from 'mobx-react';
 import page from 'components/Page';
 import paper from 'components/Paper';
 import input from 'components/input';
 import spinner from 'components/spinner';
 import formGroup from 'components/FormGroup';
-import Debug from 'debug';
-const debug = new Debug('components:user');
 
 export default (context) => {
   const { tr } = context;
@@ -17,11 +15,13 @@ export default (context) => {
   const UsernameInput = input(context);
   const EmailInput = input(context);
 
-  function UserComponent(props) {
-    debug(props);
-    const user = props.usersGetOne.data;
-    if (_.isEmpty(user)) {
+  function UserComponent({store}) {
+    if (store.opGet.loading) {
       return h(spinner(context));
+    }
+    const user = store.opGet.data;
+    if(!user){
+      return null;
     }
     return (
       <Page className="user-view text-center">
@@ -40,5 +40,5 @@ export default (context) => {
       </Page>
     );
   }
-  return UserComponent;
+  return observer(UserComponent);
 };

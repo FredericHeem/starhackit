@@ -1,8 +1,5 @@
 import _ from "lodash";
-//import React, { createElement as h } from "react";
-import { createActionAsync, createReducerAsync } from "redux-act-async";
-import { createAction, createReducer } from "redux-act";
-import { connect } from "react-redux";
+import { createElement as h } from 'react';
 import { browserHistory } from "react-router";
 import { parse } from "query-string";
 import mobx from "mobx";
@@ -15,6 +12,7 @@ import registrationCompleteView from "./views/registrationCompleteView";
 import resetPasswordView from "./views/resetPasswordView";
 import appView from "./views/applicationView";
 import rules from "services/rules";
+import AsyncOp from 'utils/asyncOp';
 
 function Resources(rest) {
   return {
@@ -42,123 +40,14 @@ function Resources(rest) {
   };
 }
 
-function Actions(resources) {
+function Containers(context, stores) {
   return {
-    setToken: createAction("TOKEN_SET"),
-    me: createActionAsync("ME", resources.me),
-    login: createActionAsync("LOGIN", resources.login),
-    logout: createActionAsync("LOGOUT", resources.logout),
-    requestPasswordReset: createActionAsync(
-      "REQUEST_PASSWORD_RESET",
-      resources.requestPasswordReset
-    ),
-    register: createActionAsync("REGISTER", resources.register),
-    verifyEmailCode: createActionAsync(
-      "VERIFY_EMAIL_CODE",
-      resources.verifyEmailCode
-    ),
-    verifyResetPasswordToken: createActionAsync(
-      "VERIFY_RESET_PASSWORD_TOKEN",
-      resources.verifyResetPasswordToken
-    )
-  };
-}
-
-const defaultState = {
-  authenticated: false
-};
-
-function AuthReducer(actions) {
-  return createReducer(
-    {
-      [actions.setToken]: (state, payload) => ({
-        ...state,
-        token: payload
-      }),
-      [actions.me.ok]: state => ({
-        ...state,
-        authenticated: true
-      }),
-      [actions.login.ok]: (state, payload) => ({
-        ...state,
-        authenticated: true,
-        token: payload.response.token
-      }),
-      [actions.login.error]: () => defaultState,
-      [actions.me.error]: () => defaultState,
-      [actions.logout.ok]: () => defaultState,
-      [actions.logout.error]: () => defaultState
-    },
-    defaultState
-  );
-}
-
-function Reducers(actions) {
-  return {
-    auth: AuthReducer(actions),
-    me: createReducerAsync(actions.me),
-    login: createReducerAsync(actions.login),
-    logout: createReducerAsync(actions.logout),
-    register: createReducerAsync(actions.register),
-    verifyEmailCode: createReducerAsync(actions.verifyEmailCode),
-    requestPasswordReset: createReducerAsync(actions.requestPasswordReset),
-    verifyResetPasswordToken: createReducerAsync(
-      actions.verifyResetPasswordToken
-    )
-  };
-}
-const selectState = state => state.auth;
-const isAuthenticated = state => selectState(state).auth.authenticated;
-
-function Containers(context, actions, stores) {
-  return {
-    login() {
-      const mapStateToProps = state => ({
-        authenticated: isAuthenticated(state),
-        login: selectState(state).login,
-        store: stores.login
-      });
-      return connect(mapStateToProps)(loginView(context));
-    },
-    register() {
-      const mapStateToProps = state => ({
-        register: selectState(state).register,
-        store: stores.register
-      });
-      return connect(mapStateToProps)(registerView(context));
-    },
-    logout() {
-      const mapStateToProps = state => ({
-        authenticated: isAuthenticated(state)
-      });
-      return connect(mapStateToProps)(logoutView(context));
-    },
-    forgot() {
-      const mapStateToProps = state => ({
-        requestPasswordReset: selectState(state).requestPasswordReset,
-        store: stores.forgotPassword
-      });
-      return connect(mapStateToProps)(forgotView(context));
-    },
-    resetPassword() {
-      const mapStateToProps = state => ({
-        verifyResetPasswordToken: selectState(state).verifyResetPasswordToken,
-        store: stores.resetPassword
-      });
-      return connect(mapStateToProps)(resetPasswordView(context));
-    },
-    registrationComplete() {
-      const mapStateToProps = state => ({
-        verifyEmailCode: selectState(state).verifyEmailCode
-      });
-      return connect(mapStateToProps)(registrationCompleteView(context));
-    },
     app() {
-      const mapStateToProps = state => ({
-        authenticated: isAuthenticated(state),
-        themeStore: context.parts.theme.stores().sideBar
-      }); 
-      return connect(mapStateToProps)(appView(context));
+      return ({ children }) => h(appView(context), {
+        authStore: stores.auth,
+        themeStore: context.parts.theme.stores().sideBar,
+        children
+      })
     }
   };
 }
@@ -168,53 +57,39 @@ function redirect() {
   browserHistory.push(nextPath);
 }
 
-function Routes(containers, stores) {
-  return {
-    childRoutes: [
-      {
-        path: "login",
-        component: containers.login()
-      },
-      {
-        path: "register",
-        component: containers.register()
-      },
-      {
-        path: "logout",
-        component: containers.logout(),
-        onEnter: () => stores.logout.execute()
-      },
-      {
-        path: "forgot",
-        component: containers.forgot()
-      },
-      {
-        path: "resetPassword/:token",
-        component: containers.resetPassword()
-      },
-      {
-        path: "verifyEmail/:code",
-        component: containers.registrationComplete(),
-        onEnter: nextState => {
-          stores.verifyEmailCode.execute({ code: nextState.params.code });
-        }
-      }
-    ]
-  };
-}
-
-export default function(context) {
+export default function (context) {
   const { rest } = context;
+  const asyncOpCreate = AsyncOp(context);
   const resources = Resources(rest);
-  const actions = Actions(resources);
-  let stores;
 
-  function Stores(dispatch) {
+  function Stores() {
+    const authStore = mobx.observable({
+      authenticated: false,
+      token: "",
+      setAuthenticated() {
+        authStore.authenticated = true;
+      },
+      setToken(token) {
+        authStore.authenticated = true;
+        authStore.token = token;
+        localStorage.setItem("JWT", token);
+      },
+      getToken() {
+        return authStore.token;
+      },
+      reset() {
+        authStore.authenticated = false;
+        authStore.token = ""
+      }
+    });
+
     return {
+      auth: authStore,
       me: mobx.observable({
-        fetch: mobx.action(async function() {
+        fetch: async () => {
           try {
-            await dispatch(actions.me());
+            await resources.me();
+            authStore.setAuthenticated()
             const pathname = window.location.pathname;
             if (pathname === "/login") {
               // From social login
@@ -223,31 +98,33 @@ export default function(context) {
           } catch (errors) {
             localStorage.removeItem("JWT");
           }
-        })
+        },
       }),
       login: mobx.observable({
         username: "",
         password: "",
         errors: {},
-        login: mobx.action(async function() {
+        op: asyncOpCreate(resources.login),
+        login: mobx.action(async function () {
           this.errors = {};
           const payload = {
-            username: _.trim(this.username),
+            username: this.username.trim(),
             password: this.password
           };
 
           try {
-            //console.log(_.pick(rules, 'username', 'password'))
             const rule = new Checkit(_.pick(rules, ["username", "password"]));
             await rule.run(payload);
-            const { response } = await dispatch(actions.login(payload));
+            const response = await this.op.fetch(payload);
+            console.log("response ", response)
             const { token } = response;
-            localStorage.setItem("JWT", token);
+            authStore.setToken(token);
             redirect();
           } catch (errors) {
             if (errors instanceof Checkit.Error) {
               this.errors = errors.toJSON();
             } else {
+              console.error("login ", errors)
               localStorage.removeItem("JWT");
             }
           }
@@ -258,11 +135,12 @@ export default function(context) {
         email: "",
         password: "",
         errors: {},
-        register: mobx.action(async function() {
+        op: asyncOpCreate(resources.register),
+        register: mobx.action(async function () {
           this.errors = {};
           const payload = {
-            username: _.trim(this.username),
-            email: _.trim(this.email),
+            username: this.username.trim(),
+            email: this.email.trim(),
             password: this.password
           };
           try {
@@ -270,7 +148,7 @@ export default function(context) {
               _.pick(rules, ["username", "email", "password"])
             );
             await rule.run(payload);
-            await dispatch(actions.register(payload));
+            await this.op.fetch(payload);
           } catch (errors) {
             if (errors instanceof Checkit.Error) {
               this.errors = errors.toJSON();
@@ -279,15 +157,18 @@ export default function(context) {
         })
       }),
       logout: mobx.observable({
-        execute: mobx.action(async function() {
+        op: asyncOpCreate(resources.logout),
+        execute: mobx.action(async function () {
           localStorage.removeItem("JWT");
-          await dispatch(actions.logout());
+          await this.op.fetch();
+          authStore.authenticated = false;
         })
       }),
       verifyEmailCode: mobx.observable({
-        execute: mobx.action(async function(param) {
+        op: asyncOpCreate(resources.verifyEmailCode),
+        execute: mobx.action(async function (param) {
           try {
-            await dispatch(actions.verifyEmailCode(param));
+            await this.op.fetch(param);
             browserHistory.push(`/login`);
           } catch (errors) {
             //
@@ -298,22 +179,25 @@ export default function(context) {
         step: "SetPassword",
         password: "",
         errors: {},
-        resetPassword: mobx.action(async function(token) {
+        op: asyncOpCreate(resources.verifyResetPasswordToken),
+        resetPassword: mobx.action(async function (token) {
           this.errors = {};
           const payload = {
-            password: _.trim(this.password),
+            password: this.password,
             token
           };
 
           try {
             const rule = new Checkit(_.pick(rules, ["password"]));
             await rule.run(payload);
-            await dispatch(actions.verifyResetPasswordToken(payload));
+
+            await this.op.fetch(payload);
             this.step = "SetNewPasswordDone";
           } catch (errors) {
             if (errors instanceof Checkit.Error) {
               this.errors = errors.toJSON();
             }
+            console.error("resetPassword ", errors)
           }
         })
       }),
@@ -321,18 +205,20 @@ export default function(context) {
         step: "SendPasswordResetEmail",
         email: "",
         errors: {},
-        requestPasswordReset: mobx.action(async function() {
+        op: asyncOpCreate(resources.requestPasswordReset),
+        requestPasswordReset: mobx.action(async function () {
           this.errors = {};
           const payload = {
-            email: _.trim(this.email)
+            email: this.email.trim()
           };
 
           try {
             const rule = new Checkit(_.pick(rules, ["email"]));
             await rule.run(payload);
-            await dispatch(actions.requestPasswordReset(payload));
+            await this.op.fetch(payload);
             this.step = "CheckEmail";
           } catch (errors) {
+            console.error(errors)
             if (errors instanceof Checkit.Error) {
               console.log(errors.toJSON());
               this.errors = errors.toJSON();
@@ -343,15 +229,45 @@ export default function(context) {
     };
   }
 
-  const containers = () => Containers(context, actions, stores);
+  function Routes(containers, stores) {
+    return {
+      childRoutes: [
+        {
+          path: "login",
+          component: () => h(loginView(context), { store: stores.login })
+        },
+        {
+          path: "register",
+          component: () => h(registerView(context), { store: stores.register }),
+        },
+        {
+          path: "logout",
+          component: () => h(logoutView(context), { authStore: stores.auth }),
+          onEnter: () => stores.logout.execute()
+        },
+        {
+          path: "forgot",
+          component: () => h(forgotView(context), { store: stores.forgotPassword }),
+        },
+        {
+          path: "resetPassword/:token",
+          component: ({ params } = {}) => h(resetPasswordView(context), { store: stores.resetPassword, params }),
+        },
+        {
+          path: "verifyEmail/:code",
+          component: () => h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
+          onEnter: nextState => {
+            stores.verifyEmailCode.execute({ code: nextState.params.code });
+          }
+        }
+      ]
+    };
+  }
+  const stores = Stores();
+  const containers = () => Containers(context, stores);
 
   return {
-    actions,
     stores: () => stores,
-    createStores: dispatch => {
-      stores = Stores(dispatch, context);
-    },
-    reducers: Reducers(actions),
     containers,
     routes: () => Routes(containers(), stores)
   };

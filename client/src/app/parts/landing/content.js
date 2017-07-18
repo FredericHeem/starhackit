@@ -34,13 +34,6 @@ export default () => ({
       text: 'A fast rising javascript library for building user interface.',
     },
     {
-      img: require('./img/redux.svg'),
-      title: 'Redux',
-      height: '100',
-      link: 'https://github.com/reactjs/redux',
-      text: 'Predictable state container, the most popular flux library.',
-    },
-    {
       img: require('./img/mobx.svg'),
       title: 'Mobx',
       height: '100',

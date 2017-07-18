@@ -4,5 +4,4 @@ describe('Verify Email', function () {
             .waitForElementVisible('.registration-complete-page', 5000)
             .waitForElementVisible('.register-complete-error-view', 5000)
     });
-
 });

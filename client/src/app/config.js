@@ -7,7 +7,7 @@ const config = {
 
     general: {
         title: 'StarHackIt',
-        description: 'React Redux Node StarterKit',
+        description: 'React Mobx Glamorous Node Starter Kit',
         apiUrl: '/api/v1/',
         analytics: {
             google: ""
@@ -15,7 +15,6 @@ const config = {
         socialAuth: ["facebook", "crossbank"],
         debug: {
           log: false,
-          redux: false,
           i18n: false
         }
     },
@@ -24,7 +23,6 @@ const config = {
         env: "development",
         debug: {
           log: true,
-          redux: false,
           i18n: false
         }
     },

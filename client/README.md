@@ -119,26 +119,25 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Version: webpack 2.5.1
-Time: 884790ms
+Version: webpack 3.3.0
+Time: 18235ms
                              Asset       Size  Chunks                    Chunk Names
-  0.f235e61ffd20e753c023.js.map.gz     246 kB          [emitted]
-         0.f235e61ffd20e753c023.js     200 kB       0  [emitted]
-       app.f235e61ffd20e753c023.js    1.26 MB       2  [emitted]  [big]  app
-     0.f235e61ffd20e753c023.js.map     428 kB       0  [emitted]
-     1.f235e61ffd20e753c023.js.map     470 kB       1  [emitted]
-   app.f235e61ffd20e753c023.js.map    7.96 MB       2  [emitted]         app
-      1.f235e61ffd20e753c023.js.gz    18.1 kB          [emitted]
-      0.f235e61ffd20e753c023.js.gz     121 kB          [emitted]
-         1.f235e61ffd20e753c023.js    65.1 kB       1  [emitted]
-  1.f235e61ffd20e753c023.js.map.gz     105 kB          [emitted]
-    app.f235e61ffd20e753c023.js.gz     301 kB          [emitted]  [big]
-app.f235e61ffd20e753c023.js.map.gz    1.68 MB          [emitted]  [big]
-                        index.html    3.01 kB          [emitted]
-                       favicon.ico    1.15 kB          [emitted]
-            locales/en/common.json  410 bytes          [emitted]
-            locales/fr/common.json  314 bytes          [emitted]
-            locales/it/common.json  175 bytes          [emitted]
+      1.5e6d042b65fe718e78a5.js.gz     177 kB          [emitted]         
+         0.5e6d042b65fe718e78a5.js     142 kB       0  [emitted]         
+         2.5e6d042b65fe718e78a5.js    65.2 kB       2  [emitted]         
+       app.5e6d042b65fe718e78a5.js     603 kB       3  [emitted]  [big]  app
+     0.5e6d042b65fe718e78a5.js.map     727 kB       0  [emitted]         
+     1.5e6d042b65fe718e78a5.js.map     614 kB       1  [emitted]         
+     2.5e6d042b65fe718e78a5.js.map     470 kB       2  [emitted]         
+   app.5e6d042b65fe718e78a5.js.map    3.81 MB       3  [emitted]         app
+      2.5e6d042b65fe718e78a5.js.gz    18.1 kB          [emitted]         
+      0.5e6d042b65fe718e78a5.js.gz    29.7 kB          [emitted]         
+         1.5e6d042b65fe718e78a5.js     292 kB       1  [emitted]  [big]  
+    app.5e6d042b65fe718e78a5.js.gz     151 kB          [emitted]         
+  2.5e6d042b65fe718e78a5.js.map.gz     105 kB          [emitted]         
+  1.5e6d042b65fe718e78a5.js.map.gz     358 kB          [emitted]  [big]  
+  0.5e6d042b65fe718e78a5.js.map.gz     151 kB          [emitted]         
+app.5e6d042b65fe718e78a5.js.map.gz     827 kB          [emitted]  [big]  
 
 ```
 

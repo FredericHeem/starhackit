@@ -16,7 +16,6 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 
 * [React](https://facebook.github.io/react/) or [Preact](https://github.com/developit/preact): libraries to build user interfaces.
 * [Mobx](https://mobx.js.org/): Simple, scalable state management
-* [Redux](http://redux.js.org/): predictable state container for JavaScript apps.
 * [Webpack](http://webpack.github.io/): module bundler for the browser
 * [Glamorous](https://github.com/paypal/glamorous): solving react component styling.
 * [i18next](http://i18next.com/): internationalization

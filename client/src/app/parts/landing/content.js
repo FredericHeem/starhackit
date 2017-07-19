@@ -27,11 +27,11 @@ export default () => ({
   ],
   frontend: [
     {
-      img: require('./img/react.svg'),
+      img: require('./img/preact.svg'),
       height: '100',
-      title: 'React',
-      link: 'https://facebook.github.io/react/',
-      text: 'A fast rising javascript library for building user interface.',
+      title: 'Preact',
+      link: 'https://preactjs.com/',
+      text: 'Fast 3kB patent free alternative to React with the same ES6 API.',
     },
     {
       img: require('./img/mobx.svg'),
@@ -103,7 +103,7 @@ export default () => ({
     {
       img: require('./img/eslint.svg'),
       title: 'ESLint',
-      height: '180',
+      height: '120',
       link: 'http://eslint.org/',
       text: 'The pluggable linting utility for JavaScript and JSX, find errors and coding style violation.',
     },

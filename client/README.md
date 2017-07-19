@@ -1,11 +1,11 @@
 # StarHackIt React Frontend
 
-An ES6 React based frontend starter kit:
+An ES6 Preact/React based frontend starter kit:
 
 * ES6/ES7 with `babel`
 * Internationalization with `i18next` and `react-intl`
+* Styling with `glamorous`
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
-* Hot reloading with `react-hot-loader`
 * Copy and paste detector with `jscpd`
 * Display lint warnings and build errors to directly to the browser with `webpack-hud`
 * Unit tests with `karma`, `mocha` and `enzyme`
@@ -110,18 +110,6 @@ Here are the i18next plugins configured in [src/app/utils/i18n.js](src/app/utils
 
 The translation files are located in [locales](locales) directory.
 
-In your *React* component, import the `i18next` package and invoke the `t` function to translate the given key:
-
-
-```
-import tr from 'i18next';
-
-...
-
-    <h2 >{tr.t('login')}</h2>
-```
-
-
 ### Production build
 
 To build the production version:
@@ -156,96 +144,3 @@ app.f235e61ffd20e753c023.js.map.gz    1.68 MB          [emitted]  [big]
 
 To find out exactly the weight of each individual library, the tool [webpack-bundle-size-analyzer](https://github.com/robertknight/webpack-bundle-size-analyzer) creates a report displaying the size and the relative percentage of the dependencies.
 
-```
-$ npm run bundle-size
-
-react-dom: 510.95 KB (15.7%)
-material-ui: 363.37 KB (11.2%)
-core-js: 256.05 KB (7.89%)
-intl: 192.53 KB (5.93%)
-lodash: 139.63 KB (4.30%)
-mobx: 109.76 KB (3.38%)
-react: 104.36 KB (3.22%)
-react-s-alert: 80.15 KB (2.47%)
-i18next: 76.49 KB (2.36%)
-react-router: 74.46 KB (2.30%)
-glamor: 66.29 KB (2.04%)
-lodash.merge: 56.82 KB (1.75%)
-buffer: 47.47 KB (1.46%)
-history: 46.82 KB (1.44%)
-mobx-react: 40.76 KB (1.26%)
-react-helmet: 36.79 KB (1.13%)
-react-redux: 36.22 KB (1.12%)
-axios: 35.24 KB (1.09%)
-inline-style-prefixer: 31.87 KB (0.982%)
-reactabular-table: 31.84 KB (0.981%)
-checkit: 31.25 KB (0.963%)
-glamorous: 30.64 KB (0.944%)
-fbjs: 30.46 KB (0.939%)
-create-react-class: 27 KB (0.832%)
-regenerator-runtime: 24.22 KB (0.747%)
-ladda: 23.57 KB (0.726%)
-prop-types: 21.42 KB (0.660%)
-redux: 20.35 KB (0.627%)
-qs: 16.67 KB (0.514%)
-bowser: 16.56 KB (0.511%)
-react-ga: 15.75 KB (0.486%)
-redux-act: 13.15 KB (0.405%)
-lodash.throttle: 13 KB (0.401%)
-redux-logger: 12.79 KB (0.394%)
-style-loader: 11.25 KB (0.347%)
-deep-diff: 11.21 KB (0.346%)
-react-router-redux: 11.05 KB (0.341%)
-react-pagify: 9.71 KB (0.299%)
-react-addons-create-fragment: 9.46 KB (0.292%)
-i18next-browser-languagedetector: 9.08 KB (0.280%)
-debug: 8.89 KB (0.274%)
-react-event-listener: 8.5 KB (0.262%)
-recompose: 8.14 KB (0.251%)
-babel-runtime: 7.81 KB (0.241%)
-react-tap-event-plugin: 7.29 KB (0.225%)
-react-ladda: 7.27 KB (0.224%)
-i18next-xhr-backend: 6.86 KB (0.211%)
-lodash.keys: 6.46 KB (0.199%)
-lodash.isarguments: 5.58 KB (0.172%)
-redux-act-async: 5.38 KB (0.166%)
-node-libs-browser: 5.17 KB (0.160%)
-  process: 5.17 KB (100%)
-  <self>: 0 B (0.00%)
-i18next-localstorage-cache: 5.15 KB (0.159%)
-lodash.isarray: 5.04 KB (0.155%)
-react-side-effect: 4.62 KB (0.142%)
-query-string: 4.15 KB (0.128%)
-deep-equal: 3.8 KB (0.117%)
-lodash._getnative: 3.78 KB (0.116%)
-base64-js: 3.4 KB (0.105%)
-lodash-es: 3.29 KB (0.101%)
-keycode: 2.7 KB (0.0831%)
-ms: 2.65 KB (0.0818%)
-css-loader: 2.14 KB (0.0659%)
-object-assign: 2.06 KB (0.0635%)
-ieee754: 2.01 KB (0.0618%)
-warning: 1.76 KB (0.0544%)
-invariant: 1.48 KB (0.0456%)
-hoist-non-react-statics: 1.35 KB (0.0418%)
-shallowequal: 1.16 KB (0.0356%)
-symbol-observable: 1.12 KB (0.0346%)
-webpack: 1.09 KB (0.0335%)
-classnames: 1.08 KB (0.0332%)
-segmentize: 1 KB (0.0309%)
-exenv: 863 B (0.0260%)
-babel-polyfill: 833 B (0.0251%)
-css-in-js-utils: 760 B (0.0229%)
-inherits: 672 B (0.0202%)
-redux-thunk: 529 B (0.0159%)
-hyphenate-style-name: 339 B (0.0102%)
-simple-assign: 281 B (0.00846%)
-strict-uri-encode: 182 B (0.00548%)
-isarray: 132 B (0.00397%)
-react-addons-transition-group: 59 B (0.00178%)
-intl .: 15 B (0.000452%)
-<self>: 410.96 KB (12.7%)
-
-
-
-```

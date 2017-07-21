@@ -120,24 +120,25 @@ To build the production version:
 
 ```
 Version: webpack 3.3.0
-Time: 18235ms
+Time: 19189ms
                              Asset       Size  Chunks                    Chunk Names
-      1.5e6d042b65fe718e78a5.js.gz     177 kB          [emitted]         
-         0.5e6d042b65fe718e78a5.js     142 kB       0  [emitted]         
-         2.5e6d042b65fe718e78a5.js    65.2 kB       2  [emitted]         
-       app.5e6d042b65fe718e78a5.js     603 kB       3  [emitted]  [big]  app
-     0.5e6d042b65fe718e78a5.js.map     727 kB       0  [emitted]         
-     1.5e6d042b65fe718e78a5.js.map     614 kB       1  [emitted]         
-     2.5e6d042b65fe718e78a5.js.map     470 kB       2  [emitted]         
-   app.5e6d042b65fe718e78a5.js.map    3.81 MB       3  [emitted]         app
-      2.5e6d042b65fe718e78a5.js.gz    18.1 kB          [emitted]         
-      0.5e6d042b65fe718e78a5.js.gz    29.7 kB          [emitted]         
-         1.5e6d042b65fe718e78a5.js     292 kB       1  [emitted]  [big]  
-    app.5e6d042b65fe718e78a5.js.gz     151 kB          [emitted]         
-  2.5e6d042b65fe718e78a5.js.map.gz     105 kB          [emitted]         
-  1.5e6d042b65fe718e78a5.js.map.gz     358 kB          [emitted]  [big]  
-  0.5e6d042b65fe718e78a5.js.map.gz     151 kB          [emitted]         
-app.5e6d042b65fe718e78a5.js.map.gz     827 kB          [emitted]  [big]  
+    app.b4e701b718b1d205a466.js.gz     139 kB          [emitted]         
+         0.b4e701b718b1d205a466.js     142 kB       0  [emitted]         
+         2.b4e701b718b1d205a466.js    65.2 kB       2  [emitted]         
+       app.b4e701b718b1d205a466.js     551 kB       3  [emitted]  [big]  app
+     0.b4e701b718b1d205a466.js.map     727 kB       0  [emitted]         
+     1.b4e701b718b1d205a466.js.map     617 kB       1  [emitted]         home
+     2.b4e701b718b1d205a466.js.map     470 kB       2  [emitted]         
+   app.b4e701b718b1d205a466.js.map    3.43 MB       3  [emitted]         app
+      0.b4e701b718b1d205a466.js.gz    29.7 kB          [emitted]         
+      2.b4e701b718b1d205a466.js.gz    18.1 kB          [emitted]         
+         1.b4e701b718b1d205a466.js     292 kB       1  [emitted]  [big]  home
+      1.b4e701b718b1d205a466.js.gz     177 kB          [emitted]         
+  2.b4e701b718b1d205a466.js.map.gz     105 kB          [emitted]         
+  1.b4e701b718b1d205a466.js.map.gz     359 kB          [emitted]  [big]  
+  0.b4e701b718b1d205a466.js.map.gz     151 kB          [emitted]         
+app.b4e701b718b1d205a466.js.map.gz     752 kB          [emitted]  [big]  
+                        index.html    3.01 kB          [emitted]    
 
 ```
 

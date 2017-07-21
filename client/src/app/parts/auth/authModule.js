@@ -1,8 +1,7 @@
 import _ from "lodash";
 import { createElement as h } from 'react';
-import { browserHistory } from "react-router";
 import { parse } from "query-string";
-import mobx from "mobx";
+import {observable, action} from "mobx";
 import Checkit from "checkit";
 import loginView from "./views/loginView";
 import logoutView from "./views/logoutView";
@@ -52,18 +51,17 @@ function Containers(context, stores) {
   };
 }
 
-function redirect() {
-  const nextPath = parse(window.location.search).nextPath || "/app/profile";
-  browserHistory.push(nextPath);
-}
-
 export default function (context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
   const resources = Resources(rest);
 
+  function redirect() {
+    const nextPath = parse(window.location.search).nextPath || "/app/profile";
+    context.history.push(nextPath);
+  }
   function Stores() {
-    const authStore = mobx.observable({
+    const authStore = observable({
       authenticated: false,
       token: "",
       setAuthenticated() {
@@ -85,7 +83,7 @@ export default function (context) {
 
     return {
       auth: authStore,
-      me: mobx.observable({
+      me: observable({
         fetch: async () => {
           try {
             await resources.me();
@@ -100,12 +98,12 @@ export default function (context) {
           }
         },
       }),
-      login: mobx.observable({
+      login: observable({
         username: "",
         password: "",
         errors: {},
         op: asyncOpCreate(resources.login),
-        login: mobx.action(async function () {
+        login: action(async function () {
           this.errors = {};
           const payload = {
             username: this.username.trim(),
@@ -116,7 +114,6 @@ export default function (context) {
             const rule = new Checkit(_.pick(rules, ["username", "password"]));
             await rule.run(payload);
             const response = await this.op.fetch(payload);
-            console.log("response ", response)
             const { token } = response;
             authStore.setToken(token);
             redirect();
@@ -130,13 +127,13 @@ export default function (context) {
           }
         })
       }),
-      register: mobx.observable({
+      register: observable({
         username: "",
         email: "",
         password: "",
         errors: {},
         op: asyncOpCreate(resources.register),
-        register: mobx.action(async function () {
+        register: action(async function () {
           this.errors = {};
           const payload = {
             username: this.username.trim(),
@@ -156,31 +153,31 @@ export default function (context) {
           }
         })
       }),
-      logout: mobx.observable({
+      logout: observable({
         op: asyncOpCreate(resources.logout),
-        execute: mobx.action(async function () {
+        execute: action(async function () {
           localStorage.removeItem("JWT");
           await this.op.fetch();
           authStore.authenticated = false;
         })
       }),
-      verifyEmailCode: mobx.observable({
+      verifyEmailCode: observable({
         op: asyncOpCreate(resources.verifyEmailCode),
-        execute: mobx.action(async function (param) {
+        execute: action(async function (param) {
           try {
             await this.op.fetch(param);
-            browserHistory.push(`/login`);
+            context.history.push(`/login`);
           } catch (errors) {
             //
           }
         })
       }),
-      resetPassword: mobx.observable({
+      resetPassword: observable({
         step: "SetPassword",
         password: "",
         errors: {},
         op: asyncOpCreate(resources.verifyResetPasswordToken),
-        resetPassword: mobx.action(async function (token) {
+        resetPassword: action(async function (token) {
           this.errors = {};
           const payload = {
             password: this.password,
@@ -201,12 +198,12 @@ export default function (context) {
           }
         })
       }),
-      forgotPassword: mobx.observable({
+      forgotPassword: observable({
         step: "SendPasswordResetEmail",
         email: "",
         errors: {},
         op: asyncOpCreate(resources.requestPasswordReset),
-        requestPasswordReset: mobx.action(async function () {
+        requestPasswordReset: action(async function () {
           this.errors = {};
           const payload = {
             email: this.email.trim()
@@ -229,46 +226,61 @@ export default function (context) {
     };
   }
 
-  function Routes(containers, stores) {
-    return {
-      childRoutes: [
-        {
-          path: "login",
-          component: () => h(loginView(context), { store: stores.login })
-        },
-        {
-          path: "register",
-          component: () => h(registerView(context), { store: stores.register }),
-        },
-        {
-          path: "logout",
-          component: () => h(logoutView(context), { authStore: stores.auth }),
-          onEnter: () => stores.logout.execute()
-        },
-        {
-          path: "forgot",
-          component: () => h(forgotView(context), { store: stores.forgotPassword }),
-        },
-        {
-          path: "resetPassword/:token",
-          component: ({ params } = {}) => h(resetPasswordView(context), { store: stores.resetPassword, params }),
-        },
-        {
-          path: "verifyEmail/:code",
-          component: () => h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
-          onEnter: nextState => {
-            stores.verifyEmailCode.execute({ code: nextState.params.code });
-          }
-        }
-      ]
-    };
+  function Routes(stores) {
+    return [
+      {
+        path: "/login",
+        component: () => ({
+          title: "Login",
+          component: h(loginView(context), { store: stores.login })
+        })
+      },
+      {
+        path: "/register",
+        component: () => ({
+          title: "Register",
+          component: h(registerView(context), { store: stores.register })
+        })
+      },
+      {
+        path: "/logout",
+        component: () => ({
+          title: "Logout",
+          component: h(logoutView(context), { store: stores.auth })
+        }),
+        action: () => stores.logout.execute()
+      },
+      {
+        path: "/forgot",
+        component: () => ({
+          title: "Forgot password",
+          component: h(forgotView(context), { store: stores.forgotPassword })
+        })
+      },
+      {
+        path: "/resetPassword/:token",
+        component: ({params} = {}) => ({
+          title: "Reset password",
+          component: h(resetPasswordView(context), { store: stores.resetPassword, params })
+        })
+      },
+      {
+        path: "/verifyEmail/:code",
+        component: () => ({
+          title: "Verify Email",
+          component: h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
+        }),
+        action: ({params}) => stores.verifyEmailCode.execute({ code: params.code })
+      }
+    ]
   }
+
   const stores = Stores();
   const containers = () => Containers(context, stores);
 
   return {
     stores: () => stores,
     containers,
-    routes: () => Routes(containers(), stores)
+    routes: () => Routes(stores)
   };
 }

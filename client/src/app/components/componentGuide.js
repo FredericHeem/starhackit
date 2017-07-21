@@ -53,14 +53,14 @@ export default context => {
             {tr.t("Authentication")}
           </h2>
           <ViewContainer>
-            {parts.auth.routes().childRoutes.map(route => route.component())}
+            {parts.auth.routes().map(route => route.component().component)}
           </ViewContainer>
 
           <h2>
             {tr.t("Profile")}
           </h2>
           <ViewContainer>
-            {parts.profile.routes().map(route => route.component())}
+            {parts.profile.routes().map(route => route.component().component)}
           </ViewContainer>
         </Content>
       </GuideView>

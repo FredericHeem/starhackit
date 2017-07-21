@@ -1,9 +1,8 @@
-import React, {createElement as h} from 'react';
-import {observer} from 'mobx-react';
+import React, { createElement as h } from 'react';
+import { observer } from 'mobx-react';
 import page from 'components/Page';
 import paper from 'components/Paper';
 import button from 'mdlean/lib/button';
-import DocTitle from 'components/docTitle';
 import spinner from 'components/spinner';
 
 export default (context) => {
@@ -28,10 +27,10 @@ export default (context) => {
       </Paper>
     );
   }
-  return observer(function LogoutView({ authStore }) {
+  return observer(function LogoutView({ store }) {
     return (
       <Page className="logout-page text-center">
-        <DocTitle title={tr.t('Logout')} /> {authStore.authenticated ? <LoggingOut /> : <LoggedOut />}
+        {store.authenticated ? <LoggingOut /> : <LoggedOut />}
       </Page>
     );
   })

@@ -2,8 +2,7 @@ import React from "react";
 import glamorous from "glamorous";
 import drawer from "mdlean/lib/drawer";
 import config from "config";
-import { browserHistory } from "react-router";
-import mobx from "mobx";
+import {observable, action} from "mobx";
 import { observer } from "mobx-react";
 import menu from "./menu";
 import button from "mdlean/lib/button";
@@ -13,7 +12,7 @@ export default context => {
   const {palette} = theme;
   const Drawer = drawer(context);
   const Menu = menu(context);
-  const store = mobx.observable({
+  const store = observable({
     open: false,
     toggle() {
       this.open = !this.open;
@@ -21,8 +20,8 @@ export default context => {
     close() {
       store.open = false;
     },
-    navChange: mobx.action(function(menuItem) {
-      browserHistory.push(menuItem.route);
+    navChange: action(function(menuItem) {
+      context.history.push(menuItem.route);
       this.open = false;
     })
   });

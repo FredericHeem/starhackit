@@ -1,4 +1,4 @@
-import mobx from 'mobx';
+import {observable, action} from "mobx";
 import { createElement as h } from 'react';
 import Checkit from 'checkit';
 import rules from 'services/rules';
@@ -12,11 +12,17 @@ export default function (context) {
   const asyncOpCreate = AsyncOp(context);
 
   function Routes(stores) {
-    return [{
-      path: 'profile',
-      component: () => h(profileView(context), { store: stores.profile }),
-      onEnter: () => stores.profile.get()
-    }]
+    return [
+      {
+        path: "/profile",
+        component: () => ({
+          title: "Profile",
+          component: h(profileView(context), { store: stores.profile }),
+        }),
+        action: () => {
+          stores.profile.get()
+        }
+      }]
   }
 
   function merge(profile, response) {
@@ -26,7 +32,7 @@ export default function (context) {
   }
 
   function Stores() {
-    const profileStore = mobx.observable({
+    const profileStore = observable({
       language: 'US',
       errors: {},
       username: "",
@@ -35,12 +41,12 @@ export default function (context) {
         biography: ""
       },
       opGet: asyncOpCreate(() => rest.get('me')),
-      get: mobx.action(async function () {
+      get: action(async function () {
         const response = await this.opGet.fetch();
         merge(profileStore, response);
       }),
       opUpdate: asyncOpCreate((payload) => rest.patch('me', payload)),
-      update: mobx.action(async function () {
+      update: action(async function () {
         this.errors = {};
         const payload = {
           biography: this.profile.biography || ""

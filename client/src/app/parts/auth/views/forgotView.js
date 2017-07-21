@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import button from 'mdlean/lib/button';
 import input from 'components/input';
-import DocTitle from 'components/docTitle';
 import page from 'components/Page';
 import paper from 'components/Paper';
 import formGroup from 'components/FormGroup';
@@ -69,7 +68,6 @@ export default (context) => {
   function ForgotView({ store }) {
     return (
       <Page className="forgot-password-page text-center">
-        <DocTitle title={tr.t("Forgot password")} />
         <Paper>
           {store.step === 'SendPasswordResetEmail' && <SendPasswordResetEmail store={store} />}
           {store.step === 'CheckEmail' && <CheckEmail />}

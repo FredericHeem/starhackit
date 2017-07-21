@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, {createElement as h} from 'react';
 import paper from 'components/Paper';
-import DocTitle from 'components/docTitle';
 import mediaSigninButtons from '../components/mediaSigninButtons';
 import registerForm from '../components/registerForm';
 import alert from 'components/alert';
@@ -44,7 +43,6 @@ export default context => {
     const registerSuccess = _.get(register, 'data.success');
     return (
       <Page className="register-page text-center">
-        <DocTitle title={tr.t('Register')} />
         <Paper>
           <h2>{tr.t('Register An Account')}</h2>
           <p>{tr.t('Create a free account')}</p>

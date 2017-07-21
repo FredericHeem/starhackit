@@ -1,11 +1,11 @@
 
-import mobx from 'mobx';
+import {observable, action} from "mobx";
 import Debug from 'debug';
 const debug = new Debug("restTableStore");
 
 export default (context, {getData}) => {
 
-  const store = mobx.observable({
+  const store = observable({
     loading: false,
     count: 0,
     data: [],
@@ -17,7 +17,7 @@ export default (context, {getData}) => {
     setData(data){
       this.data = data;
     },
-    selectPage: mobx.action(async function (page) {
+    selectPage: action(async function (page) {
       debug('onSelectPage ', page);
       if (page <= 0) {
         return;

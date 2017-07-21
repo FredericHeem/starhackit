@@ -1,14 +1,13 @@
 import React, { createElement as h } from "react";
 import glamorous from "glamorous";
 import button from "mdlean/lib/button";
-import DocTitle from "components/docTitle";
 import Row from "components/Row";
 import Title from "components/Title";
 import cardComponent from "./cardComponent";
 import guide from "components/componentGuide";
 import Content from "./content";
 
-export default context => {
+export default async context => {
   const { tr, theme } = context;
   const { palette } = theme;
   const CardIcon = cardComponent(context);
@@ -30,7 +29,7 @@ export default context => {
         <h1>{tr.t("StarHackIt")}</h1>
         <h2>{tr.t("A Full Stack Web Application Starter Kit")}</h2>
         <h3>{tr.t("Built with React, Node, data backed by SQL")}</h3>
-        
+
         <Button
           raised
           label="Clone the code on GitHub"
@@ -113,10 +112,10 @@ export default context => {
     );
   }
 
-  return function landingScreen() {
+  function LandingScreen() {
+    console.log("landingScreen")
     return (
       <div className="text-center">
-        <DocTitle title="Home" />
 
         <Header />
 
@@ -128,5 +127,13 @@ export default context => {
         {h(guide(context))}
       </div>
     );
-  };
+  }
+
+  return {
+    chunks: ['home'],
+    title: tr.t("Home"),
+    component: (
+      <LandingScreen />
+    )
+  }
 };

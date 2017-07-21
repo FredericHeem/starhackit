@@ -1,6 +1,5 @@
 import React, {createElement as h}  from 'react';
 import {observer} from 'mobx-react';
-import DocTitle from 'components/docTitle';
 import page from 'components/Page';
 import paper from 'components/Paper';
 import spinner from 'components/spinner';
@@ -16,7 +15,6 @@ export default context => {
     const { error } = store.op;
     return (
       <Page className="registration-complete-page text-center">
-        <DocTitle title={tr.t('Registering')} />
         <Paper>
           <h3>{tr.t('Registering your account')}</h3>
           <AlertAjax error={error} className="register-complete-error-view" />

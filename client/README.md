@@ -1,10 +1,12 @@
 # StarHackIt React Frontend
 
-An ES6 Preact/React based frontend starter kit:
+A functional Preact/React based frontend starter kit:
 
-* ES6/ES7 with `babel`
+* `preact` or `react` for pure view layer, 100% stateless compoment.  
+* `mobx` for state management.
+* `glamorous` for real-time styling.
+* `universal-router` for the routing solution: code split, data fetching. 
 * Internationalization with `i18next` and `react-intl`
-* Styling with `glamorous`
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
 * Copy and paste detector with `jscpd`
 * Display lint warnings and build errors to directly to the browser with `webpack-hud`
@@ -70,8 +72,6 @@ To run the development web server:
 Unit tests are written as `mocha` test and executed thanks to `karma`:
 
     $ npm test
-
-> React components are tested with the [enzyme](http://airbnb.io/enzyme/) library.
 
 #### End to end testing with nightwatch
 

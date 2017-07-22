@@ -1,6 +1,6 @@
 import { createElement as h } from 'react';
 import { observable, action } from 'mobx';
-import userView from './userView';
+import user from './userComponent';
 import AsyncOp from 'utils/asyncOp';
 
 export default function (context) {
@@ -20,7 +20,7 @@ export default function (context) {
     }
 
     function selectOne(userId) {
-        context.history.push(`/admin/users/${userId}`)
+        context.history.push(`/users/${userId}`)
     }
 
     function Routes(stores) {
@@ -38,7 +38,7 @@ export default function (context) {
                 path: "/users/:userId",
                 component: () => ({
                     title: "User",
-                    component: h(userView(context), { store: stores.user }),
+                    component: h(user(context), { store: stores.user }),
                 }),
                 action: ({params}) => stores.user.get((params.userId))
             }

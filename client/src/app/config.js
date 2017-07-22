@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 /* global process */
 const env = process.env;
 
@@ -33,4 +31,4 @@ const config = {
     }
 };
 
-export default _.extend({}, config.general, config[env.NODE_ENV]);
+export default Object.assign({}, config.general, config[env.NODE_ENV]);

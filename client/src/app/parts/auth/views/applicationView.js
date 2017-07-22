@@ -1,18 +1,23 @@
 import React from "react";
 import { observer } from "mobx-react";
-import glamorous, { ThemeProvider } from "glamorous";
+import glamorous from "glamorous";
+import AsyncRoute from "preact-async-route";
 import navBar from "../../core/components/navbar";
 import footer from "../../core/components/footer";
-import themer from "../../theme/ThemeView";
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
 export default context => {
-  const { theme } = context;
+  const { tr, theme } = context;
   const { palette } = theme;
   const NavBar = navBar(context);
   const Footer = footer(context);
-  const Themer = themer(context);
+
+  function getTheme() {
+    return System.import("../../theme/ThemeView").then(module =>
+      module.default(context)
+    );
+  }
 
   const AppRoot = glamorous("div")({
     display: "flex"
@@ -32,26 +37,22 @@ export default context => {
     alignItems: "center"
   });
 
-  function ApplicationView({
-    authStore,
-    themeStore,
-    children
-  }) {
-    console.log("App View: ");
+  function ApplicationView({ authStore, themeStore, children }) {
     return (
-      <ThemeProvider theme={theme}>
-        <AppRoot>
-          <AppView>
-            <NavBar authenticated={authStore.authenticated} />
-            <MainView>
-              {children}
-            </MainView>
-            <Footer version={version} />
-          </AppView>
-          {themeStore.open && <Themer />}
-        </AppRoot>
-
-      </ThemeProvider>
+      <AppRoot>
+        <AppView>
+          <NavBar authenticated={authStore.authenticated} />
+          <MainView>
+            {children}
+          </MainView>
+          <Footer version={version} />
+        </AppView>
+        {themeStore.open &&
+          <AsyncRoute
+            getComponent={getTheme}
+            loading={() => (<div>{tr.t("Loading")}</div>)}
+          />}
+      </AppRoot>
     );
   }
 

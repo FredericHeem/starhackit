@@ -5,6 +5,7 @@ export default ({ tr }) => {
   const AlertView = glamorous("div")({
     display: "flex",
     alignItems: "center",
+    justifyContent: 'space-between',
     padding: 20,
     margin: 10,
     fontWeight: 500,
@@ -45,10 +46,12 @@ export default ({ tr }) => {
     return function Alert({ name, message, code, onRemove }) {
       return (
         <AlertView role="alert">
-          <h3>
-            {tr.t(name)} {code && `(${code})`}
-          </h3>
-          <p>{`${message}`}</p>
+          <div>
+            <h3>
+              {tr.t(name)} {code && `(${code})`}
+            </h3>
+            <p>{`${message}`}</p>
+          </div>
           <CloseIcon onClick={onRemove} />
         </AlertView>
       );

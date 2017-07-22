@@ -22,13 +22,16 @@ export default function (context) {
   function Routes(stores) {
     return [
       {
-        path: 'schema',
-        component: () => h(SchemaView, { store: stores.schema }),
-        onEnter: () => stores.schema.get()
+        path: '/db/schema',
+        component: () => ({
+          title: "Schema explorer",
+          component: h(SchemaView, { store: stores.schema }),
+        }),
+        action: () => stores.schema.get()
       }
     ]
   }
-  
+
   const stores = Stores();
   return {
     stores: () => stores,

@@ -1,6 +1,5 @@
 import React from 'react';
 import panel from 'components/panel';
-import DocTitle from 'components/docTitle';
 import restTable from 'components/restTable';
 import columns from './usersColumns';
 
@@ -13,7 +12,6 @@ export default function (context, {getAll, selectOne}) {
   function UsersView() {
     return (
       <div className="users-view">
-        <DocTitle title="Users" />
         <Panel.Panel>
           <Panel.Header>{tr.t('Users')}</Panel.Header>
           <Panel.Body>

@@ -1,5 +1,5 @@
 import tr from "i18next";
-import { browserHistory } from "react-router";
+import createBrowserHistory from 'history/createBrowserHistory';
 import Rest from "./utils/rest";
 import theme from "./theme";
 import formatter from "utils/formatter";
@@ -12,7 +12,7 @@ export default ({ language = "en" }) => {
     tr,
     formatter: formatter(language),
     notification: notification(),
-    history: browserHistory
+    history: createBrowserHistory()
   };
   
   return context;

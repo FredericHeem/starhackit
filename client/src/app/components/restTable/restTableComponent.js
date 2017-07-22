@@ -1,6 +1,6 @@
 import React, {createElement as h} from 'react';
 import * as Table from 'reactabular-table';
-import mobx from 'mobx';
+import {toJS} from 'mobx';
 import {observer} from 'mobx-react';
 import Paginator from 'react-pagify';
 import segmentize from 'segmentize';
@@ -77,7 +77,7 @@ export default (context, store, {columns}) => {
 
   const TableView = observer(({onRow}) => {
     const {error} = store;
-    const data = mobx.toJS(store.data)
+    const data = toJS(store.data)
     if (error) return null;
     return (
       <div>

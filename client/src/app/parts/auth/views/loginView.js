@@ -4,7 +4,6 @@ import button from 'mdlean/lib/button';
 import mediaSigninButtons from '../components/mediaSigninButtons';
 import localLoginForm from '../components/localLoginForm';
 import paper from 'components/Paper';
-import DocTitle from 'components/docTitle';
 import strike from 'components/Strike';
 import page from 'components/Page';
 
@@ -18,7 +17,6 @@ export default context => {
     const Button = button(context);
     return (
       <Page className="login-page text-center">
-        <DocTitle title="Login" />
         <Paper>
           <h2>{tr.t('Login')}</h2>
           <div>

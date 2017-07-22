@@ -1,5 +1,4 @@
 import "assets/stylus/main";
-import ReactDOM from "react-dom";
 import Context from "./context";
 
 import AuthModule from "./parts/auth/authModule";
@@ -13,7 +12,7 @@ import Debug from "debug";
 
 import intl from "utils/intl";
 
-import rootView from "./rootView";
+import Client from './client';
 
 const debug = new Debug("app");
 
@@ -48,15 +47,10 @@ export default function({ language = "en" }) {
     await parts.auth.stores().me.fetch();
   }
 
-  const createRootView = () => rootView(context, parts);
   return {
-    parts,
-    createRootView,
+    context,
     render() {
-      context.rootInstance = ReactDOM.render(
-        createRootView(),
-        document.getElementById("application")
-      );
+      Client(context);
     },
     async start() {
       debug("start");

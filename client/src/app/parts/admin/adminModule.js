@@ -1,6 +1,5 @@
 import { createElement as h } from 'react';
 import { observable, action } from 'mobx';
-import { browserHistory } from 'react-router';
 import userView from './userView';
 import Users from './users';
 import AsyncOp from 'utils/asyncOp';
@@ -8,7 +7,7 @@ import AsyncOp from 'utils/asyncOp';
 export default function (context) {
     const { rest } = context;
     const asyncOpCreate = AsyncOp(context);
-    
+
     function Stores() {
         const userStore = observable({
             opGet: asyncOpCreate((id, data) => rest.get(`users/${id}`, data)),
@@ -20,9 +19,9 @@ export default function (context) {
             user: userStore
         }
     }
-    
+
     function selectOne(userId) {
-        browserHistory.push(`/admin/users/${userId}`)
+        context.history.push(`/admin/users/${userId}`)
     }
 
     const users = Users(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
@@ -30,13 +29,20 @@ export default function (context) {
     function Routes(stores) {
         return [
             {
-                path: 'users',
-                component: () => h(users.view),
-                onEnter: () => users.store.selectPage(1)
-            }, {
-                path: 'users/:userId',
-                component: () => h(userView(context), { store: stores.user }),
-                onEnter: nextState => stores.user.get(nextState.params.userId)
+                path: "/users",
+                component: () => ({
+                    title: "Users",
+                    component: h(users.view),
+                }),
+                action: () => users.store.selectPage(1)
+            },
+            {
+                path: "/users/:userId",
+                component: () => ({
+                    title: "User",
+                    component: h(userView(context), { store: stores.user }),
+                }),
+                action: ({params}) => stores.user.get((params.userId))
             }
         ]
 

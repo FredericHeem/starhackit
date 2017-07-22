@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import page from 'components/Page';
 import paper from 'components/Paper';
 import button from 'mdlean/lib/button';
-import DocTitle from 'components/docTitle';
 import alertAjax from 'components/alertAjax';
 import formGroup from 'components/FormGroup';
 import input from 'components/input';
@@ -74,7 +73,6 @@ export default (context) => {
     console.log("ResetPasswordForm ", store.op)
     return (
       <Page className="reset-password-page text-center">
-        <DocTitle title="Reset password" />
         <Paper>
           <h3>{tr.t('Reset Password')}</h3>
           <AlertAjax error={store.op.error} className="reset-password-error-view" />

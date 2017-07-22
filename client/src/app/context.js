@@ -3,7 +3,8 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import Rest from "./utils/rest";
 import theme from "./theme";
 import formatter from "utils/formatter";
-import notification from "./utils/notification";
+import alertStackCreate from 'components/alertStack';
+
 import config from 'config';
 
 export default ({ language = "en" }) => {
@@ -12,10 +13,9 @@ export default ({ language = "en" }) => {
     theme: theme(),
     tr,
     formatter: formatter(language),
-    notification: notification(),
     history: createBrowserHistory(),
     config
   };
-  
+  context.alertStack = alertStackCreate(context, { limit: 3 });
   return context;
 };

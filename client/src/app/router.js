@@ -20,7 +20,7 @@ export default (context) => {
                 path: '/',
                 load: async () => {
                     const home = await import(/* webpackChunkName: 'home' */ './parts/landing/landingScreen');
-                    return home;
+                    return home.default(context);
                 }
             },
             {
@@ -38,7 +38,7 @@ export default (context) => {
                 action: isAuthenticated
             },
             {
-                path: '/admin',
+                path: '/',
                 children: parts.admin.routes(),
                 action: isAuthenticated
             },
@@ -53,10 +53,7 @@ export default (context) => {
             if (typeof route.load === 'function') {
                 return route
                     .load()
-                    .then(action => {
-                        console.log(action)
-                        return action.default(context, params)
-                    });
+                    
             }
 
             if (typeof route.action === 'function') {

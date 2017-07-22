@@ -15,7 +15,6 @@ export default context => {
   const Themer = themer(context);
 
   const AppRoot = glamorous("div")({
-    height: "100vh",
     display: "flex"
   });
 

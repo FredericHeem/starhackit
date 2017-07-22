@@ -16,7 +16,7 @@ export default function (context) {
       {
         path: "/profile",
         component: () => ({
-          title: "Profile",
+          title: "My Profile",
           component: h(profileView(context), { store: stores.profile }),
         }),
         action: () => {

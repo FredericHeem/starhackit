@@ -5,10 +5,10 @@ import Alert from 'react-s-alert';
 import Router from './router';
 
 export default (context) => {
-    const { history } = context;
+    const { history, config } = context;
     const onRenderComplete = (route) => {
         //console.log("title: ", route.title)
-        document.title = route.title;
+        document.title = `${route.title} - ${config.title}`;
     };
 
     async function onLocationChange(location) {

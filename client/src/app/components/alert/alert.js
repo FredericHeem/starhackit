@@ -3,6 +3,8 @@ import glamorous from "glamorous";
 
 export default ({ tr }) => {
   const AlertView = glamorous("div")({
+    display: "flex",
+    alignItems: "center",
     padding: 20,
     margin: 10,
     fontWeight: 500,
@@ -27,22 +29,27 @@ export default ({ tr }) => {
     backgroundColor: "#d9edf7"
   });
 
+  const CloseIconView = glamorous("span")({
+    cursor: "pointer",
+    margin: 10
+  });
+
+  function CloseIcon({ onClick }) {
+    return (
+      <CloseIconView onClick={onClick}>
+        {"\u2716"}
+      </CloseIconView>
+    );
+  }
   function createAlert(AlertView) {
-    return function Alert({ title, name, message, code, className }) {
+    return function Alert({ name, message, code, onRemove }) {
       return (
-        <AlertView role="alert" className={className} >
-          {title && <h3>{title}</h3>}
-          {name &&
-            <div>
-              {tr.t("An error occured")}
-              <div>{name}</div>
-            </div>}
-          {message && <div>{tr.t(message)}</div>}
-          {code &&
-            <div>
-              <div>{tr.t("Status Code")}</div>
-              <div>{code}</div>
-            </div>}
+        <AlertView role="alert">
+          <h3>
+            {tr.t(name)} {code && `(${code})`}
+          </h3>
+          <p>{`${message}`}</p>
+          <CloseIcon onClick={onRemove} />
         </AlertView>
       );
     };

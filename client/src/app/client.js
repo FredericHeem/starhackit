@@ -1,13 +1,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Qs from 'qs';
-import Alert from 'react-s-alert';
 import Router from './router';
 
 export default (context) => {
+    const AlertStack = context.alertStack.View;
     const { history, config } = context;
     const onRenderComplete = (route) => {
-        //console.log("title: ", route.title)
         document.title = `${route.title} - ${config.title}`;
     };
 
@@ -23,7 +22,7 @@ export default (context) => {
             const layout = (
                 <Layout>
                     {route.component}
-                    <Alert stack={{ limit: 3 }} />
+                    <AlertStack />
                 </Layout>
             )
             context.appInstance = render(

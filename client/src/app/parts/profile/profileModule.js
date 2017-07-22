@@ -1,16 +1,15 @@
 import {observable, action} from "mobx";
-import { createElement as h } from 'react';
+import React, { createElement as h } from 'react';
 import Checkit from 'checkit';
 import rules from 'services/rules';
 import AsyncOp from 'utils/asyncOp';
-
+import alert from "components/alert";
 import profileView from './views/profileView';
 
 export default function (context) {
   const { rest, tr } = context;
-  const { notification } = context;
   const asyncOpCreate = AsyncOp(context);
-
+  const Alert = alert(context);
   function Routes(stores) {
     return [
       {
@@ -59,7 +58,7 @@ export default function (context) {
           await rule.run(payload);
           const response = await this.opUpdate.fetch(payload);
           merge(profileStore, response);
-          notification.info(tr.t('Profile updated'));
+          context.alertStack.add(<Alert.Info message={tr.t('Profile updated')} />);
         } catch (errors) {
           if (errors instanceof Checkit.Error) {
             this.errors = errors.toJSON()

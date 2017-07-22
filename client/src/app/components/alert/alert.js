@@ -43,9 +43,9 @@ export default ({ tr }) => {
     );
   }
   function createAlert(AlertView) {
-    return function Alert({ name, message, code, onRemove }) {
+    return function Alert({ name, message, code, onRemove, className = 'alert' }) {
       return (
-        <AlertView role="alert">
+        <AlertView className={className} role="alert">
           <div>
             <h3>
               {tr.t(name)} {code && `(${code})`}

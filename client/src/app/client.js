@@ -25,7 +25,7 @@ export default (context) => {
                     <AlertStack />
                 </Layout>
             )
-            context.appInstance = render(
+            context.rootInstance = render(
                 layout,
                 document.getElementById('application'),
                 () => onRenderComplete(route, location),

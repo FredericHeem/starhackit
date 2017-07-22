@@ -15,7 +15,7 @@ describe('Profile', function() {
       .waitForElementVisible('.profile-page', 15e3)
       .setValue('@biographyInput', 'My Bio')
       .click('@submit')
-      .waitForElementVisible('.s-alert-box', 10e3)
+      .waitForElementVisible('.alert', 10e3)
       .assert.title('My Profile - StarHackIt')
   });
 
@@ -24,9 +24,9 @@ describe('Profile', function() {
       .profile()
       .navigate()
       .waitForElementVisible('@biographyInput', 15e3)
-      .setValue('@biographyInput', 'abcdefhigk'.repeat(10))
+      .setValue('@biographyInput', 'abcdefhigk')
       .click('@submit')
-      .waitForElementVisible('.s-alert-box', 15e3)
+      .waitForElementVisible('.alert', 15e3)
     client.pause(5e3);
   });
 });

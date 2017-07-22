@@ -1,4 +1,4 @@
-import "assets/stylus/main";
+import "./app.css";
 import Context from "./context";
 
 import AuthModule from "./parts/auth/authModule";

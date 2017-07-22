@@ -7,6 +7,7 @@ import segmentize from 'segmentize';
 import spinner from 'components/spinner';
 import alertAjax from 'components/alertAjax';
 import Debug from 'debug';
+import table from 'components/table';
 
 const debug = new Debug("restTableComponent");
 
@@ -14,7 +15,6 @@ import 'react-pagify/style.css';
 
 export default (context, store, {columns}) => {
   const {tr} = context;
-
   const AlertAjax = alertAjax(context);
 
   const Loading = observer((loading) => (loading === true ? h(spinner(context)) : null));
@@ -74,22 +74,21 @@ export default (context, store, {columns}) => {
       </div>
     );
   })
-
-  const TableView = observer(({onRow}) => {
+  const TableProvider = table(context)(Table.Provider);
+  const TableCompoment = observer(({onRow}) => {
     const {error} = store;
     const data = toJS(store.data)
     if (error) return null;
     return (
       <div>
         <Pagination />
-        <Table.Provider
-          className="table"
+        <TableProvider
           columns={columns}
           style={{ overflowX: 'auto' }}
         >
           <Table.Header />
           <Table.Body onRow={onRow} rows={data} rowKey="id" />
-        </Table.Provider>
+        </TableProvider>
       </div>
     );
   })
@@ -100,7 +99,7 @@ export default (context, store, {columns}) => {
       <div>
         <Error />
         <Loading loading={store.loading} />
-        <TableView {...props} />
+        <TableCompoment {...props} />
       </div>
     )
   }

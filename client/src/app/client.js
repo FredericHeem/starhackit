@@ -11,7 +11,7 @@ export default (context) => {
         document.title = route.title;
     };
 
-    async function onLocationChange(location, action) {
+    async function onLocationChange(location) {
         //console.log("onLocationChange ", location, action);
         try {
             const route = await Router(context).resolve({
@@ -27,8 +27,7 @@ export default (context) => {
                 </Layout>
             )
             context.appInstance = render(
-                layout
-                ,
+                layout,
                 document.getElementById('application'),
                 () => onRenderComplete(route, location),
             );
@@ -39,6 +38,6 @@ export default (context) => {
         }
     }
 
-    context.history.listen(onLocationChange);
+    history.listen(onLocationChange);
     onLocationChange(history.location);
 }

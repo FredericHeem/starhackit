@@ -1,9 +1,6 @@
-import { createElement as h } from 'react';
 import { observable } from "mobx";
 
-export default function(context) {
-  const ThemeView = require("./ThemeView").default(context);
-
+export default function() {
   function Stores() {
     const sideBarStore = observable({
       open: false,
@@ -16,17 +13,8 @@ export default function(context) {
     };
   }
 
-  function Routes(stores) {
-    return [
-        {
-          path: "view",
-          component: () => h(ThemeView, { store: stores.sideBar })
-        }
-      ]
-  }
   const stores = Stores();
   return {
-    stores: () => stores,
-    routes: () => Routes(stores)
+    stores: () => stores
   };
 }

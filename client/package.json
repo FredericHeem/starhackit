@@ -125,8 +125,6 @@
     "react-test-renderer": "15.6.1",
     "sinon": "2.3.8",
     "style-loader": "0.18.2",
-    "stylus": "0.54.5",
-    "stylus-loader": "3.0.1",
     "uglify-js": "2.8.29",
     "url-loader": "0.5.9",
     "webpack": "3.3.0",

@@ -5,7 +5,7 @@ import AsyncOp from 'utils/asyncOp';
 export default function (context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
-  const SchemaView = require('./SchemaView').default(context);
+  const SchemaComponent = require('./SchemaComponent').default(context);
 
   function Stores() {
     const schemaStore = observable({
@@ -25,7 +25,7 @@ export default function (context) {
         path: '/db/schema',
         component: () => ({
           title: "Schema explorer",
-          component: h(SchemaView, { store: stores.schema }),
+          component: h(SchemaComponent, { store: stores.schema }),
         }),
         action: () => stores.schema.get()
       }

@@ -70,7 +70,7 @@ module.exports = function ( options ) {
               "src",
               "node_modules"
             ],
-            extensions: ['.js', '.jsx', '.styl', 'css' ],
+            extensions: ['.js', '.jsx', 'css' ],
             alias: {
                 'react': 'preact-compat',
                 'react-dom': 'preact-compat',
@@ -101,14 +101,6 @@ module.exports = function ( options ) {
                 {
                     test: /\.jpg/,
                     use: ['file-loader']
-                },
-                {
-                    test: /\.styl$/,
-                    use: [
-                      'style-loader',
-                      'css-loader',
-                      'stylus-loader'
-                    ]
                 }
             ]
         }

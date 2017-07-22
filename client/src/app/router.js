@@ -49,7 +49,7 @@ export default (context) => {
     return new Router(routes, {
         resolveRoute(routerContext, params) {
             const {route} = routerContext;
-            console.log("resolveRoute ", routerContext, params);
+            //console.log("resolveRoute ", routerContext, params);
             if (typeof route.load === 'function') {
                 return route
                     .load()

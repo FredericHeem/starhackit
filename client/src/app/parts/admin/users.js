@@ -27,7 +27,11 @@ export default function (context, {getAll, selectOne}) {
   }
 
   return {
+    chunks: ['admin'],
+    title: tr.t("Users"),
     store: RestTable.store,
-    view: UsersView
+    component: (
+      <UsersView />
+    )
   }
 }

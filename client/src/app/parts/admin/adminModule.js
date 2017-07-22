@@ -1,7 +1,6 @@
 import { createElement as h } from 'react';
 import { observable, action } from 'mobx';
 import userView from './userView';
-import Users from './users';
 import AsyncOp from 'utils/asyncOp';
 
 export default function (context) {
@@ -24,17 +23,16 @@ export default function (context) {
         context.history.push(`/admin/users/${userId}`)
     }
 
-    const users = Users(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
-
     function Routes(stores) {
         return [
             {
                 path: "/users",
-                component: () => ({
-                    title: "Users",
-                    component: h(users.view),
-                }),
-                action: () => users.store.selectPage(1)
+                load: async () => {
+                    const usersCreate = await import('./users');
+                    const users = usersCreate.default(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
+                    users.store.selectPage(1);
+                    return users;
+                }
             },
             {
                 path: "/users/:userId",

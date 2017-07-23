@@ -1,14 +1,14 @@
-import React from "react";
+import React, {createElement as h} from "react";
 import { observer } from "mobx-react";
 import glamorous from "glamorous";
-import navBar from "../../core/components/navbar";
-import footer from "../../core/components/footer";
+import navBar from "./navbar";
+import footer from "./footer";
 import asyncView from "components/AsyncView";
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
 export default context => {
-  const { theme } = context;
+  const { theme, parts } = context;
   const { palette } = theme;
   const NavBar = navBar(context);
   const Footer = footer(context);
@@ -42,10 +42,18 @@ export default context => {
           </MainView>
           <Footer version={version} />
         </AppView>
-        {themeStore.open && <AsyncView getModule={() => System.import("../../theme/ThemeView")} />}
+        {themeStore.open &&
+          <AsyncView
+            getModule={() => System.import("../parts/theme/ThemeView")}
+          />}
       </AppRoot>
     );
   }
 
-  return observer(ApplicationView);
+  return ({ children }) =>
+    h(observer(ApplicationView), {
+      authStore: parts.auth.stores().auth,
+      themeStore: parts.theme.stores().sideBar,
+      children
+    });
 };

@@ -3,23 +3,9 @@ import { parse } from "query-string";
 import { observable, action } from "mobx";
 import validate from "validate.js";
 import logoutView from "./views/logoutView";
-import appView from "./views/applicationView";
 import rules from "services/rules";
 import AsyncOp from "utils/asyncOp";
 import asyncView from "components/AsyncView";
-
-function Containers(context, stores) {
-  return {
-    app() {
-      return ({ children }) =>
-        h(appView(context), {
-          authStore: stores.auth,
-          themeStore: context.parts.theme.stores().sideBar,
-          children
-        });
-    }
-  };
-}
 
 export default function(context) {
   const { rest } = context;
@@ -283,11 +269,9 @@ export default function(context) {
   }
 
   const stores = Stores();
-  const containers = () => Containers(context, stores);
 
   return {
     stores: () => stores,
-    containers,
     routes: () => Routes(stores)
   };
 }

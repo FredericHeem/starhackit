@@ -50,10 +50,6 @@ export default context => {
     resolveRoute(routerContext, params) {
       const { route } = routerContext;
       //console.log("resolveRoute ", routerContext, params);
-      if (typeof route.load === "function") {
-        return route.load();
-      }
-
       if (typeof route.action === "function") {
         route.action(routerContext, params);
       }

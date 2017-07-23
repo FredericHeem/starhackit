@@ -120,33 +120,55 @@ To build the production version:
 
 ```
 Version: webpack 3.3.0
-Time: 17729ms
+Time: 19812ms
                              Asset       Size  Chunks                    Chunk Names
-      4.937bae5358cf5e2cfe1b.js.gz    18.1 kB          [emitted]         
-         0.937bae5358cf5e2cfe1b.js     142 kB       0  [emitted]         
-         2.937bae5358cf5e2cfe1b.js    74.6 kB       2  [emitted]         
-         3.937bae5358cf5e2cfe1b.js     292 kB       3  [emitted]  [big]  home
-         4.937bae5358cf5e2cfe1b.js    65.2 kB       4  [emitted]         
-       app.937bae5358cf5e2cfe1b.js     390 kB       5  [emitted]  [big]  app
-     0.937bae5358cf5e2cfe1b.js.map     727 kB       0  [emitted]         
-     1.937bae5358cf5e2cfe1b.js.map     294 kB       1  [emitted]         
-     2.937bae5358cf5e2cfe1b.js.map     449 kB       2  [emitted]         
-     3.937bae5358cf5e2cfe1b.js.map     617 kB       3  [emitted]         home
-     4.937bae5358cf5e2cfe1b.js.map     470 kB       4  [emitted]         
-   app.937bae5358cf5e2cfe1b.js.map    2.43 MB       5  [emitted]         app
-      1.937bae5358cf5e2cfe1b.js.gz    9.58 kB          [emitted]         
-      2.937bae5358cf5e2cfe1b.js.gz    16.3 kB          [emitted]         
-         1.937bae5358cf5e2cfe1b.js      44 kB       1  [emitted]         
-      0.937bae5358cf5e2cfe1b.js.gz    29.7 kB          [emitted]         
-  1.937bae5358cf5e2cfe1b.js.map.gz    54.9 kB          [emitted]         
-  2.937bae5358cf5e2cfe1b.js.map.gz    88.1 kB          [emitted]         
-    app.937bae5358cf5e2cfe1b.js.gz     108 kB          [emitted]         
-      3.937bae5358cf5e2cfe1b.js.gz     177 kB          [emitted]         
-  4.937bae5358cf5e2cfe1b.js.map.gz     105 kB          [emitted]         
-  3.937bae5358cf5e2cfe1b.js.map.gz     359 kB          [emitted]  [big]  
-  0.937bae5358cf5e2cfe1b.js.map.gz     151 kB          [emitted]         
-app.937bae5358cf5e2cfe1b.js.map.gz     578 kB          [emitted]  [big]  
-                        index.html    3.01 kB          [emitted]      
+   app.75839c2ed86a19f42e87.js.map    2.33 MB      11  [emitted]         app
+         0.75839c2ed86a19f42e87.js     142 kB       0  [emitted]         
+         2.75839c2ed86a19f42e87.js    74.6 kB       2  [emitted]         
+         3.75839c2ed86a19f42e87.js     298 kB    3, 6  [emitted]  [big]  
+         4.75839c2ed86a19f42e87.js    6.39 kB       4  [emitted]         
+         5.75839c2ed86a19f42e87.js    5.85 kB       5  [emitted]         
+         6.75839c2ed86a19f42e87.js     5.8 kB       6  [emitted]         
+         7.75839c2ed86a19f42e87.js    65.2 kB       7  [emitted]         
+         8.75839c2ed86a19f42e87.js     3.1 kB       8  [emitted]         
+         9.75839c2ed86a19f42e87.js    1.74 kB       9  [emitted]         
+        10.75839c2ed86a19f42e87.js    2.29 kB      10  [emitted]         
+       app.75839c2ed86a19f42e87.js     371 kB      11  [emitted]  [big]  app
+     0.75839c2ed86a19f42e87.js.map     727 kB       0  [emitted]         
+     1.75839c2ed86a19f42e87.js.map     299 kB       1  [emitted]         
+     2.75839c2ed86a19f42e87.js.map     449 kB       2  [emitted]         
+     3.75839c2ed86a19f42e87.js.map     646 kB    3, 6  [emitted]         
+     4.75839c2ed86a19f42e87.js.map    31.1 kB       4  [emitted]         
+     5.75839c2ed86a19f42e87.js.map    28.6 kB       5  [emitted]         
+     6.75839c2ed86a19f42e87.js.map    29.8 kB       6  [emitted]         
+     7.75839c2ed86a19f42e87.js.map     470 kB       7  [emitted]         
+     8.75839c2ed86a19f42e87.js.map    16.9 kB       8  [emitted]         
+     9.75839c2ed86a19f42e87.js.map    9.82 kB       9  [emitted]         
+    10.75839c2ed86a19f42e87.js.map    10.8 kB      10  [emitted]         
+         1.75839c2ed86a19f42e87.js    44.8 kB       1  [emitted]         
+      1.75839c2ed86a19f42e87.js.gz    9.77 kB          [emitted]         
+      2.75839c2ed86a19f42e87.js.gz    16.3 kB          [emitted]         
+  4.75839c2ed86a19f42e87.js.map.gz    6.89 kB          [emitted]         
+  5.75839c2ed86a19f42e87.js.map.gz    6.39 kB          [emitted]         
+  6.75839c2ed86a19f42e87.js.map.gz    4.58 kB          [emitted]         
+  8.75839c2ed86a19f42e87.js.map.gz     3.7 kB          [emitted]         
+ 10.75839c2ed86a19f42e87.js.map.gz    2.68 kB          [emitted]         
+      7.75839c2ed86a19f42e87.js.gz    18.1 kB          [emitted]         
+      0.75839c2ed86a19f42e87.js.gz    29.7 kB          [emitted]         
+  1.75839c2ed86a19f42e87.js.map.gz    55.8 kB          [emitted]         
+  2.75839c2ed86a19f42e87.js.map.gz    88.1 kB          [emitted]         
+    app.75839c2ed86a19f42e87.js.gz     104 kB          [emitted]         
+      3.75839c2ed86a19f42e87.js.gz     178 kB          [emitted]         
+  7.75839c2ed86a19f42e87.js.map.gz     105 kB          [emitted]         
+  3.75839c2ed86a19f42e87.js.map.gz     364 kB          [emitted]  [big]  
+  0.75839c2ed86a19f42e87.js.map.gz     151 kB          [emitted]         
+app.75839c2ed86a19f42e87.js.map.gz     563 kB          [emitted]  [big]  
+                        index.html    3.01 kB          [emitted]         
+                       favicon.ico    1.15 kB          [emitted]         
+            locales/en/common.json  410 bytes          [emitted]         
+            locales/fr/common.json  314 bytes          [emitted]         
+            locales/it/common.json  175 bytes          [emitted]         
+
 
 ```
 

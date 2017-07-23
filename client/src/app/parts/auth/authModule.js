@@ -1,7 +1,6 @@
-import _ from "lodash";
-import { createElement as h } from 'react';
+import { createElement as h } from "react";
 import { parse } from "query-string";
-import {observable, action} from "mobx";
+import { observable, action } from "mobx";
 import Checkit from "checkit";
 import loginView from "./views/loginView";
 import logoutView from "./views/logoutView";
@@ -11,21 +10,22 @@ import registrationCompleteView from "./views/registrationCompleteView";
 import resetPasswordView from "./views/resetPasswordView";
 import appView from "./views/applicationView";
 import rules from "services/rules";
-import AsyncOp from 'utils/asyncOp';
+import AsyncOp from "utils/asyncOp";
 
 function Containers(context, stores) {
   return {
     app() {
-      return ({ children }) => h(appView(context), {
-        authStore: stores.auth,
-        themeStore: context.parts.theme.stores().sideBar,
-        children
-      })
+      return ({ children }) =>
+        h(appView(context), {
+          authStore: stores.auth,
+          themeStore: context.parts.theme.stores().sideBar,
+          children
+        });
     }
   };
 }
 
-export default function (context) {
+export default function(context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
 
@@ -50,7 +50,7 @@ export default function (context) {
       },
       reset() {
         authStore.authenticated = false;
-        authStore.token = ""
+        authStore.token = "";
       }
     });
 
@@ -60,7 +60,7 @@ export default function (context) {
         fetch: async () => {
           try {
             await rest.get("me");
-            authStore.setAuthenticated()
+            authStore.setAuthenticated();
             const pathname = window.location.pathname;
             if (pathname === "/login") {
               // From social login
@@ -69,14 +69,14 @@ export default function (context) {
           } catch (errors) {
             localStorage.removeItem("JWT");
           }
-        },
+        }
       }),
       login: observable({
         username: "",
         password: "",
         errors: {},
         op: asyncOpCreate(payload => rest.post("auth/login", payload)),
-        login: action(async function () {
+        login: action(async function() {
           this.errors = {};
           const payload = {
             username: this.username.trim(),
@@ -84,7 +84,10 @@ export default function (context) {
           };
 
           try {
-            const rule = new Checkit(_.pick(rules, ["username", "password"]));
+            const rule = new Checkit({
+              username: rules.username,
+              password: rules.password
+            });
             await rule.run(payload);
             const response = await this.op.fetch(payload);
             const { token } = response;
@@ -94,7 +97,7 @@ export default function (context) {
             if (errors instanceof Checkit.Error) {
               this.errors = errors.toJSON();
             } else {
-              console.error("login ", errors)
+              console.error("login ", errors);
               localStorage.removeItem("JWT");
             }
           }
@@ -106,7 +109,7 @@ export default function (context) {
         password: "",
         errors: {},
         op: asyncOpCreate(payload => rest.post("auth/register", payload)),
-        register: action(async function () {
+        register: action(async function() {
           this.errors = {};
           const payload = {
             username: this.username.trim(),
@@ -114,9 +117,11 @@ export default function (context) {
             password: this.password
           };
           try {
-            const rule = new Checkit(
-              _.pick(rules, ["username", "email", "password"])
-            );
+            const rule = new Checkit({
+              username: rules.username,
+              email: rules.email,
+              password: rules.password
+            });
             await rule.run(payload);
             await this.op.fetch(payload);
           } catch (errors) {
@@ -128,15 +133,17 @@ export default function (context) {
       }),
       logout: observable({
         op: asyncOpCreate(() => rest.post("auth/logout")),
-        execute: action(async function () {
+        execute: action(async function() {
           localStorage.removeItem("JWT");
           await this.op.fetch();
           authStore.authenticated = false;
         })
       }),
       verifyEmailCode: observable({
-        op: asyncOpCreate(payload => rest.post("auth/verify_email_code", payload)),
-        execute: action(async function (param) {
+        op: asyncOpCreate(payload =>
+          rest.post("auth/verify_email_code", payload)
+        ),
+        execute: action(async function(param) {
           try {
             await this.op.fetch(param);
             context.history.push(`/login`);
@@ -149,8 +156,10 @@ export default function (context) {
         step: "SetPassword",
         password: "",
         errors: {},
-        op: asyncOpCreate(payload => rest.post("auth/verify_reset_password_token", payload)),
-        resetPassword: action(async function (token) {
+        op: asyncOpCreate(payload =>
+          rest.post("auth/verify_reset_password_token", payload)
+        ),
+        resetPassword: action(async function(token) {
           this.errors = {};
           const payload = {
             password: this.password,
@@ -158,7 +167,7 @@ export default function (context) {
           };
 
           try {
-            const rule = new Checkit(_.pick(rules, ["password"]));
+            const rule = new Checkit({ password: rules.password });
             await rule.run(payload);
 
             await this.op.fetch(payload);
@@ -167,7 +176,7 @@ export default function (context) {
             if (errors instanceof Checkit.Error) {
               this.errors = errors.toJSON();
             }
-            console.error("resetPassword ", errors)
+            console.error("resetPassword ", errors);
           }
         })
       }),
@@ -176,19 +185,19 @@ export default function (context) {
         email: "",
         errors: {},
         op: asyncOpCreate(payload => rest.post("auth/reset_password", payload)),
-        requestPasswordReset: action(async function () {
+        requestPasswordReset: action(async function() {
           this.errors = {};
           const payload = {
             email: this.email.trim()
           };
 
           try {
-            const rule = new Checkit(_.pick(rules, ["email"]));
+            const rule = new Checkit({ email: rules.email });
             await rule.run(payload);
             await this.op.fetch(payload);
             this.step = "CheckEmail";
           } catch (errors) {
-            console.error(errors)
+            console.error(errors);
             if (errors instanceof Checkit.Error) {
               console.log(errors.toJSON());
               this.errors = errors.toJSON();
@@ -232,20 +241,26 @@ export default function (context) {
       },
       {
         path: "/resetPassword/:token",
-        component: ({params} = {}) => ({
+        component: ({ params } = {}) => ({
           title: "Reset password",
-          component: h(resetPasswordView(context), { store: stores.resetPassword, params })
+          component: h(resetPasswordView(context), {
+            store: stores.resetPassword,
+            params
+          })
         })
       },
       {
         path: "/verifyEmail/:code",
         component: () => ({
           title: "Verify Email",
-          component: h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
+          component: h(registrationCompleteView(context), {
+            store: stores.verifyEmailCode
+          })
         }),
-        action: ({params}) => stores.verifyEmailCode.execute({ code: params.code })
+        action: ({ params }) =>
+          stores.verifyEmailCode.execute({ code: params.code })
       }
-    ]
+    ];
   }
 
   const stores = Stores();

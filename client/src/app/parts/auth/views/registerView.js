@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import React, {createElement as h} from 'react';
+import {observer} from 'mobx-react';
 import paper from 'components/Paper';
 import mediaSigninButtons from '../components/mediaSigninButtons';
 import registerForm from '../components/registerForm';
@@ -28,8 +28,7 @@ export default context => {
 
   function RegisterComplete() {
     return (
-      <Alert
-        type="info"
+      <Alert.Info
         className="registration-request-complete"
         message={tr.t(
           'A confirmation email has been sent. Click on the link to verify your email address and activate your account.',
@@ -38,19 +37,17 @@ export default context => {
     );
   }
 
-  function RegisterView(props) {
-    const { register } = props;
-    const registerSuccess = _.get(register, 'data.success');
+  function RegisterView({store}) {
+    const registerSuccess = !!store.op.data;
     return (
       <Page className="register-page text-center">
         <Paper>
           <h2>{tr.t('Register An Account')}</h2>
           <p>{tr.t('Create a free account')}</p>
-
-          {!registerSuccess ? <RegisterFormComponent {...props} /> : <RegisterComplete />}
+          {!registerSuccess ? <RegisterFormComponent store={store} /> : <RegisterComplete />}
         </Paper>
       </Page>
     );
   }
-  return RegisterView;
+  return observer(RegisterView);
 };

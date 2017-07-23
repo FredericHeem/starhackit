@@ -22,7 +22,7 @@ export default (context) => {
     );
   }
 
-  const CardView = glamorous.div(() => ({
+  const CardView = glamorous('div')(() => ({
     width: '150',
     flexGrow: 1,
     flexShrink: 0,
@@ -32,7 +32,7 @@ export default (context) => {
     boxShadow: `2px 2px 2px 2px ${palette.borderColor}`,
   }));
 
-  const CardContainer = glamorous.div({
+  const CardContainer = glamorous('div')({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -42,7 +42,7 @@ export default (context) => {
     alignItems: 'center',
   });
 
-  const CardItem = glamorous.div({
+  const CardItem = glamorous('div')({
     order: 0,
     flex: '0 1 auto',
     boxSizing: 'border-box',

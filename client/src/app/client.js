@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import Qs from 'qs';
 import Router from './router';
+import appView from "components/applicationView";
 
 export default (context) => {
     const AlertStack = context.alertStack.View;
@@ -18,7 +19,7 @@ export default (context) => {
                 query: Qs.parse(location.search),
             });
             //console.log("onLocationChange route ", route);
-            const Layout = context.parts.auth.containers().app();
+            const Layout = appView(context);
             const layout = (
                 <Layout>
                     {route.component}

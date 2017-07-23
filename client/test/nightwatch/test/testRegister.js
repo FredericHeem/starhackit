@@ -31,7 +31,7 @@ describe('Register', function () {
             .setValue('@passwordInput', 'password')
             .click('@submit');
 
-        client.assert.containsText('.register-form', 'The username is required')
+        client.assert.containsText('.register-form', 'Username can\'t be blank')
     });
     it('missing email', function (client) {
         client.page.register().navigate()
@@ -40,7 +40,7 @@ describe('Register', function () {
             .setValue('@passwordInput', 'password')
             .click('@submit');
 
-        client.assert.containsText('.register-form', 'The email is required')
+        client.assert.containsText('.register-form', 'Email can\'t be blank')
     });
     it('missing password', function (client) {
         client.page.register().navigate()
@@ -49,6 +49,6 @@ describe('Register', function () {
             .setValue('@emailInput', 'alice@mail.com')
             .click('@submit');
 
-        client.assert.containsText('.register-form', 'The password is required')
+        client.assert.containsText('.register-form', 'Password can\'t be blank')
     });
 });

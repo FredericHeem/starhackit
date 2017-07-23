@@ -75,6 +75,7 @@ module.exports = function ( options ) {
                 'react': 'preact-compat',
                 'react-dom': 'preact-compat',
                 'create-react-class': 'preact-compat/lib/create-react-class',
+                'glamorous': 'glamorous/dist/glamorous.es.tiny.js',
                 //application aliases
                 components: pathAppTo( 'components' ),
                 utils: pathAppTo( 'utils' ),

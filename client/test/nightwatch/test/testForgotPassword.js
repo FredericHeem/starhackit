@@ -6,7 +6,7 @@ describe('Forgot Password', function () {
             .setValue('@emailInput', 'not valid')
             .click('@submit')
 
-        client.assert.containsText('.forgot-password-page', 'The email must be a valid email address')
+        client.assert.containsText('.forgot-password-page', 'Email is not a valid email')
     });
     it('insert email and submit', function (client) {
         client.page.forgotPassword().navigate()

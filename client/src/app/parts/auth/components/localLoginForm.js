@@ -15,7 +15,6 @@ export default (context) => {
 
   function LoginForm({ store }) {
     const { errors } = store;
-    console.log("LoginForm")
     return (
       <form className="local-login-form" onSubmit={e => e.preventDefault()}>
         <AlertAjax error={store.op.error} className="login-error-view" />

@@ -1,60 +1,18 @@
-import _ from "lodash";
-import { createElement as h } from 'react';
+import React, { createElement as h } from "react";
 import { parse } from "query-string";
-import {observable, action} from "mobx";
-import Checkit from "checkit";
-import loginView from "./views/loginView";
+import { observable, action } from "mobx";
+import validate from "validate.js";
 import logoutView from "./views/logoutView";
-import forgotView from "./views/forgotView";
-import registerView from "./views/registerView";
 import registrationCompleteView from "./views/registrationCompleteView";
 import resetPasswordView from "./views/resetPasswordView";
-import appView from "./views/applicationView";
 import rules from "services/rules";
-import AsyncOp from 'utils/asyncOp';
+import AsyncOp from "utils/asyncOp";
+import asyncView from "components/AsyncView";
 
-function Resources(rest) {
-  return {
-    me() {
-      return rest.get("me");
-    },
-    register(payload) {
-      return rest.post("auth/register", payload);
-    },
-    login(payload) {
-      return rest.post("auth/login", payload);
-    },
-    logout() {
-      return rest.post("auth/logout");
-    },
-    verifyEmailCode(payload) {
-      return rest.post("auth/verify_email_code/", payload);
-    },
-    requestPasswordReset(payload) {
-      return rest.post("auth/reset_password", payload);
-    },
-    verifyResetPasswordToken(payload) {
-      return rest.post("auth/verify_reset_password_token", payload);
-    }
-  };
-}
-
-function Containers(context, stores) {
-  return {
-    app() {
-      return ({ children }) => h(appView(context), {
-        authStore: stores.auth,
-        themeStore: context.parts.theme.stores().sideBar,
-        children
-      })
-    }
-  };
-}
-
-export default function (context) {
+export default function(context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
-  const resources = Resources(rest);
+  const AsyncView = asyncView(context);
 
   function redirect() {
     const nextPath = parse(window.location.search).nextPath || "/app/profile";
@@ -77,7 +35,7 @@ export default function (context) {
       },
       reset() {
         authStore.authenticated = false;
-        authStore.token = ""
+        authStore.token = "";
       }
     });
 
@@ -86,8 +44,8 @@ export default function (context) {
       me: observable({
         fetch: async () => {
           try {
-            await resources.me();
-            authStore.setAuthenticated()
+            await rest.get("me");
+            authStore.setAuthenticated();
             const pathname = window.location.pathname;
             if (pathname === "/login") {
               // From social login
@@ -96,34 +54,37 @@ export default function (context) {
           } catch (errors) {
             localStorage.removeItem("JWT");
           }
-        },
+        }
       }),
       login: observable({
         username: "",
         password: "",
         errors: {},
-        op: asyncOpCreate(resources.login),
-        login: action(async function () {
+        op: asyncOpCreate(payload => rest.post("auth/login", payload)),
+        login: action(async function() {
           this.errors = {};
           const payload = {
             username: this.username.trim(),
             password: this.password
           };
+          const constraints = {
+            username: rules.username,
+            password: rules.password
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
+          }
 
           try {
-            const rule = new Checkit(_.pick(rules, ["username", "password"]));
-            await rule.run(payload);
             const response = await this.op.fetch(payload);
             const { token } = response;
             authStore.setToken(token);
             redirect();
           } catch (errors) {
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON();
-            } else {
-              console.error("login ", errors)
-              localStorage.removeItem("JWT");
-            }
+            console.error("login ", errors);
+            localStorage.removeItem("JWT");
           }
         })
       }),
@@ -132,38 +93,40 @@ export default function (context) {
         email: "",
         password: "",
         errors: {},
-        op: asyncOpCreate(resources.register),
-        register: action(async function () {
+        op: asyncOpCreate(payload => rest.post("auth/register", payload)),
+        register: action(async function() {
           this.errors = {};
           const payload = {
             username: this.username.trim(),
             email: this.email.trim(),
             password: this.password
           };
-          try {
-            const rule = new Checkit(
-              _.pick(rules, ["username", "email", "password"])
-            );
-            await rule.run(payload);
-            await this.op.fetch(payload);
-          } catch (errors) {
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON();
-            }
+          const constraints = {
+            username: rules.username,
+            email: rules.email,
+            password: rules.password
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
           }
+          await this.op.fetch(payload);
         })
       }),
       logout: observable({
-        op: asyncOpCreate(resources.logout),
-        execute: action(async function () {
+        op: asyncOpCreate(() => rest.post("auth/logout")),
+        execute: action(async function() {
           localStorage.removeItem("JWT");
           await this.op.fetch();
           authStore.authenticated = false;
         })
       }),
       verifyEmailCode: observable({
-        op: asyncOpCreate(resources.verifyEmailCode),
-        execute: action(async function (param) {
+        op: asyncOpCreate(payload =>
+          rest.post("auth/verify_email_code", payload)
+        ),
+        execute: action(async function(param) {
           try {
             await this.op.fetch(param);
             context.history.push(`/login`);
@@ -176,25 +139,28 @@ export default function (context) {
         step: "SetPassword",
         password: "",
         errors: {},
-        op: asyncOpCreate(resources.verifyResetPasswordToken),
-        resetPassword: action(async function (token) {
+        op: asyncOpCreate(payload =>
+          rest.post("auth/verify_reset_password_token", payload)
+        ),
+        resetPassword: action(async function(token) {
           this.errors = {};
           const payload = {
             password: this.password,
             token
           };
-
+          const constraints = {
+            password: rules.password
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
+          }
           try {
-            const rule = new Checkit(_.pick(rules, ["password"]));
-            await rule.run(payload);
-
             await this.op.fetch(payload);
             this.step = "SetNewPasswordDone";
           } catch (errors) {
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON();
-            }
-            console.error("resetPassword ", errors)
+            console.error("resetPassword ", errors);
           }
         })
       }),
@@ -202,24 +168,25 @@ export default function (context) {
         step: "SendPasswordResetEmail",
         email: "",
         errors: {},
-        op: asyncOpCreate(resources.requestPasswordReset),
-        requestPasswordReset: action(async function () {
+        op: asyncOpCreate(payload => rest.post("auth/reset_password", payload)),
+        requestPasswordReset: action(async function() {
           this.errors = {};
           const payload = {
             email: this.email.trim()
           };
-
+          const constraints = {
+            email: rules.email
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
+          }
           try {
-            const rule = new Checkit(_.pick(rules, ["email"]));
-            await rule.run(payload);
             await this.op.fetch(payload);
             this.step = "CheckEmail";
           } catch (errors) {
-            console.error(errors)
-            if (errors instanceof Checkit.Error) {
-              console.log(errors.toJSON());
-              this.errors = errors.toJSON();
-            }
+            console.error(errors);
           }
         })
       })
@@ -232,14 +199,24 @@ export default function (context) {
         path: "/login",
         component: () => ({
           title: "Login",
-          component: h(loginView(context), { store: stores.login })
+          component: (
+            <AsyncView
+              store={stores.login}
+              getModule={() => System.import("./views/loginView")}
+            />
+          )
         })
       },
       {
         path: "/register",
         component: () => ({
           title: "Register",
-          component: h(registerView(context), { store: stores.register })
+          component: (
+            <AsyncView
+              store={stores.register}
+              getModule={() => System.import("./views/registerView")}
+            />
+          )
         })
       },
       {
@@ -254,12 +231,17 @@ export default function (context) {
         path: "/forgot",
         component: () => ({
           title: "Forgot password",
-          component: h(forgotView(context), { store: stores.forgotPassword })
+          component: (
+            <AsyncView
+              store={stores.forgotPassword}
+              getModule={() => System.import("./views/forgotView")}
+            />
+          )
         })
       },
       {
         path: "/resetPassword/:token",
-        component: ({params} = {}) => ({
+        component: ({ params } = {}) => ({
           title: "Reset password",
           component: h(resetPasswordView(context), { store: stores.resetPassword, params })
         })
@@ -270,17 +252,16 @@ export default function (context) {
           title: "Verify Email",
           component: h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
         }),
-        action: ({params}) => stores.verifyEmailCode.execute({ code: params.code })
+        action: ({ params }) =>
+          stores.verifyEmailCode.execute({ code: params.code })
       }
-    ]
+    ];
   }
 
   const stores = Stores();
-  const containers = () => Containers(context, stores);
 
   return {
     stores: () => stores,
-    containers,
     routes: () => Routes(stores)
   };
 }

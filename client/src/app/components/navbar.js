@@ -73,7 +73,6 @@ export default context => {
   }));
 
   function AppBar({ onDrawerClick, onTitleClick }) {
-    console.log("AppBar ", palette.primary)
     return (
       <AppBarView>
         <IconLeft onDrawerClick={onDrawerClick} />

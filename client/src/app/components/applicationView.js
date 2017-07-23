@@ -1,23 +1,18 @@
-import React from "react";
+import React, {createElement as h} from "react";
 import { observer } from "mobx-react";
 import glamorous from "glamorous";
-import AsyncRoute from "preact-async-route";
-import navBar from "../../core/components/navbar";
-import footer from "../../core/components/footer";
+import navBar from "./navbar";
+import footer from "./footer";
+import asyncView from "components/AsyncView";
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
 export default context => {
-  const { tr, theme } = context;
+  const { theme, parts } = context;
   const { palette } = theme;
   const NavBar = navBar(context);
   const Footer = footer(context);
-
-  function getTheme() {
-    return System.import("../../theme/ThemeView").then(module =>
-      module.default(context)
-    );
-  }
+  const AsyncView = asyncView(context);
 
   const AppRoot = glamorous("div")({
     display: "flex"
@@ -48,13 +43,17 @@ export default context => {
           <Footer version={version} />
         </AppView>
         {themeStore.open &&
-          <AsyncRoute
-            getComponent={getTheme}
-            loading={() => (<div>{tr.t("Loading")}</div>)}
+          <AsyncView
+            getModule={() => System.import("../parts/theme/ThemeView")}
           />}
       </AppRoot>
     );
   }
 
-  return observer(ApplicationView);
+  return ({ children }) =>
+    h(observer(ApplicationView), {
+      authStore: parts.auth.stores().auth,
+      themeStore: parts.theme.stores().sideBar,
+      children
+    });
 };

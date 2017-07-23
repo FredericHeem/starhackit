@@ -113,12 +113,9 @@ export default async context => {
   }
 
   function LandingScreen() {
-    console.log("landingScreen")
     return (
       <div className="text-center">
-
         <Header />
-
         <Features />
         <End2End />
         <Frontend />
@@ -129,11 +126,5 @@ export default async context => {
     );
   }
 
-  return {
-    chunks: ['home'],
-    title: tr.t("Home"),
-    component: (
-      <LandingScreen />
-    )
-  }
+  return LandingScreen;
 };

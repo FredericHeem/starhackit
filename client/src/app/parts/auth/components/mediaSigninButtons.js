@@ -23,7 +23,7 @@ export default (context) => {
     },
   };
 
-  const SocialButtonView = glamorous.div({
+  const SocialButtonView = glamorous('div')({
     margin: '20px auto 20px auto',
     width: 256,
   });

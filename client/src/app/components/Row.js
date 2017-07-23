@@ -1,6 +1,6 @@
 import glamorous from 'glamorous';
 
-export default glamorous.div({
+export default glamorous('div')({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',

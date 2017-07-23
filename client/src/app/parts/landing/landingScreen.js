@@ -13,12 +13,12 @@ export default async context => {
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
-  const Section = glamorous.section(() => ({
+  const Section = glamorous('section')(() => ({
     borderTop: `1px solid ${palette.borderColor}`,
     paddingBottom: 30
   }));
 
-  const HeaderView = glamorous.section({
+  const HeaderView = glamorous('section')({
     padding: 20
   });
 
@@ -54,7 +54,7 @@ export default async context => {
     );
   }
 
-  const E2eImg = glamorous.img({
+  const E2eImg = glamorous('img')({
     width: "100%",
     maxWidth: "1200"
   });

@@ -1,7 +1,7 @@
 import { createElement as h } from "react";
 import { parse } from "query-string";
 import { observable, action } from "mobx";
-import Checkit from "checkit";
+import validate from "validate.js";
 import loginView from "./views/loginView";
 import logoutView from "./views/logoutView";
 import forgotView from "./views/forgotView";
@@ -82,24 +82,24 @@ export default function(context) {
             username: this.username.trim(),
             password: this.password
           };
+          const constraints = {
+            username: rules.username,
+            password: rules.password
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
+          }
 
           try {
-            const rule = new Checkit({
-              username: rules.username,
-              password: rules.password
-            });
-            await rule.run(payload);
             const response = await this.op.fetch(payload);
             const { token } = response;
             authStore.setToken(token);
             redirect();
           } catch (errors) {
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON();
-            } else {
-              console.error("login ", errors);
-              localStorage.removeItem("JWT");
-            }
+            console.error("login ", errors);
+            localStorage.removeItem("JWT");
           }
         })
       }),
@@ -116,19 +116,17 @@ export default function(context) {
             email: this.email.trim(),
             password: this.password
           };
-          try {
-            const rule = new Checkit({
-              username: rules.username,
-              email: rules.email,
-              password: rules.password
-            });
-            await rule.run(payload);
-            await this.op.fetch(payload);
-          } catch (errors) {
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON();
-            }
+          const constraints = {
+            username: rules.username,
+            email: rules.email,
+            password: rules.password
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
           }
+          await this.op.fetch(payload);
         })
       }),
       logout: observable({
@@ -165,17 +163,18 @@ export default function(context) {
             password: this.password,
             token
           };
-
+          const constraints = {
+            password: rules.password
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
+          }
           try {
-            const rule = new Checkit({ password: rules.password });
-            await rule.run(payload);
-
             await this.op.fetch(payload);
             this.step = "SetNewPasswordDone";
           } catch (errors) {
-            if (errors instanceof Checkit.Error) {
-              this.errors = errors.toJSON();
-            }
             console.error("resetPassword ", errors);
           }
         })
@@ -190,18 +189,19 @@ export default function(context) {
           const payload = {
             email: this.email.trim()
           };
-
+          const constraints = {
+            email: rules.email
+          };
+          const vErrors = validate(payload, constraints);
+          if (vErrors) {
+            this.errors = vErrors;
+            return;
+          }
           try {
-            const rule = new Checkit({ email: rules.email });
-            await rule.run(payload);
             await this.op.fetch(payload);
             this.step = "CheckEmail";
           } catch (errors) {
             console.error(errors);
-            if (errors instanceof Checkit.Error) {
-              console.log(errors.toJSON());
-              this.errors = errors.toJSON();
-            }
           }
         })
       })

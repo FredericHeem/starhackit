@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "axios": "0.16.2",
-    "checkit": "0.7.0",
     "debug": "2.6.8",
     "glamor": "2.20.25",
     "glamorous": "3.23.5",
@@ -59,7 +58,8 @@
     "react-pagify": "2.3.0",
     "reactabular-table": "8.9.0",
     "segmentize": "0.4.1",
-    "universal-router": "3.2.0"
+    "universal-router": "3.2.0",
+    "validate.js": "0.11.1"
   },
   "devDependencies": {
     "babel-core": "6.25.0",

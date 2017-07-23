@@ -1,7 +1,32 @@
 
 export default {
-    username: ['required', 'alphaDash', 'minLength:3', 'maxLength:64'],
-    password: ['required', 'alphaDash', 'minLength:6', 'maxLength:64'],
-    biography: ['exists', 'minLength:0', 'maxLength:2000'],
-    email: ['email', 'required', 'minLength:3', 'maxLength:64']
+  username: {
+    presence: true,
+    length: {
+      minimum: 3,
+      message: "must be at least 3 characters"
+    }
+  },
+  email: {
+    presence: true,
+    email: true,
+    length: {
+      minimum: 3,
+      message: "must be at least 3 characters"
+    }
+  },
+  password: {
+    presence: true,
+    length: {
+      minimum: 6,
+      message: "must be at least 6 characters"
+    }
+  },
+  biography: {
+    presence: true,
+    length: {
+      maximum: 2000,
+      message: "must be at least 6 characters"
+    }
+  }
 }

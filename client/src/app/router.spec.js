@@ -22,6 +22,6 @@ describe('Router', function () {
         const router = Router(context);
         context.parts.auth.stores().auth.authenticated = true;
         const route = await router.resolve('/app/profile');
-        assert.equal(route.title, "Profile")
+        assert.equal(route.title, "My Profile")
     });
 });

@@ -14,7 +14,7 @@ export default context => {
           text: "ADMIN"
         },
         {
-          route: "/db/schema",
+          route: "/dbschema",
           text: "DB SCHEMA"
         },
         {

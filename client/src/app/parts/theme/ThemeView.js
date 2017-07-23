@@ -3,7 +3,7 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import glamorous from "glamorous";
 import ColorPicker from "react-color/lib/components/photoshop/Photoshop";
-import deepForceUpdate from "react-deep-force-update";
+import deepForceUpdate from "preact-deep-force-update";
 
 const { Div } = glamorous;
 
@@ -48,7 +48,7 @@ export default context => {
   function onChangeColor(event) {
     console.log("onChangeColor ", event.hex);
     palette[store.colorName] = event.hex;
-    deepForceUpdate(context.rootInstance);
+    setTimeout(() => deepForceUpdate(context.rootInstance), 1);
   }
   function onAcceptColor(event) {
     console.log("onAcceptColor ", event.hex);

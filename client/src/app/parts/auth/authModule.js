@@ -13,32 +13,6 @@ import appView from "./views/applicationView";
 import rules from "services/rules";
 import AsyncOp from 'utils/asyncOp';
 
-function Resources(rest) {
-  return {
-    me() {
-      return rest.get("me");
-    },
-    register(payload) {
-      return rest.post("auth/register", payload);
-    },
-    login(payload) {
-      return rest.post("auth/login", payload);
-    },
-    logout() {
-      return rest.post("auth/logout");
-    },
-    verifyEmailCode(payload) {
-      return rest.post("auth/verify_email_code/", payload);
-    },
-    requestPasswordReset(payload) {
-      return rest.post("auth/reset_password", payload);
-    },
-    verifyResetPasswordToken(payload) {
-      return rest.post("auth/verify_reset_password_token", payload);
-    }
-  };
-}
-
 function Containers(context, stores) {
   return {
     app() {
@@ -54,7 +28,6 @@ function Containers(context, stores) {
 export default function (context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
-  const resources = Resources(rest);
 
   function redirect() {
     const nextPath = parse(window.location.search).nextPath || "/app/profile";
@@ -86,7 +59,7 @@ export default function (context) {
       me: observable({
         fetch: async () => {
           try {
-            await resources.me();
+            await rest.get("me");
             authStore.setAuthenticated()
             const pathname = window.location.pathname;
             if (pathname === "/login") {
@@ -102,7 +75,7 @@ export default function (context) {
         username: "",
         password: "",
         errors: {},
-        op: asyncOpCreate(resources.login),
+        op: asyncOpCreate(payload => rest.post("auth/login", payload)),
         login: action(async function () {
           this.errors = {};
           const payload = {
@@ -132,7 +105,7 @@ export default function (context) {
         email: "",
         password: "",
         errors: {},
-        op: asyncOpCreate(resources.register),
+        op: asyncOpCreate(payload => rest.post("auth/register", payload)),
         register: action(async function () {
           this.errors = {};
           const payload = {
@@ -154,7 +127,7 @@ export default function (context) {
         })
       }),
       logout: observable({
-        op: asyncOpCreate(resources.logout),
+        op: asyncOpCreate(() => rest.post("auth/logout")),
         execute: action(async function () {
           localStorage.removeItem("JWT");
           await this.op.fetch();
@@ -162,7 +135,7 @@ export default function (context) {
         })
       }),
       verifyEmailCode: observable({
-        op: asyncOpCreate(resources.verifyEmailCode),
+        op: asyncOpCreate(payload => rest.post("auth/verify_email_code", payload)),
         execute: action(async function (param) {
           try {
             await this.op.fetch(param);
@@ -176,7 +149,7 @@ export default function (context) {
         step: "SetPassword",
         password: "",
         errors: {},
-        op: asyncOpCreate(resources.verifyResetPasswordToken),
+        op: asyncOpCreate(payload => rest.post("auth/verify_reset_password_token", payload)),
         resetPassword: action(async function (token) {
           this.errors = {};
           const payload = {
@@ -202,7 +175,7 @@ export default function (context) {
         step: "SendPasswordResetEmail",
         email: "",
         errors: {},
-        op: asyncOpCreate(resources.requestPasswordReset),
+        op: asyncOpCreate(payload => rest.post("auth/reset_password", payload)),
         requestPasswordReset: action(async function () {
           this.errors = {};
           const payload = {

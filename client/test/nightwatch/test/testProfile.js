@@ -8,7 +8,7 @@ describe('Profile', function() {
     client.page.logout().logout(done);
   });
 
-  it('read and save profile', function(client) {
+  it.only('read and save profile', function(client) {
     client.page
       .profile()
       .navigate()

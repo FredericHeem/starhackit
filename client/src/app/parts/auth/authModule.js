@@ -1,16 +1,12 @@
-import { createElement as h } from "react";
+import React, { createElement as h } from "react";
 import { parse } from "query-string";
 import { observable, action } from "mobx";
 import validate from "validate.js";
-import loginView from "./views/loginView";
 import logoutView from "./views/logoutView";
-import forgotView from "./views/forgotView";
-import registerView from "./views/registerView";
-import registrationCompleteView from "./views/registrationCompleteView";
-import resetPasswordView from "./views/resetPasswordView";
 import appView from "./views/applicationView";
 import rules from "services/rules";
 import AsyncOp from "utils/asyncOp";
+import asyncView from "components/AsyncView";
 
 function Containers(context, stores) {
   return {
@@ -28,6 +24,7 @@ function Containers(context, stores) {
 export default function(context) {
   const { rest } = context;
   const asyncOpCreate = AsyncOp(context);
+  const AsyncView = asyncView(context);
 
   function redirect() {
     const nextPath = parse(window.location.search).nextPath || "/app/profile";
@@ -214,14 +211,24 @@ export default function(context) {
         path: "/login",
         component: () => ({
           title: "Login",
-          component: h(loginView(context), { store: stores.login })
+          component: (
+            <AsyncView
+              store={stores.login}
+              getModule={() => System.import("./views/loginView")}
+            />
+          )
         })
       },
       {
         path: "/register",
         component: () => ({
           title: "Register",
-          component: h(registerView(context), { store: stores.register })
+          component: (
+            <AsyncView
+              store={stores.register}
+              getModule={() => System.import("./views/registerView")}
+            />
+          )
         })
       },
       {
@@ -236,26 +243,38 @@ export default function(context) {
         path: "/forgot",
         component: () => ({
           title: "Forgot password",
-          component: h(forgotView(context), { store: stores.forgotPassword })
+          component: (
+            <AsyncView
+              store={stores.forgotPassword}
+              getModule={() => System.import("./views/forgotView")}
+            />
+          )
         })
       },
       {
         path: "/resetPassword/:token",
         component: ({ params } = {}) => ({
           title: "Reset password",
-          component: h(resetPasswordView(context), {
-            store: stores.resetPassword,
-            params
-          })
+          component: (
+            <AsyncView
+              store={stores.resetPassword}
+              params={params}
+              getModule={() => System.import("./views/resetPasswordView")}
+            />
+          )
         })
       },
       {
         path: "/verifyEmail/:code",
         component: () => ({
           title: "Verify Email",
-          component: h(registrationCompleteView(context), {
-            store: stores.verifyEmailCode
-          })
+          component: (
+            <AsyncView
+              store={stores.verifyEmailCode}
+              getModule={() =>
+                System.import("./views/registrationCompleteView")}
+            />
+          )
         }),
         action: ({ params }) =>
           stores.verifyEmailCode.execute({ code: params.code })

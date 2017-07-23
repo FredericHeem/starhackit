@@ -1,23 +1,18 @@
 import React from "react";
 import { observer } from "mobx-react";
 import glamorous from "glamorous";
-import AsyncRoute from "preact-async-route";
 import navBar from "../../core/components/navbar";
 import footer from "../../core/components/footer";
+import asyncView from "components/AsyncView";
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
 export default context => {
-  const { tr, theme } = context;
+  const { theme } = context;
   const { palette } = theme;
   const NavBar = navBar(context);
   const Footer = footer(context);
-
-  function getTheme() {
-    return System.import("../../theme/ThemeView").then(module =>
-      module.default(context)
-    );
-  }
+  const AsyncView = asyncView(context);
 
   const AppRoot = glamorous("div")({
     display: "flex"
@@ -47,11 +42,7 @@ export default context => {
           </MainView>
           <Footer version={version} />
         </AppView>
-        {themeStore.open &&
-          <AsyncRoute
-            getComponent={getTheme}
-            loading={() => (<div>{tr.t("Loading")}</div>)}
-          />}
+        {themeStore.open && <AsyncView getModule={() => System.import("../../theme/ThemeView")} />}
       </AppRoot>
     );
   }

@@ -3,6 +3,8 @@ import { parse } from "query-string";
 import { observable, action } from "mobx";
 import validate from "validate.js";
 import logoutView from "./views/logoutView";
+import registrationCompleteView from "./views/registrationCompleteView";
+import resetPasswordView from "./views/resetPasswordView";
 import rules from "services/rules";
 import AsyncOp from "utils/asyncOp";
 import asyncView from "components/AsyncView";
@@ -241,26 +243,14 @@ export default function(context) {
         path: "/resetPassword/:token",
         component: ({ params } = {}) => ({
           title: "Reset password",
-          component: (
-            <AsyncView
-              store={stores.resetPassword}
-              params={params}
-              getModule={() => System.import("./views/resetPasswordView")}
-            />
-          )
+          component: h(resetPasswordView(context), { store: stores.resetPassword, params })
         })
       },
       {
         path: "/verifyEmail/:code",
         component: () => ({
           title: "Verify Email",
-          component: (
-            <AsyncView
-              store={stores.verifyEmailCode}
-              getModule={() =>
-                System.import("./views/registrationCompleteView")}
-            />
-          )
+          component: h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
         }),
         action: ({ params }) =>
           stores.verifyEmailCode.execute({ code: params.code })

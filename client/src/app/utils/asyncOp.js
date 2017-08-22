@@ -39,7 +39,7 @@ export default context => {
  
             fetch: action(async function (input) {
                 try {
-                    store.loading = false;
+                    store.loading = true;
                     store.error = null;
                     //console.log("fetch ");
                     const response = await api(input);

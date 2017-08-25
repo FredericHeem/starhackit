@@ -1,10 +1,14 @@
 import assert from 'assert';
 import testMngr from '~/test/testManager';
 
-describe('Users', function() {
+describe.only('PostgresSchema', function() {
   let client;
-  before(async () => {
+  before(async function() {
+    if (!testMngr.app.config.db.driver !== 'pg') {
+      this.skip();
+    } else {
       await testMngr.start();
+    }
   });
   after(async () => {
       await testMngr.stop();

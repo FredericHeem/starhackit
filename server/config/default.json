@@ -17,10 +17,10 @@
     "port": 9000
   },
   "db":{
-    "driver": "pg",
-    "dialect":"postgres",
+    "driver": "sqlite3",
+    "dialect":"sqlite",
     "database": "dev",
-    "user": "frederic",
+    "user": "user",
     "password": "password",
     "host": "localhost",
     "port": "5432",

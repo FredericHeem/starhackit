@@ -27,6 +27,7 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm run mocha`|  Run the tests |
 | `npm run mock`  |  Run a mock server based on the RAML api definition |
 | `npm run doc` |  Generate the API HTML documentation |
+| `npm run opendoc` |  Open the API HTML documentation |
 
 # Mind Map
 
@@ -239,7 +240,7 @@ It will not only test the code, but also checks the source code with eslint and 
 The REST API implemented by this backend is designed and modeled with [RAML](http://raml.org/) which stands for Rest API Modeling Language.
 From a file describing the API such as the [user's API](src/plugins/users/raml/users.raml), several dedicated tools will perform the following benefits:
 
-* `npm run doc`: The [API documentation in HTML](http://starhack.it/api.html)
+* `npm run doc`: The [API documentation in HTML](http://starhack.it/api/v1/doc/api.html)
 * `npm run mocker`: A mock server that will responds to web browser according the API specification, useful for frontend developers which can start before the backend is fully implemented.
 * A mock client which verifies that the backend implemented correctly the API.
 

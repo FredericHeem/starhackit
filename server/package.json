@@ -28,7 +28,7 @@
     "mocker": "node scripts/mocker-server.js",
     "api-check": "abao src/plugins/users/raml/users.raml --server http://localhost:9000/api/v1",
     "doc": "node scripts/apidoc.js",
-    "opendoc": "open build/api.html"
+    "opendoc": "npm run doc && open build/api/v1/doc/api.html"
   },
   "dependencies": {
     "axios": "0.13.1",

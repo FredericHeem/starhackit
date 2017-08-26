@@ -10,9 +10,15 @@
   "rabbitmq": {
     "url":"amqp://localhost"
   },
-  "staticContent": ["build"],
-  "http": {
-    "port": 9000
+  "koa": {
+    "port": 9000,
+    "apiBasePath": "/api/v1/",
+    "cookieSecret": ["your-super-session-secret"],
+    "staticContent": ["build"],
+    "logger": true,
+    "cors":{
+      "credentials": true
+    }
   },
   "db":{
     "driver": "sqlite3",
@@ -34,9 +40,7 @@
       "expiresIn": "15 days"
     }
   },
-  "cors":{
-    "credentials": true
-  },
+  
   "authentication":{
     /*
     "facebook":{
@@ -58,6 +62,5 @@
       }
     }
     */
-  },
-  "apiBasePath": "/api/v1/"
+  }
 }

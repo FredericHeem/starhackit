@@ -4,7 +4,7 @@ const Cors = require('kcors');
 
 export default function (app, koaApp, config){
   let log = require('logfilename')(__filename);
-  const options = config.cors;
+  const options = config.koa.cors;
   if(options){
     log.info("using cors with options: ", options);
     koaApp.use(Cors(options));

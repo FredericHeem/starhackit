@@ -1,12 +1,11 @@
-const serve = require('koa-static');
+const koaStatic = require('koa-static');
 
 export default function (app, koaApp, config){
   let log = require('logfilename')(__filename);
-  const {serveStaticFiles} = config;
-  if(!serveStaticFiles){
+  const {staticContent} = config;
+  if(!staticContent){
     return;
   }
-
-  log.info("serve static files");
-  koaApp.use(serve('build'));
+  log.info("serve static files: ", staticContent);
+  staticContent.forEach(path => koaApp.use(koaStatic(path)))
 }

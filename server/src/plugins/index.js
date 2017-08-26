@@ -5,6 +5,7 @@ import path from 'path';
 
 const blackList = [
   'fidor',
+  'crossbank'
   //'ticket'
 ];
 

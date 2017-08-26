@@ -5,10 +5,11 @@ describe("FacebookAuth", function() {
   let client;
 
   before(async function() {
+    await testMngr.start();
+  });
+  beforeEach(async function() {
     if (!testMngr.app.config.authentication.facebook) {
       this.skip();
-    } else {
-      await testMngr.start();
     }
   });
   after(async () => {

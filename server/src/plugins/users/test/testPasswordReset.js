@@ -145,7 +145,7 @@ describe('PasswordReset', function () {
       assert(false);
     } catch(res){
       assert.equal(res.statusCode, 400);
-      console.log(res.body);
+      //console.log(res.body);
       //assert.equal(res.body.name, '');
     }
   });

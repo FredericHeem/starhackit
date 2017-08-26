@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
      for (let group of groups) {
        await UserGroup.addUserIdInGroup(group, userId, t);
      }
-   }
+   };
    /**
     * Creates in the db userGroup association between groupname and userId
     * @param {String} groupName  - Name of the group for which we want to add the user
@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
        group_id: group.get().id,
        user_id: userId
      }, {transaction:t});
-   }
+   };
 
   return UserGroup;
 };

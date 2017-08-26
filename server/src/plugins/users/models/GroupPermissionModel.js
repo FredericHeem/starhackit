@@ -18,7 +18,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
     for (let groupName of _.keys(groupPermissionsJson)) {
       await GroupPermission.add(groupName, groupPermissionsJson[groupName]);
     }
-  }
+  };
   /**
    * Creates in the db all the groupPermissions within permissionsNames associated with the groupName
    *
@@ -49,7 +49,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
           permission_id: permissionFound.get().id
         });
       };
-    }
+    };
 
   return GroupPermission;
 };

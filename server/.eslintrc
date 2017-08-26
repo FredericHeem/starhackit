@@ -10,18 +10,6 @@
         "jquery": false,
         "mocha": true
     },
-    "ecmaFeatures": {
-        "arrowFunctions": true,
-        "blockBindings": true,
-        "classes": true,
-        "defaultParams": true,
-        "destructuring": true,
-        "forOf": true,
-        "generators": true,
-        "modules": true,
-        "spread": true,
-        "templateStrings": true
-    },
     "rules": {
         "mocha/no-exclusive-tests": 1,
         "consistent-return": [0],

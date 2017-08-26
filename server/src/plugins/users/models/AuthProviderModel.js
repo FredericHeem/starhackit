@@ -27,6 +27,6 @@ module.exports = function(sequelize, DataTypes) {
       foreignKey: "user_id"
     });
   };
-  
+
   return AuthProvider;
 };

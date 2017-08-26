@@ -7,5 +7,5 @@ export default function (app, koaApp, config){
     return;
   }
   log.info("serve static files: ", staticContent);
-  staticContent.forEach(path => koaApp.use(koaStatic(path)))
+  staticContent.forEach(path => koaApp.use(koaStatic(path)));
 }

@@ -11,7 +11,7 @@ export default function PassportMiddleware(app, koaApp/*, config*/){
 
   koaApp.use(async(context, next) => {
     log.debug(`${context.method} ${context.url} JWT`);
-    return passport.authenticate('jwt', { session: false}, (err, user, info, status) => {
+    return passport.authenticate('jwt', { session: false}, (err, user/*, info, status*/) => {
       if (user === false) {
         log.debug("auth JWT KO");
       } else {

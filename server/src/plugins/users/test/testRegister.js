@@ -15,7 +15,7 @@ describe('UserRegister', function() {
       await testMngr.start();
       sandbox = sinon.sandbox.create();
       assert(app.plugins);
-      sinon.stub(app.plugins.get().users.publisher, "publish", (key, msg) => {
+      sinon.stub(app.plugins.get().users.publisher, "publish").callsFake((key, msg) => {
         //console.log("publish has been called");
         //assert.equal(key, "user.registered");
         assert(msg);

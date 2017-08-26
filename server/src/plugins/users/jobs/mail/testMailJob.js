@@ -104,7 +104,7 @@ describe.skip('MailJob', function () {
     });
 
     it('publish user.register', async(done) => {
-      sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
+      sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
         //console.log("_sendEmail has been called");
         assert.equal(type, 'user.registering');
         assert(userToSend);
@@ -115,7 +115,7 @@ describe.skip('MailJob', function () {
       await publisher.publish("user.registering", JSON.stringify(user));
     });
     it('publish user.resetpassword', async(done) => {
-      sinon.stub(mailJob, "_sendEmail", (type, userToSend) => {
+      sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
         //console.log("_sendEmail has been called");
         assert.equal(type, 'user.resetpassword');
         assert(userToSend);
@@ -126,7 +126,7 @@ describe.skip('MailJob', function () {
       await publisher.publish("user.resetpassword", JSON.stringify(user));
     });
     it('publish a non JSON message', async(done) => {
-      sinon.stub(mailJob, "_sendEmail", () => {
+      sinon.stub(mailJob, "_sendEmail").callsFake(() => {
         assert(false);
         done();
       });

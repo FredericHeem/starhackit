@@ -39,7 +39,6 @@
     "babel-root-import": "1.0.1",
     "babel-runtime": "5.8.25",
     "bcryptjs": "2.4.3",
-    "bignumber.js": "2.4.0",
     "bluebird": "3.5.0",
     "chance": "1.0.10",
     "config": "1.26.2",
@@ -105,8 +104,8 @@
     "restauth": "1.1.1",
     "sequelize-cli": "2.8.0",
     "shelljs": "0.7.3",
-    "should": "10.0.0",
-    "sinon": "1.17.4",
+    "should": "^11.2.1",
+    "sinon": "^3.2.1",
     "sinon-as-promised": "4.0.3"
   },
   "engines": {

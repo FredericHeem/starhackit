@@ -32,7 +32,7 @@ describe('Koa', function(){
       assert.equal(res.status, 204);
       const {headers} = res;
       assert.equal(headers['access-control-allow-origin'], origin);
-      assert.equal(headers['access-control-allow-methods'], 'GET,HEAD,PUT,POST,DELETE');
+      assert.equal(headers['access-control-allow-methods'], 'GET,HEAD,PUT,POST,DELETE,PATCH');
       assert.equal(headers['access-control-allow-headers'], 'Origin, Accept, Content-Type');
       assert(headers['access-control-allow-credentials']);
     });

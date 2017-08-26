@@ -11,11 +11,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName:"user_groups",
     underscored: true,
-    timestamps: false,
-    classMethods: {
-      addUserIdInGroup:addUserIdInGroup,
-      addUserIdInGroups:addUserIdInGroups
-    }
+    timestamps: false
   });
 
   /**
@@ -24,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
     * @param {String} userId   -   userId to be added to the group   *
     * @returns {Promise} returns a  Promise containing the results of the upsert
     */
-   async function addUserIdInGroups(groups, userId, t) {
+   UserGroup.addUserIdInGroups = async function(groups, userId, t) {
      log.debug(`addUserIdInGroups user:${userId}, #groups ${groups.length}`);
      for (let group of groups) {
        await UserGroup.addUserIdInGroup(group, userId, t);
@@ -36,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
     * @param {String} userId   -   userId to be added to the group   *
     * @returns {Promise} returns a  Promise containing the results of the upsert
     */
-   async function addUserIdInGroup(groupName, userId, t) {
+   UserGroup.addUserIdInGroup = async function(groupName, userId, t) {
      log.debug(`addUserIdInGroup user:${userId}, group: ${groupName}`);
      //let group = await models.Group.findByName(groupName);
      let group = await models.Group.find({

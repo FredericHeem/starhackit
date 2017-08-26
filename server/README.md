@@ -29,10 +29,6 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm run doc` |  Generate the API HTML documentation |
 | `npm run opendoc` |  Open the API HTML documentation |
 
-# Mind Map
-
-![Mind Map BackEnd StarHackit](https://atlas.mindmup.com/2016/08/8fd0abd04ece013446842b9f15b052d7/starhackit_backend/thumb.png)
-
 # Configuration
 
 ## Database

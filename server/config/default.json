@@ -10,9 +10,7 @@
   "rabbitmq": {
     "url":"amqp://localhost"
   },
-  "frontend": {
-    "path": "../client/build"
-  },
+  "staticContent": ["build"],
   "http": {
     "port": 9000
   },
@@ -61,6 +59,5 @@
     }
     */
   },
-  "apiBasePath": "/api/v1/",
-  "serveStaticFiles": true
+  "apiBasePath": "/api/v1/"
 }

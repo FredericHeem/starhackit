@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 
 export default function hashPasswordHook(instance, options) {
-  console.log("hashPasswordHook ", instance.get("password"), instance.get("passwordHash"));
   const password = instance.get("password");
     return new Promise((resolve, reject) => {
       if (!instance.changed("password") || !password) {

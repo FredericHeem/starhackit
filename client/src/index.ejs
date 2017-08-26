@@ -23,17 +23,17 @@
     <style type="text/css">
         html {
             position: relative;
-            min-height: 100%;
             font-family: sans-serif;
             -ms-text-size-adjust: 100%;
             -webkit-text-size-adjust: 100%;
         }
 
-        body {
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
             margin: 0;
-            margin-bottom: 50px;;
         }
-
         h1 {
             font-size: 50px;
         }
@@ -52,6 +52,9 @@
           text-align:center;
         }
 
+        #application {
+            width: 100%;
+        }
         .animate-spin {
           -moz-animation: spin 2s infinite linear;
           -o-animation: spin 2s infinite linear;

@@ -88,7 +88,7 @@ export default context => {
 
   function NavBar({ authenticated }) {
     return (
-      <div>
+      <header>
         <AppBar
           onDrawerClick={() => store.toggle()}
           onTitleClick={() => store.navChange({ route: "/" })}
@@ -100,7 +100,7 @@ export default context => {
             themeSideBar={themeSideBar}
           />
         </Drawer>
-      </div>
+      </header>
     );
   }
 

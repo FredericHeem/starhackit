@@ -4,8 +4,6 @@ import glamorous from 'glamorous';
 export default ({ tr, theme }) => {
   const {palette} = theme;
   const FooterView = glamorous('footer')(() => ({
-    position: 'absolute',
-    bottom: 0,
     padding: 20,
     width: '100%',
     textAlign: 'center',

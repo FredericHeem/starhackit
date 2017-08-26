@@ -15,21 +15,27 @@ export default context => {
   const AsyncView = asyncView(context);
 
   const AppRoot = glamorous("div")({
-    display: "flex"
+    display: "flex",
+    minHeight: '100vh'
   });
 
   const AppView = glamorous("div")(() => ({
     flex: "1 1 auto",
+    display: "flex",
+    flexDirection: 'column',
     overflow: "auto",
     color: palette.textPrimary
   }));
 
-  const MainView = glamorous("div")({
-    paddingTop: 20,
-    paddingBottom: 20,
+  const MainView = glamorous("main")({
     display: "flex",
+    flex: "1",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "flex-start",
+    marginTop: 50,
+    "@media(max-width: 600px)": {
+      margin: 10
+    }
   });
 
   function ApplicationView({ authStore, themeStore, children }) {

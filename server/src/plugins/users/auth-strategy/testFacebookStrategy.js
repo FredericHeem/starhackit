@@ -3,7 +3,7 @@ import testMngr from '~/test/testManager';
 import {verify} from './FacebookStrategy';
 import Chance from 'chance';
 
-describe('Facebook', function(){
+describe('FacebookStrategy', function(){
   let models = testMngr.app.data.sequelize.models;
   before(async () => {
       await testMngr.start();

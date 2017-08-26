@@ -17,9 +17,7 @@
     "port": 9000
   },
   "db":{
-     // pg, sqlite3  etc ...
     "driver": "sqlite3",
-    // postgres, sqlite
     "dialect":"sqlite",
     "database": "dev",
     "user": "user",
@@ -27,7 +25,6 @@
     "host": "localhost",
     "port": "5432",
     "logging": true,
-    "storage": "./db.dev.sqlite",
     "pool": {
       "maxConnections": 100,
       "maxIdleTime": 60

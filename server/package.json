@@ -10,7 +10,7 @@
   },
   "license": "NLPL",
   "scripts": {
-    "setup": "binci --cleanup && binci install",
+    "setup": "binci --cleanup && binci env",
     "prestart": "npm run lint",
     "build": "gulp build:production",
     "start": "gulp",

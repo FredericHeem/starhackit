@@ -5,7 +5,6 @@ import Router from 'koa-66';
 export default function(app) {
   let log = require('logfilename')(__filename);
   let koaApp = new Koa();
-  koaApp.experimental = true;
   const {config} = app;
   let httpHandle;
   let rootRouter = new Router();

@@ -2,7 +2,7 @@ const koaStatic = require('koa-static');
 
 export default function (app, koaApp, config){
   let log = require('logfilename')(__filename);
-  const {staticContent} = config;
+  const {staticContent} = config.koa;
   if(!staticContent){
     return;
   }

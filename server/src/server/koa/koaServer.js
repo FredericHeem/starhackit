@@ -30,7 +30,7 @@ export default function(app) {
      * Start the express server
      */
     async start() {
-      let configHttp = config.get('http');
+      let configHttp = config.get('koa');
       let port = process.env.PORT || configHttp.port;
 
       log.info('start koa on port %s', port);

@@ -68,7 +68,7 @@ describe.skip('CrossBank', function() {
   let client;
   this.timeout(120e3);
   const obConfig = {
-    baseURL: url.resolve(`http://localhost:${config.http.port}`, `/api/v1/`)
+    baseURL: url.resolve(`http://localhost:${config.koa.port}`, `/api/v1/`)
   };
 
   const loginParam = {

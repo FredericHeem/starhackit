@@ -10,9 +10,11 @@
   "rabbitmq": {
     "url":"amqp://localhost"
   },
-  "staticContent": ["build"],
-  "http": {
-    "port": 9000
+  "koa": {
+    "port": 9000,
+    "cookieSecret": ["your-super-session-secret"],
+    "staticContent": ["build"],
+    "logger": true
   },
   "db":{
     "driver": "sqlite3",

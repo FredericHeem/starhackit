@@ -4,8 +4,7 @@ const redisStore = require("koa-redis");
 export default function(app, koaApp, config) {
   let log = require("logfilename")(__filename);
 
-  //TODO use secret from config
-  koaApp.keys = ["your-super-session-secret"];
+  koaApp.keys = config.koa.cookieSecret;
   const redisConfig = config.redis;
   if (app.store.client()) {
     log.debug("middlewareInit use redis ", redisConfig);

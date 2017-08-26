@@ -63,8 +63,6 @@ export default function(app) {
 
   function middlewareInit() {
     log.debug("middlewareInit");
-    const convert = require('koa-convert');
-
     //TODO create SessionMiddlware
     const session = require('koa-generic-session');
     const redisStore = require('koa-redis');
@@ -73,12 +71,12 @@ export default function(app) {
     const redisConfig = config.redis;
     if(app.store.client()){
       log.debug("middlewareInit use redis ", redisConfig);
-      koaApp.use(convert(session({
+      koaApp.use(session({
         store: redisStore(app.store.client())
-      })));
+      }));
     } else {
       log.debug("middlewareInit memory session ");
-      koaApp.use(convert(session()));
+      koaApp.use(session());
     }
 
     const bodyParser = require('koa-bodyparser');

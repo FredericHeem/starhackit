@@ -1,5 +1,4 @@
 const serve = require('koa-static');
-const convert = require('koa-convert');
 
 export default function (app, koaApp, config){
   let log = require('logfilename')(__filename);
@@ -9,5 +8,5 @@ export default function (app, koaApp, config){
   }
 
   log.info("serve static files");
-  koaApp.use(convert(serve('build')));
+  koaApp.use(serve('build'));
 }

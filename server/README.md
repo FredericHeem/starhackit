@@ -21,7 +21,7 @@ These are the main *npm* commands during a standard developer workflow:
 | npm command    | details  |
 |----------------|----------|
 | `npm install`  | Install dependencies  |
-| `npm run devlabinstall`  | Install services such as Rabbitmq and Postgresql though docker |
+| `npm run setup`  | Install Rabbitmq and Postgresql docker containers through binci |
 | `npm start`    | Start the backend  |
 | `npm test`     |  Run the tests and generate a code coverage |
 | `npm run mocha`|  Run the tests |
@@ -197,10 +197,10 @@ Here is a typical configuration:
 ## Docker containers
 
 ### For development
-To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [DevLab](https://github.com/TechnologyAdvice/DevLab) project is being used to containerize the development workflow, see its configuration file: [devlab.yml](server/devlab.yml)
+To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
 
     # cd server
-    # npm run devlabinstall
+    # npm run setup &
 
 To check that the containers are running:
 

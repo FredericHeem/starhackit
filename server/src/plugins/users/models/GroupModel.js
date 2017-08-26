@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   );
 
-  let models = sequelize.models;
+
 
   Group.associate = function(models) {
     models.User.belongsToMany(Group, {
@@ -43,6 +43,8 @@ module.exports = function(sequelize, DataTypes) {
     log.debug("seedDefault: ", JSON.stringify(groupsJson, null, 4));
     return Group.bulkCreate(groupsJson);
   };
+
+  let models = sequelize.models;
 
   Group.findByName = function(groupName) {
     return models.Group.find({ where: { name: groupName } });

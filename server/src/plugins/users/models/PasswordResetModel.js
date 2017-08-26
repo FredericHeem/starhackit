@@ -14,6 +14,6 @@ module.exports = function(sequelize, DataTypes) {
   PasswordReset.associate = function(models) {
     models.User.hasOne(PasswordReset, { foreignKey: "user_id" });
   };
-  
+
   return PasswordReset;
 };

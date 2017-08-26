@@ -1,7 +1,7 @@
 export default function(app, koaApp, config) {
   let log = require("logfilename")(__filename);
   if(!config.koa.logger){
-      return
+      return;
   }
   koaApp.use(async (ctx, next) => {
     const start = new Date();

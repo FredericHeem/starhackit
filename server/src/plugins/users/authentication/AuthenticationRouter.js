@@ -14,7 +14,7 @@ export function AuthenticationHttpController(app, publisherUser){
   const jwtConfig = _.defaults(config.jwt, {secret: "secret"});
   return {
     login(ctx, next) {
-      return passport.authenticate('local', function(err, user, info, status) {
+      return passport.authenticate('local', function(err, user, info/*, status*/) {
         log.debug("login %s, %s", JSON.stringify(user), info);
         if (user) {
           ctx.body = {

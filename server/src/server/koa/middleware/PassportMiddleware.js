@@ -11,12 +11,12 @@ export default function PassportMiddleware(app, koaApp/*, config*/){
 
   koaApp.use(async(context, next) => {
     log.debug(`${context.method} ${context.url} JWT`);
-    return passport.authenticate('jwt', { session: false}, user => {
+    return passport.authenticate('jwt', { session: false}, (err, user, info, status) => {
       if (user === false) {
         log.debug("auth JWT KO");
       } else {
         log.debug("auth JWT OK, ", user);
-        context.passport.user = user;
+        context.state.user = user;
       }
       return next();
     })(context);
@@ -37,7 +37,7 @@ export default function PassportMiddleware(app, koaApp/*, config*/){
     async isAuthorized(context, next) {
       let request = context.request;
 
-      if (!context.passport.user) {
+      if (!context.state.user) {
         log.warn("isAuthorized user not set");
         context.status = 401;
         context.body = "Unauthorized";
@@ -45,7 +45,7 @@ export default function PassportMiddleware(app, koaApp/*, config*/){
 
       //TODO /api/v1 should be configurable
       let routePath = context.route.path.replace(/^(\/api\/v1)/,"");
-      let userId = context.passport.user.id;
+      let userId = context.state.user.id;
       let method = request.method;
       log.debug(`isAuthorized: who:${userId}, resource:${routePath}, method: ${method}`);
 

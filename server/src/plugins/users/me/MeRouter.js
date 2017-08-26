@@ -9,10 +9,10 @@ export function MeHttpController(app){
   let meApi = MeApi(app);
   return {
     async get(context) {
-      return respond(context, meApi, meApi.getByUserId, [context.passport.user.id]);
+      return respond(context, meApi, meApi.getByUserId, [context.state.user.id]);
     },
     async patch(context) {
-      return respond(context, meApi, meApi.patch, [context.passport.user.id, context.request.body]);
+      return respond(context, meApi, meApi.patch, [context.state.user.id, context.request.body]);
     }
   };
 }

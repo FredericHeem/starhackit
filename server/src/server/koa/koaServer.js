@@ -18,7 +18,7 @@ export default function(app) {
       return baseRouter;
     },
     mountRootRouter(){
-      rootRouter.mount('/api/v1', baseRouter);
+      rootRouter.mount(config.koa.apiBasePath, baseRouter);
       koaApp.use(rootRouter.routes());
     },
     diplayRoutes(){

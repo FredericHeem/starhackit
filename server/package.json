@@ -81,7 +81,6 @@
     "sequelize": "^4.7.5",
     "sqlite3": "3.1.9",
     "urijs": "1.18.12",
-    "validator": "5.5.0",
     "webpack": "1.13.1",
     "winston": "2.3.1"
   },

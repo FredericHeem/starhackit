@@ -114,14 +114,14 @@ describe('GroupModel', function() {
         let authorized = await models.User.checkUserPermission(param.userId, param.routePath, param.method);
         expect(authorized).to.be.equal(param.authorized);
     }
-    it('should check permission given a user id, a route path and a method', done => {
+    it('should check permission given a user id, a route path and a method', async () => {
         const param = {
             userId: userId,
             routePath: '/users/:id',
             method: 'get',
             authorized: true
         };
-        return checkUserPermission(param).then(done, done);
+        await checkUserPermission(param);
     });
     it('should get all groups for a given user', async () => {
         let res = await models.User.find({

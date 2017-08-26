@@ -12,7 +12,7 @@ describe('PasswordReset', function () {
   before(async() => {
     await testMngr.start();
     sandbox = sinon.sandbox.create();
-    publisherUserStub = sinon.stub(app.plugins.get().users.publisher, "publish", (key, msg) => {
+    publisherUserStub = sinon.stub(app.plugins.get().users.publisher, "publish").callsFake((key, msg) => {
       //assert.equal(key, "user.register");
       assert(msg);
     });
@@ -135,7 +135,7 @@ describe('PasswordReset', function () {
       assert.equal(error.body.error.name, 'TokenInvalid');
     }
   });
-  it('reset passord with malformed email', async(done) => {
+  it('reset passord with malformed email', async () => {
     let data = {
       email: "alic"
     };
@@ -147,7 +147,6 @@ describe('PasswordReset', function () {
       assert.equal(res.statusCode, 400);
       console.log(res.body);
       //assert.equal(res.body.name, '');
-      done();
     }
   });
   it('verify with wrong token', async() => {

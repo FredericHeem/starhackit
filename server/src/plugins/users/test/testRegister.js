@@ -15,7 +15,7 @@ describe('UserRegister', function() {
       await testMngr.start();
       sandbox = sinon.sandbox.create();
       assert(app.plugins);
-      sinon.stub(app.plugins.get().users.publisher, "publish", (key, msg) => {
+      sinon.stub(app.plugins.get().users.publisher, "publish").callsFake((key, msg) => {
         //console.log("publish has been called");
         //assert.equal(key, "user.registered");
         assert(msg);
@@ -84,13 +84,12 @@ describe('UserRegister', function() {
     assert(loginRes);
     //console.log(loginRes);
   });
-  it('invalid email code', async (done) => {
+  it('invalid email code', async () => {
     try {
       await client.post('v1/auth/verify_email_code', {code: "1234567890123456"});
     } catch(error){
       assert.equal(error.statusCode, 422);
       assert.equal(error.body.error.name, "NoSuchCode");
-      done();
     }
   });
   it('malformed email code', async () => {

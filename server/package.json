@@ -48,7 +48,6 @@
     "gulp": "3.9.1",
     "gulp-babel": "5.2.1",
     "gulp-debug": "2.1.2",
-    "gulp-mocha": "2.2.0",
     "gulp-rimraf": "0.2.1",
     "gulp-util": "3.0.8",
     "jsonschema": "1.2.0",

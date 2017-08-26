@@ -62,34 +62,12 @@ export default function(app) {
 
   function middlewareInit() {
     log.debug("middlewareInit");
-    //TODO create SessionMiddlware
-    const session = require('koa-generic-session');
-    const redisStore = require('koa-redis');
-    //TODO use secret from config
-    koaApp.keys = ['your-super-session-secret'];
-    const redisConfig = config.redis;
-    if(app.store.client()){
-      log.debug("middlewareInit use redis ", redisConfig);
-      koaApp.use(session({
-        store: redisStore(app.store.client())
-      }));
-    } else {
-      log.debug("middlewareInit memory session ");
-      koaApp.use(session());
-    }
+    require('./middleware/SessionMiddleware')(app, koaApp, config);
 
     const bodyParser = require('koa-bodyparser');
     koaApp.use(bodyParser());
 
-    //TODO create LoggerMiddlware
-    koaApp.use(async(ctx, next) => {
-      const start = new Date;
-      log.debug(`${ctx.method} ${ctx.url} begins`);
-      log.debug(`${JSON.stringify(ctx.header, 4, null)}`);
-      await next();
-      const ms = new Date - start;
-      log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);
-    });
+    require('./middleware/LoggerMiddleware')(app, koaApp, config);
 
     //Cors support
     require('./middleware/CorsMiddleware')(app, koaApp, config);

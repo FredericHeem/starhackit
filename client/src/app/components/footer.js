@@ -5,7 +5,6 @@ export default ({ tr, theme }) => {
   const {palette} = theme;
   const FooterView = glamorous('footer')(() => ({
     padding: 20,
-    width: '100%',
     textAlign: 'center',
     background: palette.primaryLight
   }));

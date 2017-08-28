@@ -1,43 +1,54 @@
-import React from 'react';
-import { render } from 'react-dom';
-import Qs from 'qs';
-import Router from './router';
+import React, { createElement as h } from "react";
+import { render } from "react-dom";
+import Qs from "qs";
+import Router from "./router";
 import appView from "components/applicationView";
+import asyncView from "components/AsyncView";
 
-export default (context) => {
-    const AlertStack = context.alertStack.View;
-    const { history, config } = context;
-    const onRenderComplete = (route) => {
-        document.title = `${route.title} - ${config.title}`;
-    };
+export default context => {
+  const AlertStack = context.alertStack.View;
+  const { tr, history, config } = context;
 
-    async function onLocationChange(location) {
-        //console.log("onLocationChange ", location, action);
-        try {
-            const route = await Router(context).resolve({
-                path: location.pathname,
-                query: Qs.parse(location.search),
-            });
-            //console.log("onLocationChange route ", route);
-            const Layout = appView(context);
-            const layout = (
-                <Layout>
-                    {route.component}
-                    <AlertStack />
-                </Layout>
-            )
-            context.rootInstance = render(
-                layout,
-                document.getElementById('application'),
-                () => onRenderComplete(route, location),
-            );
-        } catch (error) {
-            console.error(error);
-            throw error;
+  const onRenderComplete = route => {
+    document.title = `${route.title} - ${config.title}`;
+  };
 
-        }
+  async function onLocationChange(location) {
+    console.log("onLocationChange ", location);
+    let component;
+    let route;
+    try {
+      route = await Router(context).resolve({
+        path: location.pathname,
+        query: Qs.parse(location.search)
+      });
+      console.log("onLocationChange match route ", route);
+      component = route.component;
+    } catch (error) {
+      console.log("Routing exception:", error.status);
+      if (error.status === 404) {
+        component = h(asyncView(context), {
+          getModule: () => System.import("components/notFound")
+        });
+        route = { title: tr.t("Page Not Found") };
+      }
     }
+    if (component) {
+      const Layout = appView(context);
+      const layout = (
+        <Layout>
+          {component}
+          <AlertStack />
+        </Layout>
+      );
+      context.rootInstance = render(
+        layout,
+        document.getElementById("application"),
+        () => onRenderComplete(route, location)
+      );
+    }
+  }
 
-    history.listen(onLocationChange);
-    onLocationChange(history.location);
-}
+  history.listen(onLocationChange);
+  onLocationChange(history.location);
+};

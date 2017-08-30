@@ -5,12 +5,13 @@ import asyncView from "components/AsyncView";
 export default context => {
   const AsyncView = asyncView(context);
 
-  function isAuthenticated({ url, next }) {
+  function isAuthenticated({ url }) {
+    console.log("isAuthenticated ", url)
     const { authenticated } = context.parts.auth.stores().auth;
     if (!authenticated) {
-      context.history.push(`/login?nextPath=${url}`);
-      next(false);
-    }
+      setTimeout(() => context.history.push(`/login?nextPath=${url}`), 1);
+      throw new Error({name: 'redirect', status: 302})
+    } 
   }
 
   const { parts } = context;
@@ -49,7 +50,7 @@ export default context => {
   return new Router(routes, {
     resolveRoute(routerContext, params) {
       const { route } = routerContext;
-      console.log("resolveRoute ", routerContext, params);
+      //console.log("resolveRoute ", routerContext, params);
 
       if (typeof route.load === "function") {
         return route.load();

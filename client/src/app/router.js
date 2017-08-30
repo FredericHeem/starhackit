@@ -40,7 +40,7 @@ export default context => {
         action: isAuthenticated
       },
       {
-        path: "/",
+        path: "/admin",
         children: parts.admin.routes(),
         action: isAuthenticated
       }

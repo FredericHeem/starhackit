@@ -10,7 +10,7 @@ export default context => {
     if (authenticated) {
       return [
         {
-          route: "/users",
+          route: "/admin/sers",
           text: "ADMIN"
         },
         {

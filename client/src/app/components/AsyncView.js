@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import AsyncRoute from "preact-async-route";
 
 export default context => {

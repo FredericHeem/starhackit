@@ -15,7 +15,7 @@ let fuse, app, vendor, isProduction;
 
 Sparky.task("config", () => {
     fuse = new FuseBox({
-        useTsCompiler: true,
+        //useTsCompiler: true,
         debug: true,
         cache: true,
         homeDir: "src/app",
@@ -26,7 +26,7 @@ Sparky.task("config", () => {
         plugins: [
             SVGPlugin(),
             CSSPlugin(),
-            //BabelPlugin(),
+            BabelPlugin(),
             WebIndexPlugin({
                 template: "src/index.ejs",
                 title: "Starhackit"

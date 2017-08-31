@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import glamorous from "glamorous";
 import drawer from "mdlean/lib/drawer";
 import config from "config";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import paper from "components/Paper";
 import spinner from "./spinner";
 

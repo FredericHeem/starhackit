@@ -24,7 +24,7 @@ export default context => {
           title: "Home",
           component: h(AsyncView, { getModule:() => System.import("./parts/landing/landingScreen")})
         })
-      },
+      }/*,
       {
         path: "/guide",
         component: () => ({
@@ -43,7 +43,7 @@ export default context => {
         path: "/admin",
         children: parts.admin.routes(),
         action: isAuthenticated
-      }
+      }*/
     ]
   };
 

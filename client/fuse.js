@@ -15,13 +15,18 @@ let fuse, app, vendor, isProduction;
 
 Sparky.task("config", () => {
     fuse = new FuseBox({
+        useTsCompiler: true,
+        debug: true,
+        cache: true,
         homeDir: "src/app",
         sourceMaps: !isProduction,
         hash: isProduction,
         output: "dist/$name.js",
         sourceMaps: true,
         plugins: [
-            SVGPlugin(), CSSPlugin(), BabelPlugin(),
+            SVGPlugin(),
+            CSSPlugin(),
+            //BabelPlugin(),
             WebIndexPlugin({
                 template: "src/index.ejs",
                 title: "Starhackit"
@@ -54,7 +59,7 @@ Sparky.task("config", () => {
 });
 
 Sparky.task("default", ["clean", "config"], () => {
-    fuse.dev();
+    fuse.dev({open : true});
     // add dev instructions
     app.watch().hmr()
     return fuse.run();

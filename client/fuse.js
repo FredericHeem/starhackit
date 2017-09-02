@@ -10,7 +10,6 @@ const {
   ReplacePlugin,
   Sparky
 } = require("fuse-box");
-const fs = require('fs-extra')
 var pkg = require("./package.json");
 
 let fuse, app, vendor, isProduction;
@@ -74,14 +73,9 @@ Sparky.task("config", () => {
     .split("parts/admin/**", "users > parts/admin/users.js")
     .instructions("> [index.js] [**/**.js]")
     .target("browser");
-
-    // Copy the locales
-    fs.copy('locales/', 'dist/locales')
-    .then(() => console.log('locales copied'))
-    .catch(err => console.error(err))
 });
 
-Sparky.task("default", ["clean", "config"], () => {
+Sparky.task("default", ["clean", "copy-locales", "config"], () => {
   fuse.dev({
     open: true,
     proxy: {
@@ -97,6 +91,7 @@ Sparky.task("default", ["clean", "config"], () => {
 });
 
 Sparky.task("clean", () => Sparky.src("dist/").clean("dist/"));
+Sparky.task("copy-locales", () => Sparky.src("./locales/**/*.json").dest('./dist'))
 Sparky.task("prod-env", ["clean"], () => {
   isProduction = true;
 });

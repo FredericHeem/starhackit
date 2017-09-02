@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import get from 'lodash/get';
 import { observer } from 'mobx-react';
 import page from 'components/Page';
 import paper from 'components/Paper';
@@ -22,7 +22,7 @@ export default (context) => {
   const PasswordInput = input(context);
   const SetNewPasswordDone = observer(function SetNewPasswordDone({ store }) {
     console.log("SetNewPasswordDone ", store.op)
-    if (!_.get(store.op, 'data.success')) {
+    if (!get(store.op, 'data.success')) {
       return null;
     }
     return (

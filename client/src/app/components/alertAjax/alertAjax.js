@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import Debug from 'debug';
 import alert from '../alert';
@@ -15,15 +14,13 @@ export default (context) => {
       return null;
     }
     debug('error:', error);
-    const status = _.get(error, 'response.status');
+    const {status} = error.response;
     debug('error status :', status);
     if(![401, 422].includes(status)){
       return null;
     }
-    let message = _.get(error, 'response.data.error.message');
-    if (!message) {
-      message = error.message
-    }
+    
+    const {message} = error;
     
     return (<Alert.Danger className={className} message={message} />)
   }

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import isString from 'lodash/isString';
 import React from 'react';
 import { observable, action } from 'mobx';
 import alert from "components/alert";
@@ -12,10 +12,10 @@ function createHttpError(payload = {}) {
     return response.statusText;
   }
   function message() {
-    const data = _.get(response, 'data');
-    if (_.isString(data)) {
+    const data = response.data;
+    if (isString(data)) {
       return data;
-    } else if (data && _.isString(data.message)) {
+    } else if (data && isString(data.message)) {
       return data.message;
     } else if (payload.message) {
       return payload.message;

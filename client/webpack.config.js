@@ -52,9 +52,6 @@ module.exports = function ( options ) {
 
             new CopyWebpackPlugin([
                 { from: './src/favicon.ico' },
-                { from: './assets/img/*.png' },
-                { from: './assets/img/*.jpg' },
-                { from: './assets/img/*.svg' },
                 { from: './locales/**/*.json' }
             ]),
             new LodashModuleReplacementPlugin({

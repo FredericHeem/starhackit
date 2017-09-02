@@ -202,7 +202,7 @@ export default function(context) {
           component: (
             <AsyncView
               store={stores.login}
-              getModule={() => System.import("./views/loginView")}
+              getModule={() => import("./views/loginView")}
             />
           )
         })
@@ -214,7 +214,7 @@ export default function(context) {
           component: (
             <AsyncView
               store={stores.register}
-              getModule={() => System.import("./views/registerView")}
+              getModule={() => import("./views/registerView")}
             />
           )
         })
@@ -234,7 +234,7 @@ export default function(context) {
           component: (
             <AsyncView
               store={stores.forgotPassword}
-              getModule={() => System.import("./views/forgotView")}
+              getModule={() => import("./views/forgotView")}
             />
           )
         })

@@ -22,14 +22,14 @@ export default context => {
         path: "/",
         component: () => ({
           title: "Home",
-          component: h(AsyncView, { getModule:() => System.import("./parts/landing/landingScreen")})
+          component: h(AsyncView, { getModule:() => import("landing")})
         })
-      }/*,
+      },
       {
         path: "/guide",
         component: () => ({
           title: "Component Guide",
-          component: h(AsyncView, { getModule:() => System.import("components/componentGuide")})
+          component: h(AsyncView, { getModule:() => import("guide")})
         })
       },
       ...parts.auth.routes(),
@@ -43,7 +43,7 @@ export default context => {
         path: "/admin",
         children: parts.admin.routes(),
         action: isAuthenticated
-      }*/
+      }
     ]
   };
 

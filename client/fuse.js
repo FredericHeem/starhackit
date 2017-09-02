@@ -2,6 +2,8 @@ const {
     FuseBox,
     SVGPlugin,
     CSSPlugin,
+    JSONPlugin,
+    ImageBase64Plugin,
     BabelPlugin,
     QuantumPlugin,
     WebIndexPlugin,
@@ -26,6 +28,8 @@ Sparky.task("config", () => {
         plugins: [
             SVGPlugin(),
             CSSPlugin(),
+            JSONPlugin(),
+            ImageBase64Plugin(),
             BabelPlugin(),
             WebIndexPlugin({
                 template: "src/index.ejs",
@@ -42,7 +46,7 @@ Sparky.task("config", () => {
                 'react': 'preact-compat',
                 'react-dom': 'preact-compat',
                 'create-react-class': 'preact-compat/lib/create-react-class',
-                'glamorous': 'glamorous/dist/glamorous.es.tiny.js',
+                'glamorous': 'glamorous/dist/glamorous.cjs.tiny.js',
                 components: '~/components',
                 utils: '~/utils',
                 services: '~/services',
@@ -55,7 +59,11 @@ Sparky.task("config", () => {
     vendor = fuse.bundle("vendor").instructions("~ index.js").target("browser")
 
     // bundle app
-    app = fuse.bundle("app").instructions("> [index.js]").target("browser")
+    app = fuse.bundle("app")
+    .split("parts/landing/**", "landing > parts/landing/landingScreen.js")
+    .split("components/componentGuide", "guide > components/componentGuide.js")
+    .instructions("> [index.js] [**/**.js]").target("browser")
+    
 });
 
 Sparky.task("default", ["clean", "config"], () => {

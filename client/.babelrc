@@ -1,6 +1,6 @@
 {
-  "presets": [["es2015", { "modules": false }], "react", "stage-0"],
-  "plugins": ["transform-runtime", "lodash"],
+  "presets": ["latest", "stage-0"],
+  "plugins": ["transform-react-jsx", "transform-runtime", "lodash"],
   "env": {
     "production": {
       "plugins": ["transform-react-remove-prop-types"]

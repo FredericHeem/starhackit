@@ -1,3 +1,4 @@
+/*
 if (!window.Promise) {
   require('promise/lib/rejection-tracking').enable();
   window.Promise = require('promise/lib/es6-extensions.js');
@@ -9,3 +10,7 @@ if (!window.Promise) {
 } else {
   require('./main').default()
 }
+*/
+//TODO
+import main from './main';
+main();

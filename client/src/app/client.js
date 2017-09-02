@@ -28,7 +28,7 @@ export default context => {
       console.log("Routing exception:", error.status);
       if (error.status === 404) {
         component = h(asyncView(context), {
-          getModule: () => System.import("components/notFound")
+          getModule: () => import("components/notFound")
         });
         route = { title: tr.t("Page Not Found") };
       }

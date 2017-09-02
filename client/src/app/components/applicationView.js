@@ -5,7 +5,9 @@ import navBar from "./navbar";
 import footer from "./footer";
 import asyncView from "components/AsyncView";
 // eslint-disable-next-line no-undef
-const version = __VERSION__;
+//TODO
+//const version = __VERSION__;
+const version = "99.09";
 
 export default context => {
   const { theme, parts } = context;
@@ -50,7 +52,7 @@ export default context => {
         </AppView>
         {themeStore.open &&
           <AsyncView
-            getModule={() => System.import("../parts/theme/ThemeView")}
+            getModule={() => import("../parts/theme/ThemeView")}
           />}
       </AppRoot>
     );

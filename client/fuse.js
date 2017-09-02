@@ -18,7 +18,7 @@ let fuse, app, vendor, isProduction;
 Sparky.task("config", () => {
   fuse = new FuseBox({
     debug: true,
-    cache: !production,
+    cache: !isProduction,
     homeDir: "src/app",
     sourceMaps: !isProduction,
     hash: isProduction,

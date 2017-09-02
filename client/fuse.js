@@ -23,7 +23,6 @@ Sparky.task("config", () => {
     sourceMaps: !isProduction,
     hash: isProduction,
     output: "dist/$name.js",
-    sourceMaps: true,
     plugins: [
       SVGPlugin(),
       CSSPlugin(),
@@ -47,7 +46,8 @@ Sparky.task("config", () => {
       isProduction &&
         QuantumPlugin({
           removeExportsInterop: false,
-          uglify: true
+          uglify: true,
+          treeshake: false
         })
     ],
     experimentalFeatures: true,
@@ -83,9 +83,9 @@ Sparky.task("config", () => {
       "components/componentGuide.js",
       "guide > components/componentGuide.js"
     )
-    .split("parts/db/**", "dbSchema > parts/db/SchemaComponent.js")
-    .split("parts/theme/**", "theme > parts/theme/ThemeView.js")
-    .split("parts/admin/**", "users > parts/admin/users.js")
+    .split("parts/db/SchemaComponent.js", "dbSchema > parts/db/SchemaComponent.js")
+    .split("parts/theme/ThemeView.js", "theme > parts/theme/ThemeView.js")
+    .split("parts/admin/**", "admin > parts/admin/adminModule.js")
     .instructions("> [index.js] [**/**.js] -[**/*.spec.js] -[**/*.test.js")
     .target("browser");
 });

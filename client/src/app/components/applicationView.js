@@ -5,9 +5,7 @@ import navBar from "./navbar";
 import footer from "./footer";
 import asyncView from "components/AsyncView";
 // eslint-disable-next-line no-undef
-//TODO
-//const version = __VERSION__;
-const version = "99.09";
+const version = __VERSION__;
 
 export default context => {
   const { theme, parts } = context;

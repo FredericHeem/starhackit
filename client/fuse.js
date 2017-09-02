@@ -28,7 +28,7 @@ Sparky.task("config", () => {
       CSSPlugin(),
       JSONPlugin(),
       ImageBase64Plugin(),
-      BabelPlugin(),
+      [BabelPlugin(), ReplacePlugin({ __VERSION__: JSON.stringify(pkg.version) })],
       WebIndexPlugin({
         template: "src/index.ejs",
         title: "Starhackit"
@@ -36,9 +36,9 @@ Sparky.task("config", () => {
       isProduction &&
         QuantumPlugin({
           removeExportsInterop: false,
-          uglify: true
+          uglify: false
         }),
-      ReplacePlugin({ __VERSION__: JSON.stringify(pkg.version) })
+      
     ],
     experimentalFeatures: true,
     alias: {

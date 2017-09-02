@@ -81,7 +81,7 @@ Sparky.task("config", () => {
     .split("parts/db/**", "dbSchema > parts/db/SchemaComponent.js")
     .split("parts/theme/**", "theme > parts/theme/ThemeView.js")
     .split("parts/admin/**", "users > parts/admin/users.js")
-    .instructions("> [index.js] [**/**.js]")
+    .instructions("> [index.js] [**/**.js] -[**/*.spec.js] -[**/*.test.js")
     .target("browser");
 });
 

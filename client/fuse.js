@@ -8,6 +8,7 @@ const {
   QuantumPlugin,
   WebIndexPlugin,
   ReplacePlugin,
+  EnvPlugin,
   Sparky
 } = require("fuse-box");
 var pkg = require("./package.json");
@@ -28,7 +29,17 @@ Sparky.task("config", () => {
       CSSPlugin(),
       JSONPlugin(),
       ImageBase64Plugin(),
-      [BabelPlugin(), ReplacePlugin({ __VERSION__: JSON.stringify(pkg.version) })],
+      EnvPlugin({
+          "NODE_ENV": JSON.stringify(
+            !isProduction ? "development" : "production"
+          )
+        }),
+      [
+        BabelPlugin(),
+        ReplacePlugin({
+          __VERSION__: JSON.stringify(pkg.version)
+        })
+      ],
       WebIndexPlugin({
         template: "src/index.ejs",
         title: "Starhackit"
@@ -37,8 +48,7 @@ Sparky.task("config", () => {
         QuantumPlugin({
           removeExportsInterop: false,
           uglify: false
-        }),
-      
+        })
     ],
     experimentalFeatures: true,
     alias: {
@@ -80,8 +90,8 @@ Sparky.task("default", ["clean", "copy-locales", "config"], () => {
     open: true,
     proxy: {
       "/api/v1": {
-        logLevel: 'debug',
-        target: "http://localhost:9000",
+        logLevel: "debug",
+        target: "http://localhost:9000"
       }
     }
   });
@@ -91,7 +101,9 @@ Sparky.task("default", ["clean", "copy-locales", "config"], () => {
 });
 
 Sparky.task("clean", () => Sparky.src("dist/").clean("dist/"));
-Sparky.task("copy-locales", () => Sparky.src("./locales/**/*.json").dest('./dist'))
+Sparky.task("copy-locales", () =>
+  Sparky.src("./locales/**/*.json").dest("./dist")
+);
 Sparky.task("prod-env", ["clean"], () => {
   isProduction = true;
 });

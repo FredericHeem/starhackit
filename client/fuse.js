@@ -47,7 +47,7 @@ Sparky.task("config", () => {
       isProduction &&
         QuantumPlugin({
           removeExportsInterop: false,
-          uglify: false
+          uglify: true
         })
     ],
     experimentalFeatures: true,
@@ -62,7 +62,12 @@ Sparky.task("config", () => {
       parts: "~/parts",
       icons: "~/icons",
       config: "~/config.js"
-    }
+    },
+    natives: {
+      stream: false,
+      Buffer: false,
+      http: false
+   }
   });
   // vendor
   vendor = fuse

@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
+</head>
+
+<body>
+<!--[if lt IE 11]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- application container -->
+
+<div id="loading">
+    <style type="text/css">
+        html {
+            position: relative;
+            font-family: sans-serif;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        h1 {
+            font-size: 50px;
+        }
+
+        #loading {
+          position:fixed;
+          font-family: sans-serif;
+          width:100vw;
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #initializing {
+          text-align:center;
+        }
+
+        #application {
+            width: 100%;
+        }
+        .animate-spin {
+          -moz-animation: spin 2s infinite linear;
+          -o-animation: spin 2s infinite linear;
+          -webkit-animation: spin 10s infinite linear;
+          animation: spin 10s infinite linear;
+          display: inline-block;
+        }
+
+        @keyframes spin {
+          0% {
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+
+          100% {
+            -moz-transform: rotate(359deg);
+            -o-transform: rotate(359deg);
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+          }
+        }
+        .m-fadeOut {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s linear 300ms, opacity 300ms;
+        }
+    </style>
+    <div id="initializing">
+        <h1></h1>
+
+        <svg style="width: 230px; height: 230px;" viewBox="0 0 42 42" class="animate-spin">
+          <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
+          <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="black" stroke-width="3"></circle>
+          <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="rgb(0, 188, 212)" stroke-width="3" stroke-dasharray="3.1" stroke-dashoffset="0"></circle>
+        </svg>
+
+  </div>
+  </div>
+  <div id="application">
+  </div>
+
+</body>
+$bundles
+</html>

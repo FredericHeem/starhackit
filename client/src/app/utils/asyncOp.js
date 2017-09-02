@@ -6,7 +6,7 @@ import alert from "components/alert";
 function createHttpError(payload = {}) {
   const { response = {} } = payload;
   function name() {
-    if (_.isString(response)) {
+    if (isString(response)) {
       return response;
     }
     return response.statusText;

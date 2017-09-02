@@ -30,7 +30,7 @@ export default function (context) {
                 load: async () => {
                     console.log("load users")
                     try {
-                        const usersCreate = await import('users');
+                        const usersCreate = await import('./users.js');
                         console.log("usersCreate", usersCreate)
                         const users = usersCreate.default(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
                         console.log("users", users)

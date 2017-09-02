@@ -2,8 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="/<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+    <% } %>
 </head>
 
 <body>
@@ -80,7 +85,7 @@
         }
     </style>
     <div id="initializing">
-        <h1></h1>
+        <h1><%= htmlWebpackPlugin.options.title %></h1>
 
         <svg style="width: 230px; height: 230px;" viewBox="0 0 42 42" class="animate-spin">
           <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>
@@ -92,7 +97,13 @@
   </div>
   <div id="application">
   </div>
+<!--[if IE]>
+<script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
+<![endif]-->
+
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
 
 </body>
-$bundles
 </html>

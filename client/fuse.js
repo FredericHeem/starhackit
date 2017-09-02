@@ -40,7 +40,7 @@ Sparky.task("config", () => {
         })
       ],
       WebIndexPlugin({
-        template: "src/index.ejs",
+        template: "src/index.fuse.html",
         title: "Starhackit"
       }),
       isProduction &&

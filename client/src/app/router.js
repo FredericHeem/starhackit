@@ -22,14 +22,14 @@ export default context => {
         path: "/",
         component: () => ({
           title: "Home",
-          component: h(AsyncView, { getModule:() => import("landing")})
+          component: h(AsyncView, { getModule:() => import("./parts/landing/landingScreen")})
         })
       },
       {
         path: "/guide",
         component: () => ({
           title: "Component Guide",
-          component: h(AsyncView, { getModule:() => import("guide")})
+          component: h(AsyncView, { getModule:() => import("components/componentGuide")})
         })
       },
       ...parts.auth.routes(),

@@ -27,7 +27,7 @@ export default function(context) {
           title: "Schema explorer",
           component: h(asyncView(context), {
             store: stores.schema,
-            getModule: () => import("dbSchema")
+            getModule: () => import("parts/db/SchemaComponent")
           })
         }),
         action: () => stores.schema.get()

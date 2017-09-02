@@ -1,8 +1,4 @@
-/* global process */
-const env = process.env;
-
 const config = {
-
     general: {
         title: 'StarHackIt',
         description: 'React Mobx Glamorous Node Starter Kit',
@@ -31,4 +27,6 @@ const config = {
     }
 };
 
-export default Object.assign({}, config.general, config[env.NODE_ENV]);
+/* global process */
+console.log("process.env.NODE_ENV ", process.env.NODE_ENV)
+export default Object.assign({}, config.general, config[process.env.NODE_ENV]);

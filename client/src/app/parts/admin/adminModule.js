@@ -28,10 +28,18 @@ export default function (context) {
             {
                 path: "/users",
                 load: async () => {
-                    const usersCreate = await import('./users');
+                    console.log("load users")
+                    try {
+                    const usersCreate = await import('users');
+                    console.log("usersCreate", usersCreate)
                     const users = usersCreate.default(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
+                    console.log("users", users)
                     users.store.selectPage(1);
                     return users;
+
+                    } catch(e){
+                        console.error(e)
+                    }
                 }
             },
             {

@@ -39,6 +39,7 @@
     "glamor": "2.20.39",
     "glamorous": "4.1.0",
     "history": "4.6.3",
+    "http-proxy-middleware": "0.17.4",
     "i18next": "8.4.3",
     "i18next-browser-languagedetector": "2.0.0",
     "i18next-localstorage-cache": "1.1.1",

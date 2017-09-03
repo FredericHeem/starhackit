@@ -29,7 +29,7 @@ export default context => {
         path: "/guide",
         component: () => ({
           title: "Component Guide",
-          component: h(AsyncView, { getModule:() => import("components/componentGuide")})
+          component: h(AsyncView, { getModule:() => import("./components/componentGuide")})
         })
       },
       ...parts.auth.routes(),

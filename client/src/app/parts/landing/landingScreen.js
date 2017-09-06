@@ -1,10 +1,9 @@
-import React, { createElement as h } from "react";
+import React from "react";
 import glamorous from "glamorous";
 import button from "mdlean/lib/button";
 import Row from "components/Row";
 import Title from "components/Title";
 import cardComponent from "./cardComponent";
-import guide from "components/componentGuide";
 import Content from "./content";
 
 export default async context => {
@@ -121,7 +120,6 @@ export default async context => {
         <Frontend />
         <Backend />
         <Tools />
-        {h(guide(context))}
       </div>
     );
   }

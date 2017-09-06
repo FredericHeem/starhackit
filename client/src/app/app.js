@@ -3,7 +3,7 @@ import Context from "./context";
 
 import AuthModule from "./parts/auth/authModule";
 import CoreModule from "./parts/core/coreModule";
-import ProfileModule from "./parts/profile/profileModule";
+//import ProfileModule from "./parts/profile/profileModule";
 import AdminModule from "./parts/admin/adminModule";
 import DbModule from "./parts/db/dbModule";
 import ThemeModule from "./parts/theme/themeModule";
@@ -26,7 +26,7 @@ export default function({ language = "en" }) {
     theme: ThemeModule(context),
     auth: AuthModule(context),
     core: CoreModule(context),
-    profile: ProfileModule(context),
+    //profile: ProfileModule(context),
     admin: AdminModule(context),
     db: DbModule(context)
   };

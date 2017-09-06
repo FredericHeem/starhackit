@@ -35,9 +35,16 @@ export default context => {
       ...parts.auth.routes(),
       ...parts.db.routes(),
       {
-        path: "/app",
-        children: parts.profile.routes(),
-        action: isAuthenticated
+        path: "/app/profile",
+        load: async (routerContext) => {
+
+          console.log("load profile ", routerContext);
+          isAuthenticated(routerContext)
+          const profileModuleCreate = await import("./parts/profile/profileModule")
+          const profileModule = profileModuleCreate.default(context);
+          routerContext.route.children = profileModule.routes()
+          console.log("profileModule ", profileModule);
+        }
       },
       {
         path: "/admin",
@@ -53,7 +60,7 @@ export default context => {
       //console.log("resolveRoute ", routerContext, params);
 
       if (typeof route.load === "function") {
-        return route.load();
+        return route.load(routerContext);
       }
       if (typeof route.action === "function") {
         route.action(routerContext, params);

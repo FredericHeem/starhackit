@@ -23,6 +23,7 @@ Sparky.task("config", () => {
     sourceMaps: !isProduction,
     hash: isProduction,
     output: "dist/$name.js",
+    target: 'browser',
     plugins: [
       SVGPlugin(),
       CSSPlugin(),
@@ -45,8 +46,9 @@ Sparky.task("config", () => {
       }),
       isProduction &&
         QuantumPlugin({
+          target: "browser",
           removeExportsInterop: false,
-          uglify: true,
+          uglify: false,
           treeshake: false
         })
     ],
@@ -73,7 +75,6 @@ Sparky.task("config", () => {
   vendor = fuse
     .bundle("vendor")
     .instructions("~ index.js")
-    .target("browser");
 
   // bundle app
   app = fuse
@@ -86,8 +87,8 @@ Sparky.task("config", () => {
     .split("parts/db/SchemaComponent.js", "dbSchema > parts/db/SchemaComponent.js")
     .split("parts/theme/ThemeView.js", "theme > parts/theme/ThemeView.js")
     .split("parts/admin/users.js", "users > parts/admin/users.js")
+    .split("parts/profile/**", "profile > parts/profile/profileModule.js")
     .instructions("> [index.js] + [parts/**/**.{js, jsx}] -[**/*.spec.js] -[**/*.test.js")
-    .target("browser");
 });
 
 Sparky.task("default", ["clean", "copy-locales", "config"], () => {

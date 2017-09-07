@@ -34,6 +34,7 @@ export default context => {
       },
       ...parts.auth.routes(),
       ...parts.db.routes(),
+      ...parts.hello.routes(),
       {
         path: "/app",
         children: parts.profile.routes(),

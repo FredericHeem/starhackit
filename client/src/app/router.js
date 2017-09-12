@@ -36,21 +36,22 @@ export default context => {
       ...parts.db.routes(),
       ...parts.hello.routes(),
       {
-        path: "/app/profile",
+        path: "/profile",
         load: async (routerContext) => {
-
-          console.log("load profile ", routerContext);
           isAuthenticated(routerContext)
-          const profileModuleCreate = await import("./parts/profile/profileModule")
-          const profileModule = profileModuleCreate.default(context);
-          routerContext.route.children = profileModule.routes()
-          console.log("profileModule ", profileModule);
+          const partCreate = await import("./parts/profile/profileModule")
+          const part = partCreate.default(context);
+          routerContext.route.children = part.routes()
         }
       },
       {
         path: "/admin",
-        children: parts.admin.routes(),
-        action: isAuthenticated
+        load: async (routerContext) => {
+          isAuthenticated(routerContext)
+          const partCreate = await import("./parts/admin/adminModule")
+          const part = partCreate.default(context);
+          routerContext.route.children = part.routes()
+        }
       }
     ]
   };

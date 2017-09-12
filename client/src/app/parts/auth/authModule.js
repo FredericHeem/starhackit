@@ -15,9 +15,11 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    const nextPath = parse(window.location.search).nextPath || "/app/profile";
+    // TODO Add redirect in config
+    const nextPath = parse(window.location.search).nextPath || "/profile";
     context.history.push(nextPath);
   }
+
   function Stores() {
     const authStore = observable({
       authenticated: false,

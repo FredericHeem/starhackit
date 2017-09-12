@@ -2,6 +2,7 @@ import { createElement as h } from 'react';
 import { observable, action } from 'mobx';
 import user from './userComponent';
 import AsyncOp from 'utils/asyncOp';
+import usersCreate from './users';
 
 export default function (context) {
     const { rest } = context;
@@ -23,24 +24,17 @@ export default function (context) {
         context.history.push(`/users/${userId}`)
     }
 
+    const users = usersCreate(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
+
     function Routes(stores) {
         return [
             {
-                path: "/users",
-                load: async () => {
-                    console.log("load users")
-                    try {
-                        const usersCreate = await import('./users.js');
-                        console.log("usersCreate", usersCreate)
-                        const users = usersCreate.default(context, { selectOne, getAll: (data) => rest.get(`users/`, data) });
-                        console.log("users", users)
-                        users.store.selectPage(1);
-                        return users;
-
-                    } catch(e){
-                        console.error(e)
-                    }
-                }
+                path: "/",
+                component: () => ({
+                    title: "Users",
+                    component: users.component,
+                }),
+                action: () => users.store.selectPage(1)
             },
             {
                 path: "/users/:userId",

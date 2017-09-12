@@ -1,5 +1,5 @@
 import React, { createElement as h } from "react";
-import { parse } from "query-string";
+import { parse } from "qs";
 import { observable, action } from "mobx";
 import validate from "validate.js";
 import logoutView from "./views/logoutView";

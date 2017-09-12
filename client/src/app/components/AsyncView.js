@@ -1,5 +1,5 @@
 import React from "react";
-import AsyncRoute from "preact-async-route";
+import AsyncRoute from "components/AsyncRoute";
 
 export default context => {
   const { tr } = context;

@@ -47,10 +47,8 @@ export default context => {
             <h4>{tr.t("About Me")}</h4>
             <BioInput
               className="biography-input"
-              fullWidth
               value={store.profile.biography || ""}
               error={errors.biography && errors.biography[0]}
-              multiLine
               label={tr.t("Enter Biography")}
               rows={1}
               onChange={e => {
@@ -64,7 +62,6 @@ export default context => {
               className="btn-update-profile"
               raised
               css={{ width: 256 }}
-              loading={store.opUpdate.loading}
               onClick={() => store.update()}
               label={tr.t("Update Profile")}
             />

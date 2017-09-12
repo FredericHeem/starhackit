@@ -46,7 +46,6 @@ export default (context) => {
             raised
             css={{ width: 256 }}
             label={tr.t("Login")}
-            loading={store.op.loading}
             onClick={() => store.login()}
           />
         </FormGroup>

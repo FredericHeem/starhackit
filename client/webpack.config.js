@@ -72,9 +72,9 @@ module.exports = function ( options ) {
             ],
             extensions: ['.js', '.jsx', 'css' ],
             alias: {
-                'react': 'preact-compat',
-                'react-dom': 'preact-compat',
-                'create-react-class': 'preact-compat/lib/create-react-class',
+                //'react': 'preact-compat',
+                //'react-dom': 'preact-compat',
+                //'create-react-class': 'preact-compat/lib/create-react-class',
                 'glamorous': 'glamorous/dist/glamorous.es.tiny.js',
                 //application aliases
                 components: pathAppTo( 'components' ),

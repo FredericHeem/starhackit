@@ -16,12 +16,12 @@ describe('Router', function () {
     });
     it('/app/profile not authenticated', async () => {
         const router = Router(context);
-        expect(router.resolve('/app/profile')).to.be.rejectedWith(Error);
+        expect(router.resolve('/profile')).to.be.rejectedWith(Error);
     });
     it('/app/profile authenticated', async () => {
         const router = Router(context);
         context.parts.auth.stores().auth.authenticated = true;
-        const route = await router.resolve('/app/profile');
+        const route = await router.resolve('/profile');
         assert.equal(route.title, "My Profile")
     });
 });

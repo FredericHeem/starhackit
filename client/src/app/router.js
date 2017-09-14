@@ -14,6 +14,13 @@ export default context => {
     } 
   }
 
+  function createPart(partName, partCreate, routerContext){
+    const part = partCreate.default(context);
+    context.parts[partName] = part;
+    routerContext.route.children = part.routes();
+    return routerContext.next();
+  }
+
   const { parts } = context;
   const routes = {
     path: "/",
@@ -37,20 +44,20 @@ export default context => {
       ...parts.hello.routes(),
       {
         path: "/profile",
+        children: [],
         load: async (routerContext) => {
           isAuthenticated(routerContext)
           const partCreate = await import("./parts/profile/profileModule")
-          const part = partCreate.default(context);
-          routerContext.route.children = part.routes()
+          return createPart("profile", partCreate, routerContext);
         }
       },
       {
-        path: "/admin",
+        path: "/users",
+        children: [],
         load: async (routerContext) => {
           isAuthenticated(routerContext)
-          const partCreate = await import("./parts/admin/adminModule")
-          const part = partCreate.default(context);
-          routerContext.route.children = part.routes()
+          const partCreate = await import("./parts/admin/adminModule");
+          return createPart("admin", partCreate, routerContext);
         }
       }
     ]

@@ -37,7 +37,7 @@ export default function (context) {
                 action: () => users.store.selectPage(1)
             },
             {
-                path: "/users/:userId",
+                path: "/:userId",
                 component: () => ({
                     title: "User",
                     component: h(user(context), { store: stores.user }),

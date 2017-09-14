@@ -14,6 +14,13 @@ export default context => {
     } 
   }
 
+  function createPart(partName, partCreate, routerContext){
+    const part = partCreate.default(context);
+    context.parts[partName] = part;
+    routerContext.route.children = part.routes();
+    return routerContext.next();
+  }
+
   const { parts } = context;
   const routes = {
     path: "/",
@@ -22,28 +29,36 @@ export default context => {
         path: "/",
         component: () => ({
           title: "Home",
-          component: h(AsyncView, { getModule:() => System.import("./parts/landing/landingScreen")})
+          component: h(AsyncView, { getModule:() => import("./parts/landing/landingScreen")})
         })
       },
       {
         path: "/guide",
         component: () => ({
           title: "Component Guide",
-          component: h(AsyncView, { getModule:() => System.import("components/componentGuide")})
+          component: h(AsyncView, { getModule:() => import("./components/componentGuide")})
         })
       },
       ...parts.auth.routes(),
       ...parts.db.routes(),
       ...parts.hello.routes(),
       {
-        path: "/app",
-        children: parts.profile.routes(),
-        action: isAuthenticated
+        path: "/profile",
+        children: [],
+        load: async (routerContext) => {
+          isAuthenticated(routerContext)
+          const partCreate = await import("./parts/profile/profileModule")
+          return createPart("profile", partCreate, routerContext);
+        }
       },
       {
-        path: "/",
-        children: parts.admin.routes(),
-        action: isAuthenticated
+        path: "/users",
+        children: [],
+        load: async (routerContext) => {
+          isAuthenticated(routerContext)
+          const partCreate = await import("./parts/admin/adminModule");
+          return createPart("admin", partCreate, routerContext);
+        }
       }
     ]
   };
@@ -54,7 +69,7 @@ export default context => {
       //console.log("resolveRoute ", routerContext, params);
 
       if (typeof route.load === "function") {
-        return route.load();
+        return route.load(routerContext);
       }
       if (typeof route.action === "function") {
         route.action(routerContext, params);

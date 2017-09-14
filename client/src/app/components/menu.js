@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import glamorous from "glamorous";
 import button from "mdlean/lib/button";
 
@@ -18,7 +18,7 @@ export default context => {
           text: "DB SCHEMA"
         },
         {
-          route: "/app/profile",
+          route: "/profile",
           text: "PROFILE"
         },
         {

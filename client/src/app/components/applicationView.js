@@ -50,7 +50,7 @@ export default context => {
         </AppView>
         {themeStore.open &&
           <AsyncView
-            getModule={() => System.import("../parts/theme/ThemeView")}
+            getModule={() => import("parts/theme/ThemeView")}
           />}
       </AppRoot>
     );

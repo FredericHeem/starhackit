@@ -1,3 +1,5 @@
+dist/
+.fusebox
 .idea
 .vagrant
 reports

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import map from 'lodash/map';
 import React, {createElement as h} from 'react';
 import {observer} from 'mobx-react';
 import spinner from 'components/spinner';
@@ -36,7 +36,7 @@ export default context => {
   }
 
   function TableItem({ table, tableName }) {
-    const columns = _.map(table.columns, (column, columnName) => (
+    const columns = map(table.columns, (column, columnName) => (
       <ColumnItem key={columnName} column={column} columnName={columnName} />
     ));
     return (
@@ -62,7 +62,7 @@ export default context => {
         <p>{data && data.message}</p>
         <DbTables>
           {data &&
-            _.map(data.tables, (table, tableName) => (
+            map(data.tables, (table, tableName) => (
               <TableItem key={tableName} table={table} tableName={tableName} />
             ))}
         </DbTables>

@@ -15,9 +15,10 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    const nextPath = parse(window.location.search.slice(1)).nextPath || "/app/profile";
+    const nextPath = parse(window.location.search.slice(1)).nextPath || "/profile";
     context.history.push(nextPath);
   }
+
   function Stores() {
     const authStore = observable({
       authenticated: false,
@@ -202,7 +203,7 @@ export default function(context) {
           component: (
             <AsyncView
               store={stores.login}
-              getModule={() => System.import("./views/loginView")}
+              getModule={() => import("./views/loginView")}
             />
           )
         })
@@ -214,7 +215,7 @@ export default function(context) {
           component: (
             <AsyncView
               store={stores.register}
-              getModule={() => System.import("./views/registerView")}
+              getModule={() => import("./views/registerView")}
             />
           )
         })
@@ -234,7 +235,7 @@ export default function(context) {
           component: (
             <AsyncView
               store={stores.forgotPassword}
-              getModule={() => System.import("./views/forgotView")}
+              getModule={() => import("./views/forgotView")}
             />
           )
         })

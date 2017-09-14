@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import each from 'lodash/each';
 import formatter from '../formatter';
 import {
   assert
@@ -19,8 +19,8 @@ describe.skip('Formatter', function () {
       assert.equal(fmt.money("1000", "EUR"), "1 000,00 €")
     });
     it('all locales', () => {
-      _.each(moneyFixtures.default, (fixtures, locale) => {
-        _.each(fixtures, fixture => {
+      each(moneyFixtures.default, (fixtures, locale) => {
+        each(fixtures, fixture => {
           const [amount, currency, result] = fixture;
           assert.equal(formatter(locale).money(amount, currency), result);
         })
@@ -32,8 +32,8 @@ describe.skip('Formatter', function () {
       assert.equal(formatter('en').dateTime('2016-08-02'), "Aug 2, 2016")
     });
     it('all locales', () => {
-      _.each(dateFixtures.default, (fixtures, locale) => {
-        _.each(fixtures, fixture => {
+      each(dateFixtures.default, (fixtures, locale) => {
+        each(fixtures, fixture => {
           const [dateISO, result] = fixture;
           assert.equal(formatter(locale).dateTime(dateISO), result);
         })

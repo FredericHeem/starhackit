@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import input from "./input";
 import glamorous from "glamorous";
 import paper from "components/Paper";

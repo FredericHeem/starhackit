@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import glamorous from "glamorous";
 import button from "mdlean/lib/button";
 import paper from "components/Paper";

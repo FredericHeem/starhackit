@@ -15,7 +15,7 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    const nextPath = parse(window.location.search).nextPath || "/app/profile";
+    const nextPath = parse(window.location.search.slice(1)).nextPath || "/app/profile";
     context.history.push(nextPath);
   }
   function Stores() {

@@ -1,5 +1,5 @@
 import React, { createElement as h } from "react";
-import { parse } from "query-string";
+import { parse } from "qs";
 import { observable, action } from "mobx";
 import validate from "validate.js";
 import logoutView from "./views/logoutView";
@@ -15,7 +15,7 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    const nextPath = parse(window.location.search).nextPath || "/app/profile";
+    const nextPath = parse(window.location.search.slice(1)).nextPath || "/app/profile";
     context.history.push(nextPath);
   }
   function Stores() {

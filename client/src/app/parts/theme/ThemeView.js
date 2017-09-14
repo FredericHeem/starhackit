@@ -5,8 +5,6 @@ import glamorous from "glamorous";
 import ColorPicker from "react-color/lib/components/photoshop/Photoshop";
 import deepForceUpdate from "preact-deep-force-update";
 
-const { Div } = glamorous;
-
 export default context => {
   const { theme } = context;
   const { palette } = theme;
@@ -14,8 +12,8 @@ export default context => {
 
   const store = observable({
     showPicker: false,
-    colorValue: '',
-    colorName: ''
+    colorValue: "",
+    colorName: ""
   });
   const ColorListView = glamorous("div")({
     width: 300
@@ -57,11 +55,11 @@ export default context => {
   function onShowPicker(colorName) {
     console.log("onShowPicker ", colorName);
     store.colorName = colorName;
-    store.colorValue = palette[colorName]
+    store.colorValue = palette[colorName];
     store.showPicker = true;
   }
 
-  function onCancelColor(){
+  function onCancelColor() {
     store.showPicker = false;
   }
   function ColorRow({ colorName }) {
@@ -82,14 +80,17 @@ export default context => {
       </ColorRowView>
     );
   }
+  const ColorGroupTextView = glamorous("div")({
+    flex: 1,
+    flexDirection: "column",
+    border: `1px dotted grey`,
+    margin: 10
+  });
+
   function ColorGroupText({ colorName, display }) {
+    console.log("ColorGroupText ", colorName, display);
     return (
-      <Div
-        flex={1}
-        flexDirection="column"
-        border={`1px dotted grey`}
-        margin="10"
-      >
+      <ColorGroupTextView>
         <ColorTextView onClick={() => onShowPicker(colorName)}>
           <Color css={{ background: palette[colorName] }} />
           <strong>{display}</strong>
@@ -108,7 +109,7 @@ export default context => {
           />
           <strong>{`${display} On Secondary`}</strong>
         </ColorTextView>
-      </Div>
+      </ColorGroupTextView>
     );
   }
   const colors = ["background", "borderColor"];
@@ -118,20 +119,20 @@ export default context => {
     //console.log("ThemeView: colorValue ", store.colorValue);
     return (
       <div className="theme-view">
-        {store.showPicker &&
+        {store.showPicker && (
           <ColorPicker
             color={store.colorValue}
             header={store.colorName}
             onChange={event => onChangeColor(event)}
             onAccept={event => onAcceptColor(event)}
             onCancel={event => onCancelColor(event)}
-          />}
+          />
+        )}
         <ColorGroupLightDark colorName="primary" display="Primary" />
         <ColorGroupLightDark colorName="accent" display="Accent" />
         <ColorGroupText colorName="textPrimary" display="Text Primary" />
         <ColorGroupText colorName="textSecondary" display="Text Secondary" />
         <ColorListView>
-
           {colors.map((color, key) => <ColorRow colorName={color} key={key} />)}
         </ColorListView>
       </div>

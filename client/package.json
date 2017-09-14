@@ -36,8 +36,8 @@
   "dependencies": {
     "axios": "0.16.2",
     "debug": "2.6.8",
-    "glamor": "2.20.39",
-    "glamorous": "4.1.0",
+    "glamor": "2.20.40",
+    "glamorous": "4.8.0",
     "history": "4.6.3",
     "i18next": "8.4.3",
     "i18next-browser-languagedetector": "2.0.0",
@@ -49,12 +49,11 @@
     "mobx": "3.2.2",
     "mobx-react": "4.2.2",
     "preact": "8.2.1",
-    "preact-async-route": "2.0.0",
     "preact-compat": "3.17.0",
     "preact-deep-force-update": "0.1.0",
     "prop-types": "15.5.10",
     "qs": "6.5.0",
-    "react-color": "2.13.4",
+    "react-color": "2.13.8",
     "react-pagify": "2.3.0",
     "reactabular-table": "8.9.0",
     "segmentize": "0.4.1",
@@ -128,7 +127,8 @@
     "webpack-bundle-size-analyzer": "2.7.0",
     "webpack-dashboard": "0.4.0",
     "webpack-dev-server": "2.6.1",
-    "webpack-hud": "0.1.1"
+    "webpack-hud": "0.1.1",
+    "xhr-eval-chunk-webpack-plugin": "0.0.4"
   },
   "engines": {
     "node": ">4.x",

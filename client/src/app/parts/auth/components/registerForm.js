@@ -56,7 +56,6 @@ export default context => {
             accent
             raised
             css={{ width: 256 }}
-            loading={store.op.loading}
             onClick={() => store.register()}
             label={tr.t('Create Account')}
           />

@@ -1,6 +1,6 @@
 import React, { createElement as h } from "react";
 import { render } from "react-dom";
-import Qs from "qs";
+import { parse } from "qs";
 import Router from "./router";
 import appView from "components/applicationView";
 import asyncView from "components/AsyncView";
@@ -20,7 +20,7 @@ export default context => {
     try {
       route = await Router(context).resolve({
         path: location.pathname,
-        query: Qs.parse(location.search)
+        query: parse(location.search)
       });
       console.log("onLocationChange match route ", route);
       component = route.component;

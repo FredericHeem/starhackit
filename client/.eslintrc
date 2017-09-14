@@ -17,19 +17,6 @@
     "globals": {
         "require": true
     },
-    "ecmaFeatures": {
-        "arrowFunctions": true,
-        "blockBindings": true,
-        "classes": true,
-        "defaultParams": true,
-        "destructuring": true,
-        "forOf": true,
-        "generators": true,
-        "modules": true,
-        "spread": true,
-        "templateStrings": true,
-        "jsx": true
-    },
     "rules": {
         "global-require": 0,
         "no-debugger": 0,

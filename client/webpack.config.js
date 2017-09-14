@@ -5,6 +5,8 @@ var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+var XhrEvalChunkPlugin = require('xhr-eval-chunk-webpack-plugin').default;
+
 var pkg = require('./package.json');
 
 var pathAppTo;
@@ -38,7 +40,7 @@ module.exports = function ( options ) {
             filename: '[name].js'
         },
         plugins: [
-            //new ExtractTextPlugin('[name].[chunkhash].css'),
+            new XhrEvalChunkPlugin(),
             new HtmlWebpackPlugin({
               template: 'src/index.ejs',
               title: pkg.title,
@@ -69,9 +71,9 @@ module.exports = function ( options ) {
             ],
             extensions: ['.js', '.jsx', 'css' ],
             alias: {
-                //'react': 'preact-compat',
-                //'react-dom': 'preact-compat',
-                //'create-react-class': 'preact-compat/lib/create-react-class',
+                'react': 'preact-compat',
+                'react-dom': 'preact-compat',
+                'create-react-class': 'preact-compat/lib/create-react-class',
                 'glamorous': 'glamorous/dist/glamorous.es.tiny.js',
                 //application aliases
                 components: pathAppTo( 'components' ),

@@ -55,9 +55,6 @@
     "prop-types": "15.5.10",
     "qs": "6.5.0",
     "react-color": "2.13.4",
-    "react": "16.0.0-rc.2",
-    "react-color": "2.13.8",
-    "react-dom": "16.0.0-rc.2",
     "react-pagify": "2.3.0",
     "reactabular-table": "8.9.0",
     "segmentize": "0.4.1",
@@ -136,7 +133,8 @@
     "webpack-bundle-size-analyzer": "2.7.0",
     "webpack-dashboard": "0.4.0",
     "webpack-dev-server": "2.6.1",
-    "webpack-hud": "0.1.1"
+    "webpack-hud": "0.1.1",
+    "xhr-eval-chunk-webpack-plugin": "0.0.4"
   },
   "engines": {
     "node": ">4.x",

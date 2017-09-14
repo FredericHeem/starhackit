@@ -15,8 +15,7 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    // TODO Add redirect in config
-    const nextPath = parse(window.location.search).nextPath || "/profile";
+    const nextPath = parse(window.location.search.slice(1)).nextPath || "/app/profile";
     context.history.push(nextPath);
   }
 

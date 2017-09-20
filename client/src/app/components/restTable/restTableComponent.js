@@ -53,7 +53,8 @@ export default (context, store, {columns}) => {
 
             <Paginator.Ellipsis
               className="ellipsis"
-              previousField="beginPages" nextField="previousPages"
+              previousField="beginPages"
+              nextField="previousPages"
             />
 
             <Paginator.Segment field="previousPages" />
@@ -62,7 +63,8 @@ export default (context, store, {columns}) => {
 
             <Paginator.Ellipsis
               className="ellipsis"
-              previousField="nextPages" nextField="endPages"
+              previousField="nextPages"
+              nextField="endPages"
             />
 
             <Paginator.Segment field="endPages" />

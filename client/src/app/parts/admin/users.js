@@ -18,7 +18,8 @@ export default function (context, {getAll, selectOne}) {
             <RestTable.view
               onRow={row => ({
               onClick: () => selectOne(row.id)
-            })} rowKey='id'
+            })}
+              rowKey='id'
             />
           </Panel.Body>
         </Panel.Panel>

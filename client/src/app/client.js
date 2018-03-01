@@ -23,7 +23,7 @@ export default context => {
         query: parse(location.search)
       });
       console.log("onLocationChange match route ", route);
-      component = route.component;
+      component = route.component; // eslint-disable-line prefer-destructuring
     } catch (error) {
       console.log("Routing exception:", error.status);
       if (error.status === 404) {

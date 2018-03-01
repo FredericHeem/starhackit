@@ -1,9 +1,9 @@
 import React from "react";
-import AsyncRoute from "components/AsyncRoute";
+import createAsyncRoute from "components/AsyncRoute";
 
 export default context => {
   const { tr } = context;
-
+  const AsyncRoute = createAsyncRoute(context);
   return function AsyncView({ getModule, ...rest }) {
     return (
       <AsyncRoute
@@ -12,7 +12,7 @@ export default context => {
         loading={() =>
           (<div>
             {tr.t("Loading")}
-          </div>)}
+           </div>)}
       />
     );
   };

@@ -6,6 +6,7 @@ import CoreModule from "./parts/core/coreModule";
 import DbModule from "./parts/db/dbModule";
 import ThemeModule from "./parts/theme/themeModule";
 import HelloModule from "./parts/hello/helloModule";
+import ProfileModule from "./parts/profile/profileModule";
 
 import Debug from "debug";
 
@@ -26,7 +27,8 @@ export default function({ language = "en" }) {
     auth: AuthModule(context),
     core: CoreModule(context),
     db: DbModule(context),
-    hello: HelloModule(context)
+    hello: HelloModule(context),
+    profile: ProfileModule(context)
   };
   context.parts = parts;
 

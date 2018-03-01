@@ -15,7 +15,8 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    const nextPath = parse(window.location.search.slice(1)).nextPath || "/profile";
+    const nextPath =
+      parse(window.location.search.slice(1)).nextPath || "/profile";
     context.history.push(nextPath);
   }
 
@@ -47,7 +48,7 @@ export default function(context) {
           try {
             await rest.get("me");
             authStore.setAuthenticated();
-            const pathname = window.location.pathname;
+            const { pathname } = window.location;
             if (pathname === "/login") {
               // From social login
               redirect();
@@ -244,14 +245,19 @@ export default function(context) {
         path: "/resetPassword/:token",
         component: ({ params } = {}) => ({
           title: "Reset password",
-          component: h(resetPasswordView(context), { store: stores.resetPassword, params })
+          component: h(resetPasswordView(context), {
+            store: stores.resetPassword,
+            params
+          })
         })
       },
       {
         path: "/verifyEmail/:code",
         component: () => ({
           title: "Verify Email",
-          component: h(registrationCompleteView(context), { store: stores.verifyEmailCode }),
+          component: h(registrationCompleteView(context), {
+            store: stores.verifyEmailCode
+          })
         }),
         action: ({ params }) =>
           stores.verifyEmailCode.execute({ code: params.code })

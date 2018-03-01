@@ -7,7 +7,7 @@ if (!window.location.origin) {
 }
 
 export default function(url) {
-    const fullUrl = location.origin + config.apiUrl +  url;
+    const fullUrl = window.location.origin + config.apiUrl +  url;
 
     return fullUrl;
 }

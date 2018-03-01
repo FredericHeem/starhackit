@@ -12,7 +12,7 @@ function createHttpError(payload = {}) {
     return response.statusText;
   }
   function message() {
-    const data = response.data;
+    const {data} = response;
     if (isString(data)) {
       return data;
     } else if (data && isString(data.message)) {

@@ -6,15 +6,15 @@ export default context => {
   const AsyncView = asyncView(context);
 
   function isAuthenticated({ url }) {
-    console.log("isAuthenticated ", url)
+    console.log("isAuthenticated ", url);
     const { authenticated } = context.parts.auth.stores().auth;
     if (!authenticated) {
       setTimeout(() => context.history.push(`/login?nextPath=${url}`), 1);
-      throw new Error({name: 'redirect', status: 302})
-    } 
+      throw new Error({ name: "redirect", status: 302 });
+    }
   }
 
-  function createPart(partName, partCreate, routerContext){
+  function createPart(partName, partCreate, routerContext) {
     const part = partCreate.default(context);
     context.parts[partName] = part;
     routerContext.route.children = part.routes();
@@ -29,14 +29,18 @@ export default context => {
         path: "/",
         component: () => ({
           title: "Home",
-          component: h(AsyncView, { getModule:() => import("./parts/landing/landingScreen")})
+          component: h(AsyncView, {
+            getModule: () => import("./parts/landing/landingScreen")
+          })
         })
       },
       {
         path: "/guide",
         component: () => ({
           title: "Component Guide",
-          component: h(AsyncView, { getModule:() => import("./components/componentGuide")})
+          component: h(AsyncView, {
+            getModule: () => import("./components/componentGuide")
+          })
         })
       },
       ...parts.auth.routes(),
@@ -45,17 +49,17 @@ export default context => {
       {
         path: "/profile",
         children: [],
-        load: async (routerContext) => {
-          isAuthenticated(routerContext)
-          const partCreate = await import("./parts/profile/profileModule")
+        load: async routerContext => {
+          isAuthenticated(routerContext);
+          const partCreate = await import("./parts/profile/profileModule");
           return createPart("profile", partCreate, routerContext);
         }
       },
       {
         path: "/users",
         children: [],
-        load: async (routerContext) => {
-          isAuthenticated(routerContext)
+        load: async routerContext => {
+          isAuthenticated(routerContext);
           const partCreate = await import("./parts/admin/adminModule");
           return createPart("admin", partCreate, routerContext);
         }

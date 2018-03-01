@@ -1,8 +1,8 @@
 import * as React from "react";
 import glamorous from "glamorous";
 
-export default (context) => {
-  const { theme } = context
+export default context => {
+  const { theme } = context;
   const IconView = glamorous("i")({
     color: theme.palette.textColor
   });

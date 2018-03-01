@@ -28,20 +28,17 @@ export default context => {
 
   return function ComponentGuide() {
     //console.log("ComponentGuide")
-    
+
     return (
       <GuideView>
         <Content>
-
           <h1>{tr.t("The component guide.")}</h1>
           <h3>
             {tr.t(
               "A showroom to display components and views with various properties"
             )}
           </h3>
-          <h2>
-            {tr.t("Components")}
-          </h2>
+          <h2>{tr.t("Components")}</h2>
           <ViewContainer>
             {h(buttons(context))}
             {h(inputs(context))}
@@ -49,17 +46,21 @@ export default context => {
             {h(spinners(context))}
             {h(panels(context))}
           </ViewContainer>
-          <h2>
-            {tr.t("Authentication")}
-          </h2>
+          <h2>{tr.t("Authentication")}</h2>
           <ViewContainer>
-            {parts.auth.routes().map(route => h('div', { key: route.path }, route.component().component))}
+            {parts.auth
+              .routes()
+              .map(route =>
+                h("div", { key: route.path }, route.component().component)
+              )}
           </ViewContainer>
-          <h2>
-            {tr.t("Profile")}
-          </h2>
+          <h2>{tr.t("Profile")}</h2>
           <ViewContainer>
-            {parts.profile.routes().map(route => h('div', { key: route.path }, route.component().component))}
+            {parts.profile
+              .routes()
+              .map(route =>
+                h("div", { key: route.path }, route.component().component)
+              )}
           </ViewContainer>
         </Content>
       </GuideView>

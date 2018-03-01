@@ -20,12 +20,14 @@ export default (context, { limit = 10 }) => {
       const { messages } = store;
       console.log("add ", component);
       const message = {
-        id: Math.random().toString(10).split(".")[1],
+        id: Math.random()
+          .toString(10)
+          .split(".")[1],
         component,
         status: "inserting"
       };
       component.attributes.onRemove = () => {
-          store.remove(message.id);
+        store.remove(message.id);
       };
       if (messages.length >= limit) {
         store.remove(messages[0].id);
@@ -75,11 +77,7 @@ export default (context, { limit = 10 }) => {
     const css = animation[message.status];
     const { component } = message;
 
-    return (
-      <AlertView css={css}>
-        {component}
-      </AlertView>
-    );
+    return <AlertView css={css}>{component}</AlertView>;
   });
 
   const AlertsView = glamorous("div")({
@@ -92,9 +90,9 @@ export default (context, { limit = 10 }) => {
   function AlertStack() {
     return (
       <AlertsView>
-        {store.messages.map((message, key) =>
+        {store.messages.map((message, key) => (
           <Alert key={key} message={message} />
-        )}
+        ))}
       </AlertsView>
     );
   }

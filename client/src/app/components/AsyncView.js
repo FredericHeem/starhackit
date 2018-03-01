@@ -9,10 +9,7 @@ export default context => {
       <AsyncRoute
         {...rest}
         getComponent={() => getModule().then(module => module.default(context))}
-        loading={() =>
-          (<div>
-            {tr.t("Loading")}
-           </div>)}
+        loading={() => <div>{tr.t("Loading")}</div>}
       />
     );
   };

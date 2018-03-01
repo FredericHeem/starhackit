@@ -11,7 +11,7 @@ export default context => {
     return (
       <Paper>
         <h3>{tr.t("Spinner")}</h3>
-        
+
         <Spinner />
         <Spinner size={30} />
         <Spinner size={40} color={palette.primary} />

@@ -1,4 +1,4 @@
-import {createElement as h} from 'react';
+import { createElement as h } from "react";
 import createHello from "./Hello";
 
 export default context => {

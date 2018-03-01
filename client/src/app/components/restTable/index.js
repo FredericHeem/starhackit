@@ -1,10 +1,10 @@
-import restTableComponent from './restTableComponent';
-import RestTableStore from './restTableStore';
+import restTableComponent from "./restTableComponent";
+import RestTableStore from "./restTableStore";
 
-export default function(context, {getData, columns}) {
-  const store = RestTableStore(context, {getData})
+export default function(context, { getData, columns }) {
+  const store = RestTableStore(context, { getData });
   return {
     store,
-    view: restTableComponent(context, store, {columns})
-  }
+    view: restTableComponent(context, store, { columns })
+  };
 }

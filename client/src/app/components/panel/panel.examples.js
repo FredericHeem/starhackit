@@ -13,9 +13,7 @@ export default context => {
 
         <Panel.Panel>
           <Panel.Header>{tr.t("Panel Header")}</Panel.Header>
-          <Panel.Body>
-            {tr.t("Panel Body")}
-          </Panel.Body>
+          <Panel.Body>{tr.t("Panel Body")}</Panel.Body>
         </Panel.Panel>
       </Paper>
     );

@@ -4,8 +4,8 @@ export default function() {
   function Stores() {
     const sideBarStore = observable({
       open: false,
-      toogle(){
-        this.open = !this.open
+      toogle() {
+        this.open = !this.open;
       }
     });
     return {

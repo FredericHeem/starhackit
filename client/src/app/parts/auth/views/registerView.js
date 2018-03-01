@@ -1,11 +1,11 @@
-import React, {createElement as h} from 'react';
-import {observer} from 'mobx-react';
-import paper from 'components/Paper';
-import mediaSigninButtons from '../components/mediaSigninButtons';
-import registerForm from '../components/registerForm';
-import alert from 'components/alert';
-import strike from 'components/Strike';
-import page from 'components/Page';
+import React, { createElement as h } from "react";
+import { observer } from "mobx-react";
+import paper from "components/Paper";
+import mediaSigninButtons from "../components/mediaSigninButtons";
+import registerForm from "../components/registerForm";
+import alert from "components/alert";
+import strike from "components/Strike";
+import page from "components/Page";
 
 export default context => {
   const { tr } = context;
@@ -20,7 +20,7 @@ export default context => {
       <div>
         <RegisterForm {...props} />
         {h(strike(context))}
-        
+
         <MediaSigninButtons />
       </div>
     );
@@ -31,20 +31,24 @@ export default context => {
       <Alert.Info
         className="registration-request-complete"
         message={tr.t(
-          'A confirmation email has been sent. Click on the link to verify your email address and activate your account.',
+          "A confirmation email has been sent. Click on the link to verify your email address and activate your account."
         )}
       />
     );
   }
 
-  function RegisterView({store}) {
+  function RegisterView({ store }) {
     const registerSuccess = !!store.op.data;
     return (
       <Page className="register-page text-center">
         <Paper>
-          <h2>{tr.t('Register An Account')}</h2>
-          <p>{tr.t('Create a free account')}</p>
-          {!registerSuccess ? <RegisterFormComponent store={store} /> : <RegisterComplete />}
+          <h2>{tr.t("Register An Account")}</h2>
+          <p>{tr.t("Create a free account")}</p>
+          {!registerSuccess ? (
+            <RegisterFormComponent store={store} />
+          ) : (
+            <RegisterComplete />
+          )}
         </Paper>
       </Page>
     );

@@ -1,11 +1,10 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import button from 'mdlean/lib/button';
-import config from 'config';
 import FbSvg from 'icons/facebook.svg';
 
 export default (context) => {
-  const { tr } = context;
+  const { tr, config } = context;
 
   const socialAuthMap = {
     facebook: {

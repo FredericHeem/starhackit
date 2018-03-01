@@ -5,7 +5,7 @@ import theme from "./theme";
 import formatter from "utils/formatter";
 import alertStackCreate from 'components/alertStack';
 
-import config from 'config';
+import config from './config';
 
 export default ({ language = "en" }) => {
   const context = {

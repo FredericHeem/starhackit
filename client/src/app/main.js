@@ -1,7 +1,7 @@
 import I18n from 'utils/i18n';
 import App from './app';
 import Debug from 'debug';
-import config from 'config';
+import config from './config';
 import Log from 'utils/log';
 
 Log({ enable: config.debug.log });

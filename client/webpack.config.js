@@ -82,7 +82,6 @@ module.exports = function ( options ) {
                 parts: pathAppTo( 'parts' ),
                 assets: pathTo( 'assets' ),
                 icons: pathAppTo( 'icons' ),
-                config: pathAppTo( 'config.js' )
             }
         },
         module: {

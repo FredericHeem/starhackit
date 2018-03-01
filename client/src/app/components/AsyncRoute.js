@@ -1,7 +1,7 @@
 // https://github.com/prateekbh/preact-async-route/blob/master/src/index.js
-import { createElement as h, Component } from "react";
+import React, { createElement as h, Component } from "react";
 
-class AsyncRoute extends Component {
+export default ({tr}) => class AsyncRoute extends Component {
   constructor() {
     super();
     this.state = {
@@ -65,7 +65,9 @@ class AsyncRoute extends Component {
     }
   }
   render() {
-    if (this.state.componentData) {
+    if(this.state.error){
+      return <div>{tr.t("Error loading component")}</div>
+    } else if (this.state.componentData) {
       return h(this.state.componentData, this.props);
     } else if (this.props.loading) {
       const loadingComponent = this.props.loading();
@@ -74,5 +76,3 @@ class AsyncRoute extends Component {
     return null;
   }
 }
-
-export default AsyncRoute;

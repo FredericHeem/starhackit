@@ -75,6 +75,8 @@
         "no-underscore-dangle": 0,
         "padded-blocks": 0,
         "prefer-arrow-callback": 0,
-        "max-len": 0
+        "max-len": 0,
+        "function-paren-newline": 0,
+        "object-curly-newline": 0
     }
 }

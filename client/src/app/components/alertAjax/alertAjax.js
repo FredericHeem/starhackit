@@ -20,10 +20,7 @@ export default context => {
     if (![401, 422].includes(status)) {
       return null;
     }
-    let message = get(error, "response.data.error.message");
-    if (!message) {
-      message = error.message;
-    }
+    const message = get(error, "response.data.error.message", error.message);
 
     return <Alert.Danger className={className} message={message} />;
   }

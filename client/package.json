@@ -10,7 +10,7 @@
     "start": "webpack-dev-server --config webpack.dev.js",
     "start:prod": "http-server build/",
     "prestart": "npm run prebuild",
-    "lint": "eslint src --ext .js --ext .jsx --fix",
+    "lint": "eslint src --ext .js --ext .jsx",
     "cpd": "jscpd",
     "prebuild": "npm run lint && npm run cpd",
     "build": "webpack --config webpack.prod.js --progress",

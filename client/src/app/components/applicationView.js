@@ -1,4 +1,4 @@
-import React, {createElement as h} from "react";
+import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import glamorous from "glamorous";
 import navBar from "./navbar";
@@ -16,13 +16,13 @@ export default context => {
 
   const AppRoot = glamorous("div")({
     display: "flex",
-    minHeight: '100vh'
+    minHeight: "100vh"
   });
 
   const AppView = glamorous("div")(() => ({
     flex: "1 1 auto",
     display: "flex",
-    flexDirection: 'column',
+    flexDirection: "column",
     overflow: "auto",
     color: palette.textPrimary
   }));
@@ -43,15 +43,12 @@ export default context => {
       <AppRoot>
         <AppView>
           <NavBar authenticated={authStore.authenticated} />
-          <MainView>
-            {children}
-          </MainView>
+          <MainView>{children}</MainView>
           <Footer version={version} />
         </AppView>
-        {themeStore.open &&
-          <AsyncView
-            getModule={() => import("parts/theme/ThemeView")}
-          />}
+        {themeStore.open && (
+          <AsyncView getModule={() => import("parts/theme/ThemeView")} />
+        )}
       </AppRoot>
     );
   }

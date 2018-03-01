@@ -1,14 +1,14 @@
 import * as React from "react";
 import glamorous from "glamorous";
 import drawer from "mdlean/lib/drawer";
-import {observable, action} from "mobx";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import menu from "./menu";
 import button from "mdlean/lib/button";
 
 export default context => {
   const { tr, theme, parts, config } = context;
-  const {palette} = theme;
+  const { palette } = theme;
   const Drawer = drawer(context);
   const Menu = menu(context);
   const store = observable({
@@ -80,8 +80,8 @@ export default context => {
     );
   }
 
-  function themeSideBar(){
-    parts.theme.stores().sideBar.toogle()
+  function themeSideBar() {
+    parts.theme.stores().sideBar.toogle();
     store.toggle();
   }
 

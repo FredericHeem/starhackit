@@ -1,8 +1,8 @@
-import React from 'react';
-import glamorous from 'glamorous';
-import fontIcon from 'components/FontIcon';
+import React from "react";
+import glamorous from "glamorous";
+import fontIcon from "components/FontIcon";
 
-export default (context) => {
+export default context => {
   const { theme } = context;
   const { palette } = theme;
   const FontIcon = fontIcon(context);
@@ -22,31 +22,31 @@ export default (context) => {
     );
   }
 
-  const CardView = glamorous('div')(() => ({
-    width: '150',
+  const CardView = glamorous("div")(() => ({
+    width: "150",
     flexGrow: 1,
     flexShrink: 0,
-    flexBasis: '150',
+    flexBasis: "150",
     padding: 10,
     margin: 10,
-    boxShadow: `2px 2px 2px 2px ${palette.borderColor}`,
+    boxShadow: `2px 2px 2px 2px ${palette.borderColor}`
   }));
 
-  const CardContainer = glamorous('div')({
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignContent: 'space-between',
-    alignItems: 'center',
+  const CardContainer = glamorous("div")({
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignContent: "space-between",
+    alignItems: "center"
   });
 
-  const CardItem = glamorous('div')({
+  const CardItem = glamorous("div")({
     order: 0,
-    flex: '0 1 auto',
-    boxSizing: 'border-box',
-    maxWidth: '100%',
+    flex: "0 1 auto",
+    boxSizing: "border-box",
+    maxWidth: "100%"
   });
 
   function Card({ title, text, icon, img, height, width }) {
@@ -54,11 +54,14 @@ export default (context) => {
       <CardView className="grow">
         <CardContainer>
           <CardItem>
-            <h2>{title}</h2><p>{text}</p>
+            <h2>{title}</h2>
+            <p>{text}</p>
           </CardItem>
           <CardItem>
             {icon && <MediaIcon icon={icon} />}
-            {img && <MediaImg title={title} img={img} height={height} width={width} />}
+            {img && (
+              <MediaImg title={title} img={img} height={height} width={width} />
+            )}
           </CardItem>
         </CardContainer>
       </CardView>

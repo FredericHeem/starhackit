@@ -12,5 +12,5 @@ if (!window.Promise) {
 }
 */
 //TODO
-import main from './main';
+import main from "./main";
 main();

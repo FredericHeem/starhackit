@@ -1,13 +1,9 @@
-
-
-function Containers(/*context*/){
-    return {
-    }
+function Containers(/*context*/) {
+  return {};
 }
 
-export default function({context}) {
-
+export default function({ context }) {
   return {
-    containers: Containers(context),
-  }
+    containers: Containers(context)
+  };
 }

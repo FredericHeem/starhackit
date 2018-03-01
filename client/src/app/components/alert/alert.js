@@ -5,7 +5,7 @@ export default ({ tr }) => {
   const AlertView = glamorous("div")({
     display: "flex",
     alignItems: "center",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     padding: 20,
     margin: 10,
     fontWeight: 500,
@@ -36,14 +36,16 @@ export default ({ tr }) => {
   });
 
   function CloseIcon({ onClick }) {
-    return (
-      <CloseIconView onClick={onClick}>
-        {"\u2716"}
-      </CloseIconView>
-    );
+    return <CloseIconView onClick={onClick}>{"\u2716"}</CloseIconView>;
   }
   function createAlert(AlertView) {
-    return function Alert({ name, message, code, onRemove, className = 'alert' }) {
+    return function Alert({
+      name,
+      message,
+      code,
+      onRemove,
+      className = "alert"
+    }) {
       return (
         <AlertView className={className} role="alert">
           <div>

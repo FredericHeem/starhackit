@@ -1,11 +1,11 @@
-import React, {createElement as h} from 'react';
+import React, { createElement as h } from "react";
 
-import button from 'mdlean/lib/button';
-import mediaSigninButtons from '../components/mediaSigninButtons';
-import localLoginForm from '../components/localLoginForm';
-import paper from 'components/Paper';
-import strike from 'components/Strike';
-import page from 'components/Page';
+import button from "mdlean/lib/button";
+import mediaSigninButtons from "../components/mediaSigninButtons";
+import localLoginForm from "../components/localLoginForm";
+import paper from "components/Paper";
+import strike from "components/Strike";
+import page from "components/Page";
 
 export default context => {
   const { tr, history } = context;
@@ -18,13 +18,16 @@ export default context => {
     return (
       <Page className="login-page text-center">
         <Paper>
-          <h2>{tr.t('Login')}</h2>
+          <h2>{tr.t("Login")}</h2>
           <div>
             <LocalLoginForm {...props} />
             {h(strike(context))}
             <MediaSigninButtons />
             {h(strike(context))}
-            <Button label={tr.t('Forgot Password')} onClick={() => history.push(`/forgot`)} />
+            <Button
+              label={tr.t("Forgot Password")}
+              onClick={() => history.push(`/forgot`)}
+            />
           </div>
         </Paper>
       </Page>

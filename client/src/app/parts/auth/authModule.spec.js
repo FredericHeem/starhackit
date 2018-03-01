@@ -1,3 +1,1 @@
-
-describe.skip('Auth', function() {
-});
+describe.skip("Auth", function() {});

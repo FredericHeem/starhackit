@@ -5,8 +5,8 @@ import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "components/input";
 
-export default (context) => {
-  const {tr} = context;
+export default context => {
+  const { tr } = context;
   const FormGroup = formGroup(context);
   const UserNameInput = input(context);
   const PasswordInput = input(context);
@@ -41,7 +41,7 @@ export default (context) => {
         </FormGroup>
         <FormGroup>
           <SubmitButton
-            className='btn-login'
+            className="btn-login"
             accent
             raised
             css={{ width: 256 }}

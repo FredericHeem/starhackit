@@ -1,4 +1,3 @@
-
 export default {
   username: {
     presence: true,
@@ -29,4 +28,4 @@ export default {
       message: "must be at least 6 characters"
     }
   }
-}
+};

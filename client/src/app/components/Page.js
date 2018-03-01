@@ -1,6 +1,7 @@
-import glamorous from 'glamorous';
+import glamorous from "glamorous";
 
-export default () => glamorous('div')({
-  maxWidth: 600,
-  width: '100%'
-});
+export default () =>
+  glamorous("div")({
+    maxWidth: 600,
+    width: "100%"
+  });

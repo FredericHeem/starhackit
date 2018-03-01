@@ -1,20 +1,20 @@
-import map from 'lodash/map';
-import React, {createElement as h} from 'react';
-import {observer} from 'mobx-react';
-import spinner from 'components/spinner';
-import glamorous from 'glamorous';
+import map from "lodash/map";
+import React, { createElement as h } from "react";
+import { observer } from "mobx-react";
+import spinner from "components/spinner";
+import glamorous from "glamorous";
 
 export default context => {
   const { tr } = context;
-  const Panel = require('components/panel').default(context);
+  const Panel = require("components/panel").default(context);
 
-  const DbTables = glamorous('div')({
+  const DbTables = glamorous("div")({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "flex-start",
     alignContent: "stretch",
     alignItems: "stretch"
-  })
+  });
 
   const DbPanel = glamorous(Panel.Panel)({
     flexGrow: "1",
@@ -24,12 +24,14 @@ export default context => {
     maxHeight: "300px",
     overflowY: "auto",
     overflowX: "hidden"
-  })
+  });
 
   function ColumnItem({ column, columnName }) {
     return (
       <tr key={columnName}>
-        <td><em>{`${column.column_name}: `}</em></td>
+        <td>
+          <em>{`${column.column_name}: `}</em>
+        </td>
         <td>{`${column.data_type}`}</td>
       </tr>
     );
@@ -44,9 +46,7 @@ export default context => {
         <Panel.Header>{tableName}</Panel.Header>
         <Panel.Body>
           <table className="table">
-            <tbody>
-              {columns}
-            </tbody>
+            <tbody>{columns}</tbody>
           </table>
         </Panel.Body>
       </DbPanel>
@@ -54,10 +54,10 @@ export default context => {
   }
 
   function SchemaComponent({ store }) {
-    const {loading, data} = store.opGet;
+    const { loading, data } = store.opGet;
     return (
       <div>
-        <h3>{tr.t('Tables')}</h3>
+        <h3>{tr.t("Tables")}</h3>
         {loading && h(spinner(context))}
         <p>{data && data.message}</p>
         <DbTables>

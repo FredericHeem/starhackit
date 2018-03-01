@@ -1,16 +1,16 @@
-import I18n from 'utils/i18n';
-import App from './app';
-import Debug from 'debug';
-import config from './config';
-import Log from 'utils/log';
+import I18n from "utils/i18n";
+import App from "./app";
+import Debug from "debug";
+import config from "./config";
+import Log from "utils/log";
 
 Log({ enable: config.debug.log });
 
-const debug = new Debug('app.entry');
+const debug = new Debug("app.entry");
 
 function hideLoading() {
-  const loadingEl = document.getElementById('loading');
-  loadingEl.classList.add('m-fadeOut');
+  const loadingEl = document.getElementById("loading");
+  loadingEl.classList.add("m-fadeOut");
 }
 
 async function run() {
@@ -23,7 +23,7 @@ async function run() {
     hideLoading();
     app.render();
   } catch (e) {
-    debug('Error in app:', e);
+    debug("Error in app:", e);
     throw e;
   }
 }

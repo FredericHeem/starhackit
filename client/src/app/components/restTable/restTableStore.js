@@ -1,10 +1,8 @@
-
-import {observable, action} from "mobx";
-import Debug from 'debug';
+import { observable, action } from "mobx";
+import Debug from "debug";
 const debug = new Debug("restTableStore");
 
-export default (context, {getData}) => {
-
+export default (context, { getData }) => {
   const store = observable({
     loading: false,
     count: 0,
@@ -14,11 +12,11 @@ export default (context, {getData}) => {
       page: 1,
       perPage: 100
     },
-    setData(data){
+    setData(data) {
       this.data = data;
     },
-    selectPage: action(async function (page) {
-      debug('onSelectPage ', page);
+    selectPage: action(async function(page) {
+      debug("onSelectPage ", page);
       if (page <= 0) {
         return;
       }
@@ -29,19 +27,19 @@ export default (context, {getData}) => {
         const result = await getData({
           offset: this.pagination.perPage * (page - 1),
           limit: this.pagination.perPage
-        })
-        debug("onSelectPage length ", result.data.length)
+        });
+        debug("onSelectPage length ", result.data.length);
         this.pagination.page = page;
         this.count = result.count;
         this.data = result.data;
         this.loading = false;
       } catch (error) {
-        debug('onSelectPage error ', error);
+        debug("onSelectPage error ", error);
         this.error = error;
         this.loading = false;
       }
-    }),
-  })
+    })
+  });
 
   return store;
-}
+};

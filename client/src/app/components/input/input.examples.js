@@ -9,8 +9,7 @@ export default context => {
   const InputEmpty = input(context);
   const InputWithValue = input(context);
   const InputDisabled = input(context);
-  const InputExamplesView = glamorous(Paper)({
-  });
+  const InputExamplesView = glamorous(Paper)({});
   const ListView = glamorous("div")({
     "> div": {
       marginBottom: 30

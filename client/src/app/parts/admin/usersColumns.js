@@ -1,36 +1,39 @@
-
-export default function({tr, formatter}){
+export default function({ tr, formatter }) {
   return [
     {
-      property: 'id',
+      property: "id",
       header: {
-        label: tr.t('Id')
+        label: tr.t("Id")
       }
-    }, {
-      property: 'username',
+    },
+    {
+      property: "username",
       header: {
         label: tr.t("Username")
       }
-    }, {
-      property: 'firstName',
+    },
+    {
+      property: "firstName",
       header: {
-        label: tr.t('First Name')
+        label: tr.t("First Name")
       }
-    }, {
-      property: 'createdAt',
+    },
+    {
+      property: "createdAt",
       header: {
-        label: tr.t('Created At')
+        label: tr.t("Created At")
       },
       cell: {
-        formatters:[date => formatter.dateTime(date)]
+        formatters: [date => formatter.dateTime(date)]
       }
-    }, {
-      property: 'updatedAt',
+    },
+    {
+      property: "updatedAt",
       header: {
         label: tr.t("Updated At")
       },
       cell: {
-        formatters:[date => formatter.dateTime(date)]
+        formatters: [date => formatter.dateTime(date)]
       }
     }
   ];

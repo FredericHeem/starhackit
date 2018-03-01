@@ -12,12 +12,12 @@ export default async context => {
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
-  const Section = glamorous('section')(() => ({
+  const Section = glamorous("section")(() => ({
     borderTop: `1px solid ${palette.borderColor}`,
     paddingBottom: 30
   }));
 
-  const HeaderView = glamorous('section')({
+  const HeaderView = glamorous("section")({
     padding: 20
   });
 
@@ -33,7 +33,9 @@ export default async context => {
           raised
           label="Clone the code on GitHub"
           href="https://github.com/FredericHeem/starhackit"
-          icon={<img src={require('icons/github.svg')} width={20} alt="github" />}
+          icon={
+            <img src={require("icons/github.svg")} width={20} alt="github" />
+          }
         />
         <br />
       </HeaderView>
@@ -43,9 +45,7 @@ export default async context => {
   function Features() {
     return (
       <Section>
-        <Title>
-          {tr.t("Features")}
-        </Title>
+        <Title>{tr.t("Features")}</Title>
         <Row className="text-center">
           {features.map((card, key) => <CardIcon key={key} {...card} />)}
         </Row>
@@ -53,7 +53,7 @@ export default async context => {
     );
   }
 
-  const E2eImg = glamorous('img')({
+  const E2eImg = glamorous("img")({
     width: "100%",
     maxWidth: "1200"
   });
@@ -61,9 +61,7 @@ export default async context => {
   function End2End() {
     return (
       <Section>
-        <Title>
-          {tr.t("End to End Testing")}
-        </Title>
+        <Title>{tr.t("End to End Testing")}</Title>
         <E2eImg
           alt="functional-testing"
           src="https://raw.githubusercontent.com/FredericHeem/gifs/master/starhackit-functional-testing.gif"
@@ -75,9 +73,7 @@ export default async context => {
   function Frontend() {
     return (
       <Section>
-        <Title>
-          {tr.t("Frontend - User Interface")}
-        </Title>
+        <Title>{tr.t("Frontend - User Interface")}</Title>
         <Row>
           {frontend.map((card, key) => <CardIcon key={key} {...card} />)}
         </Row>
@@ -88,9 +84,7 @@ export default async context => {
   function Backend() {
     return (
       <Section>
-        <Title>
-          {tr.t("Backend - API Server")}
-        </Title>
+        <Title>{tr.t("Backend - API Server")}</Title>
         <Row>
           {backend.map((card, key) => <CardIcon key={key} {...card} />)}
         </Row>
@@ -101,12 +95,8 @@ export default async context => {
   function Tools() {
     return (
       <Section>
-        <Title>
-          {tr.t("Developer Tools")}
-        </Title>
-        <Row>
-          {tools.map((card, key) => <CardIcon key={key} {...card} />)}
-        </Row>
+        <Title>{tr.t("Developer Tools")}</Title>
+        <Row>{tools.map((card, key) => <CardIcon key={key} {...card} />)}</Row>
       </Section>
     );
   }

@@ -1,13 +1,13 @@
-
-
-import config from 'config';
+import config from "config";
 
 if (!window.location.origin) {
-    window.location.origin = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+  window.location.origin = `${window.location.protocol}//${
+    window.location.hostname
+  }${window.location.port ? `:${window.location.port}` : ""}`;
 }
 
 export default function(url) {
-    const fullUrl = window.location.origin + config.apiUrl +  url;
+  const fullUrl = window.location.origin + config.apiUrl + url;
 
-    return fullUrl;
+  return fullUrl;
 }

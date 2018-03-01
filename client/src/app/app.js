@@ -12,7 +12,7 @@ import Debug from "debug";
 
 import intl from "utils/intl";
 
-import Client from './client';
+import Client from "./client";
 
 const debug = new Debug("app");
 

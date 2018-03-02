@@ -1,11 +1,16 @@
-import { createElement as h } from "react";
+import React, { createElement as h } from "react";
 import Router from "universal-router";
 import asyncView from "components/AsyncView";
+import { render } from "react-dom";
+import { parse } from "qs";
+import appView from "components/applicationView";
 
 export default context => {
+  const AlertStack = context.alertStack.View;
+  const { tr, history, config } = context;
   const AsyncView = asyncView(context);
 
-  function isAuthenticated({pathname}) {
+  function isAuthenticated({ pathname }) {
     console.log("isAuthenticated ", pathname);
     const { authenticated } = context.parts.auth.stores().auth;
     if (!authenticated) {
@@ -64,7 +69,7 @@ export default context => {
     }
   ];
 
-  return new Router(routes, {
+  const router = new Router(routes, {
     resolveRoute(routerContext, params) {
       const { route } = routerContext;
       //console.log("resolveRoute ", routerContext, params);
@@ -81,4 +86,51 @@ export default context => {
       return undefined;
     }
   });
+
+  const onRenderComplete = route => {
+    document.title = `${route.title} - ${config.title}`;
+  };
+
+  async function onLocationChange(location) {
+    console.log("onLocationChange ", location);
+    let component;
+    let route;
+    try {
+      route = await router.resolve({
+        pathname: location.pathname,
+        query: parse(location.search)
+      });
+      console.log("onLocationChange match route ", route);
+      component = route.component; // eslint-disable-line prefer-destructuring
+    } catch (error) {
+      console.log("Routing exception:", error.message);
+      if (error.code === 404) {
+        component = h(asyncView(context), {
+          getModule: () => import("./components/notFound")
+        });
+        route = { title: tr.t("Page Not Found") };
+      }
+    }
+    if (component) {
+      const Layout = appView(context);
+      const layout = (
+        <Layout>
+          {component}
+          <AlertStack />
+        </Layout>
+      );
+      context.rootInstance = render(
+        layout,
+        document.getElementById("application"),
+        () => onRenderComplete(route, location)
+      );
+    }
+  }
+
+  history.listen(onLocationChange);
+  return {
+    start() {
+      onLocationChange(history.location);
+    }
+  };
 };

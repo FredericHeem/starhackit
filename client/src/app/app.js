@@ -12,7 +12,7 @@ import Debug from "debug";
 
 import intl from "utils/intl";
 
-import Client from "./client";
+import Router from "./Router";
 
 const debug = new Debug("app");
 
@@ -47,10 +47,12 @@ export default function({ language = "en" }) {
     await parts.auth.stores().me.fetch();
   }
 
+  const router = Router(context);
+  
   return {
     context,
     render() {
-      Client(context);
+      router.start();
     },
     async start() {
       debug("start");

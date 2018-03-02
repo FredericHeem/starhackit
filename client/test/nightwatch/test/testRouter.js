@@ -1,4 +1,4 @@
-describe.only("Router", function() {
+describe("Router", function() {
   it("page not found", function(client) {
     client.page
       .notFound()

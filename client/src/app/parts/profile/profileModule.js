@@ -13,7 +13,7 @@ export default function(context) {
   function Routes(stores) {
     return [
       {
-        path: "/",
+        path: "",
         component: () => ({
           title: "My Profile",
           component: h(profileView(context), { store: stores.profile })

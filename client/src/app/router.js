@@ -5,11 +5,11 @@ import asyncView from "components/AsyncView";
 export default context => {
   const AsyncView = asyncView(context);
 
-  function isAuthenticated({ url }) {
-    console.log("isAuthenticated ", url);
+  function isAuthenticated({pathname}) {
+    console.log("isAuthenticated ", pathname);
     const { authenticated } = context.parts.auth.stores().auth;
     if (!authenticated) {
-      setTimeout(() => context.history.push(`/login?nextPath=${url}`), 1);
+      setTimeout(() => context.history.push(`/login?nextPath=${pathname}`), 1);
       throw new Error({ name: "redirect", status: 302 });
     }
   }

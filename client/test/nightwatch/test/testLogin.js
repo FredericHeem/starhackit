@@ -8,7 +8,7 @@
             .setValue('@emailInput', 'alice')
             .click('@submit')
             .waitForElementVisible('.username', 5000)
-            .assert.containsText('.local-login-form', 'Password can\'t be blank')
+            .assert.containsText('.local-login-form', 'Password must be at least 6 characters')
     });
     it('login with too short password', function (client) {
         client.page.login().navigate()
@@ -25,7 +25,7 @@
             .setValue('@passwordInput', 'password')
             .click('@submit')
             .waitForElementVisible('.password', 5000)
-            .assert.containsText('.local-login-form', 'Username can\'t be blank')
+            .assert.containsText('.local-login-form', 'Username must be at least 3 characters')
     });
     it('login with incorrect password', function (client) {
         client.page.login().navigate()

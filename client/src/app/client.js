@@ -19,13 +19,13 @@ export default context => {
     let route;
     try {
       route = await Router(context).resolve({
-        path: location.pathname,
+        pathname: location.pathname,
         query: parse(location.search)
       });
       console.log("onLocationChange match route ", route);
       component = route.component; // eslint-disable-line prefer-destructuring
     } catch (error) {
-      console.log("Routing exception:", error.status);
+      console.log("Routing exception:", error.message);
       if (error.status === 404) {
         component = h(asyncView(context), {
           getModule: () => import("./components/notFound")

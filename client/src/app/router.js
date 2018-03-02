@@ -22,50 +22,47 @@ export default context => {
   }
 
   const { parts } = context;
-  const routes = {
-    path: "/",
-    children: [
-      {
-        path: "/",
-        component: () => ({
-          title: "Home",
-          component: h(AsyncView, {
-            getModule: () => import("./parts/landing/landingScreen")
-          })
+  const routes = [
+    {
+      path: "",
+      component: () => ({
+        title: "Home",
+        component: h(AsyncView, {
+          getModule: () => import("./parts/landing/landingScreen")
         })
-      },
-      {
-        path: "/guide",
-        component: () => ({
-          title: "Component Guide",
-          component: h(AsyncView, {
-            getModule: () => import("./components/componentGuide")
-          })
+      })
+    },
+    {
+      path: "/guide",
+      component: () => ({
+        title: "Component Guide",
+        component: h(AsyncView, {
+          getModule: () => import("./components/componentGuide")
         })
-      },
-      ...parts.auth.routes(),
-      ...parts.db.routes(),
-      ...parts.hello.routes(),
-      {
-        path: "/profile",
-        children: [],
-        load: async routerContext => {
-          isAuthenticated(routerContext);
-          const partCreate = await import("./parts/profile/profileModule");
-          return createPart("profile", partCreate, routerContext);
-        }
-      },
-      {
-        path: "/users",
-        children: [],
-        load: async routerContext => {
-          isAuthenticated(routerContext);
-          const partCreate = await import("./parts/admin/adminModule");
-          return createPart("admin", partCreate, routerContext);
-        }
+      })
+    },
+    ...parts.auth.routes(),
+    ...parts.db.routes(),
+    ...parts.hello.routes(),
+    {
+      path: "/profile",
+      children: [],
+      load: async routerContext => {
+        isAuthenticated(routerContext);
+        const partCreate = await import("./parts/profile/profileModule");
+        return createPart("profile", partCreate, routerContext);
       }
-    ]
-  };
+    },
+    {
+      path: "/users",
+      children: [],
+      load: async routerContext => {
+        isAuthenticated(routerContext);
+        const partCreate = await import("./parts/admin/adminModule");
+        return createPart("admin", partCreate, routerContext);
+      }
+    }
+  ];
 
   return new Router(routes, {
     resolveRoute(routerContext, params) {
@@ -81,7 +78,7 @@ export default context => {
       if (typeof route.component === "function") {
         return route.component(routerContext);
       }
-      return null;
+      return undefined;
     }
   });
 };

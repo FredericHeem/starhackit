@@ -73,6 +73,7 @@ module.exports = function ( options ) {
             alias: {
                 'react': 'preact-compat',
                 'react-dom': 'preact-compat',
+                'mobx-react': 'mobx-preact',
                 'create-react-class': 'preact-compat/lib/create-react-class',
                 'glamorous': 'glamorous/dist/glamorous.esm.tiny.js',
                 //application aliases

@@ -10,7 +10,7 @@ export default context => {
 
   return function NotFound() {
     return (
-      <NotFoundView>
+      <NotFoundView className="page-not-found">
         <h1>{tr.t("Page Not Found")}</h1>
         <h1>{tr.t("404")}</h1>
         <p>{tr.t("We cannot found the page we were looking for")}</p>

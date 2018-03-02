@@ -26,7 +26,7 @@ export default context => {
       component = route.component; // eslint-disable-line prefer-destructuring
     } catch (error) {
       console.log("Routing exception:", error.message);
-      if (error.status === 404) {
+      if (error.code === 404) {
         component = h(asyncView(context), {
           getModule: () => import("./components/notFound")
         });

@@ -1,10 +1,4 @@
-import _ from 'lodash';
-
-/* global process */
-let env = process.env;
-
-let config = {
-
+const config = {
     general: {
         title: '{{title}}',
         description: '{{description}}',
@@ -20,14 +14,18 @@ let config = {
         }
     },
 
-    development: {
-        env: "development"
-    },
-
-    production: {
-        env: "production"
-
+  development: {
+    env: "development",
+    debug: {
+      log: true,
+      i18n: false
     }
+  },
+
+  production: {
+    env: "production"
+  }
 };
 
-export default _.extend( {}, config.general, config[ env.NODE_ENV ] );
+/* global process */
+export default Object.assign({}, config.general, config[process.env.NODE_ENV]);

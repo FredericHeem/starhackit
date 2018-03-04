@@ -12,7 +12,7 @@ import Debug from "debug";
 
 import intl from "utils/intl";
 
-import Router from "./Router";
+import Router from "./router";
 
 const debug = new Debug("app");
 

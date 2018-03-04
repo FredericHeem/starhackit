@@ -5,7 +5,7 @@ import AuthModule from "./parts/auth/authModule";
 import CoreModule from "./parts/core/coreModule";
 import DbModule from "./parts/db/dbModule";
 import ThemeModule from "./parts/theme/themeModule";
-import HelloModule from "./parts/hello/helloModule";
+import HelloModule from "./parts/hello/HelloModule";
 import ProfileModule from "./parts/profile/profileModule";
 
 import Debug from "debug";

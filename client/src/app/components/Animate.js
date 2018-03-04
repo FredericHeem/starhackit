@@ -44,6 +44,9 @@ export default class DelayUnmount extends Component {
         node.removeEventListener("animationend", animationEndHandler);
         node.style.display = "none";
         node.style.animation = "";
+        while (node.firstChild) {
+          node.removeChild(node.firstChild);
+        }
       };
 
       node.addEventListener("animationend", animationEndHandler);

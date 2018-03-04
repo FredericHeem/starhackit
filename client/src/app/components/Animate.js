@@ -55,7 +55,7 @@ export default class DelayUnmount extends Component {
     const { state } = this;
     const me = this;
     return (
-      <div className="animate">
+      <div>
         <div
           ref={node => {
             this.saveNode(node);

@@ -55,6 +55,7 @@
     "prop-types": "15.6.1",
     "qs": "6.5.1",
     "react-color": "2.14.0",
+    "react-leanimate": "0.6.0",
     "react-pagify": "2.4.0",
     "reactabular-table": "8.12.1",
     "segmentize": "0.4.1",

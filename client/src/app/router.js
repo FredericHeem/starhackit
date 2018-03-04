@@ -9,19 +9,19 @@ import asyncView from "components/AsyncView";
 
 import createRoutes from "./routes";
 
-import Animate from "components/Animate";
+import Animate from "react-leanimate";
 
-  const animation = {
-    showFromLeft: keyframes({
-      "0%": { transform: "translateX(-50%)", opacity: 0 },
-      "100%": { transform: "translateX(0%)", opacity: 1 }
-    }),
-    hideToRight: keyframes({
-      "0%": { transform: "translateX(0%)", opacity: 1 },
-      "100%": { transform: "translateX(50%)", opacity: 0 }
-    })
-  };
-  
+const animation = {
+  showFromLeft: keyframes({
+    "0%": { transform: "translateX(-50%)", opacity: 0 },
+    "100%": { transform: "translateX(0%)", opacity: 1 }
+  }),
+  hideToRight: keyframes({
+    "0%": { transform: "translateX(0%)", opacity: 1 },
+    "100%": { transform: "translateX(50%)", opacity: 0 }
+  })
+};
+
 export default context => {
   const { tr, history, config } = context;
 
@@ -41,7 +41,7 @@ export default context => {
       }
       return undefined;
     }
-  })
+  });
 
   const onRenderComplete = route => {
     document.title = `${route.title} - ${config.title}`;
@@ -93,4 +93,4 @@ export default context => {
       onLocationChange(history.location);
     }
   };
-}
+};

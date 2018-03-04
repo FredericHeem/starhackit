@@ -49,7 +49,7 @@ export default context => {
   };
 
   async function onLocationChange(location) {
-    console.log("onLocationChange ", location);
+    //console.log("onLocationChange ", location);
     let component;
     let route;
     try {
@@ -57,10 +57,9 @@ export default context => {
         pathname: location.pathname,
         query: parse(location.search)
       });
-      console.log("onLocationChange match route ", route);
       component = route.component; // eslint-disable-line prefer-destructuring
     } catch (error) {
-      console.log("Routing exception:", error.message);
+      console.error("Routing exception:", error.message);
       if (error.code === 404) {
         component = h(asyncView(context), {
           getModule: () => import("./components/notFound")
@@ -77,7 +76,6 @@ export default context => {
             animationHide={`${animation.hideToRight} 0.3s`}
             animationShow={`${animation.showFromLeft} 0.5s`}
           />
-          <AlertStack />
         </Layout>
       );
       context.rootInstance = render(
@@ -89,7 +87,9 @@ export default context => {
   }
 
   history.listen(onLocationChange);
+
   return {
+    instance: router,
     start() {
       onLocationChange(history.location);
     }

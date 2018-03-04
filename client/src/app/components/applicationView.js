@@ -13,6 +13,7 @@ export default context => {
   const NavBar = navBar(context);
   const Footer = footer(context);
   const AsyncView = asyncView(context);
+  const AlertStack = context.alertStack.View;
 
   const AppRoot = glamorous("div")({
     display: "flex",
@@ -45,6 +46,7 @@ export default context => {
           <NavBar authenticated={authStore.authenticated} />
           <MainView>{children}</MainView>
           <Footer version={version} />
+          <AlertStack />
         </AppView>
         {themeStore.open && (
           <AsyncView getModule={() => import("parts/theme/ThemeView")} />

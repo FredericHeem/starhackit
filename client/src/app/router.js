@@ -1,12 +1,27 @@
 import React, { createElement as h } from "react";
 import Router from "universal-router";
 import { render } from "react-dom";
+import { keyframes } from "glamor";
+
 import { parse } from "qs";
 import appView from "components/applicationView";
 import asyncView from "components/AsyncView";
 
 import createRoutes from "./routes";
 
+import Animate from "components/Animate";
+
+  const animation = {
+    showFromLeft: keyframes({
+      "0%": { transform: "translateX(-50%)", opacity: 0 },
+      "100%": { transform: "translateX(0%)", opacity: 1 }
+    }),
+    hideToRight: keyframes({
+      "0%": { transform: "translateX(0%)", opacity: 1 },
+      "100%": { transform: "translateX(50%)", opacity: 0 }
+    })
+  };
+  
 export default context => {
   const AlertStack = context.alertStack.View;
   const { tr, history, config } = context;
@@ -57,7 +72,11 @@ export default context => {
       const Layout = appView(context);
       const layout = (
         <Layout>
-          {component}
+          <Animate
+            component={component}
+            animationHide={`${animation.hideToRight} 0.3s`}
+            animationShow={`${animation.showFromLeft} 0.5s`}
+          />
           <AlertStack />
         </Layout>
       );

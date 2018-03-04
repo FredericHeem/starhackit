@@ -43,7 +43,6 @@ export default class DelayUnmount extends Component {
       const animationEndHandler = () => {
         node.removeEventListener("animationend", animationEndHandler);
         node.style.display = "none";
-        node.style.animation = "";
         while (node.firstChild) {
           node.removeChild(node.firstChild);
         }
@@ -61,7 +60,6 @@ export default class DelayUnmount extends Component {
           ref={node => {
             this.saveNode(node);
           }}
-          style={{ position: "absolute" }}
         >
           {state.previous}
         </div>
@@ -71,7 +69,6 @@ export default class DelayUnmount extends Component {
               node.style.animation = this.props.animationShow;
               const animationBeginHandler = () => {
                 node.removeEventListener("animationend", animationBeginHandler);
-                node.style.animation = "";
               };
 
               node.addEventListener("animationend", animationBeginHandler);

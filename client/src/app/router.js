@@ -23,7 +23,6 @@ import Animate from "components/Animate";
   };
   
 export default context => {
-  const AlertStack = context.alertStack.View;
   const { tr, history, config } = context;
 
   const router = new Router(createRoutes(context), {

@@ -89,7 +89,9 @@ export default context => {
   }
 
   history.listen(onLocationChange);
+  
   return {
+    instance: router,
     start() {
       onLocationChange(history.location);
     }

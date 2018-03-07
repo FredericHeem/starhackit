@@ -9,7 +9,7 @@ import asyncView from "components/AsyncView";
 
 import createRoutes from "./routes";
 
-import Animate from "react-leanimate";
+import Animate from "react-leanimate/Animate";
 
 const animation = {
   showFromLeft: keyframes({

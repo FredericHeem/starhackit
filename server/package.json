@@ -92,7 +92,7 @@
     "isparta": "4.0.0",
     "istanbul": "0.4.5",
     "jsdom": "11.6.2",
-    "mocha": "3.5.0",
+    "mocha": "5.0.4",
     "raml-mocker-server": "0.1.6",
     "raml2html": "3.0.0",
     "restauth": "1.1.1",

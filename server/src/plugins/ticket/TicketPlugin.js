@@ -13,7 +13,7 @@ export default function ticketPlugin(app) {
       pathname: "/",
       method: "get",
       handler: async context => {
-        let tickets = await models.Ticket.findAll({
+        const tickets = await models.Ticket.findAll({
           where: { user_id: context.state.user.id }
         });
         context.body = tickets.map(ticket => ticket.get());
@@ -56,10 +56,33 @@ export default function ticketPlugin(app) {
         context.body = ticket.get();
         context.status = 200;
       }
+    },
+    update: {
+      pathname: "/",
+      method: "patch",
+      handler: async context => {
+        console.log("patch ", context.request.body);
+        const { id } = context.request.body;
+        const user_id = context.state.user.id;
+        await models.Ticket.update(context.request.body, {
+          where: {
+            id,
+            user_id
+          }
+        });
+        const ticket = await models.Ticket.findOne({
+          where: {
+            id,
+            user_id
+          }
+        });
+        context.body = ticket.get();
+        context.status = 200;
+      }
     }
   };
 
-  let router = new Router();
+  const router = new Router();
   router.use(app.server.auth.isAuthenticated);
   //router.use(app.server.auth.isAuthorized);
 

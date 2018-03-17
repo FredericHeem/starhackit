@@ -52,12 +52,23 @@ describe("Ticket", function() {
     assert(ticket.user_id);
     assert.equal(ticket.subject, input.subject);
   });
+  it("should update a ticket", async () => {
+    const inputNew = {
+      subject: "Hello World"
+    };
+    const newTicket = await client.post("v1/ticket", inputNew);
+    const inputUpdated = {
+      subject: "Hello World"
+    };
+    const updatedTicket = await client.patch("v1/ticket", {...inputUpdated, id: newTicket.id});
+    console.log("ticket ", updatedTicket);
+    assert.equal(updatedTicket.subject, inputUpdated.subject);
+  });
   it("should get all tickets", async () => {
     let tickets = await client.get("v1/ticket");
     console.log("tickets ", tickets);
     assert(tickets);
     assert(Array.isArray(tickets));
-    
   });
   it("should get one ticket", async () => {
     let ticket = await client.get("v1/ticket/1");

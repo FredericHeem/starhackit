@@ -65,7 +65,7 @@ describe('UserModel', function(){
       await userModel.create({});
     } catch(err){
       assert.equal(err.name, "SequelizeValidationError");
-      assert.equal(err.errors[0].message, "username cannot be null");
+      assert.equal(err.errors[0].message, "User.username cannot be null");
     }
   });
   it('should find the user ', async () => {

@@ -31,7 +31,6 @@ describe("Ticket No Auth", function() {
   });
 });
 
-
 describe("Ticket", function() {
   let client;
   before(async () => {
@@ -43,10 +42,28 @@ describe("Ticket", function() {
   after(async () => {
     await testMngr.stop();
   });
-
+  it("should create a ticket", async () => {
+    const input = {
+      subject: "Ciao Bella"
+    };
+    let ticket = await client.post("v1/ticket", input);
+    console.log("ticket ", ticket);
+    assert(ticket);
+    assert(ticket.user_id);
+    assert.equal(ticket.subject, input.subject);
+  });
   it("should get all tickets", async () => {
     let tickets = await client.get("v1/ticket");
+    console.log("tickets ", tickets);
     assert(tickets);
+    assert(Array.isArray(tickets));
+    
+  });
+  it("should get one ticket", async () => {
+    let ticket = await client.get("v1/ticket/1");
+    console.log("ticket ", ticket);
+    assert(ticket);
+    assert(ticket.user_id);
   });
   it("should get 404 when the ticket is not found", async () => {
     try {
@@ -61,4 +78,3 @@ describe("Ticket", function() {
     }
   });
 });
-

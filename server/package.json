@@ -101,8 +101,8 @@
     "restauth": "1.1.1",
     "sequelize-cli": "4.0.0",
     "shelljs": "0.8.1",
-    "should": "11.2.1",
-    "sinon": "3.2.1"
+    "should": "13.2.1",
+    "sinon": "4.4.6"
   },
   "engines": {
     "node": ">=8"

@@ -8,7 +8,7 @@ export async function verifyLogin(models, username, password) {
     log.info("userBasic invalid username user: ", username);
     return {
       error: {
-        message: 'InvalidUsernameOrPassword'
+        message: 'Username and Password do not match'
       }
     };
   }
@@ -23,7 +23,7 @@ export async function verifyLogin(models, username, password) {
     log.info("userBasic invalid password user: ", user.get());
     return {
       error: {
-        message: 'InvalidUsernameOrPassword'
+        message: 'Username and Password do not match'
       }
     };
   }
@@ -40,7 +40,7 @@ export default function register(passport, models) {
     async function (username, password, done) {
       try {
         let res = await verifyLogin(models, username, password);
-        done(res.err, res.user);
+        done(res.error, res.user);
       } catch (err) {
         done(err);
       }

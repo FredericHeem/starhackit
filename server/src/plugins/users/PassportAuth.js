@@ -18,6 +18,9 @@ export default function(app, publisherUser) {
     register(passport, models, publisherUser);
   }
 
+  let registerMofile = require('./auth-strategy/FacebookMobileStrategy').register;
+  registerMofile(passport, models, publisherUser);
+
   if(config.has('authentication.fidor')) {
     let register = require('./auth-strategy/FidorStrategy').register;
     register(passport, models, publisherUser);

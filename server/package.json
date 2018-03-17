@@ -95,7 +95,7 @@
     "jsdom": "11.6.2",
     "mocha": "3.5.0",
     "raml-mocker-server": "0.1.6",
-    "raml2html": "7.0.0",
+    "raml2html": "3.0.0",
     "restauth": "1.1.1",
     "sequelize-cli": "4.0.0",
     "shelljs": "0.8.1",

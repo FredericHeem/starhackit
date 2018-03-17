@@ -4,7 +4,7 @@ import Axios from 'axios';
 let log = require('logfilename')(__filename);
 
 export async function verifyLogin(models, publisherUser, userID, token){
-  log.debug("verifyLogin ", token); 
+  log.debug("verifyLogin ", token);
 
   const axios = Axios.create({
     baseURL: "https://graph.facebook.com/",

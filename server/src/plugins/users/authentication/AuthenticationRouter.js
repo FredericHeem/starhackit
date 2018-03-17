@@ -41,7 +41,7 @@ const localAuthCB = ctx => (err, user, info = {}) => {
       }
     };
   }
-}
+};
 
 export function AuthenticationHttpController(app, publisherUser){
   log.debug("AuthenticationHttpController");

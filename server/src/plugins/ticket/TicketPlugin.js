@@ -79,7 +79,20 @@ export default function ticketPlugin(app) {
         context.body = ticket.get();
         context.status = 200;
       }
-    }
+    },
+    delete: {
+      pathname: "/",
+      method: "delete",
+      handler: async context => {
+        await models.Ticket.destroy({
+          where: {
+            id: context.request.body.id,
+            user_id: context.state.user.id
+          }
+        });
+        context.status = 204;
+      }
+    },
   };
 
   const router = new Router();

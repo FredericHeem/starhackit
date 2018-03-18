@@ -36,7 +36,6 @@ describe("Ticket", function() {
   before(async () => {
     await testMngr.start();
     client = testMngr.client("alice");
-    assert(client);
     await client.login();
   });
   after(async () => {
@@ -54,15 +53,28 @@ describe("Ticket", function() {
   });
   it("should update a ticket", async () => {
     const inputNew = {
-      subject: "Hello World"
+      subject: "Ciao Mundo"
     };
     const newTicket = await client.post("v1/ticket", inputNew);
     const inputUpdated = {
       subject: "Hello World"
     };
-    const updatedTicket = await client.patch("v1/ticket", {...inputUpdated, id: newTicket.id});
+    const updatedTicket = await client.patch("v1/ticket", {
+      ...inputUpdated,
+      id: newTicket.id
+    });
     console.log("ticket ", updatedTicket);
     assert.equal(updatedTicket.subject, inputUpdated.subject);
+  });
+  it("should delete a ticket", async () => {
+    const inputNew = {
+      subject: "Ciao Mundo"
+    };
+    const newTicket = await client.post("v1/ticket", inputNew);
+    const ticketsBeforeDelete = await client.get("v1/ticket");
+    await client.delete("v1/ticket", { id: newTicket.id });
+    const ticketsAfterDelete = await client.get("v1/ticket");
+    assert.equal(ticketsBeforeDelete.length, ticketsAfterDelete.length + 1);
   });
   it("should get all tickets", async () => {
     let tickets = await client.get("v1/ticket");

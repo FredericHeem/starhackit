@@ -5,7 +5,7 @@ describe("Ticket No Auth", function() {
   let client;
   before(async () => {
     await testMngr.start();
-    client = testMngr.client("alice");
+    client = testMngr.client("bob");
   });
   after(async () => {
     await testMngr.stop();
@@ -58,10 +58,7 @@ describe("Ticket", function() {
     const inputUpdated = {
       subject: "Hello World"
     };
-    const updatedTicket = await client.patch("v1/ticket", {
-      ...inputUpdated,
-      id: newTicket.id
-    });
+    const updatedTicket = await client.patch(`v1/ticket/${newTicket.id}`, inputUpdated);
     assert.equal(updatedTicket.subject, inputUpdated.subject);
   });
   it("should delete a ticket", async () => {

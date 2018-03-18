@@ -1,9 +1,9 @@
 export default app => {
   const { models } = app.data.sequelize;
-  app.data.registerModel(__dirname, `TicketModel`);
+  app.data.registerModel(__dirname, `JobModel`);
 
   const api = {
-    pathname: "/ticket",
+    pathname: "/job",
     middlewares: [
       app.server.auth.isAuthenticated /*,app.server.auth.isAuthorized*/
     ],
@@ -12,10 +12,10 @@ export default app => {
         pathname: "/",
         method: "get",
         handler: async context => {
-          const tickets = await models.Ticket.findAll({
+          const jobs = await models.Job.findAll({
             where: { user_id: context.state.user.id }
           });
-          context.body = tickets.map(ticket => ticket.get());
+          context.body = jobs.map(job => job.get());
           context.status = 200;
         }
       },
@@ -23,14 +23,14 @@ export default app => {
         pathname: "/:id",
         method: "get",
         handler: async context => {
-          const ticket = await models.Ticket.findOne({
+          const job = await models.Job.findOne({
             where: {
               id: context.params.id,
               user_id: context.state.user.id
             }
           });
 
-          if (!ticket) {
+          if (!job) {
             context.status = 404;
             context.body = {
               error: {
@@ -39,7 +39,7 @@ export default app => {
               }
             };
           } else {
-            context.body = ticket.get();
+            context.body = job.get();
             context.status = 200;
           }
         }
@@ -48,11 +48,11 @@ export default app => {
         pathname: "/",
         method: "post",
         handler: async context => {
-          const ticket = await models.Ticket.create({
+          const job = await models.Job.create({
             ...context.request.body,
             user_id: context.state.user.id
           });
-          context.body = ticket.get();
+          context.body = job.get();
           context.status = 200;
         }
       },
@@ -62,19 +62,19 @@ export default app => {
         handler: async context => {
           const { id } = context.params;
           const user_id = context.state.user.id;
-          await models.Ticket.update(context.request.body, {
+          await models.Job.update(context.request.body, {
             where: {
               id,
               user_id
             }
           });
-          const ticket = await models.Ticket.findOne({
+          const job = await models.Job.findOne({
             where: {
               id,
               user_id
             }
           });
-          context.body = ticket.get();
+          context.body = job.get();
           context.status = 200;
         }
       },
@@ -82,7 +82,7 @@ export default app => {
         pathname: "/",
         method: "delete",
         handler: async context => {
-          await models.Ticket.destroy({
+          await models.Job.destroy({
             where: {
               id: context.request.body.id,
               user_id: context.state.user.id

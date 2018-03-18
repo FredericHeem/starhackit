@@ -2,7 +2,7 @@ var _ = require('lodash');
 var path = require('path');
 var api = require('raml-mocker-server');
 
-var sources = ['users/raml/users.raml', 'dbSchema/raml/db.explorer.raml'];
+var sources = ['users/raml/users.raml', 'job/raml/job.raml', 'dbSchema/raml/db.explorer.raml'];
 
 sources = _.map(sources, function(source) {
   return path.join(__dirname, '/../src/plugins', source);

@@ -10,6 +10,7 @@ var configWithDefaultTemplates = raml2html.getDefaultConfig();
 var sources = [
   'api.raml',
   'users/raml/users.raml',
+  'job/raml/job.raml',
   'dbSchema/raml/db.explorer.raml'
 ];
 

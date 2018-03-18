@@ -10,5 +10,11 @@
     "password":"password",
     "email":"alice@mail.com",
     "group": "User"
+  },
+  "bob":{
+    "username":"bob",
+    "password":"password",
+    "email":"bob@mail.com",
+    "group": "User"
   }
 }

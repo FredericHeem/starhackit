@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     Ticket.belongsTo(models.User, {
       foreignKey: {
         name: "user_id",
-        allowNull: true
+        allowNull: false
       }
     });
     models.User.hasMany(models.Ticket, {

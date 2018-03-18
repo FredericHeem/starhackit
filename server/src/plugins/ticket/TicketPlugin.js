@@ -79,12 +79,12 @@ export default app => {
         }
       },
       delete: {
-        pathname: "/",
+        pathname: "/:id",
         method: "delete",
         handler: async context => {
           await models.Ticket.destroy({
             where: {
-              id: context.request.body.id,
+              id: context.params.id,
               user_id: context.state.user.id
             }
           });

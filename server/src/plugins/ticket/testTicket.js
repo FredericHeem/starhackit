@@ -67,7 +67,7 @@ describe("Ticket", function() {
     };
     const newTicket = await client.post("v1/ticket", inputNew);
     const ticketsBeforeDelete = await client.get("v1/ticket");
-    await client.delete("v1/ticket", { id: newTicket.id });
+    await client.delete(`v1/ticket/${newTicket.id}`);
     const ticketsAfterDelete = await client.get("v1/ticket");
     assert.equal(ticketsBeforeDelete.length, ticketsAfterDelete.length + 1);
   });

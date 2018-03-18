@@ -1,4 +1,3 @@
-let log = require("logfilename")(__filename);
 module.exports = function(sequelize, DataTypes) {
   let Ticket = sequelize.define(
     "Ticket",
@@ -7,12 +6,11 @@ module.exports = function(sequelize, DataTypes) {
       body: DataTypes.TEXT
     },
     {
-      tableName: "tickets",
+      tableName: "ticket",
       underscored: true
     }
   );
   Ticket.associate = function(models) {
-    log.debug("associate");
     Ticket.belongsTo(models.User, {
       foreignKey: {
         name: "user_id",

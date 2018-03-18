@@ -45,6 +45,7 @@
     "ejs": "2.5.7",
     "eslint": "4.5.0",
     "eslint-plugin-mocha": "4.11.0",
+    
     "gulp": "3.9.1",
     "gulp-babel": "5.2.1",
     "gulp-debug": "2.1.2",
@@ -89,6 +90,7 @@
     "codeclimate-test-reporter": "0.5.0",
     "codecov.io": "0.1.6",
     "coveralls": "3.0.0",
+    "faker": "4.1.0",
     "isparta": "4.0.0",
     "istanbul": "0.4.5",
     "jsdom": "11.6.2",

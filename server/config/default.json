@@ -30,8 +30,8 @@
     "port": "5432",
     "logging": false,
     "pool": {
-      "maxConnections": 100,
-      "maxIdleTime": 60
+      "idle": 60000,
+      "max": 100
     }
   },
   "jwt": {

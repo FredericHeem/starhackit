@@ -22,3 +22,4 @@ log.txt
 config/development.json
 config/heroku.json
 config/travis.json
+yarn-error.log

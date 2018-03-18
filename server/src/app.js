@@ -46,7 +46,7 @@ export default function App() {
   //Must be called when all plugins are created.
   data.associate();
   app.server.mountRootRouter();
-  app.server.diplayRoutes();
+  app.server.displayRoutes();
 
   let parts = [
     app.data,

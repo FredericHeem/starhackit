@@ -66,8 +66,8 @@ Here is an example of the configuration for Postgres:
   "port": "5432",
   "logging": true,
   "pool": {
-    "maxConnections": 100,
-    "maxIdleTime": 60
+    "idle": 60000,
+    "max": 100
   }
 }
 ```

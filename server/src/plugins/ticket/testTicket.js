@@ -46,7 +46,6 @@ describe("Ticket", function() {
       subject: "Ciao Bella"
     };
     let ticket = await client.post("v1/ticket", input);
-    console.log("ticket ", ticket);
     assert(ticket);
     assert(ticket.user_id);
     assert.equal(ticket.subject, input.subject);
@@ -63,7 +62,6 @@ describe("Ticket", function() {
       ...inputUpdated,
       id: newTicket.id
     });
-    console.log("ticket ", updatedTicket);
     assert.equal(updatedTicket.subject, inputUpdated.subject);
   });
   it("should delete a ticket", async () => {
@@ -78,13 +76,11 @@ describe("Ticket", function() {
   });
   it("should get all tickets", async () => {
     let tickets = await client.get("v1/ticket");
-    console.log("tickets ", tickets);
     assert(tickets);
     assert(Array.isArray(tickets));
   });
   it("should get one ticket", async () => {
     let ticket = await client.get("v1/ticket/1");
-    console.log("ticket ", ticket);
     assert(ticket);
     assert(ticket.user_id);
   });
@@ -93,8 +89,6 @@ describe("Ticket", function() {
       let tickets = await client.get("v1/ticket/123456");
       assert(tickets);
     } catch (error) {
-      //console.log(error.body)
-      //console.log(error.statusCode)
       assert(error.body.error);
       assert.equal(error.body.error.name, "NotFound");
       assert.equal(error.statusCode, 404);

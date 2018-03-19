@@ -1,0 +1,12 @@
+[Unit]
+Description=Run the node api backend
+
+[Service]
+WorkingDirectory={{ api_dir }}/server
+Environment=NODE_ENV=production
+Environment=DEBUG=
+User={{user}}
+ExecStart=/usr/bin/npm run start:prod
+
+[Install]
+WantedBy=multi-user.target

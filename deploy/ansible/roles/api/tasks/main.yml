@@ -16,16 +16,20 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
 
-- name: Copy init script
-  template: src=api.conf.j2 dest=/etc/init/api.conf mode=0640 owner=root group=root
-  notify:
-    - restart api
-
 - name: Copy server config
   template: src=config.json.j2 dest={{ api_dir }}/server/config/{{ node_env }}.json
   notify:
-    - restart api
+    - systemctl restart api
   sudo: yes
+
+- name: Copy init script
+  template: src=api.service.j2 dest=/lib/systemd/system/api.service mode=0640 owner=root group=root
+
+- name: restart api
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: api
 
 - command: npm run build
   args:

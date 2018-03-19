@@ -7,6 +7,8 @@ Deployment - Ansible
 * [Vagrant](https://www.vagrantup.com)
 * [Ansible](http://www.ansible.com/)
 
+> Ansible scripts are written for the Ubuntu 16.04 or higher 
+
 # What is installed and deployed:
 
 Ansible enables the automation of the installation and configuration of the various stack components:

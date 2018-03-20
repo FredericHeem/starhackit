@@ -115,13 +115,13 @@ describe('UserRegister', function() {
   });
   it('shoud register twice a user', async () => {
     let userConfig =  userUtils.createRandomRegisterConfig();
-
     let res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);
     assert.equal(res.message, "confirm email");
 
-    userConfig.username = "newuser";
+    userConfig.username = userUtils.createRandomRegisterConfig().username;
+
     res = await client.post('v1/auth/register', userConfig);
     assert(res);
     assert(res.success);

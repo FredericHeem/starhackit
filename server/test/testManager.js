@@ -35,7 +35,8 @@ let TestMngr = function(){
       });
     },
 
-    start(){
+    async start(){
+      await this.app.data.seedIfEmpty();
       return this.app.start();
     },
 

@@ -1,3 +1,5 @@
+![Logo of the project](./client/src/app/parts/landing/img/starhackit-logo.png)
+
 StarHackIt is a ES6/ES7 React/Node starter kit
 ==============================================
 

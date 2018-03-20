@@ -13,7 +13,7 @@ const createFakeJob = () => ({
   end_date: faker.date.future()
 });
 
-describe("Job No Auth", function() {
+describe("Recruiter No Auth", function() {
   let client;
   before(async () => {
     await testMngr.start();
@@ -25,7 +25,7 @@ describe("Job No Auth", function() {
 
   it("should get a 401 when getting all jobs", async () => {
     try {
-      const jobs = await client.get("v1/job");
+      const jobs = await client.get("v1/recruiter/job");
       assert(jobs);
     } catch (error) {
       assert.equal(error.body, "Unauthorized");
@@ -34,7 +34,7 @@ describe("Job No Auth", function() {
   });
   it("should get 403 when getting a job", async () => {
     try {
-      let job = await client.get("v1/job/123456");
+      let job = await client.get("v1/recruiter/job/123456");
       assert(job);
     } catch (error) {
       assert.equal(error.body, "Unauthorized");
@@ -43,7 +43,7 @@ describe("Job No Auth", function() {
   });
 });
 
-describe("Job", function() {
+describe("Recruiter Auth", function() {
   let client;
   before(async () => {
     await testMngr.start();
@@ -55,12 +55,12 @@ describe("Job", function() {
   });
   it("should create a job and get this job", async () => {
     const input = createFakeJob();
-    const job = await client.post("v1/job", input);
+    const job = await client.post("v1/recruiter/job", input);
     assert(job);
     assert(job.user_id);
     assert.equal(job.title, input.title);
 
-    const jobNew = await client.get(`v1/job/${job.id}`);
+    const jobNew = await client.get(`v1/recruiter/job/${job.id}`);
     assert(jobNew);
     assert(job.user_id);
     assert.equal(job.title, jobNew.title);
@@ -68,7 +68,7 @@ describe("Job", function() {
   it("should create many jobs", async () => {
     _.times(10, async () => {
       const input = createFakeJob();
-      const job = await client.post("v1/job", input);
+      const job = await client.post("v1/recruiter/job", input);
       assert(job);
       assert(job.user_id);
       assert.equal(job.title, input.title);
@@ -76,28 +76,28 @@ describe("Job", function() {
   });
   it("should update a job", async () => {
     const inputNew = createFakeJob();
-    const newJob = await client.post("v1/job", inputNew);
+    const newJob = await client.post("v1/recruiter/job", inputNew);
     const inputUpdated = createFakeJob();
-    const updatedJob = await client.patch(`v1/job/${newJob.id}`, inputUpdated);
+    const updatedJob = await client.patch(`v1/recruiter/job/${newJob.id}`, inputUpdated);
     assert.equal(updatedJob.title, inputUpdated.title);
   });
   it("should delete a job", async () => {
     const inputNew = createFakeJob();
-    const newJob = await client.post("v1/job", inputNew);
-    await client.post("v1/job", createFakeJob());
-    const jobsBeforeDelete = await client.get("v1/job");
-    await client.delete(`v1/job/${newJob.id}`);
-    const jobsAfterDelete = await client.get("v1/job");
+    const newJob = await client.post("v1/recruiter/job", inputNew);
+    await client.post("v1/recruiter/job", createFakeJob());
+    const jobsBeforeDelete = await client.get("v1/recruiter/job");
+    await client.delete(`v1/recruiter/job/${newJob.id}`);
+    const jobsAfterDelete = await client.get("v1/recruiter/job");
     assert.equal(jobsBeforeDelete.length, jobsAfterDelete.length + 1);
   });
   it("should get all jobs", async () => {
-    let jobs = await client.get("v1/job");
+    let jobs = await client.get("v1/recruiter/job");
     assert(jobs);
     assert(Array.isArray(jobs));
   });
   it("should get 404 when the job is not found", async () => {
     try {
-      let jobs = await client.get("v1/job/123456");
+      let jobs = await client.get("v1/recruiter/job/123456");
       assert(jobs);
     } catch (error) {
       assert(error.body.error);

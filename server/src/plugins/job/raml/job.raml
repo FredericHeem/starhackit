@@ -1,6 +1,6 @@
 #%RAML 0.8
 ---
-title: Starhackit
+title: Job
 baseUri: http://localhost:8080/api/v1
 version: v1
 mediaType: application/json
@@ -11,9 +11,24 @@ documentation:
 
 traits: !include traits.raml
 
-/job:
-  description: Create, Read, Update and Delete a job
+/candidate/job:
+  description: Operations on jobs from a candidate point of view
   get:
+    description: Get all jobs
+    is: [
+      searchable: {description: "with valid searchable fields: title", example: "[\"title\", \"DevOps\", \"like\"]"},
+      orderable: {fieldsList: "title"},
+      pageable
+    ]
+    responses:
+      200:
+        body:
+          example: !include jobs.out.sample.json
+
+/recruiter/job:
+  description: Create, Read, Update and Delete a job from a recruiter point of view
+  get:
+    description: Get all jobs for a given recruiter
     is: [
       searchable: {description: "with valid searchable fields: title", example: "[\"title\", \"DevOps\", \"like\"]"},
       orderable: {fieldsList: "title"},
@@ -35,17 +50,20 @@ traits: !include traits.raml
           example: !include job.out.sample.json
         
   /{id}:
-    description: Get one job
+    description: Operations for a given job
     get:
+      description: Get one job
       responses:
         200:
           body:
             example: !include job.out.sample.json
 
     delete:
+      description: Delete a job
       responses:
         204:
     patch:
+      description: Update a job
       body:
         application/json:
           example: !include job.in.sample.json

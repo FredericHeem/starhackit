@@ -1,6 +1,6 @@
-![Logo of the project](./client/src/app/parts/landing/img/starhackit-logo.png)
+<img alt="Starhack" src="./client/src/app/parts/landing/img/starhackit-logo-text.png" height="250">
 
-StarHackIt is a ES6/ES7 React/Node starter kit
+StarHackIt is a React + Node Starter Kit
 ==============================================
 
 [![Join the chat at https://gitter.im/FredericHeem/starhackit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FredericHeem/starhackit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

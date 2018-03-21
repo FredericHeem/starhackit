@@ -42,7 +42,7 @@ Each *phase* has its own directory which contains the configuration files and th
 The global configuration which is independent on the phase is at [group_vars/all.yml](group_vars/all.yml)
 
 ```
-app_name: starthackit
+app_name: starhackit
 git_repo: https://github.com/FredericHeem/starhackit.git
 git_version: master
 api_dir: '{{home}}/{{app_name}}'

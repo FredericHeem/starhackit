@@ -1,6 +1,6 @@
-app_name: starhackit
-title: StarHackIt
-description: StarHackIt is a fullstack boilerplate written in es6/es7
+app_name: instire
+title: Instire
+description: Found a job instantly
 
 git_repo: https://github.com/FredericHeem/starhackit.git
 git_version: master
@@ -8,7 +8,7 @@ git_version: master
 api_dir: '{{home}}/{{app_name}}'
 api_port: 9000
 
-mail_signature: "The StarHackIt Team"
+mail_signature: "The Instire Team"
 
 db_name:
 db_user:

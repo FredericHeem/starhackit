@@ -1,7 +1,14 @@
 <img alt="Starhack" src="./client/src/app/parts/landing/img/starhackit-logo-text.png" height="250">
 
-StarHackIt is a React + Node Starter Kit
-==============================================
+StarHackIt
+==========
+StarHackIt is a fullstack starter kit composed of:
+
+* React web frontend
+* React native mobile app 
+* Node backend
+* Deployment by Ansible
+
 
 [![Join the chat at https://gitter.im/FredericHeem/starhackit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FredericHeem/starhackit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -23,6 +30,10 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 * [i18next](http://i18next.com/): internationalization
 
 For more information about the frontend, see its [README](client/README.md)
+
+## Mobile App Technologies
+
+For more information about the mobile app, see its [README](mobile/README.md)
 
 ## Backend Technologies
 

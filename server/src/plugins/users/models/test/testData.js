@@ -4,7 +4,7 @@ import testMngr from '~/test/testManager';
 describe('Data', function(){
   let app = testMngr.app;
   let models = app.data.sequelize.models;
-  it('seed tha database', async () => {
+  it.skip('seed tha database', async () => {
     await app.seed();
 
     let userCount = await models.User.count();

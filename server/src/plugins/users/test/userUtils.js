@@ -1,7 +1,8 @@
 import Promise from 'bluebird';
 import assert from 'assert';
-let chance = require('chance')();
 import _async from 'async';
+import faker from "faker";
+
 export default function () {
   return {
     async createBulk(models, client, userCount = 10, limit = 2){
@@ -26,11 +27,10 @@ export default function () {
       });
     },
     createRandomRegisterConfig: function(){
-      let username = `${chance.first()}.${chance.first()}.${chance.last()}`;
       let userConfig = {
-        username: username,
+        username: faker.internet.userName(),
         password: 'password',
-        email: username + "@mail.com"
+        email: faker.internet.email()
       };
       return userConfig;
     },

@@ -2,4 +2,5 @@
 --timeout 20000
 --bail
 --exit
+--file test/setup.js
 src/**/test*.js ./test/**/test*.js

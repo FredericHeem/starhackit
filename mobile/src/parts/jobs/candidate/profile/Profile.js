@@ -70,7 +70,7 @@ export default context => {
   const ExperienceEdit = require("./ExperienceEdit").default(context);
 
   const Location = require("./Location").default(context);
-  const LocationEdit = require("./LocationEdit").default(context);
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(context);
 
   const onPressExperience = (experience, navigation) => {
     store.currentExperience = { ...store.currentExperience, ...experience };
@@ -140,7 +140,7 @@ export default context => {
       },
       LocationEdit: {
         screen: ({ navigation }) => (
-          <LocationEdit
+          <AutoCompleteLocation
             onLocation={location => store.saveLocation(location, navigation)}
             store={store}
           />

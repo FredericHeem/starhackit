@@ -5,7 +5,7 @@ import { View } from "glamorous-native";
 import _ from "lodash";
 
 export default context => {
-  const Search = require("./LocationSearch").default(context);
+  const AutoComplete = require("components/AutoComplete").default(context);
   const getPlacesAutocompleteDebounce = _.debounce(getPlacesAutocomplete, 600);
 
   const store = observable({
@@ -40,9 +40,9 @@ export default context => {
     console.log("getPlacesAutocomplete ", location, store.suggestions.length);
   }
 
-  const LocationEdit = observer(({ store, onLocation }) => (
+  const AutoCompleteLocation = observer(({ store, onLocation }) => (
     <View>
-      <Search
+      <AutoComplete
         store={store}
         suggestions={store.suggestions}
         loading={store.suggestionsLoading}
@@ -52,5 +52,5 @@ export default context => {
     </View>
   ));
 
-  return props => <LocationEdit {...props} store={store} />;
+  return props => <AutoCompleteLocation {...props} store={store} />;
 };

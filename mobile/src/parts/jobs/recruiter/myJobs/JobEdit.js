@@ -10,6 +10,9 @@ const isEdit = navigation => !!navigation.state.params;
 export default context => {
   const Label = require("components/Label").default(context);
   const FormItem = require("components/FormItem").default(context);
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+    context
+  );
 
   const DateItemView = glamorous.view({
     flexDirection: "row",
@@ -83,6 +86,16 @@ export default context => {
           <FormItem>
             <DateItem currentJob={currentJob} />
           </FormItem>
+          <FormItem>
+            <Label>Location</Label>
+            <Button
+              title="Set Location"
+              onPress={async () => {
+                console.log("set location")
+              }}
+            />
+            <Text>Loc</Text>
+          </FormItem>
         </View>
         <View
           style={{
@@ -97,9 +110,7 @@ export default context => {
                 color="red"
                 title="Remove Job"
                 onPress={async () => {
-                  console.log("AAA");
                   await onRemove(currentJob.get("id"), navigation);
-                  console.log("BBB");
                 }}
               />
             )}

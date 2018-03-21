@@ -1,0 +1,34 @@
+[
+  {
+    "id": "12345656",
+    "currency": "EUR",
+    "amount": "200",
+    "details": "Thai & Co",
+    "debitedDate": "2017-02-16T19:20:30.45+01:00",
+    "accountId": "01010199"
+  },
+  {
+    "id": "12345653",
+    "currency": "EUR",
+    "amount": "100",
+    "details": "Super Food",
+    "debitedDate": "2017-02-16T19:20:30.45+01:00",
+    "accountId": "01010199"
+  },
+  {
+    "id": "12345654",
+    "currency": "EUR",
+    "amount": "1000",
+    "details": "Rent",
+    "debitedDate": "2017-02-16T19:20:30.45+01:00",
+    "accountId": "01010199"
+  },
+  {
+    "id": "12345657",
+    "currency": "EUR",
+    "amount": "60",
+    "details": "Tesco Fuel",
+    "debitedDate": "2017-02-16T19:20:30.45+01:00",
+    "accountId": "01010199"
+  }
+]

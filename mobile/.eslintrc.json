@@ -1,0 +1,81 @@
+{
+  "extends": ["airbnb"],
+  "globals": {
+        "require": true,
+        "fetch": true,
+        "expect": true
+    },
+    "env": {
+        "mocha": true
+    },
+    "plugins": [
+        "react",
+        "promise",
+        "jsx-extras"
+    ],
+    "rules": {
+        "global-require": 0,
+        "no-debugger": 0,
+        "no-console": 0,
+        "consistent-return": [0],
+        "key-spacing": [0],
+        "quotes": [0, "single", "avoid-escape"],
+        "quote-props": [1, "as-needed"],
+        "new-cap": [0],
+        "no-multi-spaces": [0],
+        "no-shadow": [0],
+        "no-unused-vars": [1],
+        "no-undef": 2,
+        "no-unused-expressions": 0,
+        "no-use-before-define": [2, "nofunc"],
+        "no-trailing-spaces": [0],
+        "eol-last": [0],
+        "no-labels": [2],
+        "indent": 0,
+        "no-mixed-spaces-and-tabs": 0,
+        "camelcase": 0,
+        "semi": [0, "always"],
+
+        "jsx-extras/jsx-no-string-literals": 0,
+
+        "promise/param-names": 1,
+        "promise/always-return": 1,
+        "promise/catch-or-return": 1,
+
+        "comma-dangle": 0,
+        "spaced-comment": 0,
+        "space-before-function-paren": 0,
+        "keyword-spacing": 0,
+        "func-names": 0,
+        "object-curly-spacing": 0,
+        "arrow-parens": 0,
+        "space-before-blocks": 0,
+
+        "import/no-extraneous-dependencies": 0,
+        "import/extensions": 0,
+        "import/first": 0,
+        "import/newline-after-import": 0,
+        "import/no-unresolved": 0,
+
+        "react/prop-types": 0,
+        "jsx-quotes": 0,
+        "react/jsx-indent": 0,
+        "react/jsx-tag-spacing": 0,
+        "react/forbid-prop-types": 0,
+        "react/jsx-filename-extension": 0,
+        "react/require-default-props": 0,
+        "react/no-array-index-key": 0,
+        "react/no-multi-comp": 0,
+        
+        "block-spacing": 0,
+        "no-param-reassign": 0,
+        "no-underscore-dangle": 0,
+        "padded-blocks": 0,
+        "prefer-arrow-callback": 0,
+        "max-len": 0,
+        "function-paren-newline": 0,
+        "object-curly-newline": 0
+    }
+
+}
+

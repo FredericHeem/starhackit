@@ -1,0 +1,44 @@
+[
+  {
+    "id": "01010199",
+    "label": "Compte Courant",
+    "bank_id": "BNP",
+    "total": "1000.00",
+    "currency": "EUR"
+  },
+  {
+    "id": "PeterMoedlID1",
+    "label": "Livret A",
+    "bank_id": "BNP",
+    "total": "2000",
+    "currency": "EUR"
+  },
+  {
+    "id": "1234567888",
+    "label": "Compte Courant",
+    "bank_id": "Société Générale",
+    "total": "100",
+    "currency": "EUR"
+  },
+  {
+    "id": "01010190",
+    "label": "LDD",
+    "bank_id": "Société Générale",
+    "total": "500",
+    "currency": "EUR"
+  },
+  {
+    "id": "999777555",
+    "label": "Current Account",
+    "bank_id": "RBS",
+    "total": "500",
+    "currency": "GBP"
+  },
+  {
+    "id": "Raju",
+    "label": "Saving Account",
+    "bank_id": "RBS",
+    "total": "500",
+    "currency": "GBP"
+  }
+]

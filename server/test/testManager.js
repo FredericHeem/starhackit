@@ -34,9 +34,10 @@ let TestMngr = function(){
         });
       });
     },
-
+    async seed(){
+      await this.app.seed();
+    },
     async start(){
-      await this.app.data.seedIfEmpty();
       return this.app.start();
     },
 

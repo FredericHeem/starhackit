@@ -1,0 +1,10 @@
+{
+  "name": "Starhackit",
+  "description": "React Native Started Kit",
+  "slug": "starhackit",
+  "iconUrl": "https://github.com/FredericHeem/starhackit-native/raw/master/assets/logo_wheel_big.png",
+  "version": "0.3.0",
+  "expo": {
+    "sdkVersion": "25.0.0"
+  }
+}

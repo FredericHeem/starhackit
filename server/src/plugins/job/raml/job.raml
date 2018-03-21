@@ -11,6 +11,25 @@ documentation:
 
 traits: !include traits.raml
 
+/candidate/profile:
+  description: Candidate profile
+  get:
+    description: Get the candidate's profile
+    responses:
+      200:
+        body:
+          example: !include profile.candidate.out.sample.json
+
+  patch:
+      description: Update the candidate's profile
+      body:
+        application/json:
+          example: !include profile.candidate.out.sample.json
+      responses:
+        200:
+          body:
+            example: !include profile.candidate.out.sample.json
+            
 /candidate/job:
   description: Operations on jobs from a candidate point of view
   get:

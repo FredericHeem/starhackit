@@ -2,7 +2,7 @@ app_name: instire
 title: Instire
 description: Found a job instantly
 
-git_repo: https://github.com/FredericHeem/starhackit.git
+git_repo: git@gitlab.com:instire/instire.git
 git_version: master
 
 api_dir: '{{home}}/{{app_name}}'

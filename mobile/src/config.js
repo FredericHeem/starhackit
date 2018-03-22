@@ -11,7 +11,7 @@ const config = {
 
   production: {
     env: "production",
-    apiUrl: "http://18.188.81.72:9000/api/v1/"
+    apiUrl: "http://app.instire.com:9000/api/v1/"
   }
 };
 

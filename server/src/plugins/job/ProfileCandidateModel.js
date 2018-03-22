@@ -10,6 +10,9 @@ module.exports = function(sequelize, DataTypes) {
       },
       location: {
         type: DataTypes.JSONB
+      },
+      sectors: {
+        type: DataTypes.JSONB
       }
     },
     {

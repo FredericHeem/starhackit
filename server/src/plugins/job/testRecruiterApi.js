@@ -10,7 +10,8 @@ const createFakeJob = () => ({
   company_url: faker.internet.url(),
   company_logo_url: faker.image.imageUrl(),
   start_date: faker.date.future(), 
-  end_date: faker.date.future()
+  end_date: faker.date.future(),
+  sector: faker.name.jobType(),
 });
 
 describe("Recruiter No Auth", function() {

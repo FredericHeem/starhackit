@@ -51,7 +51,20 @@ export default context => {
     getExperiences() {
       return store.experiences.values();
     },
-    currentExperience: {}
+    currentExperience: {},
+    sectors: [],
+    saveSector: action(async (sector, navigation) => {
+      console.log("saveSector ", sector);
+      store.sectors = [...store.sectors, sector];
+      await asyncOpPatch({ sectors: store.sectors });
+      navigation.navigate("Profile");
+    }),
+    removeSector: action(async (sector, navigation) => {
+      console.log("removeSector ", sector);
+      store.sectors.remove(sector);
+      await asyncOpPatch({ sectors: store.sectors });
+      navigation.navigate("Profile");
+    })
   });
 
   stores.profile = store;
@@ -68,6 +81,7 @@ export default context => {
 
   const Experience = require("./Experience").default(context);
   const ExperienceEdit = require("./ExperienceEdit").default(context);
+  const Sectors = require("./Sectors").default(context);
 
   const Location = require("./Location").default(context);
   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
@@ -92,6 +106,13 @@ export default context => {
       <UserInfoText>
         <Name>{stores.core.auth.me.name}</Name>
       </UserInfoText>
+      <Sectors
+        sectors={store.sectors}
+        store={store}
+        navigation={navigation}
+        onNewSector={sector => store.saveSector(sector, navigation)}
+        onSectorDelete={sector => store.removeSector(sector, navigation)}
+      />
       <Location store={store} navigation={navigation} />
       <Experience
         navigation={navigation}
@@ -130,6 +151,7 @@ export default context => {
                 const profile = await asyncOpGet();
                 store.experiences.replace(_.keyBy(profile.experiences, "id"));
                 store.summary = profile.summary;
+                store.sectors = profile.sectors || [];
                 stores.core.auth.getPicture();
               });
             }}

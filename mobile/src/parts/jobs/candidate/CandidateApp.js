@@ -1,4 +1,4 @@
-import React, { createElement as h } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "react-navigation";
 import Icon from "components/IconTabBar";
 
@@ -30,7 +30,7 @@ export default context => {
     {
       //tabBarOptions: context.theme.tabBar,
       animationEnabled: true,
-      //initialRouteName: "Profile"
+      initialRouteName: "Profile"
     }
   );
 };

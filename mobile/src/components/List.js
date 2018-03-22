@@ -4,10 +4,6 @@ import glamorous from "glamorous-native";
 
 export default context => {
   const ListView = glamorous.view({
-    margin: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "red"
   });
 
   const ListItem = require("./ListItem").default(context);

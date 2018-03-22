@@ -5,8 +5,8 @@ export default (/*{theme}*/) => {
     margin: 6,
     padding: 6,
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "red"
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgrey"
   });
   return ListItem;
 };

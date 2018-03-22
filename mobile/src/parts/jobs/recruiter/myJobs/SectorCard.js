@@ -26,7 +26,7 @@ export default context => {
           sectorStore.show = false;
         }}
       >
-        <Text>Select a sector</Text>
+        <Title>Select a sector</Title>
         <List
           onPress={item => {onPress(item); sectorStore.show = false;}}
           onKey={item => item}

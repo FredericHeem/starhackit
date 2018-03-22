@@ -84,9 +84,10 @@ export default () => {
         >
           <IconLeft loading={loading} />
           <TextInput
+            autoFocus
             underlineColorAndroid="transparent"
             placeholder="Location, i.e London"
-            style={{ flexGrow: 1, fontSize:20 }}
+            style={{ flexGrow: 1, fontSize: 20 }}
             onChangeText={onLocation}
             value={store.location}
             clearButtonMode="while-editing"

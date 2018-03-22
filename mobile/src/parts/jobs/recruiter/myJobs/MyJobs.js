@@ -18,6 +18,9 @@ import moment from "moment";
 const isEdit = navigation => !!navigation.state.params;
 
 export default context => {
+   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+    context
+  );
   const pathname = "recruiter/job"
   const createAsyncOp = require("core/asyncOp").default(context);
   const opsGetAll = createAsyncOp(() => context.rest.get(pathname));
@@ -71,7 +74,8 @@ export default context => {
   const currentJob = observable.map({
     title: "",
     description: "",
-    start_date: undefined
+    start_date: undefined,
+    location: {}
   });
 
   const Page = require("components/Page").default(context);
@@ -152,29 +156,25 @@ export default context => {
       <Button title="Create a new Job" onPress={onJobCreate} />
     </Page>
   ));
-  /*
-  const Loading = () => (
-    <View>
-      <ActivityIndicator />
-      <StatusBar barStyle="default" />
-    </View>
-  
-*/
 
   const JobEdit = require("./JobEdit").default(context);
 
   const onJobCreate = navigation => {
     console.log("onJobCreate ");
-    currentJob.replace({});
+    currentJob.replace({location: {}});
     navigation.navigate("JobEdit");
   };
 
   const onJobRemove = async (jobId, navigation) => {
     console.log("onJobRemove ", jobId);
     await store.remove(jobId, navigation);
-    currentJob.replace({});
+    currentJob.replace({location: {}});
   };
-
+  const onJobLocation = (location, navigation) => {
+    console.log("onJobLocation ", location);
+    currentJob.set("location", location);
+    navigation.navigate("JobEdit");
+  };
   const jobSaveButton = navigation => (
     <View style={{ marginRight: 10 }}>
       <Button
@@ -226,7 +226,18 @@ export default context => {
           header: undefined,
           headerRight: jobSaveButton(navigation)
         })
-      }
+      },
+      LocationEdit: {
+        screen: ({ navigation }) => (
+          <AutoCompleteLocation
+            onLocation={location => onJobLocation(location, navigation)}
+          />
+        ),
+        navigationOptions: () => ({
+          title: "Edit Location",
+          header: undefined
+        })
+      },
     },
     {
       navigationOptions: {

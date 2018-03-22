@@ -1,18 +1,16 @@
 import React from "react";
-import { View, Button, Text, TextInput, ScrollView } from "react-native";
+import { View, Button, Text, TextInput, ScrollView, Keyboard } from "react-native";
 import { observer } from "mobx-react";
 import DatePicker from "react-native-datepicker";
 import glamorous from "glamorous-native";
 import moment from "moment";
+import _ from "lodash";
 
 const isEdit = navigation => !!navigation.state.params;
 
 export default context => {
   const Label = require("components/Label").default(context);
   const FormItem = require("components/FormItem").default(context);
-  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
-    context
-  );
 
   const DateItemView = glamorous.view({
     flexDirection: "row",
@@ -88,13 +86,15 @@ export default context => {
           </FormItem>
           <FormItem>
             <Label>Location</Label>
-            <Button
-              title="Set Location"
-              onPress={async () => {
-                console.log("set location")
+            <TextInput
+              placeholder="Enter the job location "
+              underlineColorAndroid="transparent"
+              onFocus={() => {
+                Keyboard.dismiss();
+                navigation.navigate("LocationEdit");
               }}
+              value={currentJob.get("location").description}
             />
-            <Text>Loc</Text>
           </FormItem>
         </View>
         <View

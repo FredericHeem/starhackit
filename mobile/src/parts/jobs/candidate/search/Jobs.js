@@ -3,7 +3,7 @@ import { observable } from "mobx";
 import { View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { observer } from "mobx-react";
 import Lifecycle from "components/Lifecycle";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import glamorous from "glamorous-native";
 import _ from "lodash";
 import moment from "moment";
@@ -109,7 +109,7 @@ export default context => {
 
   const JobDetails = require("./JobDetails").default(context);
 
-  return StackNavigator(
+  return createStackNavigator(
     {
       Jobs: {
         screen: props => (

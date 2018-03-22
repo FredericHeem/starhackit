@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import _ from "lodash";
 import glamorous from "glamorous-native";
 import Lifecycle from "components/Lifecycle";
@@ -161,7 +161,7 @@ export default context => {
   
 */
 
-  const JobDetails = require("./JobEdit").default(context);
+  const JobEdit = require("./JobEdit").default(context);
 
   const onJobCreate = navigation => {
     console.log("onJobCreate ");
@@ -188,7 +188,7 @@ export default context => {
     </View>
   );
 
-  return StackNavigator(
+  return createStackNavigator(
     {
       Jobs: {
         screen: props => (
@@ -209,11 +209,12 @@ export default context => {
         )
       },
       JobEdit: {
-        screen: props => (
-          <JobDetails
+        screen: ({navigation, ...props}) => (
+          <JobEdit
             currentJob={currentJob}
-            onRemove={job => onJobRemove(job, props.navigation)}
-            details={props.navigation.state.params}
+            onRemove={job => onJobRemove(job, navigation)}
+            details={navigation.state.params}
+            navigation={navigation}
             {...props}
           />
         ),

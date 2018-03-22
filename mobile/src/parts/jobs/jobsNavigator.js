@@ -1,7 +1,7 @@
 import React from "react";
 
 import { StatusBar, View, ActivityIndicator } from "react-native";
-import { SwitchNavigator } from "react-navigation";
+import { createSwitchNavigator } from "react-navigation";
 export default context => {
   const store = context.stores.core;
 
@@ -28,7 +28,7 @@ export default context => {
     }
   }
 
-  return SwitchNavigator(
+  return createSwitchNavigator(
     {
       AuthLoading,
       Landing: require("./public/LandingNav").default(context),

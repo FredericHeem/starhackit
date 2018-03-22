@@ -4,7 +4,7 @@ import { Keyboard, View, Button } from "react-native";
 import { observer } from "mobx-react";
 
 import styled from "styled-components/native";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import Lifecycle from "components/Lifecycle";
 import _ from "lodash";
 
@@ -118,7 +118,7 @@ export default context => {
     </View>
   );
 
-  const Stack = StackNavigator(
+  const Stack = createStackNavigator(
     {
       Profile: {
         screen: props => (

@@ -1,5 +1,5 @@
 import React from "react";
-import { TabNavigator } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation";
 import AccountsStore from "./AccountsStore";
 import TransactionsStore from "./TransactionsStore";
 import accountsFixture from "./test/accounts.json";
@@ -23,7 +23,7 @@ export default context => {
   const Accounts = accounts(context);
   const Transactions = transactions(context);
 
-  const MainTabNavigator = TabNavigator(
+  const MainTabNavigator = createBottomTabNavigator(
     {
       Accounts: {
         screen: props => <Accounts {...props} store={store.accounts} />,

@@ -1,9 +1,9 @@
 import React, { createElement as h } from "react";
-import { TabNavigator } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation";
 import Icon from "components/IconTabBar";
 
 export default context => {
-  return TabNavigator(
+  return createBottomTabNavigator(
     {
       Jobs: {
         screen: require("./search/Jobs").default(context),

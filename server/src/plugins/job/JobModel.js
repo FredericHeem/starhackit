@@ -8,7 +8,10 @@ module.exports = function(sequelize, DataTypes) {
       company_url: DataTypes.TEXT,
       company_logo_url: DataTypes.TEXT,
       start_date: DataTypes.DATE,
-      end_date: DataTypes.DATE
+      end_date: DataTypes.DATE,
+      sector: DataTypes.TEXT,
+      location: DataTypes.JSONB,
+      meta: DataTypes.JSONB,
     },
     {
       tableName: "job",

@@ -43,6 +43,7 @@ export default context => {
   const store = observable({
     jobs: observable.map(),
     create: action(async (job, navigation) => {
+      console.log("create ", job);
       const error = hasJobError(job);
       if (error) {
         return displayError(error);
@@ -118,6 +119,7 @@ export default context => {
     <TouchableHighlight onPress={() => onPress(item)}>
       <ItemView>
         <JobTitle>{item.title}</JobTitle>
+        <JobTitle>{JSON.stringify(item.location)}</JobTitle>
         {moment(item.start_date).isValid() && (
           <StartIn>Start {moment(item.start_date).fromNow()}</StartIn>
         )}

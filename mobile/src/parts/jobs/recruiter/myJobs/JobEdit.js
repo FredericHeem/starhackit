@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Button, Text, TextInput, ScrollView, Keyboard } from "react-native";
+import {
+  View,
+  Button,
+  Text,
+  TextInput,
+  ScrollView,
+  Keyboard
+} from "react-native";
 import { observer } from "mobx-react";
 import DatePicker from "react-native-datepicker";
 import glamorous from "glamorous-native";
@@ -11,6 +18,7 @@ const isEdit = navigation => !!navigation.state.params;
 export default context => {
   const Label = require("components/Label").default(context);
   const FormItem = require("components/FormItem").default(context);
+  const LocationCard = require("components/LocationCard").default(context);
 
   const DateItemView = glamorous.view({
     flexDirection: "row",
@@ -60,6 +68,7 @@ export default context => {
           <FormItem>
             <Label>Title</Label>
             <TextInput
+              autoFocus
               placeholder="What is the position title to fill?"
               underlineColorAndroid="transparent"
               onChangeText={text => {
@@ -74,7 +83,7 @@ export default context => {
               placeholder="Describe the job"
               underlineColorAndroid="transparent"
               multiline
-              numberOfLines={10}
+              numberOfLines={4}
               onChangeText={text => {
                 currentJob.set("description", text);
               }}
@@ -84,18 +93,11 @@ export default context => {
           <FormItem>
             <DateItem currentJob={currentJob} />
           </FormItem>
-          <FormItem>
-            <Label>Location</Label>
-            <TextInput
-              placeholder="Enter the job location "
-              underlineColorAndroid="transparent"
-              onFocus={() => {
-                Keyboard.dismiss();
-                navigation.navigate("LocationEdit");
-              }}
-              value={currentJob.get("location").description}
-            />
-          </FormItem>
+          <LocationCard
+            placeHolder="Where is the Job Location?"
+            location={currentJob.get("location").description}
+            onPress={() => navigation.navigate("LocationEdit")}
+          />
         </View>
         <View
           style={{

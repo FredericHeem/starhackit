@@ -5,24 +5,22 @@ import _ from "lodash";
 
 export default context => {
   const Title = require("components/Title").default(context);
-  const Card = require("components/Card").default(context);
+  const Card = require("./Card").default(context);
 
-  const Location = observer(({ navigation, store }) => (
+  const Location = observer(({ location, placeHolder, onPress }) => (
     <Card>
       <Card.Header>
         <Title>Location</Title>
         <Button
-          title={store.getLocation() ? "Edit" : "Add"}
-          onPress={() => {
-            navigation.navigate("LocationEdit");
-          }}
+          title={location ? "Edit" : "Add"}
+          onPress={onPress}
         />
       </Card.Header>
       <Card.Body>
-        {_.isEmpty(store.getLocation()) ? (
-          <Text>Where are you looking for a job?</Text>
+        {_.isEmpty(location) ? (
+          <Text>{placeHolder}</Text>
         ) : (
-          <Text>{store.getLocation()}</Text>
+          <Text>{location}</Text>
         )}
       </Card.Body>
     </Card>

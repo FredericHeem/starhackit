@@ -6,7 +6,7 @@ import _ from "lodash";
 
 export default context => {
   const Title = require("components/Title").default(context);
-  const Card = require("./Card").default(context);
+  const Card = require("components/Card").default(context);
 
   const ExperienceItemView = glamorous.view({
     flex: 1,

@@ -6,7 +6,7 @@ export default () => {
     borderColor: "lightgrey",
     borderStyle: "dotted",
     padding: 6,
-    margin: 4,
+    margin: 6,
     backgroundColor: "white"
   });
 

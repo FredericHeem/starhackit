@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import DatePicker from "react-native-datepicker";
 import glamorous from "glamorous-native";
 import moment from "moment";
+import _ from "lodash";
 
 const isEdit = navigation => !!navigation.state.params;
 
@@ -67,7 +68,7 @@ export default context => {
           <FormItem>
             <Label>Title</Label>
             <TextInput
-              autoFocus
+              autoFocus={_.isEmpty(currentJob.get("title"))}
               placeholder="What is the position title to fill?"
               underlineColorAndroid="transparent"
               onChangeText={text => {

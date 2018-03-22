@@ -2,10 +2,8 @@ import React from "react";
 import {
   View,
   Button,
-  Text,
   TextInput,
   ScrollView,
-  Keyboard
 } from "react-native";
 import { observer } from "mobx-react";
 import DatePicker from "react-native-datepicker";
@@ -27,6 +25,8 @@ export default context => {
   });
 
   const dateFormat = "YYYY-MM-DD";
+
+  const Sector = require("./SectorCard").default(context);
 
   const DateItem = observer(({ currentJob }) => (
     <DateItemView>
@@ -90,6 +90,12 @@ export default context => {
               value={currentJob.get("description")}
             />
           </FormItem>
+          <Sector
+            sector={currentJob.get("sector")}
+            onPress={sector => {
+              currentJob.set("sector", sector);
+            }}
+          />
           <FormItem>
             <DateItem currentJob={currentJob} />
           </FormItem>

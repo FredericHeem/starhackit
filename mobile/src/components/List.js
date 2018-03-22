@@ -3,8 +3,8 @@ import { TouchableOpacity } from "react-native";
 import glamorous from "glamorous-native";
 
 export default context => {
-  const ListView = glamorous.view({
-  });
+  const ListView = glamorous.scrollView({
+  }); 
 
   const ListItem = require("./ListItem").default(context);
 
@@ -12,7 +12,7 @@ export default context => {
     <ListView>
       {items.map(item => (
         <TouchableOpacity key={onKey(item)} onPress={() => onPress(item)}>
-          <ListItem >{renderItem(item)}</ListItem>
+          <ListItem>{renderItem(item)}</ListItem>
         </TouchableOpacity>
       ))}
     </ListView>

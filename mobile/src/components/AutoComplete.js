@@ -2,8 +2,6 @@ import React from "react";
 import {
   View,
   TextInput,
-  ScrollView,
-  TouchableOpacity,
   ActivityIndicator
 } from "react-native";
 import { observer } from "mobx-react";
@@ -11,39 +9,21 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import glamorous from "glamorous-native";
 import _ from "lodash";
 
-export default () => {
-  const ItemView = glamorous.view({
-    padding: 10,
-    margin: 0,
-    borderBottomColor: "lightgrey",
-    borderBottomWidth: 1
-  });
+export default context => {
+  const List = require("components/List").default(context);
 
   const ItemText = glamorous.text({
     fontSize: 18
   });
 
-  const Item = ({ item, onPress }) => (
-    <TouchableOpacity onPress={() => onPress(item)}>
-      <ItemView>
-        <ItemText>{item.description}</ItemText>
-      </ItemView>
-    </TouchableOpacity>
-  );
-
   const Suggestions = observer(({ suggestions = [], onPress }) => (
     <View style={{ height: 300 }}>
-      <ScrollView
-        style={{
-          width: "100%",
-          position: "absolute",
-          backgroundColor: "white"
-        }}
-      >
-        {suggestions.map(item => (
-          <Item onPress={onPress} key={item.id} item={item} />
-        ))}
-      </ScrollView>
+      <List
+        onPress={onPress}
+        onKey={item => item.id}
+        items={suggestions}
+        renderItem={item => <ItemText>{item.description}</ItemText>}
+      />
     </View>
   ));
 

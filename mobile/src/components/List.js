@@ -1,14 +1,14 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
+import { observer } from "mobx-react";
 import glamorous from "glamorous-native";
 
 export default context => {
-  const ListView = glamorous.scrollView({
-  }); 
+  const ListView = glamorous.scrollView({});
 
   const ListItem = require("./ListItem").default(context);
 
-  const List = ({ items, renderItem, onPress, onKey }) => (
+  const List = observer(({ items, renderItem, onPress, onKey }) => (
     <ListView>
       {items.map(item => (
         <TouchableOpacity key={onKey(item)} onPress={() => onPress(item)}>
@@ -16,6 +16,7 @@ export default context => {
         </TouchableOpacity>
       ))}
     </ListView>
-  );
+  ));
+
   return List;
 };

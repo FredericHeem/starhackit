@@ -1,6 +1,6 @@
 import React from "react";
 import { observable } from "mobx";
-import { View, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { observer } from "mobx-react";
 import Lifecycle from "components/Lifecycle";
 import { createStackNavigator } from "react-navigation";
@@ -13,6 +13,10 @@ export default context => {
   const createAsyncOp = require("core/asyncOp").default(context);
   const opsGetAll = createAsyncOp(() => context.rest.get("candidate/job"));
   const Text = require("components/Text").default(context);
+  const List = require("components/List").default(context);
+  const Page = require("components/Page").default(context);
+
+  opsGetAll.data = [];
 
   const store = observable({
     description: "",
@@ -27,8 +31,6 @@ export default context => {
   store.location = "london";
 
   stores.jobs = store;
-
-  const Page = require("components/Page").default(context);
 
   const ItemView = glamorous.view({
     margin: 6,
@@ -61,35 +63,24 @@ export default context => {
     color: "grey"
   });
 
-  const ListItem = ({ job, onPress }) => (
-    <TouchableOpacity onPress={() => onPress(job)}>
-      <ItemView
-        style={{
-          padding: 8,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center"
-        }}
-      >
-        <View style={{ flexGrow: 1 }}>
-          <Title>{job.title}</Title>
-          <CompanyName>@ {job.company}</CompanyName>
-          <StartDate>Start Date: {moment(job.start_date).fromNow()}</StartDate>
-        </View>
-        <View style={{ width: 70, height: 70 }}>
-          {job.company_logo_url && (
-            <CompanyLogo logoURI={job.company_logo_url} />
-          )}
-        </View>
-      </ItemView>
-    </TouchableOpacity>
-  );
-
-  const List = ({ data, onPress }) => (
-    <View>
-      {data &&
-        data.map(job => <ListItem onPress={onPress} job={job} key={job.id} />)}
-    </View>
+  const JobItem = ({ job }) => (
+    <ItemView
+      style={{
+        padding: 8,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+      }}
+    >
+      <View style={{ flexGrow: 1 }}>
+        <Title>{job.title}</Title>
+        <CompanyName>@ {job.company}</CompanyName>
+        <StartDate>Start Date: {moment(job.start_date).fromNow()}</StartDate>
+      </View>
+      <View style={{ width: 70, height: 70 }}>
+        {job.company_logo_url && <CompanyLogo logoURI={job.company_logo_url} />}
+      </View>
+    </ItemView>
   );
 
   const onPressItem = (item, navigation) => {
@@ -97,12 +88,14 @@ export default context => {
     navigation.navigate("JobDetails", item);
   };
 
-  const Jobs = observer(({ opsGetAll, store, navigation }) => (
+  const Jobs = observer(({ opsGetAll, navigation }) => (
     <Page>
       {opsGetAll.loading && <ActivityIndicator size="large" color="grey" />}
       <List
         onPress={item => onPressItem(item, navigation)}
-        data={opsGetAll.data}
+        onKey={item => item.id}
+        items={opsGetAll.data}
+        renderItem={item => <JobItem job={item} />}
       />
     </Page>
   ));

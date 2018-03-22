@@ -9,7 +9,6 @@ import { observer } from "mobx-react";
 import DatePicker from "react-native-datepicker";
 import glamorous from "glamorous-native";
 import moment from "moment";
-import _ from "lodash";
 
 const isEdit = navigation => !!navigation.state.params;
 

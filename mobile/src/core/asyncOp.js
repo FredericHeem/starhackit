@@ -39,6 +39,7 @@ export default () => {
           store.loading = true;
           store.error = null;
           const response = await fn(input);
+          //console.log("fetch response ", response);
           store.data = response;
           return response;
         } catch (error) {

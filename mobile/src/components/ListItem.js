@@ -2,11 +2,14 @@ import glamorous from "glamorous-native";
 
 export default (/*{theme}*/) => {
   const ListItem = glamorous.view({
-    margin: 6,
-    padding: 6,
+    margin: 0,
+    padding: 8,
     backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "lightgrey"
+    borderBottomColor: "lightgrey",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
   });
   return ListItem;
 };

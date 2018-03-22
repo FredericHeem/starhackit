@@ -9,7 +9,19 @@ export default context => {
   const sectorItems = [
     "Bar - Restaurants - Clubs",
     "Catering - Events",
-    "Construction"
+    "Construction",
+    "Delivery -Drivers - Couriers",
+    "Electricity - Plumbing - AC",
+    "Handling - Moving - Repair",
+    "Hotels - Motels - Resorts",
+    "Housekeeping - Janitorial",
+    "Pool - Landscaping",
+    "Retail - Sales",
+    "Sport - Fitness - Spa",
+    "Valet - Security - Guard",
+    "Wholesale - Manufacturing",
+    "Web - Graphic Design",
+    "Other"
   ];
 
   return observer(({ visible, onPress, onRequestClose }) => (
@@ -24,7 +36,7 @@ export default context => {
         onPress={onPress}
         onKey={item => item}
         items={sectorItems}
-        renderItem={item => <Text>{item}</Text>}
+        renderItem={item => <Text style={{fontSize: 16}}>{item}</Text>}
       />
     </Modal>
   ));

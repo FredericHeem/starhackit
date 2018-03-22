@@ -29,7 +29,7 @@ export default context => {
     }),
     summary: null,
     saveSummary: action(async navigation => {
-      await asyncOpPatch({ summary: store.summary});
+      await asyncOpPatch({ summary: store.summary });
       Keyboard.dismiss();
       navigation.navigate("Profile");
     }),
@@ -70,7 +70,9 @@ export default context => {
   const ExperienceEdit = require("./ExperienceEdit").default(context);
 
   const Location = require("./Location").default(context);
-  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(context);
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+    context
+  );
 
   const onPressExperience = (experience, navigation) => {
     store.currentExperience = { ...store.currentExperience, ...experience };
@@ -123,11 +125,13 @@ export default context => {
       Profile: {
         screen: props => (
           <Lifecycle
-            didMount={async () => {
-              const profile = await asyncOpGet();
-              store.experiences.replace(_.keyBy(profile.experiences, "id"));
-              store.summary = profile.summary;
-              stores.core.auth.getPicture();
+            didMount={() => {
+              props.navigation.addListener("didFocus", async () => {
+                const profile = await asyncOpGet();
+                store.experiences.replace(_.keyBy(profile.experiences, "id"));
+                store.summary = profile.summary;
+                stores.core.auth.getPicture();
+              });
             }}
           >
             <Profile
@@ -159,11 +163,12 @@ export default context => {
         })
       },
       ExperienceEdit: {
-        screen: observer(({navigation}) => (
+        screen: observer(({ navigation }) => (
           <ExperienceEdit
             currentExperience={store.currentExperience}
             navigation={navigation}
-            onRemove={experience => store.removeExperience(experience, navigation)}
+            onRemove={experience =>
+              store.removeExperience(experience, navigation)}
           />
         )),
         navigationOptions: ({ navigation }) => ({

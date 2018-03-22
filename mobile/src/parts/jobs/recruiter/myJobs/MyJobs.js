@@ -119,7 +119,7 @@ export default context => {
     <TouchableHighlight onPress={() => onPress(item)}>
       <ItemView>
         <JobTitle>{item.title}</JobTitle>
-        <JobTitle>{JSON.stringify(item.location)}</JobTitle>
+        <Text>{_.get(item.location, "description")}</Text>
         {moment(item.start_date).isValid() && (
           <StartIn>Start {moment(item.start_date).fromNow()}</StartIn>
         )}
@@ -196,8 +196,9 @@ export default context => {
         screen: props => (
           <Lifecycle
             didMount={() => {
-              console.log("didMount ");
-              opsGetAll.fetch().catch(e => e);
+              props.navigation.addListener('didFocus', () => {
+                opsGetAll.fetch().catch(e => e)
+              });
             }}
             willUnmount={() => console.log("willUnmount ")}
           >

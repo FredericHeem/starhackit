@@ -113,7 +113,13 @@ export default context => {
     {
       Jobs: {
         screen: props => (
-          <Lifecycle didMount={() => store.fetch()}>
+          <Lifecycle
+            didMount={() => {
+              props.navigation.addListener("didFocus", () => {
+                store.fetch();
+              });
+            }}
+          >
             <Jobs opsGetAll={opsGetAll} store={store} {...props} />
           </Lifecycle>
         )

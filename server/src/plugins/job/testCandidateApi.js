@@ -11,7 +11,6 @@ describe("Candidate Job", function() {
   after(async () => {
     await testMngr.stop();
   });
-
   it("should get all jobs", async () => {
     let jobs = await client.get("v1/candidate/job");
     assert(jobs);

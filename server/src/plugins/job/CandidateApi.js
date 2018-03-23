@@ -1,5 +1,9 @@
+import Qs from "qs";
+import _ from "lodash";
+
 export default app => {
-  const { models } = app.data.sequelize;
+  const { sequelize } = app.data;
+  const { models } = sequelize;
 
   const api = {
     pathname: "/candidate/job",
@@ -8,7 +12,24 @@ export default app => {
         pathname: "/",
         method: "get",
         handler: async context => {
-          const jobs = await models.Job.findAll({});
+          const querystring = Qs.parse(context.request.querystring);
+          const lat = _.toNumber(querystring.lat);
+          const lon = _.toNumber(querystring.lon);
+          const {sectors} = querystring;
+          //console.log("criteria ", querystring);
+          const criteria = {
+            limit: 100,
+          };
+          if (!_.isNaN(lat) && !_.isNaN(lon)) {
+            criteria.order = sequelize.literal(
+              `geo <-> 'SRID=4326;POINT(${lat} ${lon})'`
+            );
+          }
+          if(_.isArray(sectors)){
+            criteria.where = {sector: {$in: sectors}};
+          }
+          //console.log("criteria ", criteria);
+          const jobs = await models.Job.findAll(criteria);
           context.body = jobs.map(job => job.get());
           context.status = 200;
         }

@@ -110,4 +110,29 @@ describe("Recruiter Auth", function() {
       assert.equal(error.statusCode, 404);
     }
   });
+  it("should get all jobs near me, internal", async () => {
+    const jobs = await testMngr.app.data.models().Job.findAll({
+      limit: 5,
+      order: testMngr.app.data.sequelize.literal(
+        "geo <-> 'SRID=4326;POINT(-48.234 20.12)'"
+      )
+    });
+    console.log(jobs.length);
+    assert(jobs);
+  });
+  it("should get all jobs near me", async () => {
+    let jobs = await client.get("v1/candidate/job?lat=50&lon=0");
+    console.log(jobs.length);
+    assert(jobs);
+  });
+  it("should not get any job given an unknown sector", async () => {
+    let jobs = await client.get("v1/candidate/job?sectors[]=Restaurant");
+    assert.equal(jobs.length, 0);
+    assert(jobs);
+  });
+  it("should get all jobs given an array of sectors", async () => {
+    let jobs = await client.get("v1/candidate/job?sectors[]=Administrator&sectors[]=Developer");
+    console.log(jobs.length);
+    assert(jobs);
+  });
 });

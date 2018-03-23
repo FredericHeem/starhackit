@@ -16,7 +16,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     {
       tableName: "job",
-      underscored: true
+      underscored: true,
+      indexes: [
+        {
+          using: "gist",
+          fields: ["geo"]
+        },
+        {
+          fields: ["sector"]
+        }
+      ]
     }
   );
   Job.associate = function(models) {

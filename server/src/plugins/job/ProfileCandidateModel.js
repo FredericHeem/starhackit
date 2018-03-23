@@ -19,7 +19,17 @@ module.exports = function(sequelize, DataTypes) {
     {
       tableName: "profile_candidate",
       underscored: true,
-      timestamps: false
+      timestamps: false,
+      indexes: [
+        {
+          using: "gist",
+          fields: ["geo"]
+        },
+        {
+          using: "gin",
+          fields: ["sectors"]
+        }
+      ]
     }
   );
 

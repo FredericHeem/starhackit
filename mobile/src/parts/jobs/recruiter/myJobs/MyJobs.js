@@ -18,17 +18,19 @@ import moment from "moment";
 const isEdit = navigation => !!navigation.state.params;
 
 export default context => {
-   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
     context
   );
-  const pathname = "recruiter/job"
+  const pathname = "recruiter/job";
   const createAsyncOp = require("core/asyncOp").default(context);
   const opsGetAll = createAsyncOp(() => context.rest.get(pathname));
   const opsUpdate = createAsyncOp(job =>
     context.rest.patch(`${pathname}/${job.id}`, job)
   );
   const opsCreate = createAsyncOp(job => context.rest.post(pathname, job));
-  const opsDelete = createAsyncOp(jobId => context.rest.del(`${pathname}/${jobId}`));
+  const opsDelete = createAsyncOp(jobId =>
+    context.rest.del(`${pathname}/${jobId}`)
+  );
 
   const hasJobError = job => {
     if (_.isEmpty(job.title)) {
@@ -65,7 +67,7 @@ export default context => {
       navigation.navigate("Jobs");
     }),
     remove: action(async (jobId, navigation) => {
-      console.log("remove  ", jobId)
+      console.log("remove  ", jobId);
       await opsDelete.fetch(jobId);
       Keyboard.dismiss();
       navigation.navigate("Jobs");
@@ -76,7 +78,8 @@ export default context => {
     title: "",
     description: "",
     start_date: undefined,
-    location: {}
+    location: {},
+    geo: {}
   });
 
   const Page = require("components/Page").default(context);
@@ -163,17 +166,25 @@ export default context => {
 
   const onJobCreate = navigation => {
     console.log("onJobCreate ");
-    currentJob.replace({location: {}});
+    currentJob.replace({ geo: {}, location: {} });
     navigation.navigate("JobEdit");
   };
 
   const onJobRemove = async (jobId, navigation) => {
     console.log("onJobRemove ", jobId);
     await store.remove(jobId, navigation);
-    currentJob.replace({location: {}});
+    currentJob.replace({ geo: {}, location: {} });
   };
-  const onJobLocation = (location, navigation) => {
-    console.log("onJobLocation ", location);
+  const onJobLocation = async (location, navigation) => {
+    console.log("onJobLocation ", location.description);
+    const results = await context.stores.core.geoLoc.getGeoPosition(
+      location.description
+    );
+    const geoLoc = _.get(results[0], "geometry.location");
+    console.log("geoLoc ", geoLoc);
+    if (geoLoc) {
+      currentJob.set("geo", { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] });
+    }
     currentJob.set("location", location);
     navigation.navigate("JobEdit");
   };
@@ -196,8 +207,8 @@ export default context => {
         screen: props => (
           <Lifecycle
             didMount={() => {
-              props.navigation.addListener('didFocus', () => {
-                opsGetAll.fetch().catch(e => e)
+              props.navigation.addListener("didFocus", () => {
+                opsGetAll.fetch().catch(e => e);
               });
             }}
             willUnmount={() => console.log("willUnmount ")}
@@ -212,7 +223,7 @@ export default context => {
         )
       },
       JobEdit: {
-        screen: ({navigation, ...props}) => (
+        screen: ({ navigation, ...props }) => (
           <JobEdit
             currentJob={currentJob}
             onRemove={job => onJobRemove(job, navigation)}
@@ -240,7 +251,7 @@ export default context => {
           title: "Edit Location",
           header: undefined
         })
-      },
+      }
     },
     {
       navigationOptions: {

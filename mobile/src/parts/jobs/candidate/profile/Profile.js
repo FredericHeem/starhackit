@@ -19,12 +19,23 @@ export default context => {
     asyncOp.execute(params => rest.patch(pathname, params), input);
 
   const store = observable({
+    geo: {},
     location: null,
     getLocation() {
       return _.get(asyncOp.data, "location.description");
     },
     saveLocation: action(async (location, navigation) => {
-      await asyncOpPatch({ location });
+      //console.log("saveLocation ", location);
+      const results = await context.stores.core.geoLoc.getGeoPosition(location.description);
+      
+      const geoLoc = _.get(results[0], "geometry.location");
+      //console.log("geoLoc ", geoLoc);
+      let geo;
+      if(geoLoc){
+        geo = { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] }
+      }
+      
+      await asyncOpPatch({ location, geo });
       navigation.navigate("Profile");
     }),
     summary: null,
@@ -149,8 +160,11 @@ export default context => {
             didMount={() => {
               props.navigation.addListener("didFocus", async () => {
                 const profile = await asyncOpGet();
+                store.location = profile.location;
+                console.log("profile: ", profile)
                 store.experiences.replace(_.keyBy(profile.experiences, "id"));
                 store.summary = profile.summary;
+                store.geo = profile.geo || {};
                 store.sectors = profile.sectors || [];
                 stores.core.auth.getPicture();
               });

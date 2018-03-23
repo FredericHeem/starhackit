@@ -7,11 +7,14 @@ import { createStackNavigator } from "react-navigation";
 import glamorous from "glamorous-native";
 import _ from "lodash";
 import moment from "moment";
+import Qs from "qs";
 
 export default context => {
   const { stores } = context;
   const createAsyncOp = require("core/asyncOp").default(context);
-  const opsGetAll = createAsyncOp(() => context.rest.get("candidate/job"));
+  const opsGetAll = createAsyncOp(params =>
+    context.rest.get(`candidate/job`, params)
+  );
   const Text = require("components/Text").default(context);
   const List = require("components/List").default(context);
   const Page = require("components/Page").default(context);
@@ -25,7 +28,12 @@ export default context => {
 
   async function fetchJobs() {
     console.log("fetchJobs ", stores.profile.location);
-    await opsGetAll.fetch();
+    const { geo } = stores.profile;
+    await opsGetAll.fetch({
+      sectors: stores.profile.sectors.toJS(),
+      lat: geo.lat,
+      lon: geo.lon
+    });
   }
 
   store.location = "london";

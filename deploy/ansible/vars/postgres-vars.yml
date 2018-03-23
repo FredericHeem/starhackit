@@ -4,6 +4,7 @@ postgresql_version: 9.6
 postgresql_databases:
   - name: "{{ db_name }}"
 
+postgresql_ext_postgis_version: "2.3"
 postgresql_ext_install_postgis: yes
 
 postgresql_users:

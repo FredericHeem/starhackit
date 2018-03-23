@@ -11,6 +11,12 @@ module.exports = function(sequelize, DataTypes) {
       location: {
         type: DataTypes.JSONB
       },
+      latitude: {
+        type: DataTypes.FLOAT
+      },
+      longitude: {
+        type: DataTypes.FLOAT
+      },
       sectors: {
         type: DataTypes.JSONB
       }

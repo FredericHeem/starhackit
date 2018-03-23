@@ -12,6 +12,8 @@ const createFakeJob = () => ({
   start_date: faker.date.future(), 
   end_date: faker.date.future(),
   sector: faker.name.jobType(),
+  latitude: 51.67234 + Math.random(),
+  longitude: Math.random()
 });
 
 describe("Recruiter No Auth", function() {

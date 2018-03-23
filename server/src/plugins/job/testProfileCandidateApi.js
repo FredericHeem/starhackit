@@ -21,7 +21,9 @@ describe("Candidate Profile", function() {
     const profileData = {
       summary: "The best cow in the stable",
       experiences: [{ title: "Chef" }],
-      sectors: ["Construction", "Restaurant"]
+      sectors: ["Construction", "Restaurant"],
+      latitude: 51.6723432,
+      longitude: 0.1478797
     };
     const profile = await client.patch("v1/candidate/profile", profileData);
     //console.log("profile updated", profile)

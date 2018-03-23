@@ -31,6 +31,14 @@ export default () => {
     fontStyle: "italic",
     color: "grey"
   });
+  const Date = glamorous.text({
+    margin: 6,
+    fontStyle: "italic",
+    color: "grey"
+  });
+  const Location = glamorous.text({
+    margin: 6,
+  });
 
   const CompanyLogo = ({ logoURI }) => (
     <LogoView resizeMode="contain" source={{ uri: logoURI }} />
@@ -40,14 +48,24 @@ export default () => {
     <ScrollView>
       <Title>{details.title}</Title>
       <CompanyName> {details.company}</CompanyName>
-      <CompanyLogo logoURI={details.company_logo_url} />
-      <PublishedDate>
-        Published {moment(details.created_at).fromNow()}
-      </PublishedDate>
-      <WebView
-        source={{ html: details.description }}
-        style={{ height: 3000, marginTop: 20 }}
-      />
+      {details.company_logo_url && (
+        <CompanyLogo logoURI={details.company_logo_url} />
+      )}
+      {details.location && <Location>{details.location.description}</Location>}
+      {details.start_date && (
+        <Date>Start {moment(details.start_date).fromNow()}</Date>
+      )}
+      {details.description && (
+        <WebView
+          source={{ html: details.description }}
+          style={{ height: 3000, marginTop: 20 }}
+        />
+      )}
+      {details.created_at && (
+        <PublishedDate>
+          Published {moment(details.created_at).fromNow()}
+        </PublishedDate>
+      )}
     </ScrollView>
   );
   return JobDetails;

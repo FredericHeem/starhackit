@@ -71,6 +71,10 @@ export default context => {
     color: "grey"
   });
 
+  const Location = glamorous(Text)({
+    color: "grey"
+  });
+
   const JobItem = ({ job }) => (
     <ItemView
       style={{
@@ -82,8 +86,11 @@ export default context => {
     >
       <View style={{ flexGrow: 1 }}>
         <Title>{job.title}</Title>
-        <CompanyName>@ {job.company}</CompanyName>
-        <StartDate>Start Date: {moment(job.start_date).fromNow()}</StartDate>
+        {job.company && <CompanyName>@ {job.company}</CompanyName>}
+        {job.location && <Location>{job.location.description}</Location>}
+        {job.start_date && (
+          <StartDate>Start {moment(job.start_date).fromNow()}</StartDate>
+        )}
       </View>
       <View style={{ width: 70, height: 70 }}>
         {job.company_logo_url && <CompanyLogo logoURI={job.company_logo_url} />}

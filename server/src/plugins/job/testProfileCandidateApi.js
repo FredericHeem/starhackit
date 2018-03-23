@@ -22,8 +22,7 @@ describe("Candidate Profile", function() {
       summary: "The best cow in the stable",
       experiences: [{ title: "Chef" }],
       sectors: ["Construction", "Restaurant"],
-      latitude: 51.6723432,
-      longitude: 0.1478797
+      geo: { type: "Point", coordinates: [-48.234, 20.123] }
     };
     const profile = await client.patch("v1/candidate/profile", profileData);
     //console.log("profile updated", profile)

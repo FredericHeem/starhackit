@@ -9,11 +9,10 @@ const createFakeJob = () => ({
   company: faker.company.companyName(),
   company_url: faker.internet.url(),
   company_logo_url: faker.image.imageUrl(),
-  start_date: faker.date.future(), 
+  start_date: faker.date.future(),
   end_date: faker.date.future(),
   sector: faker.name.jobType(),
-  latitude: 51.67234 + Math.random(),
-  longitude: Math.random()
+  geo: { type: "Point", coordinates: [-48.23456, 20.12345] }
 });
 
 describe("Recruiter No Auth", function() {
@@ -81,7 +80,10 @@ describe("Recruiter Auth", function() {
     const inputNew = createFakeJob();
     const newJob = await client.post("v1/recruiter/job", inputNew);
     const inputUpdated = createFakeJob();
-    const updatedJob = await client.patch(`v1/recruiter/job/${newJob.id}`, inputUpdated);
+    const updatedJob = await client.patch(
+      `v1/recruiter/job/${newJob.id}`,
+      inputUpdated
+    );
     assert.equal(updatedJob.title, inputUpdated.title);
   });
   it("should delete a job", async () => {

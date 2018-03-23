@@ -12,12 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       sector: DataTypes.TEXT,
       location: DataTypes.JSONB,
       meta: DataTypes.JSONB,
-      latitude: {
-        type: DataTypes.FLOAT
-      },
-      longitude: {
-        type: DataTypes.FLOAT
-      }
+      geo: DataTypes.GEOGRAPHY
     },
     {
       tableName: "job",

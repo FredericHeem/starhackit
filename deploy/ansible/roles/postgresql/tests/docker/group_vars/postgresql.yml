@@ -1,0 +1,35 @@
+---
+
+postgresql_shared_buffers: "32MB"
+
+postgresql_databases:
+  - name: foobar
+    owner: baz
+
+postgresql_users:
+  - name: baz
+    pass: pass
+
+  - name: zab
+    pass: md51a1dc91c907325c69271ddf0c944bc72
+    encrypted: yes
+
+  - name: zabaz
+
+postgresql_user_privileges:
+  - name: baz
+    db: foobar
+
+postgresql_ext_install_contrib: true
+
+# These do not work everywhere, but should be included ASAP
+postgresql_ssl: false
+postgresql_pgtune: false
+postgresql_ext_install_postgis: false
+
+postgresql_database_extensions:
+  - db: foobar
+    extensions:
+    - adminpack
+    - pgcrypto
+    - unaccent

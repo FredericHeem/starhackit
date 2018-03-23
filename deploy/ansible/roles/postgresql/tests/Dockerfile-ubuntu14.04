@@ -6,6 +6,7 @@ RUN apt-get update -qq && \
     apt-get install -qq python-apt python-pycurl python-pip python-dev \
                         libffi-dev libssl-dev locales && \
     echo 'en_US.UTF-8 UTF-8' > /var/lib/locales/supported.d/local && \
+    pip install -U setuptools && \
     pip install -q ansible==1.9.4
 
 # Copy our role into the container, using our role name

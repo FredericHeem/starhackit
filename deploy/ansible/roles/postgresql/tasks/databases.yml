@@ -22,14 +22,15 @@
   when: postgresql_databases|length > 0
 
 - name: PostgreSQL | Add extensions to the databases
-  shell: "psql {{item.0.db}} --username {{postgresql_admin_user}} -c 'CREATE EXTENSION IF NOT EXISTS {{ item.1 }};'"
-  become: yes
-  become_user: "{{postgresql_service_user}}"
+  postgresql_ext:
+    db: "{{ item.0.db }}"
+    login_user: "{{ postgresql_service_user }}"
+    port: "{{ postgresql_port }}"
+    name: "{{ item.1 }}"
   with_subelements:
-    - "{{postgresql_database_extensions}}"
+    - "{{ postgresql_database_extensions }}"
     - extensions
   register: result
-  changed_when: "'NOTICE' not in result.stderr"
 
 - name: PostgreSQL | Add hstore to the databases with the requirement
   become: yes

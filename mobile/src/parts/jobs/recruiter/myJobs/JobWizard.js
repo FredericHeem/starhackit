@@ -1,96 +1,18 @@
 import React from "react";
-import { View, Button, TextInput, Text, ScrollView } from "react-native";
-import { observer } from "mobx-react";
-import DatePicker from "react-native-datepicker";
+import { View, Button} from "react-native";
 import glamorous from "glamorous-native";
-import moment from "moment";
 import _ from "lodash";
 
 export default context => {
-  const Label = require("components/Label").default(context);
-  const FormItem = require("components/FormItem").default(context);
   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
     context
   );
 
+  const JobInfo = require("./JobInfo").default(context);
   const SectorList = require("components/SectorList").default(context);
   const JobEdit = require("./JobEdit").default(context);
   const CompanyInfo = require("./CompanyInfo").default(context);
-
-  const DateItemView = glamorous.view({
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  });
-
-  const dateFormat = "YYYY-MM-DD";
-
-  const DateItem = observer(({ currentJob }) => (
-    <DateItemView>
-      <Label>Start Date</Label>
-      <DatePicker
-        style={{ width: 200 }}
-        mode="date"
-        placeholder="Select Start Date"
-        format={dateFormat}
-        minDate={moment().format(dateFormat)}
-        maxDate={moment()
-          .add(1, "year")
-          .format(dateFormat)}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: "absolute",
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-        }}
-        date={currentJob.map.get("start_date")}
-        onDateChange={date => {
-          currentJob.map.set("start_date", moment(date).format());
-        }}
-      />
-    </DateItemView>
-  ));
-  const JobInfo = observer(({ currentJob }) => {
-    console.log("JobInfo");
-    return (
-      <ScrollView>
-        <View>
-          <FormItem>
-            <Label>Title</Label>
-            <TextInput
-              autoFocus={_.isEmpty(currentJob.map.get("title"))}
-              placeholder="What is the position title to fill?"
-              underlineColorAndroid="transparent"
-              onChangeText={text => {
-                currentJob.map.set("title", text);
-              }}
-              value={currentJob.map.get("title")}
-            />
-          </FormItem>
-          <FormItem>
-            <Label>Description</Label>
-            <TextInput
-              placeholder="Describe the job"
-              underlineColorAndroid="transparent"
-              multiline
-              numberOfLines={4}
-              onChangeText={text => {
-                currentJob.map.set("description", text);
-              }}
-              value={currentJob.map.get("description")}
-            />
-          </FormItem>
-        </View>
-      </ScrollView>
-    );
-  });
+  const DateItem = require("./Dates").default(context);
 
   const Header = glamorous.view({
     backgroundColor: "orange",
@@ -182,9 +104,10 @@ export default context => {
                 onJobCreated();
               }}
             />
-            <JobEdit {...props}/>
+            <JobEdit {...props} />
           </View>
-        )}
+        )
+      }
     ]
   };
 

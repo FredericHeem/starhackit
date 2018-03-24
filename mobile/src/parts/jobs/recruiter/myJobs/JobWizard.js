@@ -14,6 +14,7 @@ export default context => {
   );
 
   const SectorList = require("components/SectorList").default(context);
+  const JobEdit = require("./JobEdit").default(context);
 
   const DateItemView = glamorous.view({
     flexDirection: "row",
@@ -165,7 +166,7 @@ export default context => {
       },
       {
         title: "Review",
-        content: ({ onJobCreated, store }) => (
+        content: ({ onJobCreated, store, ...props }) => (
           <View>
             <Button
               color="blue"
@@ -175,9 +176,9 @@ export default context => {
                 onJobCreated();
               }}
             />
+            <JobEdit {...props}/>
           </View>
-        )
-      }
+        )}
     ]
   };
 

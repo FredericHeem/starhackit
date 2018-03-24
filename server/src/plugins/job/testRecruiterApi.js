@@ -6,7 +6,9 @@ import _ from "lodash";
 const createFakeJob = () => ({
   title: faker.name.jobTitle(),
   description: faker.lorem.sentences(),
-  company: faker.company.companyName(),
+  company_name: faker.company.companyName(),
+  company_info: faker.company.catchPhrase(),
+  business_type: faker.commerce.department(),
   company_url: faker.internet.url(),
   company_logo_url: faker.image.imageUrl(),
   start_date: faker.date.future(),

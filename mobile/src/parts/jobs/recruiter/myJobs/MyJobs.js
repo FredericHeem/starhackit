@@ -15,8 +15,6 @@ import glamorous from "glamorous-native";
 import Lifecycle from "components/Lifecycle";
 import moment from "moment";
 
-const isEdit = navigation => !!navigation.state.params;
-
 export default context => {
   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
     context
@@ -84,6 +82,7 @@ export default context => {
     company_info: "",
     business_type: ""
   };
+
 
   const currentJob = observable({
     map: observable.map(defaultJob),

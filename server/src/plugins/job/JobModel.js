@@ -4,8 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     {
       title: DataTypes.TEXT,
       description: DataTypes.TEXT,
-      company: DataTypes.TEXT,
+      company_name: DataTypes.TEXT,
       company_url: DataTypes.TEXT,
+      company_info: DataTypes.TEXT,
+      business_type: DataTypes.TEXT,
       company_logo_url: DataTypes.TEXT,
       start_date: DataTypes.DATE,
       end_date: DataTypes.DATE,

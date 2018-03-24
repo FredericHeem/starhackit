@@ -79,7 +79,10 @@ export default context => {
     description: "",
     start_date: undefined,
     location: {},
-    geo: {}
+    geo: {},
+    company_name: "",
+    company_info: "",
+    business_type: ""
   };
 
   const currentJob = observable({
@@ -102,7 +105,9 @@ export default context => {
     hasSector: () => !_.isEmpty(currentJob.map.get("sector")),
     hasLocation: () => !_.isEmpty(currentJob.map.get("location")),
     isValid: () =>
-      currentJob.map.get("title") && currentJob.map.get("description")
+      currentJob.map.get("title") && currentJob.map.get("description"),
+    isCompanyInfoValid: () =>
+      currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
 
   const Page = require("components/Page").default(context);

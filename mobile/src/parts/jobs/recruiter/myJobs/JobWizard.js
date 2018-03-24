@@ -15,6 +15,7 @@ export default context => {
 
   const SectorList = require("components/SectorList").default(context);
   const JobEdit = require("./JobEdit").default(context);
+  const CompanyInfo = require("./CompanyInfo").default(context);
 
   const DateItemView = glamorous.view({
     flexDirection: "row",
@@ -163,6 +164,11 @@ export default context => {
           />
         ),
         nextAllowed: ({ currentJob }) => currentJob.hasLocation()
+      },
+      {
+        title: "Company Info",
+        content: CompanyInfo,
+        nextAllowed: ({ currentJob }) => currentJob.isCompanyInfoValid()
       },
       {
         title: "Review",

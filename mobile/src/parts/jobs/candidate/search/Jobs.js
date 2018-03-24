@@ -49,26 +49,32 @@ export default context => {
   });
 
   const LogoView = glamorous.image({
-    height: 80,
-    width: 80
+    height: 80
   });
 
-  const CompanyLogo = ({ logoURI }) => (
-    <LogoView resizeMode="contain" source={{ uri: logoURI }} />
-  );
+  const CompanyLogo = ({ logoURI }) => <LogoView source={{ uri: logoURI }} />;
 
   const Title = glamorous(Text)({
     fontSize: 16,
     fontWeight: "bold"
   });
 
-  const CompanyName = glamorous(Text)({
-    fontSize: 14
+  const Sector = glamorous(Text)({
+    fontSize: 12,
+    fontWeight: "bold",
+    backgroundColor: "lightgrey",
+    alignSelf: "flex-start",
+    borderRadius: 3,
+    color: "grey",
+    padding: 4
   });
 
-  const StartDate = glamorous(Text)({
-    fontStyle: "italic",
-    color: "grey"
+  const JobDescription = glamorous(Text)({
+    fontSize: 14
+  });
+  const CompanyName = glamorous(Text)({
+    fontSize: 14,
+    fontWeight: "bold",
   });
 
   const Location = glamorous(Text)({
@@ -81,19 +87,22 @@ export default context => {
         padding: 8,
         display: "flex",
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        alignContent: "flex-start"
       }}
     >
       <View style={{ flexGrow: 1 }}>
+        <View>
+          {job.company_logo_url && (
+            <CompanyLogo logoURI={job.company_logo_url} />
+          )}
+        </View>
         <Title>{job.title}</Title>
-        {job.company && <CompanyName>@ {job.company}</CompanyName>}
+        <JobDescription>{job.description}</JobDescription>
+        <Sector>{job.sector}</Sector>
+        
+        {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
         {job.location && <Location>{job.location.description}</Location>}
-        {job.start_date && (
-          <StartDate>Start {moment(job.start_date).fromNow()}</StartDate>
-        )}
-      </View>
-      <View style={{ width: 70, height: 70 }}>
-        {job.company_logo_url && <CompanyLogo logoURI={job.company_logo_url} />}
       </View>
     </ItemView>
   );

@@ -30,7 +30,7 @@ export default context => {
     {
       //tabBarOptions: context.theme.tabBar,
       animationEnabled: true,
-      initialRouteName: "Profile"
+      //initialRouteName: "Profile"
     }
   );
 };

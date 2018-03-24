@@ -14,7 +14,16 @@ const createFakeJob = () => ({
   start_date: faker.date.future(),
   end_date: faker.date.future(),
   sector: faker.name.jobType(),
-  geo: { type: "Point", coordinates: [-48.23456, 20.12345] }
+  geo: {
+    type: "Point",
+    coordinates: [
+      faker.random.number({ min: 50, max: 51 }),
+      faker.random.number({ min: 1, max: 2 })
+    ]
+  },
+  location: {
+    description: `${faker.address.city()} - ${faker.address.state()}`
+  }
 });
 
 describe("Recruiter No Auth", function() {
@@ -133,7 +142,9 @@ describe("Recruiter Auth", function() {
     assert(jobs);
   });
   it("should get all jobs given an array of sectors", async () => {
-    let jobs = await client.get("v1/candidate/job?sectors[]=Administrator&sectors[]=Developer");
+    let jobs = await client.get(
+      "v1/candidate/job?sectors[]=Administrator&sectors[]=Developer"
+    );
     console.log(jobs.length);
     assert(jobs);
   });

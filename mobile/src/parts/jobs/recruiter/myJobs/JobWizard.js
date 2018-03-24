@@ -144,7 +144,7 @@ export default context => {
           <SectorList
             onPress={sector => {
               currentJob.map.set("sector", sector);
-              store.next()
+              store.next();
             }}
           />
         )
@@ -165,7 +165,18 @@ export default context => {
       },
       {
         title: "Review",
-        content: () => <Text>Finish</Text>
+        content: ({ onJobCreated, store }) => (
+          <View>
+            <Button
+              color="blue"
+              title="Create Job Post Now"
+              onPress={() => {
+                store.reset();
+                onJobCreated();
+              }}
+            />
+          </View>
+        )
       }
     ]
   };

@@ -53,7 +53,7 @@ export default context => {
       const jobCreated = await opsCreate.fetch(job);
       console.log("jobCreated ", jobCreated);
       Keyboard.dismiss();
-      navigation.navigate("Jobs");
+      navigation.navigate("MyJobs");
     }),
     update: action(async (job, navigation) => {
       console.log("update job ", job);
@@ -64,13 +64,13 @@ export default context => {
       const jobUpdated = await opsUpdate.fetch(job);
       console.log("jobUpdated ", jobUpdated);
       Keyboard.dismiss();
-      navigation.navigate("Jobs");
+      navigation.navigate("MyJobs");
     }),
     remove: action(async (jobId, navigation) => {
       console.log("remove  ", jobId);
       await opsDelete.fetch(jobId);
       Keyboard.dismiss();
-      navigation.navigate("Jobs");
+      navigation.navigate("MyJobs");
     })
   });
 
@@ -192,7 +192,10 @@ export default context => {
     currentJob.map.replace(defaultJob);
     navigation.navigate("JobWizard");
   };
-
+  const onJobCreated = navigation => {
+    console.log("onJobCreated ");
+    store.create(currentJob.map.toJSON(), navigation);
+  };
   const onJobRemove = async (jobId, navigation) => {
     console.log("onJobRemove ", jobId);
     await store.remove(jobId, navigation);
@@ -209,11 +212,7 @@ export default context => {
     <View style={{ marginRight: 10 }}>
       <Button
         title="Update"
-        onPress={() =>
-          store.update(
-            currentJob.map.toJSON(),
-            navigation
-          )}
+        onPress={() => store.update(currentJob.map.toJSON(), navigation)}
       />
     </View>
   );
@@ -263,6 +262,7 @@ export default context => {
             currentJob={currentJob}
             details={navigation.state.params}
             navigation={navigation}
+            onJobCreated={() => onJobCreated(navigation)}
             {...props}
           />
         ),
@@ -288,8 +288,8 @@ export default context => {
       navigationOptions: {
         header: null
       },
-      mode: "modal",
-      initialRouteName: "JobWizard"
+      mode: "modal"
+      //initialRouteName: "JobWizard"
     }
   );
 };

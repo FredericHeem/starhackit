@@ -14,6 +14,9 @@ export default (context, config = {}) => {
     index: 0,
     header: observer(config.header),
     controls: config.controls,
+    reset: action(() => {
+      store.index = 0;
+    }),
     next: action(() => {
       if (store.index + 1 < store.steps.length) {
         store.index += 1;
@@ -33,7 +36,7 @@ export default (context, config = {}) => {
   const Wizard = observer(props => (
     <View>
       {store.header && h(store.header, { title: store.title() })}
-      {store.active && h(store.active().content, {...props, store})}
+      {store.active && h(store.active().content, { ...props, store })}
       {store.controls &&
         h(store.controls, {
           index: store.index,
@@ -41,7 +44,8 @@ export default (context, config = {}) => {
           isLast: store.isLast(),
           onNext: () => store.next(),
           onPrevious: () => store.previous(),
-          nextAllowed: store.active().nextAllowed && store.active().nextAllowed(props)
+          nextAllowed:
+            store.active().nextAllowed && store.active().nextAllowed(props)
         })}
     </View>
   ));

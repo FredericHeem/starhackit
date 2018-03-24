@@ -74,12 +74,35 @@ export default context => {
     })
   });
 
-  const currentJob = observable.map({
+  const defaultJob = {
     title: "",
     description: "",
     start_date: undefined,
     location: {},
     geo: {}
+  };
+
+  const currentJob = observable({
+    map: observable.map(defaultJob),
+    setLocation: async location => {
+      console.log("setLocation ", location);
+      const results = await context.stores.core.geoLoc.getGeoPosition(
+        location.description
+      );
+      const geoLoc = _.get(results[0], "geometry.location");
+      console.log("geoLoc ", geoLoc);
+      if (geoLoc) {
+        currentJob.map.set("geo", {
+          type: "Point",
+          coordinates: [geoLoc.lat, geoLoc.lng]
+        });
+      }
+      currentJob.map.set("location", location);
+    },
+    hasSector: () => !_.isEmpty(currentJob.map.get("sector")),
+    hasLocation: () => !_.isEmpty(currentJob.map.get("location")),
+    isValid: () =>
+      currentJob.map.get("title") && currentJob.map.get("description")
   });
 
   const Page = require("components/Page").default(context);
@@ -144,18 +167,17 @@ export default context => {
     </View>
   );
 
-  const onPressItem = (job, navigation) => {
-    console.log("onPressItem", job);
-    currentJob.replace(job);
+  const onJobEdit = (job, navigation) => {
+    console.log("onJobCreation", job);
+    currentJob.map.replace(job);
     navigation.navigate("JobEdit", job);
   };
 
   const MyJobs = observer(({ store, opsGetAll, onJobCreate, navigation }) => (
     <Page>
       {_.isEmpty(opsGetAll.data) && <EmptyJobs />}
-
       <List
-        onPress={item => onPressItem(item, navigation)}
+        onPress={item => onJobEdit(item, navigation)}
         data={opsGetAll.data}
       />
       <Button title="Create a new Job" onPress={onJobCreate} />
@@ -163,38 +185,33 @@ export default context => {
   ));
 
   const JobEdit = require("./JobEdit").default(context);
+  const JobWizard = require("./JobWizard").default(context);
 
   const onJobCreate = navigation => {
     console.log("onJobCreate ");
-    currentJob.replace({ geo: {}, location: {} });
-    navigation.navigate("JobEdit");
+    currentJob.map.replace(defaultJob);
+    navigation.navigate("JobWizard");
   };
 
   const onJobRemove = async (jobId, navigation) => {
     console.log("onJobRemove ", jobId);
     await store.remove(jobId, navigation);
-    currentJob.replace({ geo: {}, location: {} });
+    currentJob.map.replace(defaultJob);
   };
+
   const onJobLocation = async (location, navigation) => {
     console.log("onJobLocation ", location.description);
-    const results = await context.stores.core.geoLoc.getGeoPosition(
-      location.description
-    );
-    const geoLoc = _.get(results[0], "geometry.location");
-    console.log("geoLoc ", geoLoc);
-    if (geoLoc) {
-      currentJob.set("geo", { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] });
-    }
-    currentJob.set("location", location);
+    await currentJob.setLocation();
     navigation.navigate("JobEdit");
   };
+
   const jobSaveButton = navigation => (
     <View style={{ marginRight: 10 }}>
       <Button
-        title={isEdit(navigation) ? "Update" : "Create"}
+        title="Update"
         onPress={() =>
-          store[isEdit(navigation) ? "update" : "create"](
-            currentJob.toJSON(),
+          store.update(
+            currentJob.map.toJSON(),
             navigation
           )}
       />
@@ -203,7 +220,7 @@ export default context => {
 
   return createStackNavigator(
     {
-      Jobs: {
+      MyJobs: {
         screen: props => (
           <Lifecycle
             didMount={() => {
@@ -229,16 +246,30 @@ export default context => {
             onRemove={job => onJobRemove(job, navigation)}
             details={navigation.state.params}
             navigation={navigation}
+            onLocation={location => onJobLocation(location, navigation)}
             {...props}
           />
         ),
 
         navigationOptions: ({ navigation }) => ({
-          title: navigation.state.params
-            ? "Edit a Job Post"
-            : "Create a Job Post",
+          title: "Edit a Job Post",
           header: undefined,
           headerRight: jobSaveButton(navigation)
+        })
+      },
+      JobWizard: {
+        screen: ({ navigation, ...props }) => (
+          <JobWizard
+            currentJob={currentJob}
+            details={navigation.state.params}
+            navigation={navigation}
+            {...props}
+          />
+        ),
+
+        navigationOptions: (/*{ navigation }*/) => ({
+          title: "Create a Job Post",
+          header: undefined
         })
       },
       LocationEdit: {
@@ -257,7 +288,8 @@ export default context => {
       navigationOptions: {
         header: null
       },
-      mode: "modal"
+      mode: "modal",
+      initialRouteName: "JobWizard"
     }
   );
 };

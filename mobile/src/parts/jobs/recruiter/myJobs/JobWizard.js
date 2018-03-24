@@ -6,12 +6,14 @@ import glamorous from "glamorous-native";
 import moment from "moment";
 import _ from "lodash";
 
-const isEdit = navigation => !!navigation.state.params;
-
 export default context => {
   const Label = require("components/Label").default(context);
   const FormItem = require("components/FormItem").default(context);
-  const LocationCard = require("components/LocationCard").default(context);
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+    context
+  );
+
+  const SectorList = require("components/SectorList").default(context);
 
   const DateItemView = glamorous.view({
     flexDirection: "row",
@@ -20,8 +22,6 @@ export default context => {
   });
 
   const dateFormat = "YYYY-MM-DD";
-
-  const SectorCard = require("./SectorCard").default(context);
 
   const DateItem = observer(({ currentJob }) => (
     <DateItemView>
@@ -55,7 +55,8 @@ export default context => {
       />
     </DateItemView>
   ));
-  const JobEdit = observer(({ currentJob, navigation, onRemove }) => {
+  const JobInfo = observer(({ currentJob }) => {
+    console.log("JobInfo");
     return (
       <ScrollView>
         <View>
@@ -84,43 +85,92 @@ export default context => {
               value={currentJob.map.get("description")}
             />
           </FormItem>
-          <SectorCard
-            sector={currentJob.map.get("sector")}
-            onPress={sector => {
-              currentJob.map.set("sector", sector);
-            }}
-          />
-          <FormItem>
-            <DateItem currentJob={currentJob} />
-          </FormItem>
-          <LocationCard
-            placeHolder="Where is the Job Location?"
-            location={currentJob.map.get("location").description}
-            onPress={() => navigation.navigate("LocationEdit")}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <View style={{ paddingTop: 30, width: 200 }}>
-            {isEdit(navigation) && (
-              <Button
-                color="red"
-                title="Remove Job"
-                onPress={async () => {
-                  await onRemove(currentJob.map.get("id"), navigation);
-                }}
-              />
-            )}
-          </View>
         </View>
       </ScrollView>
     );
   });
 
-  return JobEdit;
+  const Header = glamorous.view({
+    backgroundColor: "orange",
+    padding: 16,
+    marginBottom: 14
+  });
+
+  const HeaderTitle = glamorous.text({
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+    textAlign: "center"
+  });
+
+  const wizardConfig = {
+    header: ({ title }) => (
+      <Header>
+        <HeaderTitle>{title} </HeaderTitle>
+      </Header>
+    ),
+    controls: ({ onPrevious, onNext, isFirst, isLast, nextAllowed = true }) => (
+      <View
+        style={{
+          justifyContent: "space-between",
+          flexDirection: "row",
+          margin: 30
+        }}
+      >
+        {!isFirst ? (
+          <Button color="blue" title="Previous" onPress={onPrevious} />
+        ) : (
+          <View />
+        )}
+        {!isLast && (
+          <Button
+            disabled={!nextAllowed}
+            color="blue"
+            title="Next"
+            onPress={onNext}
+          />
+        )}
+      </View>
+    ),
+    steps: [
+      {
+        title: "Job Type",
+        content: JobInfo,
+        nextAllowed: ({ currentJob }) => currentJob.isValid()
+      },
+      {
+        title: "Sector",
+        content: ({ currentJob, store }) => (
+          <SectorList
+            onPress={sector => {
+              currentJob.map.set("sector", sector);
+              store.next()
+            }}
+          />
+        )
+      },
+      {
+        title: "Date",
+        content: props => <DateItem {...props} />
+      },
+      {
+        title: "Where ?",
+        content: ({ currentJob, store }) => (
+          <AutoCompleteLocation
+            onLocation={location => currentJob.setLocation(location)}
+            store={store}
+          />
+        ),
+        nextAllowed: ({ currentJob }) => currentJob.hasLocation()
+      },
+      {
+        title: "Review",
+        content: () => <Text>Finish</Text>
+      }
+    ]
+  };
+
+  const Wizard = require("components/Wizard").default(context, wizardConfig);
+
+  return Wizard.View;
 };

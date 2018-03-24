@@ -208,7 +208,7 @@ export default context => {
 
   const onJobLocation = async (location, navigation) => {
     console.log("onJobLocation ", location.description);
-    await currentJob.setLocation();
+    await currentJob.setLocation(location);
     navigation.navigate("JobEdit");
   };
 

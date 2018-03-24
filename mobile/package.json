@@ -24,6 +24,7 @@
     "ios": "react-native-scripts ios",
     "test": "node node_modules/jest/bin/jest.js",
     "lint": "eslint src App.js",
+    "lint:fix": "eslint src App.js --fix",
     "prettier": "prettier --write '**/*.{js,jsx}'",
     "prestart": "npm run jscpd",
     "jscpd": "jscpd -f 'src/**' -e 'src/theme/**' --languages javascript"

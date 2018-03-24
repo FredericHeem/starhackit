@@ -6,8 +6,7 @@ import Lifecycle from "components/Lifecycle";
 import { createStackNavigator } from "react-navigation";
 import glamorous from "glamorous-native";
 import _ from "lodash";
-import moment from "moment";
-import Qs from "qs";
+import distanceFromLatLonInKm from "../../utils";
 
 export default context => {
   const { stores } = context;
@@ -74,13 +73,30 @@ export default context => {
   });
   const CompanyName = glamorous(Text)({
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "bold"
   });
 
   const Location = glamorous(Text)({
     color: "grey"
   });
 
+  const computeDistance = geo => {
+    const { latitude, longitude } = _.get(context.stores.core.geoLoc, "location.coords");
+    if(!latitude || !geo){
+      return
+    }
+    const [jobLat, jobLon] = geo.coordinates;
+    console.log("distance me", latitude, longitude);
+    console.log("distance jobs", geo);
+    const distance = distanceFromLatLonInKm(
+      latitude,
+      longitude,
+      jobLat,
+      jobLon
+    );
+    console.log("distance km", distance);
+    return `${distance} km`;
+  };
   const JobItem = ({ job }) => (
     <ItemView
       style={{
@@ -100,9 +116,8 @@ export default context => {
         <Title>{job.title}</Title>
         <JobDescription>{job.description}</JobDescription>
         <Sector>{job.sector}</Sector>
-        
         {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
-        {job.location && <Location>{job.location.description}</Location>}
+        {job.location && <Location>{computeDistance(job.geo)}, {job.location.description}</Location>}
       </View>
     </ItemView>
   );

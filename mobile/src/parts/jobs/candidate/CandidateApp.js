@@ -2,8 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "react-navigation";
 import Icon from "components/IconTabBar";
 
-export default context => {
-  return createBottomTabNavigator(
+export default context => createBottomTabNavigator(
     {
       Jobs: {
         screen: require("./search/Jobs").default(context),
@@ -33,4 +32,3 @@ export default context => {
       //initialRouteName: "Profile"
     }
   );
-};

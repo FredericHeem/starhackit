@@ -17,8 +17,8 @@ const createFakeJob = () => ({
   geo: {
     type: "Point",
     coordinates: [
-      faker.random.number({ min: 50, max: 51 }),
-      faker.random.number({ min: 1, max: 2 })
+      faker.random.number({ min: 50, max: 51, precision: 0.01 }),
+      faker.random.number({ min: 1, max: 2, precision: 0.01 })
     ]
   },
   location: {

@@ -55,8 +55,7 @@ export default context => {
       />
     </DateItemView>
   ));
-  const JobEdit = observer(({ currentJob, navigation, onRemove }) => {
-    return (
+  const JobEdit = observer(({ currentJob, navigation, onRemove }) => (
       <ScrollView>
         <View>
           <FormItem>
@@ -119,8 +118,7 @@ export default context => {
           </View>
         </View>
       </ScrollView>
-    );
-  });
+    ));
 
   return JobEdit;
 };

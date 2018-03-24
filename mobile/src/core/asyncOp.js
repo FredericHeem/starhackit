@@ -27,9 +27,9 @@ function createHttpError(payload = {}) {
   return errorOut;
 }
 
-export default () => {
+export default () => 
   //const Alert = alert(context);
-  return function create(api) {
+   function create(api) {
     const store = observable({
       loading: false,
       data: undefined,
@@ -63,4 +63,4 @@ export default () => {
     });
     return store;
   };
-};
+

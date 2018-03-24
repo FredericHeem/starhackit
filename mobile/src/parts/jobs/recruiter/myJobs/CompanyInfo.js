@@ -27,7 +27,6 @@ export default context => {
           <FormItem>
             <Label>Business Type</Label>
             <TextInput
-              autoFocus={_.isEmpty(currentJob.map.get("business_type"))}
               placeholder="What is the business type, e.g. Restaurant, Hotel, Store"
               underlineColorAndroid="transparent"
               onChangeText={text => {

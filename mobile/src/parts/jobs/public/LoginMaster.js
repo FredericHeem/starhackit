@@ -42,7 +42,7 @@ export default ({ stores }) => {
               app: navigation.state.params.app
             });
             if (res) {
-              navigation.navigate(navigation.state.params.app);
+              stores.core.auth.navigate(navigation.state.params.app, navigation);
             }
           }}
         >

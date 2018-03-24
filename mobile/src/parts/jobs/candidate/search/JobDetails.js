@@ -47,7 +47,7 @@ export default () => {
   const JobDetails = ({ details }) => (
     <ScrollView>
       <Title>{details.title}</Title>
-      <CompanyName> {details.company}</CompanyName>
+      <CompanyName> {details.company_name}</CompanyName>
       {details.company_logo_url && (
         <CompanyLogo logoURI={details.company_logo_url} />
       )}

@@ -4,18 +4,18 @@ import { View, Button } from "react-native";
 export default context => {
   const Logout = require("views/Logout").default(context);
 
-  const SwitchToJobApplicant = ({ navigation }) => (
-    <View style={{ margin: 20 }}>
+  const SwitchView = ({ navigation }) => (
+    <View>
       <Button
         title="Switch to Recruiter view"
-        onPress={() => navigation.navigate("Recruiter")}
+        onPress={() => context.stores.core.auth.navigate("Recruiter", navigation)}
       />
     </View>
   );
 
   const Settings = ({ navigation }) => (
     <View>
-      <SwitchToJobApplicant navigation={navigation} />
+      <SwitchView navigation={navigation} />
       <Logout navigation={navigation} />
     </View>
   );

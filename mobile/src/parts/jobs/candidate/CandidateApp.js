@@ -20,7 +20,7 @@ export default context => {
         })
       },
       Settings: {
-        screen: require("views/Settings").default(context),
+        screen: require("./Settings").default(context),
         navigationOptions: () => ({
           title: "Settings",
           tabBarIcon: () => <Icon name="cog" />

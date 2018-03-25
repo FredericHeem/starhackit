@@ -11,3 +11,8 @@ postgresql_users:
   - name: "{{ db_user }}"
     pass: "{{ db_password }}"
     encrypted: no       # denotes if the password is already encrypted.
+
+postgresql_database_extensions:
+  - db: "{{ db_name }}"
+    extensions:
+    - postgis

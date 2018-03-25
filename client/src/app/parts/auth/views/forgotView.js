@@ -49,7 +49,7 @@ export default context => {
 
         <FormGroup>
           <EmailInput
-            id="email-input"
+            className="data-test-email-input"
             onChange={e => {
               store.email = e.target.value;
             }}

@@ -79,7 +79,7 @@ describe("Recruiter Auth", function() {
     assert.equal(job.title, jobNew.title);
   });
   it("should create many jobs", async () => {
-    _.times(10, async () => {
+    _.times(4, async () => {
       const input = createFakeJob();
       const job = await client.post("v1/recruiter/job", input);
       assert(job);

@@ -1,6 +1,6 @@
 import React from "react";
 import { observable } from "mobx";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, Image } from "react-native";
 import { observer } from "mobx-react";
 import Lifecycle from "components/Lifecycle";
 import { createStackNavigator } from "react-navigation";
@@ -81,9 +81,12 @@ export default context => {
   });
 
   const computeDistance = geo => {
-    const { latitude, longitude } = _.get(context.stores.core.geoLoc, "location.coords");
-    if(!latitude || !geo){
-      return
+    const { latitude, longitude } = _.get(
+      context.stores.core.geoLoc,
+      "location.coords"
+    );
+    if (!latitude || !geo) {
+      return;
     }
     const [jobLat, jobLon] = geo.coordinates;
     console.log("distance me", latitude, longitude);
@@ -97,30 +100,40 @@ export default context => {
     console.log("distance km", distance);
     return `${distance} km`;
   };
-  const JobItem = ({ job }) => (
-    <ItemView
-      style={{
-        padding: 8,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        alignContent: "flex-start"
-      }}
-    >
-      <View style={{ flexGrow: 1 }}>
-        <View>
-          {job.company_logo_url && (
-            <CompanyLogo logoURI={job.company_logo_url} />
+  const JobItem = ({ job }) => {
+    const image64 = _.get(job.picture, "base64");
+    return (
+      <ItemView
+        style={{
+          padding: 8,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          alignContent: "flex-start"
+        }}
+      >
+        <View style={{ flexGrow: 1 }}>
+          <View>
+            {job.company_logo_url && (
+              <CompanyLogo logoURI={job.company_logo_url} />
+            )}
+          </View>
+          {image64 && (
+            <Image style={{ height: 200 }} source={{ uri: image64 }} />
+          )}
+          <Title>{job.title}</Title>
+          <JobDescription>{job.description}</JobDescription>
+          <Sector>{job.sector}</Sector>
+          {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
+          {job.location && (
+            <Location>
+              {computeDistance(job.geo)}, {job.location.description}
+            </Location>
           )}
         </View>
-        <Title>{job.title}</Title>
-        <JobDescription>{job.description}</JobDescription>
-        <Sector>{job.sector}</Sector>
-        {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
-        {job.location && <Location>{computeDistance(job.geo)}, {job.location.description}</Location>}
-      </View>
-    </ItemView>
-  );
+      </ItemView>
+    );
+  };
 
   const onPressItem = (item, navigation) => {
     console.log("onPressItem", item.title);

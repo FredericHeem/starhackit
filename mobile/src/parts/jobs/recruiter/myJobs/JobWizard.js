@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button} from "react-native";
+import { View, Button } from "react-native";
 import glamorous from "glamorous-native";
 import _ from "lodash";
 
@@ -59,10 +59,6 @@ export default context => {
     ),
     steps: [
       {
-        title: "Picture",
-        content: JobPicture
-      },
-      {
         title: "Job Type",
         content: JobInfo,
         nextAllowed: ({ currentJob }) => currentJob.isValid()
@@ -96,6 +92,10 @@ export default context => {
         title: "Company Info",
         content: CompanyInfo,
         nextAllowed: ({ currentJob }) => currentJob.isCompanyInfoValid()
+      },
+      {
+        title: "Picture",
+        content: JobPicture
       },
       {
         title: "Review",

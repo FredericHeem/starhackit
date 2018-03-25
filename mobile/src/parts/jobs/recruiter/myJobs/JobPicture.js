@@ -14,7 +14,7 @@ export default context => {
       quality: 0.4,
       base64: true
     });
-
+    //TODO check extension and change jpg to whatever it is
     result.base64 = `data:image/jpg;base64,${result.base64}`;
     if (!result.cancelled) {
       currentJob.map.set("picture", result);
@@ -33,10 +33,7 @@ export default context => {
           />
         </FormItem>
         {picture.base64 && (
-          <Image
-            style={{ height: 300}}
-            source={{ uri: picture.base64 }}
-          />
+          <Image style={{ height: 300 }} source={{ uri: picture.base64 }} />
         )}
       </ScrollView>
     );

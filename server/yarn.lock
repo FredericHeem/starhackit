@@ -350,6 +350,12 @@ ast-types@0.9.6:
   version "0.9.6"
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.9.6.tgz#102c9e9e9005d3e7e3829bf0c4fa24ee862ee9b9"
 
+async-busboy@0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/async-busboy/-/async-busboy-0.6.2.tgz#1ab713f51ee529be55e27c542323f233f574d95c"
+  dependencies:
+    busboy "^0.2.12"
+
 async-each@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
@@ -853,7 +859,7 @@ bluebird@3.5.1, bluebird@^3.0.5, bluebird@^3.4.1, bluebird@^3.4.6, bluebird@^3.5
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
 
-bluebird@^2.9.25, bluebird@^2.9.33:
+bluebird@^2.9.33:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
 
@@ -982,6 +988,13 @@ buildmail@3.8.0:
 builtin-modules@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
+
+busboy@^0.2.12:
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/busboy/-/busboy-0.2.14.tgz#6c2a622efcf47c57bbbe1e2a9c37ad36c7925453"
+  dependencies:
+    dicer "0.2.5"
+    readable-stream "1.1.x"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -1824,6 +1837,13 @@ diagnostics@~1.0.1:
     colorspace "1.0.x"
     enabled "1.0.x"
     kuler "0.0.x"
+
+dicer@0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/dicer/-/dicer-0.2.5.tgz#5996c086bb33218c812c090bddc09cd12facb70f"
+  dependencies:
+    readable-stream "1.1.x"
+    streamsearch "0.1.2"
 
 diff@1.4.0:
   version "1.4.0"
@@ -4316,13 +4336,6 @@ log-symbols@^1.0.2:
   dependencies:
     chalk "^1.0.0"
 
-logfilename@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/logfilename/-/logfilename-0.1.1.tgz#b179db0abe03f9ff5bdc8e4a8dc355c886bafcc0"
-  dependencies:
-    lodash "^3.8.0"
-    winston "^1.0.0"
-
 logfilename@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/logfilename/-/logfilename-0.1.3.tgz#da1c1432528195b9e21d03f9224297d60e6eccb6"
@@ -5697,7 +5710,7 @@ read@^1.0.4:
   dependencies:
     mute-stream "~0.0.4"
 
-"readable-stream@1.x >=1.1.9", readable-stream@~1.1.9:
+readable-stream@1.1.x, "readable-stream@1.x >=1.1.9", readable-stream@~1.1.9:
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
   dependencies:
@@ -5976,7 +5989,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@^2.53.0, request@^2.64.0, request@^2.79.0, request@^2.83.0:
+request@2.85.0, request@^2.53.0, request@^2.79.0, request@^2.83.0:
   version "2.85.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.85.0.tgz#5a03615a47c61420b3eb99b7dba204f83603e1fa"
   dependencies:
@@ -6074,15 +6087,6 @@ resolve@^1.0.0, resolve@^1.1.6, resolve@^1.1.7, resolve@^1.5.0:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
   dependencies:
     path-parse "^1.0.5"
-
-restauth@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/restauth/-/restauth-1.1.1.tgz#9c07ab6d4005a4ef0997242eb96cd1c8bf59ee21"
-  dependencies:
-    bluebird "^2.9.25"
-    lodash "^3.8.0"
-    logfilename "0.1.1"
-    request "^2.64.0"
 
 restore-cursor@^1.0.1:
   version "1.0.1"
@@ -6646,6 +6650,10 @@ stream-consume@~0.1.0:
 stream-shift@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stream-shift/-/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
+
+streamsearch@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-0.1.2.tgz#808b9d0e56fc273d809ba57338e929919a1a9f1a"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"

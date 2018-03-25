@@ -89,8 +89,8 @@ export default context => {
       return;
     }
     const [jobLat, jobLon] = geo.coordinates;
-    console.log("distance me", latitude, longitude);
-    console.log("distance jobs", geo);
+    //console.log("distance me", latitude, longitude);
+    //console.log("distance jobs", geo);
     const distance = distanceFromLatLonInKm(
       latitude,
       longitude,

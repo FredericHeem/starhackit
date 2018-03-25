@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View, Text, Button, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+
 import glamorous from "glamorous-native";
 import _ from "lodash";
 
@@ -16,46 +18,50 @@ export default context => {
   const DateItem = require("./Dates").default(context);
 
   const Header = glamorous.view({
-    backgroundColor: "orange",
-    padding: 16,
-    marginBottom: 14
+    padding: 10,
+    marginBottom: 8,
+    backgroundColor: "white",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
   });
 
   const HeaderTitle = glamorous.text({
-    color: "white",
     fontWeight: "bold",
-    fontSize: 18,
-    textAlign: "center"
+    fontSize: 18
   });
 
   const wizardConfig = {
-    header: ({ title }) => (
+    header: ({
+      title,
+      isFirst,
+      onPrevious,
+      isLast,
+      onNext,
+      nextAllowed = true
+    }) => (
       <Header>
-        <HeaderTitle>{title} </HeaderTitle>
-      </Header>
-    ),
-    controls: ({ onPrevious, onNext, isFirst, isLast, nextAllowed = true }) => (
-      <View
-        style={{
-          justifyContent: "space-between",
-          flexDirection: "row",
-          margin: 30
-        }}
-      >
-        {!isFirst ? (
-          <Button color="blue" title="Previous" onPress={onPrevious} />
-        ) : (
-          <View />
-        )}
-        {!isLast && (
+        <TouchableOpacity
+          onPress={() => {
+            onPrevious();
+          }}
+        >
+          <Icon name="chevron-left" size={20} color="grey" />
+        </TouchableOpacity>
+
+        <HeaderTitle>{title}</HeaderTitle>
+        {!isLast ? (
           <Button
+            style={{ width: 100 }}
             disabled={!nextAllowed}
             color="blue"
             title="Next"
             onPress={onNext}
           />
+        ) : (
+          <View />
         )}
-      </View>
+      </Header>
     ),
     steps: [
       {
@@ -76,7 +82,8 @@ export default context => {
       },
       {
         title: "Date",
-        content: props => <DateItem {...props} />
+        content: props => <DateItem {...props} />,
+        nextAllowed: () => true
       },
       {
         title: "Where ?",
@@ -98,7 +105,7 @@ export default context => {
         content: JobPicture
       },
       {
-        title: "Review",
+        title: "Final Review",
         content: ({ onJobCreated, store, ...props }) => (
           <View>
             <Button

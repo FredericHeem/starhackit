@@ -35,7 +35,17 @@ export default (context, config = {}) => {
 
   const Wizard = observer(props => (
     <View>
-      {store.header && h(store.header, { title: store.title() })}
+      {store.header &&
+        h(store.header, {
+          title: store.title(),
+          index: store.index,
+          isFirst: store.isFirst(),
+          isLast: store.isLast(),
+          onNext: () => store.next(),
+          onPrevious: () => store.previous(),
+          nextAllowed:
+            store.active().nextAllowed && store.active().nextAllowed(props)
+        })}
       {store.active && h(store.active().content, { ...props, store })}
       {store.controls &&
         h(store.controls, {

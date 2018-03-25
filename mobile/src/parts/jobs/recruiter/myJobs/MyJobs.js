@@ -254,7 +254,6 @@ export default context => {
             {...props}
           />
         ),
-
         navigationOptions: ({ navigation }) => ({
           title: "Edit a Job Post",
           header: undefined,
@@ -274,7 +273,7 @@ export default context => {
 
         navigationOptions: (/*{ navigation }*/) => ({
           title: "Create a Job Post",
-          header: undefined
+          header: null
         })
       },
       LocationEdit: {

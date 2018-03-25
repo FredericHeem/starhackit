@@ -56,7 +56,15 @@ export default context => {
               }}
             />
           </FormGroup>
-
+          {/*<FormGroup>
+            <h4>{tr.t("Picture")}</h4>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={event => store.uploadPicture(event)}
+            />
+            <img alt="profile" src=""/>
+          </FormGroup>*/}
           <FormGroup>
             <ButtonLoading
               className="btn-update-profile"

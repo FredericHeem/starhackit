@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
-import {Client} from 'restauth';
+import Client from "./Client";
 
 let App = require('../src/app');
 

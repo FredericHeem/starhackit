@@ -9,6 +9,7 @@ export default context => {
   );
 
   const JobInfo = require("./JobInfo").default(context);
+  const JobPicture = require("./JobPicture").default(context);
   const SectorList = require("components/SectorList").default(context);
   const JobEdit = require("./JobEdit").default(context);
   const CompanyInfo = require("./CompanyInfo").default(context);
@@ -57,6 +58,10 @@ export default context => {
       </View>
     ),
     steps: [
+      {
+        title: "Picture",
+        content: JobPicture
+      },
       {
         title: "Job Type",
         content: JobInfo,

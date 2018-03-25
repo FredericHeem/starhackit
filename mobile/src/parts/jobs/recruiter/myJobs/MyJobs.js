@@ -80,7 +80,8 @@ export default context => {
     geo: {},
     company_name: "",
     company_info: "",
-    business_type: ""
+    business_type: "",
+    picture: {}
   };
 
 

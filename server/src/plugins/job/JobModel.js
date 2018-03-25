@@ -15,7 +15,14 @@ module.exports = function(sequelize, DataTypes) {
       location: DataTypes.JSONB,
       meta: DataTypes.JSONB,
       geo: DataTypes.GEOGRAPHY,
-      picture: DataTypes.JSONB
+      picture: {
+        type: DataTypes.JSONB,
+        defaultValue: {}
+      },
+      views: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
     },
     {
       tableName: "job",

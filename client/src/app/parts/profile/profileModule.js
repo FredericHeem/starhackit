@@ -64,7 +64,26 @@ export default function(context) {
         context.alertStack.add(
           <Alert.Info message={tr.t("Profile updated")} />
         );
-      })
+      })/*,
+      uploadPicture: action(async event => {
+        const data = new FormData();
+        const file = event.target.files[0];
+        data.append("file", file);
+        data.append("name", file.name);
+        data.append("file-type", file.type);
+        data.append("category", "profile-picture");
+        try {
+          await rest.upload("document/profile_picture", data);
+          context.alertStack.add(
+            <Alert.Info message={tr.t("Picture uploaded")} />
+          );
+        } catch (error) {
+          console.error("uploadPicture ", error);
+          context.alertStack.add(
+            <Alert.Danger message={tr.t("Cannot upload file")} />
+          );
+        }
+      })*/
     });
 
     return {

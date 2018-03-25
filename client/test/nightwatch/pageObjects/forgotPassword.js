@@ -9,7 +9,7 @@ module.exports = {
     },
     elements: {
         emailInput: {
-            selector: '#email-input'
+            selector: '.data-test-email-input'
         },
         submit: {
             selector: '.btn-forgot-password'

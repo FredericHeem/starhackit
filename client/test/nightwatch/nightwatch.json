@@ -38,12 +38,9 @@
         "path" : ""
       },
       "desiredCapabilities": {
-        "browserName": "chrome",
+        "browserName": "firefox",
         "javascriptEnabled": true,
-        "acceptSslCerts": true,
-        "chromeOptions" : {
-          "args" : ["start-fullscreen"]
-        }
+        "acceptSslCerts": true
       }
     }
   }

@@ -32,6 +32,7 @@
     "opendoc": "npm run doc && open build/api/v1/doc/api.html"
   },
   "dependencies": {
+    "async-busboy": "0.6.2",
     "axios": "0.18.0",
     "babel": "5.8.23",
     "babel-core": "5.8.25",
@@ -45,7 +46,6 @@
     "ejs": "2.5.7",
     "eslint": "4.5.0",
     "eslint-plugin-mocha": "4.11.0",
-    
     "gulp": "3.9.1",
     "gulp-babel": "5.2.1",
     "gulp-debug": "2.1.2",
@@ -97,7 +97,7 @@
     "mocha": "5.0.4",
     "raml-mocker-server": "0.1.6",
     "raml2html": "3.0.0",
-    "restauth": "1.1.1",
+    "request": "2.85.0",
     "sequelize-cli": "4.0.0",
     "shelljs": "0.8.1",
     "should": "13.2.1",

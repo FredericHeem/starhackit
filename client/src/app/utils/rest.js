@@ -12,8 +12,10 @@ function baseUrl(url) {
 
 export default function(options = {}) {
   let _jwtSelector;
-
-  function ajax(url, method, data, params) {
+  const headersDefault = {
+    "Content-Type": "application/json"
+  };
+  function ajax(url, method, data, params, headers = headersDefault) {
     debug(
       "ajax url: %s, method: %s, options %s, params: ",
       url,
@@ -21,9 +23,6 @@ export default function(options = {}) {
       JSON.stringify(options),
       params
     );
-    const headers = {
-      "Content-Type": "application/json"
-    };
 
     if (_jwtSelector) {
       const jwt = _jwtSelector();
@@ -55,20 +54,25 @@ export default function(options = {}) {
     setJwtSelector(jwtSelector) {
       _jwtSelector = jwtSelector;
     },
-    get(url, options = {}) {
-      return ajax(url, "GET", null, options);
+    get(url, data = {}) {
+      return ajax(url, "GET", null, data);
     },
-    post(url, options = {}) {
-      return ajax(url, "POST", options);
+    post(url, data = {}) {
+      return ajax(url, "POST", data);
     },
-    put(url, options = {}) {
-      return ajax(url, "PUT", options);
+    upload(url, data) {
+      return ajax(url, "POST", data, {}, {
+        "Content-Type": "multipart/form-data"
+      });
     },
-    del(url, options = {}) {
-      return ajax(url, "DELETE", options);
+    put(url, data = {}) {
+      return ajax(url, "PUT", data);
     },
-    patch(url, options = {}) {
-      return ajax(url, "PATCH", options);
+    del(url) {
+      return ajax(url, "DELETE");
+    },
+    patch(url, data = {}) {
+      return ajax(url, "PATCH", data);
     }
   };
 }

@@ -10,10 +10,10 @@ describe('Forgot Password', function () {
     });
     it('insert email and submit', function (client) {
         client.page.forgotPassword().navigate()
-            .waitForElementVisible('.forgot-password-page', 5000)
-            .setValue('@emailInput', 'frederic.heem+starthackit@gmail.com')
+            .waitForElementVisible('@emailInput', 5000)
+            .setValue('@emailInput', 'frederic.heem+starhackit@gmail.com')
             .click('@submit')
-            .waitForElementVisible('.forgot-password-check-email-view', 5000)
+            .waitForElementVisible('.forgot-password-check-email-view', 10000)
     });
 
 });

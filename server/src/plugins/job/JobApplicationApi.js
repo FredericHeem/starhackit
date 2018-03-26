@@ -5,6 +5,9 @@ export default app => {
 
   const api = {
     pathname: "/candidate/application",
+    middlewares: [
+      app.server.auth.isAuthenticated
+    ],
     ops: {
       getAll: {
         pathname: "/",

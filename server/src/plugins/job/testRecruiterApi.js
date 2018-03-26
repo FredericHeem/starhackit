@@ -149,8 +149,9 @@ describe("Recruiter Auth", function() {
 
     if(job){
       const jobDetails = await client.get(`v1/candidate/job/${job.id}`);
-      console.log("jobDetails ", jobDetails)
       assert(jobDetails.recruiter.id)
+      const jobDetails2 = await client.get(`v1/candidate/job/${job.id}`);
+      assert.equal(jobDetails.views  + 1, jobDetails2.views);
     }
     assert(jobs);
   });

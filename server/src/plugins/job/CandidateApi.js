@@ -59,7 +59,12 @@ export default app => {
               }
             };
           } else {
-            context.body = job.get();
+            const jobData = job.get();
+            await models.Job.update(
+              { views: jobData.views + 1 },
+              { where: { id: jobData.id } }
+            );
+            context.body = jobData;
             context.status = 200;
           }
         }

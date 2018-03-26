@@ -1,30 +1,8 @@
 import assert from "assert";
 import testMngr from "~/test/testManager";
-import faker from "faker";
 import _ from "lodash";
 
-const createFakeJob = () => ({
-  title: faker.name.jobTitle(),
-  description: faker.lorem.sentences(),
-  company_name: faker.company.companyName(),
-  company_info: faker.company.catchPhrase(),
-  business_type: faker.commerce.department(),
-  company_url: faker.internet.url(),
-  company_logo_url: faker.image.imageUrl(),
-  start_date: faker.date.future(),
-  end_date: faker.date.future(),
-  sector: faker.name.jobType(),
-  geo: {
-    type: "Point",
-    coordinates: [
-      faker.random.number({ min: 51, max: 52, precision: 0.01 }),
-      faker.random.number({ min: -1, max: 1, precision: 0.01 })
-    ]
-  },
-  location: {
-    description: `${faker.address.city()} - ${faker.address.state()}`
-  }
-});
+import createFakeJob from "./createFakeJob";
 
 describe("Recruiter No Auth", function() {
   let client;
@@ -79,7 +57,7 @@ describe("Recruiter Auth", function() {
     assert.equal(job.title, jobNew.title);
   });
   it("should create many jobs", async () => {
-    _.times(100, async () => {
+    _.times(2, async () => {
       const input = createFakeJob();
       const job = await client.post("v1/recruiter/job", input);
       assert(job);

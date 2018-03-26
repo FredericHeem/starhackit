@@ -1,5 +1,3 @@
-import Qs from "qs";
-import _ from "lodash";
 
 export default app => {
   const { sequelize } = app.data;

@@ -1,3 +1,5 @@
+import createFakeJob from "./createFakeJob";
+
 module.exports = function(sequelize, DataTypes) {
   const Job = sequelize.define(
     "Job",
@@ -10,8 +12,8 @@ module.exports = function(sequelize, DataTypes) {
       title: DataTypes.TEXT,
       description: DataTypes.TEXT,
       company_name: DataTypes.TEXT,
-      company_url: DataTypes.TEXT,
       company_info: DataTypes.TEXT,
+      company_url: DataTypes.TEXT,
       business_type: DataTypes.TEXT,
       company_logo_url: DataTypes.TEXT,
       start_date: DataTypes.DATE,
@@ -57,6 +59,13 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: true
       }
     });
+  };
+  Job.seedDefault = async function(models) {
+    const alice = await models.User.findByUsername("alice");
+    const fakeJobs = new Array(10)
+      .fill()
+      .map(() => createFakeJob({ user_id: alice.get().id }));
+    return Job.bulkCreate(fakeJobs);
   };
   return Job;
 };

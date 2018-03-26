@@ -70,12 +70,12 @@ export default function Data(config) {
 
       async seedDefault(app) {
         log.debug("seedDefault");
-        assert(app.plugins.get().users);
-        let plugins = _.values(app.plugins.get());
-        for (let plugin of plugins) {
-          log.debug("seedDefault plugin");
-          if (_.isFunction(plugin.seedDefault)) {
-            await plugin.seedDefault();
+        const plugins = app.plugins.get();
+        for (let name in plugins) {
+          log.debug("seedDefault plugin ", name);
+          const {seedDefault} = plugins[name]
+          if (_.isFunction(seedDefault)) {
+            await seedDefault();
           }
         }
       },

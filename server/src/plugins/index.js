@@ -1,54 +1,27 @@
-import Promise from 'bluebird';
-import _ from 'lodash';
-import fs from 'fs';
-import path from 'path';
+import Promise from "bluebird";
+import path from "path";
+import _ from "lodash";
 
-const blackList = [
-  'fidor',
-  'crossbank'
-  //'ticket'
-];
+const pluginsName = ["users", "job", "dbSchema"];
 
-export default function Plugins(app){
-  let log = require('logfilename')('plugins');
-  let plugins = {};
+export default function Plugins(app) {
+  const plugins = pluginsName.reduce((map, pluginName) => {
+    map[pluginName] = require(path.join(__dirname, pluginName))(app);
+    return map;
+  }, {});
 
-  function requirePluginDir(pluginPath, name){
-    log.debug(`requirePluginDir: ${pluginPath}, name: ${name}`);
-    fs.readdirSync(pluginPath)
-      .filter( file => file.slice(-9) === 'Plugin.js')
-      .forEach(file => {
-        const plugin = require(path.join(pluginPath, file))(app);
-        if(plugin){
-          plugins[name] =  plugin;
-        } else {
-          log.warn(`Plugin ${name} disabled`);
-        }
-      });
-  }
-
-  function createPlugin(dirname) {
-      fs.readdirSync(__dirname)
-        .filter(file => fs.lstatSync(path.join(dirname, file)).isDirectory())
-        .filter(file => !_.includes(file, blackList))
-        .forEach(file => requirePluginDir(path.join(dirname, file), file));
-  }
-
-  createPlugin(__dirname);
-
-  async function action(ops){
+  const action = async ops =>
     await Promise.each(_.values(plugins), obj => obj[ops] && obj[ops](app));
-  }
 
   return {
-    get(){
+    get() {
       return plugins;
     },
-    async start(){
-      await action('start');
+    async start() {
+      await action("start");
     },
-    async stop(){
-      await action('stop');
+    async stop() {
+      await action("stop");
     }
   };
 }

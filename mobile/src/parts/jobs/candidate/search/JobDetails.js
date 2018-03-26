@@ -140,7 +140,7 @@ export default context => {
         <View style={{ margin: 16 }}>
           <JobInfo details={details} />
           <Company details={details} />
-          <Recruiter recruiter={details.recruiter} />
+          {details.recruiter && <Recruiter recruiter={details.recruiter} />}
         </View>
       </ScrollView>
     );

@@ -141,7 +141,7 @@ describe("Recruiter Auth", function() {
     //console.log("JOBS ", jobs.length)
     assert(jobs);
   });
-  it("should get apply for a job", async () => {
+  it("should apply for a job", async () => {
     const jobCreated = await client.post("v1/recruiter/job", createFakeJob());
     assert(jobCreated);
     let jobs = await client.get("v1/candidate/job");

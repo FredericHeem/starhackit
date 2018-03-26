@@ -1,4 +1,4 @@
-import createFakeJob from "./createFakeJob";
+import createFakeJob from "../test/createFakeJob";
 
 module.exports = function(sequelize, DataTypes) {
   const Job = sequelize.define(

@@ -12,11 +12,8 @@ export default context => {
     backgroundColor: "white"
   });
 
-  const JobLoading = () => (
-    <View style={{ flex: 1 }}>
-      <ActivityIndicator size="large" color="grey" />
-    </View>
-  );
+  const LoadingScreen = require("components/LoadingScreen").default(context);
+
 
   const JobDescription = glamorous(Text)({
     fontSize: 16
@@ -127,8 +124,8 @@ export default context => {
   );
 
   const JobDetails = observer(({ opsGetOne }) => {
-    //console.log("JobDetails ", opsGetOne);
-    if (opsGetOne.loading) return <JobLoading />;
+    console.log("JobDetails ", opsGetOne.loading);
+    if (opsGetOne.loading) return <LoadingScreen label="Loading Jobs..."/>;
     const details = opsGetOne.data || {};
     const { recruiter } = details;
     console.log("recruiter ", recruiter);

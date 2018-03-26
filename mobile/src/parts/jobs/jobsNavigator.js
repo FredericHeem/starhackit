@@ -1,6 +1,5 @@
 import React from "react";
 
-import { StatusBar, View, ActivityIndicator } from "react-native";
 import { createSwitchNavigator } from "react-navigation";
 export default context => {
   const store = context.stores.core;
@@ -9,6 +8,7 @@ export default context => {
     if (!auth) return "Landing";
     return app;
   };
+  const LoadingScreen = require("components/LoadingScreen").default(context);
 
   class AuthLoading extends React.Component {
     async componentDidMount() {
@@ -19,12 +19,7 @@ export default context => {
       );
     }
     render() {
-      return (
-        <View>
-          <ActivityIndicator />
-          <StatusBar barStyle="default" />
-        </View>
-      );
+      return <LoadingScreen/>;
     }
   }
 

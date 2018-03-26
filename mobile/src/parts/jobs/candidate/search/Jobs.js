@@ -1,6 +1,6 @@
 import React from "react";
 import { observable } from "mobx";
-import { View, ActivityIndicator, Image } from "react-native";
+import { View, ActivityIndicator, Image, Dimensions } from "react-native";
 import { observer } from "mobx-react";
 import Lifecycle from "components/Lifecycle";
 import { createStackNavigator } from "react-navigation";
@@ -20,6 +20,7 @@ export default context => {
   const Text = require("components/Text").default(context);
   const List = require("components/List").default(context);
   const Page = require("components/Page").default(context);
+  const LoadingScreen = require("components/LoadingScreen").default(context);
 
   opsGetAll.data = [];
 
@@ -30,13 +31,15 @@ export default context => {
 
   async function fetchJobs() {
     console.log("fetchJobs ", stores.profile.location);
-    const { coords } = stores.core.geoLoc.location;
+    const { coords = {} } = stores.core.geoLoc.location;
+    console.log("fetchJobs coords ", coords);
     await opsGetAll.fetch({
       sectors: stores.profile.sectors.toJS(),
       lat: coords.latitude,
       lon: coords.longitude,
       max: "50"
     });
+    
   }
 
   store.location = "london";
@@ -75,6 +78,7 @@ export default context => {
   const JobDescription = glamorous(Text)({
     fontSize: 14
   });
+
   const CompanyName = glamorous(Text)({
     fontSize: 14,
     fontWeight: "bold"
@@ -111,7 +115,8 @@ export default context => {
           {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
           {job.location && (
             <Location>
-              {computeDistance(job.geo, context.stores.core.geoLoc)} {`\u00b7`} {job.location.description}
+              {computeDistance(job.geo, context.stores.core.geoLoc)} {`\u00b7`}{" "}
+              {job.location.description}
             </Location>
           )}
         </View>
@@ -125,10 +130,10 @@ export default context => {
       id: job.id
     });
   };
+  
 
   const Jobs = observer(({ opsGetAll, navigation }) => (
     <Page>
-      {opsGetAll.loading && <ActivityIndicator size="large" color="grey" />}
       <List
         onPress={item => onPressJob(item, navigation)}
         onKey={item => item.id}
@@ -151,14 +156,16 @@ export default context => {
               });
             }}
           >
-            <Jobs opsGetAll={opsGetAll} store={store} {...props} />
+            {opsGetAll.loading && <LoadingScreen label="Loading Jobs..."/>}
+            {!opsGetAll.loading &&
+            opsGetAll.data && (
+              <Jobs opsGetAll={opsGetAll} store={store} {...props} />
+            )}
           </Lifecycle>
         )
       },
       JobDetails: {
-        screen: props => (
-          <JobDetails opsGetOne={opsGetOne}{...props} />
-        ),
+        screen: props => <JobDetails opsGetOne={opsGetOne} {...props} />,
         navigationOptions: () => ({
           title: "Job Details",
           header: undefined

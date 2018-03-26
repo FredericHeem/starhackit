@@ -6,13 +6,16 @@ import Lifecycle from "components/Lifecycle";
 import { createStackNavigator } from "react-navigation";
 import glamorous from "glamorous-native";
 import _ from "lodash";
-import distanceFromLatLonInKm from "../../utils";
+import computeDistance from "./computeDistance";
 
 export default context => {
   const { stores } = context;
   const createAsyncOp = require("core/asyncOp").default(context);
   const opsGetAll = createAsyncOp(params =>
     context.rest.get(`candidate/job`, params)
+  );
+  const opsGetOne = createAsyncOp(({ id }) =>
+    context.rest.get(`candidate/job/${id}`)
   );
   const Text = require("components/Text").default(context);
   const List = require("components/List").default(context);
@@ -81,26 +84,6 @@ export default context => {
     color: "grey"
   });
 
-  const computeDistance = geo => {
-    const { latitude, longitude } = _.get(
-      context.stores.core.geoLoc,
-      "location.coords"
-    );
-    if (!latitude || !geo) {
-      return;
-    }
-    const [jobLat, jobLon] = geo.coordinates;
-    //console.log("distance me", latitude, longitude);
-    //console.log("distance jobs", geo);
-    const distance = distanceFromLatLonInKm(
-      latitude,
-      longitude,
-      jobLat,
-      jobLon
-    );
-    //console.log("distance km", distance);
-    return `${distance} km`;
-  };
   const JobItem = ({ job }) => {
     const image64 = _.get(job.picture, "base64");
     return (
@@ -128,7 +111,7 @@ export default context => {
           {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
           {job.location && (
             <Location>
-              {computeDistance(job.geo)}, {job.location.description}
+              {computeDistance(job.geo, context.stores.core.geoLoc)} {`\u00b7`} {job.location.description}
             </Location>
           )}
         </View>
@@ -136,16 +119,18 @@ export default context => {
     );
   };
 
-  const onPressItem = (item, navigation) => {
-    console.log("onPressItem", item.title);
-    navigation.navigate("JobDetails", item);
+  const onPressJob = (job, navigation) => {
+    navigation.navigate("JobDetails");
+    opsGetOne.fetch({
+      id: job.id
+    });
   };
 
   const Jobs = observer(({ opsGetAll, navigation }) => (
     <Page>
       {opsGetAll.loading && <ActivityIndicator size="large" color="grey" />}
       <List
-        onPress={item => onPressItem(item, navigation)}
+        onPress={item => onPressJob(item, navigation)}
         onKey={item => item.id}
         items={opsGetAll.data}
         renderItem={item => <JobItem job={item} />}
@@ -172,7 +157,7 @@ export default context => {
       },
       JobDetails: {
         screen: props => (
-          <JobDetails details={props.navigation.state.params} {...props} />
+          <JobDetails opsGetOne={opsGetOne}{...props} />
         ),
         navigationOptions: () => ({
           title: "Job Details",

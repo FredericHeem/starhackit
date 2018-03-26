@@ -20,7 +20,7 @@ export default app => {
           const criteria = {
             limit: 100,
             where: {},
-            order: [["updated_at", "DESC"]],
+            order: [["created_at", "DESC"]],
           };
           if (!_.isNaN(lat) && !_.isNaN(lon)) {
             const point = sequelize.fn(

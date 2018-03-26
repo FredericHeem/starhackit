@@ -1,72 +1,149 @@
 import React from "react";
-import { Text, WebView } from "react-native";
+import { Image, View, ActivityIndicator } from "react-native";
 import glamorous from "glamorous-native";
+import { observer } from "mobx-react";
 import moment from "moment";
+import _ from "lodash";
+import computeDistance from "./computeDistance";
 
-export default () => {
+export default context => {
+  const Text = require("components/Text").default(context);
   const ScrollView = glamorous.scrollview({
-    backgroundColor: "white",
-    flex: 1
+    backgroundColor: "white"
   });
 
-  const LogoView = glamorous.image({
-    height: 100,
-    margin: 10
-  });
-
-  const Title = glamorous.text({
-    margin: 6,
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center"
-  });
-
-  const CompanyName = glamorous.text({
-    margin: 6,
-    fontSize: 20
-  });
-
-  const PublishedDate = glamorous.text({
-    margin: 6,
-    fontStyle: "italic",
-    color: "grey"
-  });
-  const Date = glamorous.text({
-    margin: 6,
-    fontStyle: "italic",
-    color: "grey"
-  });
-  const Location = glamorous.text({
-    margin: 6,
-  });
-
-  const CompanyLogo = ({ logoURI }) => (
-    <LogoView resizeMode="contain" source={{ uri: logoURI }} />
+  const JobLoading = () => (
+    <View style={{ flex: 1 }}>
+      <ActivityIndicator size="large" color="grey" />
+    </View>
   );
 
-  const JobDetails = ({ details }) => (
-    <ScrollView>
-      <Title>{details.title}</Title>
-      <CompanyName> {details.company_name}</CompanyName>
-      {details.company_logo_url && (
-        <CompanyLogo logoURI={details.company_logo_url} />
+  const JobDescription = glamorous(Text)({
+    fontSize: 16
+  });
+
+  const Sector = glamorous(Text)({
+    fontSize: 12,
+    fontWeight: "bold",
+    backgroundColor: "lightgrey",
+    alignSelf: "flex-start",
+    borderRadius: 3,
+    color: "grey",
+    padding: 4
+  });
+
+  const Card = glamorous(View)({
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderTopWidth: 1,
+    borderTopColor: "lightgrey"
+  });
+
+  const JobStat = glamorous(View)({
+    flexDirection: "row"
+  });
+  const JobViews = glamorous(Text)({
+    color: "grey"
+  });
+
+  const JobTitle = glamorous(Text)({
+    fontSize: 20,
+    fontWeight: "bold"
+  });
+
+  const PublishedDate = glamorous(Text)({
+    fontStyle: "italic",
+    color: "grey"
+  });
+
+  const Date = glamorous(Text)({
+    fontStyle: "italic",
+    color: "grey"
+  });
+
+  const Location = glamorous(Text)({ color: "grey" });
+
+  const JobInfo = ({ details }) => (
+    <Card>
+      <JobStat>
+        {details.created_at && (
+          <PublishedDate>
+            Published {moment(details.created_at).fromNow()}
+          </PublishedDate>
+        )}
+        <JobViews>{`\u00b7 ${details.views} views`}</JobViews>
+      </JobStat>
+      <JobTitle>{details.title}</JobTitle>
+      <Sector>{details.sector}</Sector>
+      {details.description && (
+        <JobDescription>{details.description}</JobDescription>
       )}
-      {details.location && <Location>{details.location.description}</Location>}
+      {details.location && (
+        <Location>
+          {computeDistance(details.geo, context.stores.core.geoLoc)}
+          {` \u00b7 `}
+          {details.location.description}
+        </Location>
+      )}
       {details.start_date && (
         <Date>Start {moment(details.start_date).fromNow()}</Date>
       )}
-      {details.description && (
-        <WebView
-          source={{ html: details.description }}
-          style={{ height: 3000, marginTop: 20 }}
-        />
-      )}
-      {details.created_at && (
-        <PublishedDate>
-          Published {moment(details.created_at).fromNow()}
-        </PublishedDate>
-      )}
-    </ScrollView>
+    </Card>
   );
+
+  const CompanyName = glamorous(Text)({
+    fontSize: 18,
+    fontWeight: "bold"
+  });
+
+  const CompanyInfo = glamorous(Text)({
+    fontSize: 14
+  });
+
+  const BusinessType = glamorous(Text)({
+    fontSize: 14,
+    color: "grey"
+  });
+
+  const Company = ({ details }) => (
+    <Card>
+      <CompanyName>{details.company_name}</CompanyName>
+      <BusinessType>{details.business_type}</BusinessType>
+      <CompanyInfo>{details.company_info}</CompanyInfo>
+    </Card>
+  );
+
+  const HiredBy = glamorous(Text)({
+    fontSize: 14,
+    color: "grey",
+    fontStyle: "italic"
+  });
+
+  const Recruiter = ({ recruiter }) => (
+    <Card>
+      <HiredBy>Hiring by</HiredBy>
+      <Text>{recruiter.username}</Text>
+    </Card>
+  );
+
+  const JobDetails = observer(({ opsGetOne }) => {
+    //console.log("JobDetails ", opsGetOne);
+    if (opsGetOne.loading) return <JobLoading />;
+    const details = opsGetOne.data || {};
+    const { recruiter } = details;
+    console.log("recruiter ", recruiter);
+    const image64 = _.get(details.picture, "base64");
+    return (
+      <ScrollView style={{ height: 600 }}>
+        {image64 && <Image style={{ height: 200 }} source={{ uri: image64 }} />}
+
+        <View style={{ margin: 16 }}>
+          <JobInfo details={details} />
+          <Company details={details} />
+          <Recruiter recruiter={details.recruiter} />
+        </View>
+      </ScrollView>
+    );
+  });
   return JobDetails;
 };

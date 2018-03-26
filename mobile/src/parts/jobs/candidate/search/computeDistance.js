@@ -1,5 +1,6 @@
+import _ from "lodash";
 
-export default function distanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+function distanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the earth in km
   const dLat = deg2rad(lat2 - lat1); // deg2rad below
   const dLon = deg2rad(lon2 - lon1);
@@ -16,4 +17,16 @@ export default function distanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
+}
+
+export default function computeDistance(geo, geoLoc) {
+    console.log("geo ", geo)
+    console.log("geoLoc ", geoLoc)
+  const { latitude, longitude } = _.get(geoLoc, "location.coords");
+  if (!latitude || !geo) {
+    return;
+  }
+  const [jobLat, jobLon] = geo.coordinates;
+  const distance = distanceFromLatLonInKm(latitude, longitude, jobLat, jobLon);
+  return `${distance} km`;
 }

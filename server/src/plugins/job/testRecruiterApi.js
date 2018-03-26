@@ -17,8 +17,8 @@ const createFakeJob = () => ({
   geo: {
     type: "Point",
     coordinates: [
-      faker.random.number({ min: 50, max: 51, precision: 0.01 }),
-      faker.random.number({ min: 1, max: 2, precision: 0.01 })
+      faker.random.number({ min: 51, max: 52, precision: 0.01 }),
+      faker.random.number({ min: -1, max: 1, precision: 0.01 })
     ]
   },
   location: {
@@ -79,7 +79,7 @@ describe("Recruiter Auth", function() {
     assert.equal(job.title, jobNew.title);
   });
   it("should create many jobs", async () => {
-    _.times(4, async () => {
+    _.times(100, async () => {
       const input = createFakeJob();
       const job = await client.post("v1/recruiter/job", input);
       assert(job);
@@ -143,16 +143,22 @@ describe("Recruiter Auth", function() {
     console.log(jobs.length);
     assert(jobs);
   });
-  it("should get all jobs near me", async () => {
-    let jobs = await client.get("v1/candidate/job?lat=50&lon=0");
+  it("should get all jobs everywhere", async () => {
+    let jobs = await client.get("v1/candidate/job?lat=50&lon=0&max=10000&sectors[]=Developer");
     const job = jobs[0];
-
+    //console.log("JOB ", jobs);
+    //console.log("JOBS ", jobs.length)
     if(job){
       const jobDetails = await client.get(`v1/candidate/job/${job.id}`);
       assert(jobDetails.recruiter.id)
       const jobDetails2 = await client.get(`v1/candidate/job/${job.id}`);
       assert.equal(jobDetails.views  + 1, jobDetails2.views);
     }
+    assert(jobs);
+  });
+  it("should get all jobs near me", async () => {
+    let jobs = await client.get("v1/candidate/job?lat=50&lon=0&max=1");
+    //console.log("JOBS ", jobs.length)
     assert(jobs);
   });
 });

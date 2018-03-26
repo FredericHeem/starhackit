@@ -15,18 +15,29 @@ export default app => {
           const querystring = Qs.parse(context.request.querystring);
           const lat = _.toNumber(querystring.lat);
           const lon = _.toNumber(querystring.lon);
-          const { sectors } = querystring;
-          //console.log("criteria ", querystring);
+          const { sectors, max = "50" } = querystring;
+          //console.log("querystring ", querystring);
           const criteria = {
-            limit: 100
+            limit: 100,
+            where: {},
+            order: [["updated_at", "DESC"]],
           };
           if (!_.isNaN(lat) && !_.isNaN(lon)) {
-            criteria.order = sequelize.literal(
-              `geo <-> 'SRID=4326;POINT(${lat} ${lon})'`
+            const point = sequelize.fn(
+              "ST_GeomFromText",
+              `POINT(${lat} ${lon})`,
+              4326
             );
+            const within = sequelize.fn(
+              "ST_DWithin",
+              sequelize.col("geo"),
+              point,
+              `${max}000`
+            );
+            criteria.where.$and = within;
           }
           if (_.isArray(sectors)) {
-            criteria.where = { sector: { $in: sectors } };
+            criteria.where.sector = { $in: sectors };
           }
           //console.log("criteria ", criteria);
           const jobs = await models.Job.findAll(criteria);

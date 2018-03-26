@@ -27,11 +27,12 @@ export default context => {
 
   async function fetchJobs() {
     console.log("fetchJobs ", stores.profile.location);
-    const { geo } = stores.profile;
+    const { coords } = stores.core.geoLoc.location;
     await opsGetAll.fetch({
       sectors: stores.profile.sectors.toJS(),
-      lat: geo.lat,
-      lon: geo.lon
+      lat: coords.latitude,
+      lon: coords.longitude,
+      max: "50"
     });
   }
 
@@ -97,7 +98,7 @@ export default context => {
       jobLat,
       jobLon
     );
-    console.log("distance km", distance);
+    //console.log("distance km", distance);
     return `${distance} km`;
   };
   const JobItem = ({ job }) => {

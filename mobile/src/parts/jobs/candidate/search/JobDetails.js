@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View, ActivityIndicator } from "react-native";
+import { Image, View } from "react-native";
 import glamorous from "glamorous-native";
 import { observer } from "mobx-react";
 import moment from "moment";

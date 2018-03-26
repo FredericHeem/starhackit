@@ -20,8 +20,8 @@ function deg2rad(deg) {
 }
 
 export default function computeDistance(geo, geoLoc) {
-  //console.log("geo ", geo)
-  //console.log("geoLoc ", geoLoc)
+  console.log("geo ", geo)
+  console.log("geoLoc ", geoLoc)
   const { latitude, longitude } = _.get(geoLoc, "location.coords");
   if (!latitude || !geo) {
     return;

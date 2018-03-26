@@ -15,18 +15,18 @@ export default app => {
           const querystring = Qs.parse(context.request.querystring);
           const lat = _.toNumber(querystring.lat);
           const lon = _.toNumber(querystring.lon);
-          const {sectors} = querystring;
+          const { sectors } = querystring;
           //console.log("criteria ", querystring);
           const criteria = {
-            limit: 100,
+            limit: 100
           };
           if (!_.isNaN(lat) && !_.isNaN(lon)) {
             criteria.order = sequelize.literal(
               `geo <-> 'SRID=4326;POINT(${lat} ${lon})'`
             );
           }
-          if(_.isArray(sectors)){
-            criteria.where = {sector: {$in: sectors}};
+          if (_.isArray(sectors)) {
+            criteria.where = { sector: { $in: sectors } };
           }
           //console.log("criteria ", criteria);
           const jobs = await models.Job.findAll(criteria);
@@ -39,6 +39,12 @@ export default app => {
         method: "get",
         handler: async context => {
           const job = await models.Job.findOne({
+            include: [
+              {
+                model: models.User,
+                as: "recruiter"
+              }
+            ],
             where: {
               id: context.params.id
             }

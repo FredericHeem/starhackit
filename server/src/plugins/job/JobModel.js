@@ -40,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
   );
   Job.associate = function(models) {
     Job.belongsTo(models.User, {
+      as: "recruiter",
       foreignKey: {
         name: "user_id",
         allowNull: false

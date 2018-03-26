@@ -131,11 +131,6 @@ describe("Recruiter Auth", function() {
     console.log(jobs.length);
     assert(jobs);
   });
-  it("should get all jobs near me", async () => {
-    let jobs = await client.get("v1/candidate/job?lat=50&lon=0");
-    console.log(jobs.length);
-    assert(jobs);
-  });
   it("should not get any job given an unknown sector", async () => {
     let jobs = await client.get("v1/candidate/job?sectors[]=Restaurant");
     assert.equal(jobs.length, 0);
@@ -146,6 +141,17 @@ describe("Recruiter Auth", function() {
       "v1/candidate/job?sectors[]=Administrator&sectors[]=Developer"
     );
     console.log(jobs.length);
+    assert(jobs);
+  });
+  it("should get all jobs near me", async () => {
+    let jobs = await client.get("v1/candidate/job?lat=50&lon=0");
+    const job = jobs[0];
+
+    if(job){
+      const jobDetails = await client.get(`v1/candidate/job/${job.id}`);
+      console.log("jobDetails ", jobDetails)
+      assert(jobDetails.recruiter.id)
+    }
     assert(jobs);
   });
 });

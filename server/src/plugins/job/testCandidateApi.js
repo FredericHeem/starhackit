@@ -18,7 +18,7 @@ describe("Candidate Job", function() {
   });
   it("should get 404 when the job is not found", async () => {
     try {
-      let jobs = await client.get("v1/candidate/job/123456");
+      let jobs = await client.get("v1/candidate/job/8f7be687-5457-4c37-b1e4-bb974c9fa28a");
       assert(jobs);
     } catch (error) {
       assert(error.body.error);

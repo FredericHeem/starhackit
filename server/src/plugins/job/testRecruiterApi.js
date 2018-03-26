@@ -113,7 +113,7 @@ describe("Recruiter Auth", function() {
   });
   it("should get 404 when the job is not found", async () => {
     try {
-      let jobs = await client.get("v1/recruiter/job/123456");
+      let jobs = await client.get("v1/recruiter/job/8f7be687-5457-4c37-b1e4-bb974c9fa28a");
       assert(jobs);
     } catch (error) {
       assert(error.body.error);
@@ -163,7 +163,7 @@ describe("Recruiter Auth", function() {
     //console.log("JOBS ", jobs.length)
     assert(jobs);
   });
-  it.only("should get apply for a job", async () => {
+  it("should get apply for a job", async () => {
     const jobCreated = await client.post("v1/recruiter/job", createFakeJob());
     assert(jobCreated);
     let jobs = await client.get("v1/candidate/job");

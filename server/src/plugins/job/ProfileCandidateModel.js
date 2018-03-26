@@ -2,6 +2,11 @@ module.exports = function(sequelize, DataTypes) {
   const ProfileCandidate = sequelize.define(
     "ProfileCandidate",
     {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
+      },
       summary: {
         type: DataTypes.STRING(2048)
       },

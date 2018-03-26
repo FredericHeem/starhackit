@@ -2,6 +2,11 @@ module.exports = function(sequelize, DataTypes) {
   const Job = sequelize.define(
     "Job",
     {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
+      },
       title: DataTypes.TEXT,
       description: DataTypes.TEXT,
       company_name: DataTypes.TEXT,
@@ -22,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       views: {
         type: DataTypes.INTEGER,
         defaultValue: 0
-      },
+      }
     },
     {
       tableName: "job",

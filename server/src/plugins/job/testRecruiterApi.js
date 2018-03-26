@@ -144,15 +144,17 @@ describe("Recruiter Auth", function() {
     assert(jobs);
   });
   it("should get all jobs everywhere", async () => {
-    let jobs = await client.get("v1/candidate/job?lat=50&lon=0&max=10000&sectors[]=Developer");
+    let jobs = await client.get(
+      "v1/candidate/job?lat=50&lon=0&max=10000&sectors[]=Developer"
+    );
     const job = jobs[0];
     //console.log("JOB ", jobs);
     //console.log("JOBS ", jobs.length)
-    if(job){
+    if (job) {
       const jobDetails = await client.get(`v1/candidate/job/${job.id}`);
-      assert(jobDetails.recruiter.id)
+      assert(jobDetails.recruiter.id);
       const jobDetails2 = await client.get(`v1/candidate/job/${job.id}`);
-      assert.equal(jobDetails.views  + 1, jobDetails2.views);
+      assert.equal(jobDetails.views + 1, jobDetails2.views);
     }
     assert(jobs);
   });
@@ -160,5 +162,20 @@ describe("Recruiter Auth", function() {
     let jobs = await client.get("v1/candidate/job?lat=50&lon=0&max=1");
     //console.log("JOBS ", jobs.length)
     assert(jobs);
+  });
+  it.only("should get apply for a job", async () => {
+    const jobCreated = await client.post("v1/recruiter/job", createFakeJob());
+    assert(jobCreated);
+    let jobs = await client.get("v1/candidate/job");
+    const job = jobs[0];
+    assert(job);
+    //console.log("JOB ", jobs);
+    //console.log("JOBS ", jobs.length)
+    await client.post("v1/candidate/application", {
+      message: "Ready to perform to the heighest bidder",
+      job_id: job.id
+    });
+    const applications = await client.get("v1/candidate/application");
+    assert(Array.isArray(applications));
   });
 });

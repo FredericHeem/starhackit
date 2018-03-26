@@ -1,8 +1,9 @@
 export default app => {
-  app.data.registerModel(__dirname, `JobModel`);
-  app.data.registerModel(__dirname, `ProfileCandidateModel`);
+  ["JobModel", "ProfileCandidateModel", "JobApplicationModel"].forEach(model =>
+    app.data.registerModel(__dirname, `./${model}`)
+  );
 
-  require("./RecruiterApi")(app);
-  require("./CandidateApi")(app);
-  require("./CandidateProfileApi")(app);
+  ["RecruiterApi", "CandidateApi", "CandidateProfileApi", "CandidateApplicationApi"].forEach(model =>
+    require(`./${model}`)(app)
+  );
 };

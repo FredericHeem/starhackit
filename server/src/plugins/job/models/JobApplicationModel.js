@@ -34,6 +34,13 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       }
     });
+    models.User.hasMany(models.JobApplication, {
+      as: "job_applications",
+      foreignKey: {
+        name: "user_id",
+        allowNull: true
+      }
+    });
   };
   return JobApplication;
 };

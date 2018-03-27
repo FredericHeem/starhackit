@@ -24,7 +24,7 @@ export default context => {
   const Applicant = require("./Applicant").default(context);
 
   const pathname = "recruiter/job";
-  
+
   const opsGetAll = createAsyncOp(() => context.rest.get(pathname));
   const opsUpdate = createAsyncOp(job =>
     context.rest.patch(`${pathname}/${job.id}`, job)
@@ -112,7 +112,39 @@ export default context => {
     isCompanyInfoValid: () =>
       currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
-
+/*
+  const applicantData = {
+    created_at: "2018-03-27T16:03:24.607Z",
+    id: "cb634a61-e8a1-48e4-96a9-91372f727f95",
+    job_id: "d8ddc88d-d5cf-4363-9f8a-e9d733798e95",
+    message: "Sdsds",
+    updated_at: "2018-03-27T16:03:24.607Z",
+    user: {
+      email: "frederic.heem@gmail.com",
+      firstName: "Fred",
+      lastName: "M",
+      profile_candidate: {
+        experiences: [
+          {
+            id: "93a94e96-0721-461a-9bda-9fc771111328",
+            company: "Rosta",
+            position: "Pizzaiolo"
+          },
+          {
+            id: "8e653cb2-c39c-4e67-aab6-c3d36d495795",
+            company: "Il vesuvio",
+            position: "Chef"
+          }
+        ],
+        geo: null,
+        location: null,
+        summary: "Bla bla "
+      },
+      username: "Fred Eric M"
+    },
+    user_id: "e485a65c-42b5-42d9-9681-67134c43c2f2"
+  };
+*/
   const currentApplicant = observable.map({});
 
   const Page = require("components/Page").default(context);
@@ -189,7 +221,7 @@ export default context => {
     await currentJob.setLocation(location);
     navigation.navigate("JobEdit");
   };
-   const onApplicant = (applicant, navigation) => {
+  const onApplicant = (applicant, navigation) => {
     currentApplicant.replace(applicant);
     navigation.navigate("Applicant", applicant);
   };
@@ -277,7 +309,7 @@ export default context => {
         })
       },
       Applicants: {
-        screen: (props) => (
+        screen: props => (
           <Applicants
             job={currentJob}
             onApplicant={applicant => onApplicant(applicant, props.navigation)}
@@ -290,12 +322,7 @@ export default context => {
         })
       },
       Applicant: {
-        screen: (props) => (
-          <Applicant
-            applicant={currentApplicant}
-            {...props}
-          />
-        ),
+        screen: props => <Applicant applicant={currentApplicant} {...props} />,
         navigationOptions: () => ({
           title: "Applicant",
           header: undefined
@@ -333,8 +360,8 @@ export default context => {
       navigationOptions: {
         header: null
       },
-      mode: "modal"
-      //initialRouteName: "JobWizard"
+      mode: "modal",
+      //initialRouteName: "Applicant"
     }
   );
 };

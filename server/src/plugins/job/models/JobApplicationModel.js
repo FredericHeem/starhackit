@@ -30,6 +30,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     });
     JobApplication.belongsTo(models.User, {
+      as: "user",
       foreignKey: {
         name: "user_id",
         allowNull: false

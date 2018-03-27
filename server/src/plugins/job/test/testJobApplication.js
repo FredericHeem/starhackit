@@ -55,7 +55,10 @@ describe("Job Application Auth", function() {
     assert(Array.isArray(myJobs));
     const job_applications = myJobs[0].job_applications;
     assert(Array.isArray(job_applications));
-    //console.log(job_applications);
-    assert.equal(job_applications[0].message, input.message)
+    console.log(job_applications);
+    const job_application = job_applications[0]
+    assert(job_application);
+    assert(job_application.user);
+    assert.equal(job_application.message, input.message)
   });
 });

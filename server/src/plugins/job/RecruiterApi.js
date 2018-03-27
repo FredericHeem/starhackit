@@ -3,9 +3,7 @@ export default app => {
 
   const api = {
     pathname: "/recruiter/job",
-    middlewares: [
-      app.server.auth.isAuthenticated
-    ],
+    middlewares: [app.server.auth.isAuthenticated],
     ops: {
       getAll: {
         pathname: "/",
@@ -14,12 +12,18 @@ export default app => {
           const jobs = await models.Job.findAll({
             include: [
               {
+                include: [
+                  {
+                    model: models.User,
+                    as: "user"
+                  }
+                ],
                 model: models.JobApplication,
                 as: "job_applications"
               }
             ],
             where: { user_id: context.state.user.id },
-            order: [["created_at", "DESC"]],
+            order: [["created_at", "DESC"]]
           });
           context.body = jobs.map(job => job.get());
           context.status = 200;

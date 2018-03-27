@@ -37,9 +37,10 @@ export default context => {
         ))}
       </View>
     );
+    
     return (
       <Page>
-        <Image style={{height: 200}} source={{uri: user.picture.url}}/>
+        {user.picture && <Image style={{height: 200}} source={{uri: user.picture.url}}/>}
         <MainInfo>
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>
             {user.username}

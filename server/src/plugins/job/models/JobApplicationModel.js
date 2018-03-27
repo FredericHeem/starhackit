@@ -16,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   );
   JobApplication.associate = function(models) {
     JobApplication.belongsTo(models.Job, {
+      as: "job",
       foreignKey: {
         name: "job_id",
         allowNull: false

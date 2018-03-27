@@ -14,9 +14,16 @@ export default app => {
         method: "get",
         handler: async context => {
           const applications = await models.JobApplication.findAll({
+            include: [
+              {
+                model: models.Job,
+                as: "job"
+              }
+            ],
             where: {
               user_id: context.state.user.id
-            }
+            },
+            order: [["created_at", "DESC"]],
           });
           context.body = applications.map(application => application.get());
           context.status = 200;

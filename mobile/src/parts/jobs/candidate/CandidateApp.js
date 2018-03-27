@@ -11,6 +11,13 @@ export default context => createBottomTabNavigator(
           tabBarIcon: () => <Icon name="search" />
         })
       },
+      JobApplication: {
+        screen: require("./search/JobApplication").default(context),
+        navigationOptions: () => ({
+          title: "Job Application",
+          tabBarIcon: () => <Icon name="user" />
+        })
+      },
       Profile: {
         screen: require("./profile/Profile").default(context),
         navigationOptions: () => ({

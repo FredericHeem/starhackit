@@ -28,9 +28,11 @@ export default context => {
           }}
           value={store.message}
         />
-        
       </View>
-      <Button title="Apply Now" onPress={() => onApply(job)} />
+      <Button
+        title="Apply Now"
+        onPress={() => onApply({ job_id: job.id, message: store.message })}
+      />
     </View>
   ));
 

@@ -49,11 +49,13 @@ describe("Job Application Auth", function() {
     await client.post("v1/candidate/application", input);
     const applications = await client.get("v1/candidate/application");
     assert(Array.isArray(applications));
+    //console.log(applications)
+    assert.equal(applications[0].job.id, job.id)
     const myJobs = await client.get("v1/recruiter/job");
     assert(Array.isArray(myJobs));
     const job_applications = myJobs[0].job_applications;
     assert(Array.isArray(job_applications));
-    console.log(job_applications);
+    //console.log(job_applications);
     assert.equal(job_applications[0].message, input.message)
   });
 });

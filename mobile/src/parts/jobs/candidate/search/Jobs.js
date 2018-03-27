@@ -14,6 +14,10 @@ export default context => {
   const opsGetOne = createAsyncOp(({ id }) =>
     context.rest.get(`candidate/job/${id}`)
   );
+  const opsApplicationApply = createAsyncOp(param =>
+    context.rest.post(`candidate/application`, param)
+  );
+  
 
   opsGetAll.data = [];
 
@@ -44,12 +48,12 @@ export default context => {
       id: job.id
     });
   };
-  const onApplyJob = (job, navigation) => {
-    //navigation.navigate("JobDetails");
-    /*opsGetOne.fetch({
-      id: job.id
-    });*/
+  const onApplyJob = (param, navigation) => {
+    //console.log("onApplyJob ", param.jobId)
+    opsApplicationApply.fetch(param);
+    navigation.navigate("JobDetails");
   };
+
   const JobList = require("./JobList").default(context);
   const JobDetails = require("./JobDetails").default(context);
   const JobApply = require("./JobApply").default(context);
@@ -98,7 +102,7 @@ export default context => {
         screen: ({ navigation, ...props }) => (
           <JobApply
             job={opsGetOne.data}
-            onApply={job => onApplyJob(job, navigation)}
+            onApply={param => onApplyJob(param, navigation)}
             {...props}
           />
         ),

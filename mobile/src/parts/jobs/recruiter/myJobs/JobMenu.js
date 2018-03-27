@@ -38,7 +38,7 @@ export default context => {
     return _.reject(
       actions,
       action =>
-        action.screen === "JobApplicant" && _.isEmpty(job.map.get("job_applications"))
+        action.screen === "Applicants" && _.isEmpty(job.map.get("job_applications"))
     );
   }
   const JobMenu = observer(({ onPress, job }) => (

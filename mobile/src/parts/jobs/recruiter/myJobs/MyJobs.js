@@ -21,6 +21,7 @@ export default context => {
   const JobWizard = require("./JobWizard").default(context);
   const JobMenu = require("./JobMenu").default(context);
   const Applicants = require("./Applicants").default(context);
+  const Applicant = require("./Applicant").default(context);
 
   const pathname = "recruiter/job";
   
@@ -112,6 +113,8 @@ export default context => {
       currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
 
+  const currentApplicant = observable.map({});
+
   const Page = require("components/Page").default(context);
 
   const EmptyJobs = () => (
@@ -166,12 +169,12 @@ export default context => {
     store.create(currentJob.map.toJSON(), navigation);
   };
   const onMenuOpen = (job, navigation) => {
-    console.log("onMenuOpen ", job);
+    //console.log("onMenuOpen ", job);
     currentJob.map.replace(job);
     navigation.navigate("JobMenu", job);
   };
   const onMenuPress = (menuItem, navigation) => {
-    console.log("onMenuPress ", menuItem);
+    //console.log("onMenuPress ", menuItem);
     navigation.navigate(menuItem.screen);
   };
 
@@ -182,9 +185,13 @@ export default context => {
   };
 
   const onJobLocation = async (location, navigation) => {
-    console.log("onJobLocation ", location.description);
+    //console.log("onJobLocation ", location.description);
     await currentJob.setLocation(location);
     navigation.navigate("JobEdit");
+  };
+   const onApplicant = (applicant, navigation) => {
+    currentApplicant.replace(applicant);
+    navigation.navigate("Applicant", applicant);
   };
 
   const MyJobs = observer(({ opsGetAll, onJobCreate, navigation }) => {
@@ -273,12 +280,24 @@ export default context => {
         screen: (props) => (
           <Applicants
             job={currentJob}
-            onPress={menuItem => onMenuPress(menuItem, props.navigation)}
+            onApplicant={applicant => onApplicant(applicant, props.navigation)}
             {...props}
           />
         ),
         navigationOptions: () => ({
-          title: "Job Post Menu",
+          title: "Applicant List",
+          header: undefined
+        })
+      },
+      Applicant: {
+        screen: (props) => (
+          <Applicant
+            applicant={currentApplicant}
+            {...props}
+          />
+        ),
+        navigationOptions: () => ({
+          title: "Applicant",
           header: undefined
         })
       },

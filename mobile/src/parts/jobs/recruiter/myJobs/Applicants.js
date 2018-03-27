@@ -17,13 +17,13 @@ export default context => {
     </View>
   );
 
-  const ApplicantList = observer(({ job }) => {
+  const ApplicantList = observer(({ job, onApplicant }) => {
     const applications = job.map.get("job_applications")
-    console.log("opsGetAll.data ", applications);
+    console.log("ApplicantList ", applications);
     return (
       <View>
         <List
-          onPress={() => {}}
+          onPress={item => onApplicant(item)}
           onKey={item => item.id}
           items={applications}
           renderItem={item => <ApplicantItem item={item} />}

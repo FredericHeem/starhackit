@@ -1,3 +1,5 @@
+import createFakeCandidateProfile from "../test/createFakeCandidateProfile";
+
 module.exports = function(sequelize, DataTypes) {
   const ProfileCandidate = sequelize.define(
     "ProfileCandidate",
@@ -47,5 +49,14 @@ module.exports = function(sequelize, DataTypes) {
       foreignKey: "user_id"
     });
   };
+
+  ProfileCandidate.seedDefault = async function(models) {
+    const users = await models.User.findAll();
+    const fakeProfiles = users.map(user =>
+      createFakeCandidateProfile({ user_id: user.get().id })
+    );
+    return ProfileCandidate.bulkCreate(fakeProfiles);
+  };
+
   return ProfileCandidate;
 };

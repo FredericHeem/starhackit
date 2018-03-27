@@ -16,7 +16,8 @@ export default app => {
   return {
     seedDefault() {
       const seedDefaultFns = [
-        models.Job.seedDefault
+        models.Job.seedDefault,
+        models.ProfileCandidate.seedDefault
       ];
       return Promise.each(seedDefaultFns, fn => fn(models));
     }

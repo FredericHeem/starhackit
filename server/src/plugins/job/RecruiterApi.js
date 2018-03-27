@@ -14,8 +14,16 @@ export default app => {
               {
                 include: [
                   {
+                    include: [
+                      {
+                        model: models.ProfileCandidate,
+                        as: "profile_candidate",
+                        attributes: ["summary", "experiences", "geo", "location"]
+                      }
+                    ],
                     model: models.User,
-                    as: "user"
+                    as: "user",
+                    attributes: ["username", "email", "firstName", "lastName"]
                   }
                 ],
                 model: models.JobApplication,

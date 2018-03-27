@@ -36,7 +36,7 @@ describe("Job Application Auth", function() {
     await testMngr.stop();
   });
 
-  it("should apply for a job", async () => {
+  it.only("should apply for a job", async () => {
     const jobCreated = await client.post("v1/recruiter/job", createFakeJob());
     assert(jobCreated);
     const jobs = await client.get("v1/candidate/job");
@@ -59,6 +59,7 @@ describe("Job Application Auth", function() {
     const job_application = job_applications[0]
     assert(job_application);
     assert(job_application.user);
-    assert.equal(job_application.message, input.message)
+    assert.equal(job_application.message, input.message);
+    console.log(job_application);
   });
 });

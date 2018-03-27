@@ -57,7 +57,7 @@ export default context => {
           {profile_candidate.summary}
         </Text>
         <Header>Experiences</Header>
-        <Experiences experiences={profile_candidate.experiences} />
+        {profile_candidate.experiences && <Experiences experiences={profile_candidate.experiences} />}
       </Page>
     );
   });

@@ -182,7 +182,7 @@ export default context => {
         {_.isEmpty(item.job_applications) ? (
           "No applicant yet"
         ) : (
-          `See ${item.job_applications.length} applicant(s)`
+          `${item.job_applications.length} applicant(s)`
         )}
       </Text>
       {moment(item.start_date).isValid() && (

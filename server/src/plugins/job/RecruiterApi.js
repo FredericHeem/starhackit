@@ -23,7 +23,7 @@ export default app => {
                     ],
                     model: models.User,
                     as: "user",
-                    attributes: ["username", "email", "firstName", "lastName"]
+                    attributes: ["username", "email", "firstName", "lastName", "picture"]
                   }
                 ],
                 model: models.JobApplication,

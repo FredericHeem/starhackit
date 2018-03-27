@@ -1,6 +1,8 @@
 import React from "react";
+import {Image} from "react-native";
 import { observer } from "mobx-react";
 import glamorous, { View } from "glamorous-native";
+import _ from "lodash";
 
 export default context => {
   const Text = require("components/Text").default(context);
@@ -9,7 +11,9 @@ export default context => {
   const Applicant = observer(({ applicant }) => {
     console.log("Applicant ", applicant);
     const user = applicant.get("user");
-    const { profile_candidate = {} } = user;
+    const profile_candidate = _.defaults(user.profile_candidate, {
+      experiences: []
+    });
     const MainInfo = glamorous.view({
       backgroundColor: "white",
       padding: 10
@@ -35,6 +39,7 @@ export default context => {
     );
     return (
       <Page>
+        <Image style={{height: 200}} source={{uri: user.picture.url}}/>
         <MainInfo>
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>
             {user.username}

@@ -112,7 +112,7 @@ export default context => {
     isCompanyInfoValid: () =>
       currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
-/*
+  /*
   const applicantData = {
     created_at: "2018-03-27T16:03:24.607Z",
     id: "cb634a61-e8a1-48e4-96a9-91372f727f95",
@@ -242,8 +242,12 @@ export default context => {
             renderItem={item => <ListItem item={item} />}
           />
         )}
-
-        <Button title="Create a new Job" onPress={onJobCreate} />
+        <View style={{ margin: 20 }}>
+          <Button
+            title="Create a new Job"
+            onPress={onJobCreate}
+          />
+        </View>
       </Page>
     );
   });
@@ -360,7 +364,7 @@ export default context => {
       navigationOptions: {
         header: null
       },
-      mode: "modal",
+      mode: "modal"
       //initialRouteName: "Applicant"
     }
   );

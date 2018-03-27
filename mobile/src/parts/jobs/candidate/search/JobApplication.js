@@ -37,7 +37,9 @@ export default context => {
   };
 
   const JobApplicationList = observer(({ opsGetAll }) => {
-    if (opsGetAll.loading) return <LoadingScreen label="Loading Jobs Applications..." />;
+    if (opsGetAll.loading){
+      return <LoadingScreen label="Loading Jobs Applications..." />;
+    }
     if (!opsGetAll.data) return null;
     console.log("opsGetAll.data ", opsGetAll.data);
     return (
@@ -54,11 +56,8 @@ export default context => {
 
   const JobApplicationTab = props => (
     <Lifecycle
-      didMount={() => {
-        props.navigation.addListener("didFocus", () => {
-          opsGetAll.fetch();
-        });
-      }}
+      didMount={() =>
+        props.navigation.addListener("didFocus", () => opsGetAll.fetch())}
     >
       <JobApplicationList opsGetAll={opsGetAll} {...props} />
     </Lifecycle>

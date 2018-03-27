@@ -15,23 +15,23 @@ module.exports = function(sequelize, DataTypes) {
     }
   );
   JobApplication.associate = function(models) {
-    JobApplication.belongsTo(models.User, {
-      as: "applicant",
-      foreignKey: {
-        name: "user_id",
-        allowNull: false
-      }
-    });
     JobApplication.belongsTo(models.Job, {
       foreignKey: {
         name: "job_id",
         allowNull: false
       }
     });
-    models.User.hasMany(models.JobApplication, {
+    models.Job.hasMany(models.JobApplication, {
+      as: "job_applications",
+      foreignKey: {
+        name: "job_id",
+        allowNull: true
+      }
+    });
+    JobApplication.belongsTo(models.User, {
       foreignKey: {
         name: "user_id",
-        allowNull: true
+        allowNull: false
       }
     });
   };

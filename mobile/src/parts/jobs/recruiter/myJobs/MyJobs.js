@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Text,
-  View,
-  Button,
-  Keyboard,
-  TouchableHighlight,
-  Alert
-} from "react-native";
+import { View, Button, Keyboard, Alert } from "react-native";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import { createStackNavigator } from "react-navigation";
@@ -16,9 +9,14 @@ import Lifecycle from "components/Lifecycle";
 import moment from "moment";
 
 export default context => {
+  const Text = require("components/Text").default(context);
+  const List = require("components/List").default(context);
+  const LoadingScreen = require("components/LoadingScreen").default(context);
+
   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
     context
   );
+
   const pathname = "recruiter/job";
   const createAsyncOp = require("core/asyncOp").default(context);
   const opsGetAll = createAsyncOp(() => context.rest.get(pathname));
@@ -84,7 +82,6 @@ export default context => {
     picture: {}
   };
 
-
   const currentJob = observable({
     map: observable.map(defaultJob),
     setLocation: async location => {
@@ -146,30 +143,19 @@ export default context => {
   const StartIn = glamorous.text({
     color: "grey"
   });
-  const ListItem = ({ item, onPress }) => (
-    <TouchableHighlight onPress={() => onPress(item)}>
-      <ItemView>
-        <JobTitle>{item.title}</JobTitle>
-        <Text>{_.get(item.location, "description")}</Text>
-        {moment(item.start_date).isValid() && (
-          <StartIn>Start {moment(item.start_date).fromNow()}</StartIn>
-        )}
-        {item.company_logo ? (
-          <CompanyLogo logoURI={item.company_logo} />
-        ) : (
-          <Text>{item.company}</Text>
-        )}
-      </ItemView>
-    </TouchableHighlight>
-  );
-
-  const List = ({ data, onPress }) => (
-    <View>
-      {data &&
-        data.map(item => (
-          <ListItem onPress={onPress} item={item} key={item.id} />
-        ))}
-    </View>
+  const ListItem = ({ item }) => (
+    <ItemView>
+      <JobTitle>{item.title}</JobTitle>
+      <Text>{_.get(item.location, "description")}</Text>
+      {moment(item.start_date).isValid() && (
+        <StartIn>Start {moment(item.start_date).fromNow()}</StartIn>
+      )}
+      {item.company_logo ? (
+        <CompanyLogo logoURI={item.company_logo} />
+      ) : (
+        <Text>{item.company}</Text>
+      )}
+    </ItemView>
   );
 
   const onJobEdit = (job, navigation) => {
@@ -178,16 +164,27 @@ export default context => {
     navigation.navigate("JobEdit", job);
   };
 
-  const MyJobs = observer(({ store, opsGetAll, onJobCreate, navigation }) => (
-    <Page>
-      {_.isEmpty(opsGetAll.data) && <EmptyJobs />}
-      <List
-        onPress={item => onJobEdit(item, navigation)}
-        data={opsGetAll.data}
-      />
-      <Button title="Create a new Job" onPress={onJobCreate} />
-    </Page>
-  ));
+  const MyJobs = observer(({ opsGetAll, onJobCreate, navigation }) => {
+    if (opsGetAll.loading) {
+      return <LoadingScreen label="Loading Job Posts..." />;
+    }
+    return (
+      <Page>
+        {_.isEmpty(opsGetAll.data) ? (
+          <EmptyJobs />
+        ) : (
+          <List
+            onPress={item => onJobEdit(item, navigation)}
+            onKey={item => item.id}
+            items={opsGetAll.data}
+            renderItem={item => <ListItem item={item} />}
+          />
+        )}
+
+        <Button title="Create a new Job" onPress={onJobCreate} />
+      </Page>
+    );
+  });
 
   const JobEdit = require("./JobEdit").default(context);
   const JobWizard = require("./JobWizard").default(context);

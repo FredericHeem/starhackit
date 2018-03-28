@@ -9,7 +9,6 @@ import HelloModule from "./parts/hello/HelloModule";
 import ProfileModule from "./parts/profile/profileModule";
 
 import Debug from "debug";
-
 import intl from "utils/intl";
 
 import Router from "./router";

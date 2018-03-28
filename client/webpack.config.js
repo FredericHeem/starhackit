@@ -76,13 +76,6 @@ module.exports = function ( options ) {
                 'mobx-react': 'mobx-preact',
                 'create-react-class': 'preact-compat/lib/create-react-class',
                 'glamorous': 'glamorous/dist/glamorous.esm.tiny.js',
-                //application aliases
-                components: pathAppTo( 'components' ),
-                utils: pathAppTo( 'utils' ),
-                services: pathAppTo( 'services' ),
-                parts: pathAppTo( 'parts' ),
-                assets: pathTo( 'assets' ),
-                icons: pathAppTo( 'icons' ),
             }
         },
         module: {

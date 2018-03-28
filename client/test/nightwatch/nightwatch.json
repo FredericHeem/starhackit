@@ -16,13 +16,13 @@
   },
   "selenium" : {
     "start_process" : true,
-    "server_path" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.5.3.jar",
+    "server_path" : "../../node_modules/webdriver-manager/selenium/selenium-server-standalone-3.11.0.jar",
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "../../node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.32",
-      "webdriver.gecko.driver" :"../../node_modules/protractor/node_modules/webdriver-manager/selenium/geckodriver-v0.18.0",
+      "webdriver.chrome.driver" : "../../node_modules/webdriver-manager/selenium/chromedriver_2.37",
+      "webdriver.gecko.driver" :"../../webdriver-manager/selenium/geckodriver-v0.20.0",
       "webdriver.ie.driver" : ""
     }
   },
@@ -38,7 +38,7 @@
         "path" : ""
       },
       "desiredCapabilities": {
-        "browserName": "firefox",
+        "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }

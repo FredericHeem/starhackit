@@ -1,9 +1,8 @@
 {
-  "presets": ["latest", "stage-0"],
+  "presets": ["env", "stage-0", "react"],
   "plugins": [
-    "transform-react-jsx",
     "transform-runtime",
-    "lodash",
+    //"lodash",
     [
       "module-resolver",
       {

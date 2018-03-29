@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: xenial
 language: node_js
 node_js:
   - "8"
@@ -12,7 +12,7 @@ services:
   - redis
 
 addons:
-  postgresql: "9.4"
+  postgresql: "9.6"
   apt:
     sources:
       - ubuntu-toolchain-r-test
@@ -36,6 +36,7 @@ install:
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create extension postgis;' -U postgres
 
 after_script:
   - cd client

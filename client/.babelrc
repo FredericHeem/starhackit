@@ -1,6 +1,18 @@
 {
-  "presets": ["latest", "stage-0"],
-  "plugins": ["transform-react-jsx", "transform-runtime", "lodash"],
+  "presets": ["env", "stage-0", "react"],
+  "plugins": [
+    "transform-runtime",
+    //"lodash",
+    [
+      "module-resolver",
+      {
+        "root": ["./src/app"],
+        "alias": {
+          "test": "./test"
+        }
+      }
+    ]
+  ],
   "env": {
     "production": {
       "plugins": ["transform-react-remove-prop-types"]

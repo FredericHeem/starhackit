@@ -4,8 +4,8 @@ if (!window.Promise) {
   require.ensure([
   ], function (require) {
     require('babel-polyfill');
-    require('./main').default()
+    require('./app/main').default()
   });
 } else {
-  require('./main').default()
+  require('./app/main').default()
 }

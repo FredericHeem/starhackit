@@ -17,9 +17,7 @@ export default app => {
 
   const api = {
     pathname: "/document",
-    middlewares: [
-      app.server.auth.isAuthenticated
-    ],
+    middlewares: [app.server.auth.isAuthenticated],
     ops: {
       getAll: {
         pathname: "/",
@@ -94,4 +92,5 @@ export default app => {
   };
 
   app.server.createRouter(api);
+  return {};
 };

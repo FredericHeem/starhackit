@@ -29,6 +29,7 @@ export default function(context) {
     profile.username = response.username;
     profile.email = response.email;
     profile.profile = response.profile || { biography: "" };
+    profile.picture = response.picture;
   }
 
   function Stores() {
@@ -37,6 +38,7 @@ export default function(context) {
       errors: {},
       username: "",
       email: "",
+      picture: null,
       profile: {
         biography: ""
       },

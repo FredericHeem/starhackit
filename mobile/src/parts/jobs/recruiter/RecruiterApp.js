@@ -1,9 +1,9 @@
 import React from "react";
-import { TabNavigator } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation";
 import Icon from "components/IconTabBar";
 
 export default context =>
-  TabNavigator(
+  createBottomTabNavigator(
     {
       MyJobs: {
         screen: require("./myJobs/MyJobs").default(context),
@@ -13,7 +13,7 @@ export default context =>
         })
       },
       Settings: {
-        screen: require("views/Settings").default(context),
+        screen: require("./Settings").default(context),
         navigationOptions: () => ({
           title: "Settings",
           tabBarIcon: () => <Icon name="cog" />

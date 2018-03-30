@@ -1,17 +1,8 @@
 import assert from "assert";
 import testMngr from "~/test/testManager";
-import faker from "faker";
 import _ from "lodash";
 
-const createFakeJob = () => ({
-  title: faker.name.jobTitle(),
-  description: faker.lorem.sentences(),
-  company: faker.company.companyName(),
-  company_url: faker.internet.url(),
-  company_logo_url: faker.image.imageUrl(),
-  start_date: faker.date.future(), 
-  end_date: faker.date.future()
-});
+import createFakeJob from "./createFakeJob";
 
 describe("Recruiter No Auth", function() {
   let client;
@@ -66,7 +57,7 @@ describe("Recruiter Auth", function() {
     assert.equal(job.title, jobNew.title);
   });
   it("should create many jobs", async () => {
-    _.times(10, async () => {
+    _.times(2, async () => {
       const input = createFakeJob();
       const job = await client.post("v1/recruiter/job", input);
       assert(job);
@@ -78,7 +69,10 @@ describe("Recruiter Auth", function() {
     const inputNew = createFakeJob();
     const newJob = await client.post("v1/recruiter/job", inputNew);
     const inputUpdated = createFakeJob();
-    const updatedJob = await client.patch(`v1/recruiter/job/${newJob.id}`, inputUpdated);
+    const updatedJob = await client.patch(
+      `v1/recruiter/job/${newJob.id}`,
+      inputUpdated
+    );
     assert.equal(updatedJob.title, inputUpdated.title);
   });
   it("should delete a job", async () => {
@@ -97,7 +91,7 @@ describe("Recruiter Auth", function() {
   });
   it("should get 404 when the job is not found", async () => {
     try {
-      let jobs = await client.get("v1/recruiter/job/123456");
+      let jobs = await client.get("v1/recruiter/job/8f7be687-5457-4c37-b1e4-bb974c9fa28a");
       assert(jobs);
     } catch (error) {
       assert(error.body.error);

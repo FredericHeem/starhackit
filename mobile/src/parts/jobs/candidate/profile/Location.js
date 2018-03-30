@@ -1,11 +1,11 @@
 import React from "react";
-import { Button, Text, Modal } from "react-native";
+import { Button, Text } from "react-native";
 import { observer } from "mobx-react";
 import _ from "lodash";
 
 export default context => {
   const Title = require("components/Title").default(context);
-  const Card = require("./Card").default(context);
+  const Card = require("components/Card").default(context);
 
   const Location = observer(({ navigation, store }) => (
     <Card>

@@ -3,7 +3,7 @@ import { Text, Button } from "react-native";
 
 export default context => {
   const Title = require("components/Title").default(context);
-  const Card = require("./Card").default(context);
+  const Card = require("components/Card").default(context);
 
   const Summary = ({ navigation, store }) => (
     <Card>

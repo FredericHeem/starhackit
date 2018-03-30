@@ -10,11 +10,11 @@ export default class Client {
     this.url = this.config.url || "http://localhost:9000/api/";
   }
   _ops({ method, pathname, resCodes, param, formData, data }) {
-    console.log(
+    /*console.log(
       `${method} ${pathname} with %s to `,
       param ? JSON.stringify(param) : "no param",
       this.url
-    );
+    );*/
     let me = this;
     const input = {
       url: this.url + pathname,
@@ -23,7 +23,6 @@ export default class Client {
       formData: formData,
       json: data ? data : true
     };
-    console.log("ops: ", input);
     if (this.jwt) {
       input.headers = {
         Authorization: "Bearer " + this.jwt

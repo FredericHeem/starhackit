@@ -4,7 +4,7 @@ import { Keyboard, View, Button } from "react-native";
 import { observer } from "mobx-react";
 
 import styled from "styled-components/native";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import Lifecycle from "components/Lifecycle";
 import _ from "lodash";
 
@@ -19,17 +19,28 @@ export default context => {
     asyncOp.execute(params => rest.patch(pathname, params), input);
 
   const store = observable({
+    geo: {},
     location: null,
     getLocation() {
       return _.get(asyncOp.data, "location.description");
     },
     saveLocation: action(async (location, navigation) => {
-      await asyncOpPatch({ location });
+      //console.log("saveLocation ", location);
+      const results = await context.stores.core.geoLoc.getGeoPosition(location.description);
+      
+      const geoLoc = _.get(results[0], "geometry.location");
+      //console.log("geoLoc ", geoLoc);
+      let geo;
+      if(geoLoc){
+        geo = { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] }
+      }
+      
+      await asyncOpPatch({ location, geo });
       navigation.navigate("Profile");
     }),
     summary: null,
     saveSummary: action(async navigation => {
-      await asyncOpPatch({ summary: store.summary});
+      await asyncOpPatch({ summary: store.summary });
       Keyboard.dismiss();
       navigation.navigate("Profile");
     }),
@@ -51,7 +62,20 @@ export default context => {
     getExperiences() {
       return store.experiences.values();
     },
-    currentExperience: {}
+    currentExperience: {},
+    sectors: [],
+    saveSector: action(async (sector, navigation) => {
+      console.log("saveSector ", sector);
+      store.sectors = [...store.sectors, sector];
+      await asyncOpPatch({ sectors: store.sectors });
+      navigation.navigate("Profile");
+    }),
+    removeSector: action(async (sector, navigation) => {
+      console.log("removeSector ", sector);
+      store.sectors.remove(sector);
+      await asyncOpPatch({ sectors: store.sectors });
+      navigation.navigate("Profile");
+    })
   });
 
   stores.profile = store;
@@ -68,9 +92,12 @@ export default context => {
 
   const Experience = require("./Experience").default(context);
   const ExperienceEdit = require("./ExperienceEdit").default(context);
+  const Sectors = require("./Sectors").default(context);
 
   const Location = require("./Location").default(context);
-  const LocationEdit = require("./LocationEdit").default(context);
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+    context
+  );
 
   const onPressExperience = (experience, navigation) => {
     store.currentExperience = { ...store.currentExperience, ...experience };
@@ -90,6 +117,13 @@ export default context => {
       <UserInfoText>
         <Name>{stores.core.auth.me.name}</Name>
       </UserInfoText>
+      <Sectors
+        sectors={store.sectors}
+        store={store}
+        navigation={navigation}
+        onNewSector={sector => store.saveSector(sector, navigation)}
+        onSectorDelete={sector => store.removeSector(sector, navigation)}
+      />
       <Location store={store} navigation={navigation} />
       <Experience
         navigation={navigation}
@@ -118,16 +152,22 @@ export default context => {
     </View>
   );
 
-  const Stack = StackNavigator(
+  const Stack = createStackNavigator(
     {
       Profile: {
         screen: props => (
           <Lifecycle
-            didMount={async () => {
-              const profile = await asyncOpGet();
-              store.experiences.replace(_.keyBy(profile.experiences, "id"));
-              store.summary = profile.summary;
-              stores.core.auth.getPicture();
+            didMount={() => {
+              props.navigation.addListener("didFocus", async () => {
+                const profile = await asyncOpGet();
+                store.location = profile.location;
+                console.log("profile: ", profile)
+                store.experiences.replace(_.keyBy(profile.experiences, "id"));
+                store.summary = profile.summary;
+                store.geo = profile.geo || {};
+                store.sectors = profile.sectors || [];
+                stores.core.auth.getPicture();
+              });
             }}
           >
             <Profile
@@ -140,7 +180,7 @@ export default context => {
       },
       LocationEdit: {
         screen: ({ navigation }) => (
-          <LocationEdit
+          <AutoCompleteLocation
             onLocation={location => store.saveLocation(location, navigation)}
             store={store}
           />
@@ -159,11 +199,12 @@ export default context => {
         })
       },
       ExperienceEdit: {
-        screen: observer(({navigation}) => (
+        screen: observer(({ navigation }) => (
           <ExperienceEdit
             currentExperience={store.currentExperience}
             navigation={navigation}
-            onRemove={experience => store.removeExperience(experience, navigation)}
+            onRemove={experience =>
+              store.removeExperience(experience, navigation)}
           />
         )),
         navigationOptions: ({ navigation }) => ({

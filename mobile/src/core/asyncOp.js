@@ -27,9 +27,9 @@ function createHttpError(payload = {}) {
   return errorOut;
 }
 
-export default () => {
+export default () => 
   //const Alert = alert(context);
-  return function create(api) {
+   function create(api) {
     const store = observable({
       loading: false,
       data: undefined,
@@ -39,6 +39,7 @@ export default () => {
           store.loading = true;
           store.error = null;
           const response = await fn(input);
+          //console.log("fetch response ", response);
           store.data = response;
           return response;
         } catch (error) {
@@ -62,4 +63,4 @@ export default () => {
     });
     return store;
   };
-};
+

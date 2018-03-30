@@ -1,31 +1,38 @@
 import React from "react";
-import {
-  Text,
-  View,
-  Button,
-  Keyboard,
-  TouchableHighlight,
-  Alert
-} from "react-native";
+import { View, Button, Keyboard, Alert } from "react-native";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import _ from "lodash";
 import glamorous from "glamorous-native";
 import Lifecycle from "components/Lifecycle";
 import moment from "moment";
 
-const isEdit = navigation => !!navigation.state.params;
-
 export default context => {
-  const pathname = "recruiter/job"
   const createAsyncOp = require("core/asyncOp").default(context);
+  const Text = require("components/Text").default(context);
+  const List = require("components/List").default(context);
+  const LoadingScreen = require("components/LoadingScreen").default(context);
+  const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
+    context
+  );
+
+  const JobEdit = require("./JobEdit").default(context);
+  const JobWizard = require("./JobWizard").default(context);
+  const JobMenu = require("./JobMenu").default(context);
+  const Applicants = require("./Applicants").default(context);
+  const Applicant = require("./Applicant").default(context);
+
+  const pathname = "recruiter/job";
+
   const opsGetAll = createAsyncOp(() => context.rest.get(pathname));
   const opsUpdate = createAsyncOp(job =>
     context.rest.patch(`${pathname}/${job.id}`, job)
   );
   const opsCreate = createAsyncOp(job => context.rest.post(pathname, job));
-  const opsDelete = createAsyncOp(jobId => context.rest.del(`${pathname}/${jobId}`));
+  const opsDelete = createAsyncOp(jobId =>
+    context.rest.del(`${pathname}/${jobId}`)
+  );
 
   const hasJobError = job => {
     if (_.isEmpty(job.title)) {
@@ -40,6 +47,7 @@ export default context => {
   const store = observable({
     jobs: observable.map(),
     create: action(async (job, navigation) => {
+      console.log("create ", job);
       const error = hasJobError(job);
       if (error) {
         return displayError(error);
@@ -47,7 +55,7 @@ export default context => {
       const jobCreated = await opsCreate.fetch(job);
       console.log("jobCreated ", jobCreated);
       Keyboard.dismiss();
-      navigation.navigate("Jobs");
+      navigation.navigate("MyJobs");
     }),
     update: action(async (job, navigation) => {
       console.log("update job ", job);
@@ -58,21 +66,86 @@ export default context => {
       const jobUpdated = await opsUpdate.fetch(job);
       console.log("jobUpdated ", jobUpdated);
       Keyboard.dismiss();
-      navigation.navigate("Jobs");
+      navigation.navigate("MyJobs");
     }),
     remove: action(async (jobId, navigation) => {
-      console.log("remove  ", jobId)
+      console.log("remove  ", jobId);
       await opsDelete.fetch(jobId);
       Keyboard.dismiss();
-      navigation.navigate("Jobs");
+      navigation.navigate("MyJobs");
     })
   });
 
-  const currentJob = observable.map({
+  const defaultJob = {
     title: "",
     description: "",
-    start_date: undefined
+    start_date: undefined,
+    location: {},
+    geo: {},
+    company_name: "",
+    company_info: "",
+    business_type: "",
+    picture: {}
+  };
+
+  const currentJob = observable({
+    map: observable.map(defaultJob),
+    setLocation: async location => {
+      console.log("setLocation ", location);
+      const results = await context.stores.core.geoLoc.getGeoPosition(
+        location.description
+      );
+      const geoLoc = _.get(results[0], "geometry.location");
+      console.log("geoLoc ", geoLoc);
+      if (geoLoc) {
+        currentJob.map.set("geo", {
+          type: "Point",
+          coordinates: [geoLoc.lat, geoLoc.lng]
+        });
+      }
+      currentJob.map.set("location", location);
+    },
+    hasSector: () => !_.isEmpty(currentJob.map.get("sector")),
+    hasLocation: () => !_.isEmpty(currentJob.map.get("location")),
+    isValid: () =>
+      currentJob.map.get("title") && currentJob.map.get("description"),
+    isCompanyInfoValid: () =>
+      currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
+  /*
+  const applicantData = {
+    created_at: "2018-03-27T16:03:24.607Z",
+    id: "cb634a61-e8a1-48e4-96a9-91372f727f95",
+    job_id: "d8ddc88d-d5cf-4363-9f8a-e9d733798e95",
+    message: "Sdsds",
+    updated_at: "2018-03-27T16:03:24.607Z",
+    user: {
+      email: "frederic.heem@gmail.com",
+      firstName: "Fred",
+      lastName: "M",
+      profile_candidate: {
+        experiences: [
+          {
+            id: "93a94e96-0721-461a-9bda-9fc771111328",
+            company: "Rosta",
+            position: "Pizzaiolo"
+          },
+          {
+            id: "8e653cb2-c39c-4e67-aab6-c3d36d495795",
+            company: "Il vesuvio",
+            position: "Chef"
+          }
+        ],
+        geo: null,
+        location: null,
+        summary: "Bla bla "
+      },
+      username: "Fred Eric M"
+    },
+    user_id: "e485a65c-42b5-42d9-9681-67134c43c2f2"
+  };
+*/
+  const currentApplicant = observable.map({});
 
   const Page = require("components/Page").default(context);
 
@@ -93,109 +166,110 @@ export default context => {
     backgroundColor: "white"
   });
 
-  const LogoView = glamorous.image({
-    height: 50
-  });
-
-  const CompanyLogo = ({ logoURI }) => (
-    <View style={{}}>
-      <LogoView resizeMode="contain" source={{ uri: logoURI }} />
-    </View>
-  );
-
   const JobTitle = glamorous.text({
     fontSize: 20,
     fontWeight: "bold"
   });
+
   const StartIn = glamorous.text({
     color: "grey"
   });
-  const ListItem = ({ item, onPress }) => (
-    <TouchableHighlight onPress={() => onPress(item)}>
-      <ItemView>
-        <JobTitle>{item.title}</JobTitle>
-        {moment(item.start_date).isValid() && (
-          <StartIn>Start {moment(item.start_date).fromNow()}</StartIn>
-        )}
-        {item.company_logo ? (
-          <CompanyLogo logoURI={item.company_logo} />
+
+  const ListItem = ({ item }) => (
+    <ItemView>
+      <JobTitle>{item.title}</JobTitle>
+      <Text>
+        {_.isEmpty(item.job_applications) ? (
+          "No applicant yet"
         ) : (
-          <Text>{item.company}</Text>
+          `${item.job_applications.length} applicant(s)`
         )}
-      </ItemView>
-    </TouchableHighlight>
+      </Text>
+      {moment(item.start_date).isValid() && (
+        <StartIn>Start {moment(item.start_date).fromNow()}</StartIn>
+      )}
+    </ItemView>
   );
-
-  const List = ({ data, onPress }) => (
-    <View>
-      {data &&
-        data.map(item => (
-          <ListItem onPress={onPress} item={item} key={item.id} />
-        ))}
-    </View>
-  );
-
-  const onPressItem = (job, navigation) => {
-    console.log("onPressItem", job);
-    currentJob.replace(job);
-    navigation.navigate("JobEdit", job);
-  };
-
-  const MyJobs = observer(({ store, opsGetAll, onJobCreate, navigation }) => (
-    <Page>
-      {_.isEmpty(opsGetAll.data) && <EmptyJobs />}
-
-      <List
-        onPress={item => onPressItem(item, navigation)}
-        data={opsGetAll.data}
-      />
-      <Button title="Create a new Job" onPress={onJobCreate} />
-    </Page>
-  ));
-  /*
-  const Loading = () => (
-    <View>
-      <ActivityIndicator />
-      <StatusBar barStyle="default" />
-    </View>
-  
-*/
-
-  const JobDetails = require("./JobEdit").default(context);
 
   const onJobCreate = navigation => {
     console.log("onJobCreate ");
-    currentJob.replace({});
-    navigation.navigate("JobEdit");
+    currentJob.map.replace(defaultJob);
+    navigation.navigate("JobWizard");
+  };
+  const onJobCreated = navigation => {
+    console.log("onJobCreated ");
+    store.create(currentJob.map.toJSON(), navigation);
+  };
+  const onMenuOpen = (job, navigation) => {
+    //console.log("onMenuOpen ", job);
+    currentJob.map.replace(job);
+    navigation.navigate("JobMenu", job);
+  };
+  const onMenuPress = (menuItem, navigation) => {
+    //console.log("onMenuPress ", menuItem);
+    navigation.navigate(menuItem.screen);
   };
 
   const onJobRemove = async (jobId, navigation) => {
     console.log("onJobRemove ", jobId);
     await store.remove(jobId, navigation);
-    currentJob.replace({});
+    currentJob.map.replace(defaultJob);
   };
+
+  const onJobLocation = async (location, navigation) => {
+    //console.log("onJobLocation ", location.description);
+    await currentJob.setLocation(location);
+    navigation.navigate("JobEdit");
+  };
+  const onApplicant = (applicant, navigation) => {
+    currentApplicant.replace(applicant);
+    navigation.navigate("Applicant", applicant);
+  };
+
+  const MyJobs = observer(({ opsGetAll, onJobCreate, navigation }) => {
+    if (opsGetAll.loading) {
+      return <LoadingScreen label="Loading Job Posts..." />;
+    }
+    return (
+      <Page>
+        {_.isEmpty(opsGetAll.data) ? (
+          <EmptyJobs />
+        ) : (
+          <List
+            onPress={job => onMenuOpen(job, navigation)}
+            onKey={item => item.id}
+            items={opsGetAll.data}
+            renderItem={item => <ListItem item={item} />}
+          />
+        )}
+        <View style={{ margin: 20 }}>
+          <Button
+            title="Create a new Job"
+            onPress={onJobCreate}
+          />
+        </View>
+      </Page>
+    );
+  });
 
   const jobSaveButton = navigation => (
     <View style={{ marginRight: 10 }}>
       <Button
-        title={isEdit(navigation) ? "Update" : "Create"}
-        onPress={() =>
-          store[isEdit(navigation) ? "update" : "create"](
-            currentJob.toJSON(),
-            navigation
-          )}
+        title="Update"
+        onPress={() => store.update(currentJob.map.toJSON(), navigation)}
       />
     </View>
   );
 
-  return StackNavigator(
+  return createStackNavigator(
     {
-      Jobs: {
+      MyJobs: {
         screen: props => (
           <Lifecycle
             didMount={() => {
-              console.log("didMount ");
-              opsGetAll.fetch().catch(e => e);
+              props.navigation.addListener("didFocus", () => {
+                opsGetAll.fetch().catch(e => e);
+              });
             }}
             willUnmount={() => console.log("willUnmount ")}
           >
@@ -209,21 +283,80 @@ export default context => {
         )
       },
       JobEdit: {
-        screen: props => (
-          <JobDetails
+        screen: ({ navigation, ...props }) => (
+          <JobEdit
             currentJob={currentJob}
-            onRemove={job => onJobRemove(job, props.navigation)}
-            details={props.navigation.state.params}
+            onRemove={job => onJobRemove(job, navigation)}
+            details={navigation.state.params}
+            navigation={navigation}
+            onLocation={location => onJobLocation(location, navigation)}
+            {...props}
+          />
+        ),
+        navigationOptions: ({ navigation }) => ({
+          title: "Edit a Job Post",
+          header: undefined,
+          headerRight: jobSaveButton(navigation)
+        })
+      },
+      JobMenu: {
+        screen: ({ navigation, ...props }) => (
+          <JobMenu
+            job={currentJob}
+            onPress={menuItem => onMenuPress(menuItem, navigation)}
+            {...props}
+          />
+        ),
+        navigationOptions: () => ({
+          title: "Job Post Menu",
+          header: undefined
+        })
+      },
+      Applicants: {
+        screen: props => (
+          <Applicants
+            job={currentJob}
+            onApplicant={applicant => onApplicant(applicant, props.navigation)}
+            {...props}
+          />
+        ),
+        navigationOptions: () => ({
+          title: "Applicant List",
+          header: undefined
+        })
+      },
+      Applicant: {
+        screen: props => <Applicant applicant={currentApplicant} {...props} />,
+        navigationOptions: () => ({
+          title: "Applicant",
+          header: undefined
+        })
+      },
+      JobWizard: {
+        screen: ({ navigation, ...props }) => (
+          <JobWizard
+            currentJob={currentJob}
+            details={navigation.state.params}
+            navigation={navigation}
+            onJobCreated={() => onJobCreated(navigation)}
             {...props}
           />
         ),
 
-        navigationOptions: ({ navigation }) => ({
-          title: navigation.state.params
-            ? "Edit a Job Post"
-            : "Create a Job Post",
-          header: undefined,
-          headerRight: jobSaveButton(navigation)
+        navigationOptions: (/*{ navigation }*/) => ({
+          title: "Create a Job Post",
+          header: null
+        })
+      },
+      LocationEdit: {
+        screen: ({ navigation }) => (
+          <AutoCompleteLocation
+            onLocation={location => onJobLocation(location, navigation)}
+          />
+        ),
+        navigationOptions: () => ({
+          title: "Edit Location",
+          header: undefined
         })
       }
     },
@@ -232,6 +365,7 @@ export default context => {
         header: null
       },
       mode: "modal"
+      //initialRouteName: "Applicant"
     }
   );
 };

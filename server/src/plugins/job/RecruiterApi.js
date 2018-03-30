@@ -3,16 +3,35 @@ export default app => {
 
   const api = {
     pathname: "/recruiter/job",
-    middlewares: [
-      app.server.auth.isAuthenticated
-    ],
+    middlewares: [app.server.auth.isAuthenticated],
     ops: {
       getAll: {
         pathname: "/",
         method: "get",
         handler: async context => {
           const jobs = await models.Job.findAll({
-            where: { user_id: context.state.user.id }
+            include: [
+              {
+                include: [
+                  {
+                    include: [
+                      {
+                        model: models.ProfileCandidate,
+                        as: "profile_candidate",
+                        attributes: ["summary", "experiences", "geo", "location"]
+                      }
+                    ],
+                    model: models.User,
+                    as: "user",
+                    attributes: ["username", "email", "firstName", "lastName", "picture"]
+                  }
+                ],
+                model: models.JobApplication,
+                as: "job_applications"
+              }
+            ],
+            where: { user_id: context.state.user.id },
+            order: [["created_at", "DESC"]]
           });
           context.body = jobs.map(job => job.get());
           context.status = 200;
@@ -23,6 +42,12 @@ export default app => {
         method: "get",
         handler: async context => {
           const job = await models.Job.findOne({
+            include: [
+              {
+                model: models.JobApplication,
+                as: "job_applications"
+              }
+            ],
             where: {
               id: context.params.id,
               user_id: context.state.user.id

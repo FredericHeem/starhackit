@@ -6,7 +6,7 @@ export default () => {
     borderColor: "lightgrey",
     borderStyle: "dotted",
     padding: 6,
-    margin: 4,
+    margin: 6,
     backgroundColor: "white"
   });
 
@@ -14,7 +14,8 @@ export default () => {
     borderBottomWidth: 1,
     borderColor: "lightgrey",
     borderStyle: "solid",
-    marginBottom: 10,
+    marginBottom: 6,
+    paddingBottom: 6,
     display: "flex",
     flexDirection:"row",
     justifyContent: "space-between",

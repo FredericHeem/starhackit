@@ -1,15 +1,21 @@
-import React, { createElement as h } from "react";
-import { TabNavigator } from "react-navigation";
+import React from "react";
+import { createBottomTabNavigator } from "react-navigation";
 import Icon from "components/IconTabBar";
 
-export default context => {
-  return TabNavigator(
+export default context => createBottomTabNavigator(
     {
       Jobs: {
         screen: require("./search/Jobs").default(context),
         navigationOptions: () => ({
           title: "Search",
           tabBarIcon: () => <Icon name="search" />
+        })
+      },
+      JobApplication: {
+        screen: require("./search/JobApplication").default(context),
+        navigationOptions: () => ({
+          title: "Job Application",
+          tabBarIcon: () => <Icon name="user" />
         })
       },
       Profile: {
@@ -20,7 +26,7 @@ export default context => {
         })
       },
       Settings: {
-        screen: require("views/Settings").default(context),
+        screen: require("./Settings").default(context),
         navigationOptions: () => ({
           title: "Settings",
           tabBarIcon: () => <Icon name="cog" />
@@ -30,7 +36,6 @@ export default context => {
     {
       //tabBarOptions: context.theme.tabBar,
       animationEnabled: true,
-      initialRouteName: "Profile"
+      //initialRouteName: "Profile"
     }
   );
-};

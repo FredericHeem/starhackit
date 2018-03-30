@@ -1,89 +1,43 @@
 import React from "react";
-import { View, Button, Text, TextInput, ScrollView } from "react-native";
+import { View, Button, Image, ScrollView } from "react-native";
 import { observer } from "mobx-react";
-import DatePicker from "react-native-datepicker";
-import glamorous from "glamorous-native";
-import moment from "moment";
+
+import _ from "lodash";
 
 const isEdit = navigation => !!navigation.state.params;
 
 export default context => {
-  const Label = require("components/Label").default(context);
   const FormItem = require("components/FormItem").default(context);
+  const LocationCard = require("components/LocationCard").default(context);
+  const JobInfo = require("./JobInfo").default(context);
+  const SectorCard = require("./SectorCard").default(context);
+  const DateItem = require("./Dates").default(context);
 
-  const DateItemView = glamorous.view({
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  });
-
-  const dateFormat = "YYYY-MM-DD";
-
-  const DateItem = observer(({ currentJob }) => (
-    <DateItemView>
-      <Label>Start Date</Label>
-      <DatePicker
-        style={{ width: 200 }}
-        mode="date"
-        placeholder="Select Start Date"
-        format={dateFormat}
-        minDate={moment().format(dateFormat)}
-        maxDate={moment()
-          .add(1, "year")
-          .format(dateFormat)}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: "absolute",
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-        }}
-        date={currentJob.get("start_date")}
-        onDateChange={date => {
-          currentJob.set("start_date", moment(date).format());
-        }}
-      />
-    </DateItemView>
-  ));
   const JobEdit = observer(({ currentJob, navigation, onRemove }) => {
-    console.log("RENDER JOB EDIT");
+    const picture = currentJob.map.get("picture");
+
     return (
       <ScrollView>
         <View>
-          <FormItem>
-            <Label>Title</Label>
-            <TextInput
-              placeholder="What is the position title to fill?"
-              underlineColorAndroid="transparent"
-              onChangeText={text => {
-                currentJob.set("title", text);
-              }}
-              value={currentJob.get("title")}
-            />
-          </FormItem>
-          <FormItem>
-            <Label>Description</Label>
-            <TextInput
-              placeholder="Describe the job"
-              underlineColorAndroid="transparent"
-              multiline
-              numberOfLines={10}
-              onChangeText={text => {
-                currentJob.set("description", text);
-              }}
-              value={currentJob.get("description")}
-            />
-          </FormItem>
+          <JobInfo currentJob={currentJob} />
+          <SectorCard
+            sector={currentJob.map.get("sector")}
+            onPress={sector => {
+              currentJob.map.set("sector", sector);
+            }}
+          />
           <FormItem>
             <DateItem currentJob={currentJob} />
           </FormItem>
+          <LocationCard
+            placeHolder="Where is the Job Location?"
+            location={currentJob.map.get("location").description}
+            onPress={() => navigation.navigate("LocationEdit")}
+          />
         </View>
+        {picture.base64 && (
+          <Image style={{ height: 300 }} source={{ uri: picture.base64 }} />
+        )}
         <View
           style={{
             flex: 1,
@@ -97,9 +51,7 @@ export default context => {
                 color="red"
                 title="Remove Job"
                 onPress={async () => {
-                  console.log("AAA");
-                  await onRemove(currentJob.get("id"), navigation);
-                  console.log("BBB");
+                  await onRemove(currentJob.map.get("id"), navigation);
                 }}
               />
             )}

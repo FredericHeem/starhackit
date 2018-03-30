@@ -30,6 +30,9 @@ module.exports = function(sequelize, DataTypes) {
       lastName: {
         type: DataTypes.STRING(64)
       },
+      picture: {
+        type: DataTypes.JSONB
+      },
       password: DataTypes.VIRTUAL,
       passwordHash: DataTypes.TEXT
     },

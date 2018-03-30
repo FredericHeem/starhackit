@@ -35,7 +35,7 @@ export default class App extends React.Component {
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
 
-    //await context.stores.core.geoLoc.get();
+    await context.stores.core.geoLoc.get();
     this.setState({ isReady: true });
     console.log("App started");
   }

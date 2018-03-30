@@ -1,4 +1,4 @@
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 
 const titleMap = {
   Candidate: "Find a Job",
@@ -6,7 +6,7 @@ const titleMap = {
 };
 
 export default context =>
-  StackNavigator(
+  createStackNavigator(
     {
       Landing: {
         screen: require("./Landing").default(context),

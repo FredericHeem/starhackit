@@ -20,11 +20,11 @@ export default context => {
     if (store.opGet.loading) {
       return h(spinner(context));
     }
-
     return (
       <Paper>
         <form onSubmit={e => e.preventDefault()}>
           <h3>{tr.t("My Profile")}</h3>
+          { store.picture && <img src={store.picture.url} alt="profile"/>}
           <FormGroup>
             <UsernameInput
               id="username"

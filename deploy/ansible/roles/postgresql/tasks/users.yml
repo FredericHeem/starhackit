@@ -13,6 +13,7 @@
     port: "{{postgresql_port}}"
     state: present
     login_user: "{{postgresql_admin_user}}"
+  no_log: true
   become: yes
   become_user: "{{postgresql_admin_user}}"
   with_items: "{{postgresql_users}}"

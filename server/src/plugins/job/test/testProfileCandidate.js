@@ -20,7 +20,9 @@ describe("Candidate Profile", function() {
   it("should patch the candidate profile", async () => {
     const profileData = {
       summary: "The best cow in the stable",
-      experiences: [{ title: "Chef" }]
+      experiences: [{ title: "Chef" }],
+      sectors: ["Construction", "Restaurant"],
+      geo: { type: "Point", coordinates: [-48.234, 20.123] }
     };
     const profile = await client.patch("v1/candidate/profile", profileData);
     //console.log("profile updated", profile)

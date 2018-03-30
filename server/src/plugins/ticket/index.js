@@ -95,4 +95,5 @@ export default app => {
   };
 
   app.server.createRouter(api);
+  return {}
 };

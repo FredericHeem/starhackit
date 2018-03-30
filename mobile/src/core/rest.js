@@ -1,5 +1,6 @@
 import Axios from "axios";
 import config from "../config";
+import Qs from "qs";
 
 function baseUrl(url) {
   const fullUrl = config.apiUrl + url;
@@ -11,7 +12,9 @@ export default function(options = {}) {
 
   function ajax(url, method, data, params) {
     console.log(
-      `ajax url: ${baseUrl(url)}, method: ${method}, data ${JSON.stringify(data)}, params: ${params}`
+      `ajax url: ${baseUrl(url)}, method: ${method}, data ${JSON.stringify(
+        data
+      )}, params: ${JSON.stringify(params)}`
     );
     const headers = {
       "Content-Type": "application/json"
@@ -29,6 +32,7 @@ export default function(options = {}) {
       url: baseUrl(url),
       params,
       data,
+      paramsSerializer: params => Qs.stringify(params, { arrayFormat: "repeat" }),
       withCredentials: true,
       headers,
       timeout: 30e3

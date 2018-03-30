@@ -1,18 +1,25 @@
 import React from "react";
 import { observable } from "mobx";
-import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import { observer } from "mobx-react";
+import { View, Button } from "react-native";
 import Lifecycle from "components/Lifecycle";
-import { StackNavigator } from "react-navigation";
-import glamorous from "glamorous-native";
+import { createStackNavigator } from "react-navigation";
 import _ from "lodash";
-import moment from "moment";
 
 export default context => {
   const { stores } = context;
   const createAsyncOp = require("core/asyncOp").default(context);
-  const opsGetAll = createAsyncOp(() => context.rest.get("candidate/job"));
-  const Text = require("components/Text").default(context);
+  const opsGetAll = createAsyncOp(params =>
+    context.rest.get(`candidate/job`, params)
+  );
+  const opsGetOne = createAsyncOp(({ id }) =>
+    context.rest.get(`candidate/job/${id}`)
+  );
+  const opsApplicationApply = createAsyncOp(param =>
+    context.rest.post(`candidate/application`, param)
+  );
+  
+
+  opsGetAll.data = [];
 
   const store = observable({
     description: "",
@@ -21,109 +28,86 @@ export default context => {
 
   async function fetchJobs() {
     console.log("fetchJobs ", stores.profile.location);
-    await opsGetAll.fetch();
+    const { coords = {} } = stores.core.geoLoc.location;
+    console.log("fetchJobs coords ", coords);
+    await opsGetAll.fetch({
+      sectors: stores.profile.sectors.toJS(),
+      lat: coords.latitude,
+      lon: coords.longitude,
+      max: "50"
+    });
   }
 
   store.location = "london";
 
   stores.jobs = store;
 
-  const Page = require("components/Page").default(context);
+  const onPressJob = (job, navigation) => {
+    navigation.navigate("JobDetails");
+    opsGetOne.fetch({
+      id: job.id
+    });
+  };
+  const onApplyJob = (param, navigation) => {
+    //console.log("onApplyJob ", param.jobId)
+    opsApplicationApply.fetch(param);
+    navigation.navigate("JobDetails");
+  };
 
-  const ItemView = glamorous.view({
-    margin: 6,
-    borderWidth: 1,
-    borderColor: "white",
-    borderRadius: 6,
-    backgroundColor: "white"
-  });
+  const JobList = require("./JobList").default(context);
+  const JobDetails = require("./JobDetails").default(context);
+  const JobApply = require("./JobApply").default(context);
 
-  const LogoView = glamorous.image({
-    height: 80,
-    width: 80
-  });
-
-  const CompanyLogo = ({ logoURI }) => (
-    <LogoView resizeMode="contain" source={{ uri: logoURI }} />
-  );
-
-  const Title = glamorous(Text)({
-    fontSize: 16,
-    fontWeight: "bold"
-  });
-
-  const CompanyName = glamorous(Text)({
-    fontSize: 14
-  });
-
-  const StartDate = glamorous(Text)({
-    fontStyle: "italic",
-    color: "grey"
-  });
-
-  const ListItem = ({ job, onPress }) => (
-    <TouchableOpacity onPress={() => onPress(job)}>
-      <ItemView
-        style={{
-          padding: 8,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center"
+  const applyButton = navigation => (
+    <View style={{ marginRight: 10 }}>
+      <Button
+        title="Apply"
+        onPress={() => {
+          console.log("apply");
+          navigation.navigate("JobApply");
         }}
-      >
-        <View style={{ flexGrow: 1 }}>
-          <Title>{job.title}</Title>
-          <CompanyName>@ {job.company}</CompanyName>
-          <StartDate>Start Date: {moment(job.start_date).fromNow()}</StartDate>
-        </View>
-        <View style={{ width: 70, height: 70 }}>
-          {job.company_logo_url && (
-            <CompanyLogo logoURI={job.company_logo_url} />
-          )}
-        </View>
-      </ItemView>
-    </TouchableOpacity>
-  );
-
-  const List = ({ data, onPress }) => (
-    <View>
-      {data &&
-        data.map(job => <ListItem onPress={onPress} job={job} key={job.id} />)}
+      />
     </View>
   );
 
-  const onPressItem = (item, navigation) => {
-    console.log("onPressItem", item.title);
-    navigation.navigate("JobDetails", item);
-  };
-
-  const Jobs = observer(({ opsGetAll, store, navigation }) => (
-    <Page>
-      {opsGetAll.loading && <ActivityIndicator size="large" color="grey" />}
-      <List
-        onPress={item => onPressItem(item, navigation)}
-        data={opsGetAll.data}
-      />
-    </Page>
-  ));
-
-  const JobDetails = require("./JobDetails").default(context);
-
-  return StackNavigator(
+  return createStackNavigator(
     {
       Jobs: {
         screen: props => (
-          <Lifecycle didMount={() => store.fetch()}>
-            <Jobs opsGetAll={opsGetAll} store={store} {...props} />
+          <Lifecycle
+            didMount={() => {
+              props.navigation.addListener("didFocus", () => {
+                store.fetch();
+              });
+            }}
+          >
+            <JobList
+              opsGetAll={opsGetAll}
+              store={store}
+              onPressJob={job => onPressJob(job, props.navigation)}
+              {...props}
+            />
           </Lifecycle>
         )
       },
       JobDetails: {
-        screen: props => (
-          <JobDetails details={props.navigation.state.params} {...props} />
+        screen: props => <JobDetails opsGetOne={opsGetOne} {...props} />,
+        navigationOptions: ({ navigation }) => ({
+          title: "Job Details",
+          header: undefined,
+          headerRight: applyButton(navigation)
+        })
+      },
+      JobApply: {
+        screen: ({ navigation, ...props }) => (
+          <JobApply
+            job={opsGetOne.data}
+            onApply={param => onApplyJob(param, navigation)}
+            {...props}
+          />
         ),
         navigationOptions: () => ({
-          title: "Job Details",
+          title: "Apply",
           header: undefined
         })
       }

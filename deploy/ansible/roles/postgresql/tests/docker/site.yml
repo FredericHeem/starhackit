@@ -1,0 +1,42 @@
+# site.yml
+---
+
+- hosts: localhost
+  become: false
+  gather_facts: false
+  tasks:
+    - name: Build or pull image if needed
+      docker_image:
+        name: "{{ image_name.split(':')[0] }}"
+        tag: "{{ image_name.split(':')[1] }}"
+        dockerfile: "Dockerfile.{{ image_name | replace(':', '.') }}"
+        path: "{{ 'images' if 'builded' in image_name else '' }}"
+        force: "{{ force_build_image | default(false) }}"
+
+    - name: Run docker machines for testing PostgreSQL role
+      docker_container:
+        name: "postgresql-{{ item }}"
+        image: "{{ image_name }}"
+        command: "/sbin/init"
+        state: started
+        privileged: true
+      with_items:
+        - "{{ postgresql_versions }}"
+
+    - name: Add new machines into postgresql inventory group
+      add_host:
+        name: "postgresql-{{ item }}"
+        ansible_connection: docker
+        ansible_user: root
+        ansible_python_interpreter: python
+        groups: postgresql
+        postgresql_version: "{{ item }}"
+      changed_when: false
+      with_items:
+        - "{{ postgresql_versions }}"
+
+- hosts: postgresql
+  become: false
+  gather_facts: true
+  roles:
+    - ANXS.postgresql

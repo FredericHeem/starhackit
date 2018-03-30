@@ -7,10 +7,10 @@ export default context => {
     navigation.navigate("Landing");
   };
 
-  const Settings = ({ navigation }) => (
+  const Logout = ({ navigation }) => (
     <View style={{ margin: 20 }}>
       <Button title="Logout" onPress={() => onLogout(navigation)} />
     </View>
   );
-  return Settings;
+  return Logout;
 };

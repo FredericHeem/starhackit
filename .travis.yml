@@ -8,17 +8,19 @@ env:
   - CXX=g++-4.8
 
 services:
+  - postgresql
   - rabbitmq
   - redis
 
 addons:
-  postgresql: "9.4"
+  postgresql: "9.6"
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - gcc-4.8
       - g++-4.8
+      - postgresql-9.6-postgis-2.3
 
 before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -35,7 +37,8 @@ install:
   - npm i
 
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create database dev;' -U postgres
+  - psql -c 'create extension postgis;' -d dev -U postgres
 
 after_script:
   - cd client

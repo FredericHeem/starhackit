@@ -1,11 +1,16 @@
-## ANXS - PostgreSQL [![Build Status](https://travis-ci.org/ANXS/postgresql.png?branch=master)](https://travis-ci.org/ANXS/postgresql)
+## ANXS - PostgreSQL [![Build Status](https://travis-ci.org/ANXS/postgresql.svg?branch=master)](https://travis-ci.org/ANXS/postgresql)
+
+---
+Help Wanted! If you are able and willing to help maintain this Ansible role then please open a GitHub issue. A lot of people seem to use this role and we (quite obviously) need assistance!
+💖
+---
 
 Ansible role which installs and configures PostgreSQL, extensions, databases and users.
 
 
 #### Installation
 
-This has been tested on Ansible 1.9.4 and higher.
+This has been tested on Ansible 2.4.0 and higher.
 
 To install:
 
@@ -18,11 +23,25 @@ ansible-galaxy install ANXS.postgresql
 - ANXS.monit ([Galaxy](https://galaxy.ansible.com/list#/roles/502)/[GH](https://github.com/ANXS/monit)) if you want monit protection (in that case, you should set `monit_protection: true`)
 
 
+#### Compatibility matrix
+| Distribution / PostgreSQL | <= 9.2 | 9.3 | 9.4 | 9.5 | 9.6 |
+| ------------------------- |:------:|:---:|:---:|:---:|:---:|
+| Ubuntu 14.04 | :no_entry: | :white_check_mark:| :white_check_mark:| :white_check_mark:| :white_check_mark:|
+| Ubuntu 16.04 | :no_entry: | :white_check_mark:| :white_check_mark:| :white_check_mark:| :white_check_mark:|
+| Debian 8.x | :no_entry: | :white_check_mark:| :white_check_mark:| :white_check_mark:| :white_check_mark:|
+| Debian 9.x | :no_entry: | :white_check_mark:| :white_check_mark:| :white_check_mark:| :white_check_mark:|
+| Centos 6.x | :no_entry: | :white_check_mark:| :white_check_mark:| :white_check_mark:| :white_check_mark:|
+| Centos 7.x | :no_entry: | :white_check_mark:| :white_check_mark:| :white_check_mark:| :white_check_mark:|
+
+- :white_check_mark: - tested, works fine
+- :interrobang: - maybe works, not tested
+- :no_entry: - PostgreSQL has reached EOL
+
 #### Variables
 
 ```yaml
 # Basic settings
-postgresql_version: 9.3
+postgresql_version: 9.6
 postgresql_encoding: 'UTF-8'
 postgresql_locale: 'en_US.UTF-8'
 postgresql_ctype: 'en_US.UTF-8'

@@ -14,7 +14,7 @@ export default context => {
     autoLogin: action(async () => {
       const type = await AsyncStorage.getItem("authType");
       if (!type) {
-        return
+        return;
       }
       store.driver = driversMap[type];
       store.me = await store.driver.autoLogin();
@@ -35,10 +35,13 @@ export default context => {
     login: action(async ({ type = "facebook", app }) => {
       store.driver = driversMap[type];
       await AsyncStorage.setItem("authType", type);
-      await AsyncStorage.setItem("app", app);
       store.me = await store.driver.login();
       return store.me;
-    })
+    }),
+    navigate: async (app, navigation) => {
+      await AsyncStorage.setItem("app", app);
+      navigation.navigate(app);
+    }
   });
   return store;
 };

@@ -20,6 +20,29 @@ export default context => {
         return location;
       }
     },
+    getGeoPosition: async address => {
+      const apiKey = context.secrets.googleMapKey;
+      const buildGoogleUrl = ({ address }) =>
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
+        try {
+        const fetchRes = await fetch(
+          buildGoogleUrl({
+            address
+          })
+        );
+        const res = await fetchRes.json();
+
+        if (res.results) {
+          console.log("getPlacesAutocomplete ", address, res.results);
+          return res.results;
+        }
+        throw new Error(res);
+      } catch (error) {
+        console.log("getPlacesAutocomplete ", error);
+        throw error;
+      }
+    },
+
     getPlacesAutocomplete: async place => {
       const apiKey = context.secrets.googleMapKey;
 

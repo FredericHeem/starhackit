@@ -38,7 +38,7 @@ install:
 
 before_script:
   - psql -c 'create database dev;' -U postgres
-  - psql -c 'create extension postgis;' -U postgres
+  - psql -c 'create extension postgis;' -d dev -U postgres
 
 after_script:
   - cd client

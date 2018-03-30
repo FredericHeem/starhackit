@@ -3,6 +3,12 @@ import Store from "./Store";
 let config = require("config");
 
 describe("Redis", function() {
+  beforeEach(async function() {
+    if (!config.redis) {
+      console.log("SKIP redis test");
+      this.skip();
+    }
+  });
   it("start and stop ok", async () => {
     let store = Store(config);
     await store.start();

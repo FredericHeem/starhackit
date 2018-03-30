@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import Log from 'logfilename';
-
+import nodemailer from "nodemailer";
 import PassportAuth from './PassportAuth';
 
 import config from 'config';
@@ -27,9 +27,12 @@ export default function UserPlugin(app){
 
   let models = app.data.models();
 
-  let mailJob = MailJob(config);
-
-  let parts = [mailJob];
+  let parts = [];
+  if (config.mail && config.mail.smtp) {
+    const transporter = nodemailer.createTransport(config.mail.smtp);
+    const mailJob = MailJob(config, transporter.sendEmail);
+    parts.push(mailJob);
+  }
 
   return {
     async start(){

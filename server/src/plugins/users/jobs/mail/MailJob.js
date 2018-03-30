@@ -1,35 +1,20 @@
-import nodemailer from "nodemailer";
 import ejs from "ejs";
 import fs from "fs";
 import path from "path";
 import _ from "lodash";
 import Store from "../../../../store/Store";
 
-/*
-const subscriberOptions = {
-  exchange: 'user',
-  queueName: 'mail',
-  routingKeys:['user.registering', 'user.resetpassword']
-};
-*/
-
-export default function MailJob(config) {
+export default function MailJob(config, sendMail) {
   let log = require("logfilename")(__filename);
 
   const subscriber = new Store(config);
   log.debug("MailJob options: ", config.mail);
-  let transporter;
-  if (config.mail && config.mail.smtp) {
-    transporter = nodemailer.createTransport(config.mail.smtp);
-  } else {
-    log.warn("no mail configuration");
-  }
 
   const onIncomingMessage = async (channel, message) => {
     log.debug("onIncomingMessage content: ", message);
     let user;
 
-    if (!transporter) {
+    if (!sendMail) {
       log.error("not configured");
       return;
     }
@@ -42,7 +27,7 @@ export default function MailJob(config) {
     }
 
     try {
-      await this._sendEmail(message.fields.routingKey, user);
+      await this._sendEmail(channel, user);
       log.info("email sent");
     } catch (error) {
       log.error("error sending mail: ", error);
@@ -97,7 +82,7 @@ export default function MailJob(config) {
         throw { name: "token not set" };
       }
 
-      if (!transporter) {
+      if (!sendMail) {
         log.error("mail config not set");
         throw { name: "mail config not set" };
       }
@@ -124,7 +109,7 @@ export default function MailJob(config) {
       log.debug("_sendEmail: ", _.omit(mailOptions, "html"));
 
       return new Promise((resolve, reject) => {
-        transporter.sendMail(mailOptions, function(error, info) {
+        sendMail(mailOptions, function(error, info) {
           if (error) {
             log.error("cannot send mail: ", error);
             reject(error);

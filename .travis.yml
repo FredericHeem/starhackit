@@ -13,13 +13,14 @@ services:
   - redis
 
 addons:
-  postgresql: "9.5"
+  postgresql: "9.6"
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - gcc-4.8
       - g++-4.8
+      - postgresql-9.6-postgis-2.3
 
 before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -30,7 +31,6 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 install:
-  - sudo apt-get install -y postgresql-9.5-postgis-2.3
   - cd client
   - npm i
   - cd ../server

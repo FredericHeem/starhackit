@@ -8,7 +8,6 @@
     - 'vars/redis-vars.yml'
   roles:
    - nodesource.node
-   - mrlesmithjr.rabbitmq
    - ansible-redis
    - nginx
    - postgresql

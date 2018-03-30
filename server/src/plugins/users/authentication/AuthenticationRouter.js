@@ -43,9 +43,9 @@ const localAuthCB = ctx => (err, user, info = {}) => {
   }
 };
 
-export function AuthenticationHttpController(app, publisherUser){
+export function AuthenticationHttpController(app){
   log.debug("AuthenticationHttpController");
-  let authApi = AuthenticationApi(app, publisherUser);
+  let authApi = AuthenticationApi(app);
   let respond = app.utils.http.respond;
 
   return {
@@ -77,9 +77,9 @@ export function AuthenticationHttpController(app, publisherUser){
   };
 }
 
-export default function AuthenticationRouter(app, publisherUser){
+export default function AuthenticationRouter(app){
   let router = new Router();
-  let authHttpController = AuthenticationHttpController(app, publisherUser);
+  let authHttpController = AuthenticationHttpController(app);
   router.post('/login', authHttpController.login);
   router.post('/logout', authHttpController.logout);
   router.post('/register', authHttpController.register);

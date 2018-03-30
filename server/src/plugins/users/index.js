@@ -1,6 +1,5 @@
 import Promise from 'bluebird';
 import Log from 'logfilename';
-import {Publisher} from 'rabbitmq-pubsub';
 
 import PassportAuth from './PassportAuth';
 
@@ -18,25 +17,21 @@ import AuthenticationRouter from './authentication/AuthenticationRouter';
 
 let log = new Log(__filename);
 
-const publisherOption = { exchange: "user" };
-
 export default function UserPlugin(app){
 
   app.data.registerModelsFromDir(__dirname, './models');
 
-  let publisher = createPublisher();
-  setupAuthentication(app, publisher);
+  setupAuthentication(app);
 
-  setupRouter(app, publisher);
+  setupRouter(app);
 
   let models = app.data.models();
 
   let mailJob = MailJob(config);
 
-  let parts = [mailJob, publisher];
+  let parts = [mailJob];
 
   return {
-    publisher:publisher,
     async start(){
       try {
         for (let part of parts) {
@@ -69,9 +64,9 @@ export default function UserPlugin(app){
   };
 }
 
-function setupRouter(app, publisherUser){
+function setupRouter(app){
   //Authentication
-  AuthenticationRouter(app, publisherUser);
+  AuthenticationRouter(app);
 
   //Me
   MeRouter(app);
@@ -81,18 +76,8 @@ function setupRouter(app, publisherUser){
   UserRouter(app, userApi);
 }
 
-function createPublisher(){
-  let rabbitmq = config.rabbitmq;
-  if(rabbitmq && rabbitmq.url){
-    publisherOption.url = rabbitmq.url;
-  }
-
-  log.info("createPublisher: ", publisherOption);
-  return new Publisher(publisherOption);
-}
-
-function setupAuthentication(app, publisherUser) {
-  let auth = new PassportAuth(app, publisherUser);
+function setupAuthentication(app) {
+  let auth = new PassportAuth(app);
   app.auth = auth;
   return auth;
 }

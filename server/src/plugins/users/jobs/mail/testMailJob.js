@@ -1,18 +1,16 @@
 import assert from 'assert';
 import sinon from 'sinon';
 import _ from 'lodash';
-import {Publisher} from 'rabbitmq-pubsub';
 import config from 'config';
+import Store from "../../../../store/Store";
 
 import MailJob from './MailJob';
 
 describe.skip('MailJob', function () {
-  let publisher;
+  let publisher = Store(config);
   let sandbox;
 
   before(async() => {
-    let options = {exchange:"user", url: config.rabbitmq.url};
-    publisher = new Publisher(options, config.log);
     await publisher.start();
   });
 
@@ -37,7 +35,7 @@ describe.skip('MailJob', function () {
 
   let emailType = 'user.registering';
 
-  describe('Basic', () => {
+  describe.skip('Basic', () => {
     let mailJob;
     beforeEach(function (done) {
       mailJob = new MailJob(config);
@@ -116,7 +114,7 @@ describe.skip('MailJob', function () {
     });
     it('publish user.resetpassword', async(done) => {
       sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
-        //console.log("_sendEmail has been called");
+        console.log("_sendEmail has been called");
         assert.equal(type, 'user.resetpassword');
         assert(userToSend);
         assert.equal(userToSend.email, user.email);

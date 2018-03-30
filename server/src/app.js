@@ -12,12 +12,12 @@ import * as HttpUtils from './utils/HttpUtils';
 export default function App() {
 
   let data = Data(config);
-  let store = Store(config);
 
   let app = {
     config,
     data: data,
-    store,
+    store: Store(config),
+    publisher: Store(config),
     utils:{
       http: HttpUtils,
       api: require('./utils/ApiUtils')
@@ -51,6 +51,7 @@ export default function App() {
   let parts = [
     app.data,
     app.store,
+    app.publisher,
     app.server,
     app.plugins
   ];

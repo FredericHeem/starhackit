@@ -13,7 +13,7 @@ module.exports = function(sequelize/*, DataTypes*/) {
 
   GroupPermission.seedDefault = async function() {
     let groupPermissionsJson = require('./fixtures/group_permission.json');
-    log.debug('seedDefault: ', JSON.stringify(groupPermissionsJson, null, 4));
+    //log.debug('seedDefault: ', JSON.stringify(groupPermissionsJson, null, 4));
     //console.log('creating all groupPermissions:',groupsPermissions)
     for (let groupName of _.keys(groupPermissionsJson)) {
       await GroupPermission.add(groupName, groupPermissionsJson[groupName]);

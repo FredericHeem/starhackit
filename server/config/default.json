@@ -7,8 +7,8 @@
       "colorize": true
     }
   },
-  "rabbitmq": {
-    "url":"amqp://localhost"
+  "redis":{
+    "url": "redis://localhost:6379"
   },
   "koa": {
     "port": 9000,

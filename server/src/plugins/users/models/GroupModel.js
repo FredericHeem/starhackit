@@ -40,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
 
   Group.seedDefault = function() {
     let groupsJson = require("./fixtures/groups.json");
-    log.debug("seedDefault: ", JSON.stringify(groupsJson, null, 4));
+    //log.debug("seedDefault: ", JSON.stringify(groupsJson, null, 4));
     return Group.bulkCreate(groupsJson);
   };
 

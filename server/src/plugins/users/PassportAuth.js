@@ -3,11 +3,11 @@ import registerLocal from './auth-strategy/LocalStrategy';
 import registerJwt from './auth-strategy/JwtStrategy';
 
 let config = require('config');
-
+;
 let log = require('logfilename')(__filename);
 
-export default function(app, publisherUser) {
-
+export default function(app) {
+  const publisher = {app};
   let models = app.data.sequelize.models;
 
   registerJwt(passport, models);
@@ -15,15 +15,15 @@ export default function(app, publisherUser) {
 
   if(config.has('authentication.facebook')) {
     let register = require('./auth-strategy/FacebookStrategy').register;
-    register(passport, models, publisherUser);
+    register(passport, models, publisher);
   }
 
   let registerMofile = require('./auth-strategy/FacebookMobileStrategy').register;
-  registerMofile(passport, models, publisherUser);
+  registerMofile(passport, models, publisher);
 
   if(config.has('authentication.fidor')) {
     let register = require('./auth-strategy/FidorStrategy').register;
-    register(passport, models, publisherUser);
+    register(passport, models, publisher);
   }
 
   passport.serializeUser(function(user, done) {

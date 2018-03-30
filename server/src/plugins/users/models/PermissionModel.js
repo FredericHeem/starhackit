@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
 
   Permission.seedDefault = function() {
     let permissionsJson = require("./fixtures/permissions.json");
-    log.debug("seedDefault: ", JSON.stringify(permissionsJson, null, 4));
+    //log.debug("seedDefault: ", JSON.stringify(permissionsJson, null, 4));
     return Permission.bulkCreate(permissionsJson);
   };
 

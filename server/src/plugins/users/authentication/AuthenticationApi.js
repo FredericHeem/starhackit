@@ -3,7 +3,8 @@ import Log from 'logfilename';
 import Chance from 'chance';
 let chance = new Chance();
 
-export default function(app, publisherUser) {
+export default function(app) {
+  const {publisher} = app;
   let models = app.data.sequelize.models;
   let log = new Log(__filename);
   let validateJson = app.utils.api.validateJson;
@@ -37,7 +38,7 @@ export default function(app, publisherUser) {
         };
         log.debug("createPending code ", userPendingOut.code);
         await models.UserPending.create(userPendingOut);
-        await publisherUser.publish("user.registering", JSON.stringify(userPendingOut));
+        await publisher.publish("user.registering", JSON.stringify(userPendingOut));
       } else {
         log.info("already registered", userPendingIn.email);
       }
@@ -61,7 +62,7 @@ export default function(app, publisherUser) {
         let userToCreate = _.pick(userPending, 'username', 'email', 'passwordHash');
         let user = await models.User.createUserInGroups(userToCreate, ["User"]);
         //log.debug("verifyEmailCode: created user ", user.toJSON());
-        await publisherUser.publish("user.registered", JSON.stringify(user.toJSON()));
+        await publisher.publish("user.registered", JSON.stringify(user.toJSON()));
         return user.toJSON();
       } else {
         log.warn("verifyEmailCode: no such code ", param.code);
@@ -91,7 +92,7 @@ export default function(app, publisherUser) {
           email: user.email
         };
         log.debug("resetPassword: publish: ", passwordResetPublished);
-        await publisherUser.publish('user.resetpassword', JSON.stringify(passwordResetPublished));
+        await publisher.publish('user.resetpassword', JSON.stringify(passwordResetPublished));
       } else {
         log.info("resetPassword: no such email: ", email);
       }

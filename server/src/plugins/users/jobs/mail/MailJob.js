@@ -1,29 +1,22 @@
-import {Subscriber} from 'rabbitmq-pubsub';
-import nodemailer from 'nodemailer';
-import ejs from 'ejs';
-import fs from 'fs';
-import path from 'path';
-import _ from 'lodash';
+import nodemailer from "nodemailer";
+import ejs from "ejs";
+import fs from "fs";
+import path from "path";
+import _ from "lodash";
+import Store from "../../../../store/Store";
 
+/*
 const subscriberOptions = {
   exchange: 'user',
   queueName: 'mail',
   routingKeys:['user.registering', 'user.resetpassword']
 };
+*/
 
-export default function MailJob (config){
-  let log = require('logfilename')(__filename);
+export default function MailJob(config) {
+  let log = require("logfilename")(__filename);
 
-  function createSubscriber(){
-    let rabbitmq = config.rabbitmq;
-    if(rabbitmq && rabbitmq.url){
-      subscriberOptions.url = rabbitmq.url;
-    }
-    log.debug("createSubscriber: ", subscriberOptions);
-    return new Subscriber(subscriberOptions, config.log);
-  }
-
-  let subscriber = createSubscriber(config);
+  const subscriber = new Store(config);
   log.debug("MailJob options: ", config.mail);
   let transporter;
   if (config.mail && config.mail.smtp) {
@@ -32,29 +25,58 @@ export default function MailJob (config){
     log.warn("no mail configuration");
   }
 
+  const onIncomingMessage = async (channel, message) => {
+    log.debug("onIncomingMessage content: ", message);
+    let user;
+
+    if (!transporter) {
+      log.error("not configured");
+      return;
+    }
+
+    try {
+      user = JSON.parse(message);
+    } catch (error) {
+      log.error("cannot convert message");
+      return;
+    }
+
+    try {
+      await this._sendEmail(message.fields.routingKey, user);
+      log.info("email sent");
+    } catch (error) {
+      log.error("error sending mail: ", error);
+      return;
+    }
+  };
   return {
     async start() {
-      log.info('start');
+      log.info("start");
       try {
-        await subscriber.start(this._onIncomingMessage.bind(this));
-        log.debug('started');
-      } catch(error){
-        log.error(`cannot start: ${error}, is RabbitMq running ?`);
+        await subscriber.start();
+        subscriber.subscribe("mail", onIncomingMessage);
+        log.debug("started");
+      } catch (error) {
+        log.error(`cannot start: ${error}`);
       }
     },
 
     async stop() {
-      log.debug('stop');
+      log.debug("stop");
       await subscriber.stop();
-      log.debug('stopped');
+      log.debug("stopped");
     },
 
-    async getTemplate(type){
-      let filename = path.join(path.dirname(__filename), 'templates', type + '.html');
+    async getTemplate(type) {
+      let filename = path.join(
+        path.dirname(__filename),
+        "templates",
+        type + ".html"
+      );
       //log.debug("filename", filename);
       return new Promise((resolve, reject) => {
         fs.readFile(filename, "utf8", (error, data) => {
-          if(error){
+          if (error) {
             reject(error);
           } else {
             resolve(data);
@@ -65,19 +87,19 @@ export default function MailJob (config){
 
     async _sendEmail(type, user) {
       log.debug("sendEmail %s to user ", type, user);
-      if(!user.email){
+      if (!user.email) {
         log.error("email not set");
-        throw {name:"email not set"};
+        throw { name: "email not set" };
       }
 
-      if(!user.code){
+      if (!user.code) {
         log.error("token not set");
-        throw {name:"token not set"};
+        throw { name: "token not set" };
       }
 
-      if(!transporter){
+      if (!transporter) {
         log.error("mail config not set");
-        throw {name:"mail config not set"};
+        throw { name: "mail config not set" };
       }
 
       let locals = {
@@ -88,9 +110,9 @@ export default function MailJob (config){
 
       let template = await this.getTemplate(type);
       let html = ejs.render(template, locals);
-      let lines = html.split('\n');
+      let lines = html.split("\n");
       let subject = lines[0];
-      let body = lines.slice(1).join('\n');
+      let body = lines.slice(1).join("\n");
 
       let mailOptions = {
         from: config.mail.from,
@@ -99,55 +121,20 @@ export default function MailJob (config){
         html: body
       };
 
-      log.debug("_sendEmail: ", _.omit(mailOptions, 'html'));
+      log.debug("_sendEmail: ", _.omit(mailOptions, "html"));
 
-      return new Promise( (resolve, reject) => {
-        transporter.sendMail(mailOptions, function(error, info){
-            if(error){
-              log.error("cannot send mail: ", error);
-              reject(error);
-            } else {
-              delete info.html;
-              log.debug("mail sent: ", info);
-              resolve(info);
-            }
+      return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, function(error, info) {
+          if (error) {
+            log.error("cannot send mail: ", error);
+            reject(error);
+          } else {
+            delete info.html;
+            log.debug("mail sent: ", info);
+            resolve(info);
+          }
         });
       });
-    },
-
-    async _onIncomingMessage(message) {
-      log.debug("onIncomingMessage content: ", message.content.toString());
-      log.debug("onIncomingMessage fields: ", JSON.stringify(message.fields));
-      let user;
-
-      if(!transporter){
-        log.error("not configured");
-        subscriber.ack(message);
-        return;
-      }
-
-      try {
-        user = JSON.parse(message.content.toString());
-      } catch (error) {
-        log.error("cannot convert message");
-        subscriber.ack(message);
-        return;
-      }
-
-      try {
-        await this._sendEmail(message.fields.routingKey, user);
-        log.info("email sent");
-        subscriber.ack(message);
-      } catch (error) {
-        log.error("error sending mail: ", error);
-        // TODO nack or ack ?
-        subscriber.ack(message);
-        return;
-      }
     }
   };
 }
-
-
-
-

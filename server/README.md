@@ -21,7 +21,7 @@ These are the main *npm* commands during a standard developer workflow:
 | npm command    | details  |
 |----------------|----------|
 | `npm install`  | Install dependencies  |
-| `npm run setup`  | Install Rabbitmq and Postgresql docker containers through binci |
+| `npm run setup`  | Install Redis and Postgresql docker containers through binci |
 | `npm start`    | Start the backend  |
 | `npm test`     |  Run the tests and generate a code coverage |
 | `npm run mocha`|  Run the tests |
@@ -88,18 +88,6 @@ Create a database:
 
     $ createdb dev
 
-    
-## Message Queue
-
-A use case for using a RabbitMq in this project is to send an email during registration. It decouples the act of requesting an action and executing it. That solves a bunch of issues,  for instance, when the mail server is not reachable or down, the [job](src/plugins/users/jobs/mail/MailJob.js) who is processing the email expedition can retry until the mail service is restored.
-
-Example of configuration:
-
-```
-"rabbitmq":{
-  "url":"amqp://192.168.99.100"
-}
-```
 
 ## Sending Email
 Sending email is a very common task for an application. For instance, an email is sent during registration, when a user requests a new password etc ...
@@ -193,7 +181,7 @@ Here is a typical configuration:
 ## Docker containers
 
 ### For development
-To install the docker containers for the various services such as RabbitMq and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
+To install the docker containers for the various services such as Redis and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
 
     # cd server
     # npm run setup &
@@ -204,7 +192,6 @@ To check that the containers are running:
 # docker ps
 CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                               NAMES
 290fe4c70fea        kiasaki/alpine-postgres   "/docker-entrypoint.s"   8 days ago          Up 8 days           0.0.0.0:5432->5432/tcp                              devlab_postgres_frederic_1471545611147
-4dfd33e1e48d        gonkulatorlabs/rabbitmq   "/usr/bin/wrapper"       8 days ago          Up 8 days           5671/tcp, 15671-15672/tcp, 0.0.0.0:5672->5672/tcp   devlab_rabbitmq_frederic_1471545611147
 ```
 
 ### For production
@@ -217,7 +204,6 @@ To build a production dockerized system, please use `docker-compose` to build, s
 ## Start
 
 Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
-Don't forget to correctly set the *rabbitmq* server location.
 
 To start the backend:
 

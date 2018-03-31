@@ -48,7 +48,7 @@ describe("MailJob", function() {
     afterEach(function(done) {
       done();
     });
-    it("getTemplate ok", async () => {
+    it.skip("getTemplate ok", async () => {
       let content = await mailJob.getTemplate(emailType);
       assert(content);
     });
@@ -57,14 +57,14 @@ describe("MailJob", function() {
       let content = await mailJob.getTemplate("blabla");
       assert(content);
     });
-    it("send user registration email", async () => {
+    it.skip("send user registration email", async () => {
       await mailJob._sendEmail(emailType, user);
     });
-    it("send reset password email", async () => {
+    it.skip("send reset password email", async () => {
       let passwordReset = "user.resetpassword";
       await mailJob._sendEmail(passwordReset, user);
     });
-    it("invalid email type", done => {
+    it.skip("invalid email type", done => {
       (async () => {
         try {
           await mailJob._sendEmail("invalidEmailType", user);
@@ -75,7 +75,7 @@ describe("MailJob", function() {
         }
       })();
     });
-    it("no email", done => {
+    it.skip("no email", done => {
       (async () => {
         try {
           await mailJob._sendEmail(emailType, {});
@@ -86,7 +86,7 @@ describe("MailJob", function() {
         }
       })();
     });
-    it("no token", done => {
+    it.skip("no token", done => {
       (async () => {
         try {
           await mailJob._sendEmail(emailType, { email: user.email });
@@ -99,51 +99,39 @@ describe("MailJob", function() {
     });
   });
 
-  describe.skip("StartStop", () => {
-    let mailJob;
-    const sendMail = (error, info) => {
-      console.log("sendMail ", error, info);
-    };
+  describe("StartStop", () => {
     beforeEach(async () => {
-      mailJob = new MailJob(config, sendMail);
-      await mailJob.start();
     });
 
     afterEach(async () => {
-      mailJob._sendEmail.restore();
-      await mailJob.stop();
     });
 
-    it("publish user.register", async done => {
-      sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
-        //console.log("_sendEmail has been called");
-        assert.equal(type, "user.registering");
-        assert(userToSend);
-        assert.equal(userToSend.email, user.email);
-        done();
-      });
-
-      await publisher.publish("user.registering", JSON.stringify(user));
+    it("publish user.register", done => {
+      (async () => {
+        const sendMail = (options, cb) => {
+          console.log("sendMail ", options);
+          assert.equal("Email Confirmation", options.subject);
+          assert.equal(options.to, user.email);
+          done();
+        };
+        const mailJob = new MailJob(config, sendMail);
+        await mailJob.start();
+        await publisher.publish("user.registering", JSON.stringify(user));
+        console.log("published user.registering ");
+      })();
     });
-    it("publish user.resetpassword", async done => {
-      sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
-        console.log("_sendEmail has been called");
-        assert.equal(type, "user.resetpassword");
-        assert(userToSend);
-        assert.equal(userToSend.email, user.email);
-        done();
-      });
-
-      await publisher.publish("user.resetpassword", JSON.stringify(user));
-    });
-    it("publish a non JSON message", async done => {
-      sinon.stub(mailJob, "_sendEmail").callsFake(() => {
-        assert(false);
-        done();
-      });
-
-      await publisher.publish("user.resetpassword", "not a json");
-      done();
+    it("publish user.resetpassword", done => {
+      (async () => {
+        const sendMail = (options, cb) => {
+          console.log("sendMail ", options);
+          assert.equal(options.to, user.email);
+          assert.equal("Reset password", options.subject);
+          done();
+        };
+        const mailJob = new MailJob(config, sendMail);
+        await mailJob.start();
+        await publisher.publish("user.resetpassword", JSON.stringify(user));
+      })();
     });
   });
   describe("Ko", () => {

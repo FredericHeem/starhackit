@@ -14,6 +14,22 @@ Backend Starter Kit written in Node.js with the following features:
 * **Logging** with timestamp and filename.
 * **CORS** support with [kcors](https://github.com/koajs/cors)
 
+# Dependencies
+
+The minimal requirements to get it running locally are:
+
+* Git
+* Node, npm or yarn
+
+Sqlite can be used as the relational database and is installed through npm.
+
+To deploy to production, you will also need:
+
+* Redis
+* Postgresql
+* Ansible
+
+
 # Workflow with npm scripts
 
 These are the main *npm* commands during a standard developer workflow:
@@ -140,6 +156,12 @@ Here is how to configure Redis:
 "redis":{
   "url": "redis://localhost:6379"
 },
+```
+
+On a mac, use `brew` to install `redis`:
+
+```
+$ brew install redis
 ```
 
 ## Json Web Token

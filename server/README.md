@@ -200,28 +200,6 @@ Here is a typical configuration:
 },
 ```
 
-## Docker containers
-
-### For development
-To install the docker containers for the various services such as Redis and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
-
-    # cd server
-    # npm run setup &
-
-To check that the containers are running:
-
-```
-# docker ps
-CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                               NAMES
-290fe4c70fea        kiasaki/alpine-postgres   "/docker-entrypoint.s"   8 days ago          Up 8 days           0.0.0.0:5432->5432/tcp                              devlab_postgres_frederic_1471545611147
-```
-
-### For production
-
-To build a production dockerized system, please use `docker-compose` to build, start and stop containers:
-
-    # docker-compose build
-    # docker-compose up
 
 ## Start
 
@@ -264,6 +242,7 @@ To open the documentation, simply run
 
     # npm run opendoc
 
+
 ## Mock server
 
 Given the RAML describing of an API, [raml-mocker-server](https://github.com/dmitrisweb/raml-mocker-server) will start responding the web client with data that comply with the API.
@@ -273,6 +252,29 @@ To start the mock server, run this npm script:
     # npm run mocker
 
 This script launches [mocker-server.js](scripts/mocker-server.js), modify it to eventually change the http port and the `raml` files to select.
+
+## Docker containers
+
+### For development
+To install the docker containers for the various services such as Redis and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
+
+    # cd server
+    # npm run setup &
+
+To check that the containers are running:
+
+```
+# docker ps
+CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                               NAMES
+290fe4c70fea        kiasaki/alpine-postgres   "/docker-entrypoint.s"   8 days ago          Up 8 days           0.0.0.0:5432->5432/tcp                              devlab_postgres_frederic_1471545611147
+```
+
+### For production
+
+To build a production dockerized system, please use `docker-compose` to build, start and stop containers:
+
+    # docker-compose build
+    # docker-compose up
 
 # Development
 

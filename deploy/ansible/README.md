@@ -13,6 +13,18 @@ Eventually install `vagrant` and `virtualbox` if you desire to install a prod li
 
 > Ansible scripts are written for the Ubuntu 16.04 or higher 
 
+To install `ansible` with `brew`:
+ 
+ ```
+$ brew install ansible
+ ```
+
+The ansible scripts has been tested with version 2.4:
+ ```
+ $ ansible --version
+ansible 2.4.3.0
+
+ ```
 # What is installed and deployed:
 
 Ansible enables the automation of the installation and configuration of the various stack components:

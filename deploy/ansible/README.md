@@ -1,11 +1,15 @@
 Deployment - Ansible
 ==========
 
-# Requirements
+# Minimal Requirements
+
+* [Ansible](http://www.ansible.com/)
+
+Eventually install `vagrant` and `virtualbox` if you desire to install a prod like system on your local machine:
 
 * [VirtualBox](https://www.virtualbox.org/)
 * [Vagrant](https://www.vagrantup.com)
-* [Ansible](http://www.ansible.com/)
+
 
 > Ansible scripts are written for the Ubuntu 16.04 or higher 
 
@@ -14,7 +18,6 @@ Deployment - Ansible
 Ansible enables the automation of the installation and configuration of the various stack components:
 
 * Nginx - used as reverse proxy, https, DDOS protection etc ...
-* Rabbitmq - the message queue.
 * Nodejs
 * The node api backend
 * The frontend
@@ -29,7 +32,6 @@ The file [site.yml](site.yml) controls which roles are being deployed:
     - 'vars/nginx-vars.yml'
   roles:
    - nodesource.node
-   - mrlesmithjr.rabbitmq
    - api
    - nginx
 ```
@@ -49,7 +51,7 @@ api_dir: '{{home}}/{{app_name}}'
 mail_signature: "The StarHackIt Team"
 ```
 
-To edit the production configuration parameters, edit [prod/group_vars/server.yml](prod/group_vars/server.yml):
+To set the production configuration parameters, create [prod/group_vars/server.yml](prod/group_vars/server.yml):
 
 ```
 env_name: production

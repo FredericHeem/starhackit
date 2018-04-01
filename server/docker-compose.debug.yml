@@ -13,7 +13,6 @@ services:
       - .:/src
     links:
       - postgres
-      - rabbitmq
       - redis
     environment:
       - NODE_ENV=dev-docker
@@ -33,10 +32,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=dev
-  rabbitmq:
-    image: gonkulatorlabs/rabbitmq
-    expose:
-      - "5672"
   redis:
     image: smebberson/alpine-redis
     expose:

@@ -1,9 +1,5 @@
 from: node:8
 services:
-  - rabbitmq:
-      from: gonkulatorlabs/rabbitmq
-      expose:
-        - 5672:5672
   - postgres:
       from: kiasaki/alpine-postgres
       env:

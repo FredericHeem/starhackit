@@ -12,7 +12,6 @@ services:
       - NODE_ENV=preprod-docker
     links:
       - postgres
-      - rabbitmq
       - redis
   postgres:
     image: kiasaki/alpine-postgres
@@ -22,10 +21,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=preprod
-  rabbitmq:
-    image: gonkulatorlabs/rabbitmq
-    expose:
-      - "5672"
   redis:
     image: smebberson/alpine-redis
     expose:

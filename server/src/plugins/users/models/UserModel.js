@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
 
   User.seedDefault = async function() {
     let usersJson = require("./fixtures/users.json");
-    log.debug("seedDefault: ", JSON.stringify(usersJson, null, 4));
+    //log.debug("seedDefault: ", JSON.stringify(usersJson, null, 4));
     for (let userJson of usersJson) {
       await User.createUserInGroups(userJson, userJson.groups);
     }

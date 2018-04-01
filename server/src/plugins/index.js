@@ -2,7 +2,12 @@ import Promise from "bluebird";
 import path from "path";
 import _ from "lodash";
 
-const pluginsName = ["users", "document", "ticket", "dbSchema", "job"];
+const pluginsName = [
+  "users",
+  "dbSchema",
+  "document",
+  "ticket"
+];
 
 export default function Plugins(app) {
   const plugins = pluginsName.reduce((map, pluginName) => {

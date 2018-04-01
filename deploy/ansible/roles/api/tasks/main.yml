@@ -16,14 +16,15 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
 
+- name: Copy init script
+  template: src=api.service.j2 dest=/lib/systemd/system/api.service mode=0640 owner=root group=root
+
 - name: Copy server config
   template: src=config.json.j2 dest={{ api_dir }}/server/config/{{ node_env }}.json
   notify:
     - systemctl restart api
   sudo: yes
 
-- name: Copy init script
-  template: src=api.service.j2 dest=/lib/systemd/system/api.service mode=0640 owner=root group=root
 
 - name: restart api
   systemd:

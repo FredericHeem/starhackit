@@ -1,6 +1,8 @@
 ---
 - hosts: all
-  sudo: true
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+
   vars_files:
     - 'vars/certbot-vars.yml'
     - 'vars/nginx-vars.yml'

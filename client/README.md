@@ -6,7 +6,7 @@ A functional Preact/React based frontend starter kit:
 * `mobx` for state management.
 * `glamorous` for real-time styling.
 * `universal-router` for the routing solution: code split, data fetching. 
-* Internationalization with `i18next` and `react-intl`
+* Internationalization with `i18next`
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
 * Copy and paste detector with `jscpd`
 * Display lint warnings and build errors to directly to the browser with `webpack-hud`
@@ -23,10 +23,12 @@ A functional Preact/React based frontend starter kit:
 [npm](https://www.npmjs.com/) is used to define the 3rd party dependencies required by the frontend. *npm* comes with [node](https://nodejs.org) so make sure there are already installed:
 
     $ node -v
-    v5.6
+    v8.10.0
 
     $ npm -v
-    3.6
+    5.6.0
+
+
 
 These are the main *npm* commands for a normal developer workflow:
 
@@ -40,7 +42,6 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm run e2e`  |  Run the end to end tests with Nigthwatch/Selenium |
 | `npm run build`| Create a production build  |
 | `npm run start:prod`| start a web server to serve the production build  |
-| `npm run bundle-size`| Create a report to show the size of each dependencies |
 | `npm run lint`| Lint the source code |
 | `npm run cpd`| Run the copy and paste detector |
 | `npm run clean`| Clean the project |
@@ -119,52 +120,44 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Version: webpack 3.3.0
-Time: 17286ms
-                             Asset       Size  Chunks                    Chunk Names
-      2.f09209ebd25efb13e2d0.js.gz    9.98 kB          [emitted]         
-         0.f09209ebd25efb13e2d0.js     142 kB       0  [emitted]         
-         2.f09209ebd25efb13e2d0.js    45.9 kB       2  [emitted]         
-         3.f09209ebd25efb13e2d0.js     298 kB    3, 5  [emitted]  [big]  
-         4.f09209ebd25efb13e2d0.js    5.21 kB       4  [emitted]         
-         5.f09209ebd25efb13e2d0.js    6.26 kB       5  [emitted]         
-         6.f09209ebd25efb13e2d0.js    5.62 kB       6  [emitted]         
-         7.f09209ebd25efb13e2d0.js    5.09 kB       7  [emitted]         
-         8.f09209ebd25efb13e2d0.js    65.2 kB       8  [emitted]         
-         9.f09209ebd25efb13e2d0.js    2.29 kB       9  [emitted]         
-       app.f09209ebd25efb13e2d0.js     350 kB      10  [emitted]  [big]  app
-     0.f09209ebd25efb13e2d0.js.map     727 kB       0  [emitted]         
-     1.f09209ebd25efb13e2d0.js.map     479 kB       1  [emitted]         
-     2.f09209ebd25efb13e2d0.js.map     312 kB       2  [emitted]         
-     3.f09209ebd25efb13e2d0.js.map     649 kB    3, 5  [emitted]         
-     4.f09209ebd25efb13e2d0.js.map      43 kB       4  [emitted]         
-     5.f09209ebd25efb13e2d0.js.map    32.1 kB       5  [emitted]         
-     6.f09209ebd25efb13e2d0.js.map    26.5 kB       6  [emitted]         
-     7.f09209ebd25efb13e2d0.js.map    23.9 kB       7  [emitted]         
-     8.f09209ebd25efb13e2d0.js.map     470 kB       8  [emitted]         
-     9.f09209ebd25efb13e2d0.js.map    10.8 kB       9  [emitted]         
-   app.f09209ebd25efb13e2d0.js.map    2.21 MB      10  [emitted]         app
-         1.f09209ebd25efb13e2d0.js    77.5 kB       1  [emitted]         
-  4.f09209ebd25efb13e2d0.js.map.gz    7.82 kB          [emitted]         
-  5.f09209ebd25efb13e2d0.js.map.gz    5.02 kB          [emitted]         
-  6.f09209ebd25efb13e2d0.js.map.gz    6.01 kB          [emitted]         
-  7.f09209ebd25efb13e2d0.js.map.gz     5.5 kB          [emitted]         
-  9.f09209ebd25efb13e2d0.js.map.gz    2.68 kB          [emitted]         
-      1.f09209ebd25efb13e2d0.js.gz    16.8 kB          [emitted]         
-      8.f09209ebd25efb13e2d0.js.gz    18.1 kB          [emitted]         
-      0.f09209ebd25efb13e2d0.js.gz    29.7 kB          [emitted]         
-  2.f09209ebd25efb13e2d0.js.map.gz    58.4 kB          [emitted]         
-    app.f09209ebd25efb13e2d0.js.gz    96.9 kB          [emitted]         
-  1.f09209ebd25efb13e2d0.js.map.gz      93 kB          [emitted]         
-      3.f09209ebd25efb13e2d0.js.gz     178 kB          [emitted]         
-  8.f09209ebd25efb13e2d0.js.map.gz     105 kB          [emitted]         
-  3.f09209ebd25efb13e2d0.js.map.gz     364 kB          [emitted]  [big]  
-  0.f09209ebd25efb13e2d0.js.map.gz     151 kB          [emitted]         
-app.f09209ebd25efb13e2d0.js.map.gz     532 kB          [emitted]  [big]  
-                        index.html    3.01 kB          [emitted]         
-
+Hash: fcc48ad427c813ae63bd                                                              
+Version: webpack 4.4.1
+Time: 4593ms
+Built at: 2018-4-2 18:33:11
+                         Asset       Size  Chunks                    Chunk Names
+    14.fcc48ad427c813ae63bd.js    283 KiB      14  [emitted]  [big]  
+     0.fcc48ad427c813ae63bd.js   9.38 KiB       0  [emitted]         
+                         2.css  608 bytes       2  [emitted]         
+     2.fcc48ad427c813ae63bd.js   24.9 KiB       2  [emitted]         
+     3.fcc48ad427c813ae63bd.js     68 KiB       3  [emitted]         
+     4.fcc48ad427c813ae63bd.js   88.6 KiB       4  [emitted]         
+     5.fcc48ad427c813ae63bd.js      2 KiB       5  [emitted]         
+     6.fcc48ad427c813ae63bd.js   4.87 KiB       6  [emitted]         
+     7.fcc48ad427c813ae63bd.js   4.47 KiB       7  [emitted]         
+     8.fcc48ad427c813ae63bd.js   4.69 KiB       8  [emitted]         
+     9.fcc48ad427c813ae63bd.js   23.5 KiB       9  [emitted]         
+    10.fcc48ad427c813ae63bd.js   81 bytes      10  [emitted]         
+    11.fcc48ad427c813ae63bd.js   2.95 KiB      11  [emitted]         
+    12.fcc48ad427c813ae63bd.js   8.11 KiB      12  [emitted]         
+    13.fcc48ad427c813ae63bd.js      6 KiB      13  [emitted]         
+     1.fcc48ad427c813ae63bd.js   39.4 KiB       1  [emitted]         
+    15.fcc48ad427c813ae63bd.js  662 bytes      15  [emitted]         
+                       app.css   39 bytes      16  [emitted]         app
+   app.fcc48ad427c813ae63bd.js    313 KiB      16  [emitted]  [big]  app
+                    index.html   3.05 KiB          [emitted]         
+                   favicon.ico   1.12 KiB          [emitted]         
+        locales/en/common.json  410 bytes          [emitted]         
+        locales/fr/common.json  314 bytes          [emitted]         
+        locales/it/common.json  175 bytes          [emitted]         
+  2.fcc48ad427c813ae63bd.js.gz   5.89 KiB          [emitted]         
+  9.fcc48ad427c813ae63bd.js.gz   3.99 KiB          [emitted]         
+  1.fcc48ad427c813ae63bd.js.gz   13.3 KiB          [emitted]         
+  3.fcc48ad427c813ae63bd.js.gz   16.9 KiB          [emitted]         
+  4.fcc48ad427c813ae63bd.js.gz   28.4 KiB          [emitted]         
+ 14.fcc48ad427c813ae63bd.js.gz    172 KiB          [emitted]         
+app.fcc48ad427c813ae63bd.js.gz   92.2 KiB          [emitted]        
 
 ```
 
-To find out exactly the weight of each individual library, the tool [webpack-bundle-size-analyzer](https://github.com/robertknight/webpack-bundle-size-analyzer) creates a report displaying the size and the relative percentage of the dependencies.
+To find out exactly the weight of each individual library, the tool [https://github.com/webpack-contrib/webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) creates a report displaying the size and the relative percentage of the dependencies.
 

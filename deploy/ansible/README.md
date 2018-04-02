@@ -34,19 +34,7 @@ Ansible enables the automation of the installation and configuration of the vari
 * The node api backend
 * The frontend
 
-The file [site.yml](site.yml) controls which roles are being deployed:
-
-```
----
-- hosts: all
-  sudo: true
-  vars_files:
-    - 'vars/nginx-vars.yml'
-  roles:
-   - nodesource.node
-   - api
-   - nginx
-```
+The file [site.yml](site.yml) controls which roles are being deployed
 
 # Configuration
 
@@ -70,7 +58,9 @@ env_name: production
 user: ubuntu
 home: /home/ubuntu
 node_env: production
-website_url: "http://starhack.it"
+server_name: starhack.it
+certbot_admin_email: "security@starhack.it"
+website_url: "https://starhack.it"
 mail_service: Mailgun
 mail_from: "StarHackIt <notification@starhack.it>"
 mail_user: postmaster@starhackit.mailgun.org

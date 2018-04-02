@@ -2,11 +2,13 @@
 - hosts: all
   sudo: true
   vars_files:
+    - 'vars/certbot-vars.yml'
     - 'vars/nginx-vars.yml'
     - 'vars/postgres-vars.yml'
     - 'vars/nodejs-vars.yml'
     - 'vars/redis-vars.yml'
   roles:
+   - ansible-role-certbot
    - nodesource.node
    - ansible-redis
    - nginx

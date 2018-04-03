@@ -53,5 +53,9 @@
     "react-navigation": "2.0.0-beta.3",
     "styled-components": "3.2.1",
     "uuid": "3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:instire/instire.git"
   }
 }

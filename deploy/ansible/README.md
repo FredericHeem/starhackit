@@ -31,6 +31,8 @@ Ansible enables the automation of the installation and configuration of the vari
 
 * Nginx - used as reverse proxy, https, DDOS protection etc ...
 * Nodejs
+* Redis
+* Certbot to generate and renew ssl certificate
 * The node api backend
 * The frontend
 
@@ -86,14 +88,14 @@ First start the vagrant virtual machine where the whole stack will be installed:
 
 Make sure _ansible_ can connect to the vagrant box:
 
-    $ ansible -m ping available
+    $ ansible -i dev -m ping all
 
 To install everything on the vagrant machine:
 
-    $ ansible-playbook site.yml -vv
+    $ ansible-playbook -i dev site.yml -vv
 
-The port 8000 is forwarded to the local machine so
-the web server can be reach at `http://localhost:8000/`
+The port 443 is forwarded to the local machine so
+the web server can be reach at `http://localhost:8443/`
 
 To eventually change the forwarded port, edit [Vagrantfile](Vagrantfile)
 

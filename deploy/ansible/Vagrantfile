@@ -6,11 +6,11 @@ hosts = {
 }
 
 Vagrant.configure("2") do |config|
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.network "forwarded_port", guest: 443, host: 8443
 
   hosts.each do |name, ip|
     config.vm.define name do |machine|
-      machine.vm.box = "ubuntu/trusty64"
+      machine.vm.box = "ubuntu/xenial64"
       machine.vm.hostname = "%s.dev.starthack.it" % name
       machine.vm.network :private_network, ip: ip
       machine.vm.provider "virtualbox" do |v|

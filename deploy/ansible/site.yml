@@ -1,7 +1,8 @@
 ---
 - hosts: all
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_method: sudo
+  become_user: root
 
   vars_files:
     - 'vars/certbot-vars.yml'
@@ -11,8 +12,8 @@
     - 'vars/redis-vars.yml'
   roles:
    - ansible-role-certbot
+   - nginx
    - nodesource.node
    - ansible-redis
-   - nginx
    - postgresql
    - api

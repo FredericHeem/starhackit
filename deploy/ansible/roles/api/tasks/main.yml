@@ -21,8 +21,6 @@
 
 - name: Copy server config
   template: src=config.json.j2 dest={{ api_dir }}/server/config/{{ node_env }}.json
-  notify:
-    - systemctl restart api
   become: yes
   become_user: "{{ ansible_ssh_user }}"
 

@@ -1,7 +1,7 @@
 {
-  "name": "Starhackit",
-  "description": "React Native Started Kit",
-  "slug": "starhackit",
+  "name": "Instire",
+  "description": "Find a job instantly",
+  "slug": "instire",
   "iconUrl": "https://github.com/FredericHeem/starhackit-native/raw/master/assets/logo_wheel_big.png",
   "version": "0.3.0",
   "expo": {

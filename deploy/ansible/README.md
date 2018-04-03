@@ -31,22 +31,12 @@ Ansible enables the automation of the installation and configuration of the vari
 
 * Nginx - used as reverse proxy, https, DDOS protection etc ...
 * Nodejs
+* Redis
+* Certbot to generate and renew ssl certificate
 * The node api backend
 * The frontend
 
-The file [site.yml](site.yml) controls which roles are being deployed:
-
-```
----
-- hosts: all
-  sudo: true
-  vars_files:
-    - 'vars/nginx-vars.yml'
-  roles:
-   - nodesource.node
-   - api
-   - nginx
-```
+The file [site.yml](site.yml) controls which roles are being deployed
 
 # Configuration
 
@@ -70,7 +60,9 @@ env_name: production
 user: ubuntu
 home: /home/ubuntu
 node_env: production
-website_url: "http://starhack.it"
+server_name: starhack.it
+certbot_admin_email: "security@starhack.it"
+website_url: "https://starhack.it"
 mail_service: Mailgun
 mail_from: "StarHackIt <notification@starhack.it>"
 mail_user: postmaster@starhackit.mailgun.org
@@ -96,14 +88,14 @@ First start the vagrant virtual machine where the whole stack will be installed:
 
 Make sure _ansible_ can connect to the vagrant box:
 
-    $ ansible -m ping available
+    $ ansible -i dev -m ping all
 
 To install everything on the vagrant machine:
 
-    $ ansible-playbook site.yml -vv
+    $ ansible-playbook -i dev site.yml -vv
 
-The port 8000 is forwarded to the local machine so
-the web server can be reach at `http://localhost:8000/`
+The port 443 is forwarded to the local machine so
+the web server can be reach at `http://localhost:8443/`
 
 To eventually change the forwarded port, edit [Vagrantfile](Vagrantfile)
 

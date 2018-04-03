@@ -1,14 +1,19 @@
 ---
 - hosts: all
-  sudo: true
+  become: yes
+  become_method: sudo
+  become_user: root
+
   vars_files:
+    - 'vars/certbot-vars.yml'
     - 'vars/nginx-vars.yml'
     - 'vars/postgres-vars.yml'
     - 'vars/nodejs-vars.yml'
     - 'vars/redis-vars.yml'
   roles:
+   - ansible-role-certbot
+   - nginx
    - nodesource.node
    - ansible-redis
-   - nginx
    - postgresql
    - api

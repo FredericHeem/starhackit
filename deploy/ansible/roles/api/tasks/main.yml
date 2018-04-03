@@ -21,10 +21,8 @@
 
 - name: Copy server config
   template: src=config.json.j2 dest={{ api_dir }}/server/config/{{ node_env }}.json
-  notify:
-    - systemctl restart api
-  sudo: yes
-
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
 
 - name: restart api
   systemd:
@@ -47,7 +45,8 @@
 #Frontend
 - name: Copy client config
   template: src=config.js.j2 dest={{ api_dir }}/client/src/app/config.js
-  sudo: yes
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   tags: [fe]
 
 - name: Install client node packages

@@ -5,6 +5,6 @@
   "icon": "./assets/instire.png",
   "version": "0.4.0",
   "expo": {
-    "sdkVersion": "26.0.0"
+    "sdkVersion": "25.0.0"
   }
 }

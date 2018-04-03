@@ -2,9 +2,9 @@
   "name": "Instire",
   "description": "Find a job instantly",
   "slug": "instire",
-  "iconUrl": "https://github.com/FredericHeem/starhackit-native/raw/master/assets/logo_wheel_big.png",
-  "version": "0.3.0",
+  "icon": "./assets/instire.png",
+  "version": "0.4.0",
   "expo": {
-    "sdkVersion": "25.0.0"
+    "sdkVersion": "26.0.0"
   }
 }

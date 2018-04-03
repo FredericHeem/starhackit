@@ -22,7 +22,7 @@ export default (context, Screens) => {
     drawerToggleRoute: "DrawerToggle",
     contentComponent: props => <SideBar {...props} />,
     navigationOptions: ({ navigation }) => ({
-      title: "StarHackIt",
+      title: "Instire",
       headerLeft: getDrawerItem(navigation)
     })
   });

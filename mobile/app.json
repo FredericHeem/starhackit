@@ -1,10 +1,20 @@
 {
-  "name": "Instire",
-  "description": "Find a job instantly",
-  "slug": "instire",
-  "icon": "./assets/instire.png",
-  "version": "0.4.0",
   "expo": {
-    "sdkVersion": "25.0.0"
+    "name": "Instire",
+    "description": "Find a job instantly",
+    "slug": "instire",
+    "icon": "./assets/instire.png",
+    "splash": {
+      "resizeMode": "contain",
+      "image": "./assets/instire.png"
+    },
+    "version": "0.4.0",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "com.instire.instire"
+    },
+    "android": {
+      "package": "com.instire.instire"
+    }
   }
 }

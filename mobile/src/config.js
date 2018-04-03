@@ -1,6 +1,6 @@
 const config = {
   general: {
-    title: "StarHackIt",
+    title: "Instire",
     subTitle: "React Native Starter Kit"
   },
 

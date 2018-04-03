@@ -1,5 +1,5 @@
 {
-  "name": "starhackit",
+  "name": "instire",
   "version": "0.2.0",
   "private": true,
   "devDependencies": {
@@ -46,7 +46,7 @@
     "native-base": "2.3.10",
     "qs": "6.5.1",
     "react": "16.2.0",
-    "react-native": "0.52.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-datepicker": "1.6.0",
     "react-native-modal": "5.2.0",
     "react-native-tab-view": "0.0.74",

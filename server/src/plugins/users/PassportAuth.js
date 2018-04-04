@@ -7,7 +7,7 @@ let config = require('config');
 let log = require('logfilename')(__filename);
 
 export default function(app) {
-  const publisher = {app};
+  const {publisher} = app;
   let models = app.data.sequelize.models;
 
   registerJwt(passport, models);

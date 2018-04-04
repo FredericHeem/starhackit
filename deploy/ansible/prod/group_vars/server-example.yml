@@ -3,7 +3,9 @@ env_name: production
 user: ops
 home: /home/ops
 node_env: production
-website_url: "http://starhack.it"
+server_name: starhack.it
+certbot_admin_email: security@starhack.it
+website_url: "https://starhack.it"
 http_port: 80
 db_name: "main"
 db_user: "postgres"

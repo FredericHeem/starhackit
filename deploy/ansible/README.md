@@ -1,38 +1,42 @@
 Deployment - Ansible
 ==========
 
-# Requirements
+# Minimal Requirements
+
+* [Ansible](http://www.ansible.com/)
+
+Eventually install `vagrant` and `virtualbox` if you desire to install a prod like system on your local machine:
 
 * [VirtualBox](https://www.virtualbox.org/)
 * [Vagrant](https://www.vagrantup.com)
-* [Ansible](http://www.ansible.com/)
+
 
 > Ansible scripts are written for the Ubuntu 16.04 or higher 
 
+To install `ansible` with `brew`:
+ 
+ ```
+$ brew install ansible
+ ```
+
+The ansible scripts has been tested with version 2.4:
+ ```
+ $ ansible --version
+ansible 2.4.3.0
+
+ ```
 # What is installed and deployed:
 
 Ansible enables the automation of the installation and configuration of the various stack components:
 
 * Nginx - used as reverse proxy, https, DDOS protection etc ...
-* Rabbitmq - the message queue.
 * Nodejs
+* Redis
+* Certbot to generate and renew ssl certificate
 * The node api backend
 * The frontend
 
-The file [site.yml](site.yml) controls which roles are being deployed:
-
-```
----
-- hosts: all
-  sudo: true
-  vars_files:
-    - 'vars/nginx-vars.yml'
-  roles:
-   - nodesource.node
-   - mrlesmithjr.rabbitmq
-   - api
-   - nginx
-```
+The file [site.yml](site.yml) controls which roles are being deployed
 
 # Configuration
 
@@ -49,14 +53,16 @@ api_dir: '{{home}}/{{app_name}}'
 mail_signature: "The StarHackIt Team"
 ```
 
-To edit the production configuration parameters, edit [prod/group_vars/server.yml](prod/group_vars/server.yml):
+To set the production configuration parameters, create [prod/group_vars/server.yml](prod/group_vars/server.yml):
 
 ```
 env_name: production
 user: ubuntu
 home: /home/ubuntu
 node_env: production
-website_url: "http://starhack.it"
+server_name: starhack.it
+certbot_admin_email: "security@starhack.it"
+website_url: "https://starhack.it"
 mail_service: Mailgun
 mail_from: "StarHackIt <notification@starhack.it>"
 mail_user: postmaster@starhackit.mailgun.org
@@ -82,14 +88,14 @@ First start the vagrant virtual machine where the whole stack will be installed:
 
 Make sure _ansible_ can connect to the vagrant box:
 
-    $ ansible -m ping available
+    $ ansible -i dev -m ping all
 
 To install everything on the vagrant machine:
 
-    $ ansible-playbook site.yml -vv
+    $ ansible-playbook -i dev site.yml -vv
 
-The port 8000 is forwarded to the local machine so
-the web server can be reach at `http://localhost:8000/`
+The port 443 is forwarded to the local machine so
+the web server can be reach at `http://localhost:8443/`
 
 To eventually change the forwarded port, edit [Vagrantfile](Vagrantfile)
 

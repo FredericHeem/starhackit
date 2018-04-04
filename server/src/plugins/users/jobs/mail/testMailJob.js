@@ -1,142 +1,141 @@
-import assert from 'assert';
-import sinon from 'sinon';
-import _ from 'lodash';
-import {Publisher} from 'rabbitmq-pubsub';
-import config from 'config';
+import assert from "assert";
+import sinon from "sinon";
+import _ from "lodash";
+import config from "config";
+import Store from "../../../../store/Store";
 
-import MailJob from './MailJob';
+import MailJob from "./MailJob";
 
-describe.skip('MailJob', function () {
-  let publisher;
+describe("MailJob", function() {
+  let publisher = Store(config);
   let sandbox;
 
-  before(async() => {
-    let options = {exchange:"user", url: config.rabbitmq.url};
-    publisher = new Publisher(options, config.log);
+  before(async () => {
     await publisher.start();
   });
 
-  after(async() => {
+  after(async () => {
     await publisher.stop();
   });
 
-  beforeEach(function (done) {
+  beforeEach(function(done) {
     sandbox = sinon.sandbox.create();
     done();
   });
 
-  afterEach(function (done) {
+  afterEach(function(done) {
     sandbox.restore();
     done();
   });
 
   let user = {
-    email: 'idonotexist@mail.com',
-    code:'1234567890123456'
+    email: "idonotexist@mail.com",
+    code: "1234567890123456"
   };
 
-  let emailType = 'user.registering';
+  let emailType = "user.registering";
 
-  describe('Basic', () => {
+  describe("Basic", () => {
     let mailJob;
-    beforeEach(function (done) {
-      mailJob = new MailJob(config);
+    beforeEach(function(done) {
+      const sendMail = (mailOptions, fn) => {
+        fn(null, mailOptions);
+      };
+      mailJob = new MailJob(config, sendMail);
       done();
     });
 
-    afterEach(function (done) {
+    afterEach(function(done) {
       done();
     });
-    it('getTemplate ok', async() => {
+    it.skip("getTemplate ok", async () => {
       let content = await mailJob.getTemplate(emailType);
       assert(content);
     });
-    it('getTemplate ko', async() => {
-      let content = await mailJob.getTemplate(emailType);
+    it.skip("getTemplate ko", async () => {
+      //TODO
+      let content = await mailJob.getTemplate("blabla");
       assert(content);
     });
-    it('send user registration email', async() => {
+    it.skip("send user registration email", async () => {
       await mailJob._sendEmail(emailType, user);
     });
-    it('send reset password email', async() => {
-      let passwordReset = 'user.resetpassword';
+    it.skip("send reset password email", async () => {
+      let passwordReset = "user.resetpassword";
       await mailJob._sendEmail(passwordReset, user);
     });
-    it('invalid email type', async(done) => {
-      try {
-        await mailJob._sendEmail('invalidEmailType', user);
-      } catch(error){
-        assert(error);
-        assert.equal(error.code, 'ENOENT');
-        done();
-      }
+    it.skip("invalid email type", done => {
+      (async () => {
+        try {
+          await mailJob._sendEmail("invalidEmailType", user);
+        } catch (error) {
+          assert(error);
+          assert.equal(error.code, "ENOENT");
+          done();
+        }
+      })();
     });
-    it('no email', async(done) => {
-      try {
-        await mailJob._sendEmail(emailType, {});
-      } catch(error){
-        assert(error);
-        assert.equal(error.name, 'email not set');
-        done();
-      }
+    it.skip("no email", done => {
+      (async () => {
+        try {
+          await mailJob._sendEmail(emailType, {});
+        } catch (error) {
+          assert(error);
+          assert.equal(error.name, "email not set");
+          done();
+        }
+      })();
     });
-    it('no token', async(done) => {
-      try {
-        await mailJob._sendEmail(emailType, {email:user.email});
-      } catch(error){
-        assert(error);
-        assert.equal(error.name, 'token not set');
-        done();
-      }
+    it.skip("no token", done => {
+      (async () => {
+        try {
+          await mailJob._sendEmail(emailType, { email: user.email });
+        } catch (error) {
+          assert(error);
+          assert.equal(error.name, "token not set");
+          done();
+        }
+      })();
     });
   });
 
-  describe('StartStop', () => {
-    let mailJob;
+  describe("StartStop", () => {
     beforeEach(async () => {
-      mailJob = new MailJob(config);
-      await mailJob.start();
     });
 
     afterEach(async () => {
-      mailJob._sendEmail.restore();
-      await mailJob.stop();
     });
 
-    it('publish user.register', async(done) => {
-      sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
-        //console.log("_sendEmail has been called");
-        assert.equal(type, 'user.registering');
-        assert(userToSend);
-        assert.equal(userToSend.email, user.email);
-        done();
-      });
-
-      await publisher.publish("user.registering", JSON.stringify(user));
+    it("publish user.register", done => {
+      (async () => {
+        const sendMail = (options, cb) => {
+          console.log("sendMail ", options);
+          assert.equal("Email Confirmation", options.subject);
+          assert.equal(options.to, user.email);
+          done();
+        };
+        const mailJob = new MailJob(config, sendMail);
+        await mailJob.start();
+        await publisher.publish("user.registering", JSON.stringify(user));
+        console.log("published user.registering ");
+      })();
     });
-    it('publish user.resetpassword', async(done) => {
-      sinon.stub(mailJob, "_sendEmail").callsFake((type, userToSend) => {
-        //console.log("_sendEmail has been called");
-        assert.equal(type, 'user.resetpassword');
-        assert(userToSend);
-        assert.equal(userToSend.email, user.email);
-        done();
-      });
-
-      await publisher.publish("user.resetpassword", JSON.stringify(user));
-    });
-    it('publish a non JSON message', async(done) => {
-      sinon.stub(mailJob, "_sendEmail").callsFake(() => {
-        assert(false);
-        done();
-      });
-
-      await publisher.publish("user.resetpassword", "not a json");
-      done();
+    it("publish user.resetpassword", done => {
+      (async () => {
+        const sendMail = (options, cb) => {
+          console.log("sendMail ", options);
+          assert.equal(options.to, user.email);
+          assert.equal("Reset password", options.subject);
+          done();
+        };
+        const mailJob = new MailJob(config, sendMail);
+        await mailJob.start();
+        await publisher.publish("user.resetpassword", JSON.stringify(user));
+      })();
     });
   });
-  describe('Ko', () => {
-    it.skip('login failed', async(done) => {
+  describe("Ko", () => {
+    it.skip("login failed", async done => {
       let badPasswordConfig = _.clone(config, true);
       //console.log(JSON.stringify(badPasswordConfig));
       badPasswordConfig.mail.smtp.auth.pass = "1234567890";
@@ -145,7 +144,7 @@ describe.skip('MailJob', function () {
 
       try {
         await mailJob._sendEmail(emailType, user);
-      } catch(error){
+      } catch (error) {
         assert(error);
         assert.equal(error.code, "EAUTH");
         done();

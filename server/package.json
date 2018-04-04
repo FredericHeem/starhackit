@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "private": false,
   "main": "build/index.js",
   "repository": {
@@ -74,7 +74,6 @@
     "pg-hstore": "2.3.2",
     "pm2": "2.10.1",
     "qs": "6.5.1",
-    "rabbitmq-pubsub": "0.6.0",
     "redis": "2.8.0",
     "run-sequence": "1.2.2",
     "sequelize": "4.37.1",

@@ -1,7 +1,14 @@
 let FacebookStrategy = require('passport-facebook').Strategy;
-let config = require('config');
+import config from 'config';
+import Axios from "axios";
+import _ from "lodash";
 
 let log = require('logfilename')(__filename);
+
+const axios = Axios.create({
+  baseURL: "https://graph.facebook.com/",
+  timeout: 30e3
+});
 
 export async function verify(models, publisherUser, req, accessToken, refreshToken, profile) {
   log.debug("authentication reply from fb");
@@ -20,6 +27,7 @@ export async function verify(models, publisherUser, req, accessToken, refreshTok
     let user = await models.User.findByUserId(authProvider.get().user_id);
     //log.debug("user already exist: user ", user.toJSON());
     return {
+      fbId: profile.id,
       user: user.toJSON()
     };
   }
@@ -31,6 +39,7 @@ export async function verify(models, publisherUser, req, accessToken, refreshTok
     log.debug("email already registered");
     //should update fb profile id
     return {
+      fbId: profile.id,
       user: userByEmail.toJSON()
     };
   }
@@ -59,6 +68,26 @@ export async function verify(models, publisherUser, req, accessToken, refreshTok
   };
 }
 
+const savePicture = async ({ models, user, fbId, token }) => {
+  try {
+    const result = await axios.get(`${fbId}/picture`, {
+      params: {
+        redirect: false,
+        type: "large",
+        height: 480,
+        access_token: token
+      }
+    });
+    log.debug("picture ", result.data);
+    const picture = _.get(result.data, "data");
+
+    await models.User.update({ picture }, { where: { id: user.id } });
+  } catch (error) {
+    log.error("savePicture ", error);
+    throw error;
+  }
+};
+
 export function register(passport, models, publisherUser) {
 
   let authenticationFbConfig = config.authentication.facebook;
@@ -74,6 +103,9 @@ export function register(passport, models, publisherUser) {
       async function (req, accessToken, refreshToken, profile, done) {
         try {
           let res = await verify(models, publisherUser, req, accessToken, refreshToken, profile);
+          if (res.user) {
+            await savePicture({ models, user: res.user, fbId: res.fbId, accessToken });
+         }
           done(res.err, res.user);
         } catch(err){
           done(err);

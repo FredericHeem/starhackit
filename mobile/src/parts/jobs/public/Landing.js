@@ -21,7 +21,8 @@ export default () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "white"
       }}
     >
       <View

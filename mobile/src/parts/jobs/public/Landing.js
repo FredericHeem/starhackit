@@ -10,7 +10,7 @@ export default () => {
         width: 200,
         height: 200
       }}
-      source={require("../../../../assets/logo_wheel_big.png")}
+      source={require("../../../../assets/instire.png")}
     />
   );
 

@@ -6006,9 +6006,9 @@ md5.js@^1.3.4:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-mdlean@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/mdlean/-/mdlean-0.13.0.tgz#9d65e792de720705810837d5ec971f6a764e542f"
+mdlean@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/mdlean/-/mdlean-0.15.0.tgz#17234ae06281b8cb51ed157a831946e386f4527c"
 
 media-typer@0.3.0:
   version "0.3.0"

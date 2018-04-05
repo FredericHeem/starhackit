@@ -24,6 +24,9 @@ export default ({ theme }) => {
     },
     label: {
       root: {
+        display: "block",
+        marginBottom: 4,
+        textAlign: "start",
         fontSize: "0.9rem",
         position: "relative",
         color: palette.textSecondary,

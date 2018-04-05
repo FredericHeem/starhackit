@@ -65,6 +65,7 @@ export default context => {
         });
         route = { title: tr.t("Page Not Found") };
       }
+      //TODO display error message
     }
     if (component) {
       const Layout = appView(context);

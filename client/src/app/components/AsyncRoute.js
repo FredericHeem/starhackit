@@ -69,7 +69,12 @@ export default ({ tr }) =>
     }
     render() {
       if (this.state.error) {
-        return <div>{tr.t("Error loading component")}</div>;
+        return (
+          <div>
+            <h3>{tr.t("Error loading component")}</h3>
+            <p>{this.state.error.toString()}</p>
+          </div>
+        );
       } else if (this.state.componentData) {
         return h(this.state.componentData, this.props);
       } else if (this.props.loading) {

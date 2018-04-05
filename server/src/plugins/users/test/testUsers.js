@@ -19,26 +19,34 @@ describe('Users', function() {
       assert(res);
     });
     it('should get all users', async () => {
-      let users = await client.get('v1/users');
+      const users = await client.get('v1/users');
       assert(users);
       assert(Number.isInteger(users.count));
       assert(users.data);
 
-      //console.log(users);
+      console.log(users);
       for(let user of users.data){
-        let userGetOne = await client.get(`v1/users/${user.id}`);
+        const userGetOne = await client.get(`v1/users/${user.id}`);
         assert(userGetOne);
         //console.log('user ' , userGetOne);
         //assert(_.isEqual(user, userGetOne));
         assert(user);
-        //console.log('user:', user)
+        //console.log('user:', userGetOne);
         assert(userGetOne.id);
         assert(userGetOne.username);
         assert(userGetOne.createdAt);
         assert(userGetOne.updatedAt);
         assert(!userGetOne.password);
+
         assert(!userGetOne.passwordHash);
       }
+    });
+    it('should get all users', async () => {
+      const users = await client.get('v1/users?search=mail');
+      assert(users);
+      assert(Number.isInteger(users.count));
+      assert(users.data);
+      console.log(users);
     });
     it('should get all users with filter ASC', async () => {
       let res = await client.get('v1/users?offset=1&order=ASC&limit=10');

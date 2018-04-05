@@ -73,7 +73,7 @@ describe('UserModel', function(){
     assert(res);
     assert(res.get().username);
     assert(!res.get().password);
-    assert(res.get().passwordHash);
+    assert(!res.get().passwordHash);
     let userJson = res.toJSON();
     assert(!userJson.password);
   });

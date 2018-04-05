@@ -8,7 +8,7 @@
       "resizeMode": "contain",
       "image": "./assets/instire.png"
     },
-    "version": "0.4.0",
+    "version": "0.5.0",
     "sdkVersion": "25.0.0",
     "ios": {
       "bundleIdentifier": "com.instire.instire"

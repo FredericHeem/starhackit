@@ -16,6 +16,30 @@
     "email": "bob@mail.com",
     "password":"password",
     "groups": ["User"]
+  },
+  {
+    "username":"jp1",
+    "email": "jp1@mail.com",
+    "password":"password",
+    "groups": ["User"]
+  },
+  {
+    "username":"jp2",
+    "email": "jp2@mail.com",
+    "password":"password",
+    "groups": ["User"]
+  },
+  {
+    "username":"ja1",
+    "email": "ja1@mail.com",
+    "password":"password",
+    "groups": ["User"]
+  },
+  {
+    "username":"ja2",
+    "email": "ja2@mail.com",
+    "password":"password",
+    "groups": ["User"]
   }
 
 ]

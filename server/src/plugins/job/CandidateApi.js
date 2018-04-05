@@ -53,7 +53,12 @@ export default app => {
             include: [
               {
                 model: models.User,
-                as: "recruiter"
+                as: "recruiter",
+                attributes:["id", "username", "email", "picture", "firstName", "lastName"]
+              },
+              {
+                model: models.JobApplication,
+                as: "job_applications"
               }
             ],
             where: {

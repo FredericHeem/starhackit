@@ -1,6 +1,5 @@
 import React from "react";
 import { observable } from "mobx";
-import { View, Button } from "react-native";
 import Lifecycle from "components/Lifecycle";
 import { createStackNavigator } from "react-navigation";
 import _ from "lodash";
@@ -11,13 +10,24 @@ export default context => {
   const opsGetAll = createAsyncOp(params =>
     context.rest.get(`candidate/job`, params)
   );
-  const opsGetOne = createAsyncOp(({ id }) =>
-    context.rest.get(`candidate/job/${id}`)
+  const opsGetOne = createAsyncOp(
+    ({ id }) => context.rest.get(`candidate/job/${id}`),
+    {
+      transform: data => {
+        //console.log("data ", data);
+        //console.log("id ", stores.core.auth.me.id);
+        const out = {
+          ...data,
+          applied: data.job_applications.some(application => application.user_id === stores.core.auth.me.id)
+        };
+        //console.log("out: ", out);
+        return out
+      }
+    }
   );
   const opsApplicationApply = createAsyncOp(param =>
     context.rest.post(`candidate/application`, param)
   );
-  
 
   opsGetAll.data = [];
 
@@ -27,9 +37,9 @@ export default context => {
   });
 
   async function fetchJobs() {
-    console.log("fetchJobs ", stores.profile.location);
+    //console.log("fetchJobs ", stores.profile.location);
     const { coords = {} } = stores.core.geoLoc.location;
-    console.log("fetchJobs coords ", coords);
+    //console.log("fetchJobs coords ", coords);
     await opsGetAll.fetch({
       sectors: stores.profile.sectors.toJS(),
       lat: coords.latitude,
@@ -58,18 +68,6 @@ export default context => {
   const JobDetails = require("./JobDetails").default(context);
   const JobApply = require("./JobApply").default(context);
 
-  const applyButton = navigation => (
-    <View style={{ marginRight: 10 }}>
-      <Button
-        title="Apply"
-        onPress={() => {
-          console.log("apply");
-          navigation.navigate("JobApply");
-        }}
-      />
-    </View>
-  );
-
   return createStackNavigator(
     {
       Jobs: {
@@ -91,11 +89,16 @@ export default context => {
         )
       },
       JobDetails: {
-        screen: props => <JobDetails opsGetOne={opsGetOne} {...props} />,
-        navigationOptions: ({ navigation }) => ({
+        screen: props => (
+          <JobDetails
+            opsGetOne={opsGetOne}
+            {...props}
+            onApply={() => props.navigation.navigate("JobApply")}
+          />
+        ),
+        navigationOptions: () => ({
           title: "Job Details",
-          header: undefined,
-          headerRight: applyButton(navigation)
+          header: undefined
         })
       },
       JobApply: {

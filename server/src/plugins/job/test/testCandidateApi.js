@@ -42,14 +42,17 @@ describe("Candidate Job", function() {
   });
   it("should get all jobs everywhere", async () => {
     let jobs = await client.get(
-      "v1/candidate/job?lat=50&lon=0&max=10000&sectors[]=Developer"
+      "v1/candidate/job?lat=50&lon=0&max=10000"
     );
     const job = jobs[0];
     //console.log("JOB ", jobs);
     //console.log("JOBS ", jobs.length)
+    assert(job);
     if (job) {
       const jobDetails = await client.get(`v1/candidate/job/${job.id}`);
       assert(jobDetails.recruiter.id);
+      assert(!jobDetails.recruiter.passwordHash);
+      console.log("jobDetails ", jobDetails);
       const jobDetails2 = await client.get(`v1/candidate/job/${job.id}`);
       assert.equal(jobDetails.views + 1, jobDetails2.views);
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, View, Button } from "react-native";
 import glamorous from "glamorous-native";
 import { observer } from "mobx-react";
 import moment from "moment";
@@ -13,7 +13,6 @@ export default context => {
   });
 
   const LoadingScreen = require("components/LoadingScreen").default(context);
-
 
   const JobDescription = glamorous(Text)({
     fontSize: 16
@@ -40,9 +39,9 @@ export default context => {
     flexDirection: "row"
   });
   const JobViews = glamorous(Text)({
-    color: "grey"
+    color: "grey",
+    fontSize: 12
   });
-
   const JobTitle = glamorous(Text)({
     fontSize: 20,
     fontWeight: "bold"
@@ -50,7 +49,8 @@ export default context => {
 
   const PublishedDate = glamorous(Text)({
     fontStyle: "italic",
-    color: "grey"
+    color: "grey",
+    fontSize: 12
   });
 
   const Date = glamorous(Text)({
@@ -68,7 +68,8 @@ export default context => {
             Published {moment(details.created_at).fromNow()}
           </PublishedDate>
         )}
-        <JobViews>{`\u00b7 ${details.views} views`}</JobViews>
+        <JobViews>{`\u00b7 ${details.views} views \u00b7 ${details
+          .job_applications.length} applicants`}</JobViews>
       </JobStat>
       <JobTitle>{details.title}</JobTitle>
       <Sector>{details.sector}</Sector>
@@ -123,23 +124,34 @@ export default context => {
     </Card>
   );
 
-  const JobDetails = observer(({ opsGetOne }) => {
+  const JobDetails = observer(({ opsGetOne, onApply }) => {
     console.log("JobDetails ", opsGetOne.loading);
-    if (opsGetOne.loading) return <LoadingScreen label="Loading Jobs..."/>;
+    if (opsGetOne.loading) return <LoadingScreen label="Loading Jobs..." />;
     const details = opsGetOne.data || {};
     const { recruiter } = details;
     console.log("recruiter ", recruiter);
     const image64 = _.get(details.picture, "base64");
     return (
-      <ScrollView style={{ height: 600 }}>
-        {image64 && <Image style={{ height: 200 }} source={{ uri: image64 }} />}
-
-        <View style={{ margin: 16 }}>
-          <JobInfo details={details} />
-          <Company details={details} />
-          {details.recruiter && <Recruiter recruiter={details.recruiter} />}
+      <View>
+        <View style={{ margin: 10 }}>
+          <Button
+            title={details.applied ? "Alreay Applied" : "Apply Now"}
+            disabled={details.applied}
+            onPress={onApply}
+          />
         </View>
-      </ScrollView>
+        <ScrollView style={{ height: 600 }}>
+          {image64 && (
+            <Image style={{ height: 200 }} source={{ uri: image64 }} />
+          )}
+
+          <View style={{ margin: 16 }}>
+            <JobInfo details={details} />
+            <Company details={details} />
+            {details.recruiter && <Recruiter recruiter={details.recruiter} />}
+          </View>
+        </ScrollView>
+      </View>
     );
   });
   return JobDetails;

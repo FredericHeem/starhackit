@@ -61,5 +61,12 @@ describe("Job Application Auth", function() {
     assert(job_application.user);
     assert.equal(job_application.message, input.message);
     console.log(job_application);
+
+    const jobDetails = await client.get(`v1/candidate/job/${job.id}`);
+    console.log(jobDetails);
+    assert(Array.isArray(jobDetails.job_applications));
+    const application = job_applications[0];
+    assert.equal(application.message, input.message);
+
   });
 });

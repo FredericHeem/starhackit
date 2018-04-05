@@ -2,6 +2,7 @@ import { AsyncStorage } from "react-native";
 import { observable, action } from "mobx";
 
 export default context => {
+  const {rest} = context;
   const facebookStore = require("./facebookStore").default(context);
   const driversMap = {
     facebook: facebookStore
@@ -17,7 +18,8 @@ export default context => {
         return;
       }
       store.driver = driversMap[type];
-      store.me = await store.driver.autoLogin();
+      await store.driver.autoLogin();
+      store.me = await rest.get("me");
       const app = await AsyncStorage.getItem("app");
       return { app: app || "Candidate" };
     }),
@@ -35,7 +37,10 @@ export default context => {
     login: action(async ({ type = "facebook", app }) => {
       store.driver = driversMap[type];
       await AsyncStorage.setItem("authType", type);
-      store.me = await store.driver.login();
+      const driverMe = await store.driver.login();
+
+      store.me = await rest.get("me");
+      console.log("store.me", store.me);
       return store.me;
     }),
     navigate: async (app, navigation) => {

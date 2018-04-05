@@ -66,8 +66,6 @@ export default ({ rest }) => {
         const res = await rest.post("auth/login_facebook", body);
         store.jwt = res.token;
         //console.log("loginServer ", store.jwt);
-        const me = await rest.get("me");
-        //console.log("loginServer ME ", me);
       } catch (e) {
         console.error("loginServer ", e);
         throw e;

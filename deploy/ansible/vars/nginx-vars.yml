@@ -12,7 +12,7 @@ nginx_http_params:
 
 nginx_sites:
   default:
-     - listen 443 ssl
+     - listen 80
      - server_name {{ server_name }}
      - root {{ api_dir }}/client/dist
      - index index.html
@@ -23,18 +23,7 @@ nginx_sites:
      - location / {
          try_files $uri /index.html;
        }
-     - ssl_certificate /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
-     - ssl_certificate_key /etc/letsencrypt/live/{{ server_name }}/privkey.pem
-     - include /etc/letsencrypt/options-ssl-nginx.conf
-     - ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem
 
-  http:
-     -  if ($host = {{ server_name }}) {
-           return 301 https://$host$request_uri;
-        } 
-     -  listen 80
-     -  server_name starhack.it
-     -    return 404
 # A list of hashs that define additional configuration
 nginx_configs:
   proxy:

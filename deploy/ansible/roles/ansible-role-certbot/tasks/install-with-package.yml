@@ -1,7 +1,8 @@
 ---
+- apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+
 - name: Install Certbot.
   package: "name={{ certbot_package }} state=present"
 
-- name: Set Certbot script variable.
-  set_fact:
-    certbot_script: "{{ certbot_package }}"

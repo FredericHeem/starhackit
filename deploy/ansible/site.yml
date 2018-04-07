@@ -13,8 +13,8 @@
 
   roles:
    - user
-   - ansible-role-certbot
    - nginx
+   - ansible-role-certbot
    - nodesource.node
    - ansible-redis
    - postgresql

@@ -1,8 +1,9 @@
 {
   "name": "starhackit-ui",
   "title": "StarHack.It",
-  "version": "5.5.0",
-  "description": "React + node starter kit. A fullstack boilerplate written in ES6/7 with authentication and authorisation",
+  "version": "5.8.0",
+  "description":
+    "React + node starter kit. A fullstack boilerplate written in ES6/7 with authentication and authorisation",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
   "scripts": {
@@ -20,7 +21,8 @@
     "e2e": "npm run nightwatch",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "docker:build": "npm run build && docker build -t starhackit/ui .",
-    "docker:run": "docker run --rm -p 80:80 -p 443:443  --name starhackit-ui starhackit/ui",
+    "docker:run":
+      "docker run --rm -p 80:80 -p 443:443  --name starhackit-ui starhackit/ui",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },
@@ -44,7 +46,7 @@
     "i18next-xhr-backend": "1.5.1",
     "intl": "1.2.5",
     "lodash": "4.17.5",
-    "mdlean": "0.10.0",
+    "mdlean": "0.15.0",
     "mobx": "4.1.1",
     "mobx-preact": "2.0.0",
     "preact": "8.2.7",
@@ -53,7 +55,7 @@
     "prop-types": "15.6.1",
     "qs": "6.5.1",
     "react-color": "2.14.0",
-    "react-leanimate": "0.11.0",
+    "react-leanimate": "0.16.0",
     "react-pagify": "2.4.0",
     "reactabular-table": "8.12.1",
     "segmentize": "0.4.1",
@@ -66,6 +68,7 @@
     "babel-loader": "7.1.4",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-plugin-transform-react-remove-prop-types": "0.4.13",
+    "babel-plugin-transform-runtime": "6.23.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.6.1",
     "babel-preset-react": "6.24.1",
@@ -128,5 +131,11 @@
     "node": ">4.x",
     "npm": ">3.x"
   },
-  "false": {}
+  "false": {},
+  "alias": {
+    "react": "preact-compat",
+    "react-dom": "preact-compat",
+    "mobx-react": "mobx-preact",
+    "create-react-class": "preact-compat/lib/create-react-class"
+  }
 }

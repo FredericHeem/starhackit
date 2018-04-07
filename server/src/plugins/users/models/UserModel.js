@@ -68,7 +68,8 @@ module.exports = function(sequelize, DataTypes) {
           attributes: ["name", "authId"]
         }
       ],
-      where: { [key]: value }
+      where: { [key]: value },
+      attributes: ["id", "email", "username", "picture", "createdAt", "updatedAt"]
     });
   };
   User.findByEmail = async function(email) {

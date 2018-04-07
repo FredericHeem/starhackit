@@ -11,7 +11,6 @@ import MailJob from './jobs/mail/MailJob';
 import MeRouter from './me/MeRouter';
 
 import UserRouter from './user/UserRouter';
-import UserApi from './user/UserApi';
 
 import AuthenticationRouter from './authentication/AuthenticationRouter';
 
@@ -75,8 +74,7 @@ function setupRouter(app){
   MeRouter(app);
 
   //Users
-  let userApi = UserApi(app);
-  UserRouter(app, userApi);
+  UserRouter(app);
 }
 
 function setupAuthentication(app) {

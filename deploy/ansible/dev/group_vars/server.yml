@@ -3,8 +3,7 @@ user: vagrant
 home: /home/vagrant
 node_env: development
 server_name: dev.starhack.it
-ssl_admin_email: security@starhack.it
-website_url: "https://localhost"
+website_url: "http://localhost"
 db_name: "main"
 db_user: "postgres"
 db_password: "password"

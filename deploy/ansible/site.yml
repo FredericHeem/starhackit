@@ -6,15 +6,15 @@
 
   vars_files:
     - 'vars/certbot-vars.yml'
-    - 'vars/nginx-vars.yml'
+    - ["vars/nginx-{{ protocol }}-vars.yml"]
     - 'vars/postgres-vars.yml'
     - 'vars/nodejs-vars.yml'
     - 'vars/redis-vars.yml'
 
   roles:
    - user
+   - { role: ansible-role-certbot, when: protocol == "https" }
    - nginx
-   - ansible-role-certbot
    - nodesource.node
    - ansible-redis
    - postgresql

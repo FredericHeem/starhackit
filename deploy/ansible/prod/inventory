@@ -1,4 +1,4 @@
 [server]
 #62.210.182.186 ansible_ssh_user=ops ansible_ssh_private_key_file=$HOME/.ssh/id_rsa_starthackitprod
 #163.172.177.183 ansible_ssh_user=root
-163.172.159.179 ansible_ssh_user=root
+163.172.159.179 ansible_ssh_user=root ansible_python_interpreter=/usr/bin/python3

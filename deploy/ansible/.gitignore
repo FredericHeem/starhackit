@@ -1,3 +1,4 @@
 .vagrant
-site.retry
+*.retry
 prod/group_vars/server.yml
+*.log

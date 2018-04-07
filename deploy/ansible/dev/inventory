@@ -1,4 +1,4 @@
 [server]
-localhost ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/host0/virtualbox/private_key ansible_ssh_port=2222
+localhost ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/host0/virtualbox/private_key ansible_ssh_port=2222 ansible_python_interpreter=/usr/bin/python3
 
 

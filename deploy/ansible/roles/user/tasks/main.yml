@@ -1,6 +1,6 @@
 ---
 - name: create deployment user
   user: 
-    name: "{{ user}}"
+    name: "{{ user }}"
     createhome: yes 
     state: present 

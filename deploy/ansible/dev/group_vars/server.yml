@@ -1,7 +1,7 @@
 env_name: dev
 user: vagrant
 home: /home/vagrant
-node_env: development
+node_env: production
 server_name: dev.starhack.it
 website_url: "http://localhost"
 db_name: "main"

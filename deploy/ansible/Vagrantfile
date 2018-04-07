@@ -6,7 +6,7 @@ hosts = {
 }
 
 Vagrant.configure("2") do |config|
-  config.vm.network "forwarded_port", guest: 443, host: 8443
+  config.vm.network "forwarded_port", guest: 80, host: 8081
 
   hosts.each do |name, ip|
     config.vm.define name do |machine|

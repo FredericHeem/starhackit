@@ -94,8 +94,8 @@ To install everything on the vagrant machine:
 
     $ ansible-playbook -i dev site.yml -vv
 
-The port 443 is forwarded to the local machine so
-the web server can be reach at `http://localhost:8443/`
+The port 80 is forwarded to the local machine so
+the web server can be reach at `http://localhost:8081/`
 
 To eventually change the forwarded port, edit [Vagrantfile](Vagrantfile)
 

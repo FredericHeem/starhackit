@@ -24,12 +24,6 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
 
-- name: restart api
-  systemd:
-    state: restarted
-    daemon_reload: yes
-    name: api
-
 - command: npm run build
   args:
     chdir: "{{ api_dir }}/server"
@@ -41,6 +35,12 @@
     chdir: "{{ api_dir }}/server"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
+
+- name: restart api
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: api
 
 #Frontend
 - name: Copy client config

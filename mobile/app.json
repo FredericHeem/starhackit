@@ -11,10 +11,12 @@
     "version": "2.0.0",
     "sdkVersion": "25.0.0",
     "ios": {
-      "bundleIdentifier": "com.instire.instireapp"
+      "bundleIdentifier": "com.instire.instireapp",
+      "buildNumber": "2.0.0"
     },
     "android": {
-      "package": "com.instire.instireapp"
+      "package": "com.instire.instireapp",
+      "versionCode": 20000
     }
   }
 }

@@ -1,12 +1,12 @@
 
 env_name: production
-user: ops
-home: /home/ops
+user: ubuntu
+home: /home/ubuntu
 node_env: production
 server_name: starhack.it
-certbot_admin_email: security@starhack.it
+https: true
+ssl_admin_email: security@starhack.it
 website_url: "https://starhack.it"
-http_port: 80
 db_name: "main"
 db_user: "postgres"
 db_password: "_Password123!"

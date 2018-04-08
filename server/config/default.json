@@ -21,10 +21,10 @@
     }
   },
   "db":{
-    "driver": "sqlite3",
-    "dialect":"sqlite",
+    "driver": "pg",
+    "dialect":"postgres",
     "database": "dev",
-    "user": "user",
+    "user": "fredericheem",
     "password": "password",
     "host": "localhost",
     "port": "5432",
@@ -40,7 +40,7 @@
       "expiresIn": "15 days"
     }
   },
-  
+
   "authentication":{
     /*
     "facebook":{

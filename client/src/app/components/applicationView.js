@@ -24,13 +24,12 @@ export default context => {
     flex: "1 1 auto",
     display: "flex",
     flexDirection: "column",
-    overflow: "auto",
     color: palette.textPrimary
   }));
 
   const MainView = glamorous("main")({
     display: "flex",
-    flex: "1",
+    flexGrow: "1",
     justifyContent: "center",
     alignItems: "flex-start",
     marginTop: 50,

@@ -10,14 +10,7 @@
     <link href="/<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
     <% } %>
 </head>
-
 <body>
-<!--[if lt IE 11]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to improve your experience.</p>
-<![endif]-->
-
-<!-- application container -->
 
 <div id="loading">
     <style type="text/css">
@@ -56,25 +49,16 @@
             width: 100%;
         }
         .animate-spin {
-          -moz-animation: spin 2s infinite linear;
-          -o-animation: spin 2s infinite linear;
-          -webkit-animation: spin 10s infinite linear;
           animation: spin 10s infinite linear;
           display: inline-block;
         }
 
         @keyframes spin {
           0% {
-            -moz-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
           }
 
           100% {
-            -moz-transform: rotate(359deg);
-            -o-transform: rotate(359deg);
-            -webkit-transform: rotate(359deg);
             transform: rotate(359deg);
           }
         }
@@ -97,9 +81,6 @@
   </div>
   <div id="application">
   </div>
-<!--[if IE]>
-<script src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise"></script>
-<![endif]-->
 
 <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
 <script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>

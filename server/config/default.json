@@ -2,7 +2,7 @@
   "websiteUrl": "http://localhost:8080",
   "log": {
     "console": {
-      "level": "info",
+      "level": "debug",
       "timestamp": true,
       "colorize": true
     }

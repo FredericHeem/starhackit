@@ -85,7 +85,8 @@ export default context => {
     company_name: "",
     company_info: "",
     business_type: "",
-    picture: {}
+    picture: {},
+    employment_type: "Full Time"
   };
 
   const currentJob = observable({

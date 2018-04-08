@@ -12,6 +12,7 @@ export default context => {
   const JobInfo = require("./JobInfo").default(context);
   const SectorCard = require("./SectorCard").default(context);
   const DateItem = require("./Dates").default(context);
+  const EmploymentType = require("./EmploymentType").default(context);
 
   const JobEdit = observer(({ currentJob, navigation, onRemove }) => {
     const picture = currentJob.map.get("picture");
@@ -29,6 +30,7 @@ export default context => {
           <FormItem>
             <DateItem currentJob={currentJob} />
           </FormItem>
+          <EmploymentType currentJob={currentJob} />
           <LocationCard
             placeHolder="Where is the Job Location?"
             location={currentJob.map.get("location").description}

@@ -15,6 +15,7 @@ export default context => {
   const SectorList = require("components/SectorList").default(context);
   const JobEdit = require("./JobEdit").default(context);
   const CompanyInfo = require("./CompanyInfo").default(context);
+  const EmploymentType = require("./EmploymentType").default(context);
   const DateItem = require("./Dates").default(context);
 
   const Header = glamorous.view({
@@ -64,6 +65,7 @@ export default context => {
       </Header>
     ),
     steps: [
+
       {
         title: "Job Type",
         content: JobInfo,
@@ -94,6 +96,11 @@ export default context => {
           />
         ),
         nextAllowed: ({ currentJob }) => currentJob.hasLocation()
+      },
+      {
+        title: "Employment Type",
+        content: EmploymentType,
+        nextAllowed: () => true
       },
       {
         title: "Company Info",

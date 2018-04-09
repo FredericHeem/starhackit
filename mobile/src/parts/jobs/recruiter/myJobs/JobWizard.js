@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button, TouchableOpacity } from "react-native";
+import { View, ScrollView, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import glamorous from "glamorous-native";
 
@@ -117,7 +117,7 @@ export default context => {
       {
         title: "Final Review",
         content: ({ onJobCreated, store, ...props }) => (
-          <View>
+          <ScrollView>
             <Button
               color="blue"
               title="Create Job Post Now"
@@ -127,7 +127,7 @@ export default context => {
               }}
             />
             <JobEdit {...props} />
-          </View>
+          </ScrollView>
         )
       }
     ]

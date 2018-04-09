@@ -1,5 +1,5 @@
 import React from "react";
-import {Image} from "react-native";
+import { Image } from "react-native";
 import { observer } from "mobx-react";
 import glamorous, { View } from "glamorous-native";
 import _ from "lodash";
@@ -37,16 +37,27 @@ export default context => {
         ))}
       </View>
     );
-    
+
     return (
       <Page>
-        {user.picture && <Image style={{height: 200}} source={{uri: user.picture.url}}/>}
+        {user.picture && (
+          <Image style={{ height: 200 }} source={{ uri: user.picture.url }} />
+        )}
         <MainInfo>
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>
             {user.username}
           </Text>
           <Text>{user.email}</Text>
         </MainInfo>
+        <Header>Message</Header>
+        <Text
+          style={{
+            backgroundColor: "white",
+            padding: 10
+          }}
+        >
+          {applicant.get("message")}
+        </Text>
         <Header>Summary</Header>
         <Text
           style={{
@@ -57,7 +68,9 @@ export default context => {
           {profile_candidate.summary}
         </Text>
         <Header>Experiences</Header>
-        {profile_candidate.experiences && <Experiences experiences={profile_candidate.experiences} />}
+        {profile_candidate.experiences && (
+          <Experiences experiences={profile_candidate.experiences} />
+        )}
       </Page>
     );
   });

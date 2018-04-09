@@ -16,7 +16,7 @@
     },
     "android": {
       "package": "com.instire.instire",
-      "versionCode": 20001,
+      "versionCode": 20002,
       "permissions": [ "CAMERA", "ACCESS_FINE_LOCATION", "MANAGE_DOCUMENTS" ]
     }
   }

@@ -128,7 +128,6 @@ export default context => {
     //console.log("JobDetails ", opsGetOne.loading);
     if (opsGetOne.loading) return <LoadingScreen label="Loading Jobs..." />;
     const details = opsGetOne.data || {};
-    const { recruiter } = details;
     const image64 = _.get(details.picture, "base64");
     return (
       <View>

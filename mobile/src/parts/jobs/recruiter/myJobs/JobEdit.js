@@ -9,13 +9,12 @@ export default context => {
   const LocationCard = require("components/LocationCard").default(context);
   const JobInfo = require("./JobInfo").default(context);
   const SectorCard = require("./SectorCard").default(context);
+  const JobPicture = require("./JobPicture").default(context);
   const DateItem = require("./Dates").default(context);
   const EmploymentType = require("./EmploymentType").default(context);
   const SalaryCard = require("./SalaryCard").default(context);
 
   const JobEdit = observer(({ currentJob, navigation, onRemove }) => {
-    const picture = currentJob.map.get("picture");
-
     return (
       <ScrollView>
         <View>
@@ -42,8 +41,7 @@ export default context => {
             onPress={() => navigation.navigate("LocationEdit")}
           />
         </View>
-        {picture.base64 &&
-          <Image style={{ height: 300 }} source={{ uri: picture.base64 }} />}
+        <JobPicture currentJob={currentJob} />
         <View
           style={{
             flex: 1,

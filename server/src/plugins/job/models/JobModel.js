@@ -20,18 +20,21 @@ export default function(sequelize, DataTypes) {
       end_date: DataTypes.DATE,
       sector: DataTypes.TEXT,
       employment_type: {
-        type:   DataTypes.ENUM,
+        type: DataTypes.ENUM,
         values: ["Part Time", "Full Time"],
         defaultValue: "Full Time"
       },
       rate_min: DataTypes.TEXT,
       rate_max: DataTypes.TEXT,
-      rate_period:{
-        type:   DataTypes.ENUM,
+      rate_period: {
+        type: DataTypes.ENUM,
         values: ["hour", "day", "month", "year"],
         defaultValue: "hour"
       },
-      currency: DataTypes.TEXT,
+      currency: {
+        type: DataTypes.TEXT,
+        defaultValue: "USD"
+      },
       location: DataTypes.JSONB,
       meta: DataTypes.JSONB,
       geo: DataTypes.GEOGRAPHY,

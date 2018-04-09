@@ -10,6 +10,7 @@ import moment from "moment";
 
 export default context => {
   const createAsyncOp = require("core/asyncOp").default(context);
+  const Page = require("components/Page").default(context);
   const Text = require("components/Text").default(context);
   const List = require("components/List").default(context);
   const LoadingScreen = require("components/LoadingScreen").default(context);
@@ -165,7 +166,7 @@ export default context => {
 */
   const currentApplicant = observable.map({});
 
-  const Page = require("components/Page").default(context);
+  
 
   const EmptyJobs = () => (
     <View style={{ margin: 20 }}>

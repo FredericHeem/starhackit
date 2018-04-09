@@ -8,7 +8,7 @@ export default context => {
   const Card = require("components/Card").default(context);
 
   const displayRate = (min, max, currency) => {
-    if(min <= max){
+    if(min === max){
       return `${currency} ${min}`
     }
     return `${currency} ${min} - ${max}`

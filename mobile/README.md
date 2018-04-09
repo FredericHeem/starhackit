@@ -34,3 +34,6 @@ The most recent version of this operation guide is available [here](https://gith
 
 Copy `secrets.exmaples.json` to `secrets.json` and fill the facebook appId and the google api key. Do not forget to enable the geolocation and places google API. 
 
+Facebook authentication key hash for android:
+
+keytool -list -printcert -jarfile android%2F\@instire%2Finstire-0398ae0e-3c2a-11e8-9fa6-0a580a782213-signed.apk | grep SHA1 | awk '{ print $2 }' | xxd -r -p | openssl base64

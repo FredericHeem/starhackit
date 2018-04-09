@@ -32,7 +32,7 @@ export default context => {
           <SalaryCard
             currentJob={currentJob}
             onEdit={() => {
-              console.log("on salary edit");
+              navigation.navigate("Salary")
             }}
           />
           <EmploymentType currentJob={currentJob} />

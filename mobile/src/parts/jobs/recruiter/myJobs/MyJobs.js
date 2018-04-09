@@ -22,6 +22,7 @@ export default context => {
   const JobMenu = require("./JobMenu").default(context);
   const Applicants = require("./Applicants").default(context);
   const Applicant = require("./Applicant").default(context);
+  const Salary = require("./Salary").default(context);
 
   const pathname = "recruiter/job";
 
@@ -57,8 +58,8 @@ export default context => {
       Keyboard.dismiss();
       navigation.navigate("MyJobs");
     }),
-    update: action(async (job, navigation) => {
-      console.log("update job ", job);
+    update: action(async (job, navigation, nextPage) => {
+      console.log("update job ", job, nextPage);
       const error = hasJobError(job);
       if (error) {
         return displayError(error);
@@ -66,7 +67,7 @@ export default context => {
       const jobUpdated = await opsUpdate.fetch(job);
       console.log("jobUpdated ", jobUpdated);
       Keyboard.dismiss();
-      navigation.navigate("MyJobs");
+      navigation.navigate(nextPage);
     }),
     remove: action(async (jobId, navigation) => {
       console.log("remove  ", jobId);
@@ -110,16 +111,16 @@ export default context => {
       }
       currentJob.map.set("location", location);
     },
-    setRateMin: (min) => {
-      currentJob.map.set("rate_min", min)
-      if(min > currentJob.map.get("rate_max")){
-        currentJob.map.set("rate_max", min)
+    setRateMin: min => {
+      currentJob.map.set("rate_min", min);
+      if (min > currentJob.map.get("rate_max")) {
+        currentJob.map.set("rate_max", min);
       }
     },
-    setRateMax: (max) => {
-      currentJob.map.set("rate_max", max)
-      if(max < currentJob.map.get("rate_min")){
-        currentJob.map.set("rate_min", max)
+    setRateMax: max => {
+      currentJob.map.set("rate_max", max);
+      if (max < currentJob.map.get("rate_min")) {
+        currentJob.map.set("rate_min", max);
       }
     },
     hasSector: () => !_.isEmpty(currentJob.map.get("sector")),
@@ -260,20 +261,17 @@ export default context => {
           />
         )}
         <View style={{ margin: 20 }}>
-          <Button
-            title="Create a new Job"
-            onPress={onJobCreate}
-          />
+          <Button title="Create a new Job" onPress={onJobCreate} />
         </View>
       </Page>
     );
   });
 
-  const jobSaveButton = navigation => (
+  const jobSaveButton = (navigation, nextPage) => (
     <View style={{ marginRight: 10 }}>
       <Button
         title="Update"
-        onPress={() => store.update(currentJob.map.toJSON(), navigation)}
+        onPress={() => store.update(currentJob.map.toJSON(), navigation, nextPage)}
       />
     </View>
   );
@@ -313,7 +311,7 @@ export default context => {
         navigationOptions: ({ navigation }) => ({
           title: "Edit a Job Post",
           header: undefined,
-          headerRight: jobSaveButton(navigation)
+          headerRight: jobSaveButton(navigation, "MyJobs")
         })
       },
       JobMenu: {
@@ -374,6 +372,14 @@ export default context => {
         navigationOptions: () => ({
           title: "Edit Location",
           header: undefined
+        })
+      },
+      Salary: {
+        screen: () => <Salary currentJob={currentJob} />,
+        navigationOptions: ({ navigation }) => ({
+          title: "Salary",
+          header: undefined,
+          headerRight: jobSaveButton(navigation, "JobEdit")
         })
       }
     },

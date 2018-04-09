@@ -1,9 +1,7 @@
 import React from "react";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-
 import glamorous from "glamorous-native";
-import _ from "lodash";
 
 export default context => {
   const AutoCompleteLocation = require("components/AutoCompleteLocation").default(
@@ -15,6 +13,8 @@ export default context => {
   const SectorList = require("components/SectorList").default(context);
   const JobEdit = require("./JobEdit").default(context);
   const CompanyInfo = require("./CompanyInfo").default(context);
+  const EmploymentType = require("./EmploymentType").default(context);
+  const Salary = require("./Salary").default(context);
   const DateItem = require("./Dates").default(context);
 
   const Header = glamorous.view({
@@ -34,7 +34,7 @@ export default context => {
   const wizardConfig = {
     header: ({
       title,
-      isFirst,
+      //isFirst,
       onPrevious,
       isLast,
       onNext,
@@ -94,6 +94,16 @@ export default context => {
           />
         ),
         nextAllowed: ({ currentJob }) => currentJob.hasLocation()
+      },
+      {
+        title: "Employment Type",
+        content: EmploymentType,
+        nextAllowed: () => true
+      },
+      {
+        title: "Salary",
+        content: Salary,
+        nextAllowed: () => true
       },
       {
         title: "Company Info",

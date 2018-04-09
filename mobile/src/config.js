@@ -6,7 +6,7 @@ const config = {
 
   development: {
     env: "development",
-    apiUrl: "http://192.168.0.4:9000/api/v1/"
+    apiUrl: "http://192.168.0.11:9000/api/v1/"
   },
 
   production: {

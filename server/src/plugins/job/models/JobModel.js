@@ -1,6 +1,6 @@
 import createFakeJob from "../test/createFakeJob";
 
-module.exports = function(sequelize, DataTypes) {
+export default function(sequelize, DataTypes) {
   const Job = sequelize.define(
     "Job",
     {
@@ -19,6 +19,19 @@ module.exports = function(sequelize, DataTypes) {
       start_date: DataTypes.DATE,
       end_date: DataTypes.DATE,
       sector: DataTypes.TEXT,
+      employment_type: {
+        type:   DataTypes.ENUM,
+        values: ["Part Time", "Full Time"],
+        defaultValue: "Full Time"
+      },
+      rate_min: DataTypes.TEXT,
+      rate_max: DataTypes.TEXT,
+      rate_period:{
+        type:   DataTypes.ENUM,
+        values: ["hour", "day", "month", "year"],
+        defaultValue: "hour"
+      },
+      currency: DataTypes.TEXT,
       location: DataTypes.JSONB,
       meta: DataTypes.JSONB,
       geo: DataTypes.GEOGRAPHY,
@@ -68,4 +81,4 @@ module.exports = function(sequelize, DataTypes) {
     return Job.bulkCreate(fakeJobs);
   };
   return Job;
-};
+}

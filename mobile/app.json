@@ -15,7 +15,7 @@
       "buildNumber": "2.0.0"
     },
     "android": {
-      "package": "com.instire.instireapp",
+      "package": "com.instire.instire",
       "versionCode": 20001,
       "permissions": [ "CAMERA", "ACCESS_FINE_LOCATION", "MANAGE_DOCUMENTS" ]
     }

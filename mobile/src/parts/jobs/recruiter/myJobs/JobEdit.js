@@ -2,8 +2,6 @@ import React from "react";
 import { View, Button, Image, ScrollView } from "react-native";
 import { observer } from "mobx-react";
 
-import _ from "lodash";
-
 const isEdit = navigation => !!navigation.state.params;
 
 export default context => {
@@ -12,6 +10,8 @@ export default context => {
   const JobInfo = require("./JobInfo").default(context);
   const SectorCard = require("./SectorCard").default(context);
   const DateItem = require("./Dates").default(context);
+  const EmploymentType = require("./EmploymentType").default(context);
+  const SalaryCard = require("./SalaryCard").default(context);
 
   const JobEdit = observer(({ currentJob, navigation, onRemove }) => {
     const picture = currentJob.map.get("picture");
@@ -29,15 +29,21 @@ export default context => {
           <FormItem>
             <DateItem currentJob={currentJob} />
           </FormItem>
+          <SalaryCard
+            currentJob={currentJob}
+            onEdit={() => {
+              console.log("on salary edit");
+            }}
+          />
+          <EmploymentType currentJob={currentJob} />
           <LocationCard
             placeHolder="Where is the Job Location?"
             location={currentJob.map.get("location").description}
             onPress={() => navigation.navigate("LocationEdit")}
           />
         </View>
-        {picture.base64 && (
-          <Image style={{ height: 300 }} source={{ uri: picture.base64 }} />
-        )}
+        {picture.base64 &&
+          <Image style={{ height: 300 }} source={{ uri: picture.base64 }} />}
         <View
           style={{
             flex: 1,
@@ -46,15 +52,14 @@ export default context => {
           }}
         >
           <View style={{ paddingTop: 30, width: 200 }}>
-            {isEdit(navigation) && (
+            {isEdit(navigation) &&
               <Button
                 color="red"
                 title="Remove Job"
                 onPress={async () => {
                   await onRemove(currentJob.map.get("id"), navigation);
                 }}
-              />
-            )}
+              />}
           </View>
         </View>
       </ScrollView>

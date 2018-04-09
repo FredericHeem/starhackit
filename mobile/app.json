@@ -16,8 +16,15 @@
     },
     "android": {
       "package": "com.instire.instire",
-      "versionCode": 20003,
-      "permissions": [ "CAMERA", "ACCESS_FINE_LOCATION", "MANAGE_DOCUMENTS" ]
+      "versionCode": 20004,
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "MANAGE_DOCUMENTS",
+        "READ_INTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     }
   }
 }

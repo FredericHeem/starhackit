@@ -15,8 +15,8 @@ export default context => {
       base64: true
     });
     //TODO check extension and change jpg to whatever it is
-    result.base64 = `data:image/jpg;base64,${result.base64}`;
     if (!result.cancelled) {
+      result.base64 = `data:image/jpg;base64,${result.base64}`;
       currentJob.map.set("picture", result);
     }
   };

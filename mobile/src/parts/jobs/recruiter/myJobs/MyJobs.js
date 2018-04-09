@@ -86,7 +86,11 @@ export default context => {
     company_info: "",
     business_type: "",
     picture: {},
-    employment_type: "Full Time"
+    employment_type: "Full Time",
+    rate_min: "",
+    rate_max: "",
+    rate_period: "hour",
+    currency: "USD"
   };
 
   const currentJob = observable({
@@ -105,6 +109,18 @@ export default context => {
         });
       }
       currentJob.map.set("location", location);
+    },
+    setRateMin: (min) => {
+      currentJob.map.set("rate_min", min)
+      if(min > currentJob.map.get("rate_max")){
+        currentJob.map.set("rate_max", min)
+      }
+    },
+    setRateMax: (max) => {
+      currentJob.map.set("rate_max", max)
+      if(max < currentJob.map.get("rate_min")){
+        currentJob.map.set("rate_min", max)
+      }
     },
     hasSector: () => !_.isEmpty(currentJob.map.get("sector")),
     hasLocation: () => !_.isEmpty(currentJob.map.get("location")),

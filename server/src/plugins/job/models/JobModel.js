@@ -31,6 +31,7 @@ export default function(sequelize, DataTypes) {
         values: ["hour", "day", "month", "year"],
         defaultValue: "hour"
       },
+      currency: DataTypes.TEXT,
       location: DataTypes.JSONB,
       meta: DataTypes.JSONB,
       geo: DataTypes.GEOGRAPHY,

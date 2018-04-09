@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import pkg from "../../../../package.json"
+import pkg from "../../../../app.json"
 export default context => {
   const Logout = require("views/Logout").default(context);
   const Page = require("components/Page").default(context);
@@ -15,7 +15,7 @@ export default context => {
   );
 
   const Version = () => (
-    <Text style={{textAlign: "center", color: "grey"}}>Version {pkg.version}</Text>
+    <Text style={{textAlign: "center", color: "grey"}}>Version {pkg.expo.version}</Text>
   )
   const Settings = ({ navigation }) => (
     <Page>

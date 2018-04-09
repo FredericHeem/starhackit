@@ -49,29 +49,29 @@ export default context => {
   const store = observable({
     jobs: observable.map(),
     create: action(async (job, navigation) => {
-      console.log("create ", job);
+      //console.log("create ", job);
       const error = hasJobError(job);
       if (error) {
         return displayError(error);
       }
       const jobCreated = await opsCreate.fetch(job);
-      console.log("jobCreated ", jobCreated);
+      //console.log("jobCreated ", jobCreated);
       Keyboard.dismiss();
       navigation.navigate("MyJobs");
     }),
     update: action(async (job, navigation, nextPage) => {
-      console.log("update job ", job, nextPage);
+      //console.log("update job ", job, nextPage);
       const error = hasJobError(job);
       if (error) {
         return displayError(error);
       }
       const jobUpdated = await opsUpdate.fetch(job);
-      console.log("jobUpdated ", jobUpdated);
+      //console.log("jobUpdated ", jobUpdated);
       Keyboard.dismiss();
       navigation.navigate(nextPage);
     }),
     remove: action(async (jobId, navigation) => {
-      console.log("remove  ", jobId);
+      //console.log("remove  ", jobId);
       await opsDelete.fetch(jobId);
       Keyboard.dismiss();
       navigation.navigate("MyJobs");
@@ -98,12 +98,12 @@ export default context => {
   const currentJob = observable({
     map: observable.map(defaultJob),
     setLocation: async location => {
-      console.log("setLocation ", location);
+      //console.log("setLocation ", location);
       const results = await context.stores.core.geoLoc.getGeoPosition(
         location.description
       );
       const geoLoc = _.get(results[0], "geometry.location");
-      console.log("geoLoc ", geoLoc);
+      //console.log("geoLoc ", geoLoc);
       if (geoLoc) {
         currentJob.map.set("geo", {
           type: "Point",
@@ -131,42 +131,8 @@ export default context => {
     isCompanyInfoValid: () =>
       currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
-  /*
-  const applicantData = {
-    created_at: "2018-03-27T16:03:24.607Z",
-    id: "cb634a61-e8a1-48e4-96a9-91372f727f95",
-    job_id: "d8ddc88d-d5cf-4363-9f8a-e9d733798e95",
-    message: "Sdsds",
-    updated_at: "2018-03-27T16:03:24.607Z",
-    user: {
-      email: "frederic.heem@gmail.com",
-      firstName: "Fred",
-      lastName: "M",
-      profile_candidate: {
-        experiences: [
-          {
-            id: "93a94e96-0721-461a-9bda-9fc771111328",
-            company: "Rosta",
-            position: "Pizzaiolo"
-          },
-          {
-            id: "8e653cb2-c39c-4e67-aab6-c3d36d495795",
-            company: "Il vesuvio",
-            position: "Chef"
-          }
-        ],
-        geo: null,
-        location: null,
-        summary: "Bla bla "
-      },
-      username: "Fred Eric M"
-    },
-    user_id: "e485a65c-42b5-42d9-9681-67134c43c2f2"
-  };
-*/
-  const currentApplicant = observable.map({});
-
   
+  const currentApplicant = observable.map({});
 
   const EmptyJobs = () => (
     <View style={{ margin: 20 }}>

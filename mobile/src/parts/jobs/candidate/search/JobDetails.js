@@ -125,11 +125,10 @@ export default context => {
   );
 
   const JobDetails = observer(({ opsGetOne, onApply }) => {
-    console.log("JobDetails ", opsGetOne.loading);
+    //console.log("JobDetails ", opsGetOne.loading);
     if (opsGetOne.loading) return <LoadingScreen label="Loading Jobs..." />;
     const details = opsGetOne.data || {};
     const { recruiter } = details;
-    console.log("recruiter ", recruiter);
     const image64 = _.get(details.picture, "base64");
     return (
       <View>

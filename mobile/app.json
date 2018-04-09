@@ -3,12 +3,12 @@
     "name": "Instire",
     "description": "Find a job instantly",
     "slug": "instire",
-    "icon": "./assets/instire.png",
+    "icon": "./assets/ii512x512.png",
     "splash": {
       "resizeMode": "contain",
       "image": "./assets/instire.png"
     },
-    "version": "2.0.2",
+    "version": "2.0.3",
     "sdkVersion": "25.0.0",
     "ios": {
       "bundleIdentifier": "com.instire.instireapp",

@@ -44,6 +44,14 @@ export default context => {
     fontSize: 14
   });
 
+  const EmploymentType = glamorous(Text)({
+    fontSize: 14
+  });
+
+  const Rate = glamorous(Text)({
+    fontSize: 14
+  });
+
   const CompanyName = glamorous(Text)({
     fontSize: 14,
     fontWeight: "bold"
@@ -55,6 +63,7 @@ export default context => {
 
   const JobItem = ({ job }) => {
     const image64 = _.get(job.picture, "base64");
+    console.log("JobItem ", job);
     return (
       <ItemView
         style={{
@@ -77,6 +86,14 @@ export default context => {
           <Title>{job.title}</Title>
           <JobDescription>{job.description}</JobDescription>
           <Sector>{job.sector}</Sector>
+          <View>
+            <Rate>
+              {job.rate_min}
+              {job.rate_max && ` - ${job.rate_max}`}
+              {` ${job.currency} per ${job.rate_period}`}
+            </Rate>
+            <EmploymentType>{job.employment_type}</EmploymentType>
+          </View>
           {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
           {job.location && (
             <Location>

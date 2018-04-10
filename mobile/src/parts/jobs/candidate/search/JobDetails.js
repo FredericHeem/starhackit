@@ -58,6 +58,13 @@ export default context => {
     color: "grey"
   });
 
+  const Rate = glamorous(Text)({
+    fontWeight: "bold"
+  });
+
+ const EmploymentType = glamorous(Text)({
+  });
+
   const Location = glamorous(Text)({ color: "grey" });
 
   const JobInfo = ({ details }) => (
@@ -68,14 +75,22 @@ export default context => {
             Published {moment(details.created_at).fromNow()}
           </PublishedDate>
         )}
-        <JobViews>{`\u00b7 ${details.views} views \u00b7 ${details
-          .job_applications.length} applicants`}</JobViews>
+        <JobViews>
+          {`\u00b7 ${details.views} views \u00b7 ${details.job_applications
+            .length} applicants`}
+        </JobViews>
       </JobStat>
       <JobTitle>{details.title}</JobTitle>
       <Sector>{details.sector}</Sector>
       {details.description && (
         <JobDescription>{details.description}</JobDescription>
       )}
+      <Rate>
+        {details.rate_min}
+        {details.rate_max && ` - ${details.rate_max}`}
+        {` ${details.currency} per ${details.rate_period}`}
+      </Rate>
+      <EmploymentType>{details.employment_type}</EmploymentType>
       {details.location && (
         <Location>
           {computeDistance(details.geo, context.stores.core.geoLoc)}

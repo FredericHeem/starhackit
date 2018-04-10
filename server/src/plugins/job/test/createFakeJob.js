@@ -22,6 +22,10 @@ export default function createFakeJob(values) {
     },
     location: {
       description: `${faker.address.city()} - ${faker.address.state()}`
-    }
+    },
+    rate_min: faker.random.number({ min: 10, max: 15, precision: 1 }),
+    rate_max: faker.random.number({ min: 15, max: 30, precision: 1 }),
+    rate_period: "hour",
+    currency: "USD"
   };
 }

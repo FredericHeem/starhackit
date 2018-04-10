@@ -14,6 +14,7 @@ export default function createFakeCandidateProfile(values) {
     },
     location: {
       description: `${faker.address.city()} - ${faker.address.state()}`
-    }
+    },
+    phone: faker.phone.phoneNumber()
   };
 }

@@ -12,6 +12,9 @@ module.exports = function(sequelize, DataTypes) {
       summary: {
         type: DataTypes.STRING(2048)
       },
+      phone: {
+        type: DataTypes.TEXT
+      },
       experiences: {
         type: DataTypes.JSONB
       },

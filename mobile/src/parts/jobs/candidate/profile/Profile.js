@@ -25,11 +25,8 @@ export default context => {
       return _.get(asyncOp.data, "location.description");
     },
     saveLocation: action(async (location, navigation) => {
-      //console.log("saveLocation ", location);
       const results = await context.stores.core.geoLoc.getGeoPosition(location.description);
-      
       const geoLoc = _.get(results[0], "geometry.location");
-      //console.log("geoLoc ", geoLoc);
       let geo;
       if(geoLoc){
         geo = { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] }
@@ -41,6 +38,11 @@ export default context => {
     summary: null,
     saveSummary: action(async navigation => {
       await asyncOpPatch({ summary: store.summary });
+      Keyboard.dismiss();
+      navigation.navigate("Profile");
+    }),
+    savePhone: action(async navigation => {
+      await asyncOpPatch({ phone: store.phone });
       Keyboard.dismiss();
       navigation.navigate("Profile");
     }),
@@ -64,14 +66,15 @@ export default context => {
     },
     currentExperience: {},
     sectors: [],
+    phone: "",
     saveSector: action(async (sector, navigation) => {
-      console.log("saveSector ", sector);
+      //console.log("saveSector ", sector);
       store.sectors = [...store.sectors, sector];
       await asyncOpPatch({ sectors: store.sectors });
       navigation.navigate("Profile");
     }),
     removeSector: action(async (sector, navigation) => {
-      console.log("removeSector ", sector);
+      //console.log("removeSector ", sector);
       store.sectors.remove(sector);
       await asyncOpPatch({ sectors: store.sectors });
       navigation.navigate("Profile");
@@ -86,6 +89,9 @@ export default context => {
   const Name = require("components/H1").default(context);
 
   const ImageView = styled.Image`height: 250px;`;
+
+  const Phone = require("./Phone").default(context);
+  const PhoneEdit = require("./PhoneEdit").default(context);
 
   const Summary = require("./Summary").default(context);
   const SummaryEdit = require("./SummaryEdit").default(context);
@@ -117,6 +123,7 @@ export default context => {
       <UserInfoText>
         <Name>{stores.core.auth.me.name}</Name>
       </UserInfoText>
+      <Phone phone={store.phone} onPress={() => navigation.navigate("PhoneEdit")}/>
       <Sectors
         sectors={store.sectors}
         store={store}
@@ -141,7 +148,11 @@ export default context => {
       <Button title="Save" onPress={() => store.saveSummary(navigation)} />
     </View>
   );
-
+  const phoneSaveButton = navigation => (
+    <View style={{ marginRight: 10 }}>
+      <Button title="Save" onPress={() => store.savePhone(navigation)} />
+    </View>
+  );
   const experienceSaveButton = navigation => (
     <View style={{ marginRight: 10 }}>
       <Button
@@ -196,6 +207,14 @@ export default context => {
           title: "Edit Summary",
           header: undefined,
           headerRight: summarySaveButton(navigation)
+        })
+      },
+      PhoneEdit: {
+        screen: () => <PhoneEdit store={store} />,
+        navigationOptions: ({ navigation }) => ({
+          title: "Edit Phone Number",
+          header: undefined,
+          headerRight: phoneSaveButton(navigation)
         })
       },
       ExperienceEdit: {

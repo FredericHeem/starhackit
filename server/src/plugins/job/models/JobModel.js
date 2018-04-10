@@ -35,6 +35,7 @@ export default function(sequelize, DataTypes) {
         type: DataTypes.TEXT,
         defaultValue: "USD"
       },
+      benefits: DataTypes.TEXT,
       location: DataTypes.JSONB,
       meta: DataTypes.JSONB,
       geo: DataTypes.GEOGRAPHY,

@@ -39,6 +39,16 @@ export default context => {
       </View>
     );
 
+    const Actions = ({email, phone}) => (
+      <View style={{padding: 6}} display="flex" flexDirection="row" justifyContent="space-around">
+        {email && (
+          <Anchor style={{}} href={`mailto:${email}`} title="Send Email" />
+        )}
+        {phone && (
+          <Anchor href={`tel:${phone}`} title="Call" />
+        )}
+      </View>
+    );
     return (
       <Page>
         {user.picture && (
@@ -48,10 +58,8 @@ export default context => {
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>
             {user.username}
           </Text>
-          {user.email && (
-            <Anchor href={`mailto:${user.email}`} title="Send Email" />
-          )}
         </MainInfo>
+        <Actions phone={profile_candidate.phone} email={user.email}/>
         <Header>Message</Header>
         <Text
           style={{

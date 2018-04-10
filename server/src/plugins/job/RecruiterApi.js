@@ -18,7 +18,7 @@ export default app => {
                       {
                         model: models.ProfileCandidate,
                         as: "profile_candidate",
-                        attributes: ["summary", "experiences", "geo", "location"]
+                        attributes: ["summary", "experiences", "geo", "location", "phone"]
                       }
                     ],
                     model: models.User,

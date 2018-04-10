@@ -7,6 +7,7 @@ import _ from "lodash";
 export default context => {
   const Text = require("components/Text").default(context);
   const Page = require("components/Page").default(context);
+  const Anchor = require("components/Anchor").default(context);
 
   const Applicant = observer(({ applicant }) => {
     console.log("Applicant ", applicant);
@@ -47,7 +48,9 @@ export default context => {
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>
             {user.username}
           </Text>
-          <Text>{user.email}</Text>
+          {user.email && (
+            <Anchor href={`mailto:${user.email}`} title="Send Email" />
+          )}
         </MainInfo>
         <Header>Message</Header>
         <Text

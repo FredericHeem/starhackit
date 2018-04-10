@@ -19,7 +19,7 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
-export default function computeDistance(geo, geoLoc) {
+export default function computeDistance(geo, geoLoc, miles = true) {
   //console.log("geo ", geo)
   //console.log("geoLoc ", geoLoc)
   const { latitude, longitude } = _.get(geoLoc, "location.coords");
@@ -27,6 +27,14 @@ export default function computeDistance(geo, geoLoc) {
     return;
   }
   const [jobLat, jobLon] = geo.coordinates;
-  const distance = distanceFromLatLonInKm(latitude, longitude, jobLat, jobLon);
-  return `${distance} km`;
+  let distance = distanceFromLatLonInKm(latitude, longitude, jobLat, jobLon);
+
+  if(miles){
+    distance = Math.ceil(distance / 1.609);
+  }
+  const unit = miles ? "miles" : "km"
+  if(distance <= 1){
+    return `less than a ${unit} away`
+  }
+  return `${distance} ${unit}`;
 }

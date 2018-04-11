@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button, Image, ScrollView } from "react-native";
+import { View, Button, ScrollView } from "react-native";
 import { observer } from "mobx-react";
 
 const isEdit = navigation => !!navigation.state.params;

@@ -15,7 +15,7 @@ export default context => {
   const CompanyInfo = require("./CompanyInfo").default(context);
   const EmploymentType = require("./EmploymentType").default(context);
   const Salary = require("./Salary").default(context);
-  const DateItem = require("./Dates").default(context);
+  const Urgencies = require("./Urgencies").default(context);
 
   const Header = glamorous.view({
     padding: 10,
@@ -23,7 +23,7 @@ export default context => {
     backgroundColor: "white",
     justifyContent: "space-between",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   });
 
   const HeaderTitle = glamorous.text({
@@ -65,6 +65,13 @@ export default context => {
     ),
     steps: [
       {
+        title: "Urgencies",
+        content: ({ currentJob, store }) => (
+          <Urgencies currentJob={currentJob} onNext={store.next} />
+        ),
+        nextAllowed: () => true
+      },
+      {
         title: "Job Type",
         content: JobInfo,
         nextAllowed: ({ currentJob }) => currentJob.isValid()
@@ -81,8 +88,10 @@ export default context => {
         )
       },
       {
-        title: "Date",
-        content: props => <DateItem {...props} />,
+        title: "Urgencies",
+        content: ({ currentJob, store }) => (
+          <Urgencies currentJob={currentJob} onNext={store.next} />
+        ),
         nextAllowed: () => true
       },
       {

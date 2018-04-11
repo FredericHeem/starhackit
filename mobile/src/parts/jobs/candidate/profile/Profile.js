@@ -177,6 +177,7 @@ export default context => {
                 store.summary = profile.summary;
                 store.geo = profile.geo || {};
                 store.sectors = profile.sectors || [];
+                store.phone = profile.phone;
                 stores.core.auth.getPicture();
               });
             }}

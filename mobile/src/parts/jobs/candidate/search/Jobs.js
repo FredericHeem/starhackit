@@ -59,8 +59,11 @@ export default context => {
     });
   };
   const onApplyJob = (param, navigation) => {
-    //console.log("onApplyJob ", param.jobId)
+    //console.log("onApplyJob ", param.jobId);
     opsApplicationApply.fetch(param);
+    opsGetOne.fetch({
+      id: param.job_id
+    });
     navigation.navigate("JobDetails");
   };
 

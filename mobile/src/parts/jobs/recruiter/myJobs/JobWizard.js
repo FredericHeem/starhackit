@@ -65,13 +65,6 @@ export default context => {
     ),
     steps: [
       {
-        title: "Urgencies",
-        content: ({ currentJob, store }) => (
-          <Urgencies currentJob={currentJob} onNext={store.next} />
-        ),
-        nextAllowed: () => true
-      },
-      {
         title: "Job Type",
         content: JobInfo,
         nextAllowed: ({ currentJob }) => currentJob.isValid()

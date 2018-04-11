@@ -24,6 +24,7 @@ export default context => {
   const Applicants = require("./Applicants").default(context);
   const Applicant = require("./Applicant").default(context);
   const Salary = require("./Salary").default(context);
+  const Urgencies = require("./Urgencies").default(context);
 
   const pathname = "recruiter/job";
 
@@ -131,7 +132,7 @@ export default context => {
     isCompanyInfoValid: () =>
       currentJob.map.get("company_name") && currentJob.map.get("company_info")
   });
-  
+
   const currentApplicant = observable.map({});
 
   const EmptyJobs = () => (
@@ -238,7 +239,8 @@ export default context => {
     <View style={{ marginRight: 10 }}>
       <Button
         title="Update"
-        onPress={() => store.update(currentJob.map.toJSON(), navigation, nextPage)}
+        onPress={() =>
+          store.update(currentJob.map.toJSON(), navigation, nextPage)}
       />
     </View>
   );
@@ -347,6 +349,19 @@ export default context => {
           title: "Salary",
           header: undefined,
           headerRight: jobSaveButton(navigation, "JobEdit")
+        })
+      },
+      Urgencies: {
+        screen: ({ navigation }) => (
+          <Urgencies
+            currentJob={currentJob}
+            onNext={() =>
+              store.update(currentJob.map.toJSON(), navigation, "JobEdit")}
+          />
+        ),
+        navigationOptions: () => ({
+          title: "Urgency",
+          header: undefined
         })
       }
     },

@@ -7,6 +7,8 @@ export default context => {
   const Title = require("components/Title").default(context);
   const Card = require("components/Card").default(context);
 
+  const isPast = date => moment().diff(date) > 0;
+
   const UrgencyCard = observer(({ currentJob, onEdit }) => (
     <Card>
       <Card.Header>
@@ -14,7 +16,13 @@ export default context => {
         <Button title="Edit" onPress={onEdit} />
       </Card.Header>
       <Card.Body style={{ zIndex: 1 }}>
-        <Text>{moment(currentJob.map.get("start_date")).fromNow()}</Text>
+        <Text>
+          {isPast(currentJob.map.get("start_date")) ? (
+            "Immediate Start"
+          ) : (
+            moment(currentJob.map.get("start_date")).fromNow()
+          )}
+        </Text>
       </Card.Body>
     </Card>
   ));

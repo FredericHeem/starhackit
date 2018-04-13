@@ -6,6 +6,7 @@ import glamorous from "glamorous-native";
 
 export default context => {
   const Label = require("components/Label").default(context);
+  const Text = require("components/Text").default(context);
   const FormItemInline = glamorous.view({
     padding: 6,
     margin: 10,
@@ -14,7 +15,6 @@ export default context => {
   });
 
   const Row = glamorous.view({
-
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
@@ -33,11 +33,11 @@ export default context => {
               placeholder="minimum"
               underlineColorAndroid="transparent"
               onChangeText={min => {
-                currentJob.map.set("rate_min", min)
+                currentJob.map.set("rate_min", min);
               }}
               onBlur={() => {
-                console.log("onBlur")
-                currentJob.setRateMin(currentJob.map.get("rate_min"))
+                console.log("onBlur");
+                currentJob.setRateMin(currentJob.map.get("rate_min"));
               }}
               value={currentJob.map.get("rate_min")}
             />
@@ -49,21 +49,20 @@ export default context => {
               placeholder="maximun"
               underlineColorAndroid="transparent"
               onChangeText={max => {
-                currentJob.map.set("rate_max", max)
+                currentJob.map.set("rate_max", max);
               }}
               onBlur={() => {
-                currentJob.setRateMax(currentJob.map.get("rate_max"))
+                currentJob.setRateMax(currentJob.map.get("rate_max"));
               }}
               value={currentJob.map.get("rate_max")}
             />
           </FormItemInline>
         </Row>
         <Row>
-
           <FormItemInline>
+            <Label>Rate Period</Label>
             <Picker
               selectedValue={currentJob.map.get("rate_period")}
-              style={{ height: 50, width: 150 }}
               onValueChange={ratePeriod =>
                 currentJob.map.set("rate_period", ratePeriod)}
             >
@@ -74,9 +73,9 @@ export default context => {
             </Picker>
           </FormItemInline>
           <FormItemInline>
+            <Label>Currency</Label>
             <Picker
               selectedValue={currentJob.map.get("currency")}
-              style={{ height: 50, width: 150 }}
               onValueChange={currency =>
                 currentJob.map.set("currency", currency)}
             >

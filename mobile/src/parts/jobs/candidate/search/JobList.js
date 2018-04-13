@@ -9,6 +9,7 @@ export default context => {
   const Text = require("components/Text").default(context);
   const List = require("components/List").default(context);
   const Page = require("components/Page").default(context);
+  const StartDate = require("components/StartDate").default(context);
   const LoadingScreen = require("components/LoadingScreen").default(context);
 
   const ItemView = glamorous.view({
@@ -94,6 +95,8 @@ export default context => {
             </Rate>
             <EmploymentType>{job.employment_type}</EmploymentType>
           </View>
+          <StartDate start_date={job.start_date} />
+
           {job.company_name && <CompanyName>{job.company_name}</CompanyName>}
           {job.location && (
             <Location>
@@ -105,8 +108,11 @@ export default context => {
       </ItemView>
     );
   };
+  
   const Jobs = observer(({ opsGetAll, onPressJob }) => {
-    if (opsGetAll.loading) return <LoadingScreen label="Loading Jobs..." />;
+    if (opsGetAll.loading && _.isEmpty(opsGetAll.data)) {
+      return <LoadingScreen label="Loading Jobs..." />;
+    }
     return (
       <Page>
         <List

@@ -8,6 +8,7 @@ import computeDistance from "./computeDistance";
 
 export default context => {
   const Text = require("components/Text").default(context);
+  const StartDate = require("components/StartDate").default(context);
   const ScrollView = glamorous.scrollview({
     backgroundColor: "white"
   });
@@ -53,11 +54,7 @@ export default context => {
     fontSize: 12
   });
 
-  const Date = glamorous(Text)({
-    fontStyle: "italic",
-    color: "grey"
-  });
-
+  
   const Rate = glamorous(Text)({
     fontWeight: "bold"
   });
@@ -98,9 +95,7 @@ export default context => {
           {details.location.description}
         </Location>
       )}
-      {details.start_date && (
-        <Date>Start {moment(details.start_date).fromNow()}</Date>
-      )}
+      <StartDate start_date={details.start_date}/>
     </Card>
   );
 

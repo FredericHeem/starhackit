@@ -132,7 +132,7 @@ export default context => {
     const details = opsGetOne.data || {};
     const image64 = _.get(details.picture, "base64");
     return (
-      <View>
+      <ScrollView>
         <View style={{ margin: 10 }}>
           <Button
             title={details.applied ? "Alreay Applied" : "Apply Now"}
@@ -151,7 +151,7 @@ export default context => {
             {details.recruiter && <Recruiter recruiter={details.recruiter} />}
           </View>
         </ScrollView>
-      </View>
+      </ScrollView>
     );
   });
   return JobDetails;

@@ -9,6 +9,7 @@ export default context => {
   const Text = require("components/Text").default(context);
   const List = require("components/List").default(context);
   const Page = require("components/Page").default(context);
+  const Rate = require("components/Rate").default(context);
   const StartDate = require("components/StartDate").default(context);
   const LoadingScreen = require("components/LoadingScreen").default(context);
 
@@ -49,10 +50,6 @@ export default context => {
     fontSize: 14
   });
 
-  const Rate = glamorous(Text)({
-    fontSize: 14
-  });
-
   const CompanyName = glamorous(Text)({
     fontSize: 14,
     fontWeight: "bold"
@@ -88,11 +85,7 @@ export default context => {
           <JobDescription>{job.description}</JobDescription>
           <Sector>{job.sector}</Sector>
           <View>
-            <Rate>
-              {job.rate_min}
-              {job.rate_max && ` - ${job.rate_max}`}
-              {` ${job.currency} per ${job.rate_period}`}
-            </Rate>
+            <Rate job={job} />
             <EmploymentType>{job.employment_type}</EmploymentType>
           </View>
           <StartDate start_date={job.start_date} />
@@ -108,7 +101,7 @@ export default context => {
       </ItemView>
     );
   };
-  
+
   const Jobs = observer(({ opsGetAll, onPressJob }) => {
     if (opsGetAll.loading && _.isEmpty(opsGetAll.data)) {
       return <LoadingScreen label="Loading Jobs..." />;

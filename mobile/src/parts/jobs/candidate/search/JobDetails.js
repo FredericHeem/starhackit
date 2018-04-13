@@ -9,6 +9,7 @@ import computeDistance from "./computeDistance";
 export default context => {
   const Text = require("components/Text").default(context);
   const StartDate = require("components/StartDate").default(context);
+  const Rate = require("components/Rate").default(context);
   const ScrollView = glamorous.scrollview({
     backgroundColor: "white"
   });
@@ -54,13 +55,7 @@ export default context => {
     fontSize: 12
   });
 
-  
-  const Rate = glamorous(Text)({
-    fontWeight: "bold"
-  });
-
- const EmploymentType = glamorous(Text)({
-  });
+  const EmploymentType = glamorous(Text)({});
 
   const Location = glamorous(Text)({ color: "grey" });
 
@@ -82,11 +77,8 @@ export default context => {
       {details.description && (
         <JobDescription>{details.description}</JobDescription>
       )}
-      <Rate>
-        {details.rate_min}
-        {details.rate_max && ` - ${details.rate_max}`}
-        {` ${details.currency} per ${details.rate_period}`}
-      </Rate>
+      <Rate job={details} />
+
       <EmploymentType>{details.employment_type}</EmploymentType>
       {details.location && (
         <Location>
@@ -95,7 +87,7 @@ export default context => {
           {details.location.description}
         </Location>
       )}
-      <StartDate start_date={details.start_date}/>
+      <StartDate start_date={details.start_date} />
     </Card>
   );
 

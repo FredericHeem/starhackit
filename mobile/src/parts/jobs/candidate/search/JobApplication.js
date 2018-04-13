@@ -1,12 +1,12 @@
 import React from "react";
 import { View } from "react-native";
 import { observer } from "mobx-react";
-import glamorous from "glamorous-native";
 import Lifecycle from "components/Lifecycle";
 import moment from "moment";
 
 export default context => {
   const Text = require("components/Text").default(context);
+  const Page = require("components/Page").default(context);
   const createAsyncOp = require("core/asyncOp").default(context);
   const List = require("components/List").default(context);
 
@@ -43,14 +43,14 @@ export default context => {
     if (!opsGetAll.data) return null;
     console.log("opsGetAll.data ", opsGetAll.data);
     return (
-      <View>
+      <Page>
         <List
           onPress={() => {}}
           onKey={item => item.id}
           items={opsGetAll.data}
           renderItem={item => <ApplicationItem item={item} />}
         />
-      </View>
+      </Page>
     );
   });
 

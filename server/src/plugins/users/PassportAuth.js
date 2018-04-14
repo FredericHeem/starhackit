@@ -19,9 +19,13 @@ export default function(app) {
       .registerMobile;
     registerMobile(passport, models, publisher);
   }
+
   if (config.has("authentication.google")) {
-    const register = require("./auth-strategy/GoogleStrategy").register;
-    register(passport, models, publisher);
+    const registerWeb = require("./auth-strategy/GoogleStrategy").registerWeb;
+    registerWeb(passport, models, publisher);
+    const registerMobile = require("./auth-strategy/GoogleStrategy")
+      .registerMobile;
+    registerMobile(passport, models, publisher);
   }
 
   if (config.has("authentication.fidor")) {

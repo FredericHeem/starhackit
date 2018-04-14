@@ -1,73 +1,78 @@
 import { Strategy } from "passport-google-oauth20";
+import {
+  createRegisterMobile,
+  createVerifyMobile,
+  verifyWeb
+} from "./StrategyUtils";
+
+import Axios from "axios";
 import config from "config";
 
-const log = require("logfilename")(__filename);
+const axios = Axios.create({
+  baseURL: "https://www.googleapis.com/",
+  timeout: 30e3
+});
 
-export async function verify(
+const profileWebToUser = profile => ({
+  username: profile.displayName,
+  email: profile.emails[0].value,
+  firstName: profile.name.givenName,
+  lastName: profile.name.familyName,
+  picture: profile.image,
+  authProvider: {
+    name: "google",
+    authId: profile.id
+  }
+});
+
+const profileMobileToUser = profile => ({
+  username: profile.name,
+  email: profile.email,
+  firstName: profile.givenName,
+  lastName: profile.familyName,
+  authProvider: {
+    name: "google",
+    authId: profile.id
+  }
+});
+
+export async function verifyMobile(
   models,
   publisherUser,
-  accessToken,
-  refreshToken,
-  profile
+  profile,
+  accessToken
 ) {
-  log.debug(`authentication reply from google ${profile}`, profile);
-  log.debug(JSON.stringify(profile, null, 4));
+  const getMe = () =>
+    axios.get("userinfo/v2/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
 
-  const userByEmail = await models.User.findByEmail(profile.emails[0].value);
-
-  if (userByEmail) {
-    log.debug("email already registered ");
-    //should update fb profile id
-    return {
-      user: userByEmail.toJSON()
-    };
-  }
-
-  //Create user
-  let userConfig = {
-    username: profile.displayName,
-    email: profile.emails[0].value,
-    firstName: profile.name.givenName,
-    lastName: profile.name.familyName,
-    picture: {
-      url: profile.photos[0].value
-    },
-    authProvider: {
-      name: "google",
-      authId: profile.id
-    }
-  };
-  log.debug("creating user: ", userConfig);
-  let user = await models.User.createUserInGroups(userConfig, ["User"]);
-  let userCreated = user.toJSON();
-
-  log.info("register created new user ", userCreated);
-  if (publisherUser) {
-    console.log("publisherUser", publisherUser);
-    await publisherUser.publish("user.registered", JSON.stringify(userCreated));
-  }
-  return {
-    user: userCreated
-  };
+  return createVerifyMobile(
+    getMe,
+    models,
+    publisherUser,
+    profileMobileToUser(profile),
+    accessToken
+  );
 }
 
-export function register(passport, models, publisherUser) {
+export function registerWeb(passport, models, publisherUser) {
   const googleConfig = config.authentication.google;
   if (googleConfig) {
-    log.info("configuring linkined authentication strategy");
-    const strategy = new Strategy(googleConfig, async function(
+    const strategy = new Strategy(googleConfig, async function (
       accessToken,
       refreshToken,
       profile,
       done
     ) {
       try {
-        const res = await verify(
+        const res = await verifyWeb(
           models,
           publisherUser,
-          accessToken,
-          refreshToken,
-          profile
+          profileWebToUser(profile),
+          accessToken
         );
         done(res.err, res.user);
       } catch (err) {
@@ -76,4 +81,8 @@ export function register(passport, models, publisherUser) {
     });
     passport.use("google", strategy);
   }
+}
+
+export function registerMobile(passport, models, publisherUser) {
+  createRegisterMobile("google", verifyMobile, passport, models, publisherUser);
 }

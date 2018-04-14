@@ -68,31 +68,12 @@ export async function verifyWeb(
   log.debug("authentication reply from fb");
   log.debug(JSON.stringify(profile, null, 4));
 
-  let authProvider = await models.AuthProvider.find({
-    where: {
-      name: "facebook",
-      authId: profile.id
-    }
-  });
-
-  if (authProvider) {
-    log.debug("user already exist: auth ", authProvider.toJSON());
-    let user = await models.User.findByUserId(authProvider.get().user_id);
-    //log.debug("user already exist: user ", user.toJSON());
-    return {
-      fbId: profile.id,
-      user: user.toJSON()
-    };
-  }
-
-  log.debug("no fb profile registered");
-  let userByEmail = await models.User.findByEmail(profile._json.email);
+  const userByEmail = await models.User.findByEmail(profile._json.email);
 
   if (userByEmail) {
-    log.debug("email already registered");
+    log.debug("email already registered ");
     //should update fb profile id
     return {
-      fbId: profile.id,
       user: userByEmail.toJSON()
     };
   }
@@ -105,7 +86,6 @@ export async function verifyWeb(
 
   //await savePicture({ models, user: userCreated, fbId: profile.id, accessToken });
   return {
-    fbId: profile.id,
     user: userCreated
   };
 }

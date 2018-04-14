@@ -1,5 +1,9 @@
 const FbWebStrategy = require("passport-facebook").Strategy;
-const FbMobileStrategy = require("passport-local").Strategy;
+import {
+  createRegisterMobile,
+  createVerifyMobile,
+  verifyWeb
+} from "./StrategyUtils";
 
 import config from "config";
 import Axios from "axios";
@@ -13,7 +17,8 @@ const axios = Axios.create({
 });
 
 const profileToUser = profile => ({
-  username: `${profile.first_name} ${profile.middle_name && profile.middle_name} ${profile.last_name}`,
+  username: `${profile.first_name} ${profile.middle_name &&
+    profile.middle_name} ${profile.last_name}`,
   email: profile.email,
   firstName: profile.first_name,
   lastName: profile.last_name,
@@ -24,17 +29,70 @@ const profileToUser = profile => ({
   }
 });
 
-const createUser = async (userConfig, models, publisherUser) => {
-  log.debug("creating user: ", userConfig);
-  let user = await models.User.createUserInGroups(userConfig, ["User"]);
-  let userCreated = user.toJSON();
+export async function verifyMobile(
+  models,
+  publisherUser,
+  profile,
+  accessToken
+) {
+  const getMe = () =>
+    axios.get("me", {
+      params: {
+        fields: "name,email,picture,first_name,last_name",
+        access_token: accessToken
+      }
+    });
+  return createVerifyMobile(getMe, models, publisherUser, profile, accessToken);
+}
 
-  log.info("register created new user ", userCreated);
-  if (publisherUser) {
-    await publisherUser.publish("user.registered", JSON.stringify(userCreated));
+export function registerWeb(passport, models, publisherUser) {
+  let authenticationFbConfig = config.authentication.facebook;
+  if (authenticationFbConfig && authenticationFbConfig.clientID) {
+    log.info("configuring facebook authentication strategy");
+    let facebookStrategy = new FbWebStrategy(
+      {
+        ...authenticationFbConfig,
+        profileFields: [
+          "id",
+          "email",
+          "picture",
+          "gender",
+          "link",
+          "locale",
+          "name",
+          "timezone",
+        ],
+        enableProof: false
+      },
+      async function(req, accessToken, refreshToken, profile, done) {
+        try {
+          log.info("registerWeb ", JSON.stringify(profile, null, 4));
+          let res = await verifyWeb(
+            models,
+            publisherUser,
+            profileToUser(profile._json),
+            accessToken,
+          );
+          done(res.err, res.user);
+        } catch (err) {
+          done(err);
+        }
+      }
+    );
+    passport.use("facebook", facebookStrategy);
   }
-  return userCreated;
-};
+}
+
+export function registerMobile(passport, models, publisherUser) {
+  createRegisterMobile(
+    "facebook",
+    verifyMobile,
+    passport,
+    models,
+    publisherUser
+  );
+}
+
 /*
 const savePicture = async ({ models, user, fbId, token }) => {
   try {
@@ -56,121 +114,3 @@ const savePicture = async ({ models, user, fbId, token }) => {
   }
 };
 */
-
-export async function verifyWeb(
-  models,
-  publisherUser,
-  req,
-  accessToken,
-  profile
-) {
-  log.debug("authentication reply from fb");
-  log.debug(JSON.stringify(profile, null, 4));
-
-  const userByEmail = await models.User.findByEmail(profile.email);
-
-  if (userByEmail) {
-    log.debug("email already registered ");
-    //should update fb profile id
-    return {
-      user: userByEmail.toJSON()
-    };
-  }
-
-  const userCreated = await createUser(
-    profileToUser(profile),
-    models,
-    publisherUser
-  );
-
-  //await savePicture({ models, user: userCreated, fbId: profile.id, accessToken });
-  return {
-    user: userCreated
-  };
-}
-
-export async function verifyMobile(models, publisherUser, userID, access_token) {
-  log.debug("verifyLogin ", access_token);
-
-  try {
-    const result = await axios.get("me", {
-      params: {
-        fields: "name,email,picture,first_name,last_name",
-        access_token
-      }
-    });
-    const profile = result.data;
-    log.debug("profile ", profile);
-    return verifyWeb(models, publisherUser, null, access_token, "", profile);
-  } catch (error) {
-    log.error("loginFacebook ", error);
-    return {
-      error: {
-        message: "InvalidToken"
-      }
-    };
-  }
-}
-
-export function registerWeb(passport, models, publisherUser) {
-  let authenticationFbConfig = config.authentication.facebook;
-  if (authenticationFbConfig && authenticationFbConfig.clientID) {
-    log.info("configuring facebook authentication strategy");
-    let facebookStrategy = new FbWebStrategy(
-      {
-        clientID: authenticationFbConfig.clientID,
-        clientSecret: authenticationFbConfig.clientSecret,
-        callbackURL: authenticationFbConfig.callbackURL,
-        profileFields: [
-          "id",
-          "email",
-          "picture",
-          "gender",
-          "link",
-          "locale",
-          "name",
-          "timezone",
-          "updated_time",
-          "verified"
-        ],
-        enableProof: false
-      },
-      async function(req, accessToken, refreshToken, profile, done) {
-        try {
-          let res = await verifyWeb(
-            models,
-            publisherUser,
-            req,
-            accessToken,
-            profile._json
-          );
-          done(res.err, res.user);
-        } catch (err) {
-          done(err);
-        }
-      }
-    );
-    passport.use("facebook", facebookStrategy);
-  }
-}
-
-export function registerMobile(passport, models, publisherUser) {
-  log.info("configuring facebook mobile authentication strategy");
-  let fbMobileStrategy = new FbMobileStrategy(
-    {
-      usernameField: "userId",
-      passwordField: "token",
-      passReqToCallback: false
-    },
-    async function(userID, token, done) {
-      try {
-        let res = await verifyMobile(models, publisherUser, userID, token);
-        console.log("verifyMobile ", res)
-        done(res.error, res.user);
-      } catch (err) {
-        done(err);
-      }
-    }
-  );
-  passport.use("facebook_mobile", fbMobileStrategy);
-}

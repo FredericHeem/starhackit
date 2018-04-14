@@ -8,6 +8,9 @@ describe("FacebookMobileAuth", function() {
     await testMngr.start();
   });
   beforeEach(async function() {
+    if (!testMngr.app.config.authentication.facebook) {
+      this.skip();
+    }
   });
   after(async () => {
     await testMngr.stop();

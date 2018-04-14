@@ -62,7 +62,6 @@ export async function verifyWeb(
   publisherUser,
   req,
   accessToken,
-  refreshToken,
   profile
 ) {
   log.debug("authentication reply from fb");
@@ -143,7 +142,6 @@ export function registerWeb(passport, models, publisherUser) {
             publisherUser,
             req,
             accessToken,
-            refreshToken,
             profile._json
           );
           done(res.err, res.user);

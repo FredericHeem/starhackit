@@ -12,6 +12,11 @@ export default context => {
       href: "api/v1/auth/facebook",
       icon: <img src={FbSvg} alt="facebook" width={20} />
     },
+    google: {
+      label: `${tr.t("Sign in with")} Google`,
+      href: "api/v1/auth/google",
+      icon: <img src={require("icons/google.svg")} alt="google" width={20} />
+    },
     fidor: {
       label: `${tr.t("Sign in with")} Fidor`,
       href: "api/v1/auth/fidor"
@@ -31,7 +36,7 @@ export default context => {
     const Button = button(context);
     return (
       <SocialButtonView>
-        <Button fullWidth label={label} href={href} icon={icon || null} />
+        <Button fullWidth raised label={label} href={href} icon={icon || null} />
       </SocialButtonView>
     );
   }

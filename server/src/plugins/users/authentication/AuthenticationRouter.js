@@ -94,6 +94,11 @@ export default function AuthenticationRouter(app){
   // Facebook Auth from mobile
   router.post('/login_facebook', authHttpController.loginFacebook);
 
+  //Google
+  router.get('/google', passport.authenticate('google', { scope: ["email", "profile"] }));
+  router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login', successRedirect : '/login'}));
+
   router.get('/fidor', passport.authenticate('fidor', { scope: ['email'] }));
   router.get('/fidor/callback',
       passport.authenticate('fidor', { failureRedirect: '/login', successRedirect : '/login'}));

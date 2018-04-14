@@ -56,7 +56,7 @@ export default context => {
     return (
       <MenuItemView>
         <Button
-          style={{ textAlign: "start" }}
+          style={{ width: "100%", justifyContent: "flex-start" }}
           label={menu.text}
           onClick={() => navChange(menu)}
         />
@@ -78,7 +78,7 @@ export default context => {
             <MenuItem navChange={navChange} menu={menu} key={key} />
           ))}
         <Button
-          style={{ textAlign: "start" }}
+          style={{ width: "100%", justifyContent: "flex-start" }}
           label={tr.t("THEME")}
           onClick={() => themeSideBar()}
         />

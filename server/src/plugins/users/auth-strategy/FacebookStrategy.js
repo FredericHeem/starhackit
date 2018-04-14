@@ -13,7 +13,7 @@ const axios = Axios.create({
 });
 
 const profileToUser = profile => ({
-  username: `${profile.first_name} ${profile.middle_name} ${profile.last_name}`,
+  username: `${profile.first_name} ${profile.middle_name && profile.middle_name} ${profile.last_name}`,
   email: profile.email,
   firstName: profile.first_name,
   lastName: profile.last_name,
@@ -68,7 +68,7 @@ export async function verifyWeb(
   log.debug("authentication reply from fb");
   log.debug(JSON.stringify(profile, null, 4));
 
-  const userByEmail = await models.User.findByEmail(profile._json.email);
+  const userByEmail = await models.User.findByEmail(profile.email);
 
   if (userByEmail) {
     log.debug("email already registered ");
@@ -79,7 +79,7 @@ export async function verifyWeb(
   }
 
   const userCreated = await createUser(
-    profileToUser(profile._json),
+    profileToUser(profile),
     models,
     publisherUser
   );
@@ -144,7 +144,7 @@ export function registerWeb(passport, models, publisherUser) {
             req,
             accessToken,
             refreshToken,
-            profile
+            profile._json
           );
           done(res.err, res.user);
         } catch (err) {
@@ -167,6 +167,7 @@ export function registerMobile(passport, models, publisherUser) {
     async function(userID, token, done) {
       try {
         let res = await verifyMobile(models, publisherUser, userID, token);
+        console.log("verifyMobile ", res)
         done(res.error, res.user);
       } catch (err) {
         done(err);

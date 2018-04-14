@@ -3,8 +3,10 @@ import { observable, action } from "mobx";
 
 export default context => {
   const facebookStore = require("./facebookStore").default(context);
+  const googleStore = require("./googleStore").default(context);
   const driversMap = {
-    facebook: facebookStore
+    facebook: facebookStore,
+    google: googleStore
   };
 
   const store = observable({

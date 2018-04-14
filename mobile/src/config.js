@@ -6,12 +6,12 @@ const config = {
 
   development: {
     env: "development",
-    apiUrl: "http://192.168.0.4:9000/api/v1/"
+    apiUrl: "http://192.168.0.5:9000/api/v1/"
   },
 
   production: {
     env: "production",
-    apiUrl: "http://app.instire.com:9000/api/v1/"
+    apiUrl: "https://starhack.it/api/v1/"
   }
 };
 

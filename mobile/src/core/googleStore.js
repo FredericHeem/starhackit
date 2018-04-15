@@ -38,7 +38,7 @@ export default ({ rest }) => {
       console.log("getMe", store.me);
       return store.me;
     }),
-    
+
     logout: action(async () => {
       await store.clearToken();
     }),
@@ -53,6 +53,7 @@ export default ({ rest }) => {
       };
 
       try {
+        console.log("loginServer ", body);
         const res = await rest.post("auth/login_google", body);
         console.log("google loginServer ", store.jwt);
         store.jwt = res.token;
@@ -60,21 +61,28 @@ export default ({ rest }) => {
         const me = await rest.get("me");
         //console.log("loginServer ME ", me);
       } catch (e) {
-        console.log("loginServer ", e);
+        console.log("loginServer error", e);
         throw e;
       }
     }),
     login: action(async () => {
-      const { type, accessToken } = await Expo.Google.logInAsync({
-        ...secrets.google,
-        scopes: ["profile", "email"]
-      });
-
-      if (type === "success") {
-        await store.saveToken(accessToken);
-        const me = await store.getMe();
-        await store.loginServer();
-        return me;
+      try {
+       
+        const result = await Expo.Google.logInAsync({
+          ...secrets.google,
+          scopes: ["profile", "email"],
+          behaviour: "web"
+        });
+        const {type, accessToken, user} = result;
+        //Alert.alert("login", JSON.stringify(result));
+        if (type === "success") {
+          await store.saveToken(accessToken);
+          store.me = user;
+          await store.loginServer();
+          return user;
+        }
+      } catch (error) {
+        //Alert.alert("Login", `Cannot log in with google: ${error}`);
       }
     })
   });

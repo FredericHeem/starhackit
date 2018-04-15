@@ -38,6 +38,7 @@ export default ({ rest }) => {
       console.log("getMe", store.me);
       return store.me;
     }),
+    
     logout: action(async () => {
       await store.clearToken();
     }),

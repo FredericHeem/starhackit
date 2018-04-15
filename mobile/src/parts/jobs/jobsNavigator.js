@@ -12,14 +12,18 @@ export default context => {
 
   class AuthLoading extends React.Component {
     async componentDidMount() {
-      const res = await store.auth.autoLogin();
-
-      this.props.navigation.navigate(
-        nextRoute({ auth: store.auth.me, app: res && res.app })
-      );
+      const { navigation } = this.props;
+      store.auth
+        .autoLogin()
+        .then(res =>
+          navigation.navigate(
+            nextRoute({ auth: store.auth.me, app: res && res.app })
+          )
+        )
+        .catch(() => navigation.navigate("Landing"));
     }
     render() {
-      return <LoadingScreen/>;
+      return <LoadingScreen />;
     }
   }
 

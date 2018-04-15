@@ -1,6 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import { Button, Text } from "native-base";
+import SvgGoogle from "icons/svg/Google";
+import SvgFacebook from "icons/svg/Facebook";
 
 export default ({ stores }) => {
   const typeToHeading = {
@@ -10,7 +12,7 @@ export default ({ stores }) => {
 
   const Heading = ({ type }) => (
     <View>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 30 }}>
         {typeToHeading[type]}
       </Text>
     </View>
@@ -21,14 +23,16 @@ export default ({ stores }) => {
       style={{
         flex: 1,
         margin: "auto",
-        borderWidth: 1,
+        borderWidth: 0,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-around",
-        alignItems: "center"
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white"
       }}
     >
       <Heading type={navigation.state.params.app} />
+
       <View
         style={{
           width: "80%"
@@ -36,35 +40,49 @@ export default ({ stores }) => {
       >
         <Button
           full
+          bordered
+          style={{
+            padding: 10,
+            margin: 20
+          }}
           onPress={async () => {
             const res = await stores.core.auth.login({
               type: "facebook",
               app: navigation.state.params.app
             });
             if (res) {
-              stores.core.auth.navigate(navigation.state.params.app, navigation);
+              stores.core.auth.navigate(
+                navigation.state.params.app,
+                navigation
+              );
             }
           }}
         >
+          <SvgFacebook width="30" height="30" />
           <Text>Continue with Facebook</Text>
         </Button>
-      </View>
-      <Text style={{ fontSize: 20 }}>or</Text>
-      <View
-        style={{
-          //borderColor: "red",
-          //borderWidth: 1,
-          width: "80%"
-        }}
-      >
         <Button
           full
-          success
+          bordered
+          style={{
+            padding: 10,
+            margin: 20
+          }}
           onPress={async () => {
-            console.log("onPress");
+            const res = await stores.core.auth.login({
+              type: "google",
+              app: navigation.state.params.app
+            });
+            if (res) {
+              stores.core.auth.navigate(
+                navigation.state.params.app,
+                navigation
+              );
+            }
           }}
         >
-          <Text>Create a Profile</Text>
+          <SvgGoogle width="30" height="30" />
+          <Text>Continue with Google</Text>
         </Button>
       </View>
     </View>

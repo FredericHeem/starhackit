@@ -1,9 +1,8 @@
 import React from "react";
 import { observable, action } from "mobx";
-import { Keyboard, View, Button } from "react-native";
+import { Image, Keyboard, View, Button } from "react-native";
 import { observer } from "mobx-react";
 
-import styled from "styled-components/native";
 import { createStackNavigator } from "react-navigation";
 import Lifecycle from "components/Lifecycle";
 import _ from "lodash";
@@ -25,13 +24,15 @@ export default context => {
       return _.get(asyncOp.data, "location.description");
     },
     saveLocation: action(async (location, navigation) => {
-      const results = await context.stores.core.geoLoc.getGeoPosition(location.description);
+      const results = await context.stores.core.geoLoc.getGeoPosition(
+        location.description
+      );
       const geoLoc = _.get(results[0], "geometry.location");
       let geo;
-      if(geoLoc){
-        geo = { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] }
+      if (geoLoc) {
+        geo = { type: "Point", coordinates: [geoLoc.lat, geoLoc.lng] };
       }
-      
+
       await asyncOpPatch({ location, geo });
       navigation.navigate("Profile");
     }),
@@ -84,11 +85,8 @@ export default context => {
   stores.profile = store;
 
   const Page = require("components/Page").default(context);
-  const UserInfoText = styled.View`margin: 0px;`;
-
+  const Text = require("components/Text").default(context);
   const Name = require("components/H1").default(context);
-
-  const ImageView = styled.Image`height: 250px;`;
 
   const Phone = require("./Phone").default(context);
   const PhoneEdit = require("./PhoneEdit").default(context);
@@ -117,13 +115,19 @@ export default context => {
 
   const Profile = observer(({ store, navigation, authStore }) => (
     <Page>
-      {authStore.picture && (
-        <ImageView source={{ uri: authStore.picture.url }} />
+      {authStore.me.picture && (
+        <Image
+          style={{ height: 250 }}
+          source={{ uri: authStore.me.picture.url }}
+        />
       )}
-      <UserInfoText>
-        <Name>{stores.core.auth.me.name}</Name>
-      </UserInfoText>
-      <Phone phone={store.phone} onPress={() => navigation.navigate("PhoneEdit")}/>
+      <View>
+        <Name>{authStore.me.username}</Name>
+      </View>
+      <Phone
+        phone={store.phone}
+        onPress={() => navigation.navigate("PhoneEdit")}
+      />
       <Sectors
         sectors={store.sectors}
         store={store}
@@ -172,13 +176,13 @@ export default context => {
               props.navigation.addListener("didFocus", async () => {
                 const profile = await asyncOpGet();
                 store.location = profile.location;
-                console.log("profile: ", profile)
+                console.log("profile: ", profile);
                 store.experiences.replace(_.keyBy(profile.experiences, "id"));
                 store.summary = profile.summary;
                 store.geo = profile.geo || {};
                 store.sectors = profile.sectors || [];
                 store.phone = profile.phone;
-                stores.core.auth.getPicture();
+                //stores.core.auth.getPicture();
               });
             }}
           >

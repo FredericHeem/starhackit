@@ -8,11 +8,16 @@
       "resizeMode": "contain",
       "image": "./assets/instire.png"
     },
-    "version": "2.10.0",
+    "version": "2.11.0",
     "sdkVersion": "25.0.0",
     "ios": {
       "bundleIdentifier": "com.instire.instireapp",
-      "buildNumber": "2.0.0"
+      "buildNumber": "2.0.0",
+      "config": {
+        "googleSignIn" : {
+          "reservedClientId":"com.googleusercontent.apps.1084416267702-v70mnmtap47dc67rqdbsfvpu4u3hecjt"
+        }
+      } 
     },
     "android": {
       "package": "com.instire.instire",
@@ -25,7 +30,13 @@
         "READ_EXTERNAL_STORAGE",
         "WRITE_INTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "config": {
+        "googleSignIn" : {
+          "apiKey":"AIzaSyCc8qXNv6OH4_OAFc45MMHb-g72PaovacQ",
+          "certificateHash": "BE5691A24CCCAFA7ABE425D752D480CE7E40FABF"
+        }
+      } 
     }
   }
 }

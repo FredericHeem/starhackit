@@ -36,4 +36,10 @@ Copy `secrets.exmaples.json` to `secrets.json` and fill the facebook appId and t
 
 Facebook authentication key hash for android:
 
-keytool -list -printcert -jarfile android%2F\@instire%2Finstire-0398ae0e-3c2a-11e8-9fa6-0a580a782213-signed.apk | grep SHA1 | awk '{ print $2 }' | xxd -r -p | openssl base64
+    $ keytool -list -printcert -jarfile android%2F\@instire%2Finstire-0398ae0e-3c2a-11e8-9fa6-0a580a782213-signed.apk | grep SHA1 | awk '{ print $2 }' | xxd -r -p | openssl base64
+
+Google authentication key hash for android:
+
+    $ keytool -list -printcert -jarfile android%2F@instire%2Finstire-299c131f-3c41-11e8-9fa6-0a580a782213-signed.apk | grep SHA1 | awk '{ print $2 }'
+
+    $ keytool -list -printcert -jarfile android%2F@instire%2Finstire-299c131f-3c41-11e8-9fa6-0a580a782213-signed.apk  | grep SHA1 | awk '{ print $2 }' | sed -e 's/://g'

@@ -61,7 +61,7 @@ export default context => {
 
   const JobItem = ({ job }) => {
     const image64 = _.get(job.picture, "base64");
-    console.log("JobItem ", job);
+    //console.log("JobItem ", job);
     return (
       <ItemView
         style={{

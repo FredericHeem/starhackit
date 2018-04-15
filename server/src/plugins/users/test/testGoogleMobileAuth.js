@@ -1,14 +1,14 @@
 import assert from "assert";
 import testMngr from "~/test/testManager";
 
-describe("FacebookMobileAuth", function() {
+describe("GoogleMobileAuth", function() {
   let client;
 
   before(async function() {
     await testMngr.start();
   });
   beforeEach(async function() {
-    if (!testMngr.app.config.authentication.facebook) {
+    if (!testMngr.app.config.authentication.google) {
       this.skip();
     }
   });
@@ -22,7 +22,7 @@ describe("FacebookMobileAuth", function() {
 
   it('no token', async () => {
     try {
-      await client.post("v1/auth/login_facebook", {});
+      await client.post("v1/auth/login_google", {});
       assert(false);
     } catch(err){
       assert(err);
@@ -37,7 +37,7 @@ describe("FacebookMobileAuth", function() {
     };
 
     try {
-      await client.post("v1/auth/login_facebook", postParam);
+      await client.post("v1/auth/login_google", postParam);
       assert(false);
     } catch(err){
       assert(err);

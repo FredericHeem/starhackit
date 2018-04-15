@@ -27,7 +27,8 @@
     "lint:fix": "eslint src App.js --fix",
     "prettier": "prettier --write '**/*.{js,jsx}'",
     "prestart": "npm run jscpd",
-    "jscpd": "jscpd -f 'src/**' -e 'src/theme/**' --languages javascript"
+    "jscpd": "jscpd -f 'src/**' -e 'src/theme/**' --languages javascript",
+    "icons-svg": "msvgc -f src/icons/ -o src/icons/ --react-native"
   },
   "jest": {
     "preset": "jest-expo"
@@ -51,6 +52,7 @@
     "react-native-modal": "5.2.0",
     "react-native-modal-datetime-picker": "5.1.0",
     "react-native-radio-buttons": "^1.0.0",
+    "react-native-svg": "^6.3.1",
     "react-navigation": "2.0.0-beta.3",
     "styled-components": "3.2.1",
     "uuid": "3.2.1"

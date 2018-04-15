@@ -19,7 +19,6 @@ mail_from:
 mail_user:
 mail_password:
 
-socialAuth: ['facebook']
 facebook_client_id:
 facebook_client_secret:
 

@@ -4,8 +4,10 @@ import { observable, action } from "mobx";
 export default context => {
   const {rest} = context;
   const facebookStore = require("./facebookStore").default(context);
+  const googleStore = require("./googleStore").default(context);
   const driversMap = {
-    facebook: facebookStore
+    facebook: facebookStore,
+    google: googleStore
   };
 
   const store = observable({
@@ -15,7 +17,7 @@ export default context => {
     autoLogin: action(async () => {
       const type = await AsyncStorage.getItem("authType");
       if (!type) {
-        return;
+        throw new Error("no authType");
       }
       store.driver = driversMap[type];
       await store.driver.autoLogin();

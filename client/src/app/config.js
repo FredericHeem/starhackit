@@ -6,7 +6,7 @@ const config = {
     analytics: {
       google: ""
     },
-    socialAuth: ["facebook"],
+    socialAuth: ["facebook", "google"],
     debug: {
       log: false,
       i18n: false

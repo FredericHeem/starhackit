@@ -11,7 +11,7 @@ const config = {
 
   production: {
     env: "production",
-    apiUrl: "http://app.instire.com:9000/api/v1/"
+    apiUrl: "https://starhack.it/api/v1/"
   }
 };
 

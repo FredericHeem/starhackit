@@ -103,7 +103,7 @@ export default async context => {
 
   function LandingScreen() {
     return (
-      <div className="text-center">
+      <div style={{maxWidth: "100vw"}} className="text-center">
         <Header />
         <Features />
         <End2End />

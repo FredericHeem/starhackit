@@ -16,7 +16,7 @@ context.stores.core = store;
 
 context.rest.setJwtSelector(() => store.facebook.jwt);
 
-const AppNavigator = require("./parts/jobs/jobsNavigator").default(context);
+const AppNavigator = require("./parts/demo/rootNavigator").default(context);
 
 export default class App extends React.Component {
   constructor() {

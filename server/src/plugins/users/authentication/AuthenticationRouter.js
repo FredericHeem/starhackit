@@ -74,6 +74,9 @@ export function AuthenticationHttpController(app){
     async loginFacebook(context, next) {
       return passport.authenticate('facebook_mobile', localAuthCB(context))(context, next);
     },
+    async loginGoogle(context, next) {
+      return passport.authenticate('google_mobile', localAuthCB(context))(context, next);
+    },
   };
 }
 
@@ -93,6 +96,12 @@ export default function AuthenticationRouter(app){
   passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/login'}));
   // Facebook Auth from mobile
   router.post('/login_facebook', authHttpController.loginFacebook);
+
+  //Google
+  router.get('/google', passport.authenticate('google', { scope: ["email", "profile"] }));
+  router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login', successRedirect : '/login'}));
+  router.post('/login_google', authHttpController.loginGoogle);
 
   router.get('/fidor', passport.authenticate('fidor', { scope: ['email'] }));
   router.get('/fidor/callback',

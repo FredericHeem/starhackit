@@ -1,5 +1,5 @@
 import Expo from "expo";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { observable, action } from "mobx";
 import secrets from "../../secrets.json";
 
@@ -67,22 +67,33 @@ export default ({ rest }) => {
     }),
     login: action(async () => {
       try {
-       
         const result = await Expo.Google.logInAsync({
           ...secrets.google,
           scopes: ["profile", "email"],
           behaviour: "web"
         });
-        const {type, accessToken, user} = result;
-        //Alert.alert("login", JSON.stringify(result));
-        if (type === "success") {
-          await store.saveToken(accessToken);
-          store.me = user;
-          await store.loginServer();
-          return user;
+        const { type, accessToken, user } = result;
+
+        if (type !== "success") {
+          return;
         }
+
+        if (!accessToken) {
+          Alert.alert("Login", "no access token");
+          return;
+        }
+
+        if (!user) {
+          Alert.alert("Login", "no user");
+          return;
+        }
+        
+        await store.saveToken(accessToken);
+        store.me = user;
+        await store.loginServer();
+        return user;
       } catch (error) {
-        //Alert.alert("Login", `Cannot log in with google: ${error}`);
+        Alert.alert("Login", `Cannot log in with google: ${error}`);
       }
     })
   });

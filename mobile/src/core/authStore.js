@@ -16,7 +16,7 @@ export default context => {
     autoLogin: action(async () => {
       const type = await AsyncStorage.getItem("authType");
       if (!type) {
-        return;
+        throw new Error("no authType");
       }
       store.driver = driversMap[type];
       store.me = await store.driver.autoLogin();

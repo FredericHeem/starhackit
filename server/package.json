@@ -11,7 +11,7 @@
   "license": "NLPL",
   "scripts": {
     "setup": "binci --cleanup && binci env",
-    "prestart": "npm run lint",
+    "prestart": "npm run lint && npm run jscpd",
     "build": "gulp build:production",
     "start": "gulp",
     "pretest": "npm run build",
@@ -29,7 +29,8 @@
     "mocker": "node scripts/mocker-server.js",
     "api-check": "abao src/plugins/users/raml/users.raml --server http://localhost:9000/api/v1",
     "doc": "node scripts/apidoc.js",
-    "opendoc": "npm run doc && open build/api/v1/doc/api.html"
+    "opendoc": "npm run doc && open build/api/v1/doc/api.html",
+    "jscpd": "jscpd -f 'src/**'  --languages javascript"
   },
   "dependencies": {
     "async-busboy": "0.6.2",
@@ -51,6 +52,7 @@
     "gulp-debug": "2.1.2",
     "gulp-rimraf": "0.2.2",
     "gulp-util": "3.0.8",
+    "jscpd": "0.6.17",
     "jsonschema": "1.2.2",
     "jsonwebtoken": "8.2.0",
     "kcors": "2.2.1",

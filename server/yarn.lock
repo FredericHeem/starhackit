@@ -826,6 +826,13 @@ bl@~0.9.0:
   dependencies:
     readable-stream "~1.0.26"
 
+blamer@^0.1.9:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/blamer/-/blamer-0.1.13.tgz#61f215f2361bd054e6258c0c5e0086f04074e670"
+  dependencies:
+    bluebird "~2.3.x"
+    xml2js "~0.4.x"
+
 blessed@^0.1.81:
   version "0.1.81"
   resolved "https://registry.yarnpkg.com/blessed/-/blessed-0.1.81.tgz#f962d687ec2c369570ae71af843256e6d0ca1129"
@@ -843,6 +850,10 @@ bluebird@3.5.1, bluebird@^3.0.5, bluebird@^3.4.1, bluebird@^3.4.6, bluebird@^3.5
 bluebird@^2.9.33:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
+
+bluebird@~2.3.x:
+  version "2.3.11"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.3.11.tgz#15bb78ed32abf27b090640c0f85e4b91f615c8b6"
 
 body-parser@1.18.2:
   version "1.18.2"
@@ -1212,9 +1223,22 @@ cli-table-redemption@^1.0.0:
   dependencies:
     chalk "^1.1.3"
 
+cli-table@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/cli-table/-/cli-table-0.3.1.tgz#f53b05266a8b1a0b934b3d0821e6e2dc5914ae23"
+  dependencies:
+    colors "1.0.3"
+
 cli-width@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
+
+cli@>=0.10.x:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cli/-/cli-1.0.1.tgz#22817534f24bfa4950c34d532d48ecbc621b8c14"
+  dependencies:
+    exit "0.1.2"
+    glob "^7.1.1"
 
 cliui@^2.1.0:
   version "2.1.0"
@@ -1296,6 +1320,10 @@ codecov.io@0.1.6:
     request "2.42.0"
     urlgrey "0.4.0"
 
+codemirror@5.31.0:
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.31.0.tgz#ecf3d057eb74174147066bfc7c5f37b4c4e07df2"
+
 coffee-errors@^0.8.6:
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/coffee-errors/-/coffee-errors-0.8.6.tgz#66c778a80ae01da663bbfa89841cb91029faabbb"
@@ -1350,9 +1378,13 @@ colornames@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/colornames/-/colornames-0.0.2.tgz#d811fd6c84f59029499a8ac4436202935b92be31"
 
-colors@1.0.x:
+colors@1.0.3, colors@1.0.x:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
+
+colors@^1.1.2:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/colors/-/colors-1.2.1.tgz#f4a3d302976aaf042356ba1ade3b1a2c62d9d794"
 
 colorspace@1.0.x:
   version "1.0.1"
@@ -2239,6 +2271,10 @@ exit-hook@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-1.1.1.tgz#f05ca233b48c05d54fff07765df8507e95c02ff8"
 
+exit@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/exit/-/exit-0.1.2.tgz#0632638f8d877cc82107d30a0fff1a17cba1cd0c"
+
 expand-brackets@^0.1.4:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/expand-brackets/-/expand-brackets-0.1.5.tgz#df07284e342a807cd733ac5af72411e581d1177b"
@@ -2752,7 +2788,7 @@ glob@7.0.5:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@7.1.2, glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.2:
+glob@7.1.2, glob@>=5.0.x, glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.1, glob@^7.1.2:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"
   dependencies:
@@ -3737,7 +3773,7 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@3.x, js-yaml@^3.4.2, js-yaml@^3.6.1, js-yaml@^3.9.1:
+js-yaml@3.x, js-yaml@>=3.4.x, js-yaml@^3.4.2, js-yaml@^3.6.1, js-yaml@^3.9.1:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.11.0.tgz#597c1a8bd57152f26d622ce4117851a51f5ebaef"
   dependencies:
@@ -3747,6 +3783,23 @@ js-yaml@3.x, js-yaml@^3.4.2, js-yaml@^3.6.1, js-yaml@^3.9.1:
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
+
+jscpd@0.6.17:
+  version "0.6.17"
+  resolved "https://registry.yarnpkg.com/jscpd/-/jscpd-0.6.17.tgz#37972661ec9512446b0ffc777f6eb88911262b02"
+  dependencies:
+    blamer "^0.1.9"
+    bluebird "^3.0.5"
+    cli ">=0.10.x"
+    cli-table "^0.3.1"
+    codemirror "5.31.0"
+    colors "^1.1.2"
+    glob ">=5.0.x"
+    js-yaml ">=3.4.x"
+    minimatch "^3.0.4"
+    shelljs "^0.7.8"
+    underscore ">=1.8.x"
+    winston ">=1.0.x"
 
 jsdom@11.6.2:
   version "11.6.2"
@@ -6147,7 +6200,7 @@ samsam@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.3.0.tgz#8d1d9350e25622da30de3e44ba692b5221ab7c50"
 
-sax@^1.2.4:
+sax@>=0.6.0, sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
@@ -6283,7 +6336,7 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
-shelljs@0.7.8:
+shelljs@0.7.8, shelljs@^0.7.8:
   version "0.7.8"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.8.tgz#decbcf874b0d1e5fb72e14b164a9683048e9acb3"
   dependencies:
@@ -7029,7 +7082,7 @@ unc-path-regex@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
 
-underscore@^1.7.0, underscore@^1.8.2:
+underscore@>=1.8.x, underscore@^1.7.0, underscore@^1.8.2:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 
@@ -7333,7 +7386,7 @@ window-size@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.2.0.tgz#b4315bb4214a3d7058ebeee892e13fa24d98b075"
 
-winston@2.4.1:
+winston@2.4.1, winston@>=1.0.x:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/winston/-/winston-2.4.1.tgz#a3a9265105564263c6785b4583b8c8aca26fded6"
   dependencies:
@@ -7413,6 +7466,17 @@ xdg-basedir@^3.0.0:
 xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
+
+xml2js@~0.4.x:
+  version "0.4.19"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.19.tgz#686c20f213209e94abf0d1bcf1efaa291c7827a7"
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~9.0.1"
+
+xmlbuilder@~9.0.1:
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-9.0.7.tgz#132ee63d2ec5565c557e20f4c22df9aca686b10d"
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.1"

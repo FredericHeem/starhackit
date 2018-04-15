@@ -12,8 +12,9 @@ export default ({ rest }) => {
       await AsyncStorage.setItem("authToken", token);
     },
     autoLogin: action(async () => {
+      console.log("autoLogin ");
       store.token = await AsyncStorage.getItem("authToken");
-      if (!store.token) return;
+      if (!store.token) throw new Error("no token");
       await store.getMe();
       await store.loginServer();
       return store.me;
@@ -34,7 +35,7 @@ export default ({ rest }) => {
         { headers: { Authorization: `Bearer ${store.token}` } }
       );
       store.me = await response.json();
-      //console.log("getMe", store.me);
+      console.log("getMe", store.me);
       return store.me;
     }),
     logout: action(async () => {
@@ -58,7 +59,7 @@ export default ({ rest }) => {
         const me = await rest.get("me");
         //console.log("loginServer ME ", me);
       } catch (e) {
-        console.error("loginServer ", e);
+        console.log("loginServer ", e);
         throw e;
       }
     }),

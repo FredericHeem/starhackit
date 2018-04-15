@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Image } from "react-native";
 import { Button, Text } from "native-base";
-
+import SvgGoogle from "icons/svg/Google";
+import SvgFacebook from "icons/svg/Facebook";
 export default context => {
   const { stores } = context;
   const Logo = () => (
@@ -31,6 +32,7 @@ export default context => {
         }}
       >
         <Logo />
+        
       </View>
       <View
         style={{
@@ -39,6 +41,7 @@ export default context => {
       >
         <Button
           full
+          bordered
           onPress={async () => {
             const res = await stores.core.auth.login({
               type: "facebook"
@@ -48,6 +51,7 @@ export default context => {
             }
           }}
         >
+          <SvgFacebook width="30" height="30"/>
           <Text>Continue with Facebook</Text>
         </Button>
       </View>
@@ -58,6 +62,7 @@ export default context => {
       >
         <Button
           full
+          bordered
           onPress={async () => {
             const res = await stores.core.auth.login({
               type: "google"
@@ -67,6 +72,7 @@ export default context => {
             }
           }}
         >
+          <SvgGoogle/>
           <Text>Continue with Google</Text>
         </Button>
       </View>

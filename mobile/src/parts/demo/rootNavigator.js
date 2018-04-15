@@ -8,11 +8,13 @@ export default context => {
 
   class AuthLoading extends React.Component {
     async componentDidMount() {
-      const res = await store.auth.autoLogin();
-      this.props.navigation.navigate("AuthApp");
+      await store.auth
+        .autoLogin()
+        .then(() => this.props.navigation.navigate("AuthApp"))
+        .catch(() => this.props.navigation.navigate("Landing"));
     }
     render() {
-      return <LoadingScreen/>;
+      return <LoadingScreen />;
     }
   }
 

@@ -8,7 +8,7 @@
       "resizeMode": "contain",
       "image": "./assets/instire.png"
     },
-    "version": "2.29.0",
+    "version": "2.33.0",
     "sdkVersion": "25.0.0",
     "ios": {
       "bundleIdentifier": "com.instire.instireapp",
@@ -21,7 +21,7 @@
     },
     "android": {
       "package": "com.instire.instire",
-      "versionCode": 20005,
+      "versionCode": 20006,
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION",

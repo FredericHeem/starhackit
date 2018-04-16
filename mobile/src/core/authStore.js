@@ -1,5 +1,6 @@
 import { AsyncStorage } from "react-native";
 import { observable, action } from "mobx";
+import registerForPushNotifications from "./push";
 
 export default context => {
   const {rest} = context;
@@ -40,7 +41,7 @@ export default context => {
       store.driver = driversMap[type];
       await AsyncStorage.setItem("authType", type);
       const driverMe = await store.driver.login();
-
+      await registerForPushNotifications(context);
       store.me = await rest.get("me");
       console.log("store.me", store.me);
       return store.me;

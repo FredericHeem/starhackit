@@ -5,8 +5,8 @@ import _ from "lodash";
 const pluginsName = [
   "users",
   "dbSchema",
-  "document",
-  "ticket"
+  "job",
+  "expoPush"
 ];
 
 export default function Plugins(app) {

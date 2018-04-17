@@ -47,13 +47,12 @@ export async function verifyMobile(
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
-    });
+    }).then(res => profileMobileToUser(res.data));
 
   return createVerifyMobile(
     getMe,
     models,
     publisherUser,
-    profileMobileToUser(profile),
     accessToken
   );
 }

@@ -1,6 +1,6 @@
 {
   "name": "starhackit",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "8.2.2",
@@ -16,7 +16,7 @@
     "react-native-scripts": "1.11.1",
     "react-test-renderer": "16.2.0"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "react-native-scripts start",
     "eject": "react-native-scripts eject",
@@ -47,13 +47,18 @@
     "native-base": "2.3.10",
     "qs": "6.5.1",
     "react": "16.2.0",
-    "react-native": "0.52.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-datepicker": "1.6.0",
     "react-native-modal": "5.2.0",
-    "react-native-svg": "^6.3.1",
-    "react-native-tab-view": "0.0.74",
+    "react-native-modal-datetime-picker": "5.1.0",
+    "react-native-radio-buttons": "^1.0.0",
+    "react-native-svg": "5.5.1",
     "react-navigation": "2.0.0-beta.3",
     "styled-components": "3.2.1",
     "uuid": "3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:instire/instire.git"
   }
 }

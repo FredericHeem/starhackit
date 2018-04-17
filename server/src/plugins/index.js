@@ -5,7 +5,8 @@ import _ from "lodash";
 const pluginsName = [
   "users",
   "dbSchema",
-  "job",
+  "document",
+  "ticket",
   "expoPush"
 ];
 

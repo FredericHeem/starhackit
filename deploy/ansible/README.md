@@ -56,19 +56,28 @@ mail_signature: "The StarHackIt Team"
 To set the production configuration parameters, create [prod/group_vars/server.yml](prod/group_vars/server.yml):
 
 ```
+
 env_name: production
 user: ubuntu
 home: /home/ubuntu
 node_env: production
 server_name: starhack.it
-certbot_admin_email: "security@starhack.it"
+protocol: https
+ssl_admin_email: security@starhack.it
 website_url: "https://starhack.it"
-mail_service: Mailgun
+db_name: "main"
+db_user: "postgres"
+db_password: "_Password123!"
+redis_url: "redis://localhost:6379"
+mail_service: 'Mailgun'
 mail_from: "StarHackIt <notification@starhack.it>"
-mail_user: postmaster@starhackit.mailgun.org
-mail_password: 1b901d8d9a2806754225ad177fe93a10
-facebook_client_id: 1643377549276547
-facebook_client_secret: 1da6597bec02ca41f3950641c6e965a2
+mail_user: ''
+mail_password: ""
+facebook_client_id: ""
+facebook_client_secret: ""
+google_client_id: ""
+google_client_secret: ""
+
 ```
 
 Then to change the remote machine connection settings (ip address, username, ssh key location), edit the production inventory: [prod/inventory](prod/inventory):

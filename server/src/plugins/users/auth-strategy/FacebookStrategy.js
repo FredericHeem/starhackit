@@ -7,7 +7,6 @@ import {
 
 import config from "config";
 import Axios from "axios";
-import _ from "lodash";
 
 const log = require("logfilename")(__filename);
 

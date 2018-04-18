@@ -29,20 +29,33 @@ const profileToUser = profile => ({
   }
 });
 
+const profileMobileToUser = profile => ({
+  username: profile.name,
+  email: profile.email,
+  firstName: profile.givenName,
+  lastName: profile.familyName,
+  authProvider: {
+    name: "google",
+    authId: profile.id
+  }
+});
+
 export async function verifyMobile(
   models,
   publisherUser,
   profile,
   accessToken
 ) {
+  log.info("verifyMobile ", JSON.stringify(profile, null, 4));
   const getMe = () =>
     axios.get("me", {
       params: {
         fields: "name,email,picture,first_name,last_name",
         access_token: accessToken
       }
-    });
-  return createVerifyMobile(getMe, models, publisherUser, profile, accessToken);
+    }).then(res => profileMobileToUser(res.data));
+
+  return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
 
 export function registerWeb(passport, models, publisherUser) {

@@ -44,7 +44,7 @@ export default function UserRouter(app) {
         pathname: "/:id",
         method: "get",
         handler: async context => {
-          const user = await models.User.findByUserId(context.state.user.id);
+          const user = await models.User.findByUserId(context.params.id);
 
           if (!user) {
             context.status = 404;

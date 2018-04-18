@@ -35,7 +35,6 @@ export async function verifyWeb(
   accessToken
 ) {
   log.debug(`verifyWeb  ${accessToken}`, JSON.stringify(userConfig, null, 4));
-  log.debug("verifyWeb email", userConfig.email);
   const userByEmail = await models.User.findByEmail(userConfig.email);
 
   if (userByEmail) {
@@ -62,14 +61,12 @@ export async function createVerifyMobile(
   getMe,
   models,
   publisherUser,
-  userID,
   accessToken
 ) {
-  log.debug("verifyLogin ", accessToken);
+  log.debug("createVerifyMobile ", accessToken);
 
   try {
-    const result = await getMe();
-    const profile = result.data;
+    const profile = await getMe();
     log.debug("profile ", profile);
     return verifyWeb(models, publisherUser, profile, accessToken);
   } catch (error) {

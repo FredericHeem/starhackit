@@ -6,7 +6,8 @@ const pluginsName = [
   "users",
   "dbSchema",
   "document",
-  "ticket"
+  "ticket",
+  "expoPush"
 ];
 
 export default function Plugins(app) {

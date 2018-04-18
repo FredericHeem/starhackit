@@ -4,7 +4,7 @@ user: ubuntu
 home: /home/ubuntu
 node_env: production
 server_name: starhack.it
-https: true
+protocol: https
 ssl_admin_email: security@starhack.it
 website_url: "https://starhack.it"
 db_name: "main"
@@ -17,4 +17,5 @@ mail_user: ''
 mail_password: ""
 facebook_client_id: ""
 facebook_client_secret: ""
-google_analytics: ''
+google_client_id: ""
+google_client_secret: ""

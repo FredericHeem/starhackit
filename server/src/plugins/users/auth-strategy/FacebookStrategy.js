@@ -7,9 +7,8 @@ import {
 
 import config from "config";
 import Axios from "axios";
-import _ from "lodash";
 
-let log = require("logfilename")(__filename);
+const log = require("logfilename")(__filename);
 
 const axios = Axios.create({
   baseURL: "https://graph.facebook.com/",
@@ -32,10 +31,11 @@ const profileToUser = profile => ({
 const profileMobileToUser = profile => ({
   username: profile.name,
   email: profile.email,
-  firstName: profile.givenName,
-  lastName: profile.familyName,
+  firstName: profile.given_name,
+  lastName: profile.family_name,
+  picture: profile.picture && profile.picture.data,
   authProvider: {
-    name: "google",
+    name: "facebook",
     authId: profile.id
   }
 });
@@ -48,12 +48,18 @@ export async function verifyMobile(
 ) {
   log.info("verifyMobile ", JSON.stringify(profile, null, 4));
   const getMe = () =>
-    axios.get("me", {
-      params: {
-        fields: "name,email,picture,first_name,last_name",
-        access_token: accessToken
-      }
-    }).then(res => profileMobileToUser(res.data));
+    axios
+      .get("me", {
+        params: {
+          fields: "name,email,picture,first_name,last_name",
+          access_token: accessToken
+        }
+      })
+      .then(res => {
+        log.debug("verifyMobile me: ", JSON.stringify(res.data, null, 4));
+        return res;
+      })
+      .then(res => profileMobileToUser(res.data));
 
   return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
@@ -73,7 +79,7 @@ export function registerWeb(passport, models, publisherUser) {
           "link",
           "locale",
           "name",
-          "timezone",
+          "timezone"
         ],
         enableProof: false
       },
@@ -84,7 +90,7 @@ export function registerWeb(passport, models, publisherUser) {
             models,
             publisherUser,
             profileToUser(profile._json),
-            accessToken,
+            accessToken
           );
           done(res.err, res.user);
         } catch (err) {

@@ -67,7 +67,7 @@ export async function createVerifyMobile(
 
   try {
     const profile = await getMe();
-    log.debug("profile ", profile);
+    log.debug("profile ", JSON.stringify(profile, null, 4));
     return verifyWeb(models, publisherUser, profile, accessToken);
   } catch (error) {
     log.error("verifyMobile ", error);

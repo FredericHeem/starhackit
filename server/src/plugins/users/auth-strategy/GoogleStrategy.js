@@ -72,11 +72,12 @@ export function registerWeb(passport, models, publisherUser) {
       profile,
       done
     ) {
+      log.debug("registerWeb me: ", JSON.stringify(profile, null, 4));
       try {
         const res = await verifyWeb(
           models,
           publisherUser,
-          profileWebToUser(profile),
+          profileWebToUser(profile._json),
           accessToken
         );
         done(res.err, res.user);

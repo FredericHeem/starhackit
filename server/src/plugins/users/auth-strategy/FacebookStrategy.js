@@ -9,7 +9,7 @@ import config from "config";
 import Axios from "axios";
 import _ from "lodash";
 
-let log = require("logfilename")(__filename);
+const log = require("logfilename")(__filename);
 
 const axios = Axios.create({
   baseURL: "https://graph.facebook.com/",

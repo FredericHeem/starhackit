@@ -8,6 +8,8 @@ import {
 import Axios from "axios";
 import config from "config";
 
+const log = require("logfilename")(__filename);
+
 const axios = Axios.create({
   baseURL: "https://www.googleapis.com/",
   timeout: 30e3
@@ -28,8 +30,11 @@ const profileWebToUser = profile => ({
 const profileMobileToUser = profile => ({
   username: profile.name,
   email: profile.email,
-  firstName: profile.givenName,
-  lastName: profile.familyName,
+  firstName: profile.given_name,
+  lastName: profile.family_name,
+  picture: {
+    url: profile.picture
+  },
   authProvider: {
     name: "google",
     authId: profile.id
@@ -43,24 +48,25 @@ export async function verifyMobile(
   accessToken
 ) {
   const getMe = () =>
-    axios.get("userinfo/v2/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }).then(res => profileMobileToUser(res.data));
+    axios
+      .get("userinfo/v2/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      .then(res => {
+        log.debug("verifyMobile me: ", JSON.stringify(res.data));
+        return res;
+      })
+      .then(res => profileMobileToUser(res.data));
 
-  return createVerifyMobile(
-    getMe,
-    models,
-    publisherUser,
-    accessToken
-  );
+  return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
 
 export function registerWeb(passport, models, publisherUser) {
   const googleConfig = config.authentication.google;
   if (googleConfig) {
-    const strategy = new Strategy(googleConfig, async function (
+    const strategy = new Strategy(googleConfig, async function(
       accessToken,
       refreshToken,
       profile,

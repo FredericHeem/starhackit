@@ -24,7 +24,7 @@ export default context => {
       <Paper>
         <form onSubmit={e => e.preventDefault()}>
           <h3>{tr.t("My Profile")}</h3>
-          { store.picture && <img width="200" src={store.picture.url} alt="profile"/>}
+          { store.picture && <img width="50" src={store.picture.url} alt="profile"/>}
           <FormGroup>
             <UsernameInput 
               id="username"

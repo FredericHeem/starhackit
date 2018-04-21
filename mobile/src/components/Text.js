@@ -14,7 +14,7 @@ export default ({ theme }) => {
     secondaryOnPrimary: { color: theme.textSecondaryOnPrimary },
     primaryOnSecondary: { color: theme.textPrimaryOnSecondary },
     secondaryOnSecondary: { color: theme.textSecondaryOnSecondary },
-    large: { fontSize: 22 },
+    large: { fontSize: 20 },
     bold: { fontWeight: "bold" }
   };
   return glamorous.text(

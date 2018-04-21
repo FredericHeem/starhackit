@@ -40,7 +40,7 @@ export default context => {
   });
 
   const Picture = observer(({ url }) => (
-    <PictureView primary>
+    <PictureView primary shadow>
       <Image
         style={{ borderRadius: 10, height: 50, width: 50, margin: 20 }}
         source={{ uri: url }}
@@ -56,9 +56,9 @@ export default context => {
       {store.map.get("picture") && (
         <Picture url={store.map.get("picture").url} />
       )}
-      <View margin={20} flexDirection="row" alignItems="center">
+      <View shadow marginTop={20} padding={20} flexDirection="row" alignItems="center">
         <Icon name="email" size={24} color={theme.textPrimary} />
-        <View marginLeft={30}>
+        <View  marginLeft={30}>
           <Text>EMAIL</Text>
           <Text bold>{store.map.get("email")}</Text>
         </View>

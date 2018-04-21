@@ -2,6 +2,7 @@ import Expo from "expo";
 import { AsyncStorage } from "react-native";
 import { observable, action } from "mobx";
 import secrets from "../../secrets.json";
+import _ from "lodash";
 
 export default ({ rest }) => {
   const store = observable({
@@ -32,8 +33,10 @@ export default ({ rest }) => {
       const response = await fetch(
         `https://graph.facebook.com/me?fields=name,email,first_name,last_name&access_token=${store.token}`
       );
-      store.me = await response.json();
-      //console.log("getMe", store.me);
+      //TODO check error
+      const result = await response.json();
+      console.log("getMe result", result);
+      store.me = result;
       await store.getPicture();
       return store.me;
     }),
@@ -54,15 +57,18 @@ export default ({ rest }) => {
     }),
     loginServer: action(async () => {
       console.log("loginServer ", store.me);
-      if (!store.me) {
+      const userId = _.get(store, "me.id");
+      if (_.isEmpty(userId) || _.isEmpty(store.token)) {
         return;
       }
+
       const body = {
-        userId: store.me.id,
+        userId,
         token: store.token
       };
 
       try {
+        console.log("loginServer fb: ", body);
         const res = await rest.post("auth/login_facebook", body);
         store.jwt = res.token;
         //console.log("loginServer ", store.jwt);

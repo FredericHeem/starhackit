@@ -8,15 +8,22 @@ export default context => {
     <View>
       <View>
         <Text>Primary</Text>
+        <Text bold>Bold</Text>
         <Text secondary>Secondary</Text>
+        <Text secondary bold>Bold Secondary</Text>
       </View>
       <View primary>
         <Text primaryOnPrimary>Primary on Primary</Text>
+        <Text primaryOnPrimary bold>Bold Primary on Primary</Text>
         <Text secondaryOnPrimary>Secondary on Primary</Text>
+        <Text secondaryOnPrimary bold>Bold Secondary on Primary</Text>
       </View>
       <View secondary>
         <Text primaryOnSecondary>Primary on Secondary</Text>
+        <Text primaryOnSecondary bold>Bold Primary on Secondary</Text>
         <Text secondaryOnSecondary>Secondary on Secondary</Text>
+        <Text secondaryOnSecondary bold >Bold Secondary on Secondary</Text>
+        
       </View>
     </View>
   );

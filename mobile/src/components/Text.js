@@ -5,10 +5,9 @@ export default ({ theme }) => {
     root: {
       fontSize: 16,
       color: theme.textPrimary,
-      marginTop: 4,
-      marginBottom: 4,
-      marginRight: 4,
-      fontFamily: 'Montserrat'
+      marginTop: 2,
+      marginBottom: 2,
+      fontFamily: "Montserrat"
     },
     secondary: { color: theme.textSecondary },
     primaryOnPrimary: { color: theme.textPrimaryOnPrimary },

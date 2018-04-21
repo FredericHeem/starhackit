@@ -22,7 +22,7 @@ export default {
   badgePadding: platform === "ios" ? 3 : 0,
 
   // Button
-  btnFontFamily: platform === "ios" ? "Roboto" : "Roboto_medium",
+  btnFontFamily: platform === "ios" ? "Montserrat" : "Montserrat_medium",
   btnDisabledBg: "#b5b5b5",
   btnDisabledClr: "#f1f1f1",
 
@@ -116,7 +116,7 @@ export default {
   brandSidebar: "#252932",
 
   // Font
-  fontFamily: "Roboto",
+  fontFamily: "Montserrat",
   fontSizeBase: 15,
 
   get fontSizeH1() {
@@ -251,7 +251,7 @@ export default {
   noteFontSize: 14,
 
   // Title
-  titleFontfamily: platform === "ios" ? "Roboto" : "Roboto_medium",
+  titleFontfamily: platform === "ios" ? "Montserrat" : "Montserrat_medium",
   titleFontSize: 19,
   subTitleFontSize: 14,
   subtitleColor: "#FFF",

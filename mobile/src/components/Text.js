@@ -7,7 +7,8 @@ export default ({ theme }) => {
       color: theme.textPrimary,
       marginTop: 4,
       marginBottom: 4,
-      marginRight: 4
+      marginRight: 4,
+      fontFamily: 'Montserrat'
     },
     secondary: { color: theme.textSecondary },
     primaryOnPrimary: { color: theme.textPrimaryOnPrimary },
@@ -15,7 +16,7 @@ export default ({ theme }) => {
     primaryOnSecondary: { color: theme.textPrimaryOnSecondary },
     secondaryOnSecondary: { color: theme.textSecondaryOnSecondary },
     large: { fontSize: 20 },
-    bold: { fontWeight: "bold" }
+    bold: { fontFamily: "Montserrat_bold" }
   };
   return glamorous.text(
     styles.root,

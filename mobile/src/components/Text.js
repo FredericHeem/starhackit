@@ -13,7 +13,9 @@ export default ({ theme }) => {
     primaryOnPrimary: { color: theme.textPrimaryOnPrimary },
     secondaryOnPrimary: { color: theme.textSecondaryOnPrimary },
     primaryOnSecondary: { color: theme.textPrimaryOnSecondary },
-    secondaryOnSecondary: { color: theme.textSecondaryOnSecondary }
+    secondaryOnSecondary: { color: theme.textSecondaryOnSecondary },
+    large: { fontSize: 22 },
+    bold: { fontWeight: "bold" }
   };
   return glamorous.text(
     styles.root,
@@ -21,6 +23,9 @@ export default ({ theme }) => {
     ({ primaryOnPrimary }) => primaryOnPrimary && styles.primaryOnPrimary,
     ({ secondaryOnPrimary }) => secondaryOnPrimary && styles.secondaryOnPrimary,
     ({ primaryOnSecondary }) => primaryOnSecondary && styles.primaryOnSecondary,
-    ({ secondaryOnSecondary }) => secondaryOnSecondary && styles.secondaryOnSecondary,
+    ({ secondaryOnSecondary }) =>
+      secondaryOnSecondary && styles.secondaryOnSecondary,
+    ({ large }) => large && styles.large,
+    ({ bold }) => bold && styles.bold
   );
 };

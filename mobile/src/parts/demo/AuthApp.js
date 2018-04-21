@@ -34,6 +34,6 @@ export default context => createBottomTabNavigator(
       }
     },
     {
-      initialRouteName: "Theme"
+      //initialRouteName: "Theme"
     }
   );

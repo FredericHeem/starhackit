@@ -1,4 +1,12 @@
 export default () => ({
+  primary: "#DC682A",
+  accent: "#6A6A6A",
+  background: "#ffffff",
+  textPrimary: "#00000C",
+  textPrimaryOnPrimary: "#ffffff",
+  textPrimaryOnAccent: "#ffffff",
+  textSecondary: "#757575",
+  borderColor: "#BDBDBD",
   nav: {
     height: 0
   },

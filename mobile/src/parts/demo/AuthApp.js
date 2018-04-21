@@ -22,7 +22,7 @@ export default context => createBottomTabNavigator(
         screen: require("./ThemeViewer").default(context),
         navigationOptions: () => ({
           title: "Theme",
-          tabBarIcon: () => <Icon name="info" />
+          tabBarIcon: () => <Icon name="paint-brush" />
         })
       },
       SystemInfo: {

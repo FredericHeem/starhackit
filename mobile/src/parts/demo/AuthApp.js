@@ -4,6 +4,13 @@ import Icon from "components/IconTabBar";
 
 export default context => createBottomTabNavigator(
     {
+      Profile: {
+        screen: require("./Profile").default(context),
+        navigationOptions: () => ({
+          title: "Profile",
+          tabBarIcon: () => <Icon name="user" />
+        })
+      },
       Settings: {
         screen: require("./Settings").default(context),
         navigationOptions: () => ({
@@ -11,15 +18,22 @@ export default context => createBottomTabNavigator(
           tabBarIcon: () => <Icon name="cog" />
         })
       },
+      Theme: {
+        screen: require("./ThemeViewer").default(context),
+        navigationOptions: () => ({
+          title: "Theme",
+          tabBarIcon: () => <Icon name="info" />
+        })
+      },
       SystemInfo: {
         screen: require("views/SystemInfo").default(context),
         navigationOptions: () => ({
           title: "Info",
-          tabBarIcon: () => <Icon name="cog" />
+          tabBarIcon: () => <Icon name="info" />
         })
       }
     },
     {
-      initialRouteName: "SystemInfo"
+      //initialRouteName: "Theme"
     }
   );

@@ -1,17 +1,18 @@
 import React from "react";
-import styled from "styled-components/native";
 import { MapView } from "expo";
 import _ from "lodash";
 import { observer } from "mobx-react";
+import glamorous from "glamorous-native";
 
 export default ({ stores }) => {
-  const CartographyView = styled.View`
-    flex: 1;
-    flex-direction: column;
-    align-items: stretch;
-  `;
+  const CartographyView = glamorous.view({
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch'
+  })
 
   const geoLocStore = stores.core.geoLoc;
+  
 /*
   const defaultRegion = {
     latitude: 10.8812484,

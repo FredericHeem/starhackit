@@ -18,6 +18,13 @@ export default context => createBottomTabNavigator(
           tabBarIcon: () => <Icon name="cog" />
         })
       },
+      Theme: {
+        screen: require("./ThemeViewer").default(context),
+        navigationOptions: () => ({
+          title: "Theme",
+          tabBarIcon: () => <Icon name="info" />
+        })
+      },
       SystemInfo: {
         screen: require("views/SystemInfo").default(context),
         navigationOptions: () => ({
@@ -27,6 +34,6 @@ export default context => createBottomTabNavigator(
       }
     },
     {
-      initialRouteName: "Profile"
+      initialRouteName: "Theme"
     }
   );

@@ -1,11 +1,14 @@
 export default () => ({
   primary: "#DC682A",
-  accent: "#6A6A6A",
+  secondary: "#6A6A6A",
   background: "#ffffff",
-  textPrimary: "#00000C",
+  textPrimary: "#191919",
+  textSecondary: "#595959",
   textPrimaryOnPrimary: "#ffffff",
-  textPrimaryOnAccent: "#ffffff",
-  textSecondary: "#757575",
+  textPrimaryOnSecondary: "#ffffff",
+  textSecondaryOnPrimary: "#cccccc",
+  textSecondaryOnSecondary: "#cccccc",
+
   borderColor: "#BDBDBD",
   nav: {
     height: 0

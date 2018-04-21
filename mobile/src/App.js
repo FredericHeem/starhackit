@@ -1,7 +1,6 @@
 import React from "react";
 import Expo from "expo";
 import { StatusBar } from "react-native";
-import { ThemeProvider } from "styled-components";
 import { StyleProvider, Root } from "native-base";
 
 import getTheme from "./theme/components";
@@ -46,11 +45,9 @@ export default class App extends React.Component {
     }
     return (
       <StyleProvider style={getTheme(platform)}>
-        <ThemeProvider theme={context.theme}>
-          <Root>
-            <AppNavigator />
-          </Root>
-        </ThemeProvider>
+        <Root>
+          <AppNavigator />
+        </Root>
       </StyleProvider>
     );
   }

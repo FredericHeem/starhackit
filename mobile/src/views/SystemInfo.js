@@ -1,9 +1,13 @@
 import React from "react";
-import { Text, View, Platform } from "react-native";
-import styled from "styled-components/native";
+import { Platform } from "react-native";
 import { Constants } from "expo";
+import glamorous, {View} from "glamorous-native";
 
-export default () => {
+export default context => {
+  const View = require("components/View").default(context);
+  const Title = require("components/Title").default(context);
+  const Text = require("components/Text").default(context);
+
   const data = [
     {
       key: "Platform OS",
@@ -39,13 +43,12 @@ export default () => {
     data.concat(dataIOS);
   }
 
-  const RowView = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px;
-    border-color: ${props => props.theme.content.borderColor};
-    border-width: 0.5;
-  `;
+  const RowView = glamorous.view({
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+    borderWidth: 0.5
+  });
 
   function Row(rowData, rowId) {
     return (
@@ -56,18 +59,11 @@ export default () => {
     );
   }
 
-  const SystemInfoView = styled.ScrollView`
-    flex: 1;
-    width: 100%;
-    margin: 0;
-  `;
-
-  const Title = styled.Text`
-    font-weight: bold;
-    font-size: 18;
-    padding: 8px;
-    text-align: center;
-  `;
+  const SystemInfoView = glamorous.scrollView({
+    flex: 1,
+    width: "100%",
+    margin: 0
+  });
 
   return function SystemInfo() {
     //const { navigate } = navigation;

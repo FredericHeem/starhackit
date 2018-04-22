@@ -8,7 +8,9 @@ export default context => {
   const styles = {
     root: {
       backgroundColor: theme.backgroundColor,
-      padding: 12
+      padding: 12,
+      margin: 12,
+      borderRadius: 4
     },
     primary: { backgroundColor: theme.primary },
     secondary: { backgroundColor: theme.secondary },
@@ -38,19 +40,23 @@ export default context => {
     ({ shadow }) => shadow && styles.shadow
   );
 
-  return ({ label, onPress, children, ...props }) => (
+  return ({ label, primary, secondary, onPress, children, ...props }) => (
     <TouchableOpacity onPress={onPress}>
       <ButtonView
         {...props}
         elevation={5}
+        primary={primary}
+        secondary={secondary}
         flexDirection="row"
-        display="flex"
+        display="inline-flex"
         alignItems="center"
-        justifyContent="space-around"
+        justifyContent="flex-start"
       >
-        <Text large bold>
-          {label}
-        </Text>
+        {label && (
+          <Text primaryOnPrimary={primary} primaryOnSecondary={secondary} bold>
+            {label}
+          </Text>
+        )}
         {children}
       </ButtonView>
     </TouchableOpacity>

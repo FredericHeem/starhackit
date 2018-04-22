@@ -8,10 +8,10 @@ export default ({ theme }) => {
     shadow: {
       shadowColor: "grey",
       shadowOpacity: 0.8,
-      shadowRadius: 2,
+      shadowRadius: 5,
       shadowOffset: {
-        height: 3,
-        width: 3
+        height: 4,
+        width: 0
       }
     }
   };

@@ -1,10 +1,7 @@
 import React from "react";
 import Expo from "expo";
 import { StatusBar } from "react-native";
-import { StyleProvider, Root } from "native-base";
 
-import getTheme from "./theme/components";
-import platform from "./theme/variables/platform";
 import Context from "./core/Context";
 import Stores from "./core/Stores";
 
@@ -30,8 +27,9 @@ export default class App extends React.Component {
     StatusBar.setHidden(true);
 
     await Expo.Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+      Montserrat: require("./fonts/Montserrat-Regular.ttf"),
+      Montserrat_medium: require("./fonts/Montserrat-Medium.ttf"),
+      Montserrat_bold: require("./fonts/Montserrat-Bold.ttf")
     });
 
     await context.stores.core.geoLoc.get();
@@ -43,12 +41,6 @@ export default class App extends React.Component {
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-    return (
-      <StyleProvider style={getTheme(platform)}>
-        <Root>
-          <AppNavigator />
-        </Root>
-      </StyleProvider>
-    );
+    return <AppNavigator />;
   }
 }

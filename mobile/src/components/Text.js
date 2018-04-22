@@ -5,17 +5,19 @@ export default ({ theme }) => {
     root: {
       fontSize: 16,
       color: theme.textPrimary,
-      marginTop: 4,
-      marginBottom: 4,
-      marginRight: 4
+      marginTop: 2,
+      marginBottom: 2,
+      marginLeft: 2,
+      fontFamily: "Montserrat"
     },
     secondary: { color: theme.textSecondary },
     primaryOnPrimary: { color: theme.textPrimaryOnPrimary },
     secondaryOnPrimary: { color: theme.textSecondaryOnPrimary },
     primaryOnSecondary: { color: theme.textPrimaryOnSecondary },
     secondaryOnSecondary: { color: theme.textSecondaryOnSecondary },
+    medium: { fontSize: 18 },
     large: { fontSize: 20 },
-    bold: { fontWeight: "bold" }
+    bold: { fontFamily: "Montserrat_bold" }
   };
   return glamorous.text(
     styles.root,

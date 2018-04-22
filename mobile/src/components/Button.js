@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import glamorous, { View } from "glamorous-native";
+import glamorous from "glamorous-native";
 
 export default context => {
   const { theme } = context;

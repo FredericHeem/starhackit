@@ -2,8 +2,6 @@ import React from "react";
 import Expo from "expo";
 import { StatusBar } from "react-native";
 
-import getTheme from "./theme/components";
-import platform from "./theme/variables/platform";
 import Context from "./core/Context";
 import Stores from "./core/Stores";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {ScrollView} from "react-native"
+import { ScrollView } from "react-native";
 export default context => {
   const Text = require("components/Text").default(context);
   const View = require("components/View").default(context);
@@ -35,6 +35,12 @@ export default context => {
         </Text>
       </View>
       <View>
+        <View flexDirection="row" alignItems="center">
+          <Button primary label="Button 1" />
+          <Button primary label="Button 2" />
+          <Text>Some Text</Text>
+        </View>
+        <Button block primary label="Button primary " />
         <Button primary label="Button primary " />
         <Button secondary label="Button secondary" />
         <Button label="Button with Label" />

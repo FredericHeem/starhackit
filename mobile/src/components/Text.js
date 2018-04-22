@@ -7,6 +7,7 @@ export default ({ theme }) => {
       color: theme.textPrimary,
       marginTop: 2,
       marginBottom: 2,
+      marginLeft: 2,
       fontFamily: "Montserrat"
     },
     secondary: { color: theme.textSecondary },
@@ -14,6 +15,7 @@ export default ({ theme }) => {
     secondaryOnPrimary: { color: theme.textSecondaryOnPrimary },
     primaryOnSecondary: { color: theme.textPrimaryOnSecondary },
     secondaryOnSecondary: { color: theme.textSecondaryOnSecondary },
+    medium: { fontSize: 18 },
     large: { fontSize: 20 },
     bold: { fontFamily: "Montserrat_bold" }
   };

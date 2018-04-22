@@ -1,7 +1,6 @@
 import React from "react";
 import Expo from "expo";
 import { StatusBar } from "react-native";
-import { StyleProvider, Root } from "native-base";
 
 import getTheme from "./theme/components";
 import platform from "./theme/variables/platform";
@@ -44,12 +43,6 @@ export default class App extends React.Component {
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-    return (
-      <StyleProvider style={getTheme(platform)}>
-        <Root>
-          <AppNavigator />
-        </Root>
-      </StyleProvider>
-    );
+    return <AppNavigator />;
   }
 }

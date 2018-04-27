@@ -6,7 +6,13 @@ export default context => {
   return ({ name, focused, tintColor }) => (
     <Text
       bold={focused}
-      style={{ fontSize: 13, margin: 0, padding: 0, color: tintColor }}
+      style={{
+        fontSize: 13,
+        margin: 2,
+        padding: 0,
+        color: tintColor,
+        textAlign: "center"
+      }}
     >
       {name}
     </Text>

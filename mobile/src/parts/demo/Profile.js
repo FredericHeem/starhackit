@@ -1,8 +1,6 @@
 import React from "react";
 import { observable } from "mobx";
-import { Image } from "react-native";
 import { observer } from "mobx-react";
-import glamorous from "glamorous-native";
 import Icon from "react-native-vector-icons/Entypo";
 
 import { createStackNavigator } from "react-navigation";
@@ -28,37 +26,24 @@ export default context => {
   const Page = require("components/Page").default(context);
   const View = require("components/View").default(context);
   const Text = require("components/Text").default(context);
-
-  const PictureView = glamorous(View)({
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: 150,
-    margin: 0
-  });
-
-  const Picture = observer(({ url }) => (
-    <PictureView primary shadow>
-      <Image
-        style={{ borderRadius: 10, height: 50, width: 50, margin: 20 }}
-        source={{ uri: url }}
-      />
-      <Text primaryOnPrimary large>
-        {store.map.get("username")}
-      </Text>
-    </PictureView>
-  ));
+  const ProfileHeader = require("components/ProfileHeader").default(context);
 
   const Profile = observer(({ store }) => (
     <Page>
-      {store.map.get("picture") && (
-        <Picture url={store.map.get("picture").url} />
-      )}
-      <View shadow marginTop={20} padding={20} flexDirection="row" alignItems="center">
+      <ProfileHeader
+        url={store.map.get("picture").url}
+        username={store.map.get("username")}
+      />
+
+      <View
+        shadow
+        marginTop={20}
+        padding={20}
+        flexDirection="row"
+        alignItems="center"
+      >
         <Icon name="email" size={24} color={theme.textPrimary} />
-        <View  marginLeft={30}>
+        <View marginLeft={30}>
           <Text>EMAIL</Text>
           <Text bold>{store.map.get("email")}</Text>
         </View>
@@ -74,7 +59,7 @@ export default context => {
             didMount={() => {
               props.navigation.addListener("didFocus", async () => {
                 const profile = await asyncOpGet();
-                console.log("profile: ", profile);
+                //console.log("profile: ", profile);
                 store.map.replace(profile);
               });
             }}
@@ -86,7 +71,10 @@ export default context => {
     },
     {
       navigationOptions: {
-        header: null
+        header: null,
+        headerTitleStyle: {
+          fontFamily: context.theme.fontFamilyBold
+        }
       },
       mode: "modal"
     }

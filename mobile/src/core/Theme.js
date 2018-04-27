@@ -1,4 +1,6 @@
 export default () => ({
+  fontFamily: "Montserrat",
+  fontFamilyBold: "Montserrat_bold",
   primary: "#DC682A",
   secondary: "#6A6A6A",
   background: "#ffffff",

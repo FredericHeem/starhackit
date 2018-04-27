@@ -1,8 +1,10 @@
 import React from "react";
-import { Linking, Button } from "react-native";
+import { Linking } from "react-native";
 
-export default () => {
-  const onPress = async (href) => {
+export default context => {
+  const Button = require("components/Button").default(context);
+
+  const onPress = async href => {
     console.log("href ", href);
     if (!href) {
       console.log("no href");
@@ -30,7 +32,7 @@ export default () => {
   };
 
   const Anchor = ({ href, title, ...props }) => (
-    <Button title={title} {...props} onPress={() => onPress(href)} />
+    <Button primary label={title} {...props} onPress={() => onPress(href)} />
   );
   return Anchor;
 };

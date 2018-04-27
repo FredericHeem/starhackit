@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 
 export default context => {
+  const Button = require("components/Button").default(context);
+
   const onLogout = async navigation => {
     await context.stores.core.auth.logout();
     navigation.navigate("Landing");
@@ -9,7 +11,7 @@ export default context => {
 
   const Logout = ({ navigation }) => (
     <View style={{ margin: 20 }}>
-      <Button title="Logout" onPress={() => onLogout(navigation)} />
+      <Button primary label="Logout" onPress={() => onLogout(navigation)} />
     </View>
   );
   return Logout;

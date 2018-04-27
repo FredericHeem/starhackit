@@ -1,10 +1,18 @@
+import React from "react";
 
-import glamorous from "glamorous-native";
-
-export default (/*{theme}*/) =>
-  glamorous.text({
-    marginTop: 10,
-    marginBottom: 16,
-    fontSize: 16,
-    fontWeight: "bold"
-  })
+export default context => {
+  const Text = require("components/Text").default(context);
+  return props => (
+    <Text
+      bold
+      style={{
+        marginTop: 10,
+        marginBottom: 16,
+        fontSize: 16
+      }}
+      {...props}
+    >
+      {props.children}
+    </Text>
+  );
+};

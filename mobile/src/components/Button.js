@@ -8,10 +8,10 @@ export default context => {
   const styles = {
     root: {
       backgroundColor: theme.backgroundColor,
-      padding: 12,
-      margin: 12,
+      padding: 10,
+      margin: 10,
       borderRadius: 4,
-      
+      height: 40,
       flexDirection: "row",
       display: "flex",
       alignItems: "center",
@@ -28,6 +28,14 @@ export default context => {
       justifyContent: "center",
       alignSelf: "stretch"
     },
+    disabled: {
+      opacity: 0.2
+    },
+    small: {
+      height: 36,
+      padding: 4,
+      margin: 4
+    },
     shadow: {
       borderWidth: 1,
       //shadowColor: "#ffffff",
@@ -37,7 +45,8 @@ export default context => {
       shadowOffset: {
         height: 5,
         width: 1
-      }
+      },
+      elevation: 5  
     }
   };
   const ButtonView = glamorous.view(
@@ -47,16 +56,18 @@ export default context => {
     ({ raised }) => raised && styles.raised,
     ({ bordered }) => bordered && styles.bordered,
     ({ shadow }) => shadow && styles.shadow,
-    ({ block }) => block && styles.block
+    ({ block }) => block && styles.block,
+    ({ disabled }) => disabled && styles.disabled,
+    ({ small }) => small && styles.small,
   );
 
-  return ({ label, primary, secondary, onPress, children, ...props }) => (
-    <TouchableOpacity onPress={onPress}>
+  return ({ label, primary, secondary, onPress, disabled, children, ...props }) => (
+    <TouchableOpacity disabled={disabled} onPress={onPress}>
       <ButtonView
         {...props}
-        elevation={5}
         primary={primary}
         secondary={secondary}
+        disabled={disabled}
       >
         {label && (
           <Text primaryOnPrimary={primary} primaryOnSecondary={secondary} bold>

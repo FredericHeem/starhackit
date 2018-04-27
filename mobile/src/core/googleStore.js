@@ -2,6 +2,7 @@ import Expo from "expo";
 import { AsyncStorage, Alert } from "react-native";
 import { observable, action } from "mobx";
 import secrets from "../../secrets.json";
+import _ from "lodash";
 
 export default ({ rest }) => {
   const store = observable({
@@ -44,7 +45,7 @@ export default ({ rest }) => {
     }),
     loginServer: action(async () => {
       console.log("loginServer ", store.me);
-      if (!store.me) {
+      if (!store.me || _.isEmpty(store.token)) {
         return;
       }
       const body = {
@@ -59,7 +60,7 @@ export default ({ rest }) => {
         store.jwt = res.token;
         //console.log("loginServer ", store.jwt);
         const me = await rest.get("me");
-        //console.log("loginServer ME ", me);
+        console.log("loginServer ME ", me);
       } catch (e) {
         console.log("loginServer error", e);
         throw e;

@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, View, ActivityIndicator, Dimensions } from "react-native";
+import { View, ActivityIndicator, Dimensions } from "react-native";
 
-export default () => {
-  
-  const LoadingScreen = ({label}) => (
+export default context => {
+  const Text = require("components/Text").default(context);
+
+  const LoadingScreen = ({ label }) => (
     <View
       style={{
         width: Dimensions.get("window").width,
@@ -12,7 +13,7 @@ export default () => {
         alignItems: "center"
       }}
     >
-      {label && <Text style={{margin: 10}}>{label}</Text>}
+      {label && <Text style={{ margin: 20, padding: 20 }}>{label}</Text>}
       <ActivityIndicator size="large" color="grey" />
     </View>
   );

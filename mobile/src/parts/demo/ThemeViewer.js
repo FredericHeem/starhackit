@@ -37,11 +37,13 @@ export default context => {
       <View>
         <View flexDirection="row" alignItems="center">
           <Button primary label="Button 1" />
-          <Button primary label="Button 2" />
+          <Button primary disabled label="Disabled" />
+          <Button primary small label="small" />
           <Text>Some Text</Text>
         </View>
-        <Button block primary label="Button primary " />
         <Button primary label="Button primary " />
+        <Button primary small label="small" />
+
         <Button secondary label="Button secondary" />
         <Button label="Button with Label" />
         <Button shadow label="Button with Label " />

@@ -35,7 +35,7 @@ export default context => {
     return (
       <HelloView>
         <h2>{tr.t("Hello")}</h2>
-        <button onClick={() => store.toggle()}>
+        <button type="button" onClick={() => store.toggle()}>
           {store.show ? tr.t("Hide") : tr.t("Show")}
         </button>
         {store.show && <Word store={store} />}

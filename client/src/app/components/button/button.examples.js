@@ -38,7 +38,8 @@ export default context => {
           </Button>
           <Button raised ripple label="RAISED RIPPLE" />
           <Button raised accent disabled>
-            disabled RAISED ACCENT{" "}
+            disabled RAISED ACCENT
+{" "}
           </Button>
         </ButtonGroupView>
         <h3>Primary</h3>

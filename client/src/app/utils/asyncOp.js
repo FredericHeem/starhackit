@@ -15,9 +15,9 @@ function createHttpError(payload = {}) {
     const { data } = response;
     if (isString(data)) {
       return data;
-    } else if (data && isString(data.message)) {
+    } if (data && isString(data.message)) {
       return data.message;
-    } else if (payload.message) {
+    } if (payload.message) {
       return payload.message;
     }
   }

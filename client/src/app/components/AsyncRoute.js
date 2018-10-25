@@ -1,8 +1,7 @@
 // https://github.com/prateekbh/preact-async-route/blob/master/src/index.js
 import React, { createElement as h, Component } from "react";
 
-export default ({ tr }) =>
-  class AsyncRoute extends Component {
+export default ({ tr }) => class AsyncRoute extends Component {
     constructor() {
       super();
       this.state = {
@@ -14,8 +13,10 @@ export default ({ tr }) =>
     componentDidMount() {
       this.loadComponent();
     }
+
     componentWillReceiveProps(nextProps) {
-      if (this.props.url && this.props.url !== nextProps.url) {
+      const {url} = this.props;
+      if (url && url !== nextProps.url) {
         this.setState(
           {
             componentData: null
@@ -28,13 +29,14 @@ export default ({ tr }) =>
     }
 
     loadComponent() {
-      if (this.props.component) {
+      const {component, url, getComponent} = this.props;
+      if (component) {
         return this.setState({
-          componentData: this.props.component
+          componentData: component
         });
       }
-      const componentData = this.props.getComponent(
-        this.props.url,
+      const componentData = getComponent(
+        url,
         ({ component }) => {
           // Named param for making callback future proof
           if (component) {
@@ -49,10 +51,10 @@ export default ({ tr }) =>
       if (componentData && componentData.then) {
         // IIFE to check if a later ending promise was creating a race condition
         // Check test case for more info
-        (url => {
+        (newUrl => {
           componentData
             .then(component => {
-              if (url === this.props.url) {
+              if (newUrl === url) {
                 this.setState({
                   componentData: component
                 });
@@ -64,21 +66,24 @@ export default ({ tr }) =>
                 error: e
               });
             });
-        })(this.props.url);
+        })(url);
       }
     }
+
     render() {
-      if (this.state.error) {
+      const {error, componentData} = this.state;
+      const {loading} = this.props;
+      if (error) {
         return (
           <div>
             <h3>{tr.t("Error loading component")}</h3>
-            <p>{this.state.error.toString()}</p>
+            <p>{error.toString()}</p>
           </div>
         );
-      } else if (this.state.componentData) {
-        return h(this.state.componentData, this.props);
-      } else if (this.props.loading) {
-        const loadingComponent = this.props.loading();
+      } if (componentData) {
+        return h(componentData, this.props);
+      } if (loading) {
+        const loadingComponent = loading();
         return loadingComponent;
       }
       return null;

@@ -7,9 +7,9 @@ import { parse } from "qs";
 import appView from "components/applicationView";
 import asyncView from "components/AsyncView";
 
+import Animate from "react-leanimate/Animate";
 import createRoutes from "./routes";
 
-import Animate from "react-leanimate/Animate";
 
 const animation = {
   showFromLeft: keyframes({

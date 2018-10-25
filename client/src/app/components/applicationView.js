@@ -1,9 +1,9 @@
 import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import glamorous from "glamorous";
+import asyncView from "components/AsyncView";
 import navBar from "./navbar";
 import footer from "./footer";
-import asyncView from "components/AsyncView";
 // eslint-disable-next-line no-undef
 const version = __VERSION__;
 
@@ -54,8 +54,7 @@ export default context => {
     );
   }
 
-  return ({ children }) =>
-    h(observer(ApplicationView), {
+  return ({ children }) => h(observer(ApplicationView), {
       authStore: parts.auth.stores().auth,
       themeStore: parts.theme.stores().sideBar,
       children

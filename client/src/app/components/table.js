@@ -1,7 +1,6 @@
 import glamorous from "glamorous";
 
-export default ({ theme: { palette } }) => view =>
-  glamorous(view)(() => ({
+export default ({ theme: { palette } }) => view => glamorous(view)(() => ({
     borderCollapse: "collapse",
     borderSpacing: 0,
     padding: 20,

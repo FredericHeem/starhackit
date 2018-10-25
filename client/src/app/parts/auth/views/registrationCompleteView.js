@@ -20,7 +20,8 @@ export default context => {
           <AlertAjax
             error={error}
             className="register-complete-error-view"
-          />{" "}
+          />
+{" "}
           {!error && h(spinner(context))}
         </Paper>
       </Page>

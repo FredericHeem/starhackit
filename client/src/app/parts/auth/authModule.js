@@ -2,12 +2,12 @@ import React, { createElement as h } from "react";
 import { parse } from "qs";
 import { observable, action } from "mobx";
 import validate from "validate.js";
-import logoutView from "./views/logoutView";
-import registrationCompleteView from "./views/registrationCompleteView";
-import resetPasswordView from "./views/resetPasswordView";
 import rules from "services/rules";
 import AsyncOp from "utils/asyncOp";
 import asyncView from "components/AsyncView";
+import logoutView from "./views/logoutView";
+import registrationCompleteView from "./views/registrationCompleteView";
+import resetPasswordView from "./views/resetPasswordView";
 
 export default function(context) {
   const { rest } = context;
@@ -15,8 +15,7 @@ export default function(context) {
   const AsyncView = asyncView(context);
 
   function redirect() {
-    const nextPath =
-      parse(window.location.search.slice(1)).nextPath || "/profile";
+    const nextPath =      parse(window.location.search.slice(1)).nextPath || "/profile";
     context.history.push(nextPath);
   }
 
@@ -125,8 +124,7 @@ export default function(context) {
         })
       }),
       verifyEmailCode: observable({
-        op: asyncOpCreate(payload =>
-          rest.post("auth/verify_email_code", payload)
+        op: asyncOpCreate(payload => rest.post("auth/verify_email_code", payload)
         ),
         execute: action(async function(param) {
           try {
@@ -141,8 +139,7 @@ export default function(context) {
         step: "SetPassword",
         password: "",
         errors: {},
-        op: asyncOpCreate(payload =>
-          rest.post("auth/verify_reset_password_token", payload)
+        op: asyncOpCreate(payload => rest.post("auth/verify_reset_password_token", payload)
         ),
         resetPassword: action(async function(token) {
           this.errors = {};
@@ -259,8 +256,7 @@ export default function(context) {
             store: stores.verifyEmailCode
           })
         }),
-        action: ({ params }) =>
-          stores.verifyEmailCode.execute({ code: params.code })
+        action: ({ params }) => stores.verifyEmailCode.execute({ code: params.code })
       }
     ];
   }

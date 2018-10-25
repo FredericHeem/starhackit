@@ -1,4 +1,6 @@
 import "./app.css";
+import Debug from "debug";
+import intl from "utils/intl";
 import Context from "./context";
 
 import AuthModule from "./parts/auth/authModule";
@@ -8,8 +10,6 @@ import ThemeModule from "./parts/theme/themeModule";
 import HelloModule from "./parts/hello/HelloModule";
 import ProfileModule from "./parts/profile/profileModule";
 
-import Debug from "debug";
-import intl from "utils/intl";
 
 import Router from "./router";
 

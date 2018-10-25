@@ -1,7 +1,7 @@
 import * as React from "react";
-import input from "./input";
 import glamorous from "glamorous";
 import paper from "components/Paper";
+import input from "./input";
 
 export default context => {
   const { tr } = context;

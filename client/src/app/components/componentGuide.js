@@ -50,16 +50,14 @@ export default context => {
           <ViewContainer>
             {parts.auth
               .routes()
-              .map(route =>
-                h("div", { key: route.path }, route.component().component)
+              .map(route => h("div", { key: route.path }, route.component().component)
               )}
           </ViewContainer>
           <h2>{tr.t("Profile")}</h2>
           <ViewContainer>
             {parts.profile
               .routes()
-              .map(route =>
-                h("div", { key: route.path }, route.component().component)
+              .map(route => h("div", { key: route.path }, route.component().component)
               )}
           </ViewContainer>
         </Content>

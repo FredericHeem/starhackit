@@ -1,9 +1,9 @@
 import tr from "i18next";
 import createBrowserHistory from "history/createBrowserHistory";
-import Rest from "./utils/rest";
-import theme from "./theme";
 import formatter from "utils/formatter";
 import alertStackCreate from "components/alertStack";
+import Rest from "./utils/rest";
+import theme from "./theme";
 
 import config from "./config";
 

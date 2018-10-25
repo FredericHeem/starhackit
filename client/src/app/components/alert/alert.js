@@ -50,7 +50,9 @@ export default ({ tr }) => {
         <AlertView className={className} role="alert">
           <div>
             <h3>
-              {tr.t(name)} {code && `(${code})`}
+              {tr.t(name)} 
+{' '}
+{code && `(${code})`}
             </h3>
             <p>{`${message}`}</p>
           </div>

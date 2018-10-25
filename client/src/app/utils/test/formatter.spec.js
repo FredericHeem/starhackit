@@ -1,6 +1,6 @@
 import each from "lodash/each";
-import formatter from "../formatter";
 import { assert } from "chai";
+import formatter from "../formatter";
 const moneyFixtures = require("./money.fixture");
 const dateFixtures = require("./date.fixture");
 

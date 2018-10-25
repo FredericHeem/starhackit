@@ -1,11 +1,11 @@
 import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import paper from "components/Paper";
-import mediaSigninButtons from "../components/mediaSigninButtons";
-import registerForm from "../components/registerForm";
 import alert from "components/alert";
 import strike from "components/Strike";
 import page from "components/Page";
+import registerForm from "../components/registerForm";
+import mediaSigninButtons from "../components/mediaSigninButtons";
 
 export default context => {
   const { tr } = context;

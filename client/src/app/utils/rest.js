@@ -1,7 +1,7 @@
 import Axios from "axios";
 import Qs from "qs";
-import config from "../config";
 import Debug from "debug";
+import config from "../config";
 
 const debug = new Debug("rest");
 

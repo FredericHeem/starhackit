@@ -18,8 +18,7 @@ export default (locale = "en") => {
         new Date(date)
       );
     },
-    money: (amount, currency) =>
-      new Intl.NumberFormat(_locale, {
+    money: (amount, currency) => new Intl.NumberFormat(_locale, {
         style: "currency",
         currency
       }).format(amount)

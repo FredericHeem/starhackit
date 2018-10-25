@@ -1,11 +1,11 @@
 import React, { createElement as h } from "react";
 
 import button from "mdlean/lib/button";
-import mediaSigninButtons from "../components/mediaSigninButtons";
-import localLoginForm from "../components/localLoginForm";
 import paper from "components/Paper";
 import strike from "components/Strike";
 import page from "components/Page";
+import localLoginForm from "../components/localLoginForm";
+import mediaSigninButtons from "../components/mediaSigninButtons";
 
 export default context => {
   const { tr, history } = context;

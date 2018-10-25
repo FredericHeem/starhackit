@@ -11,8 +11,7 @@ const SvgView = glamorous("svg")({
   animation: `${animation} 4s linear infinite`
 });
 
-export default () =>
-  function Spinner({ size = 26, color = "black" }) {
+export default () => function Spinner({ size = 26, color = "black" }) {
     const radius = size / 2;
     return (
       <SvgView

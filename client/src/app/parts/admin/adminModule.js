@@ -1,7 +1,7 @@
 import { createElement as h } from "react";
 import { observable, action } from "mobx";
-import user from "./userComponent";
 import AsyncOp from "utils/asyncOp";
+import user from "./userComponent";
 import usersCreate from "./users";
 
 export default function(context) {

@@ -3,8 +3,8 @@ import glamorous from "glamorous";
 import drawer from "mdlean/lib/drawer";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import menu from "./menu";
 import button from "mdlean/lib/button";
+import menu from "./menu";
 
 export default context => {
   const { tr, theme, parts, config } = context;

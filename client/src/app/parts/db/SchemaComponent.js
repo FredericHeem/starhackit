@@ -61,8 +61,8 @@ export default context => {
         {loading && h(spinner(context))}
         <p>{data && data.message}</p>
         <DbTables>
-          {data &&
-            map(data.tables, (table, tableName) => (
+          {data
+            && map(data.tables, (table, tableName) => (
               <TableItem key={tableName} table={table} tableName={tableName} />
             ))}
         </DbTables>

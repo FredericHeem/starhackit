@@ -22,8 +22,7 @@
 		"no-console": false,
 		"interface-over-type-literal": false,
 		"comment-format": false,
-		"jsx-boolean-value": false,
-		"curly": [true, "same-line-single-line"]
+		"jsx-boolean-value": false
 	},
 	
 	"rulesDirectory": [],

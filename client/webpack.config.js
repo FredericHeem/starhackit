@@ -5,6 +5,7 @@ const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 //const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 
 const pkg = require("./package.json");
@@ -21,7 +22,9 @@ module.exports = function(options) {
         historyApiFallback: true,
         stats: "minimal",
         proxy: {
-          "/api/v1/*": "http://localhost:9000"
+          "/api/v1/*": "http://localhost:9000",
+          "/user/*": "http://localhost:4000/user",
+          "/admin/*": "http://localhost:4000/admin"
         },
         host: "0.0.0.0",
         port: 8080
@@ -57,7 +60,7 @@ module.exports = function(options) {
       ],
       resolve: {
         modules: ["src/app", "node_modules"],
-        extensions: [".mjs", ".js", ".jsx", ".css", ".ts", ".tsx"],
+        extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
         alias: {
           "src/app": path.resolve('./src/app'),
           react: "preact-compat",
@@ -69,11 +72,6 @@ module.exports = function(options) {
       },
       module: {
         rules: [
-          {
-            test: /\.css$/,
-            use: [MiniCssExtractPlugin.loader, "css-loader"]
-          },
-
           {
             test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
             use: ["url-loader"]

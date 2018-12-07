@@ -1,6 +1,7 @@
 /*eslint-env node */
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const webpackDevConfig = {
   
@@ -23,6 +24,10 @@ const webpackDevConfig = {
   ],
 
   rules: [
+    {
+      test: /\.css$/,
+      use: [MiniCssExtractPlugin.loader, "css-loader"]
+    },
     {
       test: /\.(js|jsx|ts|tsx)$/,
       enforce: 'pre',

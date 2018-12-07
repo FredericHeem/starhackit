@@ -6,19 +6,19 @@ export default (locale = "en") => {
     hour: "numeric",
     minute: "numeric"
   };
-  let _locale = locale;
+  let localeCurrent = locale;
   return {
     setLocale: newLocale => {
-      _locale = newLocale;
+      localeCurrent = newLocale;
     },
     dateTime: date => {
       if (!date) return "";
 
-      return new Intl.DateTimeFormat(_locale, dateTimeOptions).format(
+      return new Intl.DateTimeFormat(localeCurrent, dateTimeOptions).format(
         new Date(date)
       );
     },
-    money: (amount, currency) => new Intl.NumberFormat(_locale, {
+    money: (amount, currency) => new Intl.NumberFormat(localeCurrent, {
         style: "currency",
         currency
       }).format(amount)

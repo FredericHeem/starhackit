@@ -11,7 +11,7 @@ function baseUrl(url) {
 }
 
 export default function(options = {}) {
-  let _jwtSelector;
+  let jwtSelectorCurrent;
   const headersDefault = {
     "Content-Type": "application/json"
   };
@@ -24,8 +24,8 @@ export default function(options = {}) {
       params
     );
 
-    if (_jwtSelector) {
-      const jwt = _jwtSelector();
+    if (jwtSelectorCurrent) {
+      const jwt = jwtSelectorCurrent();
       if (jwt) {
         headers.Authorization = `Bearer ${jwt}`;
       }
@@ -52,7 +52,7 @@ export default function(options = {}) {
 
   return {
     setJwtSelector(jwtSelector) {
-      _jwtSelector = jwtSelector;
+      jwtSelectorCurrent = jwtSelector;
     },
     get(url, data = {}) {
       return ajax(url, "GET", null, data);

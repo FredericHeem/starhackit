@@ -29,9 +29,11 @@ const webpackDevConfig = {
       use: [
           {
               loader: 'tslint-loader',
-              options: { /* Loader options go here */ }
+              options: { emitErrors: true}
           }
-      ]
+      ],
+      include: path.join(__dirname, "src"),
+      exclude: path.join(__dirname, "node_modules")
     },
     {
       test: /\.(js|jsx|ts|tsx)$/,

@@ -22,13 +22,16 @@
 		"no-console": false,
 		"interface-over-type-literal": false,
 		"comment-format": false,
-		"jsx-boolean-value": false
+		"jsx-boolean-value": false,
+		"curly": [true, "same-line-single-line"]
 	},
 	
 	"rulesDirectory": [],
 	"jsRules": {
 		"no-unused-expression": false,
 		"object-literal-sort-keys": [false],
-		"no-console": false
+		"no-console": false,
+		"no-shadowed-variable": [false],
+		"curly": false
 	}
 }

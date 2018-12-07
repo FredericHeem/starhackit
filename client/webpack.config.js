@@ -57,7 +57,7 @@ module.exports = function(options) {
       ],
       resolve: {
         modules: ["src/app", "node_modules"],
-        extensions: [".js", ".jsx", ".css", ".ts", ".tsx"],
+        extensions: [".mjs", ".js", ".jsx", ".css", ".ts", ".tsx"],
         alias: {
           "src/app": path.resolve('./src/app'),
           react: "preact-compat",

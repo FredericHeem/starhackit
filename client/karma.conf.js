@@ -1,6 +1,8 @@
 /*eslint-env node */
 const _ = require("lodash");
 const webpackConfig = require("./webpack.dev");
+const webpackConfigProd = require("./webpack.prod");
+
 webpackConfig.devtool = "cheap-module-source-map";
 
 module.exports = function(config) {
@@ -17,7 +19,7 @@ module.exports = function(config) {
     reporters: ["mocha", "coverage"],
     webpack: {
       module: {
-        rules: webpackConfig.module.rules
+        rules: webpackConfigProd.module.rules
       },
       plugins: webpackConfig.plugins,
       externals: {

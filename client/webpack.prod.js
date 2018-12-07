@@ -36,8 +36,8 @@ const webpackProdConfig = {
 
   rules: [
     {
-      test: /\.jsx?$/,
-      use: ["babel-loader"],
+      test: /\.(js|jsx|ts|tsx)$/,
+      use: ["ts-loader"],
       include: path.join(__dirname, "src"),
       exclude: path.join(__dirname, "node_modules")
     }

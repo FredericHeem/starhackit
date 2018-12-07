@@ -1,0 +1,23 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"jsx": "react",
+		"allowJs": true,
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"skipLibCheck": true,
+		"baseUrl": "src/app",
+		"paths": {
+		},
+		"typeRoots": ["./node_modules/@types"],
+		"lib": ["dom", "es2015", "es2016"],
+		"outDir": "dist",
+		"resolveJsonModule": true
+	},
+	"include": ["src/**/*"]
+}

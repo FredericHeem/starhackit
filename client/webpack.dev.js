@@ -24,8 +24,18 @@ const webpackDevConfig = {
 
   rules: [
     {
-      test: /\.jsx?$/,
-      use: ["babel-loader", "eslint-loader"],
+      test: /\.(js|jsx|ts|tsx)$/,
+      enforce: 'pre',
+      use: [
+          {
+              loader: 'tslint-loader',
+              options: { /* Loader options go here */ }
+          }
+      ]
+    },
+    {
+      test: /\.(js|jsx|ts|tsx)$/,
+      use: ["ts-loader"],
       include: path.join(__dirname, "src"),
       exclude: path.join(__dirname, "node_modules")
     }

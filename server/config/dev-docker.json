@@ -1,9 +1,6 @@
 {
   "websiteUrl": "http://localhost:8080",
 
-  "rabbitmq":{
-    "url":"amqp://rabbitmq"
-  },
   "redis":{
     "url": "redis://redis:6379"
   },

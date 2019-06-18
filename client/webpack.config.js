@@ -22,9 +22,7 @@ module.exports = function(options) {
         historyApiFallback: true,
         stats: "minimal",
         proxy: {
-          "/api/v1/*": "http://localhost:9000",
-          "/user/*": "http://localhost:4000/user",
-          "/admin/*": "http://localhost:4000/admin"
+          "/api/v1/*": "http://localhost:9000"
         },
         host: "0.0.0.0",
         port: 8080

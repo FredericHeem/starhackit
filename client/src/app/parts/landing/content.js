@@ -75,13 +75,6 @@ export default () => ({
         "Sequelize is a promise-based ORM for Node.js and io.js. It supports the dialects PostgreSQL, MySQL, MariaDB, SQLite and MSSQL"
     },
     {
-      img: require("./img/rabbitmq.png"),
-      title: "RabbitMq",
-      width: "200",
-      link: "assets/img/rabbitmq.png",
-      text: "Robust messaging for applications"
-    },
-    {
       img: require("./img/passportjs.png"),
       title: "Passportjs",
       width: "64",

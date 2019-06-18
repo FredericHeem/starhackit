@@ -40,7 +40,6 @@ For more information about the mobile app, see its [README](mobile/README.md)
 * [Koa](http://koajs.com/): next generation web framework for Node.js.
 * [Sequelize](http://docs.sequelizejs.com/en/latest/): Object Relationship Management (ORM) supporting majors relational SQL database.
 * [PostgreSQL](http://www.postgresql.org/): the world's most advanced open source relational database.
-* [RabbitMq](https://www.rabbitmq.com/): messaging system.
 * [Passport](http://passportjs.org/): authentication framework with more than 140 authentication strategies: username/password, facebook , google, github etc ...
 * [Winston](https://github.com/winstonjs/winston): a multi-transport async logging library.
 * [Nodemailer](https://github.com/andris9/Nodemailer): send email with various provider.

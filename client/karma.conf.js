@@ -1,8 +1,10 @@
 /*eslint-env node */
 const _ = require("lodash");
+const path = require("path");
 const webpackConfig = require("./webpack.dev");
-webpackConfig.devtool = "cheap-module-source-map";
+const webpackConfigProd = require("./webpack.prod");
 
+webpackConfig.devtool = "cheap-module-source-map";
 module.exports = function(config) {
 
   const configuration = {
@@ -16,8 +18,24 @@ module.exports = function(config) {
     },
     reporters: ["mocha", "coverage"],
     webpack: {
+      mode: "development",
       module: {
-        rules: webpackConfig.module.rules
+        rules: [
+          {
+            test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+            use: ["url-loader"]
+          },
+          {
+            test: /\.css$/,
+            use: ["css-loader"]
+          },
+          {
+            test: /\.(js|jsx|ts|tsx)$/,
+            use: ["ts-loader"],
+            include: path.join(__dirname, "src"),
+            exclude: path.join(__dirname, "node_modules")
+          }
+        ]
       },
       plugins: webpackConfig.plugins,
       externals: {

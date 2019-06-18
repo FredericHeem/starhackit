@@ -1,6 +1,7 @@
 /*eslint-env node */
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const webpackDevConfig = {
   
@@ -24,8 +25,24 @@ const webpackDevConfig = {
 
   rules: [
     {
-      test: /\.jsx?$/,
-      use: ["babel-loader", "eslint-loader"],
+      test: /\.css$/,
+      use: [MiniCssExtractPlugin.loader, "css-loader"]
+    },
+    {
+      test: /\.(js|jsx|ts|tsx)$/,
+      enforce: 'pre',
+      use: [
+          {
+              loader: 'tslint-loader',
+              options: { emitErrors: true}
+          }
+      ],
+      include: path.join(__dirname, "src"),
+      exclude: path.join(__dirname, "node_modules")
+    },
+    {
+      test: /\.(js|jsx|ts|tsx)$/,
+      use: ["ts-loader"],
       include: path.join(__dirname, "src"),
       exclude: path.join(__dirname, "node_modules")
     }

@@ -1,0 +1,36 @@
+{
+	"defaultSeverity": "warning",
+	"extends": ["tslint:latest", "tslint-config-prettier", "tslint-react"],
+	"linterOptions": {
+		"exclude": [
+			"node_modules/**/*",
+			"**/test.ts",
+			"**/test.tsx"
+		]
+	},
+	"rules": {
+		"object-literal-sort-keys": [false],
+		"no-shadowed-variable": [false],
+		"ordered-imports": [false],
+		"interface-name": [true, "never-prefix"],
+		"jsx-wrap-multiline": false,
+		"jsx-no-multiline-js": false,
+		"jsx-no-lambda": false,
+		"no-submodule-imports": false,
+		"no-implicit-dependencies": [true, ["~"]],
+		"max-classes-per-file": false,
+		"no-console": false,
+		"interface-over-type-literal": false,
+		"comment-format": false,
+		"jsx-boolean-value": false
+	},
+	
+	"rulesDirectory": [],
+	"jsRules": {
+		"no-unused-expression": false,
+		"object-literal-sort-keys": [false],
+		"no-console": false,
+		"no-shadowed-variable": [false],
+		"curly": false
+	}
+}

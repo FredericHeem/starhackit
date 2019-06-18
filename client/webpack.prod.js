@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const CompressionPlugin = require("compression-webpack-plugin");
 const CleanPlugin = require("clean-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const webpackProdConfig = {
   overrides: {
@@ -36,8 +37,12 @@ const webpackProdConfig = {
 
   rules: [
     {
-      test: /\.jsx?$/,
-      use: ["babel-loader"],
+      test: /\.css$/,
+      use: [MiniCssExtractPlugin.loader, "css-loader"]
+    },
+    {
+      test: /\.(js|jsx|ts|tsx)$/,
+      use: ["ts-loader"],
       include: path.join(__dirname, "src"),
       exclude: path.join(__dirname, "node_modules")
     }

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import { jsx, keyframes } from '@emotion/core'
+import { jsx, keyframes } from "@emotion/core";
 import styled from "@emotion/styled";
 
 export default (context, { limit = 10 }) => {
@@ -26,9 +26,7 @@ export default (context, { limit = 10 }) => {
         component,
         status: "inserting"
       };
-      component.attributes.onRemove = () => {
-        store.remove(message.id);
-      };
+      
       if (messages.length >= limit) {
         store.remove(messages[0].id);
       }
@@ -52,7 +50,9 @@ export default (context, { limit = 10 }) => {
     margin: 10,
     padding: 10,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "flex-start",
+    alignItems: "center",
+    cursor: "pointer"
   });
 
   const animationFadeIn = keyframes({
@@ -77,7 +77,11 @@ export default (context, { limit = 10 }) => {
     const css = animation[message.status];
     const { component } = message;
 
-    return <AlertView css={css}>{component}</AlertView>;
+    return (
+      <AlertView css={css} onClick={() => store.remove(message.id)} >
+        {component}
+      </AlertView>
+    );
   });
 
   const AlertsView = styled("div")({

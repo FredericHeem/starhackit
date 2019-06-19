@@ -1,4 +1,6 @@
-import React, { createElement as h } from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
+import { createElement as h } from "react";
 
 import button from "mdlean/lib/button";
 import paper from "components/Paper";
@@ -24,10 +26,12 @@ export default context => {
             {h(strike(context))}
             <MediaSigninButtons />
             {h(strike(context))}
-            <Button
-              label={tr.t("Forgot Password")}
-              onClick={() => history.push(`/forgot`)}
-            />
+            <a
+              css={{ cursor: "pointer" }}
+              onClick={() => history.push(`forgot`)}
+            >
+              {tr.t("Forgot Password")}
+            </a>
           </div>
         </Paper>
       </Page>

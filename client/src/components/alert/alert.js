@@ -1,4 +1,5 @@
-import * as React from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
 import styled from "@emotion/styled";
 
 export default ({ tr }) => {
@@ -6,7 +7,7 @@ export default ({ tr }) => {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 20,
+    padding: 10,
     margin: 10,
     fontWeight: 500,
     textAlign: "center"
@@ -30,14 +31,20 @@ export default ({ tr }) => {
     backgroundColor: "#d9edf7"
   });
 
-  const CloseIconView = styled("span")({
-    cursor: "pointer",
-    margin: 10
-  });
-
   function CloseIcon({ onClick }) {
-    return <CloseIconView onClick={onClick}>{"\u2716"}</CloseIconView>;
+    return (
+      <span
+        css={{
+          cursor: "pointer",
+          margin: 0
+        }}
+        onClick={onClick}
+      >
+        {"\u2716"}
+      </span>
+    );
   }
+
   function createAlert(AlertView) {
     return function Alert({
       name,
@@ -50,13 +57,11 @@ export default ({ tr }) => {
         <AlertView className={className} role="alert">
           <div>
             <h3>
-              {tr.t(name)} 
-{' '}
-{code && `(${code})`}
+              {tr.t(name)} {code && `(${code})`}
             </h3>
             <p>{`${message}`}</p>
           </div>
-          <CloseIcon onClick={onRemove} />
+          {onRemove && <CloseIcon onClick={onRemove} />}
         </AlertView>
       );
     };

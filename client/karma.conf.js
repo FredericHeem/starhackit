@@ -1,28 +1,31 @@
 /*eslint-env node */
-process.env.CHROME_BIN = require('puppeteer').executablePath()
+process.env.CHROME_BIN = require("puppeteer").executablePath();
 
 const _ = require("lodash");
 const path = require("path");
 const webpackConfig = require("./webpack.dev");
 
 webpackConfig.devtool = "cheap-module-source-map";
-module.exports = function (config) {
-
+module.exports = function(config) {
   const configuration = {
-    browsers: ['Chrome_without_security'],
+    browsers: ["Chrome_without_security"],
     customLaunchers: {
       Chrome_without_security: {
-        base: 'ChromeHeadless',
+        base: "ChromeHeadless",
         flags: [
-          '--headless',
-          '--ignore-certificate-errors',
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--window-size=1920,1080',
+          "--headless",
+          "--ignore-certificate-errors",
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--window-size=1920,1080",
           "--disable-accelerated-2d-canvas",
-          '--disable-dev-shm-usage',
+          "--disable-dev-shm-usage",
           "--disable-gpu"
         ]
+      },
+      Chrome_travis_ci: {
+        base: "Chrome",
+        flags: ["--no-sandbox"]
       }
     },
     singleRun: true,
@@ -32,10 +35,10 @@ module.exports = function (config) {
     preprocessors: {
       "src/**/*.js": ["webpack", "sourcemap"]
     },
-    reporters: ["mocha", "coverage", 'junit'],
+    reporters: ["mocha", "coverage", "junit"],
     junitReporter: {
-      outputDir: 'coverage',
-      outputFile: 'test-results.xml'
+      outputDir: "coverage",
+      outputFile: "test-results.xml"
     },
     webpack: {
       mode: "development",
@@ -78,12 +81,6 @@ module.exports = function (config) {
           dir: "coverage/"
         }
       ]
-    },
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: "Chrome",
-        flags: ["--no-sandbox"]
-      }
     }
   };
 

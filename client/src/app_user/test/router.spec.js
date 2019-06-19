@@ -1,17 +1,17 @@
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-import App from "../UserApp";
+import UserApp from "../UserApp";
 
 chai.use(chaiAsPromised);
 const { expect, assert } = chai;
 
 describe("Router", function() {
-  const { router, context } = App({});
+  const { router, context } = UserApp();
   it("/login", async () => {
     // console.log("CONTEXT ", context);
-    const component = await router.instance.resolve("/login");
-    assert(component);
-    assert.equal(component.title, "Login");
+    const route = await router.instance.resolve("/user/login");
+    assert(route);
+    assert.equal(route.title, "Login");
   });
   it("/app/profile not authenticated", async () => {
     expect(router.instance.resolve("/profile")).to.be.rejectedWith(Error);

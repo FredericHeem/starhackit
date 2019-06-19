@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement as h } from "react";
 import drawer from "mdlean/lib/drawer";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
@@ -62,16 +62,18 @@ export default context => {
 
   const TitleView = titleView(context)(button(context));
 
-  const NavBar = observer(({UserInfo, appMenu}) => {
+  const NavBar = observer(({ right, appMenu }) => {
     return (
       <header>
         <AppBarView>
-          <IconLeft onDrawerClick={() => store.toggleDrawer()} />
-          <TitleView
-            onClick={() => store.navChange({ route: defaultPath })}
-            label={title}
-          />
-          {UserInfo && <UserInfo />}
+          <div>
+            <IconLeft onDrawerClick={() => store.toggleDrawer()} />
+            <TitleView
+              onClick={() => store.navChange({ route: defaultPath })}
+              label={title}
+            />
+          </div>
+          {right && h(right)}
         </AppBarView>
         <Drawer open={store.drawerOpen} onClose={() => store.closeDrawer()}>
           <Menu menuItems={appMenu} navChange={item => store.navChange(item)} />

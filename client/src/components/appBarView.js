@@ -4,7 +4,7 @@ export default context =>
   glamorous("div")({
     height: 80,
     display: "flex",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: context.theme.palette.primary,
     color: context.theme.palette.textPrimaryOnPrimary

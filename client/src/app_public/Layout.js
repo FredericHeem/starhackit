@@ -2,6 +2,7 @@ import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import navBar from "components/navbar";
 import footer from "components/footer";
+import authBar from "./landing/authBar"
 import MainView from "components/MainView";
 import APP_MENU from "./menuItems";
 
@@ -12,7 +13,7 @@ export default context => {
 
   const NavBar = navBar(context);
   const Footer = footer(context);
-
+  const AuthBar = authBar(context);
   const ApplicationLayout = ({ children }) => (
     <div
       style={{
@@ -22,7 +23,7 @@ export default context => {
         flexDirection: "column"
       }}
     >
-      <NavBar appMenu={APP_MENU()} />
+      <NavBar appMenu={APP_MENU()} right={AuthBar}/>
       <div
         style={{
           display: "flex",

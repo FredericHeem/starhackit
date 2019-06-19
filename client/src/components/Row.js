@@ -1,6 +1,6 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
-export default glamorous("div")({
+export default styled("div")({
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",

@@ -1,16 +1,16 @@
 import * as React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
 import paper from "components/Paper";
 /* eslint-disable jsx-extras/jsx-no-string-literals */
 export default context => {
   const Button = button(context);
   const Paper = paper(context);
-  const ButtonExamplesView = glamorous(Paper)({
+  const ButtonExamplesView = styled(Paper)({
     maxWidth: 500
   });
 
-  const ButtonGroupView = glamorous("div")({
+  const ButtonGroupView = styled("div")({
     "> button": {
       margin: 6
     }

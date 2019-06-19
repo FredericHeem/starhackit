@@ -1,13 +1,13 @@
-import * as React from "react";
-import glamorous from "glamorous";
-import { keyframes } from "glamor";
+/** @jsx jsx */
+import styled from "@emotion/styled";
+import { jsx, keyframes } from '@emotion/core'
 
 const animation = keyframes({
   "0%": { transform: "rotate(0deg)" },
   "100%": { transform: "rotate(360deg)" }
 });
 
-const SvgView = glamorous("svg")({
+const SvgView = styled("svg")({
   animation: `${animation} 4s linear infinite`
 });
 

@@ -1,4 +1,5 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
 import { observer } from "mobx-react";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";

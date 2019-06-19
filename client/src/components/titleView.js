@@ -1,7 +1,7 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context => component =>
-  glamorous(component)({
+  styled(component)({
     fontSize: 34,
     fontWeight: "bold",
     margin: 10,

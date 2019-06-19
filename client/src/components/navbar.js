@@ -1,8 +1,10 @@
-import React, { createElement as h } from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
+import { createElement as h } from "react";
 import drawer from "mdlean/lib/drawer";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
 import menu from "./menu";
 import appBarView from "components/appBarView";
@@ -30,7 +32,7 @@ export default context => {
     })
   });
 
-  const BurgerButton = glamorous(button(context))({
+  const BurgerButton = styled(button(context))({
     height: 50,
     width: 50
   });
@@ -66,7 +68,14 @@ export default context => {
     return (
       <header>
         <AppBarView>
-          <div>
+          <div
+            css={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignContent: "center",
+              alignItems: "center"
+            }}
+          >
             <IconLeft onDrawerClick={() => store.toggleDrawer()} />
             <TitleView
               onClick={() => store.navChange({ route: defaultPath })}

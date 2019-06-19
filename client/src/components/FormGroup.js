@@ -1,6 +1,6 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
-export default () => glamorous("div")({
+export default () => styled("div")({
     marginTop: 20,
     marginBottom: 20
   });

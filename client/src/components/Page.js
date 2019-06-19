@@ -1,7 +1,7 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
-export default () => glamorous("section")({
-    maxWidth: 600,
-    minWidth: 400,
+export default () => styled("section")({
+    maxWidth: "600px",
+    minWidth: "400px",
     width: "100%"
   });

@@ -1,5 +1,5 @@
 import React, { createElement as h } from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import spinners from "./spinner/spinner.examples";
 import alerts from "./alert/alert.examples";
 import panels from "./panel/panel.examples";
@@ -9,19 +9,19 @@ import buttons from "./button/button.examples";
 export default context => {
   const { tr, parts } = context;
 
-  const ViewContainer = glamorous("div")({
+  const ViewContainer = styled("div")({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "flex-start"
   });
 
-  const GuideView = glamorous("div")({
+  const GuideView = styled("div")({
     //height: "100vh",
     display: "flex",
     margin: 20
   });
 
-  const Content = glamorous("div")({
+  const Content = styled("div")({
     //flex: "1 1 auto",
     //overflow: "auto"
   });

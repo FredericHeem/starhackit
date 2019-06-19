@@ -1,8 +1,8 @@
 import * as React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default ({ tr }) => {
-  const AlertView = glamorous("div")({
+  const AlertView = styled("div")({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -12,25 +12,25 @@ export default ({ tr }) => {
     textAlign: "center"
   });
 
-  const AlertDangerView = glamorous(AlertView)({
+  const AlertDangerView = styled(AlertView)({
     border: "1px solid #ebccd1",
     color: "#a94442",
     backgroundColor: "#f2dede"
   });
 
-  const AlertWarningView = glamorous(AlertView)({
+  const AlertWarningView = styled(AlertView)({
     border: "1px solid #faebcc",
     color: "#8a6d3b",
     backgroundColor: "#fcf8e3"
   });
 
-  const AlertInfoView = glamorous(AlertView)({
+  const AlertInfoView = styled(AlertView)({
     border: "1px solid #bce8f1",
     color: "#31708f",
     backgroundColor: "#d9edf7"
   });
 
-  const CloseIconView = glamorous("span")({
+  const CloseIconView = styled("span")({
     cursor: "pointer",
     margin: 10
   });

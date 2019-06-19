@@ -1,5 +1,5 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
 import FbSvg from "icons/facebook.svg";
 
@@ -27,7 +27,7 @@ export default context => {
     }
   };
 
-  const SocialButtonView = glamorous("div")({
+  const SocialButtonView = styled("div")({
     margin: "20px auto 20px auto",
     width: 256
   });

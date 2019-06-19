@@ -1,5 +1,5 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import fontIcon from "components/FontIcon";
 
 export default context => {
@@ -22,27 +22,27 @@ export default context => {
     );
   }
 
-  const CardView = glamorous("div")(() => ({
-    width: "150",
+  const CardView = styled("div")(() => ({
+    width: "150px",
     flexGrow: 1,
     flexShrink: 0,
-    flexBasis: "150",
+    flexBasis: "150px",
     padding: 10,
     margin: 10,
     boxShadow: `2px 2px 2px 2px ${palette.borderColor}`
   }));
 
-  const CardContainer = glamorous("div")({
+  const CardContainer = styled("div")({
     height: "100%",
     display: "flex",
     flexDirection: "column",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    alignContent: "space-between",
+    alignContent: "center",
     alignItems: "center"
   });
 
-  const CardItem = glamorous("div")({
+  const CardItem = styled("div")({
     order: 0,
     flex: "0 1 auto",
     boxSizing: "border-box",

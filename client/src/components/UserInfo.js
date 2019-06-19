@@ -1,5 +1,5 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import menu from "./menu";
@@ -26,7 +26,7 @@ export default context => {
     })
   });
 
-  const CurrentUser = glamorous("div")(() => ({
+  const CurrentUser = styled("div")(() => ({
     marginLeft: "auto",
     marginRight: 10
   }));

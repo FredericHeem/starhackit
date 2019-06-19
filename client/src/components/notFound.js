@@ -1,10 +1,10 @@
 import * as React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context => {
   const { tr } = context;
 
-  const NotFoundView = glamorous("div")({
+  const NotFoundView = styled("div")({
     margin: 20
   });
 

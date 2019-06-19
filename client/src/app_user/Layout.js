@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import footer from "components/footer";
 import MainView from "components/MainView";
 import navBar from "components/navbar";
+import APP_MENU from "./menuItems";
 
 export default context => {
   const {
@@ -21,7 +22,7 @@ export default context => {
         flexDirection: "column"
       }}
     >
-       <NavBar />
+       <NavBar appMenu={APP_MENU()}/>
       <div
         style={{
           display: "flex",

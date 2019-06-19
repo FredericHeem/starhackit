@@ -2,13 +2,13 @@ import map from "lodash/map";
 import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import spinner from "components/spinner";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context => {
   const { tr } = context;
   const Panel = require("components/panel").default(context);
 
-  const DbTables = glamorous("div")({
+  const DbTables = styled("div")({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "flex-start",
@@ -16,7 +16,7 @@ export default context => {
     alignItems: "stretch"
   });
 
-  const DbPanel = glamorous(Panel.Panel)({
+  const DbPanel = styled(Panel.Panel)({
     flexGrow: "1",
     flexShrink: "1",
     margin: "10px",

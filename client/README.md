@@ -1,10 +1,10 @@
 # StarHackIt React Frontend
 
-A functional Preact/React based frontend starter kit:
+A functional React based frontend starter kit:
 
-* `preact` or `react` for pure view layer, 100% stateless compoment.  
+* `react` for pure view layer, 100% stateless compoment.  
 * `mobx` for state management.
-* `glamorous` for real-time styling.
+* `emotion` for real-time styling.
 * `universal-router` for the routing solution: code split, data fetching. 
 * Internationalization with `i18next`
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
@@ -120,42 +120,59 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Hash: fcc48ad427c813ae63bd                                                              
-Version: webpack 4.4.1
-Time: 4593ms
-Built at: 2018-4-2 18:33:11
-                         Asset       Size  Chunks                    Chunk Names
-    14.fcc48ad427c813ae63bd.js    283 KiB      14  [emitted]  [big]  
-     0.fcc48ad427c813ae63bd.js   9.38 KiB       0  [emitted]         
-                         2.css  608 bytes       2  [emitted]         
-     2.fcc48ad427c813ae63bd.js   24.9 KiB       2  [emitted]         
-     3.fcc48ad427c813ae63bd.js     68 KiB       3  [emitted]         
-     4.fcc48ad427c813ae63bd.js   88.6 KiB       4  [emitted]         
-     5.fcc48ad427c813ae63bd.js      2 KiB       5  [emitted]         
-     6.fcc48ad427c813ae63bd.js   4.87 KiB       6  [emitted]         
-     7.fcc48ad427c813ae63bd.js   4.47 KiB       7  [emitted]         
-     8.fcc48ad427c813ae63bd.js   4.69 KiB       8  [emitted]         
-     9.fcc48ad427c813ae63bd.js   23.5 KiB       9  [emitted]         
-    10.fcc48ad427c813ae63bd.js   81 bytes      10  [emitted]         
-    11.fcc48ad427c813ae63bd.js   2.95 KiB      11  [emitted]         
-    12.fcc48ad427c813ae63bd.js   8.11 KiB      12  [emitted]         
-    13.fcc48ad427c813ae63bd.js      6 KiB      13  [emitted]         
-     1.fcc48ad427c813ae63bd.js   39.4 KiB       1  [emitted]         
-    15.fcc48ad427c813ae63bd.js  662 bytes      15  [emitted]         
-                       app.css   39 bytes      16  [emitted]         app
-   app.fcc48ad427c813ae63bd.js    313 KiB      16  [emitted]  [big]  app
-                    index.html   3.05 KiB          [emitted]         
-                   favicon.ico   1.12 KiB          [emitted]         
-        locales/en/common.json  410 bytes          [emitted]         
-        locales/fr/common.json  314 bytes          [emitted]         
-        locales/it/common.json  175 bytes          [emitted]         
-  2.fcc48ad427c813ae63bd.js.gz   5.89 KiB          [emitted]         
-  9.fcc48ad427c813ae63bd.js.gz   3.99 KiB          [emitted]         
-  1.fcc48ad427c813ae63bd.js.gz   13.3 KiB          [emitted]         
-  3.fcc48ad427c813ae63bd.js.gz   16.9 KiB          [emitted]         
-  4.fcc48ad427c813ae63bd.js.gz   28.4 KiB          [emitted]         
- 14.fcc48ad427c813ae63bd.js.gz    172 KiB          [emitted]         
-app.fcc48ad427c813ae63bd.js.gz   92.2 KiB          [emitted]        
+Version: webpack 4.28.4
+Time: 16929ms
+Built at: 06/19/2019 6:26:27 PM
+                            Asset       Size  Chunks                    Chunk Names
+       10.39137f272569846297d4.js   23.5 KiB      10  [emitted]         
+    10.39137f272569846297d4.js.gz   3.99 KiB          [emitted]         
+       11.39137f272569846297d4.js  428 bytes      11  [emitted]         
+    11.39137f272569846297d4.js.gz  280 bytes          [emitted]         
+       12.39137f272569846297d4.js   1.71 KiB      12  [emitted]         
+    12.39137f272569846297d4.js.gz  771 bytes          [emitted]         
+       13.39137f272569846297d4.js   81 bytes      13  [emitted]         
+        3.39137f272569846297d4.js   11.8 KiB       3  [emitted]         
+     3.39137f272569846297d4.js.gz   3.76 KiB          [emitted]         
+        4.39137f272569846297d4.js    276 KiB       4  [emitted]  [big]  
+     4.39137f272569846297d4.js.gz    168 KiB          [emitted]         
+        5.39137f272569846297d4.js   4.99 KiB       5  [emitted]         
+     5.39137f272569846297d4.js.gz   2.38 KiB          [emitted]         
+        6.39137f272569846297d4.js   5.47 KiB       6  [emitted]         
+     6.39137f272569846297d4.js.gz   2.54 KiB          [emitted]         
+        7.39137f272569846297d4.js   1.73 KiB       7  [emitted]         
+     7.39137f272569846297d4.js.gz  767 bytes          [emitted]         
+        8.39137f272569846297d4.js   39.5 KiB       8  [emitted]         
+     8.39137f272569846297d4.js.gz   13.3 KiB          [emitted]         
+        9.39137f272569846297d4.js   3.77 KiB       9  [emitted]         
+     9.39137f272569846297d4.js.gz    1.1 KiB          [emitted]         
+    admin.39137f272569846297d4.js    372 KiB       0  [emitted]  [big]  admin
+ admin.39137f272569846297d4.js.gz    115 KiB          [emitted]         
+                        admin.css  647 bytes       0  [emitted]         admin
+                     admin.css.gz  262 bytes          [emitted]         
+                 admin/index.html   2.21 KiB          [emitted]         
+              admin/index.html.gz  870 bytes          [emitted]         
+                      favicon.ico   1.12 KiB          [emitted]         
+                   favicon.ico.gz  220 bytes          [emitted]         
+                       index.html   2.32 KiB          [emitted]         
+                    index.html.gz  937 bytes          [emitted]         
+           locales/en/common.json  410 bytes          [emitted]         
+        locales/en/common.json.gz  200 bytes          [emitted]         
+           locales/fr/common.json  314 bytes          [emitted]         
+        locales/fr/common.json.gz  207 bytes          [emitted]         
+           locales/it/common.json  175 bytes          [emitted]         
+        locales/it/common.json.gz  138 bytes          [emitted]         
+   public.39137f272569846297d4.js    334 KiB       1  [emitted]  [big]  public
+public.39137f272569846297d4.js.gz    106 KiB          [emitted]         
+                       public.css   39 bytes       1  [emitted]         public
+     user.39137f272569846297d4.js    334 KiB       2  [emitted]  [big]  user
+  user.39137f272569846297d4.js.gz    106 KiB          [emitted]         
+                         user.css   39 bytes       2  [emitted]         user
+                  user/index.html   2.31 KiB          [emitted]         
+               user/index.html.gz  935 bytes          [emitted]         
+Entrypoint public [big] = public.css public.39137f272569846297d4.js
+Entrypoint user [big] = user.css user.39137f272569846297d4.js
+Entrypoint admin [big] = admin.css admin.39137f272569846297d4.js
+  
 
 ```
 

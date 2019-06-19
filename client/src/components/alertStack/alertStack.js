@@ -1,8 +1,8 @@
-import * as React from "react";
+/** @jsx jsx */
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import { keyframes } from "glamor";
-import glamorous from "glamorous";
+import { jsx, keyframes } from '@emotion/core'
+import styled from "@emotion/styled";
 
 export default (context, { limit = 10 }) => {
   const store = observable({
@@ -48,7 +48,7 @@ export default (context, { limit = 10 }) => {
     }
   });
 
-  const AlertView = glamorous("div")({
+  const AlertView = styled("div")({
     margin: 10,
     padding: 10,
     display: "flex",
@@ -80,7 +80,7 @@ export default (context, { limit = 10 }) => {
     return <AlertView css={css}>{component}</AlertView>;
   });
 
-  const AlertsView = glamorous("div")({
+  const AlertsView = styled("div")({
     minWidth: 300,
     maxWidth: 600,
     position: "fixed",

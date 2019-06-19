@@ -6,8 +6,6 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-//const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-
 const pkg = require("./package.json");
 
 module.exports = function(options) {
@@ -71,25 +69,12 @@ module.exports = function(options) {
           filename: "[name].css",
           chunkFilename: "[id].css"
         })
-        /*
-            new LodashModuleReplacementPlugin({
-              cloning: true,
-              collections: true,
-              paths: true
-            }),
-
-            */
       ],
       resolve: {
         modules: ["src", "node_modules"],
         extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
         alias: {
-          "src": path.resolve('./src'),
-          react: "preact-compat",
-          "react-dom": "preact-compat",
-          "mobx-react": "mobx-preact",
-          "create-react-class": "preact-compat/lib/create-react-class",
-          glamorous: "glamorous/dist/glamorous.esm.tiny.js"
+          "src": path.resolve('./src')
         }
       },
       module: {

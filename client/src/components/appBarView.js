@@ -1,7 +1,7 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context =>
-  glamorous("div")({
+  styled("div")({
     height: 80,
     display: "flex",
     justifyContent: "space-between",

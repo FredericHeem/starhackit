@@ -1,5 +1,5 @@
 import * as React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import paper from "components/Paper";
 import input from "./input";
 
@@ -9,8 +9,8 @@ export default context => {
   const InputEmpty = input(context);
   const InputWithValue = input(context);
   const InputDisabled = input(context);
-  const InputExamplesView = glamorous(Paper)({});
-  const ListView = glamorous("div")({
+  const InputExamplesView = styled(Paper)({});
+  const ListView = styled("div")({
     "> div": {
       marginBottom: 30
     }

@@ -1,6 +1,6 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
-export default glamorous("main")({
+export default styled("main")({
   display: "flex",
   flexGrow: "1",
   justifyContent: "center",

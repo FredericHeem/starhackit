@@ -30,11 +30,11 @@ export default () => ({
   ],
   frontend: [
     {
-      img: require("./img/preact.svg"),
+      img: require("./img/react.svg"),
       height: "100",
-      title: "Preact",
-      link: "https://preactjs.com/",
-      text: "Fast 3kB patent free alternative to React with the same ES6 API."
+      title: "React",
+      link: "https://reactjs.org/",
+      text: "A library for building user interfaces"
     },
     {
       img: require("./img/mobx.svg"),
@@ -44,10 +44,10 @@ export default () => ({
       text: "Simple, scalable state management"
     },
     {
-      img: require("./img/glamorous.png"),
-      title: "Glamorous",
+      img: require("./img/emotion.png"),
+      title: "Emotion",
       height: "150",
-      link: "https://github.com/paypal/glamorous",
+      link: "https://emotion.sh",
       text: "Style React Components with Style."
     },
     {

@@ -1,9 +1,9 @@
 import * as React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context => {
   const { theme } = context;
-  const IconView = glamorous("i")({
+  const IconView = styled("i")({
     color: theme.palette.textColor
   });
 

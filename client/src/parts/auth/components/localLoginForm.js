@@ -1,4 +1,5 @@
-import * as React from "react";
+/** @jsx jsx */
+import { jsx } from "@emotion/core";
 import { observer } from "mobx-react";
 import button from "mdlean/lib/button";
 import alertAjax from "components/alertAjax";
@@ -44,7 +45,7 @@ export default context => {
             className="btn-login"
             accent
             raised
-            css={{ width: 256 }}
+            css={{ width: "256px" }}
             label={tr.t("Login")}
             onClick={() => store.login()}
           />

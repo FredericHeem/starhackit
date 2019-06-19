@@ -1,7 +1,7 @@
 import * as React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import ColorPicker from "react-color/lib/components/photoshop/Photoshop";
 import deepForceUpdate from "preact-deep-force-update";
 
@@ -15,11 +15,11 @@ export default context => {
     colorValue: "",
     colorName: ""
   });
-  const ColorListView = glamorous("div")({
+  const ColorListView = styled("div")({
     width: 300
   });
 
-  const ColorRowView = glamorous("div")({
+  const ColorRowView = styled("div")({
     display: "flex",
     flexDirection: "row",
     alignContent: "center",
@@ -28,7 +28,7 @@ export default context => {
     cursor: "pointer",
     border: `1px dotted grey`
   });
-  const ColorTextView = glamorous("div")({
+  const ColorTextView = styled("div")({
     display: "flex",
     flexDirection: "row",
     alignContent: "center",
@@ -36,7 +36,7 @@ export default context => {
     margin: 10,
     cursor: "pointer"
   });
-  const Color = glamorous("div")({
+  const Color = styled("div")({
     height: 40,
     width: 40,
     margin: 6,
@@ -80,7 +80,7 @@ export default context => {
       </ColorRowView>
     );
   }
-  const ColorGroupTextView = glamorous("div")({
+  const ColorGroupTextView = styled("div")({
     flex: 1,
     flexDirection: "column",
     border: `1px dotted grey`,

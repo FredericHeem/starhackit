@@ -1,8 +1,8 @@
-import React from "react";
+/** @jsx jsx */
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import glamorous from "glamorous";
-import { keyframes } from "glamor";
+import styled from "@emotion/styled";
+import { jsx, keyframes } from '@emotion/core'
 
 export default ({ theme }) => {
   const { palette } = theme;
@@ -18,7 +18,7 @@ export default ({ theme }) => {
   const styles = {
     root: {
       margin: "auto",
-      width: "256",
+      width: "256px",
       padding: 0,
       position: "relative"
     },
@@ -79,18 +79,18 @@ export default ({ theme }) => {
       color: "red"
     }
   };
-  const InputContainerView = glamorous("div")(styles.root);
-  const LabelView = glamorous("label")(styles.label.root);
-  const InputView = glamorous("input")(styles.input);
-  const UnderlineView = glamorous("hr")(styles.underline.root);
-  const UnderlineStaticView = glamorous(UnderlineView)(styles.underline.static);
-  const UnderlineFocusView = glamorous(UnderlineView)(
+  const InputContainerView = styled("div")(styles.root);
+  const LabelView = styled("label")(styles.label.root);
+  const InputView = styled("input")(styles.input);
+  const UnderlineView = styled("hr")(styles.underline.root);
+  const UnderlineStaticView = styled(UnderlineView)(styles.underline.static);
+  const UnderlineFocusView = styled(UnderlineView)(
     styles.underline.focusOff
   );
-  const UnderlineErrorView = glamorous(UnderlineView)(
+  const UnderlineErrorView = styled(UnderlineView)(
     styles.underline.errorOff
   );
-  const ErrorView = glamorous("div")(styles.error);
+  const ErrorView = styled("div")(styles.error);
 
   return observer(function Input(props) {
     const { id, label, onChange, error, ...otherProps } = props;

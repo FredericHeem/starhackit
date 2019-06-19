@@ -1,8 +1,8 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context => {
   const { theme } = context;
-  return glamorous("div")(() => ({
+  return styled("div")(() => ({
     boxShadow: `2px 2px 2px 2px ${theme.palette.borderColor}`,
     padding: 20,
     margin: 10,

@@ -1,5 +1,5 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
 import Row from "components/Row";
 import Title from "components/Title";
@@ -12,12 +12,12 @@ export default async context => {
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
-  const Section = glamorous("section")(() => ({
+  const Section = styled("section")(() => ({
     borderTop: `1px solid ${palette.borderColor}`,
     paddingBottom: 30
   }));
 
-  const HeaderView = glamorous("section")({
+  const HeaderView = styled("section")({
     padding: 20
   });
 
@@ -53,7 +53,7 @@ export default async context => {
     );
   }
 
-  const E2eImg = glamorous("img")({
+  const E2eImg = styled("img")({
     width: "100%",
     maxWidth: "1200"
   });

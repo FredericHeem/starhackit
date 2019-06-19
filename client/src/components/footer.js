@@ -1,9 +1,9 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default ({ tr, theme }) => {
   const { palette } = theme;
-  const FooterView = glamorous("footer")(() => ({
+  const FooterView = styled("footer")(() => ({
     padding: 20,
     textAlign: "center",
     background: palette.primaryLight

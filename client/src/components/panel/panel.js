@@ -1,20 +1,20 @@
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default function({ theme }) {
   const { palette } = theme;
-  const Panel = glamorous("div")({
+  const Panel = styled("div")({
     borderBottom: `1px solid ${palette.primaryDark}`,
     padding: "0.5rem"
   });
 
-  const Header = glamorous("div")({
+  const Header = styled("div")({
     fontSize: "2rem",
     fontWeight: "bold",
     padding: "0.5rem",
     backgroundColor: palette.primaryLight
   });
 
-  const Body = glamorous("div")({
+  const Body = styled("div")({
     padding: "0.5rem",
     backgroundColor: palette.background
   });

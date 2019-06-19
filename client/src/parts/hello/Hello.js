@@ -1,7 +1,7 @@
 import React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
 export default context => {
   const { tr, theme } = context;
@@ -15,7 +15,7 @@ export default context => {
     word: "World"
   });
 
-  const HelloView = glamorous("div")({
+  const HelloView = styled("div")({
     width: 300,
     padding: 20,
     border: `1px solid ${palette.borderColor}`,

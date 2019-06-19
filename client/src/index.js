@@ -7,5 +7,5 @@ if (!window.Promise) {
     require('./app/main').default()
   });
 } else {
-  require('./app/main').default()
+  require('./main').default()
 }

@@ -5,7 +5,7 @@
     [
       "module-resolver",
       {
-        "root": ["./src/app"],
+        "root": ["./src"],
         "alias": {
           "test": "./test"
         }

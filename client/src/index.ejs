@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width">
     <link rel='shortcut icon' type='image/png' href='/favicon.ico' />
     <% for (var css in htmlWebpackPlugin.files.css) { %>
-    <link href="/<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+    <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
     <% } %>
 </head>
 <body>
@@ -83,7 +83,7 @@
   </div>
 
 <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
-<script src="/<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
 <% } %>
 
 </body>

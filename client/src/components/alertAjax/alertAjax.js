@@ -15,11 +15,10 @@ export default context => {
       return null;
     }
     debug("error:", error);
-    const { status } = error.response;
-    debug("error status :", status);
-    if (![401, 422].includes(status)) {
+    if (![401, 422].includes(get(error, "response.status"))) {
       return null;
     }
+    
     const message = get(error, "response.data.error.message", error.message);
 
     return <Alert.Danger className={className} message={message} />;

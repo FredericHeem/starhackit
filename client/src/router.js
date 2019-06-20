@@ -8,7 +8,7 @@ import ErrorBoundary from "components/ErrorBoundary";
 export default ({ context, routes, layout }) => {
   const { tr, history, config } = context;
   const router = new Router(routes);
-
+  const Layout = layout(context);
   const onRenderComplete = title => {
     document.title = `${title} - ${config.title}`;
   };
@@ -32,7 +32,7 @@ export default ({ context, routes, layout }) => {
     const { title, component } = await resolveRoute();
 
     if (component) {
-      const Layout = layout(context);
+      
       const page = (
         <ErrorBoundary>
           <Layout>{component}</Layout>

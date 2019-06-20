@@ -1,20 +1,18 @@
 import Axios from "axios";
 import Qs from "qs";
 import Debug from "debug";
-import config from "../config";
-
 const debug = new Debug("rest");
 
-function baseUrl(url) {
-  const fullUrl = config.apiUrl + url;
-  return fullUrl;
-}
-
-export default function(options = {}) {
+export default function(config = {}, options = {}) {
   let jwtSelectorCurrent;
   const headersDefault = {
     "Content-Type": "application/json"
   };
+
+  function baseUrl(url) {
+    const fullUrl = config.apiUrl + url;
+    return fullUrl;
+  }
   function ajax(url, method, data, params, headers = headersDefault) {
     debug(
       "ajax url: %s, method: %s, options %s, params: ",

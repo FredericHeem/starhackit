@@ -1,12 +1,11 @@
 import "./app.css";
-import Debug from "debug";
 import Router from "./router";
+import Log from "utils/log";
+import config from "./config";
 
-const debug = new Debug("app");
+Log({ enable: config.debug.log });
 
-export default function({ context, parts, createRoutes, layout }) {
-  debug("App begins");
-
+export default async function({ context, parts, createRoutes, layout }) {
   context.parts = parts;
 
   async function preAuth() {
@@ -17,18 +16,10 @@ export default function({ context, parts, createRoutes, layout }) {
     await parts.auth.stores().me.fetch();
   }
 
-  const routes = createRoutes({context, parts});
+  const routes = createRoutes({ context, parts });
   const router = Router({ context, routes, layout });
 
-  return {
-    context,
-    router,
-    render() {
-      router.start();
-    },
-    async start() {
-      debug("start");
-      return Promise.all([preAuth()]);
-    }
-  };
+  await Promise.all([preAuth()]);
+  document.getElementById("loading").classList.add("m-fadeOut");
+  router.start();
 }

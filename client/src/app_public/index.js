@@ -1,2 +1,2 @@
 import App from "./PublicApp";
-App().then(app => require("../main").default(app))
+App().then(app => require("../app").default(app))

@@ -9,6 +9,7 @@ export default ({ context, routes, layout }) => {
   const { tr, history, config } = context;
   const router = new Router(routes);
   const Layout = layout(context);
+
   const onRenderComplete = title => {
     document.title = `${title} - ${config.title}`;
   };
@@ -28,11 +29,35 @@ export default ({ context, routes, layout }) => {
     }
   };
 
+  const isProtected = route => {
+    if (!route) {
+      return false;
+    }
+    if (route.protected) {
+      return true;
+    }
+    if (route.parent) {
+      return isProtected(route.parent);
+    }
+
+    return false;
+  };
+
   async function onLocationChange(location) {
-    const { title, component } = await resolveRoute();
+    const { title, component, routerContext = {} } = await resolveRoute();
+
+    if (
+      isProtected(routerContext.route) &&
+      !context.parts.auth.stores().auth.authenticated
+    ) {
+      setTimeout(
+        () => context.history.push(`login?nextPath=${routerContext.pathname}`),
+        1
+      );
+      throw new Error({ name: "redirect", status: 302 });
+    }
 
     if (component) {
-      
       const page = (
         <ErrorBoundary>
           <Layout>{component}</Layout>

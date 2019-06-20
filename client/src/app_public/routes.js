@@ -7,7 +7,8 @@ export default ({context, parts}) => [
     children: [
       {
         path: "",
-        action: () => ({
+        action: routerContext => ({
+          routerContext,
           title: "Home",
           component: h(asyncView(context), {
             getModule: () => import("./landing/landingScreen")
@@ -16,7 +17,8 @@ export default ({context, parts}) => [
       },
       {
         path: "/guide",
-        action: () => ({
+        action: routerContext => ({
+          routerContext,
           title: "Component Guide",
           component: h(asyncView(context), {
             getModule: () => import("components/componentGuide")
@@ -24,7 +26,6 @@ export default ({context, parts}) => [
         })
       },
       ...parts.auth.routes(),
-      ...parts.db.routes(),
       ...parts.hello.routes()
     ]
   }

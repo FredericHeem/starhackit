@@ -14,9 +14,11 @@ export default function(context) {
     return [
       {
         path: "/profile",
-        action: () => {
+        protected: true,
+        action: routerContext => {
           stores.profile.get();
           return {
+            routerContext,
             title: "My Profile",
             component: h(profileView(context), { store: stores.profile })
           }

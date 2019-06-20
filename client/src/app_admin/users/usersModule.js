@@ -33,12 +33,14 @@ export default function(context) {
     return [
       {
         path: "/users",
+        protected: true,
         children: [
           {
             path: "",
-            action: () => {
+            action: routerContext => {
               users.store.selectPage(1);
               return {
+                routerContext,
                 title: "Users",
                 component: users.component
               };
@@ -46,9 +48,10 @@ export default function(context) {
           },
           {
             path: "/:userId",
-            action: ({ params }) => {
-              stores.user.get(params.userId);
+            action: routerContext => {
+              stores.user.get(routerContext.params.userId);
               return {
+                routerContext,
                 title: "User",
                 component: h(user(context), { store: stores.user })
               };

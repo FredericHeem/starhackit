@@ -7,9 +7,10 @@ export default context => {
     return [
       {
         path: "/hello",
-        action: () => {
+        action: routerContext => {
           hello.store.get();
           return {
+            routerContext,
             title: "Hello",
             component: h(hello.view)
           };

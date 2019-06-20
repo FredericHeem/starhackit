@@ -199,7 +199,8 @@ export default function(context) {
     return [
       {
         path: "/login",
-        action: () => ({
+        action: routerContext => ({
+          routerContext,
           title: "Login",
           component: (
             <AsyncView
@@ -211,8 +212,10 @@ export default function(context) {
       },
       {
         path: "/register",
-        action: () => ({
+        action: routerContext => ({
+          
           title: "Register",
+          routerContext,
           component: (
             <AsyncView
               store={stores.register}
@@ -223,9 +226,10 @@ export default function(context) {
       },
       {
         path: "/logout",
-        action: () => {
+        action: routerContext => {
           stores.logout.execute();
           return {
+            routerContext,
             title: "Logout",
             component: h(logoutView(context), { store: stores.auth })
           };
@@ -233,7 +237,8 @@ export default function(context) {
       },
       {
         path: "/forgot",
-        action: () => ({
+        action: routerContext => ({
+          routerContext,
           title: "Forgot password",
           component: (
             <AsyncView
@@ -245,19 +250,21 @@ export default function(context) {
       },
       {
         path: "/resetPassword/:token",
-        action: ({ params } = {}) => ({
+        action: routerContext => ({
+          routerContext,
           title: "Reset password",
           component: h(resetPasswordView(context), {
             store: stores.resetPassword,
-            params
+            params: routerContext.params
           })
         })
       },
       {
         path: "/verifyEmail/:code",
-        action: ({ params }) => {
-          stores.verifyEmailCode.execute({ code: params.code });
+        action: routerContext => {
+          stores.verifyEmailCode.execute({ code: routerContext.params.code });
           return {
+            routerContext,
             title: "Verify Email",
             component: h(registrationCompleteView(context), {
               store: stores.verifyEmailCode

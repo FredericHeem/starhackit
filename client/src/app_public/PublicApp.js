@@ -6,8 +6,8 @@ import HelloModule from "parts/hello/helloModule";
 import createRoutes from "./routes";
 import layout from "./Layout";
 
-export default () => {
-  const context = Context({
+export default async () => {
+  const context = await Context({
     config: {
       routeAfterLogin: "profile",
       title: "Starhackit"

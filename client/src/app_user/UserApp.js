@@ -5,12 +5,12 @@ import createRoutes from "./routes";
 import AuthModule from "parts/auth/authModule";
 import ProfileModule from "./profile/profileModule";
 
-export default () => {
-  const context = Context({
+export default async() => {
+  const context = await Context({
     config: {
       routeAfterLogin: "profile",
       defaultPath: "profile",
-      title: "User"
+      title: "Your Area"
     }
   });
 

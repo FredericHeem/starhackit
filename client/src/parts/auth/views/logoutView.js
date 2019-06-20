@@ -26,7 +26,7 @@ export default context => {
         <Button
           primary
           label={tr.t("Login")}
-          onClick={() => history.push(`/login`)}
+          onClick={() => history.push(`login`)}
         />
       </Paper>
     );

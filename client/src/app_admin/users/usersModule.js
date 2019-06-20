@@ -21,7 +21,7 @@ export default function(context) {
   }
 
   function selectOne(userId) {
-    context.history.push(`/users/${userId}`);
+    context.history.push(`users/${userId}`);
   }
 
   const users = usersCreate(context, {
@@ -46,7 +46,7 @@ export default function(context) {
           },
           {
             path: "/:userId",
-            component: ({ params }) => {
+            action: ({ params }) => {
               stores.user.get(params.userId);
               return {
                 title: "User",

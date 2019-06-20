@@ -1,2 +1,2 @@
 import App from "./AdminApp";
-require("../main").default(App());
+App().then(app => require("../main").default(app))

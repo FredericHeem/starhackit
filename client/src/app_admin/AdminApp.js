@@ -5,8 +5,8 @@ import createRoutes from "./routes";
 import UsersModule from "./users/usersModule";
 import AuthModule from "parts/auth/authModule";
 
-export default () => {
-  const context = Context({
+export default async () => {
+  const context = await Context({
     config: {
       title: "Admin",
       routeAfterLogin: "users",

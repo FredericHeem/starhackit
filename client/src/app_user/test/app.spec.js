@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import App from "../UserApp";
 
-describe("App", function() {
-  const app = App();
+describe("App", async function() {
+  const app = await App();
   it("start", async () => {
     await app.start();
   });

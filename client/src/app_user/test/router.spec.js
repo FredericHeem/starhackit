@@ -5,8 +5,8 @@ import UserApp from "../UserApp";
 chai.use(chaiAsPromised);
 const { expect, assert } = chai;
 
-describe("Router", function() {
-  const { router, context } = UserApp();
+describe("Router", async function() {
+  const { router, context } = await UserApp();
   it("/login", async () => {
     // console.log("CONTEXT ", context);
     const route = await router.instance.resolve("/user/login");

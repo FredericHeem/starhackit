@@ -1,2 +1,2 @@
 import App from "./PublicApp";
-App().then(app => require("../app").default(app))
+App().catch(error => console.error(error));

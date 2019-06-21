@@ -1,6 +1,9 @@
 import React from "react";
 import get from "lodash/get";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
+import validate from "validate.js";
+import rules from "services/rules";
 import page from "components/Page";
 import paper from "components/Paper";
 import button from "mdlean/lib/button";
@@ -8,11 +11,12 @@ import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "components/input";
 import Debug from "debug";
+import AsyncOp from "utils/asyncOp";
 
 const debug = new Debug("resetPasword");
 
 export default context => {
-  const { tr } = context;
+  const { tr, rest } = context;
 
   const FormGroup = formGroup(context);
   const Page = page(context);
@@ -20,7 +24,40 @@ export default context => {
   const Button = button(context);
   const AlertAjax = alertAjax(context);
   const PasswordInput = input(context);
-  const SetNewPasswordDone = observer(function SetNewPasswordDone({ store }) {
+  const asyncOpCreate = AsyncOp(context);
+
+  const store = observable({
+    step: "SetPassword",
+    password: "",
+    errors: {},
+    op: asyncOpCreate(payload =>
+      rest.post("auth/verify_reset_password_token", payload)
+    ),
+    resetPassword: action(async function(token) {
+      this.errors = {};
+      const payload = {
+        password: this.password,
+        token
+      };
+      const constraints = {
+        password: rules.password
+      };
+      const vErrors = validate(payload, constraints);
+      if (vErrors) {
+        this.errors = vErrors;
+        return;
+      }
+      try {
+        await this.op.fetch(payload);
+        this.step = "SetNewPasswordDone";
+      } catch (errors) {
+        console.error("resetPassword ", errors);
+      }
+    })
+  }),
+  
+  
+  const SetNewPasswordDone = observer(({ store }) => {
     console.log("SetNewPasswordDone ", store.op);
     if (!get(store.op, "data.success")) {
       return null;
@@ -34,7 +71,7 @@ export default context => {
     );
   });
 
-  const SetNewPassword = observer(function SetNewPassword({ store, params }) {
+  const SetNewPassword = observer(({ store, params }) => {
     if (store.step !== "SetPassword") {
       return null;
     }
@@ -69,8 +106,8 @@ export default context => {
     );
   });
 
-  function ResetPasswordForm({ store, params }) {
-    console.log("ResetPasswordForm ", store.op);
+  const  ResetPasswordForm = observer(({ store, params }) => {
+    // console.log("ResetPasswordForm ", store.op);
     return (
       <Page className="reset-password-page text-center">
         <Paper>
@@ -84,7 +121,7 @@ export default context => {
         </Paper>
       </Page>
     );
-  }
+  })
 
-  return observer(ResetPasswordForm);
+  return props => <ResetPasswordForm store={store} {...props}/>;
 };

@@ -1,20 +1,60 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { observer } from "mobx-react";
+import { observable, action } from "mobx";
+import validate from "validate.js";
 import button from "mdlean/lib/button";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "components/input";
+import AsyncOp from "utils/asyncOp";
+import {redirect} from "../authUtils"
+import rules from "services/rules";
 
 export default context => {
-  const { tr } = context;
+  const { tr, rest } = context;
   const FormGroup = formGroup(context);
   const UserNameInput = input(context);
   const PasswordInput = input(context);
   const AlertAjax = alertAjax(context);
   const SubmitButton = button(context);
+  const asyncOpCreate = AsyncOp(context);
+  const authStore = context.parts.auth.stores().auth;
 
-  function LoginForm({ store }) {
+  const store = observable({
+    username: "",
+    password: "",
+    errors: {},
+    op: asyncOpCreate(payload => rest.post("auth/login", payload)),
+    login: action(async function() {
+      this.errors = {};
+      const payload = {
+        username: this.username.trim(),
+        password: this.password
+      };
+      const constraints = {
+        username: rules.username,
+        password: rules.password
+      };
+      const vErrors = validate(payload, constraints);
+      if (vErrors) {
+        this.errors = vErrors;
+        return;
+      }
+
+      try {
+        const response = await this.op.fetch(payload);
+        const { token } = response;
+        authStore.setToken(token);
+        redirect(context.history, context.config);
+      } catch (errors) {
+        console.error("login ", errors);
+        localStorage.removeItem("JWT");
+      }
+    })
+  })
+
+  const LoginForm = observer(({ store }) => {
     const { errors } = store;
     return (
       <form className="local-login-form" onSubmit={e => e.preventDefault()}>
@@ -52,6 +92,6 @@ export default context => {
         </FormGroup>
       </form>
     );
-  }
-  return observer(LoginForm);
+  })
+  return props => <LoginForm store={store} {...props}/>;
 };

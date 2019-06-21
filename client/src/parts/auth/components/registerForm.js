@@ -5,6 +5,7 @@ import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "components/input";
 
+
 export default context => {
   const { tr } = context;
   const FormGroup = formGroup(context);
@@ -14,7 +15,7 @@ export default context => {
   const EmailInput = input(context);
   const PasswordInput = input(context);
 
-  function RegisterForm({ store }) {
+  const RegisterForm = observer(({ store }) => {
     const { errors } = store;
     return (
       <form
@@ -66,6 +67,6 @@ export default context => {
         </FormGroup>
       </form>
     );
-  }
-  return observer(RegisterForm);
+  });
+  return RegisterForm
 };

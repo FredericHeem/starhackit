@@ -1,18 +1,51 @@
 import React from "react";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import button from "mdlean/lib/button";
 import input from "components/input";
+import validate from "validate.js";
 import page from "components/Page";
 import paper from "components/Paper";
 import formGroup from "components/FormGroup";
+import AsyncOp from "utils/asyncOp";
+import rules from "services/rules";
 
 export default context => {
-  const { tr } = context;
+  const { tr, rest } = context;
   const FormGroup = formGroup(context);
   const Page = page(context);
   const Paper = paper(context);
   const Button = button(context);
   const EmailInput = input(context);
+  const asyncOpCreate = AsyncOp(context);
+
+  const store = observable({
+    step: "SendPasswordResetEmail",
+    email: "",
+    errors: {},
+    op: asyncOpCreate(payload => rest.post("auth/reset_password", payload)),
+    requestPasswordReset: action(async function() {
+      this.errors = {};
+      const payload = {
+        email: this.email.trim()
+      };
+      const constraints = {
+        email: rules.email
+      };
+      const vErrors = validate(payload, constraints);
+      if (vErrors) {
+        this.errors = vErrors;
+        return;
+      }
+      try {
+        await this.op.fetch(payload);
+        this.step = "CheckEmail";
+      } catch (errors) {
+        console.error(errors);
+      }
+    })
+  });
+
   const CheckEmail = observer(() => (
     <div className="forgot-password-check-email-view">
       <h3>{tr.t("Step 2 - Check Email")}</h3>
@@ -69,18 +102,16 @@ export default context => {
     );
   });
 
-  function ForgotView({ store }) {
-    return (
-      <Page className="forgot-password-page text-center">
-        <Paper>
-          {store.step === "SendPasswordResetEmail" && (
-            <SendPasswordResetEmail store={store} />
-          )}
-          {store.step === "CheckEmail" && <CheckEmail />}
-        </Paper>
-      </Page>
-    );
-  }
+  const ForgotView = observer(({ store }) => (
+    <Page className="forgot-password-page text-center">
+      <Paper>
+        {store.step === "SendPasswordResetEmail" && (
+          <SendPasswordResetEmail store={store} />
+        )}
+        {store.step === "CheckEmail" && <CheckEmail />}
+      </Paper>
+    </Page>
+  ));
 
-  return observer(ForgotView);
+  return props => <ForgotView store={store} {...props} />;
 };

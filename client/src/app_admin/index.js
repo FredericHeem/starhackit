@@ -1,2 +1,2 @@
 import App from "./AdminApp";
-App().then(app => require("../app").default(app))
+App().catch(error => console.error(error));

@@ -5,6 +5,13 @@ import config from "./config";
 
 Log({ enable: config.debug.log });
 
+const initialScreenFadeOut = () => {
+  const loading = document.getElementById("loading");
+  if (loading) {
+    loading.classList.add("m-fadeOut");
+  }
+}
+
 export default async function({ context, parts, createRoutes, layout }) {
   context.parts = parts;
 
@@ -20,6 +27,13 @@ export default async function({ context, parts, createRoutes, layout }) {
   const router = Router({ context, routes, layout });
 
   await Promise.all([preAuth()]);
-  document.getElementById("loading").classList.add("m-fadeOut");
+
+  initialScreenFadeOut();
+
   router.start();
+
+  return {
+    context,
+    router
+  }
 }

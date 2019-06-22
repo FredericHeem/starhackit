@@ -76,7 +76,7 @@ export default context => {
               alignItems: "center"
             }}
           >
-            <IconLeft onDrawerClick={() => store.toggleDrawer()} />
+            {appMenu && <IconLeft onDrawerClick={() => store.toggleDrawer()} />}
             <TitleView
               onClick={() => store.navChange({ route: defaultPath })}
               label={title}
@@ -84,9 +84,14 @@ export default context => {
           </div>
           {right && h(right)}
         </AppBarView>
-        <Drawer open={store.drawerOpen} onClose={() => store.closeDrawer()}>
-          <Menu menuItems={appMenu} navChange={item => store.navChange(item)} />
-        </Drawer>
+        {appMenu && (
+          <Drawer open={store.drawerOpen} onClose={() => store.closeDrawer()}>
+            <Menu
+              menuItems={appMenu}
+              navChange={item => store.navChange(item)}
+            />
+          </Drawer>
+        )}
       </header>
     );
   });

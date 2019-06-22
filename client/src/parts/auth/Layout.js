@@ -1,17 +1,18 @@
 import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
+import navBar from "components/navbar";
 import footer from "components/footer";
 import MainView from "components/MainView";
-import navBar from "components/navbar";
-import APP_MENU from "./menuItems";
+import authBar from "components/authBar"
 
 export default context => {
   const {
-    alertStack: { View: AlertStack }
+    alertStack: { View: AlertStack },
   } = context;
 
   const NavBar = navBar(context);
   const Footer = footer(context);
+  const AuthBar = authBar(context);
 
   const Layout = ({ children }) => (
     <div
@@ -22,17 +23,8 @@ export default context => {
         flexDirection: "column"
       }}
     >
-       <NavBar appMenu={APP_MENU()}/>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          flexGrow: "1"
-        }}
-      >
-        <MainView>{children}</MainView>
-      </div>
+      <NavBar right={AuthBar}/>
+      <MainView>{children}</MainView>
       <Footer />
       <AlertStack />
     </div>

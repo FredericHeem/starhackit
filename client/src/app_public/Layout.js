@@ -2,7 +2,7 @@ import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import navBar from "components/navbar";
 import footer from "components/footer";
-import authBar from "./landing/authBar"
+import authBar from "components/authBar"
 import MainView from "components/MainView";
 import APP_MENU from "./menuItems";
 
@@ -14,7 +14,8 @@ export default context => {
   const NavBar = navBar(context);
   const Footer = footer(context);
   const AuthBar = authBar(context);
-  const ApplicationLayout = ({ children }) => (
+  
+  const Layout = ({ children }) => (
     <div
       style={{
         display: "flex",
@@ -24,23 +25,14 @@ export default context => {
       }}
     >
       <NavBar appMenu={APP_MENU()} right={AuthBar}/>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          flexGrow: "1"
-        }}
-      >
-        <MainView>{children}</MainView>
-      </div>
+      <MainView>{children}</MainView>
       <Footer />
       <AlertStack />
     </div>
   );
 
   return ({ children }) =>
-    h(observer(ApplicationLayout), {
+    h(observer(Layout), {
       children
     });
 };

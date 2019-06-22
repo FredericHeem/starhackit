@@ -13,7 +13,7 @@ export default context => {
   const NavBar = navBar(context);
   const Footer = footer(context);
 
-  const ApplicationLayout = ({ children }) => (
+  const Layout = ({ children }) => (
     <div
       style={{
         display: "flex",
@@ -23,23 +23,14 @@ export default context => {
       }}
     >
       <NavBar appMenu={APP_MENU()} />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          flexGrow: "1"
-        }}
-      >
-        <MainView>{children}</MainView>
-      </div>
+      <MainView>{children}</MainView>
       <Footer />
       <AlertStack />
     </div>
   );
 
   return ({ children }) =>
-    h(observer(ApplicationLayout), {
+    h(observer(Layout), {
       children
     });
 };

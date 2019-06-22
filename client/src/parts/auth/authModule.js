@@ -5,9 +5,11 @@ import asyncView from "components/AsyncView";
 import logoutView from "./views/logoutView";
 import registrationCompleteView from "./views/registrationCompleteView";
 import { redirect } from "./authUtils";
+import Layout from "./Layout";
 
 export default function(context) {
   const { rest, history, config } = context;
+  const layout = Layout(context)
   const asyncOpCreate = AsyncOp(context);
   const AsyncView = asyncView(context);
 
@@ -73,6 +75,7 @@ export default function(context) {
               return {
                 routerContext,
                 title: "Login",
+                layout,
                 component: (
                   <AsyncView
                     authStore={authStore}
@@ -87,6 +90,7 @@ export default function(context) {
             action: routerContext => ({
               title: "Register",
               routerContext,
+              layout,
               component: (
                 <AsyncView getModule={() => import("./views/registerView")} />
               )
@@ -99,6 +103,7 @@ export default function(context) {
               return {
                 routerContext,
                 title: "Logout",
+                layout,
                 component: h(logoutView(context), { store: stores.auth })
               };
             }
@@ -108,6 +113,7 @@ export default function(context) {
             action: routerContext => ({
               routerContext,
               title: "Forgot password",
+              layout,
               component: (
                 <AsyncView getModule={() => import("./views/forgotView")} />
               )
@@ -118,6 +124,7 @@ export default function(context) {
             action: routerContext => ({
               routerContext,
               title: "Reset password",
+              layout,
               component: (
                 <AsyncView
                   params={routerContext.params}
@@ -135,6 +142,7 @@ export default function(context) {
               return {
                 routerContext,
                 title: "Verify Email",
+                layout,
                 component: h(registrationCompleteView(context), {
                   store: stores.verifyEmailCode
                 })

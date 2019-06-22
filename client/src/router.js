@@ -19,7 +19,7 @@ export function createPart({name, context, partCreate, routerContext}) {
 export default ({ context, routes, layout }) => {
   const { tr, history, config } = context;
   const router = new Router(routes);
-  const Layout = layout(context);
+  const LayoutDefault = layout(context);
 
   const onRenderComplete = title => {
     document.title = `${title} - ${config.title}`;
@@ -41,16 +41,14 @@ export default ({ context, routes, layout }) => {
   };
 
   async function onLocationChange(location) {
-    const { title, component, routerContext = {} } = await resolveRoute();
+    const { title, component, layout } = await resolveRoute();
+    const Layout = layout || LayoutDefault
 
     if (component) {
-      const page = (
+      context.rootInstance = render(
         <ErrorBoundary>
           <Layout>{component}</Layout>
-        </ErrorBoundary>
-      );
-      context.rootInstance = render(
-        page,
+        </ErrorBoundary>,
         document.getElementById("application"),
         () => onRenderComplete(title, location)
       );

@@ -13,20 +13,8 @@ const initialScreenFadeOut = () => {
 }
 
 export default async function({ context, parts, createRoutes, layout }) {
-  context.parts = parts;
-
-  async function preAuth() {
-    const token = localStorage.getItem("JWT");
-    if (token) {
-      parts.auth.stores().auth.setToken(token);
-    }
-    await parts.auth.stores().me.fetch();
-  }
-
-  const routes = createRoutes({ context, parts });
+  const routes = createRoutes({ context });
   const router = Router({ context, routes, layout });
-
-  await Promise.all([preAuth()]);
 
   initialScreenFadeOut();
 

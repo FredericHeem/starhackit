@@ -5,7 +5,7 @@ var commands = {
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/forgot';
+        return this.api.launchUrl + '/auth/forgot';
     },
     elements: {
         emailInput: {

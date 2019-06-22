@@ -1,7 +1,7 @@
 
 import {createPart} from "../router"
 
-export default ({ context, parts }) => [
+export default ({ context }) => [
   {
     path: "/user",
     children: [
@@ -16,7 +16,17 @@ export default ({ context, parts }) => [
             routerContext
           })
       },
-      ...parts.auth.routes()
+      {
+        path: "/auth",
+        children: [],
+        action: async routerContext =>
+          createPart({
+            name: "auth",
+            context,
+            partCreate: await import("parts/auth/authModule"),
+            routerContext
+          })
+      }
     ]
   }
 ];

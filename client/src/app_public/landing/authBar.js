@@ -7,8 +7,8 @@ export default context => {
   function AuthBar() {
     return (
       <div css={css`& a {margin:10px}`}>
-        <Button primary raised label="Login" href="/user/login" />
-        <Button primary flat label="Register" href="/user/register" />
+        <Button primary raised label="Login" href="/user/auth/login" />
+        <Button primary flat label="Register" href="/user/auth/register" />
       </div>
     );
   }

@@ -1,10 +1,10 @@
 export default () => [
   {
-    route: "users",
+    route: "/admin/users",
     text: "USERS"
   },
   {
-    route: "logout",
+    route: "/admin/auth/logout",
     text: "LOGOUT"
   }
 ];

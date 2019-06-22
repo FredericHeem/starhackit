@@ -1,18 +1,13 @@
 import Axios from "axios";
-import {stringify} from "qs";
+import { stringify } from "qs";
 import Debug from "debug";
 const debug = new Debug("rest");
 
-export default function(config = {}, options = {}) {
-  let jwtSelectorCurrent;
+export default function({config, history}, options = {}) {
   const headersDefault = {
     "Content-Type": "application/json"
   };
 
-  function baseUrl(url) {
-    const fullUrl = config.apiUrl + url;
-    return fullUrl;
-  }
   function ajax(url, method, data, params, headers = headersDefault) {
     debug(
       "ajax url: %s, method: %s, options %s, params: ",
@@ -21,17 +16,15 @@ export default function(config = {}, options = {}) {
       JSON.stringify(options),
       params
     );
-
-    if (jwtSelectorCurrent) {
-      const jwt = jwtSelectorCurrent();
-      if (jwt) {
-        headers.Authorization = `Bearer ${jwt}`;
-      }
+    const jwt = localStorage.getItem("JWT");
+    if (jwt) {
+      headers.Authorization = `Bearer ${jwt}`;
     }
 
     return Axios({
       method,
-      url: baseUrl(url),
+      baseURL: config.apiUrl ,
+      url,
       params,
       data,
       withCredentials: true,
@@ -44,14 +37,16 @@ export default function(config = {}, options = {}) {
       .then(res => res.data)
       .catch(error => {
         debug("ajax error: ", error);
+        if(error.response){
+          if([401].includes(error.response.status) && !location.pathname.includes('login')){
+            history.push(`auth/login?nextPath=${location.pathname}`)
+          }
+        }
         throw error;
       });
   }
 
   return {
-    setJwtSelector(jwtSelector) {
-      jwtSelectorCurrent = jwtSelector;
-    },
     get(url, data = {}) {
       return ajax(url, "GET", null, data);
     },
@@ -59,9 +54,15 @@ export default function(config = {}, options = {}) {
       return ajax(url, "POST", data);
     },
     upload(url, data) {
-      return ajax(url, "POST", data, {}, {
-        "Content-Type": "multipart/form-data"
-      });
+      return ajax(
+        url,
+        "POST",
+        data,
+        {},
+        {
+          "Content-Type": "multipart/form-data"
+        }
+      );
     },
     put(url, data = {}) {
       return ajax(url, "PUT", data);

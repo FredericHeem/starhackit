@@ -6,7 +6,6 @@ import asyncView from "components/AsyncView";
 import ErrorBoundary from "components/ErrorBoundary";
 
 export function createPart({name, context, partCreate, routerContext}) {
-  console.log("createPart ", name);
   if(context.parts[name]){
     return
   }
@@ -42,33 +41,8 @@ export default ({ context, routes, layout }) => {
     }
   };
 
-  const isProtected = route => {
-    if (!route) {
-      return false;
-    }
-    if (route.protected) {
-      return true;
-    }
-    if (route.parent) {
-      return isProtected(route.parent);
-    }
-
-    return false;
-  };
-
   async function onLocationChange(location) {
     const { title, component, routerContext = {} } = await resolveRoute();
-
-    if (
-      isProtected(routerContext.route) &&
-      !context.parts.auth.stores().auth.authenticated
-    ) {
-      setTimeout(
-        () => context.history.push(`login?nextPath=${routerContext.pathname}`),
-        1
-      );
-      throw new Error({ name: "redirect", status: 302 });
-    }
 
     if (component) {
       const page = (

@@ -1,7 +1,8 @@
 import { createElement as h } from "react";
 import asyncView from "components/AsyncView";
+import {createPart} from "../router"
 
-export default ({context, parts}) => [
+export default ({context}) => [
   {
     path: "/",
     children: [
@@ -25,8 +26,17 @@ export default ({context, parts}) => [
           })
         })
       },
-      ...parts.auth.routes(),
-      ...parts.hello.routes()
+      {
+        path: "/auth",
+        children: [],
+        action: async routerContext =>
+          createPart({
+            name: "auth",
+            context,
+            partCreate: await import("parts/auth/authModule"),
+            routerContext
+          })
+      }
     ]
   }
 ];

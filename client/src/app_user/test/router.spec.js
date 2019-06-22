@@ -9,7 +9,7 @@ describe("Router", async function() {
   const { router, context } = await UserApp();
   it("/login", async () => {
     // console.log("CONTEXT ", context);
-    const route = await router.instance.resolve("/user/login");
+    const route = await router.instance.resolve("/user/auth/login");
     assert(route);
     assert.equal(route.title, "Login");
   });

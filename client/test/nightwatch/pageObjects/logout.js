@@ -12,7 +12,7 @@ var commands = {
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/logout';
+        return this.api.launchUrl + '/auth/logout';
     },
     elements: {
     }

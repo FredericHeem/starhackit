@@ -9,17 +9,18 @@ import I18n from "utils/i18n";
 
 import rootConfig from "./config";
 
-export default async (option) => {
-  const config = {  ...rootConfig, ...option.config };
+export default async option => {
+  const config = { ...rootConfig, ...option.config };
   const context = {
-    rest: Rest(config),
     theme: theme(),
     tr,
     formatter: formatter("en"),
     history: createBrowserHistory(),
-    config
+    config,
+    parts: {}
   };
   context.alertStack = alertStackCreate(context, { limit: 3 });
+  context.rest = Rest(context);
 
   const i18n = I18n({ debug: config.debug.i18n });
   const language = await i18n.load();

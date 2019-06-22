@@ -1,10 +1,10 @@
 export default () => [
   {
-    route: "profile",
+    route: "/user/profile",
     text: "PROFILE"
   },
   {
-    route: "logout",
+    route: "/user/auth/logout",
     text: "LOGOUT"
   }
 ];

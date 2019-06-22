@@ -1,14 +1,14 @@
 /* global module */
 var commands = {
     withResetCode: function (code) {
-        return this.navigate(this.api.launchUrl + '/resetPassword/' + code)
+        return this.navigate(this.api.launchUrl + '/auth/resetPassword/' + code)
     }
 };
 
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/resetPassword/';
+        return this.api.launchUrl + '/auth/resetPassword/';
     },
     elements: {
         passwordInput: {

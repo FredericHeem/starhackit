@@ -9,7 +9,7 @@ import formGroup from "components/FormGroup";
 import input from "components/input";
 import AsyncOp from "utils/asyncOp";
 import {redirect} from "../authUtils"
-import rules from "services/rules";
+import rules from "utils/rules";
 
 export default context => {
   const { tr, rest } = context;

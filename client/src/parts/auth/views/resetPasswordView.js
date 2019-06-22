@@ -3,7 +3,7 @@ import get from "lodash/get";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import validate from "validate.js";
-import rules from "services/rules";
+import rules from "utils/rules";
 import page from "components/Page";
 import paper from "components/Paper";
 import button from "mdlean/lib/button";

@@ -1,7 +1,7 @@
 import { observable, action } from "mobx";
 import React, { createElement as h } from "react";
 import validate from "validate.js";
-import rules from "services/rules";
+import rules from "utils/rules";
 import AsyncOp from "utils/asyncOp";
 import alert from "components/alert";
 import profileView from "./views/profileView";

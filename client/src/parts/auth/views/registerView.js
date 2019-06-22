@@ -9,7 +9,7 @@ import page from "components/Page";
 import registerForm from "../components/registerForm";
 import mediaSigninButtons from "../components/mediaSigninButtons";
 import AsyncOp from "utils/asyncOp";
-import rules from "services/rules";
+import rules from "utils/rules";
 
 
 

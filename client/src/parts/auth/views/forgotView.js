@@ -8,7 +8,7 @@ import page from "components/Page";
 import paper from "components/Paper";
 import formGroup from "components/FormGroup";
 import AsyncOp from "utils/asyncOp";
-import rules from "services/rules";
+import rules from "utils/rules";
 
 export default context => {
   const { tr, rest } = context;

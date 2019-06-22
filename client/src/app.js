@@ -12,8 +12,7 @@ const initialScreenFadeOut = () => {
   }
 }
 
-export default async function({ context, createRoutes, layout }) {
-  const routes = createRoutes({ context });
+export default async function({ context, routes, layout }) {
   const router = Router({ context, routes, layout });
 
   initialScreenFadeOut();

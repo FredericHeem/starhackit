@@ -19,7 +19,6 @@ export function createPart({name, context, partCreate, routerContext}) {
 export default ({ context, routes, layout }) => {
   const { tr, history, config } = context;
   const router = new Router(routes);
-  router.createPart = createPart;
   const Layout = layout(context);
 
   const onRenderComplete = title => {

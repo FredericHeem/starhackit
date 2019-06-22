@@ -10,5 +10,5 @@ export default async () => {
     }
   });
 
-  return App({ context, createRoutes, layout });
+  return App({ context, routes: createRoutes({ context }), layout });
 };

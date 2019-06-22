@@ -8,12 +8,9 @@ export default async () => {
     config: {
       title: "Admin",
       routeAfterLogin: "/admin/users",
-      defaultPath: "users"
+      defaultPath: "/admin/users"
     }
   });
 
-  const parts = {
-  };
-
-  return App({ context, parts, createRoutes, layout });
+  return App({ context, routes: createRoutes({ context }), layout });
 };

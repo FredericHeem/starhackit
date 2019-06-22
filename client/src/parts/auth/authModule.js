@@ -7,7 +7,7 @@ import registrationCompleteView from "./views/registrationCompleteView";
 import { redirect } from "./authUtils";
 
 export default function(context) {
-  const { rest } = context;
+  const { rest, history, config } = context;
   const asyncOpCreate = AsyncOp(context);
   const AsyncView = asyncView(context);
 
@@ -24,21 +24,16 @@ export default function(context) {
       authStore.authenticated = false;
       localStorage.removeItem("JWT");
     },
-    preAuth: async () => {
+    redirectFromSocialLogin: async () => {
       try {
         await rest.get("me");
         authStore.setAuthenticated();
-        const { pathname } = window.location;
-        //TODO FRED check
-        if (pathname === "auth/login") {
-          // From social login
-          redirect(context.history, config);
-        }
+        redirect(history, config);
       } catch (errors) {
-        localStorage.removeItem("JWT");
+        authStore.reset();
       }
     }
-  })
+  });
 
   function Stores() {
     return {
@@ -46,7 +41,7 @@ export default function(context) {
       logout: observable({
         op: asyncOpCreate(() => rest.post("auth/logout")),
         execute: action(async function() {
-          authStore.reset()
+          authStore.reset();
           await this.op.fetch();
         })
       }),
@@ -73,16 +68,19 @@ export default function(context) {
         children: [
           {
             path: "/login",
-            action: routerContext => ({
-              routerContext,
-              title: "Login",
-              component: (
-                <AsyncView
-                  authStore={authStore}
-                  getModule={() => import("./views/loginView")}
-                />
-              )
-            })
+            action: async routerContext => {
+              await authStore.redirectFromSocialLogin();
+              return {
+                routerContext,
+                title: "Login",
+                component: (
+                  <AsyncView
+                    authStore={authStore}
+                    getModule={() => import("./views/loginView")}
+                  />
+                )
+              };
+            }
           },
           {
             path: "/register",

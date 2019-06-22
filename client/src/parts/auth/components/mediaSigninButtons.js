@@ -8,12 +8,12 @@ export default context => {
   const socialAuthMap = {
     facebook: {
       label: `${tr.t("Sign in with")} Facebook`,
-      href: "api/v1/auth/facebook",
+      href: "/api/v1/auth/facebook",
       icon: <img src={require("./icons/facebook.svg")} alt="facebook" width={20} />
     },
     google: {
       label: `${tr.t("Sign in with")} Google`,
-      href: "api/v1/auth/google",
+      href: "/api/v1/auth/google",
       icon: <img src={require("./icons/google.svg")} alt="google" width={20} />
     },
     fidor: {
@@ -22,7 +22,7 @@ export default context => {
     },
     crossbank: {
       label: `${tr.t("Sign in with")} Open Bank`,
-      href: "api/v1/crossbank/login"
+      href: "/api/v1/crossbank/login"
     }
   };
 

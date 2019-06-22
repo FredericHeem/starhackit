@@ -32,7 +32,7 @@ export default function(context) {
   function Routes(stores) {
     return [
       {
-        path: "/users",
+        path: "",
         protected: true,
         children: [
           {

@@ -8,7 +8,6 @@ import ErrorBoundary from "components/ErrorBoundary";
 export function createPart({name, context, partCreate, routerContext}) {
   console.log("createPart ", name);
   if(context.parts[name]){
-    console.error(`part ${name} already exist`)
     return
   }
   

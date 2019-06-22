@@ -2,7 +2,6 @@ import Context from "../context";
 import App from "../app";
 import layout from "./Layout";
 import createRoutes from "./routes";
-import UsersModule from "./users/usersModule";
 import AuthModule from "parts/auth/authModule";
 
 export default async () => {
@@ -15,7 +14,6 @@ export default async () => {
   });
 
   const parts = {
-    users: UsersModule(context),
     auth: AuthModule(context),
   };
 

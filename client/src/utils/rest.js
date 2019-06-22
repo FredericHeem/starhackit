@@ -1,5 +1,5 @@
 import Axios from "axios";
-import Qs from "qs";
+import {stringify} from "qs";
 import Debug from "debug";
 const debug = new Debug("rest");
 
@@ -38,7 +38,7 @@ export default function(config = {}, options = {}) {
       headers,
       timeout: 30e3,
       paramsSerializer(params) {
-        return Qs.stringify(params, { arrayFormat: "brackets" });
+        return stringify(params, { arrayFormat: "brackets" });
       }
     })
       .then(res => res.data)

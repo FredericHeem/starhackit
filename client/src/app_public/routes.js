@@ -27,6 +27,17 @@ export default ({context}) => [
         })
       },
       {
+        path: "/hello",
+        children: [],
+        action: async routerContext =>
+          createPart({
+            name: "hello",
+            context,
+            partCreate: await import("parts/hello/hello"),
+            routerContext
+          })
+      },
+      {
         path: "/auth",
         children: [],
         action: async routerContext =>

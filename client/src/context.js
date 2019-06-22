@@ -3,7 +3,7 @@ import { createBrowserHistory } from "history";
 import formatter from "utils/formatter";
 import alertStackCreate from "components/alertStack";
 import Rest from "./utils/rest";
-import theme from "./theme";
+import palette from "./palette";
 import intl from "utils/intl";
 import I18n from "utils/i18n";
 
@@ -12,7 +12,7 @@ import rootConfig from "./config";
 export default async option => {
   const config = { ...rootConfig, ...option.config };
   const context = {
-    theme: theme(),
+    palette: palette(),
     tr,
     formatter: formatter("en"),
     history: createBrowserHistory(),

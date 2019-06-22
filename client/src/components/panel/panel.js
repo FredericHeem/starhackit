@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
-export default function({ theme }) {
-  const { palette } = theme;
+export default function({ palette }) {
   const Panel = styled("div")({
     borderBottom: `1px solid ${palette.primaryDark}`,
     padding: "0.5rem"

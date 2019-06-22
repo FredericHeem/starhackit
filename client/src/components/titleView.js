@@ -6,5 +6,5 @@ export default context => component =>
     fontWeight: "bold",
     margin: 10,
     lineHeight: "normal",
-    color: context.theme.palette.textPrimaryOnPrimary
+    color: context.palette.textPrimaryOnPrimary
   });

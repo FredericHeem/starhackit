@@ -6,9 +6,7 @@ import ColorPicker from "react-color/lib/components/photoshop/Photoshop";
 import deepForceUpdate from "preact-deep-force-update";
 
 export default context => {
-  const { theme } = context;
-  const { palette } = theme;
-  //console.log("theme primary", palette.primary);
+  const { palette } = context;
 
   const store = observable({
     showPicker: false,

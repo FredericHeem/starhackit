@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export default ({ theme: { palette } }) => view => styled(view)(() => ({
+export default ({ palette }) => view => styled(view)(() => ({
     borderCollapse: "collapse",
     borderSpacing: 0,
     padding: 20,

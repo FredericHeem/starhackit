@@ -3,8 +3,7 @@ import paper from "components/Paper";
 import spinner from "./spinner";
 
 export default context => {
-  const { tr, theme } = context;
-  const { palette } = theme;
+  const { tr, palette } = context;
   const Paper = paper(context);
   const Spinner = spinner(context);
   return function SpinnerExamples() {

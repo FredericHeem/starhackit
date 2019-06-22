@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
-export default context => {
-  const { theme } = context;
+export default ({ palette }) => {
   return styled("div")(() => ({
     position: "relative",
-    borderBottom: `1px solid ${theme.palette.borderColor}`,
+    borderBottom: `1px solid ${palette.borderColor}`,
     marginBottom: 20
   }));
 };

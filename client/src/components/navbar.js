@@ -13,7 +13,7 @@ import titleView from "components/titleView";
 export default context => {
   const {
     history,
-    theme: { palette },
+    palette,
     config: { defaultPath, title }
   } = context;
   const AppBarView = appBarView(context);

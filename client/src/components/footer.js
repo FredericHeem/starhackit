@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-export default ({ tr, theme }) => {
-  const { palette } = theme;
+export default ({ tr, palette }) => {
   const FooterView = styled("footer")(() => ({
     padding: 20,
     textAlign: "center",

@@ -7,8 +7,7 @@ import cardComponent from "./cardComponent";
 import Content from "./content";
 
 export default async context => {
-  const { tr, theme } = context;
-  const { palette } = theme;
+  const { tr, palette } = context;
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 

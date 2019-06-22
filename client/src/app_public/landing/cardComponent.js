@@ -3,8 +3,7 @@ import styled from "@emotion/styled";
 import fontIcon from "components/FontIcon";
 
 export default context => {
-  const { theme } = context;
-  const { palette } = theme;
+  const { palette } = context;
   const FontIcon = fontIcon(context);
   function MediaIcon({ icon }) {
     return (

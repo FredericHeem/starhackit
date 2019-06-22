@@ -6,6 +6,6 @@ export default context =>
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: context.theme.palette.primary,
-    color: context.theme.palette.textPrimaryOnPrimary
+    backgroundColor: context.palette.primary,
+    color: context.palette.textPrimaryOnPrimary
   });

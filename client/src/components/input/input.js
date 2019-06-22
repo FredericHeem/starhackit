@@ -4,8 +4,7 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import { jsx, keyframes } from '@emotion/core'
 
-export default ({ theme }) => {
-  const { palette } = theme;
+export default ({ palette }) => {
   const store = observable({
     focus: false
   });

@@ -6,7 +6,7 @@ import { observable } from "mobx";
 export default context => {
   const {
     tr,
-    theme: { palette }
+    palette
   } = context;
 
   const store = observable({

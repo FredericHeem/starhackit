@@ -2,6 +2,7 @@ import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import navBar from "components/navbar";
 import footer from "components/footer";
+import RootView from "components/RootView";
 import MainView from "components/MainView";
 import APP_MENU from "./menuItems";
 
@@ -14,19 +15,12 @@ export default context => {
   const Footer = footer(context);
 
   const Layout = ({ children }) => (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        minWidth: "100vw",
-        flexDirection: "column"
-      }}
-    >
+    <RootView>
       <NavBar appMenu={APP_MENU()} />
       <MainView>{children}</MainView>
       <Footer />
       <AlertStack />
-    </div>
+    </RootView>
   );
 
   return ({ children }) =>

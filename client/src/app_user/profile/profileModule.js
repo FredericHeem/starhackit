@@ -13,7 +13,7 @@ export default function(context) {
   function Routes(stores) {
     return [
       {
-        path: "/profile",
+        path: "",
         protected: true,
         action: routerContext => {
           stores.profile.get();

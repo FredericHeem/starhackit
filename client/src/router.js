@@ -5,9 +5,23 @@ import { parse } from "qs";
 import asyncView from "components/AsyncView";
 import ErrorBoundary from "components/ErrorBoundary";
 
+export function createPart({name, context, partCreate, routerContext}) {
+  console.log("createPart ", name);
+  if(context.parts[name]){
+    console.error(`part ${name} already exist`)
+    return
+  }
+  
+  const part = partCreate.default(context);
+  context.parts[name] = part;
+  routerContext.route.children = part.routes();
+  return routerContext.next();
+}
+
 export default ({ context, routes, layout }) => {
   const { tr, history, config } = context;
   const router = new Router(routes);
+  router.createPart = createPart;
   const Layout = layout(context);
 
   const onRenderComplete = title => {

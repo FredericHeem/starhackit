@@ -3,7 +3,6 @@ import App from "../app";
 import layout from "./layout";
 import createRoutes from "./routes";
 import AuthModule from "parts/auth/authModule";
-import ProfileModule from "./profile/profileModule";
 
 export default async() => {
   const context = await Context({
@@ -15,7 +14,6 @@ export default async() => {
   });
 
   const parts = {
-    profile: ProfileModule(context),
     auth: AuthModule(context),
   };
 

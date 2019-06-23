@@ -10,6 +10,7 @@ const webpackProdConfig = {
   overrides: {
     mode: "production",
     entry: {
+      micro: ["./src/app_micro/index.js"],
       public: ["./src/app_public/index.js"],
       user: ["./src/app_user/index.js"],
       admin: ["./src/app_admin/index.js"]

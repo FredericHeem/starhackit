@@ -21,7 +21,8 @@ module.exports = function(options) {
           rewrites: [
             { from: /^\/$/, to: '/index.html' },
             { from: /^\/user/, to: '/user/index.html' },
-            { from: /^\/admin/, to: '/admin/index.html' }
+            { from: /^\/admin/, to: '/admin/index.html' },
+            { from: /^\/public/, to: '/public/index.html' }
           ]
         },
         stats: "minimal",
@@ -39,9 +40,18 @@ module.exports = function(options) {
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
+          inject: false,
+          chunks: ['micro'],
+          description: pkg.description,
+          filename: 'index.html'
+        }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
           chunks: ['public'],
           inject: false,
-          description: pkg.description
+          description: pkg.description,
+          filename: 'public/index.html'
         }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
@@ -58,6 +68,7 @@ module.exports = function(options) {
           chunks: ['admin'],
           filename: 'admin/index.html'
         }),
+        
         new webpack.DefinePlugin({
           __VERSION__: JSON.stringify(process.env.BUILD_VERSION || pkg.version)
         }),

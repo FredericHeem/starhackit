@@ -9,7 +9,7 @@ import I18n from "utils/i18n";
 
 import rootConfig from "./config";
 
-export default async option => {
+export default async (option = {}) => {
   const config = { ...rootConfig, ...option.config };
   const context = {
     palette: palette(),

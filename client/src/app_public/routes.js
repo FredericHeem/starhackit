@@ -4,7 +4,7 @@ import {createPart} from "../router"
 
 export default ({context}) => [
   {
-    path: "/",
+    path: "/public",
     children: [
       {
         path: "",

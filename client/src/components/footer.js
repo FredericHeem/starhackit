@@ -7,7 +7,7 @@ export default ({ tr, palette }) => {
     textAlign: "center",
     background: palette.primaryLight
   }));
-  return function Footer({ version }) {
+  return function Footer({  }) {
     return (
       <FooterView>
         <div>
@@ -25,7 +25,7 @@ export default ({ tr, palette }) => {
             {tr.t("GitHub")}
           </a>
         </div>
-        <div>{version}</div>
+        <div>{__VERSION__} </div>
       </FooterView>
     );
   };

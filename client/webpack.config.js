@@ -70,7 +70,7 @@ module.exports = function(options) {
         }),
         
         new webpack.DefinePlugin({
-          __VERSION__: JSON.stringify(process.env.BUILD_VERSION || pkg.version)
+          __VERSION__: JSON.stringify(pkg.version)
         }),
         new CopyWebpackPlugin([
           { from: "./src/favicon.ico" },

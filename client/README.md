@@ -38,7 +38,6 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm start`    | Start a development web server  |
 | `npm test`     |  Run the unit tests with Karma |
 | `npm run test:watch` |  Watch the code and run the unit test |
-| `npm run selenium-install`  |  Intall the Selenium driver for end to end testing |
 | `npm run e2e`  |  Run the end to end tests with Nigthwatch/Selenium |
 | `npm run build`| Create a production build  |
 | `npm run start:prod`| start a web server to serve the production build  |
@@ -78,7 +77,6 @@ Unit tests are written as `mocha` test and executed thanks to `karma`:
 
 To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
 
-    $ npm run selenium-install
     $ npm run e2e
 
 The end to end tests are executed by [nightwatch](http://nightwatchjs.org/) which uses the *Selenium* driver API.

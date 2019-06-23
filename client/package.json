@@ -16,7 +16,6 @@
     "clean": "rimraf dist coverage",
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
     "test:watch": "karma start --auto-watch --no-single-run karma.conf.js",
-    "selenium-install": "webdriver-manager update",
     "e2e": "npm run nightwatch",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
     "docker:build": "npm run build && docker build -t starhackit/ui .",

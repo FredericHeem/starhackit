@@ -28,7 +28,7 @@ export default ({ context, routes, layout }) => {
   const resolveRoute = async () => {
     try {
       return await router.resolve({
-        pathname: location.pathname,
+        pathname: location.pathname.replace(config.base, ''),
         query: parse(location.search)
       });
     } catch (error) {

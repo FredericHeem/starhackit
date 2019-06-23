@@ -2,7 +2,7 @@ import {createPart} from "../router"
 
 export default ({context}) => [
   {
-    path: "/admin",
+    path: "",
     children: [
       {
         path: "/auth",

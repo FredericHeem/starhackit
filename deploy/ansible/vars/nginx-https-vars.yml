@@ -21,9 +21,14 @@ nginx_sites:
          break;
        }
      - location / {
-         try_files $uri /index.html;
+         try_files $uri /public/index.html;
        }
-
+     - location /user {
+         try_files $uri /user/index.html;
+       }
+     - location /admin {
+         try_files $uri /user/index.html;
+       }
      - ssl_certificate      /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
      - ssl_certificate_key  /etc/letsencrypt/live/{{ server_name }}/privkey.pem
   http:

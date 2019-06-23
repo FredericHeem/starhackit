@@ -6,7 +6,7 @@ import layout from "./Layout";
 export default async () => {
   const context = await Context({
     config: {
-      title: "Starhackit"
+      base: "/public"
     }
   });
 

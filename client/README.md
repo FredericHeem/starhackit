@@ -104,7 +104,6 @@ The [i18next](http://i18next.com/) provides internationalization support for thi
 Here are the i18next plugins configured in [src/app/utils/i18n.js](src/app/utils/i18n.js):
 
 * [i18next-browser-languagedetector](https://github.com/i18next/i18next-browser-languageDetector): language detector used in browser environment for i18next
-* [i18next-localstorage-cache](https://github.com/i18next/i18next-localStorage-cache): caching layer for i18next using browsers localStorage
 * [i18next-xhr-backend](https://github.com/i18next/i18next-xhr-backend): backend layer for i18next using browsers xhr
 
 The translation files are located in [locales](locales) directory.
@@ -119,58 +118,81 @@ To build the production version:
 
 ```
 Version: webpack 4.28.4
-Time: 16929ms
-Built at: 06/19/2019 6:26:27 PM
-                            Asset       Size  Chunks                    Chunk Names
-       10.39137f272569846297d4.js   23.5 KiB      10  [emitted]         
-    10.39137f272569846297d4.js.gz   3.99 KiB          [emitted]         
-       11.39137f272569846297d4.js  428 bytes      11  [emitted]         
-    11.39137f272569846297d4.js.gz  280 bytes          [emitted]         
-       12.39137f272569846297d4.js   1.71 KiB      12  [emitted]         
-    12.39137f272569846297d4.js.gz  771 bytes          [emitted]         
-       13.39137f272569846297d4.js   81 bytes      13  [emitted]         
-        3.39137f272569846297d4.js   11.8 KiB       3  [emitted]         
-     3.39137f272569846297d4.js.gz   3.76 KiB          [emitted]         
-        4.39137f272569846297d4.js    276 KiB       4  [emitted]  [big]  
-     4.39137f272569846297d4.js.gz    168 KiB          [emitted]         
-        5.39137f272569846297d4.js   4.99 KiB       5  [emitted]         
-     5.39137f272569846297d4.js.gz   2.38 KiB          [emitted]         
-        6.39137f272569846297d4.js   5.47 KiB       6  [emitted]         
-     6.39137f272569846297d4.js.gz   2.54 KiB          [emitted]         
-        7.39137f272569846297d4.js   1.73 KiB       7  [emitted]         
-     7.39137f272569846297d4.js.gz  767 bytes          [emitted]         
-        8.39137f272569846297d4.js   39.5 KiB       8  [emitted]         
-     8.39137f272569846297d4.js.gz   13.3 KiB          [emitted]         
-        9.39137f272569846297d4.js   3.77 KiB       9  [emitted]         
-     9.39137f272569846297d4.js.gz    1.1 KiB          [emitted]         
-    admin.39137f272569846297d4.js    372 KiB       0  [emitted]  [big]  admin
- admin.39137f272569846297d4.js.gz    115 KiB          [emitted]         
-                        admin.css  647 bytes       0  [emitted]         admin
-                     admin.css.gz  262 bytes          [emitted]         
-                 admin/index.html   2.21 KiB          [emitted]         
-              admin/index.html.gz  870 bytes          [emitted]         
-                      favicon.ico   1.12 KiB          [emitted]         
-                   favicon.ico.gz  220 bytes          [emitted]         
-                       index.html   2.32 KiB          [emitted]         
-                    index.html.gz  937 bytes          [emitted]         
-           locales/en/common.json  410 bytes          [emitted]         
-        locales/en/common.json.gz  200 bytes          [emitted]         
-           locales/fr/common.json  314 bytes          [emitted]         
-        locales/fr/common.json.gz  207 bytes          [emitted]         
-           locales/it/common.json  175 bytes          [emitted]         
-        locales/it/common.json.gz  138 bytes          [emitted]         
-   public.39137f272569846297d4.js    334 KiB       1  [emitted]  [big]  public
-public.39137f272569846297d4.js.gz    106 KiB          [emitted]         
-                       public.css   39 bytes       1  [emitted]         public
-     user.39137f272569846297d4.js    334 KiB       2  [emitted]  [big]  user
-  user.39137f272569846297d4.js.gz    106 KiB          [emitted]         
-                         user.css   39 bytes       2  [emitted]         user
-                  user/index.html   2.31 KiB          [emitted]         
-               user/index.html.gz  935 bytes          [emitted]         
-Entrypoint public [big] = public.css public.39137f272569846297d4.js
-Entrypoint user [big] = user.css user.39137f272569846297d4.js
-Entrypoint admin [big] = admin.css admin.39137f272569846297d4.js
-  
+Time: 19061ms
+Built at: 06/23/2019 12:31:27 PM
+                            Asset       Size      Chunks                    Chunk Names
+        0.3c19d7ce083a08f254a6.js   14.5 KiB           0  [emitted]         
+     0.3c19d7ce083a08f254a6.js.gz   5.03 KiB              [emitted]         
+        1.3c19d7ce083a08f254a6.js   7.56 KiB           1  [emitted]         
+     1.3c19d7ce083a08f254a6.js.gz   2.25 KiB              [emitted]         
+       10.3c19d7ce083a08f254a6.js   6.48 KiB  10, 13, 14  [emitted]         
+    10.3c19d7ce083a08f254a6.js.gz   2.34 KiB              [emitted]         
+       11.3c19d7ce083a08f254a6.js   7.73 KiB          11  [emitted]         
+    11.3c19d7ce083a08f254a6.js.gz   3.38 KiB              [emitted]         
+       12.3c19d7ce083a08f254a6.js   8.09 KiB          12  [emitted]         
+    12.3c19d7ce083a08f254a6.js.gz   3.45 KiB              [emitted]         
+       13.3c19d7ce083a08f254a6.js   6.33 KiB      13, 14  [emitted]         
+    13.3c19d7ce083a08f254a6.js.gz   2.29 KiB              [emitted]         
+       14.3c19d7ce083a08f254a6.js   6.01 KiB          14  [emitted]         
+    14.3c19d7ce083a08f254a6.js.gz   2.21 KiB              [emitted]         
+       15.3c19d7ce083a08f254a6.js   4.37 KiB          15  [emitted]         
+    15.3c19d7ce083a08f254a6.js.gz   1.72 KiB              [emitted]         
+       16.3c19d7ce083a08f254a6.js   4.29 KiB          16  [emitted]         
+    16.3c19d7ce083a08f254a6.js.gz   1.63 KiB              [emitted]         
+       17.3c19d7ce083a08f254a6.js   6.55 KiB          17  [emitted]         
+    17.3c19d7ce083a08f254a6.js.gz   2.05 KiB              [emitted]         
+       18.3c19d7ce083a08f254a6.js   39.5 KiB          18  [emitted]         
+    18.3c19d7ce083a08f254a6.js.gz   13.3 KiB              [emitted]         
+       19.3c19d7ce083a08f254a6.js   23.5 KiB          19  [emitted]         
+    19.3c19d7ce083a08f254a6.js.gz   3.99 KiB              [emitted]         
+       20.3c19d7ce083a08f254a6.js  428 bytes          20  [emitted]         
+    20.3c19d7ce083a08f254a6.js.gz  281 bytes              [emitted]         
+       21.3c19d7ce083a08f254a6.js  717 bytes          21  [emitted]         
+    21.3c19d7ce083a08f254a6.js.gz  455 bytes              [emitted]         
+       22.3c19d7ce083a08f254a6.js   81 bytes          22  [emitted]         
+        6.3c19d7ce083a08f254a6.js   35.2 KiB           6  [emitted]         
+     6.3c19d7ce083a08f254a6.js.gz   8.93 KiB              [emitted]         
+                            6.css  608 bytes           6  [emitted]         
+                         6.css.gz  248 bytes              [emitted]         
+        7.3c19d7ce083a08f254a6.js    238 KiB           7  [emitted]         
+     7.3c19d7ce083a08f254a6.js.gz    146 KiB              [emitted]         
+        8.3c19d7ce083a08f254a6.js   7.67 KiB           8  [emitted]         
+     8.3c19d7ce083a08f254a6.js.gz   2.86 KiB              [emitted]         
+        9.3c19d7ce083a08f254a6.js   9.54 KiB           9  [emitted]         
+     9.3c19d7ce083a08f254a6.js.gz   3.31 KiB              [emitted]         
+    admin.3c19d7ce083a08f254a6.js    300 KiB           2  [emitted]  [big]  admin
+ admin.3c19d7ce083a08f254a6.js.gz   95.1 KiB              [emitted]         
+                        admin.css   39 bytes           2  [emitted]         admin
+                 admin/index.html   2.21 KiB              [emitted]         
+              admin/index.html.gz  868 bytes              [emitted]         
+                      favicon.ico   1.12 KiB              [emitted]         
+                   favicon.ico.gz  220 bytes              [emitted]         
+                       index.html   2.31 KiB              [emitted]         
+                    index.html.gz  933 bytes              [emitted]         
+           locales/en/common.json  410 bytes              [emitted]         
+        locales/en/common.json.gz  200 bytes              [emitted]         
+           locales/fr/common.json  314 bytes              [emitted]         
+        locales/fr/common.json.gz  207 bytes              [emitted]         
+           locales/it/common.json  175 bytes              [emitted]         
+        locales/it/common.json.gz  138 bytes              [emitted]         
+    micro.3c19d7ce083a08f254a6.js    291 KiB           3  [emitted]  [big]  micro
+ micro.3c19d7ce083a08f254a6.js.gz   92.1 KiB              [emitted]         
+                        micro.css   39 bytes           3  [emitted]         micro
+   public.3c19d7ce083a08f254a6.js    300 KiB           4  [emitted]  [big]  public
+public.3c19d7ce083a08f254a6.js.gz     95 KiB              [emitted]         
+                       public.css   39 bytes           4  [emitted]         public
+                public/index.html   2.32 KiB              [emitted]         
+             public/index.html.gz  935 bytes              [emitted]         
+     user.3c19d7ce083a08f254a6.js    299 KiB           5  [emitted]  [big]  user
+  user.3c19d7ce083a08f254a6.js.gz   94.8 KiB              [emitted]         
+                         user.css   39 bytes           5  [emitted]         user
+                  user/index.html   2.31 KiB              [emitted]         
+               user/index.html.gz  933 bytes              [emitted]         
+Entrypoint micro [big] = micro.css micro.3c19d7ce083a08f254a6.js
+Entrypoint public [big] = public.css public.3c19d7ce083a08f254a6.js
+Entrypoint user [big] = user.css user.3c19d7ce083a08f254a6.js
+Entrypoint admin [big] = admin.css admin.3c19d7ce083a08f254a6.js
+
 
 ```
 

@@ -8,17 +8,12 @@ const { expect, assert } = chai;
 describe("Router", async function() {
   const { router, context } = await UserApp();
   it("/login", async () => {
-    // console.log("CONTEXT ", context);
-    const route = await router.instance.resolve("/user/auth/login");
+    const route = await router.instance.resolve("/auth/login");
     assert(route);
+    assert(route.component)
     assert.equal(route.title, "Login");
   });
   it("/app/profile not authenticated", async () => {
     expect(router.instance.resolve("/profile")).to.be.rejectedWith(Error);
-  });
-  it.skip("/app/profile authenticated", async () => {
-    context.parts.auth.stores().auth.authenticated = true;
-    const route = await router.instance.resolve("/profile");
-    assert.equal(route.title, "My Profile");
   });
 });

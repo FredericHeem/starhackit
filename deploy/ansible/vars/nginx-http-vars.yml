@@ -27,7 +27,7 @@ nginx_sites:
          try_files $uri /user/index.html;
        }
      - location /admin {
-         try_files $uri /user/index.html;
+         try_files $uri /admin/index.html;
        }
 # A list of hashs that define additional configuration
 nginx_configs:

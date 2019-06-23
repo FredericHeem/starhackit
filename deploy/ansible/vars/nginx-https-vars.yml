@@ -27,7 +27,7 @@ nginx_sites:
          try_files $uri /user/index.html;
        }
      - location /admin {
-         try_files $uri /user/index.html;
+         try_files $uri /admin/index.html;
        }
      - ssl_certificate      /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
      - ssl_certificate_key  /etc/letsencrypt/live/{{ server_name }}/privkey.pem

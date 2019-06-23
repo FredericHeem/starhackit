@@ -6,8 +6,6 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-//const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-
 const pkg = require("./package.json");
 
 module.exports = function(options) {
@@ -19,7 +17,14 @@ module.exports = function(options) {
         publicPath: "/",
         hot: true,
         inline: true,
-        historyApiFallback: true,
+        historyApiFallback: {
+          rewrites: [
+            { from: /^\/$/, to: '/index.html' },
+            { from: /^\/user/, to: '/user/index.html' },
+            { from: /^\/admin/, to: '/admin/index.html' },
+            { from: /^\/public/, to: '/public/index.html' }
+          ]
+        },
         stats: "minimal",
         proxy: {
           "/api/v1/*": "http://localhost:9000"
@@ -28,16 +33,44 @@ module.exports = function(options) {
         port: 8080
       },
       entry: {},
-      output: {},
+      output: {
+        publicPath: "/"
+      },
       plugins: [
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
           inject: false,
+          chunks: ['micro'],
+          description: pkg.description,
+          filename: 'index.html'
+        }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          chunks: ['public'],
+          inject: false,
+          description: pkg.description,
+          filename: 'public/index.html'
+        }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          chunks: ['user'],
+          inject: false,
+          filename: 'user/index.html',
           description: pkg.description
         }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          inject: false,
+          chunks: ['admin'],
+          filename: 'admin/index.html'
+        }),
+        
         new webpack.DefinePlugin({
-          __VERSION__: JSON.stringify(pkg.version)
+          __VERSION__: JSON.stringify(process.env.BUILD_VERSION || pkg.version)
         }),
         new CopyWebpackPlugin([
           { from: "./src/favicon.ico" },
@@ -47,31 +80,18 @@ module.exports = function(options) {
           filename: "[name].css",
           chunkFilename: "[id].css"
         })
-        /*
-            new LodashModuleReplacementPlugin({
-              cloning: true,
-              collections: true,
-              paths: true
-            }),
-
-            */
       ],
       resolve: {
-        modules: ["src/app", "node_modules"],
+        modules: ["src", "node_modules"],
         extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
         alias: {
-          "src/app": path.resolve('./src/app'),
-          react: "preact-compat",
-          "react-dom": "preact-compat",
-          "mobx-react": "mobx-preact",
-          "create-react-class": "preact-compat/lib/create-react-class",
-          glamorous: "glamorous/dist/glamorous.esm.tiny.js"
+          "src": path.resolve('./src')
         }
       },
       module: {
         rules: [
           {
-            test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+            test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
             use: ["url-loader"]
           },
           {

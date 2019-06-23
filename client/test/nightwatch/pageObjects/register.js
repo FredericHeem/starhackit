@@ -5,7 +5,7 @@ var commands = {
 module.exports = {
     commands: [commands],
     url: function () {
-        return this.api.launchUrl + '/register';
+        return this.api.launchUrl + '/auth/register';
     },
     elements: {
         emailInput: {

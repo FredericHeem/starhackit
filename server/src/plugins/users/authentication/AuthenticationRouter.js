@@ -93,19 +93,19 @@ export default function AuthenticationRouter(app){
   // Facebook Auth from web
   router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
   router.get('/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/login'}));
+  passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : "back"}));
   // Facebook Auth from mobile
   router.post('/login_facebook', authHttpController.loginFacebook);
 
   //Google
   router.get('/google', passport.authenticate('google', { scope: ["email", "profile"] }));
   router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login', successRedirect : '/login'}));
+  passport.authenticate('google', { failureRedirect: '/login', successRedirect : "back"}));
   router.post('/login_google', authHttpController.loginGoogle);
 
   router.get('/fidor', passport.authenticate('fidor', { scope: ['email'] }));
   router.get('/fidor/callback',
-      passport.authenticate('fidor', { failureRedirect: '/login', successRedirect : '/login'}));
+      passport.authenticate('fidor', { failureRedirect: '/login', successRedirect : "back"}));
 
   app.server.baseRouter().mount('auth', router);
 

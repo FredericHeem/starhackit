@@ -2,7 +2,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const CompressionPlugin = require("compression-webpack-plugin");
-const CleanPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -10,7 +10,10 @@ const webpackProdConfig = {
   overrides: {
     mode: "production",
     entry: {
-      app: ["./src/index.js"]
+      micro: ["./src/app_micro/index.js"],
+      public: ["./src/app_public/index.js"],
+      user: ["./src/app_user/index.js"],
+      admin: ["./src/app_admin/index.js"]
     },
     output: {
       path: path.join(__dirname, "dist"),
@@ -19,7 +22,7 @@ const webpackProdConfig = {
   },
 
   plugins: [
-    new CleanPlugin(["./dist"]),
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || "production")

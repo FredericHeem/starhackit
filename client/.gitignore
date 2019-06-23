@@ -11,3 +11,4 @@ build
 
 deploy/keys
 selenium-debug.log
+chromedriver.log

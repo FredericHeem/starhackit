@@ -1,10 +1,10 @@
 # StarHackIt React Frontend
 
-A functional Preact/React based frontend starter kit:
+A functional React based frontend starter kit:
 
-* `preact` or `react` for pure view layer, 100% stateless compoment.  
+* `react` for pure view layer, 100% stateless compoment.  
 * `mobx` for state management.
-* `glamorous` for real-time styling.
+* `emotion` for real-time styling.
 * `universal-router` for the routing solution: code split, data fetching. 
 * Internationalization with `i18next`
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
@@ -38,7 +38,6 @@ These are the main *npm* commands for a normal developer workflow:
 | `npm start`    | Start a development web server  |
 | `npm test`     |  Run the unit tests with Karma |
 | `npm run test:watch` |  Watch the code and run the unit test |
-| `npm run selenium-install`  |  Intall the Selenium driver for end to end testing |
 | `npm run e2e`  |  Run the end to end tests with Nigthwatch/Selenium |
 | `npm run build`| Create a production build  |
 | `npm run start:prod`| start a web server to serve the production build  |
@@ -78,7 +77,6 @@ Unit tests are written as `mocha` test and executed thanks to `karma`:
 
 To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
 
-    $ npm run selenium-install
     $ npm run e2e
 
 The end to end tests are executed by [nightwatch](http://nightwatchjs.org/) which uses the *Selenium* driver API.
@@ -106,7 +104,6 @@ The [i18next](http://i18next.com/) provides internationalization support for thi
 Here are the i18next plugins configured in [src/app/utils/i18n.js](src/app/utils/i18n.js):
 
 * [i18next-browser-languagedetector](https://github.com/i18next/i18next-browser-languageDetector): language detector used in browser environment for i18next
-* [i18next-localstorage-cache](https://github.com/i18next/i18next-localStorage-cache): caching layer for i18next using browsers localStorage
 * [i18next-xhr-backend](https://github.com/i18next/i18next-xhr-backend): backend layer for i18next using browsers xhr
 
 The translation files are located in [locales](locales) directory.
@@ -120,42 +117,82 @@ To build the production version:
 *webpack* will produce a report with all the assets and their respective size.
 
 ```
-Hash: fcc48ad427c813ae63bd                                                              
-Version: webpack 4.4.1
-Time: 4593ms
-Built at: 2018-4-2 18:33:11
-                         Asset       Size  Chunks                    Chunk Names
-    14.fcc48ad427c813ae63bd.js    283 KiB      14  [emitted]  [big]  
-     0.fcc48ad427c813ae63bd.js   9.38 KiB       0  [emitted]         
-                         2.css  608 bytes       2  [emitted]         
-     2.fcc48ad427c813ae63bd.js   24.9 KiB       2  [emitted]         
-     3.fcc48ad427c813ae63bd.js     68 KiB       3  [emitted]         
-     4.fcc48ad427c813ae63bd.js   88.6 KiB       4  [emitted]         
-     5.fcc48ad427c813ae63bd.js      2 KiB       5  [emitted]         
-     6.fcc48ad427c813ae63bd.js   4.87 KiB       6  [emitted]         
-     7.fcc48ad427c813ae63bd.js   4.47 KiB       7  [emitted]         
-     8.fcc48ad427c813ae63bd.js   4.69 KiB       8  [emitted]         
-     9.fcc48ad427c813ae63bd.js   23.5 KiB       9  [emitted]         
-    10.fcc48ad427c813ae63bd.js   81 bytes      10  [emitted]         
-    11.fcc48ad427c813ae63bd.js   2.95 KiB      11  [emitted]         
-    12.fcc48ad427c813ae63bd.js   8.11 KiB      12  [emitted]         
-    13.fcc48ad427c813ae63bd.js      6 KiB      13  [emitted]         
-     1.fcc48ad427c813ae63bd.js   39.4 KiB       1  [emitted]         
-    15.fcc48ad427c813ae63bd.js  662 bytes      15  [emitted]         
-                       app.css   39 bytes      16  [emitted]         app
-   app.fcc48ad427c813ae63bd.js    313 KiB      16  [emitted]  [big]  app
-                    index.html   3.05 KiB          [emitted]         
-                   favicon.ico   1.12 KiB          [emitted]         
-        locales/en/common.json  410 bytes          [emitted]         
-        locales/fr/common.json  314 bytes          [emitted]         
-        locales/it/common.json  175 bytes          [emitted]         
-  2.fcc48ad427c813ae63bd.js.gz   5.89 KiB          [emitted]         
-  9.fcc48ad427c813ae63bd.js.gz   3.99 KiB          [emitted]         
-  1.fcc48ad427c813ae63bd.js.gz   13.3 KiB          [emitted]         
-  3.fcc48ad427c813ae63bd.js.gz   16.9 KiB          [emitted]         
-  4.fcc48ad427c813ae63bd.js.gz   28.4 KiB          [emitted]         
- 14.fcc48ad427c813ae63bd.js.gz    172 KiB          [emitted]         
-app.fcc48ad427c813ae63bd.js.gz   92.2 KiB          [emitted]        
+Version: webpack 4.28.4
+Time: 19061ms
+Built at: 06/23/2019 12:31:27 PM
+                            Asset       Size      Chunks                    Chunk Names
+        0.3c19d7ce083a08f254a6.js   14.5 KiB           0  [emitted]         
+     0.3c19d7ce083a08f254a6.js.gz   5.03 KiB              [emitted]         
+        1.3c19d7ce083a08f254a6.js   7.56 KiB           1  [emitted]         
+     1.3c19d7ce083a08f254a6.js.gz   2.25 KiB              [emitted]         
+       10.3c19d7ce083a08f254a6.js   6.48 KiB  10, 13, 14  [emitted]         
+    10.3c19d7ce083a08f254a6.js.gz   2.34 KiB              [emitted]         
+       11.3c19d7ce083a08f254a6.js   7.73 KiB          11  [emitted]         
+    11.3c19d7ce083a08f254a6.js.gz   3.38 KiB              [emitted]         
+       12.3c19d7ce083a08f254a6.js   8.09 KiB          12  [emitted]         
+    12.3c19d7ce083a08f254a6.js.gz   3.45 KiB              [emitted]         
+       13.3c19d7ce083a08f254a6.js   6.33 KiB      13, 14  [emitted]         
+    13.3c19d7ce083a08f254a6.js.gz   2.29 KiB              [emitted]         
+       14.3c19d7ce083a08f254a6.js   6.01 KiB          14  [emitted]         
+    14.3c19d7ce083a08f254a6.js.gz   2.21 KiB              [emitted]         
+       15.3c19d7ce083a08f254a6.js   4.37 KiB          15  [emitted]         
+    15.3c19d7ce083a08f254a6.js.gz   1.72 KiB              [emitted]         
+       16.3c19d7ce083a08f254a6.js   4.29 KiB          16  [emitted]         
+    16.3c19d7ce083a08f254a6.js.gz   1.63 KiB              [emitted]         
+       17.3c19d7ce083a08f254a6.js   6.55 KiB          17  [emitted]         
+    17.3c19d7ce083a08f254a6.js.gz   2.05 KiB              [emitted]         
+       18.3c19d7ce083a08f254a6.js   39.5 KiB          18  [emitted]         
+    18.3c19d7ce083a08f254a6.js.gz   13.3 KiB              [emitted]         
+       19.3c19d7ce083a08f254a6.js   23.5 KiB          19  [emitted]         
+    19.3c19d7ce083a08f254a6.js.gz   3.99 KiB              [emitted]         
+       20.3c19d7ce083a08f254a6.js  428 bytes          20  [emitted]         
+    20.3c19d7ce083a08f254a6.js.gz  281 bytes              [emitted]         
+       21.3c19d7ce083a08f254a6.js  717 bytes          21  [emitted]         
+    21.3c19d7ce083a08f254a6.js.gz  455 bytes              [emitted]         
+       22.3c19d7ce083a08f254a6.js   81 bytes          22  [emitted]         
+        6.3c19d7ce083a08f254a6.js   35.2 KiB           6  [emitted]         
+     6.3c19d7ce083a08f254a6.js.gz   8.93 KiB              [emitted]         
+                            6.css  608 bytes           6  [emitted]         
+                         6.css.gz  248 bytes              [emitted]         
+        7.3c19d7ce083a08f254a6.js    238 KiB           7  [emitted]         
+     7.3c19d7ce083a08f254a6.js.gz    146 KiB              [emitted]         
+        8.3c19d7ce083a08f254a6.js   7.67 KiB           8  [emitted]         
+     8.3c19d7ce083a08f254a6.js.gz   2.86 KiB              [emitted]         
+        9.3c19d7ce083a08f254a6.js   9.54 KiB           9  [emitted]         
+     9.3c19d7ce083a08f254a6.js.gz   3.31 KiB              [emitted]         
+    admin.3c19d7ce083a08f254a6.js    300 KiB           2  [emitted]  [big]  admin
+ admin.3c19d7ce083a08f254a6.js.gz   95.1 KiB              [emitted]         
+                        admin.css   39 bytes           2  [emitted]         admin
+                 admin/index.html   2.21 KiB              [emitted]         
+              admin/index.html.gz  868 bytes              [emitted]         
+                      favicon.ico   1.12 KiB              [emitted]         
+                   favicon.ico.gz  220 bytes              [emitted]         
+                       index.html   2.31 KiB              [emitted]         
+                    index.html.gz  933 bytes              [emitted]         
+           locales/en/common.json  410 bytes              [emitted]         
+        locales/en/common.json.gz  200 bytes              [emitted]         
+           locales/fr/common.json  314 bytes              [emitted]         
+        locales/fr/common.json.gz  207 bytes              [emitted]         
+           locales/it/common.json  175 bytes              [emitted]         
+        locales/it/common.json.gz  138 bytes              [emitted]         
+    micro.3c19d7ce083a08f254a6.js    291 KiB           3  [emitted]  [big]  micro
+ micro.3c19d7ce083a08f254a6.js.gz   92.1 KiB              [emitted]         
+                        micro.css   39 bytes           3  [emitted]         micro
+   public.3c19d7ce083a08f254a6.js    300 KiB           4  [emitted]  [big]  public
+public.3c19d7ce083a08f254a6.js.gz     95 KiB              [emitted]         
+                       public.css   39 bytes           4  [emitted]         public
+                public/index.html   2.32 KiB              [emitted]         
+             public/index.html.gz  935 bytes              [emitted]         
+     user.3c19d7ce083a08f254a6.js    299 KiB           5  [emitted]  [big]  user
+  user.3c19d7ce083a08f254a6.js.gz   94.8 KiB              [emitted]         
+                         user.css   39 bytes           5  [emitted]         user
+                  user/index.html   2.31 KiB              [emitted]         
+               user/index.html.gz  933 bytes              [emitted]         
+Entrypoint micro [big] = micro.css micro.3c19d7ce083a08f254a6.js
+Entrypoint public [big] = public.css public.3c19d7ce083a08f254a6.js
+Entrypoint user [big] = user.css user.3c19d7ce083a08f254a6.js
+Entrypoint admin [big] = admin.css admin.3c19d7ce083a08f254a6.js
+
 
 ```
 

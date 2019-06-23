@@ -1,28 +1,51 @@
 /*eslint-env node */
+process.env.CHROME_BIN = require("puppeteer").executablePath();
+
 const _ = require("lodash");
 const path = require("path");
 const webpackConfig = require("./webpack.dev");
-const webpackConfigProd = require("./webpack.prod");
 
 webpackConfig.devtool = "cheap-module-source-map";
 module.exports = function(config) {
-
   const configuration = {
-    browsers: ["Chrome"], // ['Chrome'] run in Chrome, 'PhantomJS'
+    browsers: ["Chrome_without_security"],
+    customLaunchers: {
+      Chrome_without_security: {
+        base: "ChromeHeadless",
+        flags: [
+          "--headless",
+          "--ignore-certificate-errors",
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--window-size=1920,1080",
+          "--disable-accelerated-2d-canvas",
+          "--disable-dev-shm-usage",
+          "--disable-gpu"
+        ]
+      },
+      Chrome_travis_ci: {
+        base: "Chrome",
+        flags: ["--no-sandbox"]
+      }
+    },
     singleRun: true,
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ["mocha", "sinon"],
-    files: ["src/**/*.spec.js"],
+    files: ["src/**/*.spec.{js,jsx,ts,tsx}"],
     preprocessors: {
       "src/**/*.js": ["webpack", "sourcemap"]
     },
-    reporters: ["mocha", "coverage"],
+    reporters: ["mocha", "coverage", "junit"],
+    junitReporter: {
+      outputDir: "coverage",
+      outputFile: "test-results.xml"
+    },
     webpack: {
       mode: "development",
       module: {
         rules: [
           {
-            test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=\.]+)?$/,
+            test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
             use: ["url-loader"]
           },
           {
@@ -58,12 +81,6 @@ module.exports = function(config) {
           dir: "coverage/"
         }
       ]
-    },
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: "Chrome",
-        flags: ["--no-sandbox"]
-      }
     }
   };
 

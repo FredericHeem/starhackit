@@ -44,7 +44,7 @@
 
 #Frontend
 - name: Copy client config
-  template: src=config.js.j2 dest={{ api_dir }}/client/src/app/config.js
+  template: src=config.js.j2 dest={{ api_dir }}/client/src/config.js
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   tags: [fe]

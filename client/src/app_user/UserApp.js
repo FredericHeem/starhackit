@@ -1,6 +1,6 @@
 import Context from "../context";
 import App from "../app";
-import layout from "./layout";
+import layout from "./Layout";
 import createRoutes from "./routes";
 
 export default async () => {

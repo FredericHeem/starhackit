@@ -12,7 +12,7 @@
     "lint": "tslint -c tslint.json './src/**/*.{js,jsx,ts,tsx}'",
     "cpd": "jscpd",
     "prebuild": "npm run lint && npm run cpd",
-    "build": "webpack --config webpack.prod.js --progress",
+    "build": "webpack --config webpack.prod.js",
     "clean": "rimraf dist coverage",
     "test": "karma start --single-run --no-auto-watch karma.conf.js",
     "test:watch": "karma start --auto-watch --no-single-run karma.conf.js",

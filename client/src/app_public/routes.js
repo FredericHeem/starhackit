@@ -33,7 +33,7 @@ export default ({context}) => [
           createPart({
             name: "hello",
             context,
-            partCreate: await import("parts/hello/hello"),
+            partCreate: await import("parts/hello/Hello"),
             routerContext
           })
       },

@@ -3,7 +3,7 @@ import {createPart} from "../router"
 
 export default ({ context }) => [
   {
-    path: "/user",
+    path: "",
     children: [
       {
         path: "/profile",

@@ -6,6 +6,7 @@ import createRoutes from "./routes";
 export default async () => {
   const context = await Context({
     config: {
+      base: "/user",
       routeAfterLogin: "/user/profile",
       defaultPath: "/user/profile",
       title: "Your Area"

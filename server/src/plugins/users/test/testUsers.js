@@ -49,14 +49,14 @@ describe('Users', function() {
       console.log(users);
     });
     it('should get all users with filter ASC', async () => {
-      let res = await client.get('v1/users?offset=1&order=ASC&limit=10');
-      assert.equal(res.data.length, 10);
+      let res = await client.get('v1/users?offset=1&order=ASC&limit=2');
+      assert.equal(res.data.length, 2);
       //console.log(res.data[0])
       assert(res.data[0].id);
     });
     it('should get all users with filter DESC', async () => {
-      let res = await client.get('v1/users?offset=10&limit=10');
-      assert.equal(res.data.length, 10);
+      let res = await client.get('v1/users?offset=10&limit=2');
+      assert.equal(res.data.length, 2);
     });
 
     it.skip('should not create a new user with missing username', async () => {

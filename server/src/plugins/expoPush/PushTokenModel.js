@@ -16,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   PushToken.associate = function(models) {
     PushToken.belongsTo(models.User, {
       as: "user",
+      onDelete: 'cascade',
       foreignKey: {
         name: "user_id",
         allowNull: false

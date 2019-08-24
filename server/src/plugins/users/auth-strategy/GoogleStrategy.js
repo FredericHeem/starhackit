@@ -1,4 +1,5 @@
 import { Strategy } from "passport-google-oauth20";
+import GoogleTokenStrategy from "passport-google-id-token";
 import {
   createRegisterMobile,
   createVerifyMobile,
@@ -77,8 +78,7 @@ export function registerWeb(passport, models, publisherUser) {
         const res = await verifyWeb(
           models,
           publisherUser,
-          profileWebToUser(profile._json),
-          accessToken
+          profileWebToUser(profile._json)
         );
         done(res.err, res.user);
       } catch (err) {
@@ -91,4 +91,36 @@ export function registerWeb(passport, models, publisherUser) {
 
 export function registerMobile(passport, models, publisherUser) {
   createRegisterMobile("google", verifyMobile, passport, models, publisherUser);
+
+  //const googleConfig = config.authentication.google;
+
+  // Standalone android
+  passport.use(
+    "google-id-token",
+    new GoogleTokenStrategy(
+      {
+      },
+      async (parsedToken, googleId, done) => {
+        log.debug(
+          `GoogleTokenStrategy: ${JSON.stringify(
+            parsedToken,
+            null,
+            4
+          )} ${googleId}`
+        );
+
+        try {
+          const res = await verifyWeb(
+            models,
+            publisherUser,
+            profileMobileToUser({ ...parsedToken.payload, id: googleId })
+          );
+          done(res.err, res.user);
+        } catch (err) {
+          log.error("GoogleTokenStrategy", err);
+          done(err);
+        }
+      }
+    )
+  );
 }

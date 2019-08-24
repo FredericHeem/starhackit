@@ -17,6 +17,19 @@ export default function MeRouter(app /*auth*/) {
           context.status = 200;
         }
       },
+      delete: {
+        pathname: "/",
+        method: "delete",
+        handler: async context => {
+          await models.User.destroy({
+            where: {
+              id: context.state.user.id
+            }
+          });
+          context.logout();
+          context.status = 204;
+        }
+      },
       patch: {
         pathname: "/",
         method: "patch",

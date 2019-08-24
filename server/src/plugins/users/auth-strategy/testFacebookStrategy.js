@@ -20,24 +20,22 @@ describe("FacebookStrategy", function() {
     await testMngr.stop();
   });
 
-  let accessToken = "123456789";
-  let chance = new Chance();
-
   it("create a new user, register it", async () => {
-    let res = await verifyWeb(models, null, profile, accessToken);
+    let res = await verifyWeb(models, null, profile);
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);
     assert(!res.user.password);
     //console.log("verify again")
-    res = await verifyWeb(models, null, profile, accessToken);
+    profile.first_name = "Justine";
+    res = await verifyWeb(models, null, profile);
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);
     assert(!res.user.password);
 
-    profile.id = chance.integer({ min: 1000000, max: 1000000000 }).toString();
-    res = await verifyWeb(models, null, profile, accessToken);
+    profile.id = require("uuid/v4")();
+    res = await verifyWeb(models, null, profile);
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);

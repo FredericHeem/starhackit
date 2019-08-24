@@ -9,6 +9,9 @@ import Store from './store/Store';
 import Server from './server/koa/koaServer';
 import * as HttpUtils from './utils/HttpUtils';
 
+// https://github.com/sequelize/sequelize/issues/3781
+import pg from "pg";
+delete pg.native;
 export default function App() {
 
   let data = Data(config);

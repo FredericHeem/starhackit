@@ -1,0 +1,19 @@
+---
+- name: Create pre hook to stop services
+  template:
+    src: stop_services.j2
+    dest: /etc/letsencrypt/renewal-hooks/pre/stop_services
+    owner: "{{ certbot_auto_renew_user }}"
+    group: "{{ certbot_auto_renew_user }}"
+    mode: 0750
+  when: certbot_create_standalone_stop_services is defined and certbot_create_standalone_stop_services
+
+- name: create post hook to start services
+  template:
+    src: start_services.j2
+    dest: /etc/letsencrypt/renewal-hooks/post/start_services
+    owner: "{{ certbot_auto_renew_user }}"
+    group: "{{ certbot_auto_renew_user }}"
+    mode: 0750
+  when: certbot_create_standalone_stop_services is defined and certbot_create_standalone_stop_services
+

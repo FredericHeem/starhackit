@@ -1,0 +1,15 @@
+#!/bin/bash
+# {{ ansible_managed }}
+
+{% for item in certbot_create_standalone_stop_services %}
+echo "starting service {{ item }}"
+{% if ansible_service_mgr == 'systemd' %}
+systemctl start {{ item }}
+{% elif ansible_service_mgr == 'upstart' %}
+initctl start {{ item }}
+{% elif ansible_service_mgr == 'openrc' %}
+rc-service {{ item }} start
+{% else %}
+service {{ item }} start
+{% endif %}
+{% endfor %}

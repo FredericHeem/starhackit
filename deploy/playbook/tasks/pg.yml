@@ -1,0 +1,19 @@
+---
+- name: docker run postgres {{database}}
+  docker_container:
+    name: "{{hostname}}"
+    image: postgres:10-alpine
+    state: started
+    exposed_ports:
+    - "5432"
+    env:
+      POSTGRES_USER: "{{username}}"
+      POSTGRES_PASSWORD: "{{password}}"
+      POSTGRES_DB: "{{database}}"
+    user: 0
+    volumes:
+    - /home/{{user}}/pg_data/{{database}}:/var/lib/postgresql/data:z
+    networks:
+    - name: net
+  tags:
+  - containers

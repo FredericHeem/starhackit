@@ -1,0 +1,4 @@
+- name: geerlingguy.pip
+- name: geerlingguy.docker
+- name: geerlingguy.certbot
+- name: geerlingguy.firewall

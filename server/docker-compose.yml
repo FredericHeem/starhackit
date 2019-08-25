@@ -15,3 +15,5 @@ services:
     image: smebberson/alpine-redis
     expose:
       - "6379"
+    ports:
+      - "7379:6379"

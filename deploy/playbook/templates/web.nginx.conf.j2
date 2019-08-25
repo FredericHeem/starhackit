@@ -1,0 +1,64 @@
+user nginx;
+worker_processes 1;
+daemon off;
+
+events {
+  worker_connections 1024;
+}
+
+error_log   /var/log/nginx/error.log warn;
+pid         /var/run/nginx.pid;
+
+http {
+
+  upstream api {
+    server api:9000;
+  }
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+  '$status $body_bytes_sent "$http_referer" '
+  '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log /var/log/nginx/access.log main;
+  sendfile on;
+  gzip on;
+
+  server {
+    listen 443 ssl;
+    server_name   {{domain_name}};
+    root /usr/html;
+    
+    index index.html;
+    location /api/ {
+        proxy_pass http://api;
+        break;
+        
+    }
+    location / {
+        try_files $uri /public/index.html;
+        
+    }
+    location /user {
+        try_files $uri /user/index.html;
+        
+    }
+    location /admin {
+        try_files $uri /admin/index.html;
+        
+    }
+    ssl_certificate      /etc/letsencrypt/live/starhack.it/fullchain.pem;
+    ssl_certificate_key  /etc/letsencrypt/live/starhack.it/privkey.pem;
+  }
+
+  server {
+    if ($host = {{domain_name}}) {
+      return 301 https://$host$request_uri;
+    }
+    listen 80;
+    server_name {{domain_name}};
+    return 404;
+  }
+}

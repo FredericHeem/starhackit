@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: False
+  become: True
+  vars:
+    certbot_auto_renew_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
+

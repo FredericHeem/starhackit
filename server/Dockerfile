@@ -24,6 +24,6 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-EXPOSE 4000
+EXPOSE 9000
 
 ENTRYPOINT ["npm", "run", "server"]

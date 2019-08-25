@@ -1,0 +1,30 @@
+---
+- name: Copy api.json config
+  template:
+    src: api.json.j2
+    dest: /home/{{user}}/api.json
+    owner: "{{user}}"
+    mode: '0600'
+
+- name: docker run api
+  docker_container:
+    name: api
+    pull: yes
+    image: "{{ api_image }}:{{ api_tag }}"
+    state: started
+    recreate: yes
+    volumes:
+    - /home/{{user}}/api.json:/app/config/production.json
+    published_ports:
+    - "9000:9000"
+    env:
+      NODE_ENV: "production"
+    entrypoint: sh scripts/initialise.sh
+    networks:
+    - name: net
+      links:
+      - postgres
+      - redis
+  tags:
+  - containers
+  - app

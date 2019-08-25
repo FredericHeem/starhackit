@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: True
+  gather_facts: False
+  roles:
+  - dependencies

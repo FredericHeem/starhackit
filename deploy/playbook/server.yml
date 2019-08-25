@@ -1,0 +1,52 @@
+---
+- hosts: all
+  become: True
+  vars_files:
+  - vars/certbot-vars.yml
+  roles:
+  - geerlingguy.pip
+  - geerlingguy.docker
+  - { role: geerlingguy.certbot, when: protocol == "https" }
+  - { role: certbot-renew-hooks, when: protocol == "https" }
+  - docker_config
+  - geerlingguy.firewall
+  tasks:
+  - name: Add the user docker
+    user:
+      name: "{{user}}"
+      shell: /bin/bash
+
+  - name: make docker directory
+    file:
+      path: /home/{{user}}/{{docker_directory}}
+      state: directory
+      owner: "{{user}}"
+
+  - name: Login to docker registry
+    docker_login:
+      username: "{{ docker_hub_username }}"
+      password: "{{ docker_hub_password }}"
+      email: "{{ docker_hub_email }}"
+
+  - name: make pg_data directory
+    file:
+      path: /home/{{user}}/pg_data/{{item}}
+      state: directory
+      owner: "{{user}}"
+      mode: 0777
+    with_nested:
+    - "{{db_database}}"
+
+  - name: Create a network
+    docker_network:
+      name: net
+    tags:
+    - containers
+
+  - include_tasks: tasks/redis.yml
+  - include_tasks: tasks/pg.yml
+    vars:
+      database: "{{db_database}}"
+      hostname: "{{db_hostname}}"
+      username: "{{db_username}}"
+      password: "{{db_password}}"

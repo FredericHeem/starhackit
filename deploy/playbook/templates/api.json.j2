@@ -1,0 +1,40 @@
+{
+  "jwtSecret": "{{jwt_secret}}",
+  "db": {
+    "url": "postgres://{{db_username}}:{{db_password}}@{{db_hostname}}:5432/{{db_database}}?sslmode=disable"
+  },
+  "redis":{
+    "url": "redis://redis:6379"
+  },
+  "log": {
+    "console": {
+      "level": "info",
+      "timestamp": true,
+      "colorize": true
+    }
+  },
+  "authentication":{
+    "facebook":{
+      "clientID": "{{facebook_client_id}}",
+      "clientSecret": "{{facebook_client_secret}}",
+      "callbackURL": "{{website_url}}/api/v1/auth/facebook/callback"
+    },
+    "google":{
+      "clientID": "{{google_client_id}}",
+      "clientSecret": "{{google_client_secret}}",
+      "callbackURL": "{{website_url}}/api/v1/auth/google/callback"
+    }
+  },
+  
+  "mail": {
+    "from": "{{mail_from}}",
+    "signature": "{{mail_signature}}",
+    "smtp": {
+      "service": "{{mail_service}}",
+      "auth": {
+        "user": "{{mail_user}}",
+        "pass": "{{mail_password}}"
+      }
+    }
+  }
+}

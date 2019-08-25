@@ -1,0 +1,38 @@
+---
+docker_users: ["docker"]
+home: /home/docker
+user: docker
+docker_directory: docker_data
+docker_install_compose: True
+postgres_directory: pg_data
+pip_install_packages:
+  - name: docker
+
+# Docker image tag names
+api_image: "fredericheem/api"
+api_tag: latest
+
+web_image: "fredericheem/ui"
+web_tag: latest
+
+firewall_state: started
+firewall_enabled_at_boot: true
+firewall_allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+
+# Database settings
+db_username: "docker"
+db_hostname: "pg"
+db_database: "prod"
+
+server_name: default
+protocol: "https"
+ssl_admin_email: "admin@starhack.it"
+production: "FALSE"
+network: "mainnet"
+
+mail_from: "StarHackIt <notification@starhack.it>"
+mail_signature: "The StarHackIt Team"
+mail_service: "Mailgun"

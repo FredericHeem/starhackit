@@ -2,7 +2,7 @@
   "websiteUrl": "http://localhost:8080",
   "log": {
     "console": {
-      "level": "info",
+      "level": "debug",
       "timestamp": true,
       "colorize": true
     }
@@ -21,17 +21,9 @@
     }
   },
   "db":{
-    "driver": "sqlite3",
-    "dialect":"sqlite",
-    "database": "dev",
-    "user": "user",
-    "password": "password",
-    "host": "localhost",
-    "port": "5432",
-    "logging": false,
-    "pool": {
-      "idle": 60000,
-      "max": 100
+    "url": "postgres://postgres:password@localhost:6432/dev?sslmode=disable",
+    "options": {
+      "logging": true
     }
   },
   "jwt": {

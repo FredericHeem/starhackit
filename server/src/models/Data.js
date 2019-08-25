@@ -1,6 +1,5 @@
 'use strict';
 let _ = require('lodash');
-let assert = require('assert');
 let fs = require('fs');
 let path = require('path');
 let Sequelize = require('sequelize');
@@ -8,7 +7,14 @@ let Sequelize = require('sequelize');
 export default function Data(config) {
   let log = require('logfilename')(__filename);
   let dbConfig = config.db;
-  let sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, dbConfig);
+  let sequelizeOption = {
+    underscored: true,
+    pool: {
+      idle: 60000,
+      max: 100
+    }
+  };
+  let sequelize = new Sequelize(dbConfig.url, {...sequelizeOption, ...dbConfig.options});
   let modelsMap = {};
 
   let data = {

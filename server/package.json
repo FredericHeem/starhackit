@@ -10,7 +10,6 @@
   },
   "license": "NLPL",
   "scripts": {
-    "setup": "binci --cleanup && binci env",
     "prestart": "npm run lint && npm run jscpd",
     "build": "gulp build:production",
     "start": "gulp",
@@ -23,14 +22,22 @@
     "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "migrate": "sequelize db:migrate",
     "start:prod": "pm2 start pm2.json --no-daemon",
     "clean": "gulp clean",
     "mocker": "node scripts/mocker-server.js",
     "api-check": "abao src/plugins/users/raml/users.raml --server http://localhost:9000/api/v1",
     "doc": "node scripts/apidoc.js",
     "opendoc": "npm run doc && open build/api/v1/doc/api.html",
-    "jscpd": "jscpd -f 'src/**'  --languages javascript"
+    "jscpd": "jscpd -f 'src/**'  --languages javascript",
+    "db:create": "node_modules/.bin/sequelize db:create",
+    "db:drop": "node_modules/.bin/sequelize db:drop",
+    "db:migrate": "node_modules/.bin/sequelize db:migrate",
+    "db:recreate": "npm run db:drop && npm run db:create && npm run db:migrate",
+    "docker:build": "docker build . -t starhackit/api",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:destroy": "docker ps -a -q | xargs docker rm -f && docker volume prune -f",
+    "setup": "npm run docker:down  && npm run docker:up && sleep 1 && npm run db:migrate"
   },
   "dependencies": {
     "async-busboy": "0.6.2",
@@ -80,15 +87,14 @@
     "qs": "6.5.1",
     "redis": "2.8.0",
     "run-sequence": "1.2.2",
-    "sequelize": "4.37.1",
-    "sqlite3": "4.0.0",
+    "sequelize": "4.41.2",
+    "sequelize-cli": "5.4.0",
     "urijs": "1.19.1",
     "winston": "2.4.1"
   },
   "devDependencies": {
     "abao": "0.5.0",
     "async": "2.6.0",
-    "binci": "4.2.0",
     "chai": "4.1.2",
     "codeclimate-test-reporter": "0.5.0",
     "codecov.io": "0.1.6",
@@ -101,7 +107,6 @@
     "raml-mocker-server": "0.1.6",
     "raml2html": "3.0.0",
     "request": "2.85.0",
-    "sequelize-cli": "4.0.0",
     "shelljs": "0.8.1",
     "should": "13.2.1",
     "sinon": "4.4.6"

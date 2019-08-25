@@ -1,26 +1,16 @@
-version: '2'
-
+version: '3'
 services:
-  api:
-    image: starhackit/api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "9000:9000"
+  pg:
+    image: postgres:10-alpine
+    restart: on-failure
     environment:
-      - NODE_ENV=preprod-docker
-    links:
-      - postgres
-      - redis
-  postgres:
-    image: kiasaki/alpine-postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: dev
+      POSTGRES_PASSWORD: password
     expose:
       - "5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=preprod
+    ports:
+      - "6432:5432"
   redis:
     image: smebberson/alpine-redis
     expose:

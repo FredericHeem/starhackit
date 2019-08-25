@@ -4,6 +4,7 @@
   "version": "7.2.0",
   "private": false,
   "scripts": {
+    "docker:up": "docker-compose up",
     "install": "echo \"Run the command \"npm install\" in the client and in the server\"",
     "version": "cd client && npm test",
     "postversion": "git push && git push --tags"

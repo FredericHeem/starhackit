@@ -25,7 +25,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: starhackit/api:latest
+    image: api:latest
     expose:
       - '9000'
     ports:
@@ -53,7 +53,7 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_VERSION: "docker compose alpha build"
-    image: starhackit/web:latest
+    image: ui:latest
     volumes:
       - ./deploy/nginx.conf:/etc/nginx/nginx.conf
     expose:

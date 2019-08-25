@@ -1,7 +1,7 @@
 {
   "name": "starhackit-ui",
   "title": "StarHack.It",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "React + node starter kit. A fullstack boilerplate written in ES6/7 with authentication and authorisation",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
@@ -18,8 +18,9 @@
     "test:watch": "karma start --auto-watch --no-single-run karma.conf.js",
     "e2e": "npm run nightwatch",
     "nightwatch": "cd test/nightwatch/ && nightwatch",
-    "docker:build": "docker build -t starhackit/ui .",
-    "docker:run": "docker run --rm -p 80:80 -p 443:443  --name starhackit-ui starhackit/ui",
+    "docker:build": "docker build -t ui .",
+    "docker:tag": "docker tag ui fredericheem/ui:latest",
+    "docker:push": "docker push fredericheem/ui:latest",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },

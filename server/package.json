@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "5.12.0",
+  "version": "8.0.0",
   "private": false,
   "main": "build/index.js",
   "repository": {
@@ -33,7 +33,9 @@
     "db:drop": "node_modules/.bin/sequelize db:drop",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",
     "db:recreate": "npm run db:drop && npm run db:create && npm run db:migrate",
-    "docker:build": "docker build . -t starhackit/api",
+    "docker:build": "docker build . -t api",
+    "docker:tag": "docker tag api fredericheem/api:latest",
+    "docker:push": "docker push fredericheem/api:latest",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:destroy": "docker ps -a -q | xargs docker rm -f && docker volume prune -f",

@@ -126,8 +126,8 @@ export default function AuthenticationRouter(app) {
   router.get(
     "/facebook/callback",
     passport.authenticate("facebook", {
-      failureRedirect: "/login",
-      successRedirect: "login"
+      failureRedirect: "/user/auth/login",
+      successRedirect: "/user/auth/login"
     })
   );
   // Facebook Auth from mobile
@@ -141,14 +141,13 @@ export default function AuthenticationRouter(app) {
   router.get(
     "/google/callback",
     passport.authenticate("google", {
-      failureRedirect: "/login",
-      successRedirect: "login"
+      failureRedirect: "/user/auth/login",
+      successRedirect: "/user/auth/login"
     })
   );
   router.post("/login_google", authHttpController.loginGoogle);
 
   router.post("/login_google_id_token", authHttpController.loginGoogleIdToken);
-  
 
   app.server.baseRouter().mount("auth", router);
 

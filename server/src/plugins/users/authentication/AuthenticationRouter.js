@@ -127,7 +127,7 @@ export default function AuthenticationRouter(app) {
     "/facebook/callback",
     passport.authenticate("facebook", {
       failureRedirect: "/login",
-      successRedirect: "/back"
+      successRedirect: "login"
     })
   );
   // Facebook Auth from mobile
@@ -142,7 +142,7 @@ export default function AuthenticationRouter(app) {
     "/google/callback",
     passport.authenticate("google", {
       failureRedirect: "/login",
-      successRedirect: "/back"
+      successRedirect: "login"
     })
   );
   router.post("/login_google", authHttpController.loginGoogle);

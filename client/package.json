@@ -21,6 +21,7 @@
     "docker:build": "docker build -t ui .",
     "docker:tag": "docker tag ui fredericheem/ui:latest",
     "docker:push": "docker push fredericheem/ui:latest",
+    "docker:btp": "npm run docker:build && npm run docker:tag && npm run docker:push",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
   },

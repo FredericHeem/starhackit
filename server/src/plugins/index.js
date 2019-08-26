@@ -3,6 +3,7 @@ import path from "path";
 import _ from "lodash";
 
 const pluginsName = [
+  "version",
   "users",
   "dbSchema",
   "document",

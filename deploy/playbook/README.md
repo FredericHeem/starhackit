@@ -39,9 +39,9 @@ Each *phase* has its own directory which contains the configuration files and th
 
 The global configuration which is independent on the phase is at [group_vars/all/vars.yml](group_vars/all/vars.yml)
 
-To set the production configuration parameters, create [prod/group_vars/server.yml](prod/group_vars/server.yml):
+To set the production configuration parameters, create [group_vars/production.yml](group_vars/production.yml):
 
-Then to change the remote machine connection settings (ip address, username, ssh key location), edit the production inventory: [prod/inventory](prod/inventory):
+Then to change the remote machine connection settings (ip address, username, ssh key location), edit the production inventory: [production.ini](production.ini):
 
 # Deployment to production
 

@@ -1,50 +1,34 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { observable, action } from "mobx";
+/** @jsx jsx */
+import { useEffect } from "react";
+import { jsx, css } from "@emotion/core";
 import { observer } from "mobx-react";
-import menu from "./menu";
-
-const  MENU = [
-  {
-    route: "settings",
-    text: "SETTINGS"
-  }
-];
+import AsyncOp from "utils/asyncOp";
 
 export default context => {
-  const { parts, history } = context;
-  const me = parts.auth.stores().me.data;
-  const Menu = menu(context);
+  const { history, rest } = context;
+  const meStore = AsyncOp(context)(() => rest.get(`me`));
 
-  const store = observable({
-    userMenuOpen: false,
-    toggleUserMenu() {
-      store.userMenuOpen = !store.userMenuOpen;
-    },
-    navChange: action(function(menuItem) {
-      history.push(menuItem.route);
-    })
+  const UserDetails = observer(() => {
+    useEffect(() => {
+      meStore.fetch();
+    }, []);
+
+    return (
+      <span onClick={() => history.push("settings")}>
+        {meStore.data ? meStore.data.email : "Loading"}
+      </span>
+    );
   });
 
-  const CurrentUser = styled("div")(() => ({
-    marginLeft: "auto",
-    marginRight: 10
-  }));
-
-  const userMenu = () => MENU;
-
   const UserInfo = observer(() => (
-    <div>
-      <span onClick={() => store.toggleUserMenu()} style={{ marginRight: 10 }}>{me.get("email")} </span>
-      {store.userMenuOpen && (
-        <Menu
-          css={{ position: "absolute", backgroundColor: "#e6f7ff" }}
-          menuItems={userMenu()}
-          navChange={item => store.navChange(item)}
-        />
-      )}
+    <div
+      css={css`
+        margin-left: 0px;
+      `}
+    >
+      <UserDetails />
     </div>
   ));
 
-  return () => <CurrentUser>{me && me.get("email") && <UserInfo />}</CurrentUser>;
+  return UserInfo;
 };

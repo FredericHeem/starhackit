@@ -8,7 +8,7 @@ export default context => {
   const { tr, palette, rest } = context;
   const versionStore = AsyncOp(context)(() => rest.get(`version`));
 
-  const Footer = observer(({}) => {
+  const Footer = observer(() => {
     useEffect(() => {
       versionStore.fetch();
     }, []);

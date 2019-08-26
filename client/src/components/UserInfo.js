@@ -2,33 +2,41 @@
 import { useEffect } from "react";
 import { jsx, css } from "@emotion/core";
 import { observer } from "mobx-react";
+import button from "mdlean/lib/button";
 import AsyncOp from "utils/asyncOp";
+import avatar from "./avatar";
 
 export default context => {
   const { history, rest } = context;
   const meStore = AsyncOp(context)(() => rest.get(`me`));
+  const Avatar = avatar(context);
+  const Button = button(context);
 
-  const UserDetails = observer(() => {
+  const UserDetails = observer(() => (
+    <Button raised onClick={() => history.push("settings")}>
+      {meStore.data.picture ? <Avatar
+        title={meStore.data.email}
+        alt={meStore.data.email}
+        src={meStore.data.picture.url}
+      />: <span>{meStore.data.email}</span>}
+    </Button>
+  ));
+
+  const UserInfo = observer(() => {
     useEffect(() => {
       meStore.fetch();
     }, []);
-
     return (
-      <span onClick={() => history.push("settings")}>
-        {meStore.data ? meStore.data.email : "Loading"}
-      </span>
+      <div
+        css={css`
+          margin-left: 0px;
+          margin-right: 10px;
+        `}
+      >
+        {meStore.data ? <UserDetails /> : "Loading"}
+      </div>
     );
   });
-
-  const UserInfo = observer(() => (
-    <div
-      css={css`
-        margin-left: 0px;
-      `}
-    >
-      <UserDetails />
-    </div>
-  ));
 
   return UserInfo;
 };

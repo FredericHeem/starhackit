@@ -45,7 +45,7 @@
     "i18next-xhr-backend": "3.0.0",
     "intl": "1.2.5",
     "lodash": "4.17.11",
-    "mdlean": "0.20.0",
+    "mdlean": "0.21.0",
     "mobx": "5.10.1",
     "mobx-react": "6.1.1",
     "prop-types": "15.7.2",

@@ -50,11 +50,12 @@ export default context => {
         } catch (error) {
           //console.error("fetch error ", error);
           store.error = error;
-          if (![401, 422].includes(get(error, "response.status"))) {
+          const status = get(error, "response.status")
+          if (![401, 422].includes(status)) {
             context.alertStack.add(
               <Alert.Danger {...createHttpError(error)} />
             );
-          } else {
+          } else if(!status){
             context.alertStack.add(
               <Alert.Danger message={error.toString()} />
             );

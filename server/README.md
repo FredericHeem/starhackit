@@ -4,7 +4,7 @@ Node.js Starter Kit
 Backend Starter Kit written in Node.js with the following features:
 
 * **ES6/ES7** ready: async/await, classes, arrow function, template strings etc ...
-* **SQL** Relational database support with  [Sequelize](http://docs.sequelizejs.com/en/latest/)
+* **SQL** Relational database support with  [Sequelize](http://docs.sequelizejs.com/en/latest/), with migration support
 * **Koa** web server, the next generation web server with async/await support.
 * **REST API** designed with [RAML](http://raml.org/), produce a human friendly [API documentation](http://starhack.it/api/v1/doc/api.html) and a **Mock Server** for frontend developer.
 * [Json Web Token](https://jwt.io/) authentication.
@@ -15,6 +15,15 @@ Backend Starter Kit written in Node.js with the following features:
 * **Logging** with timestamp and filename.
 * **CORS** support with [kcors](https://github.com/koajs/cors)
 
+## Tl;DR
+
+To start the backend:
+
+    # cd server
+    # npm install
+    # npm run setup
+    # npm start
+
 # Dependencies
 
 The minimal requirements to get it running locally are:
@@ -22,10 +31,9 @@ The minimal requirements to get it running locally are:
 * Git
 * Node, npm or yarn
 
-Sqlite can be used as the relational database and is installed through npm.
-
 To deploy to production, you will also need:
 
+* Docker
 * Redis
 * Postgresql
 * Ansible
@@ -37,13 +45,21 @@ These are the main *npm* commands during a standard developer workflow:
 | npm command    | details  |
 |----------------|----------|
 | `npm install`  | Install dependencies  |
-| `npm run setup`  | Install Redis and Postgresql docker containers through binci |
+| `npm run setup`  | Install Redis and Postgresql docker containers  |
 | `npm start`    | Start the backend  |
 | `npm test`     |  Run the tests and generate a code coverage |
 | `npm run mocha`|  Run the tests |
 | `npm run mock`  |  Run a mock server based on the RAML api definition |
 | `npm run doc` |  Generate the API HTML documentation |
 | `npm run opendoc` |  Open the API HTML documentation |
+| `npm run db:create`| Create the database 
+| `npm run db:drop`| Drop the database
+| `npm run db:migrate`| Run the sql migration
+| `npm run db:recreate`| Drop and create the database
+| `npm run docker:build`| Build the api docker image
+| `npm run docker:up`| Start all docker containers: postgres and redis
+| `npm run docker:down`| Stop all containers
+| `npm run docker:destroy`| Destoy dockers containers and storage
 
 # Configuration
 
@@ -52,39 +68,16 @@ These are the main *npm* commands during a standard developer workflow:
 This project can use the most popular SQL databases such as PostgreSQL, MySQL, Oracle, MSSQL and Sqlite. This is achieved with [Sequelize](http://docs.sequelizejs.com/en/latest/), the most popular [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) for Node.js
 
 
-For rapid prototyping, the easiest database to configure is sqlite. In production, StarHackIt is using PostgreSQL.
-
-### Sqlite configuration
-
-```
-"db":{
-  "driver": "sqlite3",
-  "dialect":"sqlite",
-  "database": "dev",
-  "user": "user",
-  "logging": true,
-  "storage": "./db.dev.sqlite"
-}
-
-```
 ### Postgresql configuration
 
 Here is an example of the configuration for Postgres:
 
 ```
 "db":{
-  "driver": "pg",
-  "dialect":"postgres",
-  "database": "dev",
-  "user": "user",
-  "password": "password",
-  "host": "localhost",
-  "port": "5432",
-  "logging": true,
-  "pool": {
-    "idle": 60000,
-    "max": 100
-  }
+    "url": "postgres://postgres:password@localhost:6432/dev?sslmode=disable",
+    "options": {
+      "logging": true
+    }
 }
 ```
 
@@ -102,8 +95,7 @@ Create a user
 
 Create a database:
 
-    $ createdb dev
-
+    $ npm run db:create
 
 ## Sending Email
 Sending email is a very common task for an application. For instance, an email is sent during registration, when a user requests a new password etc ...
@@ -201,14 +193,7 @@ Here is a typical configuration:
 ```
 
 
-## Start
 
-Before running the backend, check and modify the configuration located at [server/config/default.json](server/config/default.json).
-
-To start the backend:
-
-    # cd server
-    # npm start
 
 ## Test & Code Coverage
 To test the backend:
@@ -259,22 +244,23 @@ This script launches [mocker-server.js](scripts/mocker-server.js), modify it to 
 To install the docker containers for the various services such as Redis and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
 
     # cd server
-    # npm run setup &
+    # npm run setup
 
 To check that the containers are running:
 
 ```
 # docker ps
-CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                               NAMES
-290fe4c70fea        kiasaki/alpine-postgres   "/docker-entrypoint.s"   8 days ago          Up 8 days           0.0.0.0:5432->5432/tcp                              devlab_postgres_frederic_1471545611147
+CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                    NAMES
+422cac20abc7        postgres:10-alpine        "docker-entrypoint.s…"   2 hours ago         Up 2 hours          0.0.0.0:6432->5432/tcp   server_pg_1
+7e5c38a946ff        smebberson/alpine-redis   "/init"                  2 hours ago         Up 2 hours          6379/tcp                 server_redis_1
+
 ```
 
 ### For production
 
 To build a production dockerized system, please use `docker-compose` to build, start and stop containers:
 
-    # docker-compose build
-    # docker-compose up
+    # npm run docker:up
 
 # Development
 
@@ -308,9 +294,4 @@ Eventually change the sql table name to *underscore_case*
 
 Run the following command to migrate the database:
 
-    $ ./node_modules/.bin/sequelize db:migrate
-
-### Database rollback
-When the new database update breaks in production, it's very handy to rollback as quick as possible:
-
-    $ ./node_modules/.bin/sequelize db:migrate:undo
+    $ npm run db:migrate

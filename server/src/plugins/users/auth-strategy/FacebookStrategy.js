@@ -89,8 +89,7 @@ export function registerWeb(passport, models, publisherUser) {
           let res = await verifyWeb(
             models,
             publisherUser,
-            profileToUser(profile._json),
-            accessToken
+            profileToUser(profile._json)
           );
           done(res.err, res.user);
         } catch (err) {

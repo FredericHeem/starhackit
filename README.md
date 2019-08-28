@@ -7,12 +7,11 @@ StarHackIt is a fullstack starter kit composed of:
 * React web frontend
 * React native mobile app 
 * Node backend
-* Deployment by Ansible
-
+* Deployment by Ansible with docker images
 
 [![Join the chat at https://gitter.im/FredericHeem/starhackit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FredericHeem/starhackit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Fullstack web application starter kit written in es6/es7 with react and node.js with the following features:
+Fullstack web application starter kit written in modern Javascript with react and node.js with the following features:
 
 * Authentication: username/password, facebook, google authentication etc ...
 * Authorization: scheme using user, group and permission  
@@ -20,13 +19,12 @@ Fullstack web application starter kit written in es6/es7 with react and node.js 
 * Relational database: postgres, mysql, sqlite, mssql etc, ...
 * Logging
 
-
 ## Frontend Technologies
 
-* [React](https://facebook.github.io/react/) or [Preact](https://github.com/developit/preact): libraries to build user interfaces.
+* [React](https://facebook.github.io/react/): libraries to build user interfaces.
 * [Mobx](https://mobx.js.org/): Simple, scalable state management
 * [Webpack](http://webpack.github.io/): module bundler for the browser
-* [Glamorous](https://github.com/paypal/glamorous): solving react component styling.
+* [Emotion](https://emotion.sh): Style React Components with Style.
 * [i18next](http://i18next.com/): internationalization
 
 For more information about the frontend, see its [README](client/README.md)
@@ -48,6 +46,7 @@ For more information about the backend, see its [README](server/README.md)
 
 ## Dev Technologies
 
+* [Docker](https://www.docker.com/): Debug your app, not your environment
 * [Babel](https://babeljs.io/): A es6/es7 compiler.
 * [Mocha](http://mochajs.org/): test framework.
 * [Karma](https://karma-runner.github.io): a productive testing environment to developers
@@ -58,7 +57,7 @@ For more information about the backend, see its [README](server/README.md)
 * [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/starhackit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/starhackit)
 [![Test Coverage](https://codeclimate.com/github/FredericHeem/starhackit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/starhackit/coverage)
 * [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/starhackit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/starhackit?branch=master)
-* [Binci](https://github.com/binci/binci): Containerize your development workflow.
+* 
 
 > The frontend and the backend are two separate projects with their own set of dependencies. One can use the frontend with another existing backend, or use the backend with another frontend stack.
 
@@ -73,7 +72,7 @@ To get the latest code, grab it by cloning the repository from GitHub:
 
 ## Deployment
 
-See [Ansible README.md](deploy/ansible/README.md)
+See [Ansible README.md](deploy/playbook/README.md)
 
 # License
 

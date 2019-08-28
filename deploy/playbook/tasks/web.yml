@@ -1,0 +1,33 @@
+---
+- name: Copy nginx.conf file for web container
+  template:
+    src: web.nginx.conf.j2
+    dest: /home/{{user}}/nginx.conf
+    owner: "{{user}}"
+    mode: '0600'
+
+- name: docker run web
+  docker_container:
+    name: web
+    pull: yes
+    image: "{{ web_image}}:{{ web_tag }}"
+    state: started
+    recreate: yes
+    volumes:
+    - /etc/letsencrypt/:/etc/letsencrypt/
+    - /home/{{user}}/nginx.conf:/etc/nginx/nginx.conf
+    exposed_ports:
+    - "80"
+    - "443"
+    published_ports:
+    - "80:80"
+    - "443:443"
+    networks:
+    - name: net
+      links:
+      - api
+  tags:
+  - containers
+  - app
+
+

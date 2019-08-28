@@ -33,7 +33,7 @@ describe('UserRegister', function() {
 
     let countBefore = await models.User.count();
     assert(countBefore > 0);
-    let usersToAdd = 100;
+    let usersToAdd = 10;
     // Limit to 1 when using sqlite
     let limit = 2;
     await userUtils.createBulk(models, client, usersToAdd, limit);
@@ -83,6 +83,15 @@ describe('UserRegister', function() {
     let loginRes = await client.login(loginParam);
     assert(loginRes);
     //console.log(loginRes);
+    const me = await client.get('v1/me');
+    assert.equal(me.email, userConfig.email);
+    await client.delete('v1/me');
+    const user = await models.User.find({
+      where: {
+        email: userConfig.email
+      }
+    });
+    assert(!user);
   });
   it('invalid email code', async () => {
     try {

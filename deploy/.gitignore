@@ -1,0 +1,5 @@
+.vagrant/
+*.retry
+*.log
+vault.yml
+server.yml

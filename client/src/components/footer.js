@@ -1,15 +1,26 @@
-import React from "react";
-import styled from "@emotion/styled";
+/** @jsx jsx */
+import { useEffect } from "react";
+import { jsx, css } from "@emotion/core";
+import { observer } from "mobx-react";
+import AsyncOp from "utils/asyncOp";
 
-export default ({ tr, palette }) => {
-  const FooterView = styled("footer")(() => ({
-    padding: 20,
-    textAlign: "center",
-    background: palette.primaryLight
-  }));
-  return function Footer({  }) {
+export default context => {
+  const { tr, palette, rest } = context;
+  const versionStore = AsyncOp(context)(() => rest.get(`version`));
+
+  const Footer = observer(() => {
+    useEffect(() => {
+      versionStore.fetch();
+    }, []);
+
     return (
-      <FooterView>
+      <footer
+        css={css`
+          padding: 20px;
+          text-align: center;
+          background: ${palette.primaryLight};
+        `}
+      >
         <div>
           {tr.t(
             "StarHackIt is the starting point to build a full stack web application"
@@ -25,8 +36,12 @@ export default ({ tr, palette }) => {
             {tr.t("GitHub")}
           </a>
         </div>
-        <div>{__VERSION__} </div>
-      </FooterView>
+        <div>
+          {`F${__VERSION__}`}{" "}
+          {versionStore.data ? `B${versionStore.data.version}` : "Fetching..."}
+        </div>
+      </footer>
     );
-  };
+  });
+  return Footer;
 };

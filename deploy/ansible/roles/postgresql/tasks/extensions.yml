@@ -1,8 +1,0 @@
-# file: postgresql/tasks/extensions.yml
-
-- import_tasks: extensions/contrib.yml
-  when: postgresql_ext_install_contrib
-- import_tasks: extensions/dev_headers.yml
-  when: postgresql_ext_install_dev_headers
-- import_tasks: extensions/postgis.yml
-  when: postgresql_ext_install_postgis

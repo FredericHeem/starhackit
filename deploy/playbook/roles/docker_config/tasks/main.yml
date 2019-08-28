@@ -1,0 +1,7 @@
+---
+- name: stop docker
+  command: systemctl stop docker
+- name: Copy docker daemon config
+  template: src=templates/daemon.json.j2 dest=/etc/docker/daemon.json mode=0755
+- name: start docker
+  command: systemctl start docker

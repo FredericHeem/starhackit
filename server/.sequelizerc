@@ -1,10 +1,6 @@
-var path = require('path');
-var config = require('config');
+const path = require('path');
 
-var dbConfig = config.db;
-dbConfig.config = __filename;
-
-dbConfig["migrationsPath"] = 'migrations';
-dbConfig["modelsPath"] = 'src/models';
-
-module.exports = dbConfig;
+module.exports = {
+  'config': path.resolve('src', 'database.js'),
+  'migrations-path': path.resolve('migrations')
+}

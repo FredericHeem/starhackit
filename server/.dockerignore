@@ -1,1 +1,10 @@
+.git
+.env
+.vscode
+coverage
+dist
+builds
+local_backup
 node_modules
+docs
+

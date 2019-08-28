@@ -1,4 +1,0 @@
----
-nodejs_version: "8.x"
-debian_repo_version: "8.x"
-nodejs_install_npm_user: "{{ ansible_ssh_user }}"

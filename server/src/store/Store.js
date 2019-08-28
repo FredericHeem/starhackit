@@ -47,6 +47,8 @@ export default function(config = {}) {
       if (client) {
         client.subscribe(channel);
         client.on("message", fn);
+      } else {
+        log.warn("subscribe: not configured");
       }
     },
     async unsubscribe() {
@@ -56,8 +58,11 @@ export default function(config = {}) {
     },
     async publish(channel, message) {
       if (client) {
+        log.debug(`publish: ${channel} ${message}`);
         client.publish(channel, message);
+      } else {
+        log.warn("publish: not configured");
       }
-    },
+    }
   };
 }

@@ -43,7 +43,8 @@ describe("Candidate Job", function() {
     await models.PushToken.upsert({token: 'ExponentPushToken[8giJthMgGEyYUr8H5NsPWO]', user_id});
     const res = await sendToUser(models, user_id, {
       title: "test notif",
-      body: "Ciao ciccio"
+      body: "Ciao ciccio",
+      sound: 'default'
     });
     console.log("res: ", res);
   });

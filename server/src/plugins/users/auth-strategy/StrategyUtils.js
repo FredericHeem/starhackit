@@ -31,17 +31,20 @@ export function createRegisterMobile(
 export async function verifyWeb(
   models,
   publisherUser,
-  userConfig,
-  accessToken
+  userConfig
 ) {
-  log.debug(`verifyWeb  ${accessToken}`, JSON.stringify(userConfig, null, 4));
+  log.debug(`verifyWeb`, JSON.stringify(userConfig, null, 4));
   const userByEmail = await models.User.findByEmail(userConfig.email);
 
   if (userByEmail) {
     log.debug("email already registered ");
-    //should update fb profile id
+    await models.User.update(userConfig, {
+      where: { email: userConfig.email }
+    });
+    const userUpdated = await models.User.findByEmail(userConfig.email);
+    log.debug("updated ", JSON.stringify(userUpdated.get(), null, 4) );
     return {
-      user: userByEmail.toJSON()
+      user: userUpdated.toJSON()
     };
   }
   log.debug("creating user: ", userConfig);
@@ -68,7 +71,7 @@ export async function createVerifyMobile(
   try {
     const profile = await getMe();
     log.debug("profile ", JSON.stringify(profile, null, 4));
-    return verifyWeb(models, publisherUser, profile, accessToken);
+    return verifyWeb(models, publisherUser, profile);
   } catch (error) {
     log.error("verifyMobile ", error);
     return {

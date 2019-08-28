@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: True
+  become: True
+  tasks:
+  
+  - include_tasks: tasks/api.yml
+  - include_tasks: tasks/web.yml
+

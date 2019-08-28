@@ -2,6 +2,7 @@ import isString from "lodash/isString";
 import React from "react";
 import { observable, action } from "mobx";
 import alert from "components/alert";
+import {get} from "lodash"
 
 function createHttpError(payload = {}) {
   const { response = {} } = payload;
@@ -49,11 +50,14 @@ export default context => {
         } catch (error) {
           //console.error("fetch error ", error);
           store.error = error;
-          const { response: { status } } = error;
-          //console.error("fetch status ", status);
+          const status = get(error, "response.status")
           if (![401, 422].includes(status)) {
             context.alertStack.add(
               <Alert.Danger {...createHttpError(error)} />
+            );
+          } else if(!status){
+            context.alertStack.add(
+              <Alert.Danger message={error.toString()} />
             );
           }
           throw error;

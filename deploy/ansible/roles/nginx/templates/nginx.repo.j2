@@ -1,8 +1,0 @@
-[nginx]
-name=nginx repo
-{% if nginx_official_repo_mainline %}
-baseurl=http://nginx.org/packages/mainline/{{"rhel" if ansible_distribution == "RedHat" else "centos"}}/{{ansible_distribution_version.split('.')[0]}}/{{ansible_architecture}}/
-{% else %}
-baseurl=http://nginx.org/packages/{{"rhel" if ansible_distribution == "RedHat" else "centos"}}/{{ansible_distribution_version.split('.')[0]}}/{{ansible_architecture}}/
-{% endif %}
-enabled=1

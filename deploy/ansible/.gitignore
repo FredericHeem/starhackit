@@ -1,4 +1,0 @@
-.vagrant
-*.retry
-prod/group_vars/server.yml
-*.log

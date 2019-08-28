@@ -1,4 +1,0 @@
----
-postgresql_service_name: "postgresql"
-
-postgresql_bin_directory: /usr/bin

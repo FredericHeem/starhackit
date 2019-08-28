@@ -1,8 +1,0 @@
----
-- apt_repository:
-    repo: ppa:certbot/certbot
-    state: present
-
-- name: Install Certbot.
-  package: "name={{ certbot_package }} state=present"
-

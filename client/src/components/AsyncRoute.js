@@ -9,7 +9,7 @@ export default ({ tr }) => class AsyncRoute extends Component {
         error: null
       };
     }
-
+//TODO
     componentDidMount() {
       this.loadComponent();
     }

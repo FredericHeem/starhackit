@@ -22,7 +22,7 @@ function userUtils() {
     assert.equal(res.message, "confirm email");
 
     //Retrieve the code in the db
-    res = await models.UserPending.find({
+    res = await models.UserPending.findOne({
       where: {
         email: userConfig.email
       }
@@ -35,7 +35,7 @@ function userUtils() {
 
     //console.log("verify user ", userConfig);
     await client.post('v1/auth/verify_email_code', {code:userPending.code});
-    res = await models.User.find({
+    res = await models.User.findOne({
       where: {
         email: userConfig.email
       }

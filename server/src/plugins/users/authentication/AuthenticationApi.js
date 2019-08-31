@@ -13,7 +13,7 @@ function AuthenticationApi(app) {
       log.debug("createPending: ", userPendingIn);
 
       let userByUsername = await models.User.findByUsername(userPendingIn.username);
-      let userPendingByUsername = await models.UserPending.find({
+      let userPendingByUsername = await models.UserPending.findOne({
         where:{
           username: userPendingIn.username
         }
@@ -49,7 +49,7 @@ function AuthenticationApi(app) {
     async verifyEmailCode(param){
       log.debug("verifyEmailCode: ", param);
       validateJson(param, require('./schema/verifyEmailCode.json'));
-      let res = await models.UserPending.find({
+      let res = await models.UserPending.findOne({
         where: {
           code: param.code
         }
@@ -106,9 +106,8 @@ function AuthenticationApi(app) {
 
       log.info("verifyResetPasswordToken: ", token);
       // Has the token expired ?
-
       // find the user
-      let user = await models.User.find({
+      let user = await models.User.findOne({
         include: [{
           model: models.PasswordReset,
           where: {
@@ -120,7 +119,7 @@ function AuthenticationApi(app) {
 
       if(user){
         const now = new Date();
-        const paswordResetDate = user.get().PasswordReset.get().created_at;
+        const paswordResetDate = user.get().PasswordReset.get().createdAt;
         // Valid for 24 hours
         paswordResetDate.setUTCHours(paswordResetDate.getUTCHours() + 24);
 

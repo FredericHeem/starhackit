@@ -12,6 +12,19 @@
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
-        }
+        },
+        {
+            "name": "Debug test",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/server/node_modules/mocha/bin/_mocha",
+            "stopOnEntry": false,
+            "args": ["--no-timeouts", "--colors"], //you can specify paths to specific tests here
+            "cwd": "${workspaceRoot}/server",
+            "runtimeExecutable": null,
+            "env": {
+              "NODE_PATH": "src"
+            }
+          }
     ]
 }

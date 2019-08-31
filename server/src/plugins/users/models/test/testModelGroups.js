@@ -123,7 +123,7 @@ describe('GroupModel', function() {
         await checkUserPermission(param);
     });
     it('should get all groups for a given user', async () => {
-        let res = await models.User.find({
+        let res = await models.User.findOne({
             include: [{ model: models.Group }],
             where: { id: userId }
         });

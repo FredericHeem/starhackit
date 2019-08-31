@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
   let models = sequelize.models;
 
   Group.findByName = function(groupName) {
-    return models.Group.find({ where: { name: groupName } });
+    return models.Group.findOne({ where: { name: groupName } });
   };
 
   /**
@@ -57,7 +57,7 @@ module.exports = function(sequelize, DataTypes) {
    * @returns {Promise}  a Promise containing permission results
    */
   Group.getPermissions = function(groupName) {
-    return models.Group.find({
+    return models.Group.findOne({
       include: [
         {
           model: models.Permission

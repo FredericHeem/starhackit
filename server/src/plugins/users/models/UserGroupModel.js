@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
    UserGroup.addUserIdInGroup = async function(groupName, userId, t) {
      log.debug(`addUserIdInGroup user:${userId}, group: ${groupName}`);
      //let group = await models.Group.findByName(groupName);
-     let group = await models.Group.find({
+     let group = await models.Group.findOne({
        where: { name: groupName }
      }, {transaction:t});
      if (!group) {

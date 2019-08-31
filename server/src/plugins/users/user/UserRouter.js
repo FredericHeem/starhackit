@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const Qs = require("qs");
+const Op = require("sequelize").Op;
 
 function UserRouter(app) {
   const { models } = app.data.sequelize;
@@ -26,9 +27,9 @@ function UserRouter(app) {
             order: [["createdAt", filter.order]],
             offset: filter.offset,
             where: filter.search && {
-              $or: [
-                { username: { $like: `%${filter.search}%` } },
-                { email: { $like: `%${filter.search}%` } }
+              [Op.or]: [
+                { username: { [Op.like]: `%${filter.search}%` } },
+                { email: { [Op.like]: `%${filter.search}%` } }
               ]
             }
           });

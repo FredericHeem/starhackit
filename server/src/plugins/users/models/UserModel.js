@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Promise = require("bluebird");
 const hashPasswordHook = require('./utils/hashPasswordHook');
-
+const Op = require("sequelize").Op;
 module.exports = function(sequelize, DataTypes) {
   const log = require("logfilename")(__filename);
   const models = sequelize.models;
@@ -55,7 +55,7 @@ module.exports = function(sequelize, DataTypes) {
   };
 
   User.findByKey = async function(key, value) {
-    return this.find({
+    return this.findOne({
       include: [
         {
           model: models.Profile,
@@ -83,9 +83,9 @@ module.exports = function(sequelize, DataTypes) {
     return this.findByKey("username", userName);
   };
   User.findByUsernameOrEmail = async function(username) {
-    return this.find({
+    return this.findOne({
       where: {
-        $or: [{ email: username }, { username: username }]
+        [Op.or]: [{ email: username }, { username: username }]
       }
     });
   };
@@ -140,7 +140,7 @@ module.exports = function(sequelize, DataTypes) {
       resource: resource
     };
     where[action.toUpperCase()] = true;
-    let res = await this.find({
+    let res = await this.findOne({
       include: [
         {
           model: models.Group,
@@ -161,7 +161,7 @@ module.exports = function(sequelize, DataTypes) {
   };
 
   User.getPermissions = function(username) {
-    return this.find({
+    return this.findOne({
       include: [
         {
           model: models.Group,

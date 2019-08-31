@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/server/src/index.js",
+            "cwd": "${workspaceFolder}/server",
+            "runtimeArgs": ["-r", "ts-node/register", "-r", "tsconfig-paths/register"],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}

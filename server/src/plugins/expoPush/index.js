@@ -1,11 +1,11 @@
-import Promise from "bluebird";
+import * as Promise from "bluebird";
 
 export default app => {
   ["PushTokenModel"].forEach(model =>
     app.data.registerModel(__dirname, `./${model}`)
   );
 
-  ["PushTokenApi"].forEach(model => require(`./${model}`)(app));
+  ["PushTokenApi"].forEach(model => require(`./${model}`).default(app));
 
   return {
     seedDefault() {

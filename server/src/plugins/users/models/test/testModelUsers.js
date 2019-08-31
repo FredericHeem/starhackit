@@ -1,7 +1,9 @@
-import _ from 'lodash';
-import assert from 'assert';
+import * as _ from 'lodash';
+import * as assert from 'assert';
 import testMngr from '~/test/testManager';
-let chance = require('chance')();
+import * as Chance from 'chance';
+
+let chance = new Chance()
 
 //let fixtures = require(__dirname + '/../fixtures/models/users');
 

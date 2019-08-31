@@ -1,4 +1,5 @@
-import assert from "assert";
+import * as assert from "assert";
+import {get} from "lodash";
 import testMngr from "~/test/testManager";
 
 describe("GoogleMobileAuth", function() {
@@ -8,7 +9,7 @@ describe("GoogleMobileAuth", function() {
     await testMngr.start();
   });
   beforeEach(async function() {
-    if (!testMngr.app.config.authentication.google) {
+    if (!get(testMngr.app.config, "authentication.google")) {
       this.skip();
     }
   });

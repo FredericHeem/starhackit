@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "paths": {
+      "~/test/*": [
+        "test/*"
+      ]
+    },
+    "moduleResolution": "node",
+    "lib": ["esnext"],
+    "noImplicitAny": false,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "types": ["node", "mocha"],
+    "typeRoots": [
+      "node_modules/@types",
+      "typings"
+   ]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/tmp-resolvers/**"]
+}

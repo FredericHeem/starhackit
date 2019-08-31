@@ -1,4 +1,4 @@
-import assert from 'assert';
+import * as assert from 'assert';
 import testMngr from '~/test/testManager';
 
 describe.skip('Fidor', function(){

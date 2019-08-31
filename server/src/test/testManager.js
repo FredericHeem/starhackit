@@ -1,8 +1,7 @@
-import Promise from 'bluebird';
-import _ from 'lodash';
+import * as Promise from 'bluebird';
+import * as _ from 'lodash';
 import Client from "./Client";
-
-let App = require('../src/app');
+import App from '../app';
 
 let log = require('logfilename')(__filename);
 
@@ -67,4 +66,4 @@ TestMngr.getInstance = function(){
     return this.instance;
 };
 
-module.exports = TestMngr.getInstance();
+export default TestMngr.getInstance();

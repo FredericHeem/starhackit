@@ -1,19 +1,13 @@
-import Promise from 'bluebird';
-import Log from 'logfilename';
-import config from 'config';
-let log = new Log(__filename, config.log);
-
+import * as Promise from 'bluebird';
+import config from './config';
 import Plugins from './plugins';
 import Data from './models/Data';
 import Store from './store/Store';
 import Server from './server/koa/koaServer';
 import * as HttpUtils from './utils/HttpUtils';
+let log = require("logfilename")(__filename);
 
-// https://github.com/sequelize/sequelize/issues/3781
-import pg from "pg";
-delete pg.native;
 export default function App() {
-
   let data = Data(config);
 
   let app = {

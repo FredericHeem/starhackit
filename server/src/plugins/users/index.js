@@ -1,9 +1,8 @@
-import Promise from 'bluebird';
-import Log from 'logfilename';
-import nodemailer from "nodemailer";
+import * as Promise from 'bluebird';
+import * as nodemailer from "nodemailer";
 import PassportAuth from './PassportAuth';
 
-import config from 'config';
+import config from '../../config';
 
 // Jobs
 import MailJob from './jobs/mail/MailJob';
@@ -14,9 +13,8 @@ import UserRouter from './user/UserRouter';
 
 import AuthenticationRouter from './authentication/AuthenticationRouter';
 
-let log = new Log(__filename);
-
 export default function UserPlugin(app){
+  let log = require("logfilename")(__filename);
 
   app.data.registerModelsFromDir(__dirname, './models');
 

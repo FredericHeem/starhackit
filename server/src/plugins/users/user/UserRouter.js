@@ -1,6 +1,5 @@
-import _ from "lodash";
-import Qs from "qs";
-import Sequelize from "sequelize";
+import * as _ from "lodash";
+import * as Qs from "qs";
 
 export default function UserRouter(app) {
   const { models } = app.data.sequelize;

@@ -5,7 +5,7 @@ import {
   verifyWeb
 } from "./StrategyUtils";
 
-import config from "config";
+import config from "../../../config";
 import Axios from "axios";
 
 const log = require("logfilename")(__filename);

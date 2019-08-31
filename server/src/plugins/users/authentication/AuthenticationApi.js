@@ -1,12 +1,11 @@
-import _ from 'lodash';
-import Log from 'logfilename';
-import Chance from 'chance';
+import * as _ from 'lodash';
+import * as Chance from 'chance';
 let chance = new Chance();
 
 export default function(app) {
+  let log = require("logfilename")(__filename);
   const {publisher} = app;
   let models = app.data.sequelize.models;
-  let log = new Log(__filename);
   let validateJson = app.utils.api.validateJson;
   return {
     async createPending(userPendingIn) {

@@ -1,5 +1,5 @@
-import fs from "fs";
-import assert from "assert";
+import * as fs from "fs";
+import * as assert from "assert";
 import testMngr from "~/test/testManager";
 
 describe.skip("Document No Auth", function() {

@@ -1,7 +1,7 @@
-import ejs from "ejs";
-import fs from "fs";
-import path from "path";
-import _ from "lodash";
+import * as ejs from "ejs";
+import * as fs from "fs";
+import * as path from "path";
+import * as _ from "lodash";
 import Store from "../../../../store/Store";
 
 const channels = ["user.registering", "user.resetpassword"];

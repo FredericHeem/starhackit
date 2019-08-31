@@ -1,9 +1,9 @@
-import _ from "lodash";
-import Router from "koa-66";
-import passport from "koa-passport";
+import * as _ from "lodash";
+import * as Router from "koa-66";
+import * as passport from "koa-passport";
 import AuthenticationApi from "./AuthenticationApi";
-import jwt from "jsonwebtoken";
-import config from "config";
+import * as jwt from "jsonwebtoken";
+import config from "../../../config";
 
 let log = require("logfilename")(__filename);
 

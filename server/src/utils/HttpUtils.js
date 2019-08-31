@@ -1,7 +1,6 @@
-import Log from 'logfilename';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
-let log = new Log(__filename);
+let log = require("logfilename")(__filename);
 
 export function respond(context, me, callback, args, statusCode = 200) {
   //log.debug("respond ");

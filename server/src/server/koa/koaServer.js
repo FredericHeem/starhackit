@@ -1,7 +1,7 @@
 let Promise = require("bluebird");
-import Koa from "koa";
-import Router from "koa-66";
-import _ from "lodash";
+import * as Koa from "koa";
+import * as Router from "koa-66";
+import {each} from "lodash";
 
 export default function(app) {
   let log = require("logfilename")(__filename);
@@ -14,7 +14,7 @@ export default function(app) {
 
   return {
     koa: koaApp,
-    auth: require("./middleware/PassportMiddleware")(app, koaApp, config),
+    auth: require("./middleware/PassportMiddleware").default(app, koaApp, config),
     baseRouter() {
       return baseRouter;
     },
@@ -29,8 +29,8 @@ export default function(app) {
     },
     createRouter(api) {
       const router = new Router();
-      _.each(api.middlewares, middleware => router.use(middleware));
-      _.each(api.ops, ({ pathname, method, handler }) =>
+      each(api.middlewares, middleware => router.use(middleware));
+      each(api.ops, ({ pathname, method, handler }) =>
         router[method](pathname, handler)
       );
  
@@ -40,7 +40,7 @@ export default function(app) {
      * Start the koa server
      */
     async start() {
-      let configHttp = config.get("koa");
+      let configHttp = config.koa;
       let port = process.env.PORT || configHttp.port;
 
       log.info("start koa on port %s", port);
@@ -71,18 +71,18 @@ export default function(app) {
   };
 
   function middlewareInit() {
-    log.debug("middlewareInit");
-    require("./middleware/SessionMiddleware")(app, koaApp, config);
+    //log.debug("middlewareInit");
+    require("./middleware/SessionMiddleware").default(app, koaApp, config);
 
     const bodyParser = require("koa-bodyparser");
     koaApp.use(bodyParser());
 
-    require("./middleware/LoggerMiddleware")(app, koaApp, config);
+    require("./middleware/LoggerMiddleware").default(app, koaApp, config);
 
     //Cors support
-    require("./middleware/CorsMiddleware")(app, koaApp, config);
+    require("./middleware/CorsMiddleware").default(app, koaApp, config);
 
     //Serve static html files such as the generated api documentation.
-    require("./middleware/StaticMiddleware")(app, koaApp, config);
+    require("./middleware/StaticMiddleware").default(app, koaApp, config);
   }
 }

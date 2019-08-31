@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import testMngr from '~/test/testManager';
 
 describe('Configure Database', function(){

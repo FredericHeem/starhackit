@@ -1,4 +1,4 @@
-import JsonSchema from "jsonschema";
+import * as JsonSchema from "jsonschema";
 let validator = new JsonSchema.Validator();
 let validate = validator.validate.bind(validator);
 

@@ -7,7 +7,7 @@ import {
 } from "./StrategyUtils";
 
 import Axios from "axios";
-import config from "config";
+import config from "../../../config";
 
 const log = require("logfilename")(__filename);
 

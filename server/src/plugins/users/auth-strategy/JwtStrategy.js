@@ -1,5 +1,5 @@
 import {Strategy, ExtractJwt} from 'passport-jwt';
-import config from 'config';
+import config from '../../../config';
 
 let log = require('logfilename')(__filename);
 

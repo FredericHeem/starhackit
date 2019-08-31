@@ -1,7 +1,7 @@
-import Promise from 'bluebird';
-import assert from 'assert';
+import * as Promise from 'bluebird';
+import * as assert from 'assert';
 import _async from 'async';
-import faker from "faker";
+import * as faker from "faker";
 
 export default function () {
   return {
@@ -68,17 +68,5 @@ export default function () {
       //console.log("user created ", user);
       return userConfig;
     }
-    /*,
-    createRandomUser: async function (){
-      let username = chance.name();
-      let userConfig = {
-          username: username,
-          password: "password",
-          email: username + "@mail.com"
-      };
-      let userCreated = await models.User.createUserInGroups(userConfig, ["User"]);
-      return userCreated;
-    }
-    */
 };
 };

@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 
 export default function hashPasswordHook(instance) {
   const password = instance.get("password");

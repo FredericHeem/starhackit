@@ -1,7 +1,7 @@
-import assert from "assert";
-import sinon from "sinon";
-import _ from "lodash";
-import config from "config";
+import * as assert from "assert";
+import * as sinon from "sinon";
+import * as _ from "lodash";
+import config from "../../../../config";
 import Store from "../../../../store/Store";
 
 import MailJob from "./MailJob";

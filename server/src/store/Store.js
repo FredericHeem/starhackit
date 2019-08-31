@@ -1,4 +1,4 @@
-import redis from "redis";
+import * as redis from "redis";
 
 export default function(config = {}) {
   let log = require("logfilename")(__filename);

@@ -1,4 +1,4 @@
-import passport from 'koa-passport';
+import * as passport from 'koa-passport';
 
 
 export default function PassportMiddleware(app, koaApp/*, config*/){

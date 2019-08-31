@@ -1,5 +1,5 @@
 let assert = require('assert');
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import testMngr from '~/test/testManager';
 
 describe('PasswordReset', function () {

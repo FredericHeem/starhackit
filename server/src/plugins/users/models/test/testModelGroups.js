@@ -1,7 +1,6 @@
-import _ from 'lodash';
-import chai from 'chai';
-const expect = chai.expect;
-import assert from 'assert';
+import * as _ from 'lodash';
+import {expect} from 'chai';
+import * as assert from 'assert';
 import testMngr from '~/test/testManager';
 
 describe('GroupModel', function() {

@@ -1,7 +1,5 @@
-//import _ from 'lodash';
-import Router from 'koa-66';
+import * as Router from 'koa-66';
 import PgSchema from './PgSchema';
-//import config from 'config';
 let log = require('logfilename')(__filename);
 
 export default function DbSchemaPlugin(app){

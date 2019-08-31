@@ -1,8 +1,9 @@
-import passport from "koa-passport";
+import * as passport from "koa-passport";
 import registerLocal from "./auth-strategy/LocalStrategy";
 import registerJwt from "./auth-strategy/JwtStrategy";
 
-let config = require("config");
+import config from "../../config";
+import {get} from 'lodash'
 let log = require("logfilename")(__filename);
 
 export default function(app) {
@@ -12,7 +13,7 @@ export default function(app) {
   registerJwt(passport, models);
   registerLocal(passport, models);
 
-  if (config.has("authentication.facebook")) {
+  if (get(config,"authentication.facebook")) {
     const registerWeb = require("./auth-strategy/FacebookStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/FacebookStrategy")
@@ -20,17 +21,12 @@ export default function(app) {
     registerMobile(passport, models, publisher);
   }
 
-  if (config.has("authentication.google")) {
+  if (get(config,"authentication.google")) {
     const registerWeb = require("./auth-strategy/GoogleStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/GoogleStrategy")
       .registerMobile;
     registerMobile(passport, models, publisher);
-  }
-
-  if (config.has("authentication.fidor")) {
-    let register = require("./auth-strategy/FidorStrategy").register;
-    register(passport, models, publisher);
   }
 
   passport.serializeUser(function(user, done) {

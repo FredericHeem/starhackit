@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs";
-import Promise from "bluebird";
+import * as bcrypt from "bcryptjs";
+import * as Promise from "bluebird";
 import hashPasswordHook from './utils/hashPasswordHook';
 
 module.exports = function(sequelize, DataTypes) {

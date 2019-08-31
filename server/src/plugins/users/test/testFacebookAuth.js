@@ -1,4 +1,5 @@
-import assert from "assert";
+import * as assert from "assert";
+import {get} from "lodash";
 import testMngr from "~/test/testManager";
 
 describe("FacebookAuth", function() {
@@ -8,7 +9,7 @@ describe("FacebookAuth", function() {
     await testMngr.start();
   });
   beforeEach(async function() {
-    if (!testMngr.app.config.authentication.facebook) {
+    if (!get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
   });

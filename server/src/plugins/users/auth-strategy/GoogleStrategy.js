@@ -19,7 +19,9 @@ const profileWebToUser = profile => ({
   email: profile.emails[0].value,
   firstName: profile.name.givenName,
   lastName: profile.name.familyName,
-  picture: profile.image,
+  picture: {
+    url: profile.photos[0].value
+  },
   authProvider: {
     name: "google",
     authId: profile.id
@@ -76,7 +78,7 @@ function registerWeb(passport, models, publisherUser) {
         const res = await verifyWeb(
           models,
           publisherUser,
-          profileWebToUser(profile._json)
+          profileWebToUser(profile)
         );
         done(res.err, res.user);
       } catch (err) {

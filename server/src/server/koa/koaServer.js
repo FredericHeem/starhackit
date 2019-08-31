@@ -1,7 +1,7 @@
 let Promise = require("bluebird");
 import * as Koa from "koa";
 import * as Router from "koa-66";
-import {each} from "lodash";
+const _ = require("lodash");
 
 export default function(app) {
   let log = require("logfilename")(__filename);
@@ -29,11 +29,11 @@ export default function(app) {
     },
     createRouter(api) {
       const router = new Router();
-      each(api.middlewares, middleware => router.use(middleware));
-      each(api.ops, ({ pathname, method, handler }) =>
+      _.each(api.middlewares, middleware => router.use(middleware));
+      _.each(api.ops, ({ pathname, method, handler }) =>
         router[method](pathname, handler)
       );
- 
+
       baseRouter.mount(api.pathname, router);
     },
     /**

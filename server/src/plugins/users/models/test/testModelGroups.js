@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import {expect} from 'chai';
+const expect = require('chai').expect;
 import * as assert from 'assert';
-import testMngr from '~/test/testManager';
+const testMngr = require('test/testManager');
 
 describe('GroupModel', function() {
     const app = testMngr.app;

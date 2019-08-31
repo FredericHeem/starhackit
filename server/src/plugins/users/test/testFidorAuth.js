@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import testMngr from '~/test/testManager';
+const testMngr = require('test/testManager');
 
 describe.skip('Fidor', function(){
   let client;

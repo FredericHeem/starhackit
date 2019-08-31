@@ -5,7 +5,8 @@ import {
   verifyWeb
 } from "./StrategyUtils";
 
-import config from "../../../config";
+//TODO
+import config from "config";
 import Axios from "axios";
 
 const log = require("logfilename")(__filename);
@@ -40,7 +41,7 @@ const profileMobileToUser = profile => ({
   }
 });
 
-export async function verifyMobile(
+async function verifyMobile(
   models,
   publisherUser,
   profile,
@@ -63,6 +64,8 @@ export async function verifyMobile(
 
   return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
+
+module.exports.verifyMobile = verifyMobile;
 
 export function registerWeb(passport, models, publisherUser) {
   let authenticationFbConfig = config.authentication.facebook;

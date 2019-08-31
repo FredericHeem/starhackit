@@ -79,7 +79,7 @@ export default function Data(config) {
         const plugins = app.plugins.get();
         for (let name in plugins) {
           log.debug("seedDefault plugin ", name);
-          const {seedDefault} = plugins[name]
+          const {seedDefault} = plugins[name];
           if (_.isFunction(seedDefault)) {
             await seedDefault();
           }

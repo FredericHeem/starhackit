@@ -1,5 +1,7 @@
-import {Strategy, ExtractJwt} from 'passport-jwt';
-import config from '../../../config';
+const passportJwt = require("passport-jwt");
+const {Strategy, ExtractJwt} = passportJwt;
+//TODO config
+import config from 'config';
 
 let log = require('logfilename')(__filename);
 

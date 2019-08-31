@@ -1,7 +1,6 @@
-import {Strategy as LocalStrategy} from 'passport-local';
+const LocalStrategy = require('passport-local').Strategy;
 let log = require('logfilename')(__filename);
-
-export async function verifyLogin(models, username, password) {
+async function verifyLogin(models, username, password) {
   log.debug("loginStrategy username: ", username);
   let user = await models.User.findByUsernameOrEmail(username);
   if (!user) {
@@ -28,7 +27,6 @@ export async function verifyLogin(models, username, password) {
     };
   }
 }
-
 
 export default function register(passport, models) {
   log.debug("register");

@@ -1,16 +1,12 @@
 import * as Promise from 'bluebird';
 import * as nodemailer from "nodemailer";
 import PassportAuth from './PassportAuth';
-
-import config from '../../config';
-
+//TODO
+import config from 'config';
 // Jobs
 import MailJob from './jobs/mail/MailJob';
-
 import MeRouter from './me/MeRouter';
-
 import UserRouter from './user/UserRouter';
-
 import AuthenticationRouter from './authentication/AuthenticationRouter';
 
 export default function UserPlugin(app){

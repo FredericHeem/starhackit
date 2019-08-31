@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import testMngr from "~/test/testManager";
+const testMngr = require('test/testManager');
 
 describe("Version", function() {
   let client;

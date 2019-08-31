@@ -1,5 +1,5 @@
 
-export default app => {
+export default function(app) {
   const { sequelize } = app.data;
   const { models } = sequelize;
 

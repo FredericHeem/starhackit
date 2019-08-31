@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import asyncBusboy from "async-busboy";
 
-export default app => {
+export default function (app) {
   const { models } = app.data.sequelize;
   app.data.registerModel(__dirname, `DocumentModel`);
 

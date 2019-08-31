@@ -1,6 +1,6 @@
 import * as Promise from "bluebird";
 
-export default app => {
+export default function(app) {
   ["PushTokenModel"].forEach(model =>
     app.data.registerModel(__dirname, `./${model}`)
   );

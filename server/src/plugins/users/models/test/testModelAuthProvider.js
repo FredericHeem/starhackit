@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import testMngr from '~/test/testManager';
+const testMngr = require('test/testManager');
 
 describe('AuthProviderModel', function(){
   let models = testMngr.app.data.sequelize.models;

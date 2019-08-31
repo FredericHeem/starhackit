@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import Store from "./Store";
-import config from "../config";
+import config from "config";
 
 describe("Redis", function() {
   beforeEach(async function() {

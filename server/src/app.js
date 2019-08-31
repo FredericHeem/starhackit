@@ -1,5 +1,5 @@
 import * as Promise from 'bluebird';
-import config from './config';
+import config from 'config';
 import Plugins from './plugins';
 import Data from './models/Data';
 import Store from './store/Store';

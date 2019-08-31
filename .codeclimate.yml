@@ -3,7 +3,7 @@ engines:
     enabled: true
 ratings:
    paths:
-   - client/src/app/**
+   - client/src/**
    - server/src/**
 exclude_paths:
   - "client/src/app/lib/**/*"

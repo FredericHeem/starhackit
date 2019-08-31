@@ -1,7 +1,7 @@
 
 const pkg = require("../../../package.json");
 
-export default app => {
+export default function(app) {
   const api = {
     pathname: "/version",
     ops: {

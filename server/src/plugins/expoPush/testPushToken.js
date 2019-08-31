@@ -1,8 +1,6 @@
-import * as assert from "assert";
-import testMngr from "~/test/testManager";
+const testMngr = require('test/testManager');
 import Axios from "axios";
 import { sendToUser } from "./sendNotification";
-
 //TODO error Request failed with status code 503
 describe.skip("Expo Push Notification", function() {
   let client;

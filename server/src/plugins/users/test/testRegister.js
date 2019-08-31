@@ -1,6 +1,6 @@
 let assert = require('assert');
 import * as sinon from 'sinon';
-import testMngr from '~/test/testManager';
+const testMngr = require('test/testManager');
 
 import UserUtils from './userUtils';
 

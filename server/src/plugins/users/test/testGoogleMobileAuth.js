@@ -1,6 +1,6 @@
 import * as assert from "assert";
-import {get} from "lodash";
-import testMngr from "~/test/testManager";
+const _ = require("lodash");
+const testMngr = require('test/testManager');
 
 describe("GoogleMobileAuth", function() {
   let client;
@@ -9,7 +9,7 @@ describe("GoogleMobileAuth", function() {
     await testMngr.start();
   });
   beforeEach(async function() {
-    if (!get(testMngr.app.config, "authentication.google")) {
+    if (!_.get(testMngr.app.config, "authentication.google")) {
       this.skip();
     }
   });

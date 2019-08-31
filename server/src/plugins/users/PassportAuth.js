@@ -2,8 +2,9 @@ import * as passport from "koa-passport";
 import registerLocal from "./auth-strategy/LocalStrategy";
 import registerJwt from "./auth-strategy/JwtStrategy";
 
-import config from "../../config";
-import {get} from 'lodash'
+//TODO config
+import config from "config";
+const _ = require("lodash");
 let log = require("logfilename")(__filename);
 
 export default function(app) {
@@ -13,7 +14,7 @@ export default function(app) {
   registerJwt(passport, models);
   registerLocal(passport, models);
 
-  if (get(config,"authentication.facebook")) {
+  if (_.get(config,"authentication.facebook")) {
     const registerWeb = require("./auth-strategy/FacebookStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/FacebookStrategy")
@@ -21,7 +22,7 @@ export default function(app) {
     registerMobile(passport, models, publisher);
   }
 
-  if (get(config,"authentication.google")) {
+  if (_.get(config,"authentication.google")) {
     const registerWeb = require("./auth-strategy/GoogleStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/GoogleStrategy")

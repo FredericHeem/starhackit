@@ -1,5 +1,6 @@
-import testMngr from "~/test/testManager";
+require('import-to-commonjs/dist/register');
+const testMngr = require("../src/test/testManager");
 
-before(async () => {
-  await testMngr.seed();
+before(() => {
+  return testMngr.seed();
 });

@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes) {
   const Document = sequelize.define(
     "Document",
     {
-      type: DataTypes.TEXT, 
+      type: DataTypes.TEXT,
       file_type: DataTypes.TEXT,
       name: DataTypes.TEXT,
       size: DataTypes.BIGINT,

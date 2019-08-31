@@ -1,6 +1,6 @@
 import * as assert from "assert";
-import {get} from "lodash";
-import testMngr from "~/test/testManager";
+const _ = require("lodash");
+const testMngr = require('test/testManager');
 
 describe("FacebookAuth", function() {
   let client;
@@ -9,7 +9,7 @@ describe("FacebookAuth", function() {
     await testMngr.start();
   });
   beforeEach(async function() {
-    if (!get(testMngr.app.config, "authentication.facebook")) {
+    if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
   });

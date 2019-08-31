@@ -3,7 +3,7 @@ import * as Router from "koa-66";
 import * as passport from "koa-passport";
 import AuthenticationApi from "./AuthenticationApi";
 import * as jwt from "jsonwebtoken";
-import config from "../../../config";
+import config from "config";
 
 let log = require("logfilename")(__filename);
 

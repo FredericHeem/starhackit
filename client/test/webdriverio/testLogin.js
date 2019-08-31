@@ -1,5 +1,5 @@
 //import assert from 'assert';
-//import testMngr from '~/test/testManager';
+//const testMngr = require('test/testManager');
 var webdriverio = require('webdriverio');
 
 describe('Login', function() {

@@ -1,5 +1,5 @@
-import {assert} from 'chai';
-import testMngr from '~/test/testManager';
+const assert = require('chai').assert;
+const testMngr = require('test/testManager');
 
 describe('Authentication', function(){
   let client;

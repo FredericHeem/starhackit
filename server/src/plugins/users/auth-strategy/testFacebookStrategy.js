@@ -1,6 +1,6 @@
 import * as assert from "assert";
-import {get} from "lodash";
-import testMngr from "~/test/testManager";
+const _ = require("lodash");
+const testMngr = require('test/testManager');
 import { verifyWeb } from "./StrategyUtils";
 
 const profile = {
@@ -20,7 +20,7 @@ describe("FacebookStrategy", function() {
     await testMngr.stop();
   });
   beforeEach(async function() {
-    if (!get(testMngr.app.config, "authentication.facebook")) {
+    if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
   });

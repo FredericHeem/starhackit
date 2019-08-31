@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import {convertAndRespond} from '../HttpUtils';
+const convertAndRespond = require('../HttpUtils').convertAndRespond;
 
 describe('HttpUtils', function(){
 

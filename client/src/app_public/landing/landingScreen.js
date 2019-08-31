@@ -6,7 +6,7 @@ import Title from "components/Title";
 import cardComponent from "./cardComponent";
 import Content from "./content";
 
-export default async context => {
+export default context => {
   const { tr, palette } = context;
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();

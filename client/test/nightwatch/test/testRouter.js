@@ -3,7 +3,7 @@ describe("Router", function() {
     this.timeout(40e3);
     client.page.login().login(done);
   });
-  it.only("page not found", function(client) {
+  it("page not found", function(client) {
     client.page
       .notFound()
       .navigate()

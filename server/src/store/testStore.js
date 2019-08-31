@@ -1,6 +1,6 @@
-import * as assert from "assert";
-import Store from "./Store";
-import config from "config";
+const assert = require("assert");
+const Store =  require("./Store");
+const config =  require("config");
 
 describe("Redis", function() {
   beforeEach(async function() {

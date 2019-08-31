@@ -1,4 +1,4 @@
-export default function(app, koaApp, config) {
+function loggerMiddleware(app, koaApp, config) {
   let log = require("logfilename")(__filename);
   if(!config.koa.logger){
       return;
@@ -12,3 +12,5 @@ export default function(app, koaApp, config) {
     log.debug(`${ctx.method} ${ctx.url} ends in ${ms}ms, code: ${ctx.status}`);
   });
 }
+
+module.exports = loggerMiddleware;

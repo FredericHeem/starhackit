@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+const assert = require('assert');
 const testMngr = require('test/testManager');
 
 describe('Data', function(){

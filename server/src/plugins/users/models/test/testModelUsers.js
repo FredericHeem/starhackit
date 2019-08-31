@@ -1,7 +1,7 @@
-import * as _ from 'lodash';
-import * as assert from 'assert';
+const _ = require('lodash');
+const assert = require('assert');
 const testMngr = require('test/testManager');
-import * as Chance from 'chance';
+const Chance = require('chance');
 
 let chance = new Chance();
 

@@ -1,8 +1,8 @@
-import * as Router from 'koa-66';
-import PgSchema from './PgSchema';
+const Router = require('koa-66');
+const PgSchema = require('./PgSchema');
 let log = require('logfilename')(__filename);
 
-export default function DbSchemaPlugin(app){
+function DbSchemaPlugin(app){
   log.debug("DbSchemaPlugin ");
 
   function DbSchemaHttpController(){
@@ -40,3 +40,5 @@ export default function DbSchemaPlugin(app){
     }
   };
 }
+
+module.exports = DbSchemaPlugin;

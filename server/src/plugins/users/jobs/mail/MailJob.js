@@ -1,12 +1,12 @@
-import * as ejs from "ejs";
-import * as fs from "fs";
-import * as path from "path";
-import * as _ from "lodash";
-import Store from "../../../../store/Store";
+const ejs = require("ejs");
+const fs = require("fs");
+const path = require("path");
+const _ = require("lodash");
+const Store = require("../../../../store/Store");
 
 const channels = ["user.registering", "user.resetpassword"];
 
-export default function MailJob(config, sendMail) {
+function MailJob(config, sendMail) {
   let log = require("logfilename")(__filename);
 
   log.debug("MailJob options: ", config.mail);
@@ -130,3 +130,5 @@ export default function MailJob(config, sendMail) {
     }
   };
 }
+
+module.exports = MailJob;

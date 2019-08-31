@@ -1,7 +1,7 @@
-import * as _ from "lodash";
-import * as Qs from "qs";
+const _ = require("lodash");
+const Qs = require("qs");
 
-export default function UserRouter(app) {
+function UserRouter(app) {
   const { models } = app.data.sequelize;
 
   const api = {
@@ -65,3 +65,5 @@ export default function UserRouter(app) {
   app.server.createRouter(api);
   return {};
 }
+
+module.exports = UserRouter;

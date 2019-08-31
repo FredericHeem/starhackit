@@ -1,9 +1,9 @@
-import * as Promise from 'bluebird';
-import * as assert from 'assert';
-import _async from 'async';
-import * as faker from "faker";
+const Promise = require('bluebird');
+const assert = require('assert');
+const _async = require('async');
+const faker = require("faker");
 
-export default function () {
+function userUtils() {
 
   function createRandomRegisterConfig(){
     let userConfig = {
@@ -76,3 +76,5 @@ export default function () {
 
 };
 };
+
+module.exports = userUtils;

@@ -1,6 +1,6 @@
 const testMngr = require('test/testManager');
-import Server from './koaServer';
-import Axios from 'axios';
+const Server =  require('./koaServer');
+const Axios =  require('axios');
 const assert = require('chai').assert;
 
 describe('Koa', function(){

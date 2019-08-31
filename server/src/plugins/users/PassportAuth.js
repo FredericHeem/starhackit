@@ -1,13 +1,13 @@
-import * as passport from "koa-passport";
-import registerLocal from "./auth-strategy/LocalStrategy";
-import registerJwt from "./auth-strategy/JwtStrategy";
+const passport = require("koa-passport");
+const registerLocal = require("./auth-strategy/LocalStrategy");
+const registerJwt =  require("./auth-strategy/JwtStrategy");
 
 //TODO config
-import config from "config";
+const config = require("config");
 const _ = require("lodash");
 let log = require("logfilename")(__filename);
 
-export default function(app) {
+function PassportAuth(app) {
   const { publisher } = app;
   let models = app.data.sequelize.models;
 
@@ -42,3 +42,5 @@ export default function(app) {
     done(null, user);
   });
 }
+
+module.exports = PassportAuth;

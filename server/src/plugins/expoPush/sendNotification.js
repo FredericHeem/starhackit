@@ -1,5 +1,5 @@
-import * as Axios from "axios";
-import * as _ from "lodash";
+const Axios = require("axios");
+const _ = require("lodash");
 const log = require("logfilename")(__filename);
 
 async function sendToUser(models, user_id, { title, body }) {

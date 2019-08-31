@@ -1,9 +1,5 @@
 console.log("api server started");
-require('import-to-commonjs/dist/register');
-//import * as pkg from '../package.json';
-console.log("package.json: ");
-//console.log(pkg);
-const App = require('./app').default;
+const App = require('./app');
 let app = App();
 app.displayInfoEnv();
 

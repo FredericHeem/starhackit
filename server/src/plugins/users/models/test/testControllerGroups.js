@@ -1,4 +1,4 @@
-import * as chai from 'chai';
+const chai = require('chai');
 const testMngr = require('test/testManager');
 
 describe('Configure Database', function(){

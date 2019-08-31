@@ -1,6 +1,6 @@
-import * as redis from "redis";
+const redis = require("redis");
 
-export default function(config = {}) {
+function Store(config = {}) {
   let log = require("logfilename")(__filename);
   let client;
 
@@ -66,3 +66,5 @@ export default function(config = {}) {
     }
   };
 }
+
+module.exports = Store;

@@ -1,9 +1,9 @@
-import * as _ from "lodash";
-import * as Router from "koa-66";
-import * as passport from "koa-passport";
-import AuthenticationApi from "./AuthenticationApi";
-import * as jwt from "jsonwebtoken";
-import config from "config";
+const _ = require("lodash");
+const Router = require("koa-66");
+const passport = require("koa-passport");
+const AuthenticationApi =  require("./AuthenticationApi");
+const jwt = require("jsonwebtoken");
+const config =  require("config");
 
 let log = require("logfilename")(__filename);
 
@@ -48,7 +48,7 @@ const localAuthCB = ctx => (err, user, info = {}) => {
   }
 };
 
-export function AuthenticationHttpController(app) {
+function AuthenticationHttpController(app) {
   log.debug("AuthenticationHttpController");
   let authApi = AuthenticationApi(app);
   let respond = app.utils.http.respond;
@@ -105,7 +105,7 @@ export function AuthenticationHttpController(app) {
   };
 }
 
-export default function AuthenticationRouter(app) {
+function AuthenticationRouter(app) {
   let router = new Router();
   let authHttpController = AuthenticationHttpController(app);
   router.post("/login", authHttpController.login);
@@ -153,3 +153,6 @@ export default function AuthenticationRouter(app) {
 
   return router;
 }
+
+exports.AuthenticationHttpController = AuthenticationHttpController;
+module.exports = AuthenticationRouter;

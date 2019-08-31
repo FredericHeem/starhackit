@@ -1,6 +1,6 @@
-import * as bcrypt from "bcryptjs";
-import * as Promise from "bluebird";
-import hashPasswordHook from './utils/hashPasswordHook';
+const bcrypt = require("bcryptjs");
+const Promise = require("bluebird");
+const hashPasswordHook = require('./utils/hashPasswordHook');
 
 module.exports = function(sequelize, DataTypes) {
   const log = require("logfilename")(__filename);

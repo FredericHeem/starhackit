@@ -49,7 +49,6 @@
     "chance": "1.0.18",
     "config": "3.2.2",
     "ejs": "2.6.2",
-    "import-to-commonjs": "0.2.5",
     "jsonschema": "1.2.4",
     "jsonwebtoken": "8.5.1",
     "kcors": "2.2.2",

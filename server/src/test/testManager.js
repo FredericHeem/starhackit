@@ -1,7 +1,7 @@
-import * as Promise from 'bluebird';
-import * as _ from 'lodash';
-import Client from "./Client";
-import App from '../app';
+const Promise = require('bluebird');
+const _ = require('lodash');
+const Client = require("./Client");
+const App = require('../app');
 
 let log = require('logfilename')(__filename);
 

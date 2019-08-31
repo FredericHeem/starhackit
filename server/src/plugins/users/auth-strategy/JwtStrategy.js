@@ -1,11 +1,11 @@
 const passportJwt = require("passport-jwt");
 const {Strategy, ExtractJwt} = passportJwt;
 //TODO config
-import config from 'config';
+const config = require('config');
 
 let log = require('logfilename')(__filename);
 
-export default function register(passport, models) {
+function register(passport, models) {
   log.debug("register");
 
   //More options at https://github.com/themikenicholson/passport-jwt#configure-strategy
@@ -34,3 +34,5 @@ export default function register(passport, models) {
 
   passport.use('jwt', strategy);
 };
+
+module.exports = register;

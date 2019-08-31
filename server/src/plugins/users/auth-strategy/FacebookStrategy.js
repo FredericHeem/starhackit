@@ -1,13 +1,11 @@
 const FbWebStrategy = require("passport-facebook").Strategy;
-import {
-  createRegisterMobile,
+const { createRegisterMobile,
   createVerifyMobile,
-  verifyWeb
-} from "./StrategyUtils";
+  verifyWeb } = require("./StrategyUtils");
 
 //TODO
-import config from "config";
-import Axios from "axios";
+const config = require("config");
+const Axios = require("axios");
 
 const log = require("logfilename")(__filename);
 
@@ -67,7 +65,7 @@ async function verifyMobile(
 
 module.exports.verifyMobile = verifyMobile;
 
-export function registerWeb(passport, models, publisherUser) {
+function registerWeb(passport, models, publisherUser) {
   let authenticationFbConfig = config.authentication.facebook;
   if (authenticationFbConfig && authenticationFbConfig.clientID) {
     log.info("configuring facebook authentication strategy");
@@ -104,7 +102,7 @@ export function registerWeb(passport, models, publisherUser) {
   }
 }
 
-export function registerMobile(passport, models, publisherUser) {
+function registerMobile(passport, models, publisherUser) {
   createRegisterMobile(
     "facebook",
     verifyMobile,
@@ -135,3 +133,6 @@ const savePicture = async ({ models, user, fbId, token }) => {
   }
 };
 */
+
+exports.registerWeb = registerWeb;
+exports.registerMobile = registerMobile;

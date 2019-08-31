@@ -1,7 +1,7 @@
-import * as assert from "assert";
+const assert = require("assert");
 const _ = require("lodash");
 const testMngr = require('test/testManager');
-import { verifyWeb } from "./StrategyUtils";
+const { verifyWeb } = require("./StrategyUtils");
 
 const profile = {
   username: "justin time",

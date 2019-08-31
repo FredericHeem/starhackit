@@ -1,10 +1,10 @@
-import * as assert from "assert";
-import * as sinon from "sinon";
-import * as _ from "lodash";
-import config from "config";
-import Store from "../../../../store/Store";
+const assert = require("assert");
+const sinon = require("sinon");
+const _ = require("lodash");
+const config =  require("config");
+const Store = require("../../../../store/Store");
 
-import MailJob from "./MailJob";
+const MailJob = require("./MailJob");
 
 describe("MailJob", function() {
   let publisher = Store(config);

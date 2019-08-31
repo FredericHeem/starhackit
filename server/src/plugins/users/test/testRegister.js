@@ -1,8 +1,8 @@
 let assert = require('assert');
-import * as sinon from 'sinon';
+const sinon = require('sinon');
 const testMngr = require('test/testManager');
 
-import UserUtils from './userUtils';
+const UserUtils = require('./userUtils');
 
 describe('UserRegister', function() {
   let app = testMngr.app;

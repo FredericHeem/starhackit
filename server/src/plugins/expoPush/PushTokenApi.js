@@ -1,5 +1,5 @@
 
-export default function(app) {
+function PushToken(app) {
   const { sequelize } = app.data;
   const { models } = sequelize;
 
@@ -32,3 +32,5 @@ export default function(app) {
 
   app.server.createRouter(api);
 };
+
+module.exports = PushToken;

@@ -1,7 +1,7 @@
 const session = require("koa-generic-session");
 const redisStore = require("koa-redis");
 
-export default function(app, koaApp, config) {
+function SessionMiddleware(app, koaApp, config) {
   let log = require("logfilename")(__filename);
 
   koaApp.keys = config.koa.cookieSecret;
@@ -18,3 +18,5 @@ export default function(app, koaApp, config) {
     koaApp.use(session());
   }
 }
+
+module.exports = SessionMiddleware;

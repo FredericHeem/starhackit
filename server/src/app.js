@@ -1,13 +1,13 @@
-import * as Promise from 'bluebird';
-import config from 'config';
-import Plugins from './plugins';
-import Data from './models/Data';
-import Store from './store/Store';
-import Server from './server/koa/koaServer';
-import * as HttpUtils from './utils/HttpUtils';
+const Promise = require('bluebird');
+const config = require('config')
+const Plugins = require('./plugins');
+const Data = require('./models/Data');
+const Store = require('./store/Store');
+const Server = require('./server/koa/koaServer');
+const HttpUtils = require('./utils/HttpUtils');
 let log = require("logfilename")(__filename);
 
-export default function App() {
+function App() {
   let data = Data(config);
 
   let app = {
@@ -68,3 +68,5 @@ function displayInfoEnv(){
   log.info("USER: %s", process.env.USER);
   log.info("PWD: %s", process.env.PWD);
 }
+
+module.exports = App;

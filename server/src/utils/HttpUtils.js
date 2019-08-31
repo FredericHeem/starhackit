@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
+const _ = require('lodash');
 
 let log = require("logfilename")(__filename);
 
-export function respond(context, me, callback, args, statusCode = 200) {
+function respond(context, me, callback, args, statusCode = 200) {
   //log.debug("respond ");
     //apply used to pass args to the callback
   return callback.apply(me, args)
@@ -22,7 +22,7 @@ function buildError(error){
   };
 }
 
-export function convertAndRespond(context, error) {
+function convertAndRespond(context, error) {
   if (error instanceof TypeError) {
     log.error('TypeError: ', error.toString());
     log.error('TypeError stack: ', error.stack);
@@ -44,3 +44,6 @@ export function convertAndRespond(context, error) {
     context.body = buildError(error);
   }
 }
+
+exports.respond = respond;
+exports.convertAndRespond = convertAndRespond;

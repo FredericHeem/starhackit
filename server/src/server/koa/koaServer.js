@@ -1,9 +1,9 @@
 let Promise = require("bluebird");
-import * as Koa from "koa";
-import * as Router from "koa-66";
+const Koa = require("koa");
+const Router = require("koa-66");
 const _ = require("lodash");
 
-export default function(app) {
+function KoaServer(app) {
   let log = require("logfilename")(__filename);
   let koaApp = new Koa();
   const { config } = app;
@@ -14,7 +14,7 @@ export default function(app) {
 
   return {
     koa: koaApp,
-    auth: require("./middleware/PassportMiddleware").default(app, koaApp, config),
+    auth: require("./middleware/PassportMiddleware")(app, koaApp, config),
     baseRouter() {
       return baseRouter;
     },
@@ -72,17 +72,19 @@ export default function(app) {
 
   function middlewareInit() {
     //log.debug("middlewareInit");
-    require("./middleware/SessionMiddleware").default(app, koaApp, config);
+    require("./middleware/SessionMiddleware")(app, koaApp, config);
 
     const bodyParser = require("koa-bodyparser");
     koaApp.use(bodyParser());
 
-    require("./middleware/LoggerMiddleware").default(app, koaApp, config);
+    require("./middleware/LoggerMiddleware")(app, koaApp, config);
 
     //Cors support
-    require("./middleware/CorsMiddleware").default(app, koaApp, config);
+    require("./middleware/CorsMiddleware")(app, koaApp, config);
 
     //Serve static html files such as the generated api documentation.
-    require("./middleware/StaticMiddleware").default(app, koaApp, config);
+    require("./middleware/StaticMiddleware")(app, koaApp, config);
   }
 }
+
+module.exports = KoaServer;

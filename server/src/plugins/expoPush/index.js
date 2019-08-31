@@ -1,11 +1,11 @@
-import * as Promise from "bluebird";
+const Promise = require("bluebird");
 
-export default function(app) {
+function ExpoPush(app) {
   ["PushTokenModel"].forEach(model =>
     app.data.registerModel(__dirname, `./${model}`)
   );
 
-  ["PushTokenApi"].forEach(model => require(`./${model}`).default(app));
+  ["PushTokenApi"].forEach(model => require(`./${model}`)(app));
 
   return {
     seedDefault() {
@@ -14,3 +14,5 @@ export default function(app) {
     }
   };
 };
+
+module.exports = ExpoPush;

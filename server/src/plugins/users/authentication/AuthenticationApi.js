@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
-import * as Chance from 'chance';
+const _ = require('lodash');
+const Chance = require('chance');
 let chance = new Chance();
 
-export default function(app) {
+function AuthenticationApi(app) {
   let log = require("logfilename")(__filename);
   const {publisher} = app;
   let models = app.data.sequelize.models;
@@ -161,3 +161,5 @@ function createToken(){
     pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   });
 }
+
+module.exports = AuthenticationApi;

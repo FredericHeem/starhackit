@@ -1,8 +1,8 @@
-import { Strategy } from "passport-local";
+const { Strategy } = require("passport-local");
 
 const log = require("logfilename")(__filename);
 
-export function createRegisterMobile(
+function createRegisterMobile(
   name,
   verifyMobile,
   passport,
@@ -83,3 +83,4 @@ async function createVerifyMobile(
   }
 }
 module.exports.createVerifyMobile = createVerifyMobile;
+exports.createRegisterMobile = createRegisterMobile;

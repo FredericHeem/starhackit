@@ -1,9 +1,9 @@
-import * as JsonSchema from "jsonschema";
+const JsonSchema = require("jsonschema");
 let validator = new JsonSchema.Validator();
 let validate = validator.validate.bind(validator);
 
 //Deprecated
-export function validateJson(json, schema) {
+function validateJson(json, schema) {
   let result = validate(json, schema);
   if (!result.errors.length) return true;
 
@@ -14,7 +14,7 @@ export function validateJson(json, schema) {
   };
 }
 
-export function validateSchema(json, schema, context) {
+function validateSchema(json, schema, context) {
   const result = validate(json, schema);
   if (!result.errors.length) return true;
   context.status = 400;
@@ -26,3 +26,6 @@ export function validateSchema(json, schema, context) {
     }
   };
 }
+
+exports.validateJson = validateJson;
+exports.validateSchema = validateSchema;

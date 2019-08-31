@@ -1,7 +1,7 @@
-import * as passport from 'koa-passport';
+const passport = require('koa-passport');
 
 
-export default function PassportMiddleware(app, koaApp/*, config*/){
+function PassportMiddleware(app, koaApp/*, config*/){
   let log = require('logfilename')(__filename);
 
   koaApp.use(passport.initialize());
@@ -63,3 +63,5 @@ export default function PassportMiddleware(app, koaApp/*, config*/){
     }
   };
 }
+
+module.exports = PassportMiddleware;

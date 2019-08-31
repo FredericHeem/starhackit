@@ -1,15 +1,15 @@
-import * as Promise from 'bluebird';
-import * as nodemailer from "nodemailer";
-import PassportAuth from './PassportAuth';
+const Promise = require('bluebird');
+const nodemailer = require("nodemailer");
+const PassportAuth = require('./PassportAuth');
 //TODO
-import config from 'config';
+const config = require('config');
 // Jobs
-import MailJob from './jobs/mail/MailJob';
-import MeRouter from './me/MeRouter';
-import UserRouter from './user/UserRouter';
-import AuthenticationRouter from './authentication/AuthenticationRouter';
+const MailJob =  require('./jobs/mail/MailJob');
+const MeRouter =  require('./me/MeRouter');
+const UserRouter =  require('./user/UserRouter');
+const AuthenticationRouter = require('./authentication/AuthenticationRouter');
 
-export default function UserPlugin(app){
+function UserPlugin(app){
   let log = require("logfilename")(__filename);
 
   app.data.registerModelsFromDir(__dirname, './models');
@@ -76,3 +76,5 @@ function setupAuthentication(app) {
   app.auth = auth;
   return auth;
 }
+
+module.exports = UserPlugin;

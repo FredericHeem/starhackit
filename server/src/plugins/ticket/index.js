@@ -1,4 +1,4 @@
-export default function(app) {
+function Ticket(app) {
   const { models } = app.data.sequelize;
   app.data.registerModel(__dirname, `TicketModel`);
 
@@ -97,3 +97,5 @@ export default function(app) {
   app.server.createRouter(api);
   return {};
 };
+
+module.exports = Ticket;

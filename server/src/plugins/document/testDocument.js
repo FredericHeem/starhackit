@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as assert from "assert";
+const fs = require("fs");
+const assert = require("assert");
 const testMngr = require('test/testManager');
 
 describe.skip("Document No Auth", function() {

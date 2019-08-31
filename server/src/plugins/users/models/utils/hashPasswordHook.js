@@ -1,6 +1,6 @@
-import * as bcrypt from "bcryptjs";
+const bcrypt = require("bcryptjs");
 
-export default function hashPasswordHook(instance) {
+function hashPasswordHook(instance) {
   const password = instance.get("password");
     return new Promise((resolve, reject) => {
       if (!instance.changed("password") || !password) {
@@ -18,3 +18,4 @@ export default function hashPasswordHook(instance) {
       });
     });
   };
+module.exports = hashPasswordHook;

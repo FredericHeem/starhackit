@@ -1,4 +1,5 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
 import Row from "components/Row";
@@ -45,8 +46,14 @@ export default context => {
     return (
       <Section>
         <Title>{tr.t("Features")}</Title>
-        <Row className="text-center">
-          {features.map((card, key) => <CardIcon key={key} {...card} />)}
+        <Row
+          css={css`
+            text-align: center;
+          `}
+        >
+          {features.map((card, key) => (
+            <CardIcon key={key} {...card} />
+          ))}
         </Row>
       </Section>
     );
@@ -74,7 +81,9 @@ export default context => {
       <Section>
         <Title>{tr.t("Frontend - User Interface")}</Title>
         <Row>
-          {frontend.map((card, key) => <CardIcon key={key} {...card} />)}
+          {frontend.map((card, key) => (
+            <CardIcon key={key} {...card} />
+          ))}
         </Row>
       </Section>
     );
@@ -85,7 +94,9 @@ export default context => {
       <Section>
         <Title>{tr.t("Backend - API Server")}</Title>
         <Row>
-          {backend.map((card, key) => <CardIcon key={key} {...card} />)}
+          {backend.map((card, key) => (
+            <CardIcon key={key} {...card} />
+          ))}
         </Row>
       </Section>
     );
@@ -95,14 +106,18 @@ export default context => {
     return (
       <Section>
         <Title>{tr.t("Developer Tools")}</Title>
-        <Row>{tools.map((card, key) => <CardIcon key={key} {...card} />)}</Row>
+        <Row>
+          {tools.map((card, key) => (
+            <CardIcon key={key} {...card} />
+          ))}
+        </Row>
       </Section>
     );
   }
 
   function LandingScreen() {
     return (
-      <div style={{maxWidth: "100vw"}} className="text-center">
+      <div style={{ maxWidth: "100vw", textAlign: "center" }}>
         <Header />
         <Features />
         <End2End />

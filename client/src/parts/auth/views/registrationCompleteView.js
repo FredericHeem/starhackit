@@ -14,7 +14,7 @@ export default context => {
     const Paper = paper(context);
     const { error } = store.op;
     return (
-      <Page className="registration-complete-page text-center">
+      <Page className="registration-complete-page">
         <Paper>
           <h3>{tr.t("Registering your account")}</h3>
           <AlertAjax

@@ -1,4 +1,4 @@
-import "./app.css";
+//import "./app.css";
 import Router from "./router";
 import Log from "utils/log";
 import config from "./config";

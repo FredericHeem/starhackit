@@ -33,7 +33,7 @@ export default context => {
   }
   return observer(function LogoutView({ store }) {
     return (
-      <Page className="logout-page text-center">
+      <Page className="logout-page">
         {store.authenticated ? <LoggingOut /> : <LoggedOut />}
       </Page>
     );

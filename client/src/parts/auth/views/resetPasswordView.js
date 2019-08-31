@@ -109,7 +109,7 @@ export default context => {
   const  ResetPasswordForm = observer(({ store, params }) => {
     // console.log("ResetPasswordForm ", store.op);
     return (
-      <Page className="reset-password-page text-center">
+      <Page className="reset-password-page">
         <Paper>
           <h3>{tr.t("Reset Password")}</h3>
           <AlertAjax

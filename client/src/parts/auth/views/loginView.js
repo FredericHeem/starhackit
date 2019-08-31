@@ -18,7 +18,7 @@ export default context => {
   return function LoginView(props) {
     const Button = button(context);
     return (
-      <Page className="login-page text-center">
+      <Page className="login-page">
         <Paper>
           <h2>{tr.t("Login")}</h2>
           <div>

@@ -24,7 +24,7 @@ export default context => {
       return null;
     }
     return (
-      <Page className="user-view text-center">
+      <Page className="user-view">
         <Paper>
           <h3>{tr.t("User")}</h3>
           <FormGroup>

@@ -1,10 +1,12 @@
 const config = require("config");
 
+const common = {
+  url: config.db.url,
+  migrationStorageTableName: "sequelize_meta",
+  migrationStorageTableSchema: "sequelize_schema"
+};
+
 module.exports = {
-  development: {
-    url: config.db.url
-  },
-  production: {
-    url: config.db.url
-  }
+  development: common,
+  production: common
 };

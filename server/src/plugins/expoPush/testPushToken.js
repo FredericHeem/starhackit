@@ -2,7 +2,7 @@ const testMngr = require('test/testManager');
 const Axios = require("axios");
 const { sendToUser } = require("./sendNotification");
 //TODO error Request failed with status code 503
-describe.skip("Expo Push Notification", function() {
+describe("Expo Push Notification", function() {
   let client;
   const models = testMngr.app.data.models();
   before(async () => {

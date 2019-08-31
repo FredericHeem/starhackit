@@ -2,7 +2,7 @@ const fs = require("fs");
 const assert = require("assert");
 const testMngr = require('test/testManager');
 
-describe.skip("Document No Auth", function() {
+describe("Document No Auth", function() {
   let client;
   before(async () => {
     await testMngr.start();
@@ -25,7 +25,7 @@ describe.skip("Document No Auth", function() {
   });
 });
 
-describe.skip("Document", function() {
+describe("Document", function() {
   let client;
   before(async () => {
     await testMngr.start();

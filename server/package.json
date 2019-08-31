@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "9.0.4",
+  "version": "9.0.0",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -11,12 +11,10 @@
   "license": "NLPL",
   "scripts": {
     "prestart": "npm run lint && npm run jscpd",
-    "build": "",
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
-    "pretest": "npm run build",
-    "test": "npm run coverage",
+    "test": "npm run cover",
     "mocha": "NODE_PATH=src mocha",
-    "coverage": "NODE_PATH=src istanbul  cover -x 'src/**/test*.js' -x 'test/**/test*.js' -x 'src/plugins/crossbank/*' -x 'src/plugins/dbSchema/*'  -x 'src/plugins/ticket/*' -x 'src/plugins/document/*' -x 'src/plugins/fidor/*' _mocha --report text --report html --report lcov ./src/**/test*.js ./test/**/*.js",
+    "cover": "nyc npm run mocha",
     "coveralls": "coveralls < coverage/lcov.info",
     "codecov": "./node_modules/codecov.io/bin/codecov.io.js < coverage/lcov.info",
     "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
@@ -89,17 +87,37 @@
     "eslint": "6.3.0",
     "eslint-plugin-mocha": "6.1.0",
     "faker": "4.1.0",
-    "isparta": "4.1.1",
-    "istanbul": "0.4.5",
     "jscpd": "2.0.15",
     "mocha": "6.2.0",
     "nodemon": "1.19.1",
+    "nyc": "14.1.1",
     "raml-mocker-server": "0.1.6",
     "raml2html": "7.4.0",
     "request": "2.88.0",
     "shelljs": "0.8.3",
     "should": "13.2.3",
     "sinon": "7.4.1"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/test*.js",
+      "src/database.js",
+      "src/scripts",
+      "src/index.js"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "reporter": [
+      "html",
+      "text",
+      "text-summary"
+    ],
+    "all": true
   },
   "engines": {
     "node": ">=8"

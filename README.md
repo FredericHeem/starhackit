@@ -1,4 +1,4 @@
-<img alt="Starhack" src="./client/src/app/parts/landing/img/starhackit-logo-text.png" height="250">
+<img alt="Starhack" src="./client/src/app_public/landing/img/starhackit-logo-text.png" height="250">
 
 StarHackIt
 ==========

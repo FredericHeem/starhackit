@@ -44,7 +44,7 @@
     "axios": "0.19.0",
     "bcryptjs": "2.4.3",
     "bluebird": "3.5.5",
-    "chance": "1.0.18",
+    "chance": "1.1.0",
     "config": "3.2.2",
     "ejs": "2.6.2",
     "ioredis": "4.14.0",

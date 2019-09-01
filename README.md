@@ -18,7 +18,8 @@ Fullstack web application starter kit written in modern Javascript with react an
 * Scalable by using a micro services based architecture, a.k.a message queues
 * Relational database: postgres, mysql, sqlite, mssql etc, ...
 * Logging
-
+* 100% results in [Lighthouse test](https://developers.google.com/web/tools/lighthouse/)
+  
 ## Frontend Technologies
 
 * [React](https://facebook.github.io/react/): libraries to build user interfaces.

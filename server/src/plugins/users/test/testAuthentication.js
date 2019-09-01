@@ -21,8 +21,6 @@ describe('Authentication', function(){
         username:"alice@mail.com"
     };
     beforeEach(async () => {
-
-
       await client.login(postParam);
     });
 
@@ -45,7 +43,7 @@ describe('Authentication', function(){
     } catch(err){
       assert(err);
       assert.equal(err.statusCode, 401);
-      //assert.equal(err.body, "Bad Request");
+      assert.equal(err.body, "Bad Request");
     }
   });
 

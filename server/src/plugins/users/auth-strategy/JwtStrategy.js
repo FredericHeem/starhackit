@@ -17,18 +17,13 @@ function register(passport, models) {
 
   let strategy = new Strategy(opts, async (jwtPayload, done) => {
     log.debug("findUser: ", jwtPayload);
-    let user = await models.User.findOne({
-      where: {
-        id: jwtPayload.id
-      }
-    });
 
-    if (!user) {
+    if (!jwtPayload) {
       log.info("findUser no user");
       done(null);
     } else {
-      log.info("findUser ", user.get());
-      done(null, user.get());
+      log.info("findUser ", jwtPayload);
+      done(null, jwtPayload);
     }
   });
 

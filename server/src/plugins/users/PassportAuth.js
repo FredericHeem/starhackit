@@ -1,5 +1,4 @@
 const passport = require("koa-passport");
-const registerLocal = require("./auth-strategy/LocalStrategy");
 const registerJwt =  require("./auth-strategy/JwtStrategy");
 
 //TODO config
@@ -12,7 +11,6 @@ function PassportAuth(app) {
   let models = app.data.sequelize.models;
 
   registerJwt(passport, models);
-  registerLocal(passport, models);
 
   if (_.get(config,"authentication.facebook")) {
     const registerWeb = require("./auth-strategy/FacebookStrategy").registerWeb;

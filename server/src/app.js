@@ -5,9 +5,9 @@ const Data = require('./models/Data');
 const Store = require('./store/Store');
 const Server = require('./server/koa/koaServer');
 const HttpUtils = require('./utils/HttpUtils');
-let log = require("logfilename")(__filename);
-
+const log = require("logfilename")(__filename, config.log);
 function App() {
+
   let data = Data(config);
 
   let app = {

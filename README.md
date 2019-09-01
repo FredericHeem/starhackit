@@ -9,8 +9,6 @@ StarHackIt is a fullstack starter kit composed of:
 * Node backend
 * Deployment by Ansible with docker images
 
-[![Join the chat at https://gitter.im/FredericHeem/starhackit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/FredericHeem/starhackit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Fullstack web application starter kit written in modern Javascript with react and node.js with the following features:
 
 * Authentication: username/password, facebook, google authentication etc ...
@@ -56,8 +54,9 @@ For more information about the backend, see its [README](server/README.md)
 * [Travis](https://travis-ci.org/): Test and deploy. [![Build Status](https://travis-ci.org/FredericHeem/starhackit.svg?branch=master)](https://travis-ci.org/FredericHeem/starhackit)
 * [CodeClimate](https://codeclimate.com): Automated code review [![Code Climate](https://codeclimate.com/github/FredericHeem/starhackit/badges/gpa.svg)](https://codeclimate.com/github/FredericHeem/starhackit)
 [![Test Coverage](https://codeclimate.com/github/FredericHeem/starhackit/badges/coverage.svg)](https://codeclimate.com/github/FredericHeem/starhackit/coverage)
-* [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/starhackit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/starhackit?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/FredericHeem/starhackit.svg)](https://greenkeeper.io/)
-* 
+* [Coveralls](https://coveralls.io): [![Coverage Status](https://coveralls.io/repos/FredericHeem/starhackit/badge.svg?branch=master)](https://coveralls.io/r/FredericHeem/starhackit?branch=master)
+*  [![Greenkeeper badge](https://badges.greenkeeper.io/FredericHeem/starhackit.svg)](https://greenkeeper.io/)
+  
 
 > The frontend and the backend are two separate projects with their own set of dependencies. One can use the frontend with another existing backend, or use the backend with another frontend stack.
 

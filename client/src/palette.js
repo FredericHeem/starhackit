@@ -1,6 +1,6 @@
 export default () => ({
   primaryDark: "#455A64",
-  primary: "#607D8B",
+  primary: "#0c4560",
   primaryLight: "#CFD8DC",
   accent: "#7C4DFF",
   background: "#ffffff",

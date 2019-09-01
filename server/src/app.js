@@ -7,14 +7,13 @@ const Server = require('./server/koa/koaServer');
 const HttpUtils = require('./utils/HttpUtils');
 const log = require("logfilename")(__filename, config.log);
 function App() {
-
   let data = Data(config);
+  const publisher =  Store(config);
 
   let app = {
     config,
     data: data,
-    store: Store(config),
-    publisher: Store(config),
+    publisher,
     utils:{
       http: HttpUtils,
       api: require('./utils/ApiUtils')
@@ -25,13 +24,13 @@ function App() {
     },
 
     async start() {
-      log.info("start");
+      log.debug("start");
       await action('start');
       log.info("started");
     },
 
     async stop() {
-      log.info("stop");
+      log.debug("stop");
       await action('stop');
       log.info("stopped");
     },
@@ -47,7 +46,6 @@ function App() {
 
   let parts = [
     app.data,
-    app.store,
     app.publisher,
     app.server,
     app.plugins

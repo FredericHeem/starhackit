@@ -11,7 +11,6 @@ function KoaServer(app) {
   let rootRouter = new Router();
   let baseRouter = new Router();
   middlewareInit(app, koaApp, config);
-
   return {
     koa: koaApp,
     auth: require("./middleware/PassportMiddleware")(app, koaApp, config),
@@ -70,7 +69,7 @@ function KoaServer(app) {
     }
   };
 
-  function middlewareInit() {
+  function middlewareInit(app, koaApp, config) {
     //log.debug("middlewareInit");
     require("./middleware/SessionMiddleware")(app, koaApp, config);
 

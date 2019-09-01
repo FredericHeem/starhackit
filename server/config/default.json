@@ -8,7 +8,7 @@
     }
   },
   "redis":{
-    "url": "redis://localhost:7379"
+    "url": "//localhost:7379"
   },
   "koa": {
     "port": 9000,

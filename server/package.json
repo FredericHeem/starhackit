@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -47,6 +47,7 @@
     "chance": "1.0.18",
     "config": "3.2.2",
     "ejs": "2.6.2",
+    "ioredis": "4.14.0",
     "jsonschema": "1.2.4",
     "jsonwebtoken": "8.5.1",
     "kcors": "2.2.2",
@@ -72,7 +73,6 @@
     "pg-hstore": "2.3.3",
     "pm2": "3.5.1",
     "qs": "6.8.0",
-    "redis": "2.8.0",
     "sequelize": "5.18.0",
     "sequelize-cli": "5.5.1",
     "urijs": "1.19.1",

@@ -147,7 +147,7 @@ Here is how to configure Redis:
 
 ```
 "redis":{
-  "url": "redis://localhost:6379"
+  "url": "//localhost:6379"
 },
 ```
 

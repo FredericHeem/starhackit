@@ -1,4 +1,3 @@
-const redis = require("redis");
 const Redis = require('ioredis');
 
 function Store(config = {}) {

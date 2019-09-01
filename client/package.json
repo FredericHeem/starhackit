@@ -10,7 +10,7 @@
     "start:prod": "http-server dist/",
     "prestart": "npm run prebuild",
     "lint": "tslint -c tslint.json './src/**/*.{js,jsx,ts,tsx}'",
-    "cpd": "jscpd",
+    "cpd": "jscpd -r console --format 'javascript,typescript' ./src",
     "prebuild": "npm run lint && npm run cpd",
     "build": "webpack --config webpack.prod.js",
     "clean": "rimraf dist coverage",

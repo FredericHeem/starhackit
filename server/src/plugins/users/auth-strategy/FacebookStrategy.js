@@ -55,7 +55,7 @@ async function verifyMobile(
         }
       })
       .then(res => {
-        log.debug("verifyMobile me: ", JSON.stringify(res.data, null, 4));
+        log.debug("verifyMobile fb me: ", JSON.stringify(res.data, null, 4));
         return res;
       })
       .then(res => profileMobileToUser(res.data));

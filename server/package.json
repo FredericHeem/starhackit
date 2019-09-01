@@ -25,7 +25,7 @@
     "mocker": "node scripts/mocker-server.js",
     "doc": "node scripts/apidoc.js",
     "opendoc": "npm run doc && open build/api/v1/doc/api.html",
-    "jscpd": "jscpd -f 'src/**'",
+    "jscpd": "jscpd -r console --format 'javascript' --ignore '**/test*.js' ./src",
     "db:create": "node_modules/.bin/sequelize db:create",
     "db:drop": "node_modules/.bin/sequelize db:drop",
     "db:migrate": "node_modules/.bin/sequelize db:migrate",

@@ -1,6 +1,6 @@
 const koaStatic = require('koa-static');
 
-export default function (app, koaApp, config){
+function StaticMiddleware(app, koaApp, config){
   let log = require('logfilename')(__filename);
   const {staticContent} = config.koa;
   if(!staticContent){
@@ -9,3 +9,5 @@ export default function (app, koaApp, config){
   log.info("serve static files: ", staticContent);
   staticContent.forEach(path => koaApp.use(koaStatic(path)));
 }
+
+module.exports = StaticMiddleware;

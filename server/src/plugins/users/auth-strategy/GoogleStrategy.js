@@ -1,13 +1,11 @@
-import { Strategy } from "passport-google-oauth20";
-import GoogleTokenStrategy from "passport-google-id-token";
-import {
-  createRegisterMobile,
+const { Strategy } = require("passport-google-oauth20");
+const GoogleTokenStrategy = require("passport-google-id-token");
+const { createRegisterMobile,
   createVerifyMobile,
-  verifyWeb
-} from "./StrategyUtils";
+  verifyWeb } = require("./StrategyUtils");
 
-import Axios from "axios";
-import config from "config";
+const Axios = require("axios");
+const config = require("config");
 
 const log = require("logfilename")(__filename);
 
@@ -21,7 +19,9 @@ const profileWebToUser = profile => ({
   email: profile.emails[0].value,
   firstName: profile.name.givenName,
   lastName: profile.name.familyName,
-  picture: profile.image,
+  picture: {
+    url: profile.photos[0].value
+  },
   authProvider: {
     name: "google",
     authId: profile.id
@@ -42,7 +42,7 @@ const profileMobileToUser = profile => ({
   }
 });
 
-export async function verifyMobile(
+function verifyMobile(
   models,
   publisherUser,
   profile,
@@ -64,7 +64,7 @@ export async function verifyMobile(
   return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
 
-export function registerWeb(passport, models, publisherUser) {
+function registerWeb(passport, models, publisherUser) {
   const googleConfig = config.authentication.google;
   if (googleConfig) {
     const strategy = new Strategy(googleConfig, async function(
@@ -78,7 +78,7 @@ export function registerWeb(passport, models, publisherUser) {
         const res = await verifyWeb(
           models,
           publisherUser,
-          profileWebToUser(profile._json)
+          profileWebToUser(profile)
         );
         done(res.err, res.user);
       } catch (err) {
@@ -89,7 +89,7 @@ export function registerWeb(passport, models, publisherUser) {
   }
 }
 
-export function registerMobile(passport, models, publisherUser) {
+function registerMobile(passport, models, publisherUser) {
   createRegisterMobile("google", verifyMobile, passport, models, publisherUser);
 
   //const googleConfig = config.authentication.google;
@@ -124,3 +124,7 @@ export function registerMobile(passport, models, publisherUser) {
     )
   );
 }
+
+exports.verifyMobile = verifyMobile;
+exports.registerWeb = registerWeb;
+exports.registerMobile = registerMobile;

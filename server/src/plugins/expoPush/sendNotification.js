@@ -1,8 +1,8 @@
-import Axios from "axios";
-import _ from "lodash";
+const Axios = require("axios");
+const _ = require("lodash");
 const log = require("logfilename")(__filename);
 
-export async function sendToUser(models, user_id, { title, body }) {
+async function sendToUser(models, user_id, { title, body }) {
   log.debug(`sendToUser: ${user_id}, title: ${title}, body: ${body}`);
   const tokens = await models.PushToken.findAll({ where: { user_id } });
   if (_.isEmpty(tokens)) {
@@ -20,3 +20,5 @@ export async function sendToUser(models, user_id, { title, body }) {
     data
   });
 }
+
+module.exports.sendToUser = sendToUser;

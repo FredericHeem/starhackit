@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
   };
 
   Permission.findByName = function(permissionName) {
-    return Permission.find({ where: { name: permissionName } });
+    return Permission.findOne({ where: { name: permissionName } });
   };
 
   return Permission;

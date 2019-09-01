@@ -1,9 +1,9 @@
 let Promise = require("bluebird");
-import Koa from "koa";
-import Router from "koa-66";
-import _ from "lodash";
+const Koa = require("koa");
+const Router = require("koa-66");
+const _ = require("lodash");
 
-export default function(app) {
+function KoaServer(app) {
   let log = require("logfilename")(__filename);
   let koaApp = new Koa();
   const { config } = app;
@@ -11,7 +11,6 @@ export default function(app) {
   let rootRouter = new Router();
   let baseRouter = new Router();
   middlewareInit(app, koaApp, config);
-
   return {
     koa: koaApp,
     auth: require("./middleware/PassportMiddleware")(app, koaApp, config),
@@ -33,14 +32,14 @@ export default function(app) {
       _.each(api.ops, ({ pathname, method, handler }) =>
         router[method](pathname, handler)
       );
- 
+
       baseRouter.mount(api.pathname, router);
     },
     /**
      * Start the koa server
      */
     async start() {
-      let configHttp = config.get("koa");
+      let configHttp = config.koa;
       let port = process.env.PORT || configHttp.port;
 
       log.info("start koa on port %s", port);
@@ -70,8 +69,8 @@ export default function(app) {
     }
   };
 
-  function middlewareInit() {
-    log.debug("middlewareInit");
+  function middlewareInit(app, koaApp, config) {
+    //log.debug("middlewareInit");
     require("./middleware/SessionMiddleware")(app, koaApp, config);
 
     const bodyParser = require("koa-bodyparser");
@@ -86,3 +85,5 @@ export default function(app) {
     require("./middleware/StaticMiddleware")(app, koaApp, config);
   }
 }
+
+module.exports = KoaServer;

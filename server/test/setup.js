@@ -1,5 +1,5 @@
-import testMngr from "~/test/testManager";
+const testMngr = require("../src/test/testManager");
 
-before(async () => {
-  await testMngr.seed();
+before(() => {
+  return testMngr.seed();
 });

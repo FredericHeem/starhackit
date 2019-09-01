@@ -1,7 +1,7 @@
 
 const pkg = require("../../../package.json");
 
-export default app => {
+function Version(app) {
   const api = {
     pathname: "/version",
     ops: {
@@ -21,3 +21,5 @@ export default app => {
   app.server.createRouter(api);
   return {};
 };
+
+module.exports = Version;

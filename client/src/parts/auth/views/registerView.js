@@ -74,7 +74,7 @@ export default context => {
   const RegisterView = observer(({ store }) => {
     const registerSuccess = !!store.op.data;
     return (
-      <Page className="register-page text-center">
+      <Page className="register-page">
         <Paper>
           <h2>{tr.t("Register An Account")}</h2>
           <p>{tr.t("Create a free account")}</p>

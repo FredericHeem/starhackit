@@ -1,8 +1,8 @@
-import _ from "lodash";
-import Qs from "qs";
-import Sequelize from "sequelize";
+const _ = require("lodash");
+const Qs = require("qs");
+const Op = require("sequelize").Op;
 
-export default function UserRouter(app) {
+function UserRouter(app) {
   const { models } = app.data.sequelize;
 
   const api = {
@@ -27,9 +27,9 @@ export default function UserRouter(app) {
             order: [["createdAt", filter.order]],
             offset: filter.offset,
             where: filter.search && {
-              $or: [
-                { username: { $like: `%${filter.search}%` } },
-                { email: { $like: `%${filter.search}%` } }
+              [Op.or]: [
+                { username: { [Op.like]: `%${filter.search}%` } },
+                { email: { [Op.like]: `%${filter.search}%` } }
               ]
             }
           });
@@ -66,3 +66,5 @@ export default function UserRouter(app) {
   app.server.createRouter(api);
   return {};
 }
+
+module.exports = UserRouter;

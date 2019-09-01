@@ -1,3 +1,5 @@
+.nyc_output/
+dist/
 .vscode
 build/
 node_modules/

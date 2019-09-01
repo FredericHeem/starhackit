@@ -1,6 +1,6 @@
-import Promise from "bluebird";
+const Promise = require("bluebird");
 
-export default app => {
+function ExpoPush(app) {
   ["PushTokenModel"].forEach(model =>
     app.data.registerModel(__dirname, `./${model}`)
   );
@@ -14,3 +14,5 @@ export default app => {
     }
   };
 };
+
+module.exports = ExpoPush;

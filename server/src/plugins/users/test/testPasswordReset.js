@@ -1,6 +1,6 @@
 let assert = require('assert');
-import sinon from 'sinon';
-import testMngr from '~/test/testManager';
+const sinon = require('sinon');
+const testMngr = require('test/testManager');
 
 describe('PasswordReset', function () {
   let app = testMngr.app;
@@ -35,9 +35,8 @@ describe('PasswordReset', function () {
     // Create the reset token
     let res = await client.post('v1/auth/reset_password', resetPaswordData);
     assert(res);
-
     // Verify that the reset token has been created
-    let resUser = await models.User.find({
+    let resUser = await models.User.findOne({
       where: {
         email: email
       },
@@ -64,7 +63,7 @@ describe('PasswordReset', function () {
     assert(res);
 
     // Verify that the reset token has been deleted
-    const passwordReset = await models.PasswordReset.find({
+    const passwordReset = await models.PasswordReset.findOne({
       where: {
         token
       }
@@ -93,13 +92,12 @@ describe('PasswordReset', function () {
     let resetPaswordData = {
       email
     };
-
     // Create the reset token
     let res = await client.post('v1/auth/reset_password', resetPaswordData);
     assert(res);
 
     // Verify that the reset token has been created
-    let resUser = await models.User.find({
+    let resUser = await models.User.findOne({
       where: {
         email: email
       },
@@ -116,7 +114,7 @@ describe('PasswordReset', function () {
     assert(token);
     //Set the token creation date to the past
     await models.PasswordReset.update({
-      created_at: new Date("2016-08-25").toUTCString()
+      createdAt: new Date("2016-08-25").toUTCString()
     },{
       where: {token}
     });

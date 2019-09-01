@@ -1,8 +1,8 @@
-import { Strategy } from "passport-local";
+const { Strategy } = require("passport-local");
 
 const log = require("logfilename")(__filename);
 
-export function createRegisterMobile(
+function createRegisterMobile(
   name,
   verifyMobile,
   passport,
@@ -28,7 +28,7 @@ export function createRegisterMobile(
   passport.use(`${name}_mobile`, strategy);
 }
 
-export async function verifyWeb(
+async function verifyWeb(
   models,
   publisherUser,
   userConfig
@@ -59,8 +59,9 @@ export async function verifyWeb(
     user: userCreated
   };
 }
+module.exports.verifyWeb = verifyWeb;
 
-export async function createVerifyMobile(
+async function createVerifyMobile(
   getMe,
   models,
   publisherUser,
@@ -81,3 +82,5 @@ export async function createVerifyMobile(
     };
   }
 }
+module.exports.createVerifyMobile = createVerifyMobile;
+exports.createRegisterMobile = createRegisterMobile;

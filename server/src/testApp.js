@@ -1,4 +1,4 @@
-import App from './app';
+const App = require('./app');
 
 describe('App', function(){
 

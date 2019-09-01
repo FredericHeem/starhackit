@@ -1,9 +1,9 @@
 
-export default function MeRouter(app /*auth*/) {
+function MeRouter(app /*auth*/) {
   const { models } = app.data.sequelize;
   const { validateSchema } = app.utils.api;
 
-  
+
   const api = {
     pathname: "/me",
     middlewares: [app.server.auth.isAuthenticated],
@@ -68,3 +68,5 @@ export default function MeRouter(app /*auth*/) {
 
   app.server.createRouter(api);
 }
+
+module.exports = MeRouter;

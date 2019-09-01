@@ -1,7 +1,9 @@
-import _ from 'lodash';
-import assert from 'assert';
-import testMngr from '~/test/testManager';
-let chance = require('chance')();
+const _ = require('lodash');
+const assert = require('assert');
+const testMngr = require('test/testManager');
+const Chance = require('chance');
+
+let chance = new Chance();
 
 //let fixtures = require(__dirname + '/../fixtures/models/users');
 
@@ -106,7 +108,7 @@ describe('UserModel', function(){
   });
   it('should find admin user, without attributes', async () => {
     let adminUsername = 'admin';
-    let res = await userModel.find({
+    let res = await userModel.findOne({
         include:[
            {model: models.Profile, as: 'profile'}
          ],
@@ -119,7 +121,7 @@ describe('UserModel', function(){
   });
   it('should find admin user, with attributes', async () => {
     let adminUsername = 'admin';
-    let res = await userModel.find({
+    let res = await userModel.findOne({
            attributes: [ 'id', 'username' ],
            where:{
              username:adminUsername

@@ -86,17 +86,10 @@ export default () => ({
   tools: [
     {
       img: require("./img/es7.png"),
-      title: "ES6/ES7 ready",
+      title: "ES7 ready",
       height: "180",
       link: "https://github.com/lukehoban/es6features",
       text: "The new javascript ECMAScript 7"
-    },
-    {
-      img: require("./img/gulp.png"),
-      title: "Gulp",
-      height: "180",
-      link: "http://gulpjs.com/",
-      text: "A very popular build system for frontend and backend development"
     },
     {
       img: require("./img/eslint.svg"),

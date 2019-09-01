@@ -1,8 +1,8 @@
 let assert = require('assert');
-import sinon from 'sinon';
-import testMngr from '~/test/testManager';
+const sinon = require('sinon');
+const testMngr = require('test/testManager');
 
-import UserUtils from './userUtils';
+const UserUtils = require('./userUtils');
 
 describe('UserRegister', function() {
   let app = testMngr.app;
@@ -49,9 +49,8 @@ describe('UserRegister', function() {
   it('shoud register a user', async () => {
 
     let userConfig = await userUtils.registerRandom(models, client);
-
     //The user shoud no longer be in the user_pendings table
-    let res = await models.UserPending.find({
+    let res = await models.UserPending.findOne({
       where: {
         email: userConfig.email
       }
@@ -86,7 +85,7 @@ describe('UserRegister', function() {
     const me = await client.get('v1/me');
     assert.equal(me.email, userConfig.email);
     await client.delete('v1/me');
-    const user = await models.User.find({
+    const user = await models.User.findOne({
       where: {
         email: userConfig.email
       }

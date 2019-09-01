@@ -1,8 +1,8 @@
-import fs from "fs";
-import assert from "assert";
-import testMngr from "~/test/testManager";
+const fs = require("fs");
+const assert = require("assert");
+const testMngr = require('test/testManager');
 
-describe.skip("Document No Auth", function() {
+describe("Document No Auth", function() {
   let client;
   before(async () => {
     await testMngr.start();
@@ -25,7 +25,7 @@ describe.skip("Document No Auth", function() {
   });
 });
 
-describe.skip("Document", function() {
+describe("Document", function() {
   let client;
   before(async () => {
     await testMngr.start();
@@ -40,7 +40,7 @@ describe.skip("Document", function() {
         name: "IMG_20180316_153034.jpg",
         file_type: "image/jpeg",
         photo: fs.createReadStream(__dirname + "/testDocument.js")
-      }
+      };
     await client.upload("v1/document", formData);
     const formData2 = {
       name: "IMG_20180316_153035.jpg",

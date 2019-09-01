@@ -1,8 +1,7 @@
-import _ from 'lodash';
-import chai from 'chai';
-const expect = chai.expect;
-import assert from 'assert';
-import testMngr from '~/test/testManager';
+const _ = require('lodash');
+const expect = require('chai').expect;
+const assert = require('assert');
+const testMngr = require('test/testManager');
 
 describe('GroupModel', function() {
     const app = testMngr.app;
@@ -124,7 +123,7 @@ describe('GroupModel', function() {
         await checkUserPermission(param);
     });
     it('should get all groups for a given user', async () => {
-        let res = await models.User.find({
+        let res = await models.User.findOne({
             include: [{ model: models.Group }],
             where: { id: userId }
         });

@@ -1,18 +1,18 @@
-import passport from "koa-passport";
-import registerLocal from "./auth-strategy/LocalStrategy";
-import registerJwt from "./auth-strategy/JwtStrategy";
+const passport = require("koa-passport");
+const registerJwt =  require("./auth-strategy/JwtStrategy");
 
-let config = require("config");
+//TODO config
+const config = require("config");
+const _ = require("lodash");
 let log = require("logfilename")(__filename);
 
-export default function(app) {
+function PassportAuth(app) {
   const { publisher } = app;
   let models = app.data.sequelize.models;
 
   registerJwt(passport, models);
-  registerLocal(passport, models);
 
-  if (config.has("authentication.facebook")) {
+  if (_.get(config,"authentication.facebook")) {
     const registerWeb = require("./auth-strategy/FacebookStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/FacebookStrategy")
@@ -20,17 +20,12 @@ export default function(app) {
     registerMobile(passport, models, publisher);
   }
 
-  if (config.has("authentication.google")) {
+  if (_.get(config,"authentication.google")) {
     const registerWeb = require("./auth-strategy/GoogleStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/GoogleStrategy")
       .registerMobile;
     registerMobile(passport, models, publisher);
-  }
-
-  if (config.has("authentication.fidor")) {
-    let register = require("./auth-strategy/FidorStrategy").register;
-    register(passport, models, publisher);
   }
 
   passport.serializeUser(function(user, done) {
@@ -45,3 +40,5 @@ export default function(app) {
     done(null, user);
   });
 }
+
+module.exports = PassportAuth;

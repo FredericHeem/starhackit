@@ -1,20 +1,26 @@
 const session = require("koa-generic-session");
 const redisStore = require("koa-redis");
+const Redis = require('ioredis');
 
-export default function(app, koaApp, config) {
-  let log = require("logfilename")(__filename);
-
+function SessionMiddleware(app, koaApp, config) {
+  const log = require("logfilename")(__filename);
+  
   koaApp.keys = config.koa.cookieSecret;
-  const redisConfig = config.redis;
-  if (app.store.client()) {
-    log.debug("middlewareInit use redis ", redisConfig);
+  if (config.redis) {
+    log.debug("middlewareInit use redis");
+    const redis = new Redis(config.redis.url);
     koaApp.use(
-      session({
-        store: redisStore(app.store.client())
-      })
+      session(
+        {
+          maxAge: 1000*20,
+          store: redisStore({client: redis})
+        }
+      )
     );
   } else {
     log.debug("middlewareInit memory session ");
     koaApp.use(session());
   }
 }
+
+module.exports = SessionMiddleware;

@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import footer from "components/footer";
 import MainView from "components/MainView";
 import navBar from "components/navbar";
-import userInfo from "components/userInfo";
+import userInfo from "components/UserInfo";
 
 import APP_MENU from "./menuItems";
 

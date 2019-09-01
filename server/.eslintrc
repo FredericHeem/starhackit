@@ -1,13 +1,15 @@
 {
-    "parser": "babel-eslint",
     "plugins": [
       "mocha"
     ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+    },
     "env": {
         "browser": false,
         "es6": true,
         "node": true,
-        "jquery": false,
         "mocha": true
     },
     "rules": {

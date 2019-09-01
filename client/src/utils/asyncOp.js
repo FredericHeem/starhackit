@@ -2,7 +2,7 @@ import isString from "lodash/isString";
 import React from "react";
 import { observable, action } from "mobx";
 import alert from "components/alert";
-import {get} from "lodash"
+import get from "lodash/get"
 
 function createHttpError(payload = {}) {
   const { response = {} } = payload;

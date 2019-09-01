@@ -1,12 +1,11 @@
-import _ from 'lodash';
-import Log from 'logfilename';
-import Chance from 'chance';
+const _ = require('lodash');
+const Chance = require('chance');
 let chance = new Chance();
 
-export default function(app) {
+function AuthenticationApi(app) {
+  let log = require("logfilename")(__filename);
   const {publisher} = app;
   let models = app.data.sequelize.models;
-  let log = new Log(__filename);
   let validateJson = app.utils.api.validateJson;
   return {
     async createPending(userPendingIn) {
@@ -14,7 +13,7 @@ export default function(app) {
       log.debug("createPending: ", userPendingIn);
 
       let userByUsername = await models.User.findByUsername(userPendingIn.username);
-      let userPendingByUsername = await models.UserPending.find({
+      let userPendingByUsername = await models.UserPending.findOne({
         where:{
           username: userPendingIn.username
         }
@@ -50,7 +49,7 @@ export default function(app) {
     async verifyEmailCode(param){
       log.debug("verifyEmailCode: ", param);
       validateJson(param, require('./schema/verifyEmailCode.json'));
-      let res = await models.UserPending.find({
+      let res = await models.UserPending.findOne({
         where: {
           code: param.code
         }
@@ -107,9 +106,8 @@ export default function(app) {
 
       log.info("verifyResetPasswordToken: ", token);
       // Has the token expired ?
-
       // find the user
-      let user = await models.User.find({
+      let user = await models.User.findOne({
         include: [{
           model: models.PasswordReset,
           where: {
@@ -121,7 +119,7 @@ export default function(app) {
 
       if(user){
         const now = new Date();
-        const paswordResetDate = user.get().PasswordReset.get().created_at;
+        const paswordResetDate = user.get().PasswordReset.get().createdAt;
         // Valid for 24 hours
         paswordResetDate.setUTCHours(paswordResetDate.getUTCHours() + 24);
 
@@ -162,3 +160,5 @@ function createToken(){
     pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   });
 }
+
+module.exports = AuthenticationApi;

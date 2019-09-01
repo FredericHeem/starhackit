@@ -4,7 +4,7 @@ let fs = require('fs');
 let path = require('path');
 let Sequelize = require('sequelize');
 
-export default function Data(config) {
+function Data(config) {
   let log = require('logfilename')(__filename);
   let dbConfig = config.db;
   let sequelizeOption = {
@@ -79,7 +79,7 @@ export default function Data(config) {
         const plugins = app.plugins.get();
         for (let name in plugins) {
           log.debug("seedDefault plugin ", name);
-          const {seedDefault} = plugins[name]
+          const {seedDefault} = plugins[name];
           if (_.isFunction(seedDefault)) {
             await seedDefault();
           }
@@ -97,3 +97,5 @@ export default function Data(config) {
   };
   return data;
 };
+
+module.exports = Data;

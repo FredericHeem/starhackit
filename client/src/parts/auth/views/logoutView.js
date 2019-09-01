@@ -6,7 +6,7 @@ import button from "mdlean/lib/button";
 import spinner from "components/spinner";
 
 export default context => {
-  const { tr, history } = context;
+  const { tr } = context;
   const Page = page(context);
   const Paper = paper(context);
   const Button = button(context);
@@ -26,14 +26,14 @@ export default context => {
         <Button
           primary
           label={tr.t("Login")}
-          onClick={() => history.push(`login`)}
+          onClick={() => window.location.replace("login")}
         />
       </Paper>
     );
   }
   return observer(function LogoutView({ store }) {
     return (
-      <Page className="logout-page text-center">
+      <Page className="logout-page">
         {store.authenticated ? <LoggingOut /> : <LoggedOut />}
       </Page>
     );

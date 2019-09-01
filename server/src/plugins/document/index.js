@@ -1,7 +1,7 @@
-import fs from "fs-extra";
-import asyncBusboy from "async-busboy";
+const fs = require("fs-extra");
+const asyncBusboy = require("async-busboy");
 
-export default app => {
+function Document(app) {
   const { models } = app.data.sequelize;
   app.data.registerModel(__dirname, `DocumentModel`);
 
@@ -94,3 +94,5 @@ export default app => {
   app.server.createRouter(api);
   return {};
 };
+
+module.exports = Document;

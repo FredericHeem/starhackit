@@ -103,7 +103,7 @@ export default context => {
   });
 
   const ForgotView = observer(({ store }) => (
-    <Page className="forgot-password-page text-center">
+    <Page className="forgot-password-page">
       <Paper>
         {store.step === "SendPasswordResetEmail" && (
           <SendPasswordResetEmail store={store} />

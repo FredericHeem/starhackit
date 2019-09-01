@@ -54,13 +54,11 @@ export default context => {
     );
   }
 
-  function IconLeft({ onDrawerClick }) {
-    return (
-      <BurgerButton ripple onClick={onDrawerClick}>
-        <BurgerIcon />
-      </BurgerButton>
-    );
-  }
+  const IconLeft = ({ onDrawerClick }) => (
+    <BurgerButton aria-label="Open Menu" ripple onClick={onDrawerClick}>
+      <BurgerIcon />
+    </BurgerButton>
+  );
 
   const TitleView = titleView(context)(button(context));
 

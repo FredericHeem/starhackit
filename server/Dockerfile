@@ -25,7 +25,7 @@ RUN cp -R node_modules prod_node_modules
 # install ALL node_modules, including 'devDependencies'
 RUN npm install
 COPY . .
-RUN npm run build
+#RUN npm run build
 #
 # ---- Test ----
 # run linters, setup and tests

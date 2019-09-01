@@ -1,5 +1,5 @@
-import assert from "assert";
-import testMngr from "~/test/testManager";
+const assert = require("assert");
+const testMngr = require('test/testManager');
 
 describe("PostgresSchema", function() {
   let client;
@@ -7,7 +7,7 @@ describe("PostgresSchema", function() {
     await testMngr.start();
   });
   beforeEach(async function() {
-    if (!testMngr.app.config.db.driver !== "pg") {
+    if (!testMngr.app.config.db) {
       console.log("SKIP PostgresSchema");
       this.skip();
     }
@@ -26,6 +26,7 @@ describe("PostgresSchema", function() {
       let schema = await client.get("v1/db/schema");
       console.log("got response", JSON.stringify(schema, null, 4));
       assert(schema);
+
       assert(schema.tables);
       assert(schema.constraints);
       assert(schema.sequences);

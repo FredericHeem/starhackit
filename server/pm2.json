@@ -2,7 +2,7 @@
   "apps": [
   {
     "name": "api",
-    "script": "build/index.js",
+    "script": "src/index.js",
     "watch": false
   }]
 }

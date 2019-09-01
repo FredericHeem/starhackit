@@ -1,4 +1,4 @@
-import hashPasswordHook from "./utils/hashPasswordHook";
+const hashPasswordHook = require("./utils/hashPasswordHook");
 
 module.exports = function(sequelize, DataTypes) {
   const UserPending = sequelize.define(

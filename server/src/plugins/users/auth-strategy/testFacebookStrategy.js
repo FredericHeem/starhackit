@@ -1,7 +1,7 @@
-import assert from "assert";
-import testMngr from "~/test/testManager";
-import { verifyWeb } from "./StrategyUtils";
-import Chance from "chance";
+const assert = require("assert");
+const _ = require("lodash");
+const testMngr = require('test/testManager');
+const { verifyWeb } = require("./StrategyUtils");
 
 const profile = {
   username: "justin time",
@@ -19,7 +19,11 @@ describe("FacebookStrategy", function() {
   after(async () => {
     await testMngr.stop();
   });
-
+  beforeEach(async function() {
+    if (!_.get(testMngr.app.config, "authentication.facebook")) {
+      this.skip();
+    }
+  });
   it("create a new user, register it", async () => {
     let res = await verifyWeb(models, null, profile);
     //console.log(res.err)

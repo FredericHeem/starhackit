@@ -8,7 +8,7 @@
     }
   },
   "redis":{
-    "url": "redis://localhost:7379"
+    "url": "//localhost:7379"
   },
   "koa": {
     "port": 9000,
@@ -32,27 +32,16 @@
       "expiresIn": "15 days"
     }
   },
-  
-  "authentication":{
-    /*
-    "facebook":{
-      "clientID":"",
-      "clientSecret":"",
-      "callbackURL": "http://localhost:3000/v1/auth/facebook/callback"
-    }
-    */
-  },
   "mail": {
-    /*
     "from": "StarHackIt <notification@starhack.it>",
-    "signature": "The StarHackIt Team",
+    "signature": "The Team",
     "smtp": {
       "service": "Mailgun",
       "auth": {
         "user": "postmaster@yourproject.mailgun.org",
-        "pass": "2109aef076a99216943a141d9abad454"
+        "pass": "11111111111111111111"
       }
     }
-    */
+    
   }
 }

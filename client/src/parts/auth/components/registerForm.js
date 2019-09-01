@@ -19,7 +19,7 @@ export default context => {
     const { errors } = store;
     return (
       <form
-        className="register-form text-center"
+        className="register-form"
         onSubmit={e => e.preventDefault()}
       >
         <AlertAjax error={store.op.error} className="register-error-view" />

@@ -7,7 +7,7 @@ export default context => {
   const ProfileForm = profileForm(context);
   function ProfileView(props) {
     return (
-      <Page className="profile-page text-center">
+      <Page className="profile-page">
         <ProfileForm {...props} />
       </Page>
     );

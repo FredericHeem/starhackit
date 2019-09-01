@@ -1,7 +1,7 @@
-import assert from "assert";
-import testMngr from "~/test/testManager";
+const assert = require("assert");
+const testMngr = require('test/testManager');
 
-describe.skip("Ticket No Auth", function() {
+describe("Ticket No Auth", function() {
   let client;
   before(async () => {
     await testMngr.start();
@@ -31,7 +31,7 @@ describe.skip("Ticket No Auth", function() {
   });
 });
 
-describe.skip("Ticket", function() {
+describe("Ticket", function() {
   let client;
   before(async () => {
     await testMngr.start();

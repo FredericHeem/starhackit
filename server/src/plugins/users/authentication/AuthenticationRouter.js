@@ -1,9 +1,9 @@
-import _ from "lodash";
-import Router from "koa-66";
-import passport from "koa-passport";
-import AuthenticationApi from "./AuthenticationApi";
-import jwt from "jsonwebtoken";
-import config from "config";
+const _ = require("lodash");
+const Router = require("koa-66");
+const passport = require("koa-passport");
+const AuthenticationApi = require("./AuthenticationApi");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
 let log = require("logfilename")(__filename);
 
@@ -48,14 +48,63 @@ const localAuthCB = ctx => (err, user, info = {}) => {
   }
 };
 
-export function AuthenticationHttpController(app) {
+async function verifyLogin(models, username, password) {
+  log.debug("verifyLogin username: ", username);
+  let user = await models.User.findByUsernameOrEmail(username);
+  if (!user) {
+    log.info("userBasic invalid username user: ", username);
+    return {
+      error: {
+        message: "Username and Password do not match"
+      }
+    };
+  }
+  //log.info("userBasic user: ", user.get());
+  let result = await user.comparePassword(password);
+  if (result) {
+    log.debug("verifyLogin valid password for user: ", user.toJSON());
+    return {
+      user: user.toJSON()
+    };
+  } else {
+    log.debug("verifyLogin invalid password user: ", user.get());
+    return {
+      error: {
+        message: "Username and Password do not match"
+      }
+    };
+  }
+}
+
+async function login(ctx, models) {
+  const { username, password } = ctx.request.body;
+  if (!username || !password) {
+    ctx.status = 401;
+    ctx.body = "Bad Request";
+    return;
+  }
+  const { user, error } = await verifyLogin(models, username, password);
+  if (user) {
+    ctx.status = 200;
+    ctx.body = {
+      user,
+      token: jwt.sign(user, config.jwt.secret, config.jwt.options)
+    };
+  } else {
+    ctx.status = 401;
+    ctx.body = {
+      error
+    };
+  }
+}
+function AuthenticationHttpController(app) {
   log.debug("AuthenticationHttpController");
   let authApi = AuthenticationApi(app);
   let respond = app.utils.http.respond;
 
   return {
     login(ctx, next) {
-      return passport.authenticate("local", localAuthCB(ctx))(ctx, next);
+      return login(ctx, app.data.models());
     },
     logout(ctx) {
       log.debug("logout");
@@ -105,7 +154,7 @@ export function AuthenticationHttpController(app) {
   };
 }
 
-export default function AuthenticationRouter(app) {
+function AuthenticationRouter(app) {
   let router = new Router();
   let authHttpController = AuthenticationHttpController(app);
   router.post("/login", authHttpController.login);
@@ -153,3 +202,6 @@ export default function AuthenticationRouter(app) {
 
   return router;
 }
+
+exports.AuthenticationHttpController = AuthenticationHttpController;
+module.exports = AuthenticationRouter;

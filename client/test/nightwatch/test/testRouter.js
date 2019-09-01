@@ -1,4 +1,8 @@
 describe("Router", function() {
+  before(function(client, done) {
+    this.timeout(40e3);
+    client.page.login().login(done);
+  });
   it("page not found", function(client) {
     client.page
       .notFound()

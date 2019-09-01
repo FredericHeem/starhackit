@@ -1,26 +1,19 @@
-import Promise from 'bluebird';
-import Log from 'logfilename';
-import config from 'config';
-let log = new Log(__filename, config.log);
-
-import Plugins from './plugins';
-import Data from './models/Data';
-import Store from './store/Store';
-import Server from './server/koa/koaServer';
-import * as HttpUtils from './utils/HttpUtils';
-
-// https://github.com/sequelize/sequelize/issues/3781
-import pg from "pg";
-delete pg.native;
-export default function App() {
-
+const Promise = require('bluebird');
+const config = require('config')
+const Plugins = require('./plugins');
+const Data = require('./models/Data');
+const Store = require('./store/Store');
+const Server = require('./server/koa/koaServer');
+const HttpUtils = require('./utils/HttpUtils');
+const log = require("logfilename")(__filename, config.log);
+function App() {
   let data = Data(config);
+  const publisher =  Store(config);
 
   let app = {
     config,
     data: data,
-    store: Store(config),
-    publisher: Store(config),
+    publisher,
     utils:{
       http: HttpUtils,
       api: require('./utils/ApiUtils')
@@ -31,13 +24,13 @@ export default function App() {
     },
 
     async start() {
-      log.info("start");
+      log.debug("start");
       await action('start');
       log.info("started");
     },
 
     async stop() {
-      log.info("stop");
+      log.debug("stop");
       await action('stop');
       log.info("stopped");
     },
@@ -53,7 +46,6 @@ export default function App() {
 
   let parts = [
     app.data,
-    app.store,
     app.publisher,
     app.server,
     app.plugins
@@ -74,3 +66,5 @@ function displayInfoEnv(){
   log.info("USER: %s", process.env.USER);
   log.info("PWD: %s", process.env.PWD);
 }
+
+module.exports = App;

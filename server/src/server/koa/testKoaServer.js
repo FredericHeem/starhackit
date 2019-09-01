@@ -1,7 +1,7 @@
-import testMngr from '~/test/testManager';
-import Server from './koaServer';
-import Axios from 'axios';
-import {assert} from 'chai';
+const testMngr = require('test/testManager');
+const Server =  require('./koaServer');
+const Axios =  require('axios');
+const assert = require('chai').assert;
 
 describe('Koa', function(){
   const baseUrl = "http://localhost:9000";

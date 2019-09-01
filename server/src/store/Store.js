@@ -1,9 +1,8 @@
-import redis from "redis";
+const Redis = require('ioredis');
 
-export default function(config = {}) {
+function Store(config = {}) {
   let log = require("logfilename")(__filename);
-  let client;
-
+  let client
   return {
     client() {
       return client;
@@ -12,7 +11,7 @@ export default function(config = {}) {
       log.debug("start ", config);
       return new Promise(function(resolve, reject) {
         if (config.redis) {
-          client = redis.createClient(config.redis);
+          client = new Redis(config.redis.url);
           client.on("error", err => {
             log.error("Error " + err);
             reject(err);
@@ -28,7 +27,8 @@ export default function(config = {}) {
             log.info("reconnecting ");
           });
           client.on("end", () => {
-            log.info("ready ");
+            log.error("end ");
+            reject();
           });
         } else {
           log.error("redis not configured");
@@ -66,3 +66,5 @@ export default function(config = {}) {
     }
   };
 }
+
+module.exports = Store;

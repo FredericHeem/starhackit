@@ -1,6 +1,6 @@
-import Promise from "bluebird";
-import path from "path";
-import _ from "lodash";
+const Promise = require("bluebird");
+const path = require("path");
+const _ = require("lodash");
 
 const pluginsName = [
   "version",
@@ -11,7 +11,7 @@ const pluginsName = [
   "expoPush"
 ];
 
-export default function Plugins(app) {
+function Plugins(app) {
   const plugins = pluginsName.reduce((map, pluginName) => {
     map[pluginName] = require(path.join(__dirname, pluginName))(app);
     return map;
@@ -32,3 +32,5 @@ export default function Plugins(app) {
     }
   };
 }
+
+module.exports = Plugins;

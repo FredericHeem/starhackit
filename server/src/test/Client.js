@@ -3,7 +3,7 @@ let Promise = require("bluebird");
 let _ = require("lodash");
 let log;
 
-export default class Client {
+class Client {
   constructor(config = {}, logOptions) {
     log = require("logfilename")(__filename, logOptions);
     this.config = config;
@@ -106,3 +106,5 @@ function createJar({ cookies, url }) {
     return jar;
   }
 }
+
+module.exports = Client;

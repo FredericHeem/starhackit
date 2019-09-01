@@ -10,10 +10,12 @@ COPY package.json .
 
 RUN npm install
 COPY . .
-
 RUN npm run build
 
 FROM smebberson/alpine-nginx
 WORKDIR /app
+
 COPY --from=build /app/dist /usr/html/
+COPY --from=build /app/robots.txt /usr/html/
+
 EXPOSE 80

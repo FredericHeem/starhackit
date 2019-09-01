@@ -20,7 +20,7 @@
     "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "start:prod": "pm2 start pm2.json --no-daemon",
+    "start:prod": "NODE_ENV=production pm2 start pm2.json --no-daemon",
     "clean": "",
     "mocker": "node scripts/mocker-server.js",
     "doc": "node scripts/apidoc.js",

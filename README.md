@@ -48,7 +48,6 @@ For more information about the backend, see its [README](server/README.md)
 ## Dev Technologies
 
 * [Docker](https://www.docker.com/): Debug your app, not your environment
-* [Babel](https://babeljs.io/): A es6/es7 compiler.
 * [Mocha](http://mochajs.org/): test framework.
 * [Karma](https://karma-runner.github.io): a productive testing environment to developers
 * [Nightwatch](http://nightwatchjs.org/): End-to-End tests in Node.js quickly and effortlessly that run against a Selenium server

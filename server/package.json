@@ -96,7 +96,7 @@
     "request": "2.88.0",
     "shelljs": "0.8.3",
     "should": "13.2.3",
-    "sinon": "7.4.1"
+    "sinon": "7.4.2"
   },
   "nyc": {
     "include": [

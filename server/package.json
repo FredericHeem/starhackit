@@ -89,7 +89,7 @@
     "faker": "4.1.0",
     "jscpd": "2.0.15",
     "mocha": "6.2.0",
-    "nodemon": "1.19.1",
+    "nodemon": "1.19.2",
     "nyc": "14.1.1",
     "raml-mocker-server": "0.1.6",
     "raml2html": "7.4.0",

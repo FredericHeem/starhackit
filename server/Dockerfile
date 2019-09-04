@@ -40,4 +40,4 @@ COPY --from=dependencies /app/prod_node_modules ./node_modules
 # copy app sources
 COPY . .
 EXPOSE 9000
-CMD npm run server
+CMD scripts/initialise.sh

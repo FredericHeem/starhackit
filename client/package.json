@@ -39,7 +39,7 @@
     "@types/react": "16.9.2",
     "axios": "0.19.0",
     "debug": "4.1.1",
-    "history": "4.9.0",
+    "history": "4.10.0",
     "i18next": "17.0.13",
     "i18next-browser-languagedetector": "3.0.3",
     "i18next-xhr-backend": "3.1.2",

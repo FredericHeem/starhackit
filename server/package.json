@@ -84,7 +84,7 @@
     "codeclimate-test-reporter": "0.5.1",
     "codecov.io": "0.1.6",
     "coveralls": "3.0.6",
-    "eslint": "6.3.0",
+    "eslint": "6.4.0",
     "eslint-plugin-mocha": "6.1.0",
     "faker": "4.1.0",
     "jscpd": "2.0.15",

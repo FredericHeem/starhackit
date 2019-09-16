@@ -56,7 +56,7 @@
     "react-pagify": "2.4.0",
     "reactabular-table": "8.14.0",
     "segmentize": "0.4.1",
-    "universal-router": "8.2.1",
+    "universal-router": "8.3.0",
     "validate.js": "0.13.1"
   },
   "devDependencies": {

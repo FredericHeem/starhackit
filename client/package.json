@@ -104,7 +104,7 @@
     "webpack-bundle-analyzer": "3.4.1",
     "webpack-bundle-size-analyzer": "3.0.0",
     "webpack-cli": "3.3.7",
-    "webpack-dev-server": "3.8.0",
+    "webpack-dev-server": "3.8.1",
     "webpack-hud": "0.1.2"
   },
   "engines": {

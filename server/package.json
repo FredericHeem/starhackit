@@ -75,7 +75,7 @@
     "qs": "6.8.0",
     "sequelize": "5.18.0",
     "sequelize-cli": "5.5.1",
-    "urijs": "1.19.1",
+    "urijs": "1.19.2",
     "winston": "3.2.1"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@ import { redirect } from "./authUtils";
 import Layout from "./Layout";
 
 export default function(context) {
-  const { rest, history, config } = context;
+  const { rest, history, config, emitter } = context;
   const layout = Layout(context)
   const asyncOpCreate = AsyncOp(context);
   const AsyncView = asyncView(context);
@@ -36,6 +36,11 @@ export default function(context) {
       }
     }
   });
+
+  emitter.on("login.ok", ({token}) => {
+    authStore.setToken(token);
+    redirect(history, config);
+  })
 
   function Stores() {
     return {

@@ -69,7 +69,7 @@
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "passport-oauth2": "1.5.0",
-    "pg": "7.12.1",
+    "pg": "7.13.0",
     "pg-hstore": "2.3.3",
     "pm2": "3.5.1",
     "qs": "6.8.0",

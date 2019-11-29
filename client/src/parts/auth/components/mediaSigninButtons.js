@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
+import fbIcon from "./icons/facebook.svg"
+import googleIcon from "./icons/google.svg"
 
 export default context => {
   const { tr, config } = context;
@@ -9,20 +11,12 @@ export default context => {
     facebook: {
       label: `${tr.t("Sign in with")} Facebook`,
       href: "/api/v1/auth/facebook",
-      icon: <img src={require("./icons/facebook.svg")} alt="facebook" width={20} />
+      icon: <img src={fbIcon} alt="facebook" width={20} />
     },
     google: {
       label: `${tr.t("Sign in with")} Google`,
       href: "/api/v1/auth/google",
-      icon: <img src={require("./icons/google.svg")} alt="google" width={20} />
-    },
-    fidor: {
-      label: `${tr.t("Sign in with")} Fidor`,
-      href: "api/v1/auth/fidor"
-    },
-    crossbank: {
-      label: `${tr.t("Sign in with")} Open Bank`,
-      href: "/api/v1/crossbank/login"
+      icon: <img src={googleIcon} alt="google" width={20} />
     }
   };
 

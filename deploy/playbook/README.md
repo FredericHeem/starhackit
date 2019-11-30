@@ -43,6 +43,11 @@ To set the production configuration parameters, create [group_vars/production.ym
 
 Then to change the remote machine connection settings (ip address, username, ssh key location), edit the production inventory: [production.ini](production.ini):
 
+
+Get ansible dependencies 
+
+    deploy/playbook$ ansible-galaxy install -r roles/requirements.yml
+    
 # Deployment to production
 
 Check the connection to the production servers:

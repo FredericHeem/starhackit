@@ -87,7 +87,7 @@ export default () => ({
     {
       img: require("./img/es7.png").default,
       title: "ES7 ready",
-      height: "180",
+      height: "120",
       link: "https://github.com/lukehoban/es6features",
       text: "The new javascript ECMAScript 7"
     },
@@ -139,7 +139,7 @@ export default () => ({
     {
       img: require("./img/code-climate.png").default,
       title: "CodeClimate",
-      height: "200",
+      height: "140",
       link: "https://codeclimate.com/",
       text: "Code Coverage and Code Review"
     },

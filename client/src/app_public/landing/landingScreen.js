@@ -34,7 +34,7 @@ export default context => {
           label="Clone the code on GitHub"
           href="https://github.com/FredericHeem/starhackit"
           icon={
-            <img src={require("./img/github.svg")} width={20} alt="github" />
+            <img src={require("./img/github.svg").default} width={20} alt="github" />
           }
         />
         <br />

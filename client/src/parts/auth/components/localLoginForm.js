@@ -8,18 +8,16 @@ import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "components/input";
 import AsyncOp from "utils/asyncOp";
-import {redirect} from "../authUtils"
 import rules from "utils/rules";
 
 export default context => {
-  const { tr, rest } = context;
+  const { tr, rest, emitter } = context;
   const FormGroup = formGroup(context);
   const UserNameInput = input(context);
   const PasswordInput = input(context);
   const AlertAjax = alertAjax(context);
   const SubmitButton = button(context);
   const asyncOpCreate = AsyncOp(context);
-  const authStore = context.parts.auth.stores().auth;
 
   const store = observable({
     username: "",
@@ -43,10 +41,8 @@ export default context => {
       }
 
       try {
-        const response = await this.op.fetch(payload);
-        const { token } = response;
-        authStore.setToken(token);
-        redirect(context.history, context.config);
+        const {token} = await this.op.fetch(payload);
+        emitter.emit("login.ok", {token})
       } catch (errors) {
         console.error("login ", errors);
         localStorage.removeItem("JWT");

@@ -1,0 +1,46 @@
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: api
+        image: fredericheem/api:latest
+        command: ["./scripts/initialise.sh"]
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+          - mountPath: /app/config/production.json
+            subPath: api.json
+            name: api-config-volume
+      - name: ui
+        image: fredericheem/ui:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+          name: nginx-config-volume
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+            items:
+            - key: nginx.conf
+              path: nginx.conf
+        - name: api-config-volume
+          configMap:
+            name: api-config
+            items:
+            - key: api.json
+              path: api.json
+            
+      
+              

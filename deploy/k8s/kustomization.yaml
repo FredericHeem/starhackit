@@ -1,0 +1,21 @@
+configMapGenerator:
+- name: nginx-config
+  files:
+  - nginx.conf
+- name: redis-config
+  files:
+  - redis-config
+- name: api-config
+  files:
+  - api.json
+
+resources:
+- postgres-configmap.yaml
+- postgres-storage.yaml
+- postgres-deployment.yaml
+- postgres-service.yaml
+- redis-deployment.yaml
+- redis-service.yaml
+- deployment.yaml
+- service.yaml
+

@@ -90,7 +90,7 @@
     "jscpd": "2.0.16",
     "mocha": "6.2.2",
     "nodemon": "2.0.1",
-    "nyc": "14.1.1",
+    "nyc": "15.0.0",
     "raml-mocker-server": "0.1.6",
     "raml2html": "7.5.0",
     "request": "2.88.0",

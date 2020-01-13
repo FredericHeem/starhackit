@@ -94,7 +94,7 @@
     "sinon": "7.5.0",
     "style-loader": "1.0.1",
     "ts-loader": "6.2.1",
-    "ts-node": "8.5.4",
+    "ts-node": "8.6.2",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-loader": "3.5.4",

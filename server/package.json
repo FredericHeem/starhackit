@@ -93,7 +93,7 @@
     "nyc": "14.1.1",
     "raml-mocker-server": "0.1.6",
     "raml2html": "7.5.0",
-    "request": "2.88.0",
+    "request": "2.88.2",
     "shelljs": "0.8.3",
     "should": "13.2.3",
     "sinon": "7.5.0"

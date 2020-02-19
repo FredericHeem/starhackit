@@ -85,7 +85,7 @@
     "codecov.io": "0.1.6",
     "coveralls": "3.0.9",
     "eslint": "6.7.1",
-    "eslint-plugin-mocha": "6.2.2",
+    "eslint-plugin-mocha": "6.3.0",
     "faker": "4.1.0",
     "jscpd": "2.0.16",
     "mocha": "6.2.2",

@@ -51,7 +51,7 @@
     "mobx-react": "6.1.4",
     "prop-types": "15.7.2",
     "qs": "6.9.1",
-    "react": "16.12.0",
+    "react": "16.13.0",
     "react-dom": "16.12.0",
     "react-leanimate": "0.16.0",
     "react-pagify": "2.4.0",

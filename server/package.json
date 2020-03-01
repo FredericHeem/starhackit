@@ -40,7 +40,7 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 1 && npm run db:migrate"
   },
   "dependencies": {
-    "async-busboy": "0.7.0",
+    "async-busboy": "1.0.1",
     "axios": "0.19.0",
     "bcryptjs": "2.4.3",
     "bluebird": "3.7.2",

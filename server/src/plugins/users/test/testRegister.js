@@ -13,7 +13,7 @@ describe('UserRegister', function() {
   let userUtils = UserUtils();
   before(async () => {
       await testMngr.start();
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       assert(app.plugins);
       sinon.stub(app.publisher, "publish").callsFake((key, msg) => {
         //console.log("publish has been called");

@@ -11,7 +11,7 @@ describe('PasswordReset', function () {
 
   before(async() => {
     await testMngr.start();
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     publisherUserStub = sinon.stub(app.publisher, "publish").callsFake((key, msg) => {
       //assert.equal(key, "user.register");
       assert(msg);

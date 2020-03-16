@@ -15,14 +15,12 @@ export default context => {
         `}
       >
         <Button
-          css={css`
-          `}
           primary
           raised
           label="Login"
           href="/user/auth/login"
         />
-        <Button primary flat label="Register" href="/user/auth/register" />
+        <Button primary label="Register" href="/user/auth/register" />
       </div>
     );
   }

@@ -19,6 +19,7 @@ export default context => {
           padding: 20px;
           text-align: center;
           background: ${palette.primary.light};
+          color: ${palette.primary.contrastText}
         `}
       >
         <div>

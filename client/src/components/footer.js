@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import AsyncOp from "utils/asyncOp";
 
 export default context => {
-  const { tr, palette, rest } = context;
+  const { tr, theme: {palette}, rest } = context;
   const versionStore = AsyncOp(context)(() => rest.get(`version`));
 
   const Footer = observer(() => {
@@ -18,7 +18,7 @@ export default context => {
         css={css`
           padding: 20px;
           text-align: center;
-          background: ${palette.primaryLight};
+          background: ${palette.primary.light};
         `}
       >
         <div>

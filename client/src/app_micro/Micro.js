@@ -8,7 +8,7 @@ import createLink from "components/link";
 
 export default async () => {
   const context = await Context();
-  const { tr, palette } = context;
+  const { tr, theme: {palette} } = context;
   const Link = createLink(context);
 
   const store = observable({
@@ -46,8 +46,8 @@ export default async () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          background-color: ${palette.primary};
-          color: ${palette.textPrimaryOnPrimary};
+          background-color: ${palette.primary.main};
+          color: ${palette.primary.contrastText};
           & * {
             margin: 10px;
           }

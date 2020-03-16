@@ -5,6 +5,8 @@ import formatter from "utils/formatter";
 import alertStackCreate from "components/alertStack";
 import Rest from "./utils/rest";
 import palette from "./palette";
+import { createMuiTheme } from "@material-ui/core/styles";
+
 import intl from "utils/intl";
 import I18n from "utils/i18n";
  
@@ -14,6 +16,12 @@ export default async (option = {}) => {
   const config = { ...rootConfig, ...option.config };
   const context = {
     palette: palette(),
+    theme: createMuiTheme({
+      palette: {
+        primary: { main: "#3f51b5" },
+        secondary: { main: "#f50057" }
+      }
+    }),
     tr,
     formatter: formatter("en"),
     history: createBrowserHistory(),

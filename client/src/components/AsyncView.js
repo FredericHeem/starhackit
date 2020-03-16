@@ -3,7 +3,7 @@ import createAsyncRoute from "components/AsyncRoute";
 import spinner from "components/spinner";
 
 export default context => {
-  const { palette, tr } = context;
+  const { theme: {palette}, tr } = context;
   const AsyncRoute = createAsyncRoute(context);
   return function AsyncView({ getModule, ...rest }) {
     return (
@@ -15,7 +15,7 @@ export default context => {
             .catch(reject)
         }
         loading={() => (
-          <div>{h(spinner(context), { size: 400, color: palette.primary })}</div>
+          <div>{h(spinner(context), { size: 400, color: palette.primary.main })}</div>
         )}
         error={error => (
           <div>

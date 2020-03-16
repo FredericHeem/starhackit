@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 import { jsx, keyframes } from '@emotion/core'
 
-export default ({ palette }) => {
+export default ({ theme: {palette} }) => {
   const store = observable({
     focus: false
   });
@@ -28,11 +28,11 @@ export default ({ palette }) => {
         textAlign: "start",
         fontSize: "0.9rem",
         position: "relative",
-        color: palette.textSecondary,
+        color: palette.text.main,
         transition: "color 1s"
       },
       focus: {
-        color: palette.primary
+        color: palette.primary.main
       }
     },
     input: {
@@ -61,7 +61,7 @@ export default ({ palette }) => {
         transform: "scaleX(1)"
       },
       focusOff: {
-        borderColor: palette.primary
+        borderColor: palette.primary.main
       },
       errorOff: {
         borderColor: "red"

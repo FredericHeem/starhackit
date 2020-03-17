@@ -1,33 +1,20 @@
 sudo: required
-dist: trusty
+dist: bionic
 language: node_js
 node_js:
-  - "8"
-
-env:
-  - CXX=g++-4.8
+  - "12"
 
 services:
+  - xvfb
   - postgresql
   - redis
 
 addons:
-  postgresql: "9.6"
+  chrome: stable
+  postgresql: "10"
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
-      - g++-4.8
-      - postgresql-9.6-postgis-2.3
-
-before_install:
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
-
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+      - postgresql-10-postgis-2.4
 
 install:
   - cd client
@@ -45,5 +32,3 @@ after_script:
   - npm test
   - cd ../server
   - npm test
-  - npm run codeclimate
-  - npm run coveralls

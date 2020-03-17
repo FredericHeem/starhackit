@@ -1,4 +1,6 @@
-import React, { createElement as h } from "react";
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
+import { createElement as h } from "react";
 import input from "components/input";
 import spinner from "components/spinner";
 import paper from "components/Paper";
@@ -10,7 +12,7 @@ export default context => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const Paper = paper(context);
-  const ButtonLoading = require("mdlean/lib/button").default(context);
+  const ButtonLoading = require("mdlean/lib/button").default(context, { cssOverride: css`width: 256px;` });
   const UsernameInput = input(context);
   const EmailInput = input(context);
   const BioInput = input(context);
@@ -24,9 +26,9 @@ export default context => {
       <Paper>
         <form onSubmit={e => e.preventDefault()}>
           <h3>{tr.t("My Profile")}</h3>
-          { store.picture && <img width="50" src={store.picture.url} alt="profile"/>}
+          {store.picture && <img width="50" src={store.picture.url} alt="profile" />}
           <FormGroup>
-            <UsernameInput 
+            <UsernameInput
               id="username"
               label={tr.t("Username")}
               value={store.username}
@@ -69,7 +71,6 @@ export default context => {
             <ButtonLoading
               className="btn-update-profile"
               raised
-              css={{ width: 256 }}
               onClick={() => store.update()}
               label={tr.t("Update Profile")}
             />

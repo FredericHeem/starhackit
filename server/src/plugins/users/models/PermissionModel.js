@@ -15,7 +15,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     {
       tableName: "permissions",
-      underscored: true,
       timestamps: false
     }
   );

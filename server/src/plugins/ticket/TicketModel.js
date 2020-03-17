@@ -6,8 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       body: DataTypes.TEXT
     },
     {
-      tableName: "ticket",
-      underscored: true
+      tableName: "ticket"
     }
   );
   Ticket.associate = function(models) {

@@ -1,3 +1,7 @@
 ---
-- name: install python 2
-  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes

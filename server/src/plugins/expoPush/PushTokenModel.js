@@ -9,8 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     {
-      tableName: "push_token",
-      underscored: true
+      tableName: "push_token"
     }
   );
   PushToken.associate = function(models) {

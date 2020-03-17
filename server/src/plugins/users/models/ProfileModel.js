@@ -8,7 +8,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     {
       tableName: "profile",
-      underscored: true,
       timestamps: false
     }
   );

@@ -13,7 +13,7 @@ export default context => {
   const Button = button(context);
 
   const UserDetails = observer(() => (
-    <Button raised>
+    <Button raised primary>
       {meStore.data.picture ? <Avatar
         title={meStore.data.email}
         alt={meStore.data.email}

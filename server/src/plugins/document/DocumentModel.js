@@ -3,15 +3,17 @@ module.exports = function(sequelize, DataTypes) {
     "Document",
     {
       type: DataTypes.TEXT,
-      file_type: DataTypes.TEXT,
+      fileType: {
+        type: DataTypes.TEXT,
+        field: 'file_type',
+      },
       name: DataTypes.TEXT,
       size: DataTypes.BIGINT,
       content: DataTypes.BLOB,
       meta: DataTypes.JSONB
     },
     {
-      tableName: "document",
-      underscored: true
+      tableName: "document"
     }
   );
   Document.associate = function(models) {

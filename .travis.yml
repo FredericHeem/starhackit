@@ -5,22 +5,16 @@ node_js:
   - "12"
 
 services:
+  - xvfb
   - postgresql
   - redis
 
 addons:
+  chrome: stable
   postgresql: "10"
   apt:
     packages:
       - postgresql-10-postgis-2.4
-
-before_install:
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
-
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
 
 install:
   - cd client
@@ -29,6 +23,7 @@ install:
   - npm i
 
 before_script:
+  - export DISPLAY=:99.0
   - psql -c 'create database dev;' -U postgres
   - psql -c 'create extension postgis;' -d dev -U postgres
 

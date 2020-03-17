@@ -23,7 +23,6 @@ install:
   - npm i
 
 before_script:
-  - export DISPLAY=:99.0
   - psql -c 'create database dev;' -U postgres
   - psql -c 'create extension postgis;' -d dev -U postgres
 

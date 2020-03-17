@@ -1,4 +1,11 @@
 ---
+- name: make pg_data directory
+  file:
+    path: /home/{{user}}/pg_data/{{database}}
+    state: directory
+    owner: "{{user}}"
+    mode: 0777
+    
 - name: docker run postgres {{database}}
   docker_container:
     name: "{{hostname}}"

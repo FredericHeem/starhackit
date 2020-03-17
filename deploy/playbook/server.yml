@@ -10,11 +10,12 @@
   - vars/certbot-vars.yml
   roles:
   - geerlingguy.pip
+  - geerlingguy.firewall
   - geerlingguy.docker
   - { role: geerlingguy.certbot, when: protocol == "https" }
   - { role: certbot-renew-hooks, when: protocol == "https" }
   - docker_config
-  - geerlingguy.firewall
+  
   tasks:
   - name: Add the user docker
     user:

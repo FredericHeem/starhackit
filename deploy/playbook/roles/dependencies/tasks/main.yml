@@ -1,6 +1,0 @@
----
-- name: install python
-  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-
-- name: install pip3
-  raw: test -e /usr/bin/pip3 || (apt -y update && apt install -y python3-pip)

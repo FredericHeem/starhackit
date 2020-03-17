@@ -1,6 +1,5 @@
-let request = require("request");
-let Promise = require("bluebird");
-let _ = require("lodash");
+const Axios = require("axios");
+const fs = require('fs');
 let log;
 
 class Client {
@@ -8,42 +7,34 @@ class Client {
     log = require("logfilename")(__filename, logOptions);
     this.config = config;
     this.url = this.config.url || "http://localhost:9000/api/";
-  }
-  _ops({ method, pathname, resCodes, param, formData, data }) {
-    /*console.log(
-      `${method} ${pathname} with %s to `,
-      param ? JSON.stringify(param) : "no param",
-      this.url
-    );*/
-    let me = this;
-    const input = {
-      url: this.url + pathname,
-      method: method,
-      jar: createJar(this),
-      formData: formData,
-      json: data ? data : true
-    };
-    if (this.jwt) {
-      input.headers = {
-        Authorization: "Bearer " + this.jwt
-      };
-    }
-    return new Promise((resolve, reject) => {
-      request(input, (error, res, body) => {
-        if (error) reject(error);
-        let cookiesIn = res.headers["set-cookie"];
-        if (cookiesIn) {
-          me.cookies = _.map(cookiesIn, cookie => {
-            return request.cookie(cookie);
-          });
-        }
-        if (resCodes.indexOf(res.statusCode) == -1) {
-          reject(res);
-        } else {
-          resolve(body);
-        }
-      });
+    this.axios = Axios.create({
+      baseURL: this.url,
+      timeout: 30e3,
+      withCredentials: true
     });
+  }
+  _ops({ method, pathname, resCodes, formData, data }) {
+    let headers = {
+    }
+
+    if (this.jwt) {
+      headers.Authorization = `Bearer ${this.jwt}`
+    }
+
+    if(formData){
+      headers = {...headers, ...formData.getHeaders()}
+    }
+    return this.axios
+      .request({
+        method,
+        url: pathname,
+        headers,
+        data
+      })
+      .then(res => {
+        console.log(JSON.stringify(res.data, null, 4));
+        return res.data;
+      })
   }
 
   get(pathname, param) {
@@ -75,7 +66,8 @@ class Client {
       method: "POST",
       pathname,
       resCodes: [200, 201, 204],
-      formData
+      formData,
+      data: formData
     });
   }
   login(param) {
@@ -92,18 +84,6 @@ class Client {
       }
       return body;
     });
-  }
-}
-
-function createJar({ cookies, url }) {
-  if (cookies) {
-    const jar = request.jar();
-    jar._jar.rejectPublicSuffixes = false;
-    _.each(cookies, cookie => {
-      //console.log("cookie:" + cookie);
-      jar.setCookie(cookie, url);
-    });
-    return jar;
   }
 }
 

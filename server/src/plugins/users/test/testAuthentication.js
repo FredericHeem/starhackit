@@ -42,8 +42,8 @@ describe('Authentication', function(){
       assert(false);
     } catch(err){
       assert(err);
-      assert.equal(err.statusCode, 401);
-      assert.equal(err.body, "Bad Request");
+      assert.equal(err.response.status, 401);
+      assert.equal(err.response.data, "Bad Request");
     }
   });
 
@@ -64,8 +64,8 @@ describe('Authentication', function(){
       assert(false);
     } catch(err){
       assert(err);
-      assert.equal(err.statusCode, 401);
-      assert.equal(err.body, "Unauthorized");
+      assert.equal(err.response.status, 401);
+      assert.equal(err.response.data, "Unauthorized");
     }
   });
 
@@ -80,7 +80,7 @@ describe('Authentication', function(){
       assert(false);
     } catch(err){
       assert(err);
-      assert.equal(err.statusCode, 401);
+      assert.equal(err.response.status, 401);
       //assert.equal(err.body, "Unauthorized");
     }
   });
@@ -95,7 +95,7 @@ describe('Authentication', function(){
       assert(false);
     } catch(err){
       assert(err);
-      assert.equal(err.statusCode, 401);
+      assert.equal(err.response.status, 401);
       //assert.equal(err.body, "Bad Request");
     }
   });
@@ -111,7 +111,7 @@ describe('Authentication', function(){
       assert(false);
     } catch(err){
       assert(err);
-      assert.equal(err.statusCode, 401);
+      assert.equal(err.response.status, 401);
       //assert.equal(err.body, "Unauthorized");
     }
   });

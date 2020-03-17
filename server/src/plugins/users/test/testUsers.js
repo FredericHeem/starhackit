@@ -65,7 +65,7 @@ describe('Users', function() {
         assert(false);
       } catch(err){
         assert(err);
-        assert.equal(err.statusCode, 400);
+        assert.equal(err.response.status, 400);
       }
     });
   });
@@ -82,7 +82,7 @@ describe('Users', function() {
         assert(false);
       } catch(err){
         assert(err);
-        assert.equal(err.statusCode, 401);
+        assert.equal(err.response.status, 401);
       }
     });
   });

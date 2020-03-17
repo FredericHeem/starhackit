@@ -35,7 +35,7 @@ module.exports = function(config) {
     preprocessors: {
       "src/**/*.js": ["webpack", "sourcemap"]
     },
-    reporters: ["mocha", "coverage", "junit"],
+    reporters: ["mocha"],
     junitReporter: {
       outputDir: "coverage",
       outputFile: "test-results.xml"

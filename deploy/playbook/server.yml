@@ -1,6 +1,11 @@
 ---
 - hosts: all
   become: True
+  vars:
+    pip_executable: pip3
+    pip_install_packages:
+      - name: docker
+
   vars_files:
   - vars/certbot-vars.yml
   roles:

@@ -1,7 +1,7 @@
 certbot_script: certbot
 certbot_admin_email: "{{ ssl_admin_email }}"
 certbot_create_if_missing: yes
-certbot_create_standalone_stop_services: ['nginx']
+certbot_create_standalone_stop_services: []
 certbot_certs:
 - domains:
   - "{{domain_name}}"

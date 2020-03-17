@@ -13,10 +13,10 @@ To install `ansible` with `brew`:
 $ brew install ansible
  ```
 
-The ansible scripts has been tested with version 2.4:
+Check the ansible version:
  ```
  $ ansible --version
-ansible 2.8.4
+ansible 2.9.6
 
  ```
 # What is installed and deployed:

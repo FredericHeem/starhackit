@@ -1,25 +1,18 @@
 sudo: required
-dist: trusty
+dist: bionic
 language: node_js
 node_js:
   - "12"
-
-env:
-  - CXX=g++-4.8
 
 services:
   - postgresql
   - redis
 
 addons:
-  postgresql: "9.6"
+  postgresql: "10"
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
-      - g++-4.8
-      - postgresql-9.6-postgis-2.3
+      - postgresql-10-postgis-2.4
 
 before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

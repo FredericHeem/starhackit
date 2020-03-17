@@ -1,6 +1,7 @@
 ---
-- name: install python
-  raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
 
-- name: install pip3
-  raw: test -e /usr/bin/pip3 || (apt -y update && apt install -y python3-pip)
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes

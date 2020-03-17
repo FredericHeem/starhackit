@@ -16,7 +16,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     {
       tableName: "groups",
-      underscored: true,
       timestamps: false
     }
   );

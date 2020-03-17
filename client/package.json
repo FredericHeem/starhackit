@@ -1,8 +1,8 @@
 {
   "name": "starhackit-ui",
   "title": "StarHack.It",
-  "version": "9.1.1",
-  "description": "React + node starter kit. A fullstack boilerplate written in ES6/7 with authentication and authorisation",
+  "version": "10.0.0",
+  "description": "React + node starter kit. A fullstack boilerplate with authentication and authorisation",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
   "scripts": {
@@ -110,7 +110,7 @@
     "webpack-hud": "0.1.2"
   },
   "engines": {
-    "node": ">8.x",
+    "node": ">10.x",
     "npm": ">5.x"
   }
 }

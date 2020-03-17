@@ -13,7 +13,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     {
       tableName: "auth_provider",
-      underscored: true,
       timestamps: false
     }
   );

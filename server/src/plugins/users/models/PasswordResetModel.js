@@ -6,7 +6,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     {
       tableName: "password_resets",
-      underscored: true,
       timestamps: true
     }
   );

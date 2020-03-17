@@ -6,7 +6,6 @@ module.exports = function(sequelize/*, DataTypes*/) {
   const GroupPermission = sequelize.define('GroupPermission', {},
     {
       tableName:"group_permissions",
-      underscored: true,
       timestamps: false
     }
   );

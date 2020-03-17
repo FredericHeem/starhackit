@@ -25,20 +25,24 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
       },
       firstName: {
-        type: DataTypes.STRING(64)
+        type: DataTypes.STRING(64),
+        field: "first_name"
       },
       lastName: {
-        type: DataTypes.STRING(64)
+        type: DataTypes.STRING(64),
+        field: "last_name"
       },
       picture: {
         type: DataTypes.JSONB
       },
       password: DataTypes.VIRTUAL,
-      passwordHash: DataTypes.TEXT
+      passwordHash: {
+        type: DataTypes.TEXT,
+        field: "password_hash"
+      }
     },
     {
       tableName: "users",
-      underscored: false,
       hooks: {
         beforeCreate: hashPasswordHook,
         beforeUpdate: hashPasswordHook

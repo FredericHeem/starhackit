@@ -8,7 +8,9 @@ function Data(config) {
   let log = require('logfilename')(__filename);
   let dbConfig = config.db;
   let sequelizeOption = {
-    underscored: true,
+    define: {
+        underscored: true
+    },
     pool: {
       idle: 60000,
       max: 100

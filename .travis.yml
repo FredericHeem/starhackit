@@ -32,5 +32,3 @@ after_script:
   - npm test
   - cd ../server
   - npm test
-  - npm run codeclimate
-  - npm run coveralls

@@ -3,7 +3,7 @@
 ## Getting started
 
 * [Requirements](docs/REQUIREMENTS.md)    
-
+* [Quick Start](docs/QuickStart.md)
  
 ## Frontend
 

@@ -1,0 +1,1 @@
+# Cut And Paste Detector

@@ -10,8 +10,8 @@ A functional React based frontend starter kit:
 * Find bugs, enforce coding standards with `eslint` and its plugins: `react`, `promise`, `mocha`.
 * Copy and paste detector with `jscpd`
 * Display lint warnings and build errors to directly to the browser with `webpack-hud`
-* Unit tests with `karma`, `mocha` and `enzyme`
-* Code coverage with `istanbul`
+* Unit tests with `karma` and `mocha`
+* Code coverage with `nyc`
 * End to end tests with `nightwatch`
 * Concatenation, minification, obfuscation and compression of javascript and css file
 * Bundle size and dependencies size under control
@@ -27,8 +27,6 @@ A functional React based frontend starter kit:
 
     $ npm -v
     5.6.0
-
-
 
 These are the main *npm* commands for a normal developer workflow:
 
@@ -64,14 +62,6 @@ To run the development web server:
     $ npm start
 
 > **Hot reloading**: Webpack detects any change in the code, it rebuilds automatically and pushes the new change the browser, no manual browser refresh required.
-
-### Test
-
-#### Unit test with Karma
-
-Unit tests are written as `mocha` test and executed thanks to `karma`:
-
-    $ npm test
 
 ## Configuration
 

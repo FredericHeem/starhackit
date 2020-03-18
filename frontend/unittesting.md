@@ -1,5 +1,8 @@
-# Unit testing with Karma
+# Unit testing
 
 Unit tests are written as `mocha` test and executed thanks to `karma`:
 
-    $ npm test
+```text
+$ npm test
+```
+

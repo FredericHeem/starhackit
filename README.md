@@ -1,13 +1,15 @@
-<img alt="Starhack" src="./client/src/app_public/landing/img/starhackit-logo-text.png" height="250">
+# Introduction
 
-StarHackIt
-==========
+![Starhack](.gitbook/assets/starhackit-logo-text.png)
+
+## StarHackIt
+
 StarHackIt is a fullstack starter kit composed of:
 
-* [React web frontend](client/README.md)
-* [Node backend](server/README.md)
-* [React native mobile app ](mobile/README.md)
-* [Deployment by Ansible with docker images](deploy/playbook/README.md)
+* [React web frontend](frontend/client.md)
+* [Node backend](backend/server.md)
+* [React native mobile app ](https://github.com/FredericHeem/starhackit/tree/09437da314079802151aa899cffca97ea342f146/mobile/README.md)
+* [Deployment by Ansible with docker images](https://github.com/FredericHeem/starhackit/tree/09437da314079802151aa899cffca97ea342f146/deploy/playbook/README.md)
 
 Fullstack web application starter kit written in modern Javascript with react and node.js with the following features:
 
@@ -17,8 +19,8 @@ Fullstack web application starter kit written in modern Javascript with react an
 * Relational database: postgres, mysql, sqlite, mssql etc, ...
 * Logging
 * 100% results in [Lighthouse test](https://developers.google.com/web/tools/lighthouse/)
-  
-## Dev Technologies
+
+### Dev Technologies
 
 * [Docker](https://www.docker.com/): Debug your app, not your environment
 * [Mocha](http://mochajs.org/): test framework.
@@ -28,22 +30,24 @@ Fullstack web application starter kit written in modern Javascript with react an
 * [Eslint](http://eslint.org/): The pluggable linting utility for JavaScript and JSX.
 * [Travis](https://travis-ci.org/): Test and deploy. [![Build Status](https://travis-ci.org/FredericHeem/starhackit.svg?branch=master)](https://travis-ci.org/FredericHeem/starhackit)
 * [NYC](https://github.com/istanbuljs/nyc): Code coverage
-*  [![Greenkeeper badge](https://badges.greenkeeper.io/FredericHeem/starhackit.svg)](https://greenkeeper.io/)
-  
+* [![Greenkeeper badge](https://badges.greenkeeper.io/FredericHeem/starhackit.svg)](https://greenkeeper.io/)
 
 > The frontend and the backend are two separate projects with their own set of dependencies. One can use the frontend with another existing backend, or use the backend with another frontend stack.
 
-## Clone the source code
+### Clone the source code
 
 To get the latest code, grab it by cloning the repository from GitHub:
 
-    $ git clone https://github.com/FredericHeem/starhackit.git yourproject
-    $ cd yourproject
+```text
+$ git clone https://github.com/FredericHeem/starhackit.git yourproject
+$ cd yourproject
+```
 
-# License
+## License
 
-See [LICENSE](LICENSE)
+See [LICENSE](https://github.com/FredericHeem/starhackit/tree/09437da314079802151aa899cffca97ea342f146/LICENSE/README.md)
 
-# Author
+## Author
 
 Crafted with passion by [Frederic Heem](https://github.com/FredericHeem)
+

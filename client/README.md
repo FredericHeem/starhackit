@@ -73,16 +73,6 @@ Unit tests are written as `mocha` test and executed thanks to `karma`:
 
     $ npm test
 
-#### End to end testing with nightwatch
-
-To execute the end to end testing, a.k.a _e2e testing_, first make sure the frontend and backend are running, then run:
-
-    $ npm run e2e
-
-The end to end tests are executed by [nightwatch](http://nightwatchjs.org/) which uses the *Selenium* driver API.
-
-The test suite can be found in [test/nightwatch](test/nightwatch)
-
 ## Configuration
 
 The file [src/app/config.js](src/app/config.js) gathers the common configuration and the environment specific configuration which is selected by defining the variable `NODE_ENV` to `production`, `development`, `uat` etc ...

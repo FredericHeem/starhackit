@@ -8,6 +8,7 @@
 ## Frontend
 
 * [The frontend](client/README.md)
+* [Unit testing](client/docs/UnitTesting.md)    
 * [End 2 End Testing](client/docs/End2EndTest.md)    
 * [Multi Application](client/docs/MultiApp.md)    
 * [Production Build](client/docs/ProductionBuild.md)    

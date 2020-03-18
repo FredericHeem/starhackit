@@ -1,5 +1,10 @@
 # Summary​
 
+## Getting started
+
+* [Requirements](docs/REQUIREMENTS.md)    
+
+ 
 ## Frontend
 
 * [The frontend](client/README.md)    

@@ -1,14 +1,12 @@
-# Production Build
+# Production Build
 
 To build the production version:
 
-```text
-$ npm run build
+    $ npm run build
+
+*webpack* will produce a report with all the assets and their respective size.
+
 ```
-
-_webpack_ will produce a report with all the assets and their respective size.
-
-```text
 $ npm run build
 Webpack Bundle Analyzer saved report to /Users/fredericheem/starhackit/client/dist/report.html
 Hash: e9d3997237a507a37f97
@@ -81,6 +79,8 @@ Entrypoint micro [big] = micro.e9d3997237a507a37f97.js
 Entrypoint public [big] = public.e9d3997237a507a37f97.js
 Entrypoint user [big] = user.e9d3997237a507a37f97.js
 Entrypoint admin [big] = admin.e9d3997237a507a37f97.js
+
+
 ```
 
 To find out exactly the weight of each individual library, the tool [https://github.com/webpack-contrib/webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer) creates a report displaying the size and the relative percentage of the dependencies.

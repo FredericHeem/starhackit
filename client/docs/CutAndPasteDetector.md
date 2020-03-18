@@ -1,8 +1,8 @@
-# Cut and Paste detector
+# Cut And Paste Detector
 
 [jspcd](https://github.com/kucherenko/jscpd) is used for the copy and paste detection.
 
-```text
+```
 client $ npm run cpd
 > jscpd -r console --format 'javascript,typescript' ./src
 
@@ -16,5 +16,5 @@ client $ npm run cpd
 ├────────────┼────────────────┼─────────────┼──────────────┼──────────────────┼───────┤
 │ Total:     │ 92             │ 4047        │ 5            │ 60               │ 1.48% │
 └────────────┴────────────────┴─────────────┴──────────────┴──────────────────┴───────┘
-```
 
+```

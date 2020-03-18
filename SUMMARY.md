@@ -1,28 +1,25 @@
-# Table of contents
-
-* [Introduction](README.md)
+# Summary​
 
 ## Getting started
 
-* [Requirements](getting-started/requirements.md)
-* [Quick Start](getting-started/quickstart.md)
-
+* [Requirements](docs/REQUIREMENTS.md)    
+* [Quick Start](docs/QuickStart.md)
+ 
 ## Frontend
 
-* [The frontend](frontend/client.md)
-* [Npm scripts](frontend/npmscripts.md)
-* [Unit testing](frontend/unittesting.md)
-* [End 2 End Testing](frontend/end2endtest.md)
-* [Multi Application](frontend/multiapp.md)
-* [Production Build](frontend/productionbuild.md)
-* [Internationalization](frontend/internationalization.md)
-* [Cut and Paste detector](frontend/cutandpastedetector.md)
+* [The frontend](client/README.md)
+* [Npm scripts](client/docs/NpmScripts.md)    
+* [Unit testing](client/docs/UnitTesting.md)    
+* [End 2 End Testing](client/docs/End2EndTest.md)    
+* [Multi Application](client/docs/MultiApp.md)    
+* [Production Build](client/docs/ProductionBuild.md)
+* [Internationalization](client/docs/Internationalization.md)    
+* [Cut and Paste detector](client/docs/CutAndPasteDetector.md)    
 
 ## Backend
 
-* [The node backend](backend/server.md)
+* [The node backend](server/README.md)
 
 ## Deployment
 
-* [Deploy docker images with Ansible](deployment/playbook.md)
-
+* [Deploy docker images with Ansible](deploy/playbook/README.md)

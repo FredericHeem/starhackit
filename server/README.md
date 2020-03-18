@@ -1,6 +1,5 @@
-# The node backend
-
-## Node.js Starter Kit
+Node.js Starter Kit
+==================
 
 Backend Starter Kit written in Node.js with the following features:
 
@@ -17,18 +16,16 @@ Backend Starter Kit written in Node.js with the following features:
 * **Logging** with timestamp and filename.
 * **CORS** support with [kcors](https://github.com/koajs/cors)
 
-### Tl;DR
+## Tl;DR
 
 To start the backend:
 
-```text
-# cd server
-# npm install
-# npm run setup
-# npm start
-```
+    # cd server
+    # npm install
+    # npm run setup
+    # npm start
 
-## Dependencies
+# Dependencies
 
 The minimal requirements to get it running locally are:
 
@@ -42,40 +39,41 @@ To deploy to production, you will also need:
 * Postgresql
 * Ansible
 
-## Workflow with npm scripts
+# Workflow with npm scripts
 
-These are the main _npm_ commands during a standard developer workflow:
+These are the main *npm* commands during a standard developer workflow:
 
-| npm command | details |
-| :--- | :--- |
-| `npm install` | Install dependencies |
-| `npm run setup` | Install Redis and Postgresql docker containers |
-| `npm start` | Start the backend |
-| `npm test` | Run the tests and generate a code coverage |
-| `npm run mocha` | Run the tests |
-| `npm run mock` | Run a mock server based on the RAML api definition |
-| `npm run doc` | Generate the API HTML documentation |
-| `npm run opendoc` | Open the API HTML documentation |
-| `npm run db:create` | Create the database |
-| `npm run db:drop` | Drop the database |
-| `npm run db:migrate` | Run the sql migration |
-| `npm run db:recreate` | Drop and create the database |
-| `npm run docker:build` | Build the api docker image |
-| `npm run docker:up` | Start all docker containers: postgres and redis |
-| `npm run docker:down` | Stop all containers |
-| `npm run docker:destroy` | Destoy dockers containers and storage |
+| npm command    | details  |
+|----------------|----------|
+| `npm install`  | Install dependencies  |
+| `npm run setup`  | Install Redis and Postgresql docker containers  |
+| `npm start`    | Start the backend  |
+| `npm test`     |  Run the tests and generate a code coverage |
+| `npm run mocha`|  Run the tests |
+| `npm run mock`  |  Run a mock server based on the RAML api definition |
+| `npm run doc` |  Generate the API HTML documentation |
+| `npm run opendoc` |  Open the API HTML documentation |
+| `npm run db:create`| Create the database 
+| `npm run db:drop`| Drop the database
+| `npm run db:migrate`| Run the sql migration
+| `npm run db:recreate`| Drop and create the database
+| `npm run docker:build`| Build the api docker image
+| `npm run docker:up`| Start all docker containers: postgres and redis
+| `npm run docker:down`| Stop all containers
+| `npm run docker:destroy`| Destoy dockers containers and storage
 
-## Configuration
+# Configuration
 
-### Database
+## Database
 
 This project can use the most popular SQL databases such as PostgreSQL, MySQL, Oracle, MSSQL and Sqlite. This is achieved with [Sequelize](http://docs.sequelizejs.com/en/latest/), the most popular [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) for Node.js
 
-#### Postgresql configuration
+
+### Postgresql configuration
 
 Here is an example of the configuration for Postgres:
 
-```text
+```
 "db":{
     "url": "postgres://postgres:password@localhost:6432/dev?sslmode=disable",
     "options": {
@@ -86,35 +84,26 @@ Here is an example of the configuration for Postgres:
 
 Install and configure Postgres on a mac:
 
-```text
-$ brew install postgres
-```
+    $ brew install postgres
 
 Start postgres:
 
-```text
-$ brew services start postgres
-```
+    $ brew services start postgres
 
 Create a user
 
-```text
-$ createuser --interactive
-```
+    $ createuser --interactive
 
 Create a database:
 
-```text
-$ npm run db:create
-```
+    $ npm run db:create
 
-### Sending Email
-
+## Sending Email
 Sending email is a very common task for an application. For instance, an email is sent during registration, when a user requests a new password etc ...
 
 The project is leveraging [nodemailer](http://nodemailer.com/) which makes sending e-mail easy as cake:
 
-```text
+```
 "mail": {
   "from": "StarHackIt <notification@yourproject.com>",
   "signature": "The Team",
@@ -130,17 +119,17 @@ The project is leveraging [nodemailer](http://nodemailer.com/) which makes sendi
 
 Please have a look at the [nodemailer documentation](https://github.com/nodemailer/nodemailer) for more information about how to use another mail provider.
 
-### Social authentication
+## Social authentication
 
 Beside creating an account with username and password, this starter kit supports social authentication such as Facebook, Google, Twitter etc ...
 
 [passportjs](http://passportjs.org/) has more than 300 different strategies to choose from.
 
-#### Facebook authentication
+### Facebook authentication
 
 Here is the configuration for the Facebook authentication:
 
-```text
+```
 "authentication":{
   "facebook":{
     "clientID":"",
@@ -150,13 +139,13 @@ Here is the configuration for the Facebook authentication:
 }
 ```
 
-### Redis session store
+## Redis session store
 
-_Redis_ can be used to quickly store and retrieve session data. This allows for zero down time in production when the api server is restarted.
+*Redis* can be used to quickly store and retrieve session data. This allows for zero down time in production when the api server is restarted.
 
 Here is how to configure Redis:
 
-```text
+```
 "redis":{
   "url": "//localhost:6379"
 },
@@ -164,11 +153,11 @@ Here is how to configure Redis:
 
 On a mac, use `brew` to install `redis`:
 
-```text
+```
 $ brew install redis
 ```
 
-### Json Web Token
+## Json Web Token
 
 [Json Web Token](https://jwt.io/) is a modern alternative to HTTP cookie for authentication purposes.
 
@@ -178,11 +167,11 @@ A sequence diagram a worth a thousand words:
 
 ![Json Web Token Sequence Diagram](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgSldUIEF1dGhlbnRpY2F0aW9uIFNlcXVlbmNlCgpDbGllbnQtPlNlcnZlcjogUE9TVCAvYXV0aC9sb2dpbiBcbnVzZXJuYW1lOiJwaXBwbyJcbnBhc3N3b3JkOiAiAAMIIgoAPAYtPkRCOiBmaW5kIHVzZXIgYnkAAwVuYW1lCkRCAF4KZm91ABsIAFEFCm5vdGUgcmlnaHQgb2YgAIEHCHRva2VuID0gand0LnNpZ24odXNlciwgc2VjcmV0LCBvcHRpb25zKQB0CQCBSQY6IDIwMCBPS1xuADsGOiAiQTFCMkMzRDRFNTY3ODkwIgCBUQY6ewCBVAkgAIFXB319Cg&s=modern-blue)
 
-Please change the following configuration according to your need, especially the _secret_.
+Please change the following configuration according to your need, especially the *secret*.
 
 For a list of all available options, please consult the [node-jsonwebtoken documentation](https://github.com/auth0/node-jsonwebtoken#usage)
 
-```text
+```
 "jwt": {
   "secret": "I love shrimp with mayonnaise",
   "options": {
@@ -191,137 +180,119 @@ For a list of all available options, please consult the [node-jsonwebtoken docum
 }
 ```
 
-### CORS
-
-[Cross-origin resource sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is implemented with the _koa_ middleware [kcors](https://github.com/koajs/cors)
+## CORS
+[Cross-origin resource sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is implemented with the *koa* middleware [kcors](https://github.com/koajs/cors)
 
 See [kors options](https://github.com/koajs/cors#corsoptions) for the list of all options.
 
 Here is a typical configuration:
 
-```text
+```
 "cors":{
   "credentials": true
 },
 ```
 
-### Test & Code Coverage
 
+
+
+## Test & Code Coverage
 To test the backend:
 
-```text
-# npm test
-```
+    # npm test
 
 It will not only test the code, but also checks the source code with eslint and generates a code coverage report located at `coverage/lcov-report/index.html`
 
-## API - RAML
+# API - RAML
 
-The REST API implemented by this backend is designed and modeled with [RAML](http://raml.org/) which stands for Rest API Modeling Language. From a file describing the API such as the [user's API](https://github.com/FredericHeem/starhackit/tree/ad5151d8b510e5de2e89b85c3a6524fc01784c3f/server/src/plugins/users/raml/users.raml), several dedicated tools will perform the following benefits:
+The REST API implemented by this backend is designed and modeled with [RAML](http://raml.org/) which stands for Rest API Modeling Language.
+From a file describing the API such as the [user's API](src/plugins/users/raml/users.raml), several dedicated tools will perform the following benefits:
 
 * `npm run doc`: The [API documentation in HTML](http://starhack.it/api/v1/doc/api.html)
 * `npm run mocker`: A mock server that will responds to web browser according the API specification, useful for frontend developers which can start before the backend is fully implemented.
 * A mock client which verifies that the backend implemented correctly the API.
 
-### REST API HTML documentation
+## REST API HTML documentation
 
 The REST API HTML documentation is generated with the following command:
 
-```text
-# npm run doc
-```
+    # npm run doc
 
 The result can be found at `build/api.html`
 
 Behind the scene `npm run doc` invokes:
 
-```text
-# node scripts/apidoc.js
-```
+    # node scripts/apidoc.js
 
 To open the documentation, simply run
 
-```text
-# npm run opendoc
-```
+    # npm run opendoc
 
-### Mock server
+
+## Mock server
 
 Given the RAML describing of an API, [raml-mocker-server](https://github.com/dmitrisweb/raml-mocker-server) will start responding the web client with data that comply with the API.
 
 To start the mock server, run this npm script:
 
-```text
-# npm run mocker
-```
+    # npm run mocker
 
-This script launches [mocker-server.js](https://github.com/FredericHeem/starhackit/tree/ad5151d8b510e5de2e89b85c3a6524fc01784c3f/server/scripts/mocker-server.js), modify it to eventually change the http port and the `raml` files to select.
+This script launches [mocker-server.js](scripts/mocker-server.js), modify it to eventually change the http port and the `raml` files to select.
 
-### Docker containers
+## Docker containers
 
-#### For development
+### For development
+To install the docker containers for the various services such as Redis and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](server/binci.yml)
 
-To install the docker containers for the various services such as Redis and Postgres on the local machine, the [Binci](https://github.com/binci/binci) project is being used to containerize the development workflow, see its configuration file: [binci.yml](https://github.com/FredericHeem/starhackit/tree/ad5151d8b510e5de2e89b85c3a6524fc01784c3f/server/server/binci.yml)
-
-```text
-# cd server
-# npm run setup
-```
+    # cd server
+    # npm run setup
 
 To check that the containers are running:
 
-```text
+```
 # docker ps
 CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                    NAMES
 422cac20abc7        postgres:10-alpine        "docker-entrypoint.s…"   2 hours ago         Up 2 hours          0.0.0.0:6432->5432/tcp   server_pg_1
 7e5c38a946ff        smebberson/alpine-redis   "/init"                  2 hours ago         Up 2 hours          6379/tcp                 server_redis_1
+
 ```
 
-#### For production
+### For production
 
 To build a production dockerized system, please use `docker-compose` to build, start and stop containers:
 
-```text
-# npm run docker:up
-```
+    # npm run docker:up
 
-## Development
+# Development
 
 [sequelize-cli](https://github.com/sequelize/cli) helps to manage the database migration and rollback.
 
-### Creating a new data model
+## Creating a new data model
 
-By using the _model:create_ command, a new sequelize model is created alongside its migration script for database update and rollback
+By using the *model:create* command, a new sequelize model is created alongside its migration script for database update and rollback
 
-```text
-$ ./node_modules/.bin/sequelize model:create --name User --attributes "name:text, password:text"
+    $ ./node_modules/.bin/sequelize model:create --name User --attributes "name:text, password:text"
 
-$ ./node_modules/.bin/sequelize model:create --name UserPending --attributes "username:string(64), email:string(64), password:string, code:string(16)"
+    $ ./node_modules/.bin/sequelize model:create --name UserPending --attributes "username:string(64), email:string(64), password:string, code:string(16)"
 
-$ ./node_modules/.bin/sequelize model:create --name PasswordReset --attributes "user_id:integer, token:string(32)"
-```
+    $ ./node_modules/.bin/sequelize model:create --name PasswordReset --attributes "user_id:integer, token:string(32)"
 
 2 files will be generated:
+  * the javascript sequelize model in the *models* directory
+  * the sql migration script in the *migrations* directory
 
-* the javascript sequelize model in the _models_ directory
-* the sql migration script in the _migrations_ directory
+Eventually change the sql table name to *underscore_case*
 
-Eventually change the sql table name to _underscore\_case_
+## GraphQL
 
-### GraphQL
+    # npm install -g postgraphql
+    # postgraphql postgres://postgres:password@192.168.99.100:5432/dev --development
 
-```text
-# npm install -g postgraphql
-# postgraphql postgres://postgres:password@192.168.99.100:5432/dev --development
-```
 
-### Database migration
+## Database migration
 
 > Database migration are **not** necessary for development environment but only for system already in production.
 
 Run the following command to migrate the database:
 
-```text
-$ npm run db:migrate
-```
-
+    $ npm run db:migrate

@@ -20,13 +20,13 @@ A functional React based frontend starter kit:
 
 ## TOC
 
-* [Npm scripts](client/docs/NpmScripts.md)    
-* [Unit testing](client/docs/UnitTesting.md)    
-* [End 2 End Testing](client/docs/End2EndTest.md)    
-* [Multi Application](client/docs/MultiApp.md)    
-* [Production Build](client/docs/ProductionBuild.md)
-* [Internationalization](client/docs/Internationalization.md)    
-* [Cut and Paste detector](client/docs/CutAndPasteDetector.md)   
+* [Npm scripts](docs/NpmScripts.md)    
+* [Unit testing](docs/UnitTesting.md)    
+* [End 2 End Testing](docs/End2EndTest.md)    
+* [Multi Application](docs/MultiApp.md)    
+* [Production Build](docs/ProductionBuild.md)
+* [Internationalization](docs/Internationalization.md)    
+* [Cut and Paste detector](docs/CutAndPasteDetector.md)   
 
 ### TL;DR
 

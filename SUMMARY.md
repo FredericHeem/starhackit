@@ -19,3 +19,7 @@
 ## Backend
 
 * [The node backend](server/README.md)
+
+## Deployment
+
+* [Deploy docker images with Ansible](deploy/playbook/README.md)

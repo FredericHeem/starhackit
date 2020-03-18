@@ -1,3 +1,0 @@
----
-- hosts: all
-  become: True

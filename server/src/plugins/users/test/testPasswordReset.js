@@ -129,8 +129,8 @@ describe('PasswordReset', function () {
       await client.post('v1/auth/verify_reset_password_token', verifyPaswordData);
       assert(false);
     } catch(error){
-      assert.equal(error.statusCode, 422);
-      assert.equal(error.body.error.name, 'TokenInvalid');
+      assert.equal(error.response.status, 422);
+      assert.equal(error.response.data.error.name, 'TokenInvalid');
     }
   });
   it('reset passord with malformed email', async () => {
@@ -142,7 +142,7 @@ describe('PasswordReset', function () {
       await client.post('v1/auth/reset_password', data);
       assert(false);
     } catch(res){
-      assert.equal(res.statusCode, 400);
+      assert.equal(res.response.status, 400);
       //console.log(res.body);
       //assert.equal(res.body.name, '');
     }
@@ -162,9 +162,8 @@ describe('PasswordReset', function () {
       assert(false);
     } catch(res){
       assert(res);
-      assert.equal(res.statusCode, 422);
-      //console.log(res);
-      assert.equal(res.body.error.name, 'TokenInvalid');
+      assert.equal(res.response.status, 422);
+      assert.equal(res.response.data.error.name, 'TokenInvalid');
     }
   });
   it('verify reset password with malformed token', async() => {
@@ -182,9 +181,9 @@ describe('PasswordReset', function () {
       assert(false);
     } catch(res){
       assert(res);
-      assert.equal(res.statusCode, 400);
+      assert.equal(res.response.status, 400);
       //console.log(res.body);
-      assert.equal(res.body.error.validation[0].stack, 'instance.token does not meet minimum length of 16');
+      assert.equal(res.response.data.error.validation[0].stack, 'instance.token does not meet minimum length of 16');
     }
   });
 });

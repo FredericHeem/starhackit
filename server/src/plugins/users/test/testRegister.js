@@ -62,8 +62,8 @@ describe('UserRegister', function() {
       assert(false, "should not be here");
     } catch(error){
       //console.log(error);
-      assert.equal(error.statusCode, 422);
-      assert.equal(error.body.error.name, 'UsernameExists');
+      assert.equal(error.response.status, 422);
+      assert.equal(error.response.data.error.name, 'UsernameExists');
     }
 
     // registering the same email when user is already registered
@@ -96,8 +96,8 @@ describe('UserRegister', function() {
     try {
       await client.post('v1/auth/verify_email_code', {code: "1234567890123456"});
     } catch(error){
-      assert.equal(error.statusCode, 422);
-      assert.equal(error.body.error.name, "NoSuchCode");
+      assert.equal(error.response.status, 422);
+      assert.equal(error.response.data.error.name, "NoSuchCode");
     }
   });
   it('malformed email code', async () => {
@@ -105,8 +105,8 @@ describe('UserRegister', function() {
       await client.post('v1/auth/verify_email_code', {code: "123456789012345"});
       assert(false);
     } catch(error){
-      assert.equal(error.statusCode, 400);
-      assert.equal(error.body.error.validation[0].stack, "instance.code does not meet minimum length of 16");
+      assert.equal(error.response.status, 400);
+      assert.equal(error.response.data.error.validation[0].stack, "instance.code does not meet minimum length of 16");
     }
   });
   it('invalid register username too short', async () => {
@@ -116,9 +116,9 @@ describe('UserRegister', function() {
       await client.post('v1/auth/register', registerDataKo);
       assert(false);
     } catch(error){
-      console.log(error.body);
-      assert.equal(error.statusCode, 400);
-      assert.equal(error.body.error.validation[0].stack, 'instance.username does not meet minimum length of 3');
+      console.log(error.response.data);
+      assert.equal(error.response.status, 400);
+      assert.equal(error.response.data.error.validation[0].stack, 'instance.username does not meet minimum length of 3');
     }
   });
   it('shoud register twice a user', async () => {
@@ -145,8 +145,8 @@ describe('UserRegister', function() {
       assert(false, "should not be here");
     } catch(error){
       //console.log(error);
-      assert.equal(error.statusCode, 422);
-      assert.equal(error.body.error.name, 'UsernameExists');
+      assert.equal(error.response.status, 422);
+      assert.equal(error.response.data.error.name, 'UsernameExists');
     }
 
   });

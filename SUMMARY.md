@@ -23,7 +23,7 @@
 * [Testing](server/docs/Testing.md)
 * [Configuration](server/Docs/Configuration.md)
 * [Database](server/docs/Database.md)
-* [Authentication]((server/docs/Authentication.md))
+* [Authentication](server/docs/Authentication.md)
     * [Social Authentication](server/docs/SocialAuthentication.md)
     * [Local authtication with JWT](server/docs/JsonWebToken.md)
 * [Api Model](server/docs/ApiModel.md)

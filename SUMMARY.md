@@ -5,7 +5,7 @@
 * [Requirements](docs/REQUIREMENTS.md)    
 * [Quick Start](docs/QuickStart.md)
  
-## Frontend (client/README.md)
+## [Frontend] (client/README.md)
 
 * [The Frontend](client/README.md)
     * [Npm scripts](client/docs/NpmScripts.md)    

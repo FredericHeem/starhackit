@@ -25,7 +25,7 @@
 * [Database](server/docs/Database.md)
 * [Authentication](server/docs/Authentication.md)
     * [Social Authentication](server/docs/SocialAuthentication.md)
-    * [Local authtication with JWT](server/docs/JsonWebToken.md)
+    * [Local Authentication with JWT](server/docs/JsonWebToken.md)
 * [Api Model](server/docs/ApiModel.md)
 * [Api Mocking](server/docs/ApiMocking.md)
 * [Email](server/docs/Email.md)

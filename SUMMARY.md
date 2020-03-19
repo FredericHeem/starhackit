@@ -30,7 +30,8 @@
 * [Api Mocking](server/docs/ApiMocking.md)
 * [Email](server/docs/Email.md)
 * [Redis](server/docs/Redis.md)
-* [CORS](server/docs/Cors.md)
+* [Http Server](server/docs/HttpServer.md)
+    * [CORS](server/docs/Cors.md)
 * [Docker images](server/docs/Docker.md)
 
 ## Deployment

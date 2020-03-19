@@ -8,6 +8,6 @@ When working on the source code, it is best to run mocha with the *--watch* opti
 
     $ npm run mocha:watch
 
- > To execute on one test, add *.only* to *it* or *describe*
+ > To execute only one test, add *.only* to *it* or *describe*
 
 

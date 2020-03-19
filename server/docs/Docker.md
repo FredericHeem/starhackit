@@ -1,25 +1,6 @@
-## Docker containers
+## Docker
 
-*docker-compose* manages the docker containers for the various services such as Redis and Postgres on the local machine.
+*Docker* is used both for bringing a predictable development enviromnent and for production by running the backend as a docker container.
 
-The file [docker-compose.yml](../docker-compose.yml) defines all dependencies to run the project
-
-    # cd server
-    # npm run docker:up
-
-To check that the containers are running:
-
-```
-# docker ps
-CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                    NAMES
-e16e6b12b427        postgres:10-alpine        "docker-entrypoint.s…"   47 hours ago        Up 47 hours         0.0.0.0:6432->5432/tcp   server_pg_1
-0b24afd9defe        smebberson/alpine-redis   "/init"                  47 hours ago        Up 47 hours         0.0.0.0:7379->6379/tcp   server_redis_1
-```
-
-Getting a container logs:
-
-    $ docker logs server_pg_1
-
-Destroying all containers and volumes:
-
-    $ npm run docker:destroy
+* [Development Enviromnent with *docker-compose*](DockerCompose.md)
+* [Build, Tag and Push Docker Images](DockerImages.md)

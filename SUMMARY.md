@@ -8,7 +8,7 @@
 ## Frontend
 
 * [The Frontend](client/README.md)
-* [Npm scripts](client/docs/NpmScripts.md)    
+    * [Npm scripts](client/docs/NpmScripts.md)    
 * [Unit testing](client/docs/UnitTesting.md)    
 * [End 2 End Testing](client/docs/End2EndTest.md)    
 * [Multi Application](client/docs/MultiApp.md)    
@@ -31,7 +31,9 @@
     * [Local Authentication with JWT](server/docs/LocalAuthentication.md)
 * [Email](server/docs/Email.md)
 * [Redis](server/docs/Redis.md)
-* [Docker images](server/docs/Docker.md)
+* [Docker](server/docs/Docker.md)
+    * [Development Enviromnent with *docker-compose*](DockerCompose.md)
+    * [Build, Tag and Push Docker Images](server/docs/DockerImages.md)
 * [Api Model](server/docs/ApiModel.md)
     * [Api Mocking](server/docs/ApiMocking.md)
 

@@ -18,10 +18,11 @@
 
 ## Backend
 
-* [Node Nackend](server/README.md)
-* [Npm scripts](server/docs/NpmScripts.md)  
+* [Node Backend](server/README.md)
+    * [Npm scripts](server/docs/NpmScripts.md)  
 * [Testing](server/docs/Testing.md)
-* [Configuration](server/Docs/Configuration.md)
+    * [Code Coverage](server/docs/CodeCoverage.md)
+* [Configuration](server/docs/Configuration.md)
 * [Database](server/docs/Database.md)
 * [Http Server](server/docs/HttpServer.md)
     * [CORS](server/docs/Cors.md)

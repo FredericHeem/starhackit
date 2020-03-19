@@ -14,6 +14,7 @@
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
     "test": "npm run cover",
     "mocha": "NODE_PATH=src mocha",
+    "mocha:watch": "NODE_PATH=src mocha --watch",
     "cover": "nyc npm run mocha",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",

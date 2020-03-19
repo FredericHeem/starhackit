@@ -13,8 +13,10 @@
 * [End 2 End Testing](client/docs/End2EndTest.md)    
 * [Multi Application](client/docs/MultiApp.md)    
 * [Production Build](client/docs/ProductionBuild.md)
-* [Internationalization](client/docs/Internationalization.md)    
+* [Internationalization](client/docs/Internationalization.md)
+* [Configuration](client/docs/Configuration.md)   
 * [Cut and Paste detector](client/docs/CutAndPasteDetector.md)    
+* [Webpack](client/docs/Webpack.md)    
 
 ## Backend
 

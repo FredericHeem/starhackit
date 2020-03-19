@@ -3,9 +3,6 @@ const config = {
     title: "StarHackIt",
     description: "React Mobx Emotion Node Starter Kit",
     apiUrl: "/api/v1/",
-    analytics: {
-      google: ""
-    },
     socialAuth: ["facebook", "google"],
     debug: {
       log: false,

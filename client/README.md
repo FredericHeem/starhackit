@@ -29,24 +29,12 @@ A functional React based frontend starter kit:
 * [Production Build](docs/ProductionBuild.md)
 * [Internationalization](docs/Internationalization.md)    
 * [Cut and Paste detector](docs/CutAndPasteDetector.md)   
+* [Configuration](docs/Configuration.md)   
+* [Webpack](client/docs/Webpack.md)    
 
 ### TL;DR
 
     $ cd client
     $ npm install
     $ npm start
-
-### Build & Serve
-
-[Webpack](https://webpack.github.io/) has become the defacto standard for building React frontend, it is configured through 3 files:
-
-* [webpack.config.js](webpack.config.js): the configuration common to all environment.
-* [webpack.dev.js](webpack.dev.js): the configuration for development environment. Thanks to the Webpack plugin `OpenBrowserPlugin`, a new browser page will be opened at the right URL i.e: `http://localhost:8080`
-* [webpack.prod.js](webpack.prod.js): the configuration for production environment.
-
-## Configuration
-
-The file [src/app/config.js](src/app/config.js) gathers the common configuration and the environment specific configuration which is selected by defining the variable `NODE_ENV` to `production`, `development`, `uat` etc ...
-The `NODE_ENV` variable is injected through the *webpack* plugin `DefinePlugin`.
-
 

@@ -1,8 +1,8 @@
 # Configuration
 
-The backend is configured through a set of config file located in the [config directory](../config)
+This project uses the library [node-config](https://lorenwest.github.io/node-config/) which supports config file hierarchy and the *NODE_CONFIG* environment variable.
 
-Example of such config:
+Example of [the default config file](../config/default.json):
 ```
 {
   "websiteUrl": "http://localhost:8080",

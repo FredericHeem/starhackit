@@ -7,7 +7,8 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm install`  | Install dependencies  |
 | `npm run setup`  | Install Redis and Postgresql docker containers  |
 | `npm start`    | Start the backend  |
-| `npm run mocha`|  Run the tests |
+| `npm run mocha`|  Run the tests once|
+| `npm run mocha:watch`|  Run the tests and restart when code changes |
 | `npm test`     |  Run the tests and generate a code coverage |
 | `npm run db:create`| Create the database 
 | `npm run db:drop`| Drop the database

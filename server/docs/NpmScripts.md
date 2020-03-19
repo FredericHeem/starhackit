@@ -7,6 +7,7 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm install`  | Install dependencies  |
 | `npm run setup`  | Install Redis and Postgresql docker containers  |
 | `npm start`    | Start the backend  |
+| `npm run mocha`|  Run the tests |
 | `npm test`     |  Run the tests and generate a code coverage |
 | `npm run db:create`| Create the database 
 | `npm run db:drop`| Drop the database
@@ -16,7 +17,7 @@ These are the main *npm* commands during a standard developer workflow:
 | `npm run docker:up`| Start all docker containers: postgres and redis
 | `npm run docker:down`| Stop all containers
 | `npm run docker:destroy`| Destoy dockers containers and storage
-| `npm run mocha`|  Run the tests |
+
 | `npm run mock`  |  Run a mock server based on the RAML api definition |
 | `npm run doc` |  Generate the API HTML documentation |
 | `npm run opendoc` |  Open the API HTML documentation |

@@ -2,8 +2,17 @@
 
 This project can use the most popular SQL databases such as PostgreSQL, MySQL, Oracle, MSSQL and Sqlite. This is achieved with [Sequelize](http://docs.sequelizejs.com/en/latest/), the most popular [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) for Node.js
 
+## Install and Start 
 
-### Postgresql configuration
+Start the postgres database asnd other services:
+
+    $ npm run docker:up
+
+Connect to the database:
+
+    $ psql "postgres://postgres:password@localhost:6432/dev?sslmode=disable"
+
+## Configuration
 
 Here is an example of the configuration for Postgres:
 
@@ -16,16 +25,7 @@ Here is an example of the configuration for Postgres:
 }
 ```
 
-Install and configure Postgres on a mac:
-
-    $ brew install postgres
-
-Create a database:
-
-    $ npm run db:create
-
-
-## Database migration
+## Migration
 
 > Database migration are **not** necessary for development environment but only for system already in production.
 
@@ -33,11 +33,9 @@ Run the following command to migrate the database:
 
     $ npm run db:migrate
 
-# Development
+## Creating a new data model
 
 [sequelize-cli](https://github.com/sequelize/cli) helps to manage the database migration and rollback.
-
-## Creating a new data model
 
 By using the *model:create* command, a new sequelize model is created alongside its migration script for database update and rollback
 

@@ -5,7 +5,7 @@
 
 ## Configuration
 
-Here is the (koa configuration)[../config/default.json]:
+Here is the [koa configuration](../config/default.json):
 
 ```
 "koa": {

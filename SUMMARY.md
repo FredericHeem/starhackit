@@ -23,16 +23,16 @@
 * [Testing](server/docs/Testing.md)
 * [Configuration](server/Docs/Configuration.md)
 * [Database](server/docs/Database.md)
+* [Http Server](server/docs/HttpServer.md)
+    * [CORS](server/docs/Cors.md)
 * [Authentication](server/docs/Authentication.md)
     * [Social Authentication](server/docs/SocialAuthentication.md)
     * [Local Authentication with JWT](server/docs/LocalAuthentication.md)
-* [Api Model](server/docs/ApiModel.md)
-* [Api Mocking](server/docs/ApiMocking.md)
 * [Email](server/docs/Email.md)
 * [Redis](server/docs/Redis.md)
-* [Http Server](server/docs/HttpServer.md)
-    * [CORS](server/docs/Cors.md)
 * [Docker images](server/docs/Docker.md)
+* [Api Model](server/docs/ApiModel.md)
+    * [Api Mocking](server/docs/ApiMocking.md)
 
 ## Deployment
 

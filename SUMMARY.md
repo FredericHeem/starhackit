@@ -5,7 +5,7 @@
 * [Requirements](docs/REQUIREMENTS.md)    
 * [Quick Start](docs/QuickStart.md)
  
-## [Frontend](client/README.md)
+## Frontend
 
 * [The Frontend](client/README.md)
     * [Npm scripts](client/docs/NpmScripts.md)    
@@ -19,7 +19,8 @@
 ## Backend
 
 * [Node Backend](server/README.md)
-    * [Npm scripts](server/docs/NpmScripts.md)  
+    * [Npm scripts](server/docs/NpmScripts.md)
+* [Development Enviromnent with *docker-compose*](server/docs/DockerCompose.md)
 * [Testing](server/docs/Testing.md)
     * [Code Coverage](server/docs/CodeCoverage.md)
 * [Configuration](server/docs/Configuration.md)
@@ -31,12 +32,10 @@
     * [Local Authentication with JWT](server/docs/LocalAuthentication.md)
 * [Email](server/docs/Email.md)
 * [Redis](server/docs/Redis.md)
-* [Docker](server/docs/Docker.md)
-    * [Development Enviromnent with *docker-compose*](DockerCompose.md)
-    * [Build, Tag and Push Docker Images](server/docs/DockerImages.md)
 * [Api Model](server/docs/ApiModel.md)
     * [Api Mocking](server/docs/ApiMocking.md)
 
 ## Deployment
 
-* [Deploy docker images with Ansible](deploy/playbook/README.md)
+* [Build, Tag and Push Docker Images](deploy/docs/DockerImages.md)
+* [Deploy with Ansible](deploy/playbook/README.md)

@@ -25,7 +25,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: api:latest
+    image: fredericheem/api:v10.1
     expose:
       - '9000'
     ports:
@@ -47,13 +47,13 @@ services:
     networks:
       - net
 
-  web:
+  ui:
     build:
       context: ./client
       dockerfile: Dockerfile
       args:
         BUILD_VERSION: "docker compose alpha build"
-    image: ui:latest
+    image: fredericheem/ui:v10.1
     volumes:
       - ./deploy/nginx.conf:/etc/nginx/nginx.conf
     expose:

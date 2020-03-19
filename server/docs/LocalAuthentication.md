@@ -1,4 +1,4 @@
-## Json Web Token
+## Local Authentication with Json Web Token
 
 [Json Web Token](https://jwt.io/) is a modern alternative to HTTP cookie for authentication purposes.
 

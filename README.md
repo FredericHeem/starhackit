@@ -15,8 +15,6 @@ Fullstack web application starter kit written in modern Javascript with react an
 * Authorization: scheme using user, group and permission  
 * Scalable by using a micro services based architecture, a.k.a message queues
 * Relational database: postgres, mysql, sqlite, mssql etc, ...
-* Logging
-* 100% results in [Lighthouse test](https://developers.google.com/web/tools/lighthouse/)
   
 ## Dev Technologies
 
@@ -32,13 +30,6 @@ Fullstack web application starter kit written in modern Javascript with react an
   
 
 > The frontend and the backend are two separate projects with their own set of dependencies. One can use the frontend with another existing backend, or use the backend with another frontend stack.
-
-## Clone the source code
-
-To get the latest code, grab it by cloning the repository from GitHub:
-
-    $ git clone https://github.com/FredericHeem/starhackit.git yourproject
-    $ cd yourproject
 
 # License
 

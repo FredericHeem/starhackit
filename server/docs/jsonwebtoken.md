@@ -1,15 +1,22 @@
+## Json Web Token
 
-<div class=wsd wsd_style="modern-blue" ><pre>
+[Json Web Token](https://jwt.io/) is a modern alternative to HTTP cookie for authentication purposes.
 
-    title JSON Web Token Authentication
+[node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) is the node library which implements such a protocol.
 
-    Client->Server: POST /auth/login \nusername:"pippo"\npassword: "password"
-    Server->DB: find user by username
-    DB->Server: found user pippo
-    note right of Server: token = jwt.sign(user, secret, options)
-    Server->Client: 200 OK\n token: "A1B2C3D4E567890"\nuser:{username: "pippo"}}
-    Client->Client: Save token to local storage
-</pre></div><script type="text/javascript" src="http://www.websequencediagrams.com/service.js"></script>
+A sequence diagram a worth a thousand words:
 
+![Json Web Token Sequence Diagram](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgSldUIEF1dGhlbnRpY2F0aW9uIFNlcXVlbmNlCgpDbGllbnQtPlNlcnZlcjogUE9TVCAvYXV0aC9sb2dpbiBcbnVzZXJuYW1lOiJwaXBwbyJcbnBhc3N3b3JkOiAiAAMIIgoAPAYtPkRCOiBmaW5kIHVzZXIgYnkAAwVuYW1lCkRCAF4KZm91ABsIAFEFCm5vdGUgcmlnaHQgb2YgAIEHCHRva2VuID0gand0LnNpZ24odXNlciwgc2VjcmV0LCBvcHRpb25zKQB0CQCBSQY6IDIwMCBPS1xuADsGOiAiQTFCMkMzRDRFNTY3ODkwIgCBUQY6ewCBVAkgAIFXB319Cg&s=modern-blue)
 
+Please change the following configuration according to your need, especially the *secret*.
 
+For a list of all available options, please consult the [node-jsonwebtoken documentation](https://github.com/auth0/node-jsonwebtoken#usage)
+
+```
+"jwt": {
+  "secret": "I love shrimp with mayonnaise",
+  "options": {
+    "expiresIn": "15 days"
+  }
+}
+```

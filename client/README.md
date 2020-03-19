@@ -17,6 +17,8 @@ A functional React based frontend starter kit:
 * Bundle size and dependencies size under control
 * Configuration depending of the environment: dev, uat, prod etc ...
 * *Hot reloading**: Webpack detects any change in the code, it rebuilds automatically and pushes the new change the browser, no manual browser refresh required.
+* 100% results in [Lighthouse test](https://developers.google.com/web/tools/lighthouse/)
+
 
 ## TOC
 

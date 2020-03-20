@@ -25,7 +25,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: fredericheem/api:v10.2.0
+    image: fredericheem/api:v10.5.0
     expose:
       - "9000"
     ports:

@@ -3,8 +3,6 @@ import styled from "@emotion/styled";
 import spinners from "./spinner/spinner.examples";
 import alerts from "./alert/alert.examples";
 import panels from "./panel/panel.examples";
-import inputs from "./input/input.examples";
-import buttons from "./button/button.examples";
 
 export default context => {
   const { tr, parts } = context;

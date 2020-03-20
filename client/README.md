@@ -30,7 +30,7 @@ A functional React based frontend starter kit:
 * [Internationalization](docs/Internationalization.md)    
 * [Cut and Paste detector](docs/CutAndPasteDetector.md)   
 * [Configuration](docs/Configuration.md)   
-* [Webpack](client/docs/Webpack.md)    
+* [Webpack](docs/Webpack.md)    
 
 ### TL;DR
 

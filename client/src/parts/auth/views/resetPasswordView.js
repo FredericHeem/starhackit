@@ -9,7 +9,7 @@ import paper from "components/Paper";
 import button from "mdlean/lib/button";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
-import input from "components/input";
+import input from "mdlean/lib/input";
 import Debug from "debug";
 import AsyncOp from "utils/asyncOp";
 

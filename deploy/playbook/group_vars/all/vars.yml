@@ -10,10 +10,10 @@ pip_install_packages:
 
 # Docker image tag names
 api_image: "fredericheem/api"
-api_tag: latest
+api_tag: v10.2.0
 
 web_image: "fredericheem/ui"
-web_tag: latest
+web_tag: v10.2.0
 
 firewall_state: started
 firewall_enabled_at_boot: true

@@ -5,7 +5,11 @@ import { observer } from "mobx-react";
 import AsyncOp from "utils/asyncOp";
 
 export default context => {
-  const { tr, theme: {palette}, rest } = context;
+  const {
+    tr,
+    theme: { palette, shadows },
+    rest
+  } = context;
   const versionStore = AsyncOp(context)(() => rest.get(`version`));
 
   const Footer = observer(() => {
@@ -18,8 +22,8 @@ export default context => {
         css={css`
           padding: 20px;
           text-align: center;
-          background: ${palette.primary.light};
-          color: ${palette.primary.contrastText}
+          box-shadow: ${shadows[5]};
+          color: ${palette.text.secondary};
         `}
       >
         <div>
@@ -30,6 +34,9 @@ export default context => {
         <div>
           {tr.t("Get the source code at ")}
           <a
+            css={css`
+              color: ${palette.text.secondary};
+            `}
             href="https://github.com/FredericHeem/starhackit"
             rel="noopener noreferrer"
             target="_blank"
@@ -38,7 +45,8 @@ export default context => {
           </a>
         </div>
         <div>
-          {`F${__VERSION__}`}{" "}
+          {`F${__VERSION__}`}
+          {" - "}
           {versionStore.data ? `B${versionStore.data.version}` : "Fetching..."}
         </div>
       </footer>

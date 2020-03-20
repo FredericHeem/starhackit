@@ -9,7 +9,7 @@ StarHackIt is a fullstack starter kit composed of:
 * [React native mobile app ](mobile/README.md)
 * [Deployment by Ansible with docker images](deploy/playbook/README.md)
 
-See [online documentation](https://fredericheem.gitbook.io/starhackit/) on gitbook
+See the [online documentation](https://fredericheem.gitbook.io/starhackit/) on gitbook
 
 Fullstack web application starter kit written in modern Javascript with react and node.js with the following features:
 

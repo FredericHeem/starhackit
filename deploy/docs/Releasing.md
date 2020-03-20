@@ -27,7 +27,8 @@ Check out the master branch and pull the latest
     $ git pull
 
 The npm version script:
-\$ npm version 10.2.1
+
+    $ npm version 10.2.1
 
 will perform the following tasks:
 
@@ -37,4 +38,4 @@ will perform the following tasks:
 - tag the git repository with new version
 - push the new git tag
 
-You are now ready to [deploy with Ansible](deploy/playbook/README.md)
+You are now ready to [deploy with Ansible](../playbook/README.md)

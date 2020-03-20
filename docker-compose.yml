@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   pg:
     image: postgres:10-alpine
@@ -20,16 +20,16 @@ services:
       - "6379"
     networks:
       - net
-  
+
   api:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: fredericheem/api:v10.1
+    image: fredericheem/api:v10.2.0
     expose:
-      - '9000'
+      - "9000"
     ports:
-      - '9001:9000'
+      - "9001:9000"
     environment:
       NODE_CONFIG: |
         {
@@ -53,13 +53,13 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_VERSION: "docker compose alpha build"
-    image: fredericheem/ui:v10.1
+    image: fredericheem/ui:v10.2.0
     volumes:
       - ./deploy/nginx.conf:/etc/nginx/nginx.conf
     expose:
-      - '3000'
+      - "3000"
     ports:
-      - '3001:3000'
+      - "3001:3000"
     links:
       - api
     depends_on:

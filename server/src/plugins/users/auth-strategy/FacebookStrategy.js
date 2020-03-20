@@ -1,7 +1,10 @@
+const _ = require("lodash");
 const FbWebStrategy = require("passport-facebook").Strategy;
-const { createRegisterMobile,
+const {
+  createRegisterMobile,
   createVerifyMobile,
-  verifyWeb } = require("./StrategyUtils");
+  verifyWeb
+} = require("./StrategyUtils");
 
 //TODO
 const config = require("config");
@@ -39,12 +42,7 @@ const profileMobileToUser = profile => ({
   }
 });
 
-async function verifyMobile(
-  models,
-  publisherUser,
-  profile,
-  accessToken
-) {
+async function verifyMobile(models, publisherUser, profile, accessToken) {
   log.info("verifyMobile ", JSON.stringify(profile, null, 4));
   const getMe = () =>
     axios
@@ -67,7 +65,7 @@ module.exports.verifyMobile = verifyMobile;
 
 function registerWeb(passport, models, publisherUser) {
   let authenticationFbConfig = config.authentication.facebook;
-  if (authenticationFbConfig && authenticationFbConfig.clientID) {
+  if (authenticationFbConfig && !_.isEmpty(authenticationFbConfig.clientID)) {
     log.info("configuring facebook authentication strategy");
     let facebookStrategy = new FbWebStrategy(
       {

@@ -1,8 +1,11 @@
+const _ = require("lodash");
 const { Strategy } = require("passport-google-oauth20");
 const GoogleTokenStrategy = require("passport-google-id-token");
-const { createRegisterMobile,
+const {
+  createRegisterMobile,
   createVerifyMobile,
-  verifyWeb } = require("./StrategyUtils");
+  verifyWeb
+} = require("./StrategyUtils");
 
 const Axios = require("axios");
 const config = require("config");
@@ -42,12 +45,7 @@ const profileMobileToUser = profile => ({
   }
 });
 
-function verifyMobile(
-  models,
-  publisherUser,
-  profile,
-  accessToken
-) {
+function verifyMobile(models, publisherUser, profile, accessToken) {
   const getMe = () =>
     axios
       .get("userinfo/v2/me", {
@@ -66,7 +64,7 @@ function verifyMobile(
 
 function registerWeb(passport, models, publisherUser) {
   const googleConfig = config.authentication.google;
-  if (googleConfig) {
+  if (googleConfig && !_.isEmpty(googleConfig.clientID)) {
     const strategy = new Strategy(googleConfig, async function(
       accessToken,
       refreshToken,
@@ -97,31 +95,27 @@ function registerMobile(passport, models, publisherUser) {
   // Standalone android
   passport.use(
     "google-id-token",
-    new GoogleTokenStrategy(
-      {
-      },
-      async (parsedToken, googleId, done) => {
-        log.debug(
-          `GoogleTokenStrategy: ${JSON.stringify(
-            parsedToken,
-            null,
-            4
-          )} ${googleId}`
-        );
+    new GoogleTokenStrategy({}, async (parsedToken, googleId, done) => {
+      log.debug(
+        `GoogleTokenStrategy: ${JSON.stringify(
+          parsedToken,
+          null,
+          4
+        )} ${googleId}`
+      );
 
-        try {
-          const res = await verifyWeb(
-            models,
-            publisherUser,
-            profileMobileToUser({ ...parsedToken.payload, id: googleId })
-          );
-          done(res.err, res.user);
-        } catch (err) {
-          log.error("GoogleTokenStrategy", err);
-          done(err);
-        }
+      try {
+        const res = await verifyWeb(
+          models,
+          publisherUser,
+          profileMobileToUser({ ...parsedToken.payload, id: googleId })
+        );
+        done(res.err, res.user);
+      } catch (err) {
+        log.error("GoogleTokenStrategy", err);
+        done(err);
       }
-    )
+    })
   );
 }
 

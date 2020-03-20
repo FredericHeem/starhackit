@@ -26,4 +26,15 @@ Check out the master branch and pull the latest
     $ git checkout master
     $ git pull
 
-    $ npm version 10.2.1
+The npm version script:
+\$ npm version 10.2.1
+
+will perform the following tasks:
+
+- build the docker images for backend and frontend
+- push the images to the docker repository
+- Change and commit the version on the root package.json
+- tag the git repository with new version
+- push the new git tag
+
+You are now ready to [deploy with Ansible](deploy/playbook/README.md)

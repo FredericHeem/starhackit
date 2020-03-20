@@ -9,6 +9,11 @@ import Content from "./content";
 
 export default context => {
   const { tr, palette } = context;
+  const Button = button(context, {
+    cssOverride: css`
+      width: 300px;
+    `
+  });
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
@@ -22,21 +27,40 @@ export default context => {
   });
 
   function Header() {
-    const Button = button(context);
     return (
       <HeaderView>
         <h1>{tr.t("StarHackIt")}</h1>
         <h2>{tr.t("A Full Stack Web Application Starter Kit")}</h2>
         <h3>{tr.t("Built with React, Node, data backed by SQL")}</h3>
-
-        <Button
-          raised
-          label="Clone the code on GitHub"
-          href="https://github.com/FredericHeem/starhackit"
-          icon={
-            <img src={require("./img/github.svg").default} width={20} alt="github" />
-          }
-        />
+        <ul
+          css={css`
+            list-style: none;
+          `}
+        >
+          <li>
+            <Button
+              raised
+              label="Clone the code"
+              href="https://github.com/FredericHeem/starhackit"
+              icon={
+                <img
+                  src={require("./img/github.svg").default}
+                  width={20}
+                  alt="github"
+                />
+              }
+            />
+          </li>
+          <li>
+            <br />
+            <Button
+              primary
+              raised
+              label="Explore the documentation"
+              href="https://fredericheem.gitbook.io/starhackit"
+            />
+          </li>
+        </ul>
         <br />
       </HeaderView>
     );

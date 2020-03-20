@@ -1,7 +1,7 @@
 {
   "name": "starhackit",
   "description": "react + node fullstack starter kit with authentication and authorization, data backed by SQL",
-  "version": "10.5.2",
+  "version": "10.6.1",
   "private": false,
   "scripts": {
     "docker:up": "docker-compose up",

@@ -49,23 +49,7 @@ The strict necessary is the docker configuration.
 
 Please create a new access token from _https://hub.docker.com/settings/security_ for _docker_hub_password_
 
-```
-docker_hub_username: ""
-docker_hub_password: ""
-docker_hub_email: ""
-
-jwt_secret: ""
-db_password: ""
-
-mail_user: ''
-mail_password: ""
-
-facebook_client_id: ""
-facebook_client_secret: ""
-
-google_client_id: ""
-google_client_secret: ""
-```
+[include](group_vars/all/vault.example.yml)
 
 # Ansible roles download
 

@@ -85,13 +85,6 @@ export default () => ({
   ],
   tools: [
     {
-      img: require("./img/es7.png").default,
-      title: "ES7 ready",
-      height: "120",
-      link: "https://github.com/lukehoban/es6features",
-      text: "The new javascript ECMAScript 7"
-    },
-    {
       img: require("./img/eslint.svg").default,
       title: "ESLint",
       height: "120",
@@ -137,13 +130,6 @@ export default () => ({
       text: "A continuous integration platform."
     },
     {
-      img: require("./img/code-climate.png").default,
-      title: "CodeClimate",
-      height: "140",
-      link: "https://codeclimate.com/",
-      text: "Code Coverage and Code Review"
-    },
-    {
       img: require("./img/raml.png").default,
       title: "RAML",
       link: "http://raml.org",
@@ -163,13 +149,6 @@ export default () => ({
       width: "128",
       link: "http://www.ansible.com/",
       text: "Deploy apps. Manage systems. DevOps made easy"
-    },
-    {
-      img: require("./img/vagrant.png").default,
-      title: "Vagrant",
-      link: "https://www.vagrantup.com/",
-      text:
-        "Create and configure lightweight, reproducible, and portable development environments."
     },
     {
       img: require("./img/docker.png").default,

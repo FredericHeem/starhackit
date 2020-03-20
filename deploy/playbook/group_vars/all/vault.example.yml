@@ -6,9 +6,11 @@ docker_hub_email: ""
 jwt_secret: ""
 db_password: ""
 
-mail_user: ''
+mail_user: ""
 mail_password: ""
+
 facebook_client_id: ""
 facebook_client_secret: ""
+
 google_client_id: ""
 google_client_secret: ""

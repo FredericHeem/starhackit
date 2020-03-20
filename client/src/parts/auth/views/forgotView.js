@@ -2,7 +2,7 @@ import React from "react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import button from "mdlean/lib/button";
-import input from "components/input";
+import input from "mdlean/lib/input";
 import validate from "validate.js";
 import page from "components/Page";
 import paper from "components/Paper";

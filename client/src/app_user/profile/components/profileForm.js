@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
 import { createElement as h } from "react";
-import input from "components/input";
+import input from "mdlean/lib/input";
+import button from "mdlean/lib/button";
 import spinner from "components/spinner";
 import paper from "components/Paper";
 import formGroup from "components/FormGroup";
@@ -12,10 +13,18 @@ export default context => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const Paper = paper(context);
-  const ButtonLoading = require("mdlean/lib/button").default(context, { cssOverride: css`width: 256px;` });
-  const UsernameInput = input(context);
-  const EmailInput = input(context);
-  const BioInput = input(context);
+  const Button = button(context, {
+    cssOverride: css`
+      width: 256px;
+    `
+  });
+  const Input = input(context, {
+    cssOverride: css`
+      > input {
+        width: 256px;
+      }
+    `
+  });
 
   function ProfileForm({ store }) {
     const { errors } = store;
@@ -26,9 +35,11 @@ export default context => {
       <Paper>
         <form onSubmit={e => e.preventDefault()}>
           <h3>{tr.t("My Profile")}</h3>
-          {store.picture && <img width="50" src={store.picture.url} alt="profile" />}
+          {store.picture && (
+            <img width="50" src={store.picture.url} alt="profile" />
+          )}
           <FormGroup>
-            <UsernameInput
+            <Input
               id="username"
               label={tr.t("Username")}
               value={store.username}
@@ -36,7 +47,7 @@ export default context => {
             />
           </FormGroup>
           <FormGroup>
-            <EmailInput
+            <Input
               id="email"
               value={store.email}
               disabled
@@ -47,7 +58,7 @@ export default context => {
 
           <FormGroup>
             <h4>{tr.t("About Me")}</h4>
-            <BioInput
+            <Input
               className="biography-input"
               value={store.profile.biography || ""}
               error={errors.biography && errors.biography[0]}
@@ -68,7 +79,7 @@ export default context => {
             <img alt="profile" src=""/>
           </FormGroup>*/}
           <FormGroup>
-            <ButtonLoading
+            <Button
               className="btn-update-profile"
               raised
               onClick={() => store.update()}

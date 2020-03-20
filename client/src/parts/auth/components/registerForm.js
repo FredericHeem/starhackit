@@ -1,50 +1,52 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, css } from "@emotion/core";
 import { observer } from "mobx-react";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
-import input from "components/input";
-
+import input from "mdlean/lib/input";
 
 export default context => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const AlertAjax = alertAjax(context);
   const ButtonLoading = require("mdlean/lib/button").default(context);
-  const UserNameInput = input(context);
-  const EmailInput = input(context);
-  const PasswordInput = input(context);
+  const Input = input(context, {
+    cssOverride: css`
+      > input {
+        width: 256px;
+      }
+    `
+  });
 
   const RegisterForm = observer(({ store }) => {
     const { errors } = store;
     return (
-      <form
-        className="register-form"
-        onSubmit={e => e.preventDefault()}
-      >
+      <form className="register-form" onSubmit={e => e.preventDefault()}>
         <AlertAjax error={store.op.error} className="register-error-view" />
         <FormGroup className="username">
-          <UserNameInput
+          <Input
             id="username"
             onChange={e => {
               store.username = e.target.value;
             }}
+            type="email"
             label={tr.t("Username")}
             error={errors.username && errors.username[0]}
           />
         </FormGroup>
         <FormGroup className="email">
-          <EmailInput
+          <Input
             id="email"
             onChange={e => {
               store.email = e.target.value;
             }}
+            type="email"
             label={tr.t("Email")}
             error={errors.email && errors.email[0]}
           />
         </FormGroup>
         <FormGroup className="password">
-          <PasswordInput
+          <Input
             id="password"
             onChange={e => {
               store.password = e.target.value;
@@ -58,7 +60,7 @@ export default context => {
         <FormGroup>
           <ButtonLoading
             className="btn-register"
-            accent
+            primary
             raised
             css={{ width: 256 }}
             onClick={() => store.register()}
@@ -68,5 +70,5 @@ export default context => {
       </form>
     );
   });
-  return RegisterForm
+  return RegisterForm;
 };

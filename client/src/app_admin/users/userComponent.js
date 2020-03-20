@@ -2,7 +2,7 @@ import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import page from "components/Page";
 import paper from "components/Paper";
-import input from "components/input";
+import input from "mdlean/lib/input";
 import spinner from "components/spinner";
 import formGroup from "components/FormGroup";
 

@@ -6,7 +6,7 @@
   "scripts": {
     "docker:up": "docker-compose up",
     "install": "echo \"Run the command \"npm install\" in the client and in the server\"",
-    "version": "cd client && npm test",
+    "version": "docker-compose build && docker-compose push",
     "postversion": "git push && git push --tags"
   },
   "repository": {

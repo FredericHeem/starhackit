@@ -2,7 +2,7 @@
 
 Edit [docker-compose.yml](../../docker-compose.yml) at the root of the project and change the docker organisation name and as well as the version of the images for the **api** and **ui**
 
-Care has been taken to minimize the size of the image.
+Change the frontend and backend version in their respective _package.json_
 
 ### Build
 
@@ -27,7 +27,7 @@ Open a web browser at the given address:
 
     $ open http://localhost:3001/
 
-If something goes wrong, check the *backend* logs:
+If something goes wrong, check the _backend_ logs:
 
     $ docker logs starhackit_api_1
 
@@ -36,6 +36,3 @@ If something goes wrong, check the *backend* logs:
 Push the images to the docker repository:
 
     $ docker-compose push
-
-
-

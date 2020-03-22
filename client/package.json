@@ -51,7 +51,7 @@
     "mobx": "5.15.4",
     "mobx-react": "6.1.8",
     "prop-types": "15.7.2",
-    "qs": "6.9.1",
+    "qs": "6.9.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-leanimate": "0.16.0",

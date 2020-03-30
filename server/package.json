@@ -62,7 +62,7 @@
     "nodemailer": "6.4.6",
     "oauth": "0.9.15",
     "passport-facebook": "3.0.0",
-    "passport-google-id-token": "0.4.6",
+    "passport-google-id-token": "0.4.7",
     "passport-google-oauth20": "2.0.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",

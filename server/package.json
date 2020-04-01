@@ -46,7 +46,7 @@
     "config": "3.3.0",
     "ejs": "3.0.1",
     "ioredis": "4.16.0",
-    "jsonschema": "1.2.5",
+    "jsonschema": "1.2.6",
     "jsonwebtoken": "8.5.1",
     "kcors": "2.2.2",
     "koa": "2.11.0",

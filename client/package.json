@@ -41,7 +41,7 @@
     "axios": "0.19.2",
     "debug": "4.1.1",
     "history": "4.10.1",
-    "i18next": "19.3.3",
+    "i18next": "19.4.1",
     "i18next-browser-languagedetector": "4.0.2",
     "i18next-xhr-backend": "3.2.2",
     "intl": "1.2.5",

@@ -45,7 +45,7 @@
     "chance": "1.1.4",
     "config": "3.3.0",
     "ejs": "3.0.1",
-    "ioredis": "4.16.0",
+    "ioredis": "4.16.2",
     "jsonschema": "1.2.5",
     "jsonwebtoken": "8.5.1",
     "kcors": "2.2.2",

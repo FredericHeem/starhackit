@@ -69,7 +69,7 @@
     "passport-oauth2": "1.5.0",
     "pg": "7.18.2",
     "pg-hstore": "2.3.3",
-    "pm2": "4.2.3",
+    "pm2": "4.4.0",
     "qs": "6.9.1",
     "sequelize": "5.21.5",
     "sequelize-cli": "5.5.1",

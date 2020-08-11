@@ -47,7 +47,7 @@
     "i18next-browser-languagedetector": "4.0.2",
     "i18next-xhr-backend": "3.2.2",
     "intl": "1.2.5",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "mdlean": "0.23.0",
     "mitt": "1.2.0",
     "mobx": "5.15.4",

@@ -22,6 +22,7 @@
             "args": ["--no-timeouts", "--colors"], //you can specify paths to specific tests here
             "cwd": "${workspaceRoot}/server",
             "runtimeExecutable": null,
+            "internalConsoleOptions": "openOnSessionStart",
             "env": {
               "NODE_PATH": "src"
             }

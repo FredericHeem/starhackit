@@ -37,7 +37,7 @@ function Data(config) {
 
       registerModel(dirname, modelFile) {
         log.debug("registerModel ", modelFile);
-        let model = sequelize['import'](path.join(dirname, modelFile));
+        let model = require(path.join(dirname, modelFile))(sequelize, Sequelize.DataTypes);
         modelsMap[model.name] = model;
       },
 

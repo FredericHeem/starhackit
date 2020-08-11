@@ -5,7 +5,9 @@ These are the main *npm* commands for a normal developer workflow:
 | npm command    | details  |
 |----------------|----------|
 | `npm install`  | Install dependencies  |
-| `npm start`    | Start a development web server  |
+| `npm start`    | Start a development web server to the basic frontend |
+| `npm run start:user`    | Start a development web server pointing to the user frontend |
+| `npm run start:admin`    | Start a development web server pointing to the admin frontend  |
 | `npm test`     |  Run the unit tests with Karma |
 | `npm run test:watch` |  Watch the code and run the unit test |
 | `npm run e2e`  |  Run the end to end tests with Nigthwatch/Selenium |

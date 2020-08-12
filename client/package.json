@@ -9,6 +9,7 @@
     "start": "webpack-dev-server --config webpack.dev.js --open --hot",
     "start:admin": "webpack-dev-server --config webpack.dev.js --hot --open-page=admin/users",
     "start:user": "webpack-dev-server --config webpack.dev.js --hot --open-page=user/profile",
+    "start:public": "webpack-dev-server --config webpack.dev.js --hot --open-page=public",
     "start:prod": "http-server dist/",
     "prestart": "npm run prebuild",
     "lint": "tslint -c tslint.json './src/**/*.{js,jsx,ts,tsx}'",

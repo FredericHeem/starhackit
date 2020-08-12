@@ -1,5 +1,6 @@
 
 import {createPart} from "../router"
+import Layout from "./LayoutUnauthenticated"
 
 export default ({ context }) => [
   {
@@ -24,7 +25,8 @@ export default ({ context }) => [
             name: "auth",
             context,
             partCreate: await import("parts/auth/authModule"),
-            routerContext
+            routerContext,
+            partParam: {Layout}
           })
       }
     ]

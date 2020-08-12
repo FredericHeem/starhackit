@@ -5,12 +5,12 @@ import { parse } from "qs";
 import asyncView from "components/AsyncView";
 import ErrorBoundary from "components/ErrorBoundary";
 
-export function createPart({name, context, partCreate, routerContext}) {
+export function createPart({name, context, partParam, partCreate, routerContext}) {
   if(context.parts[name]){
     return
   }
   
-  const part = partCreate.default(context);
+  const part = partCreate.default(context, partParam);
   context.parts[name] = part;
   routerContext.route.children = part.routes();
   return routerContext.next();

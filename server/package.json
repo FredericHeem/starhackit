@@ -13,7 +13,7 @@
     "prestart": "npm run lint && npm run jscpd",
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
     "test": "npm run cover",
-    "mocha": "NODE_PATH=src mocha --file test/setup.js 'src/**/test*.js'",
+    "mocha": "NODE_PATH=src mocha --file test/setup.js 'src/**/test*.js' --exit",
     "mocha:watch": "npm run mocha --watch",
     "cover": "nyc npm run mocha",
     "lint": "eslint src",

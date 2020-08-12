@@ -4,7 +4,7 @@ import navBar from "components/navbar";
 import footer from "components/footer";
 import RootView from "components/RootView";
 import MainView from "components/MainView";
-import authBar from "./authbar";
+import authBar from "./authBar";
 
 export default context => {
   const {

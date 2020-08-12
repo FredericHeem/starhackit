@@ -5,11 +5,10 @@ import asyncView from "components/AsyncView";
 import logoutView from "./views/logoutView";
 import registrationCompleteView from "./views/registrationCompleteView";
 import { redirect } from "./authUtils";
-import Layout from "./Layout";
 
-export default function(context) {
+export default function(context, partParam) {
   const { rest, history, config, emitter } = context;
-  const layout = Layout(context)
+  const layout = partParam.Layout(context)
   const asyncOpCreate = AsyncOp(context);
   const AsyncView = asyncView(context);
 

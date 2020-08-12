@@ -40,7 +40,6 @@ module.exports = function(options) {
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
-          inject: false,
           chunks: ['micro'],
           description: pkg.description,
           filename: 'index.html'
@@ -49,7 +48,6 @@ module.exports = function(options) {
           template: "src/index.ejs",
           title: pkg.title,
           chunks: ['public'],
-          inject: false,
           description: pkg.description,
           filename: 'public/index.html'
         }),
@@ -57,14 +55,12 @@ module.exports = function(options) {
           template: "src/index.ejs",
           title: pkg.title,
           chunks: ['user'],
-          inject: false,
           filename: 'user/index.html',
           description: pkg.description
         }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
-          inject: false,
           chunks: ['admin'],
           filename: 'admin/index.html'
         }),
@@ -72,10 +68,10 @@ module.exports = function(options) {
         new webpack.DefinePlugin({
           __VERSION__: JSON.stringify(pkg.version)
         }),
-        new CopyWebpackPlugin([
+        new CopyWebpackPlugin({patterns:[
           { from: "./src/favicon.ico" },
           { from: "./locales/**/*.json" }
-        ]),
+        ]}),
         new MiniCssExtractPlugin({
           filename: "[name].css",
           chunkFilename: "[id].css"

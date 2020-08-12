@@ -9,8 +9,16 @@ There are 4 frontend applications in this repository:
 * [app_public](https://github.com/FredericHeem/starhackit/tree/master/client/src/app_public)
 * [app_micro](https://github.com/FredericHeem/starhackit/tree/master/client/src/app_micro)
 
-To start a browser to the relevant app, one could add the *open-page* option:
+To start a browser to the relevant app, use one of the following command:
 
-    $ npm start -- --open-page=user 
+```
+$ npm run start:admin
+```
 
-Webpack will open a browser at *http://0.0.0.0:8080/user*
+```
+$ npm run start:user
+```
+
+```
+$ npm run start:public
+```

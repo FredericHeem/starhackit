@@ -26,6 +26,7 @@
 - [Testing](server/docs/Testing.md)
   - [Code Coverage](server/docs/CodeCoverage.md)
 - [Configuration](server/docs/Configuration.md)
+- [Debugging](server/docs/Debugging.md)
 - [Database](server/docs/Database.md)
 - [Http Server](server/docs/HttpServer.md)
   - [CORS](server/docs/Cors.md)

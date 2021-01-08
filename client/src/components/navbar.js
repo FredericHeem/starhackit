@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx } from "@emotion/react";
 import { createElement as h } from "react";
 import drawer from "mdlean/lib/drawer";
 import { observable, action } from "mobx";
@@ -10,11 +10,11 @@ import menu from "./menu";
 import appBarView from "components/appBarView";
 import titleView from "components/titleView";
 
-export default context => {
+export default (context) => {
   const {
     history,
-    theme: {palette},
-    config: { defaultPath, title }
+    theme: { palette },
+    config: { defaultPath, title },
   } = context;
   const AppBarView = appBarView(context);
   const Drawer = drawer(context);
@@ -27,14 +27,14 @@ export default context => {
     closeDrawer() {
       store.drawerOpen = false;
     },
-    navChange: action(function(menuItem) {
+    navChange: action(function (menuItem) {
       history.push(menuItem.route);
-    })
+    }),
   });
 
   const BurgerButton = styled(button(context))({
     height: 50,
-    width: 50
+    width: 50,
   });
 
   function BurgerIcon() {
@@ -71,7 +71,7 @@ export default context => {
               display: "flex",
               justifyContent: "flex-start",
               alignContent: "center",
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             {appMenu && <IconLeft onDrawerClick={() => store.toggleDrawer()} />}
@@ -86,7 +86,7 @@ export default context => {
           <Drawer open={store.drawerOpen} onClose={() => store.closeDrawer()}>
             <Menu
               menuItems={appMenu}
-              navChange={item => store.navChange(item)}
+              navChange={(item) => store.navChange(item)}
             />
           </Drawer>
         )}
@@ -94,5 +94,5 @@ export default context => {
     );
   });
 
-  return props => <NavBar {...props} />;
+  return (props) => <NavBar {...props} />;
 };

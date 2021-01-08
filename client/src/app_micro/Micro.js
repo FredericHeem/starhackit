@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
 import { observable } from "mobx";
 import Context from "../context";
@@ -8,14 +8,17 @@ import createLink from "components/link";
 
 export default async () => {
   const context = await Context();
-  const { tr, theme: {palette} } = context;
+  const {
+    tr,
+    theme: { palette },
+  } = context;
   const Link = createLink(context);
 
   const store = observable({
     show: false,
     toggle() {
       store.show = !store.show;
-    }
+    },
   });
 
   const Menu = () => (
@@ -59,7 +62,7 @@ export default async () => {
       <main
         css={{
           flexGrow: 1,
-          border: "1px dotted green"
+          border: "1px dotted green",
         }}
       >
         {children}
@@ -71,7 +74,7 @@ export default async () => {
     <div
       css={{
         margin: "20px",
-        border: "1px dotted green"
+        border: "1px dotted green",
       }}
     >
       <div>Edit app_micro/Micro.js to get started </div>
@@ -89,16 +92,16 @@ export default async () => {
       path: "/",
       action: () => ({
         title: "Intro",
-        component: <Intro />
-      })
+        component: <Intro />,
+      }),
     },
     {
       path: "/page",
       action: () => ({
         title: "Page",
-        component: <PageA />
-      })
-    }
+        component: <PageA />,
+      }),
+    },
   ];
 
   return App({ context, routes, layout });

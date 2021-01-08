@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx } from "@emotion/react";
 import { createElement as h } from "react";
 
 import button from "mdlean/lib/button";
@@ -9,7 +9,7 @@ import page from "components/Page";
 import localLoginForm from "../components/localLoginForm";
 import mediaSigninButtons from "../components/mediaSigninButtons";
 
-export default context => {
+export default (context) => {
   const { tr, history } = context;
   const Paper = paper(context);
   const Page = page(context);

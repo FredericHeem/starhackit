@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import styled from "@emotion/styled";
 import button from "mdlean/lib/button";
 import Row from "components/Row";
@@ -7,23 +7,23 @@ import Title from "components/Title";
 import cardComponent from "./cardComponent";
 import Content from "./content";
 
-export default context => {
+export default (context) => {
   const { tr, palette } = context;
   const Button = button(context, {
     cssOverride: css`
       width: 300px;
-    `
+    `,
   });
   const CardIcon = cardComponent(context);
   const { features, frontend, backend, tools } = Content();
 
   const Section = styled("section")(() => ({
     borderTop: `1px solid ${palette.borderColor}`,
-    paddingBottom: 30
+    paddingBottom: 30,
   }));
 
   const HeaderView = styled("section")({
-    padding: 20
+    padding: 20,
   });
 
   function Header() {
@@ -85,7 +85,7 @@ export default context => {
 
   const E2eImg = styled("img")({
     width: "100%",
-    maxWidth: "1200"
+    maxWidth: "1200",
   });
 
   function End2End() {

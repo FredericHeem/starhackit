@@ -1,8 +1,7 @@
-/** @jsx jsx */
-import { jsx } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx } from "@emotion/react";
 
-export default context => {
-  
+export default (context) => {
   const Link = ({ to, children }) => (
     <a
       css={{ textDecoration: window.location.pathname === to ? "" : "none" }}
@@ -12,6 +11,6 @@ export default context => {
       {children}
     </a>
   );
-  
+
   return Link;
 };

@@ -1,17 +1,18 @@
-/** @jsx jsx */
+/* @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import { jsx, keyframes } from '@emotion/core'
+import { jsx, keyframes } from "@emotion/react";
 
 const animation = keyframes({
   "0%": { transform: "rotate(0deg)" },
-  "100%": { transform: "rotate(360deg)" }
+  "100%": { transform: "rotate(360deg)" },
 });
 
 const SvgView = styled("svg")({
-  animation: `${animation} 4s linear infinite`
+  animation: `${animation} 4s linear infinite`,
 });
 
-export default () => function Spinner({ size = 26, color = "black" }) {
+export default () =>
+  function Spinner({ size = 26, color = "black" }) {
     const radius = size / 2;
     return (
       <SvgView

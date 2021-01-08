@@ -1,14 +1,14 @@
-/** @jsx jsx */
+/* @jsxImportSource @emotion/react */
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import { jsx, keyframes } from "@emotion/core";
+import { jsx, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export default (context, { limit = 10 }) => {
   const store = observable({
     messages: [],
     setStatus(id, status) {
-      store.messages.findIndex(message => {
+      store.messages.findIndex((message) => {
         if (message.id === id) {
           message.status = status;
           return true;
@@ -20,13 +20,11 @@ export default (context, { limit = 10 }) => {
       const { messages } = store;
       console.log("add ", component);
       const message = {
-        id: Math.random()
-          .toString(10)
-          .split(".")[1],
+        id: Math.random().toString(10).split(".")[1],
         component,
-        status: "inserting"
+        status: "inserting",
       };
-      
+
       if (messages.length >= limit) {
         store.remove(messages[0].id);
       }
@@ -43,7 +41,7 @@ export default (context, { limit = 10 }) => {
         }
         return false;
       });
-    }
+    },
   });
 
   const AlertView = styled("div")({
@@ -52,25 +50,25 @@ export default (context, { limit = 10 }) => {
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
-    cursor: "pointer"
+    cursor: "pointer",
   });
 
   const animationFadeIn = keyframes({
     "0%": { transform: "scale(0.5)", opacity: 0 },
-    "100%": { transform: "scale(1)", opacity: 1 }
+    "100%": { transform: "scale(1)", opacity: 1 },
   });
   const animationFadeOut = keyframes({
     "0%": { transform: "scale(1)", opacity: 1 },
-    "100%": { transform: "scale(0)", opacity: 0 }
+    "100%": { transform: "scale(0)", opacity: 0 },
   });
 
   const animation = {
     inserting: {
-      animation: `${animationFadeIn} 0.5s`
+      animation: `${animationFadeIn} 0.5s`,
     },
     removing: {
-      animation: `${animationFadeOut} 0.5s`
-    }
+      animation: `${animationFadeOut} 0.5s`,
+    },
   };
 
   const Alert = observer(function Alert({ message }) {
@@ -78,7 +76,7 @@ export default (context, { limit = 10 }) => {
     const { component } = message;
 
     return (
-      <AlertView css={css} onClick={() => store.remove(message.id)} >
+      <AlertView css={css} onClick={() => store.remove(message.id)}>
         {component}
       </AlertView>
     );
@@ -88,7 +86,7 @@ export default (context, { limit = 10 }) => {
     minWidth: 300,
     maxWidth: 600,
     position: "fixed",
-    right: 20
+    right: 20,
   });
 
   function AlertStack() {
@@ -109,6 +107,6 @@ export default (context, { limit = 10 }) => {
     },
     remove(id) {
       store.remove(id);
-    }
+    },
   };
 };

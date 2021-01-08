@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { createElement as h } from "react";
 import input from "mdlean/lib/input";
 import button from "mdlean/lib/button";
@@ -9,21 +9,21 @@ import formGroup from "components/FormGroup";
 
 import { observer } from "mobx-react";
 
-export default context => {
+export default (context) => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const Paper = paper(context);
   const Button = button(context, {
     cssOverride: css`
       width: 256px;
-    `
+    `,
   });
   const Input = input(context, {
     cssOverride: css`
       > input {
         width: 256px;
       }
-    `
+    `,
   });
 
   function ProfileForm({ store }) {
@@ -33,7 +33,7 @@ export default context => {
     }
     return (
       <Paper>
-        <form onSubmit={e => e.preventDefault()}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <h3>{tr.t("My Profile")}</h3>
           {store.picture && (
             <img width="50" src={store.picture.url} alt="profile" />
@@ -64,7 +64,7 @@ export default context => {
               error={errors.biography && errors.biography[0]}
               label={tr.t("Enter Biography")}
               rows={1}
-              onChange={e => {
+              onChange={(e) => {
                 store.profile.biography = e.target.value;
               }}
             />

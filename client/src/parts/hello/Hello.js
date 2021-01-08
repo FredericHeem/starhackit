@@ -1,23 +1,20 @@
-/** @jsx jsx */
-import { jsx } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx } from "@emotion/react";
 import { observer } from "mobx-react";
 import { observable } from "mobx";
 
-export default context => {
-  const {
-    tr,
-    palette
-  } = context;
+export default (context) => {
+  const { tr, palette } = context;
 
   const store = observable({
     show: false,
     toggle() {
       store.show = !store.show;
     },
-    word: "World"
+    word: "World",
   });
 
-  const Word = ({ store }) => <div>{store.word}</div>
+  const Word = ({ store }) => <div>{store.word}</div>;
 
   const Hello = observer(() => (
     <div
@@ -29,8 +26,8 @@ export default context => {
         flexDirection: "column",
         alignItems: "center",
         "> * ": {
-          margin: 20
-        }
+          margin: 20,
+        },
       }}
     >
       <h2>{tr.t("Hello")}</h2>
@@ -45,14 +42,14 @@ export default context => {
     routes: () => [
       {
         path: "",
-        action: routerContext => {
+        action: (routerContext) => {
           // Fetch data here
           return {
             title: "Hello",
-            component: <Hello/>
+            component: <Hello />,
           };
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 };

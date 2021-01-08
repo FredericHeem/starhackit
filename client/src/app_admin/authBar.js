@@ -1,8 +1,8 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import button from "mdlean/lib/button";
 
-export default context => {
+export default (context) => {
   const Button = button(context);
   function AuthBar() {
     return (
@@ -14,12 +14,7 @@ export default context => {
           }
         `}
       >
-        <Button
-          primary
-          raised
-          label="Login"
-          href="/admin/auth/login"
-        />
+        <Button primary raised label="Login" href="/admin/auth/login" />
       </div>
     );
   }

@@ -10,7 +10,7 @@ pip_install_packages:
 
 # Docker image tag names
 api_image: "fredericheem/api"
-api_tag: v10.8.0
+api_tag: v10.9.0
 
 web_image: "fredericheem/ui"
 web_tag: v10.8.0

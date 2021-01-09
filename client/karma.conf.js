@@ -6,7 +6,7 @@ const path = require("path");
 const webpackConfig = require("./webpack.dev");
 
 webpackConfig.devtool = "cheap-module-source-map";
-module.exports = function(config) {
+module.exports = function (config) {
   const configuration = {
     browsers: ["Chrome_without_security"],
     customLaunchers: {
@@ -20,25 +20,25 @@ module.exports = function(config) {
           "--window-size=1920,1080",
           "--disable-accelerated-2d-canvas",
           "--disable-dev-shm-usage",
-          "--disable-gpu"
-        ]
+          "--disable-gpu",
+        ],
       },
       Chrome_travis_ci: {
         base: "Chrome",
-        flags: ["--no-sandbox"]
-      }
+        flags: ["--no-sandbox"],
+      },
     },
     singleRun: true,
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ["mocha", "sinon"],
+    frameworks: ["mocha", "sinon", "webpack"],
     files: ["src/**/*.spec.{js,jsx,ts,tsx}"],
     preprocessors: {
-      "src/**/*.js": ["webpack", "sourcemap"]
+      "src/**/*.js": ["webpack", "sourcemap"],
     },
     reporters: ["mocha"],
     junitReporter: {
       outputDir: "coverage",
-      outputFile: "test-results.xml"
+      outputFile: "test-results.xml",
     },
     webpack: {
       mode: "development",
@@ -46,42 +46,42 @@ module.exports = function(config) {
         rules: [
           {
             test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
-            use: ["url-loader"]
+            use: ["url-loader"],
           },
           {
             test: /\.css$/,
-            use: ["css-loader"]
+            use: ["css-loader"],
           },
           {
             test: /\.(js|jsx|ts|tsx)$/,
             use: ["ts-loader"],
             include: path.join(__dirname, "src"),
-            exclude: path.join(__dirname, "node_modules")
-          }
-        ]
+            exclude: path.join(__dirname, "node_modules"),
+          },
+        ],
       },
       plugins: webpackConfig.plugins,
       externals: {
         "react/addons": true,
         "react/lib/ExecutionEnvironment": true,
-        "react/lib/ReactContext": true
+        "react/lib/ReactContext": true,
       },
-      resolve: webpackConfig.resolve
+      resolve: webpackConfig.resolve,
     },
     webpackServer: {
-      noInfo: true
+      noInfo: true,
     },
     coverageReporter: {
       reporters: [
         {
-          type: "text-summary"
+          type: "text-summary",
         },
         {
           type: "html",
-          dir: "coverage/"
-        }
-      ]
-    }
+          dir: "coverage/",
+        },
+      ],
+    },
   };
 
   if (process.env.TRAVIS) {

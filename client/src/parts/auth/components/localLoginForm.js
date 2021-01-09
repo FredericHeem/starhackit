@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
 import { observable, action } from "mobx";
 import validate from "validate.js";
@@ -10,7 +10,7 @@ import button from "mdlean/lib/button";
 import AsyncOp from "utils/asyncOp";
 import rules from "utils/rules";
 
-export default context => {
+export default (context) => {
   const { tr, rest, emitter } = context;
   const FormGroup = formGroup(context);
   const Input = input(context, {
@@ -18,7 +18,7 @@ export default context => {
       > input {
         width: 256px;
       }
-    `
+    `,
   });
   const AlertAjax = alertAjax(context);
   const SubmitButton = button(context);
@@ -28,16 +28,16 @@ export default context => {
     username: "",
     password: "",
     errors: {},
-    op: asyncOpCreate(payload => rest.post("auth/login", payload)),
-    login: action(async function() {
+    op: asyncOpCreate((payload) => rest.post("auth/login", payload)),
+    login: action(async function () {
       this.errors = {};
       const payload = {
         username: this.username.trim(),
-        password: this.password
+        password: this.password,
       };
       const constraints = {
         username: rules.username,
-        password: rules.password
+        password: rules.password,
       };
       const vErrors = validate(payload, constraints);
       if (vErrors) {
@@ -52,18 +52,18 @@ export default context => {
         console.error("login ", errors);
         localStorage.removeItem("JWT");
       }
-    })
+    }),
   });
 
   const LoginForm = observer(({ store }) => {
     const { errors } = store;
     return (
-      <form className="local-login-form" onSubmit={e => e.preventDefault()}>
+      <form className="local-login-form" onSubmit={(e) => e.preventDefault()}>
         <AlertAjax error={store.op.error} className="login-error-view" />
         <FormGroup className="username">
           <Input
             id="username"
-            onChange={e => {
+            onChange={(e) => {
               store.username = e.target.value;
             }}
             type="email"
@@ -74,7 +74,7 @@ export default context => {
         <FormGroup className="password">
           <Input
             id="password"
-            onChange={e => {
+            onChange={(e) => {
               store.password = e.target.value;
             }}
             label={tr.t("Password")}
@@ -95,5 +95,5 @@ export default context => {
       </form>
     );
   });
-  return props => <LoginForm store={store} {...props} />;
+  return (props) => <LoginForm store={store} {...props} />;
 };

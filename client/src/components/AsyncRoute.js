@@ -1,4 +1,4 @@
-/** @jsx jsx */
+/* @jsxImportSource @emotion/react */
 import { useEffect, useState, createElement as h } from "react";
 
 export default () =>
@@ -8,8 +8,8 @@ export default () =>
 
     useEffect(() => {
       getComponent(
-        component => setComponent(() => component),
-        error => setError(error)
+        (component) => setComponent(() => component),
+        (error) => setError(error)
       );
     }, []);
     if (errorDisplay) {

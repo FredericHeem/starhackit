@@ -1,14 +1,14 @@
-/** @jsx jsx */
+/* @jsxImportSource @emotion/react */
 import { useEffect } from "react";
-import { jsx, css } from "@emotion/core";
+import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
 import AsyncOp from "utils/asyncOp";
 
-export default context => {
+export default (context) => {
   const {
     tr,
     theme: { palette, shadows },
-    rest
+    rest,
   } = context;
   const versionStore = AsyncOp(context)(() => rest.get(`version`));
 

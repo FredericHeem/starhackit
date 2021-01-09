@@ -1,11 +1,11 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "mdlean/lib/input";
 
-export default context => {
+export default (context) => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const AlertAjax = alertAjax(context);
@@ -15,18 +15,18 @@ export default context => {
       > input {
         width: 256px;
       }
-    `
+    `,
   });
 
   const RegisterForm = observer(({ store }) => {
     const { errors } = store;
     return (
-      <form className="register-form" onSubmit={e => e.preventDefault()}>
+      <form className="register-form" onSubmit={(e) => e.preventDefault()}>
         <AlertAjax error={store.op.error} className="register-error-view" />
         <FormGroup className="username">
           <Input
             id="username"
-            onChange={e => {
+            onChange={(e) => {
               store.username = e.target.value;
             }}
             type="email"
@@ -37,7 +37,7 @@ export default context => {
         <FormGroup className="email">
           <Input
             id="email"
-            onChange={e => {
+            onChange={(e) => {
               store.email = e.target.value;
             }}
             type="email"
@@ -48,7 +48,7 @@ export default context => {
         <FormGroup className="password">
           <Input
             id="password"
-            onChange={e => {
+            onChange={(e) => {
               store.password = e.target.value;
             }}
             label={tr.t("Password")}

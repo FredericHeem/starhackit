@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export default ({ tr }) => {
@@ -10,25 +10,25 @@ export default ({ tr }) => {
     padding: 10,
     margin: 10,
     fontWeight: 500,
-    textAlign: "center"
+    textAlign: "center",
   });
 
   const AlertDangerView = styled(AlertView)({
     border: "1px solid #ebccd1",
     color: "#a94442",
-    backgroundColor: "#f2dede"
+    backgroundColor: "#f2dede",
   });
 
   const AlertWarningView = styled(AlertView)({
     border: "1px solid #faebcc",
     color: "#8a6d3b",
-    backgroundColor: "#fcf8e3"
+    backgroundColor: "#fcf8e3",
   });
 
   const AlertInfoView = styled(AlertView)({
     border: "1px solid #bce8f1",
     color: "#31708f",
-    backgroundColor: "#d9edf7"
+    backgroundColor: "#d9edf7",
   });
 
   function CloseIcon({ onClick }) {
@@ -36,7 +36,7 @@ export default ({ tr }) => {
       <span
         css={{
           cursor: "pointer",
-          margin: 0
+          margin: 0,
         }}
         onClick={onClick}
       >
@@ -51,7 +51,7 @@ export default ({ tr }) => {
       message,
       code,
       onRemove,
-      className = "alert"
+      className = "alert",
     }) {
       return (
         <AlertView className={className} role="alert">
@@ -70,6 +70,6 @@ export default ({ tr }) => {
   return {
     Danger: createAlert(AlertDangerView),
     Warning: createAlert(AlertWarningView),
-    Info: createAlert(AlertInfoView)
+    Info: createAlert(AlertInfoView),
   };
 };

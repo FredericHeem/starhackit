@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+/* @jsxImportSource @emotion/react */
+import { jsx, css } from "@emotion/react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import styled from "@emotion/styled";
@@ -14,41 +14,43 @@ export default function createAvatar() {
     onError() {
       store.loading = false;
       store.error = true;
-    }
+    },
   });
 
   const AvatarView = styled("div")(
     {
-      margin: 0
+      margin: 0,
     },
     ({ width, height, circle }) => ({
       width,
-      height
+      height,
     }),
     ({ circle }) =>
       circle && {
         "> img": {
-          borderRadius: "50%"
-        }
+          borderRadius: "50%",
+        },
       }
   );
 
-  const Avatar = observer(({ src, width = 50, height = 50, alt = "", circle, ...props }) => (
-    <AvatarView circle={circle} width={width} height={height} {...props}>
-      {store.loading && ""}
-      {store.error && "ERROR"}
-      {!store.error && (
-        <img
-        alt={alt}
-          src={src}
-          width={width}
-          height={height}
-          onLoad={() => store.onLoad()}
-          onError={e => store.onError(e)}
-        />
-      )}
-    </AvatarView>
-  ));
+  const Avatar = observer(
+    ({ src, width = 50, height = 50, alt = "", circle, ...props }) => (
+      <AvatarView circle={circle} width={width} height={height} {...props}>
+        {store.loading && ""}
+        {store.error && "ERROR"}
+        {!store.error && (
+          <img
+            alt={alt}
+            src={src}
+            width={width}
+            height={height}
+            onLoad={() => store.onLoad()}
+            onError={(e) => store.onError(e)}
+          />
+        )}
+      </AvatarView>
+    )
+  );
 
   return Avatar;
 }

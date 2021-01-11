@@ -25,7 +25,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
   });
   const rt = await provider.makeRouteTables({
     name: "rt",
-    dependencies: { vpc, subnet },
+    dependencies: { vpc, subnet, ig },
     properties: () => ({}),
   });
 

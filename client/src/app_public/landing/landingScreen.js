@@ -32,6 +32,13 @@ export default (context) => {
         <h1>{tr.t("StarHackIt")}</h1>
         <h2>{tr.t("A Full Stack Web Application Starter Kit")}</h2>
         <h3>{tr.t("Built with React, Node, data backed by SQL")}</h3>
+        <h3>
+          {tr.t("Infrastructure as code by ")}
+          <a target="_blank" href="https://grucloud.com">
+            GruCloud
+          </a>
+        </h3>
+
         <ul
           css={css`
             list-style: none;

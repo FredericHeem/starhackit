@@ -1,0 +1,17 @@
+{
+  "name": "grucloud-aws-starhackit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "e2e": "gc d -a -f && gc d -a && gc l && gc a -f && gc a && gc d -f && gc d && gc l -o",
+    "link": "npm link @grucloud/core"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grucloud/core": "*",
+    "ping": "^0.4.0",
+    "ssh2": "^0.8.9"
+  }
+}

@@ -42,4 +42,5 @@
 
 - [Build, Tag and Push Docker Images](deploy/docs/DockerImages.md)
 - [Releasing](deploy/docs/Releasing.md)
+- [Deploy Infrastructure with GruCloud](deploy/grucloud-aws/README.md)
 - [Deploy with Ansible](deploy/playbook/README.md)

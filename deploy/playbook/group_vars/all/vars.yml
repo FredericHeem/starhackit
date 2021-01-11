@@ -13,7 +13,7 @@ api_image: "fredericheem/api"
 api_tag: v10.8.0
 
 web_image: "fredericheem/ui"
-web_tag: v10.9.0
+web_tag: v10.10.0
 
 firewall_state: started
 firewall_enabled_at_boot: true

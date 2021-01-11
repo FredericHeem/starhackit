@@ -8,94 +8,97 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const pkg = require("./package.json");
 
-module.exports = function(options) {
+module.exports = function (options) {
   const config = _.merge(
     {},
     {
       devServer: {
         contentBase: path.join(__dirname, "src"),
         publicPath: "/",
+        open: true,
         hot: true,
         inline: true,
         historyApiFallback: {
           rewrites: [
-            { from: /^\/$/, to: '/index.html' },
-            { from: /^\/user/, to: '/user/index.html' },
-            { from: /^\/admin/, to: '/admin/index.html' },
-            { from: /^\/public/, to: '/public/index.html' }
-          ]
+            { from: /^\/$/, to: "/index.html" },
+            { from: /^\/user/, to: "/user/index.html" },
+            { from: /^\/admin/, to: "/admin/index.html" },
+            { from: /^\/public/, to: "/public/index.html" },
+          ],
         },
         stats: "minimal",
         proxy: {
-          "/api/v1/*": "http://localhost:9000"
+          "/api/v1/*": "http://localhost:9000",
         },
         host: "0.0.0.0",
-        port: 8080
+        port: 8080,
       },
       entry: {},
       output: {
-        publicPath: "/"
+        publicPath: "/",
       },
       plugins: [
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
-          chunks: ['micro'],
+          chunks: ["micro"],
           description: pkg.description,
-          filename: 'index.html'
+          filename: "index.html",
         }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
-          chunks: ['public'],
+          chunks: ["public"],
           description: pkg.description,
-          filename: 'public/index.html'
+          filename: "public/index.html",
         }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
-          chunks: ['user'],
-          filename: 'user/index.html',
-          description: pkg.description
+          chunks: ["user"],
+          filename: "user/index.html",
+          description: pkg.description,
         }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
-          chunks: ['admin'],
-          filename: 'admin/index.html'
+          chunks: ["admin"],
+          filename: "admin/index.html",
         }),
-        
+
         new webpack.DefinePlugin({
-          __VERSION__: JSON.stringify(pkg.version)
+          __VERSION__: JSON.stringify(pkg.version),
         }),
-        new CopyWebpackPlugin({patterns:[
-          { from: "./src/favicon.ico" },
-          { from: "./locales/**/*.json" }
-        ]}),
+        new CopyWebpackPlugin({
+          patterns: [
+            { from: "./src/favicon.ico" },
+            { from: "./locales/**/*.json" },
+          ],
+        }),
         new MiniCssExtractPlugin({
           filename: "[name].css",
-          chunkFilename: "[id].css"
-        })
+          chunkFilename: "[id].css",
+        }),
       ],
       resolve: {
         modules: ["src", "node_modules"],
         extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
         alias: {
-          "src": path.resolve('./src')
-        }
+          src: path.resolve("./src"),
+        },
       },
       module: {
         rules: [
           {
             test: /.(gif|png|woff(2)?|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
-            use: ["url-loader"]
+            use: ["url-loader"],
           },
           {
             test: /\.jpg/,
-            use: ["file-loader"]
-          }
-        ]
-      }
+            use: ["file-loader"],
+          },
+        ],
+      },
     },
     options.overrides
   );

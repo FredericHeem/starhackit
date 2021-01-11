@@ -1,4 +1,5 @@
 const { AwsProvider } = require("@grucloud/core");
+const assert = require("assert");
 
 const createResources = async ({ provider, resources: { keyPair } }) => {
   const config = provider.config();
@@ -131,9 +132,11 @@ exports.createResources = createResources;
 exports.createStack = async ({ name = "aws", config }) => {
   // Create a AWS provider
   const provider = AwsProvider({ name, config });
+  const { keyPairName } = config;
+  assert(keyPairName);
 
   const keyPair = await provider.useKeyPair({
-    name: "kp",
+    name: keyPairName,
   });
   const resources = await createResources({ provider, resources: { keyPair } });
   return { provider, resources };

@@ -7,9 +7,9 @@ import RootView from "components/RootView";
 import MainView from "components/MainView";
 import APP_MENU from "./menuItems";
 
-export default context => {
+export default (context) => {
   const {
-    alertStack: { View: AlertStack }
+    alertStack: { View: AlertStack },
   } = context;
 
   const NavBar = navBar(context);
@@ -27,6 +27,6 @@ export default context => {
 
   return ({ children }) =>
     h(observer(Layout), {
-      children
+      children,
     });
 };

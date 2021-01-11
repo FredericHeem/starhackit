@@ -80,7 +80,15 @@ export default (context) => {
               label={title}
             />
           </div>
-          {right && h(right)}
+          <div
+            css={{
+              "@media(max-width: 600px)": {
+                display: "none",
+              },
+            }}
+          >
+            {right && h(right)}
+          </div>
         </AppBarView>
         {appMenu && (
           <Drawer open={store.drawerOpen} onClose={() => store.closeDrawer()}>

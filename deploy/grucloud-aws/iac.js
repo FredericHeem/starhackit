@@ -41,6 +41,36 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       ingress: {
         IpPermissions: [
           {
+            FromPort: 80,
+            IpProtocol: "tcp",
+            IpRanges: [
+              {
+                CidrIp: "0.0.0.0/0",
+              },
+            ],
+            Ipv6Ranges: [
+              {
+                CidrIpv6: "::/0",
+              },
+            ],
+            ToPort: 80,
+          },
+          {
+            FromPort: 443,
+            IpProtocol: "tcp",
+            IpRanges: [
+              {
+                CidrIp: "0.0.0.0/0",
+              },
+            ],
+            Ipv6Ranges: [
+              {
+                CidrIpv6: "::/0",
+              },
+            ],
+            ToPort: 443,
+          },
+          {
             FromPort: 22,
             IpProtocol: "tcp",
             IpRanges: [

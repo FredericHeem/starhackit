@@ -1,16 +1,20 @@
 # ---- Base Node ----
 FROM node:14-alpine as base
 ENV GIT_SSH_COMMAND "ssh -i ~/.ssh/id_ecdsa -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-WORKDIR /app
-#COPY package-lock.json .
-#COPY git_private_key /tmp/git_private_key
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+WORKDIR /app
+
+#COPY package-lock.json .
+# Uncomment when the package.json contains dependencies fetched through private git repository.
+#COPY git_private_key /tmp/git_private_key
 #RUN mkdir -p /root/.ssh/ && \
 #    chmod 0700 ~/.ssh && \
-#    mv /tmp/git_private_key ~/.ssh/id_ecdsa && \
-#    chmod 0600 ~/.ssh/id_ecdsa && \
-# Set tini as entrypoint
-ENTRYPOINT ["/sbin/tini", "--"]
+#    mv /tmp/git_private_key ~/.ssh/iid_rsa && \
+#    chmod 0600 ~/.ssh/id_rsa 
+
 # copy project file
 COPY package.json .
 
@@ -40,4 +44,4 @@ COPY --from=dependencies /app/prod_node_modules ./node_modules
 # copy app sources
 COPY . .
 EXPOSE 9000
-CMD scripts/initialise.sh
+CMD ["scripts/initialise.sh"]

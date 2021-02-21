@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "10.10.0",
+  "version": "10.11.0",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -38,7 +38,7 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:migrate"
   },
   "dependencies": {
-    "async-busboy": "git@github.com:amit777/async-busboy.git",
+    "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",
     "bcryptjs": "2.4.3",
     "bluebird": "3.7.2",

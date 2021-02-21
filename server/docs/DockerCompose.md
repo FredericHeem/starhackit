@@ -1,6 +1,6 @@
 ## Docker Compose
 
-*docker-compose* manages the docker containers for the various services such as Redis and Postgres on the local machine.
+_docker-compose_ manages the docker containers for the various services such as Redis and Postgres on the local machine.
 
 The file [docker-compose.yml](../docker-compose.yml) defines all dependencies to run the project
 
@@ -20,6 +20,6 @@ Getting a container logs:
 
     $ docker logs server_pg_1
 
-Destroying all containers and volumes:
+Destroy all containers and volumes:
 
     $ npm run docker:destroy

@@ -1,7 +1,7 @@
 {
   "name": "starhackit-ui",
   "title": "StarHack.It",
-  "version": "10.10.0",
+  "version": "10.11.0",
   "description": "React + node starter kit. A fullstack boilerplate with authentication and authorisation",
   "homepage": "https://github.com/FredericHeem/starhackit",
   "license": "NLPL",
@@ -70,7 +70,7 @@
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "chance": "1.1.7",
-    "chromedriver": "87.0.5",
+    "chromedriver": "88.0.0",
     "clean-webpack-plugin": "3.0.0",
     "compression-webpack-plugin": "7.1.1",
     "copy-webpack-plugin": "7.0.0",

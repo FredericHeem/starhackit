@@ -1,12 +1,17 @@
-FROM node:11-alpine as build
+FROM node:14-alpine as build
 
 ARG BUILD_VERSION
 ENV BUILD_VERSION $BUILD_VERSION
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
 WORKDIR /app
+
 
 COPY package.json .
 #COPY package-lock.json .
+
 
 RUN npm install
 COPY . .
@@ -17,5 +22,6 @@ WORKDIR /app
 
 COPY --from=build /app/dist /usr/html/
 COPY --from=build /app/robots.txt /usr/html/
+COPY nginx.conf /etc/nginx
 
-EXPOSE 80
+EXPOSE 3000

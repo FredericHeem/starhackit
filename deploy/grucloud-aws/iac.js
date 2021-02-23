@@ -23,10 +23,15 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       CidrBlock: "10.1.0.1/24",
     }),
   });
-  const rt = await provider.makeRouteTables({
-    name: "rt",
-    dependencies: { vpc, subnet, ig },
-    properties: () => ({}),
+
+  const routeTable = await provider.makeRouteTables({
+    name: "route-table",
+    dependencies: { vpc, subnet },
+  });
+
+  const route = await provider.makeRoute({
+    name: "route-ig",
+    dependencies: { routeTable, ig },
   });
 
   const sg = await provider.makeSecurityGroup({
@@ -120,7 +125,6 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       eip,
     },
     properties: () => ({
-      VolumeSize: 50,
       InstanceType: "t2.micro",
       ImageId: "ami-0917237b4e71c5759", // Ubuntu 20.04
     }),
@@ -154,7 +158,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     },
   });
 
-  return { vpc, ig, subnet, rt, sg, eip, server, hostedZone, recordA };
+  return { vpc, ig, subnet, routeTable, sg, eip, server, hostedZone, recordA };
 };
 
 exports.createResources = createResources;

@@ -2,6 +2,6 @@ const pkg = require("../package.json");
 
 module.exports = () => ({
   domainName: "starhack.it",
-  keyPairName: "kp",
+  keyPairName: "starhackit",
   projectName: pkg.name,
 });

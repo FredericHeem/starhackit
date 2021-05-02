@@ -1,8 +1,8 @@
-const { AwsProvider } = require("@grucloud/core");
+const { AwsProvider } = require("@grucloud/provider-aws");
 const assert = require("assert");
 
 const createResources = async ({ provider, resources: { keyPair } }) => {
-  const config = provider.config();
+  const { config } = provider;
   const { domainName, stage } = config;
 
   const vpc = await provider.makeVpc({
@@ -24,9 +24,9 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     }),
   });
 
-  const routeTable = await provider.makeRouteTables({
+  const routeTable = await provider.makeRouteTable({
     name: "route-table",
-    dependencies: { vpc, subnet },
+    dependencies: { vpc, subnets: [subnet] },
   });
 
   const route = await provider.makeRoute({
@@ -121,7 +121,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     dependencies: {
       keyPair,
       subnet,
-      securityGroups: { sg },
+      securityGroups: [sg],
       eip,
     },
     properties: () => ({
@@ -163,10 +163,10 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
 
 exports.createResources = createResources;
 
-exports.createStack = async ({ name = "aws", config }) => {
+exports.createStack = async ({ config, stage }) => {
   // Create a AWS provider
-  const provider = AwsProvider({ name, config });
-  const { keyPairName } = config;
+  const provider = AwsProvider({ config, stage });
+  const { keyPairName } = provider.config;
   assert(keyPairName);
 
   const keyPair = await provider.useKeyPair({

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@grucloud/core": "*",
+    "@grucloud/provider-aws": "*",
     "ping": "^0.4.0",
     "ssh2": "^0.8.9"
   }

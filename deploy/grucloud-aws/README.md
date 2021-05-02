@@ -31,6 +31,14 @@ Install the dependencies
 npm i
 ```
 
+Generate a graph of the infrastrucure:s
+
+```sh
+gc graph
+```
+
+![Graph](grucloud.svg)
+
 Deploy the infrastructure with:
 
 ```sh

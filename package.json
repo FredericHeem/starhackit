@@ -12,5 +12,8 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:FredericHeem/starhackit.git"
+  },
+  "dependencies": {
+    "lerna": "^4.0.0"
   }
 }

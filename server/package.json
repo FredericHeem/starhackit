@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@grucloud/core": "1.14.0",
+    "@grucloud/docker-axios": "1.15.0",
     "@grucloud/provider-aws": "1.14.1",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",

@@ -31,7 +31,7 @@ describe("CloudDiagram No Auth", function () {
   });
 });
 
-describe("CloudDiagram", function () {
+describe.only("CloudDiagram", function () {
   let client;
   before(async () => {
     await testMngr.start();

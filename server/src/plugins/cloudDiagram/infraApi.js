@@ -172,28 +172,52 @@ exports.InfraApi = (app) => {
           )(),
       },
 
-      //update: {
-      //   pathname: "/:id",
-      //   method: "patch",
-      //   handler: async (context) => {
-      //     const { id } = context.params;
-      //     const user_id = context.state.user.id;
-      //     await models.CloudDiagram.update(context.request.body, {
-      //       where: {
-      //         id,
-      //         user_id,
-      //       },
-      //     });
-      //     const cloudDiagram = await models.CloudDiagram.findOne({
-      //       where: {
-      //         id,
-      //         user_id,
-      //       },
-      //     });
-      //     context.body = cloudDiagram.get();
-      //     context.status = 200;
-      //   },
-      // },
+      update: {
+        pathname: "/:id",
+        method: "patch",
+        handler: (context) =>
+          tryCatch(
+            pipe([
+              tap(() => {
+                assert(context.params.id);
+                assert(context.state.user.id);
+              }),
+              switchCase([
+                () => uuid.validate(context.params.id),
+                // valid id
+                pipe([
+                  tap((xxx) => {
+                    assert(true);
+                  }),
+                  () =>
+                    models.Infra.update(context.request.body, {
+                      where: {
+                        id: context.params.id,
+                      },
+                    }),
+                  () =>
+                    models.Infra.findOne({
+                      where: {
+                        id: context.params.id,
+                      },
+                    }),
+                  callProp("get"),
+                  tap((xxx) => {
+                    assert(true);
+                  }),
+                  tap(contextSetOk({ context })),
+                ]),
+                // invalid uuid
+                contextSet400({ context, message: "invalid uuid" }),
+              ]),
+            ]),
+            pipe([
+              (error) => {
+                throw error;
+              },
+            ])
+          )(),
+      },
     },
   };
 

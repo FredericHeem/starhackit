@@ -2,13 +2,16 @@
 import { css } from "@emotion/react";
 import { observable, action, runInAction, toJS } from "mobx";
 import React, { createElement as h } from "react";
+import { observer } from "mobx-react";
+import { get, eq, pipe, map, switchCase, pick } from "rubico";
+import { size, isEmpty } from "rubico/x";
+import { MdEdit } from "react-icons/md";
+
 import button from "mdlean/lib/button";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
 import input from "mdlean/lib/input";
-import { observer } from "mobx-react";
-import { get, eq, pipe, map, switchCase } from "rubico";
-import { size, isEmpty } from "rubico/x";
+
 import validate from "validate.js";
 import rules from "./rulesForm";
 import awsSelectRegion from "./awsSelectRegion";
@@ -18,6 +21,24 @@ import alert from "components/alert";
 import page from "components/Page";
 import spinner from "components/spinner";
 import AwsLogo from "./assets/aws.svg";
+
+const Form = ({ children, cssOverride }) => (
+  <form
+    onSubmit={(e) => e.preventDefault()}
+    css={[
+      css`
+        box-shadow: 2px 2px 2px 2px grey;
+        display: flex;
+        flex-direction: column;
+        padding: 0rem 1rem 1rem 1rem;
+        margin-bottom: 2rem;
+      `,
+      cssOverride,
+    ]}
+  >
+    {children}
+  </form>
+);
 
 const badgeRegion = ({ theme: { palette } }) => ({ region }) => (
   <div
@@ -56,7 +77,6 @@ const createResourcePerTypeTable = (context) => ({ lives }) => (
       border-top: 0.5em solid transparent;
       border-spacing: 0;
       padding: 16px;
-      margin: 10px;
       & td,
       & th {
         padding: 0.6rem 1rem 0.6rem 1rem;
@@ -173,15 +193,7 @@ const createInfraDelete = (context) => {
   });
 
   const InfraDeleteForm = ({ store }) => (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      css={css`
-        border: 1px solid blue;
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-      `}
-    >
+    <Form>
       <h2>Delete Infrastructure</h2>
       <div>
         Please provide the name of the infrastructure to destroy:{" "}
@@ -213,13 +225,17 @@ const createInfraDelete = (context) => {
         />
         <Button onClick={() => history.back()} label={tr.t("Cancel")} />
       </FormGroup>
-    </form>
+    </Form>
   );
   return observer(InfraDeleteForm);
 };
 
 const createInfraNew = (context) => {
-  const { tr, history } = context;
+  const {
+    tr,
+    history,
+    theme: { palette },
+  } = context;
   const FormGroup = formGroup(context);
   const Input = input(context, {
     cssOverride: css`
@@ -228,6 +244,8 @@ const createInfraNew = (context) => {
       }
     `,
   });
+  const Spinner = spinner(context);
+
   const AwsSelectRegion = awsSelectRegion(context);
   ///const AlertAjax = alertAjax(context);
   const Button = button(context, {
@@ -235,19 +253,11 @@ const createInfraNew = (context) => {
   });
 
   const InfraNew = ({ store }) => (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      css={css`
-        border: 1px solid blue;
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-      `}
-    >
-      <h2>{tr.t("Create new Infratructure")}</h2>
+    <Form>
+      <h2>{tr.t("Create new Infrastructure")}</h2>
       <div>
         {tr.t(
-          "Please provide the following information to create a new infrastructure"
+          "Please provide the following information to create and scan a new infrastructure"
         )}
       </div>
       <FormGroup className="infra-name">
@@ -290,8 +300,10 @@ const createInfraNew = (context) => {
       />
       <FormGroup
         css={css`
-          button {
-            margin: 10px;
+          border-top: 1px ${palette.grey[300]} solid;
+          padding-top: 1rem;
+          * {
+            margin-right: 10px;
           }
         `}
       >
@@ -302,13 +314,18 @@ const createInfraNew = (context) => {
           onClick={() => store.create()}
           label={tr.t("Create Infrastructure")}
         />
+        <Spinner
+          css={css`
+            visibility: ${store.opScan.loading ? "visible" : "hidden"};
+          `}
+          color={palette.primary.main}
+        />
         <Button
           onClick={() => history.push(`/user/infra`)}
           label={tr.t("Cancel")}
         />
       </FormGroup>
-      {store.opScan.loading && <div>Scanning Infrastructure</div>}
-    </form>
+    </Form>
   );
   return observer(InfraNew);
 };
@@ -347,15 +364,7 @@ const createInfraEdit = (context) => {
   ));
 
   const InfraEdit = ({ store }) => (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      css={css`
-        border: 1px solid blue;
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-      `}
-    >
+    <Form>
       <h2>Edit the Infrastructure</h2>
       <div>Edit the Infrastructure such as the name.</div>
       <FormGroup className="infra-name">
@@ -394,7 +403,7 @@ const createInfraEdit = (context) => {
       <FormGroup
         css={css`
           button {
-            margin: 10px;
+            margin-right: 10px;
           }
         `}
       >
@@ -407,7 +416,7 @@ const createInfraEdit = (context) => {
         <Button onClick={() => history.back()} label={tr.t("Cancel")} />
       </FormGroup>
       <InfraDelete store={store} />
-    </form>
+    </Form>
   );
   return observer(InfraEdit);
 };
@@ -437,38 +446,23 @@ const createInfraDetail = (context) => {
   ));
 
   const InfraDetail = observer(({ store, detail }) => (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      css={css`
+    <Form
+      cssOverride={css`
+        width: 100%;
         display: flex;
+        flex-direction: row;
       `}
     >
       <section>
-        <h2>{detail.name}</h2>
-        <div
+        <header
           css={css`
             display: flex;
+            flex-direction: row;
           `}
         >
-          <ProviderLogo type="aws" />
-          <BadgeRegion region={detail.providerAuth.region} />
-        </div>
-        <div>
+          <h2>{detail.name}</h2>
           <Button
-            primary
-            onClick={() => store.scan(detail)}
-            icon={
-              <Spinner
-                css={css`
-                  visibility: ${store.opScan.loading ? "visible" : "hidden"};
-                `}
-                color={palette.primary.main}
-              />
-            }
-            disabled={store.opScan.loading}
-            label={store.opScan.loading ? tr.t("Scanning") : tr.t("New Scan")}
-          />
-          <Button
+            icon={<MdEdit size="1.5rem" />}
             onClick={() => {
               history.push(`${detail.id}/edit`, {
                 name: detail.name,
@@ -478,7 +472,33 @@ const createInfraDetail = (context) => {
                 secretKey: detail.providerAuth.AWSSecretKey,
               });
             }}
-            label={tr.t("Settings")}
+          />
+        </header>
+        <div
+          css={css`
+            display: flex;
+          `}
+        >
+          <ProviderLogo type="aws" />
+          <BadgeRegion region={detail.providerAuth.region} />
+        </div>
+        <div
+          css={css`
+            margin: 1rem 0rem 1rem 0rem;
+          `}
+        >
+          <Button
+            primary
+            raised
+            onClick={() => store.scan(detail)}
+            disabled={store.opScan.loading}
+            label={store.opScan.loading ? tr.t("Scanning") : tr.t("New Scan")}
+          />
+          <Spinner
+            css={css`
+              visibility: ${store.opScan.loading ? "visible" : "hidden"};
+            `}
+            color={palette.primary.main}
           />
         </div>
         {store.lives && <ResourcePerTypeTable lives={store.lives} />}
@@ -499,7 +519,7 @@ const createInfraDetail = (context) => {
           }}
         />
       </section>
-    </form>
+    </Form>
   ));
 
   return InfraDetailContainer;
@@ -516,9 +536,8 @@ const createInfraList = (context) => {
   const InfraItem = createInfraItem(context);
 
   const InfraListView = ({ store }) => (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      css={css`
+    <Form
+      cssOverride={css`
         //border: 1px solid red;
         width: 95%;
       `}
@@ -552,7 +571,7 @@ const createInfraList = (context) => {
           }}
         ></InfraItem>
       ))}
-    </form>
+    </Form>
   );
   return observer(InfraListView);
 };
@@ -600,12 +619,12 @@ export default function (context) {
         path: "/detail/:id/edit",
         protected: true,
         action: (routerContext) => {
-          stores.create.setData(window.history.state.usr);
+          stores.edit.setData(window.history.state.usr);
           return {
             routerContext,
             title: "Edit Infrastructure",
             component: h(createInfraEdit(context), {
-              store: stores.create,
+              store: stores.edit,
               onClick: () => stores.create.update(),
             }),
           };
@@ -650,13 +669,16 @@ export default function (context) {
       opGet: asyncOpCreate(() => rest.get("infra")),
       get: action(async function () {
         const response = await this.opGet.fetch();
+        if (isEmpty(response)) {
+          context.history.push("infra/create");
+        }
         console.log(response);
       }),
-      opUpdate: asyncOpCreate((payload) => rest.patch("infra", payload)),
-      update: action(async function () {
-        this.errors = {};
-        const response = await this.opUpdate.fetch(payload);
-      }),
+      // opUpdate: asyncOpCreate((payload) => rest.patch("infra", payload)),
+      // update: action(async function () {
+      //   this.errors = {};
+      //   const response = await this.opUpdate.fetch(payload);
+      // }),
     });
 
     const defaultData = {
@@ -705,9 +727,7 @@ export default function (context) {
         };
         try {
           const result = await storeCreate.op.fetch(payload);
-          console.log(result);
           await storeCreate.opScan.fetch(result);
-
           alertStack.add(
             <Alert.Info message={tr.t("Infrastructure Created")} />
           );
@@ -715,8 +735,53 @@ export default function (context) {
           emitter.emit("infra.created", result);
         } catch (errors) {
           console.log(errors);
+
+          // backend should 422 if the credentials are incorrect
+
           alertStack.add(
-            <Alert.Danger message={tr.t("Error creating infrastructure")} />
+            <Alert.Danger
+              message={tr.t(
+                "Error creating infrastructure, check the credentials"
+              )}
+            />
+          );
+        }
+      }),
+    });
+
+    const storeEdit = observable({
+      data: defaultData,
+      errors: {},
+      reset: action(() => {
+        storeEdit.data = defaultData;
+      }),
+      setData: action((data) => {
+        storeEdit.data = data;
+      }),
+      opUpdate: asyncOpCreate((payload) =>
+        rest.patch(`infra/${storeEdit.data.id}`, payload)
+      ),
+      update: action(async function () {
+        this.errors = {};
+
+        try {
+          const response = await this.opUpdate.fetch(
+            pick(["name"])(storeEdit.data)
+          );
+          console.log(response);
+          alertStack.add(
+            <Alert.Info message={tr.t("Infrastructure Updated")} />
+          );
+          history.back();
+          emitter.emit("infra.updated", storeEdit.data);
+        } catch (error) {
+          console.error(error);
+          alertStack.add(
+            <Alert.Danger
+              message={tr.t(
+                "An error occured while updating the infrastructure"
+              )}
+            />
           );
         }
       }),
@@ -756,7 +821,10 @@ export default function (context) {
       errors: {},
       opDestroy: asyncOpCreate(() => rest.del(`infra/${storeDelete.data.id}`)),
       get nameMatch() {
-        return storeDelete.name && storeDelete.name === storeDelete.data.name;
+        return (
+          !isEmpty(storeDelete.name) &&
+          storeDelete.name === storeDelete.data.name
+        );
       },
       destroy: action(async () => {
         try {
@@ -783,6 +851,7 @@ export default function (context) {
     return {
       infra: infraStore,
       create: storeCreate,
+      edit: storeEdit,
       infraDetail: infraDetailStore,
       delete: storeDelete,
     };

@@ -4,6 +4,9 @@ const { first, isEmpty } = require("rubico/x");
 
 const testMngr = require("test/testManager");
 const awsEnv = require("../../../aws.env.json");
+
+const infraName = "infra-test";
+const infraNameNew = "infra-test-new-name";
 describe("Infra", function () {
   let client;
   before(async () => {
@@ -19,7 +22,7 @@ describe("Infra", function () {
       await pipe([
         // Create
         () => ({
-          name: "infra-test",
+          name: infraName,
           providerType: "aws",
           providerAuth: awsEnv,
           options: {},
@@ -36,8 +39,10 @@ describe("Infra", function () {
         }),
         first,
         tap(({ id }) => client.get(`v1/infra/${id}`)),
+        ({ id }) => client.patch(`v1/infra/${id}`, { name: infraNameNew }),
         tap((result) => {
           assert(result);
+          assert.equal(result.name, infraNameNew);
         }),
         tap(({ id }) => client.delete(`v1/infra/${id}`)),
       ])();

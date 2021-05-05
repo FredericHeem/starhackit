@@ -83,6 +83,7 @@ exports.InfraApi = (app) => {
                 pipe([
                   () =>
                     models.Infra.findOne({
+                      include: { model: models.Job, limit: 1 },
                       where: {
                         id: context.params.id,
                         user_id: context.state.user.id,

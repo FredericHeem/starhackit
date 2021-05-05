@@ -12,10 +12,11 @@ const SvgView = styled("svg")({
 });
 
 export default () =>
-  function Spinner({ size = 26, color = "black" }) {
+  function Spinner({ size = 16, color = "black", ...props }) {
     const radius = size / 2;
     return (
       <SvgView
+        {...props}
         id="loader-1"
         width={size}
         height={size}

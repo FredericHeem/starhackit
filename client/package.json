@@ -51,8 +51,8 @@
     "lodash": "4.17.20",
     "mdlean": "0.29.0",
     "mitt": "2.1.0",
-    "mobx": "6.0.4",
-    "mobx-react": "7.0.5",
+    "mobx": "6.3.0",
+    "mobx-react": "7.1.0",
     "prop-types": "15.7.2",
     "qs": "6.9.4",
     "react": "17.0.1",
@@ -61,6 +61,7 @@
     "react-leanimate": "0.16.0",
     "react-pagify": "2.4.0",
     "reactabular-table": "8.14.0",
+    "rubico": "1.6.23",
     "segmentize": "0.4.1",
     "universal-router": "9.0.1",
     "validate.js": "0.13.1"

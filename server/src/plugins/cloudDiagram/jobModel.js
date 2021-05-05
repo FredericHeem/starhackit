@@ -25,12 +25,31 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Job.associate = (models) => {
+    // Job - Infra
+    Job.belongsTo(models.Infra, {
+      as: "infra",
+      onDelete: "CASCADE",
+      foreignKey: {
+        name: "infra_id",
+        allowNull: false,
+      },
+    });
+
+    models.Infra.hasMany(models.Job, {
+      foreignKey: {
+        name: "infra_id",
+        allowNull: true,
+      },
+    });
+
+    // Job - User
     Job.belongsTo(models.User, {
       foreignKey: {
         name: "user_id",
         allowNull: false,
       },
     });
+
     models.User.hasMany(models.Job, {
       foreignKey: {
         name: "user_id",

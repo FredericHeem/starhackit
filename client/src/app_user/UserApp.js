@@ -7,10 +7,10 @@ export default async () => {
   const context = await Context({
     config: {
       base: "/user",
-      routeAfterLogin: "/user/profile",
-      defaultPath: "/user/profile",
-      title: "Your Area"
-    }
+      routeAfterLogin: "/user/infra",
+      defaultPath: "/user/infra",
+      title: "GruCloud",
+    },
   });
 
   return App({ context, routes: createRoutes({ context }), layout });

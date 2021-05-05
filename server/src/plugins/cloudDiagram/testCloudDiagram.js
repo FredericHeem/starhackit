@@ -1,5 +1,92 @@
 const assert = require("assert");
+const { pipe, tap, tryCatch } = require("rubico");
+const { first } = require("rubico/x");
+const awsEnv = require("../../../aws.env.json");
+
 const testMngr = require("test/testManager");
+
+describe("CloudDiagram", function () {
+  let client;
+  before(async () => {
+    await testMngr.start();
+    client = testMngr.client("alice");
+    await client.login();
+  });
+  after(async () => {
+    await testMngr.stop();
+  });
+  it("create, list, get by id, delete", async () => {
+    try {
+      await pipe([
+        // Create
+        () => ({
+          name: "infra-test",
+          providerType: "aws",
+          providerAuth: awsEnv,
+        }),
+        (input) => client.post("v1/infra", input),
+        tap((result) => {
+          assert(result);
+        }),
+        ({ id: infra_id }) => ({
+          options: {},
+          infra_id,
+        }),
+        (input) => client.post("v1/cloudDiagram", input),
+        tap((result) => {
+          assert(result);
+          //TODO add jobId
+        }),
+        () => client.get("v1/cloudDiagram"),
+        // List
+        tap((results) => {
+          assert(Array.isArray(results));
+        }),
+        first,
+        tap(({ id }) => client.get(`v1/cloudDiagram/${id}`)),
+        tap((result) => {
+          assert(result);
+          assert(result.id);
+          assert(result.user_id);
+        }),
+        //tap(({ id }) => client.delete(`v1/cloudDiagram/${id}`)),
+        tap((xxx) => {
+          assert(true);
+        }),
+      ])();
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  it("list infra", async () => {
+    return tryCatch(
+      pipe([
+        // List
+        () => client.get("v1/infra"),
+        tap((results) => {
+          assert(Array.isArray(results));
+        }),
+        tap((xxx) => {
+          assert(true);
+        }),
+      ]),
+      (error) => {
+        throw error;
+      }
+    )();
+  });
+  it("should get 404 when the cloudDiagram is not found", async () => {
+    try {
+      const cloudDiagrams = await client.get("v1/cloudDiagram/123456");
+      assert(cloudDiagrams);
+    } catch (error) {
+      assert(error.response.data.error);
+      assert.equal(error.response.data.error.name, "BadRequest");
+      assert.equal(error.response.status, 400);
+    }
+  });
+});
 
 describe("CloudDiagram No Auth", function () {
   let client;
@@ -27,61 +114,6 @@ describe("CloudDiagram No Auth", function () {
     } catch (error) {
       assert.equal(error.response.data, "Unauthorized");
       assert.equal(error.response.status, 401);
-    }
-  });
-});
-
-describe.only("CloudDiagram", function () {
-  let client;
-  before(async () => {
-    await testMngr.start();
-    client = testMngr.client("alice");
-    await client.login();
-  });
-  after(async () => {
-    await testMngr.stop();
-  });
-  it.only("should create a cloudDiagram", async () => {
-    const input = {
-      options: {},
-    };
-    let cloudDiagram = await client.post("v1/cloudDiagram", input);
-    assert(cloudDiagram);
-    assert(!cloudDiagram.error);
-    assert(cloudDiagram.results);
-  });
-
-  it("should delete a cloudDiagram", async () => {
-    const inputNew = {
-      subject: "Ciao Mundo",
-    };
-    const newCloudDiagram = await client.post("v1/cloudDiagram", inputNew);
-    const cloudDiagramsBeforeDelete = await client.get("v1/cloudDiagram");
-    await client.delete(`v1/cloudDiagram/${newCloudDiagram.id}`);
-    const cloudDiagramsAfterDelete = await client.get("v1/cloudDiagram");
-    assert.equal(
-      cloudDiagramsBeforeDelete.length,
-      cloudDiagramsAfterDelete.length + 1
-    );
-  });
-  it("should get all cloudDiagrams", async () => {
-    let cloudDiagrams = await client.get("v1/cloudDiagram");
-    assert(cloudDiagrams);
-    assert(Array.isArray(cloudDiagrams));
-  });
-  it("should get one cloudDiagram", async () => {
-    let cloudDiagram = await client.get("v1/cloudDiagram/1");
-    assert(cloudDiagram);
-    assert(cloudDiagram.user_id);
-  });
-  it("should get 404 when the cloudDiagram is not found", async () => {
-    try {
-      let cloudDiagrams = await client.get("v1/cloudDiagram/123456");
-      assert(cloudDiagrams);
-    } catch (error) {
-      assert(error.response.data.error);
-      assert.equal(error.response.data.error.name, "NotFound");
-      assert.equal(error.response.status, 404);
     }
   });
 });

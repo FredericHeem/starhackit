@@ -3,9 +3,9 @@ import { stringify } from "qs";
 import Debug from "debug";
 const debug = new Debug("rest");
 
-export default function({config, history}, options = {}) {
+export default function ({ config, history }, options = {}) {
   const headersDefault = {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   };
 
   function ajax(url, method, data, params, headers = headersDefault) {
@@ -23,7 +23,7 @@ export default function({config, history}, options = {}) {
 
     return Axios({
       method,
-      baseURL: config.apiUrl ,
+      baseURL: config.apiUrl,
       url,
       params,
       data,
@@ -32,14 +32,17 @@ export default function({config, history}, options = {}) {
       timeout: 30e3,
       paramsSerializer(params) {
         return stringify(params, { arrayFormat: "brackets" });
-      }
+      },
     })
-      .then(res => res.data)
-      .catch(error => {
+      .then((res) => res.data)
+      .catch((error) => {
         debug("ajax error: ", error);
-        if(error.response){
-          if([401].includes(error.response.status) && !location.pathname.includes('login')){
-            history.push(`auth/login?nextPath=${location.pathname}`)
+        if (error.response) {
+          if (
+            [401, 403].includes(error.response.status) &&
+            !location.pathname.includes("login")
+          ) {
+            history.push(`auth/login?nextPath=${location.pathname}`);
           }
         }
         throw error;
@@ -60,7 +63,7 @@ export default function({config, history}, options = {}) {
         data,
         {},
         {
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "multipart/form-data",
         }
       );
     },
@@ -72,6 +75,6 @@ export default function({config, history}, options = {}) {
     },
     patch(url, data = {}) {
       return ajax(url, "PATCH", data);
-    }
+    },
   };
 }

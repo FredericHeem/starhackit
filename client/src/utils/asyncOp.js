@@ -1,6 +1,6 @@
 import isString from "lodash/isString";
 import React from "react";
-import { observable, action } from "mobx";
+import { observable, action, runInAction } from "mobx";
 import alert from "components/alert";
 import get from "lodash/get";
 
@@ -42,16 +42,22 @@ export default (context) => {
 
       fetch: action(async function (...input) {
         try {
-          store.loading = true;
-          store.error = null;
-          //console.log("fetch ");
+          runInAction(() => {
+            store.loading = true;
+            store.error = null;
+          });
+          console.log("fetch ");
           const response = await api(...input);
-          store.data = response;
-          //console.log("fetch response ", response);
+          runInAction(() => {
+            store.data = response;
+          });
+          console.log("fetch response ", response);
           return response;
         } catch (error) {
           //console.error("fetch error ", error);
-          store.error = error;
+          runInAction(() => {
+            store.error = error;
+          });
           const status = get(error, "response.status");
           if (![401, 422].includes(status)) {
             context.alertStack.add(
@@ -62,7 +68,9 @@ export default (context) => {
           }
           throw error;
         } finally {
-          store.loading = false;
+          runInAction(() => {
+            store.loading = false;
+          });
         }
       }),
     });

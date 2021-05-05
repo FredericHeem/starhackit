@@ -1,7 +1,7 @@
 /* @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { observable, action, runInAction, toJS } from "mobx";
-import React, { createElement as h } from "react";
+import { createElement as h } from "react";
 import { observer } from "mobx-react";
 import { get, eq, pipe, map, switchCase, pick } from "rubico";
 import { size, isEmpty } from "rubico/x";
@@ -65,13 +65,19 @@ const providerType2Logo = (type) =>
   ])();
 
 const providerLogo = ({ theme: { palette } }) => ({ type }) => (
-  <img width="60px" src={providerType2Logo(type)}></img>
+  <img
+    css={css`
+      filter: grayscale(100%);
+    `}
+    width="60px"
+    src={providerType2Logo(type)}
+  ></img>
 );
 
 const createResourcePerTypeTable = (context) => ({ lives }) => (
   <table
     css={css`
-      box-shadow: 2px 2px 2px 2px grey;
+      box-shadow: 1px 1px 1px 1px lightgrey;
       min-width: 200px;
       border-collapse: collapse;
       border-top: 0.5em solid transparent;
@@ -305,6 +311,9 @@ const createInfraNew = (context) => {
           * {
             margin-right: 10px;
           }
+          display: flex;
+          flex-direction: row;
+          align-items: center;
         `}
       >
         <Button
@@ -453,7 +462,11 @@ const createInfraDetail = (context) => {
         flex-direction: row;
       `}
     >
-      <section>
+      <section
+        css={css`
+          margin-right: 1rem;
+        `}
+      >
         <header
           css={css`
             display: flex;
@@ -485,6 +498,9 @@ const createInfraDetail = (context) => {
         <div
           css={css`
             margin: 1rem 0rem 1rem 0rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
           `}
         >
           <Button

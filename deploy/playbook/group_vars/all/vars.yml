@@ -8,12 +8,15 @@ postgres_directory: pg_data
 pip_install_packages:
   - name: docker
 
+  
+grucloud_image: "fredericheem/grucloud-aws:v1.15.2"
+docker_base_url: "http:/v1.41"
 # Docker image tag names
 api_image: "fredericheem/api"
-api_tag: v10.11.0
+api_tag: v10.21.0
 
 web_image: "fredericheem/ui"
-web_tag: v10.11.0
+web_tag: v10.18.0
 
 firewall_state: started
 firewall_enabled_at_boot: true

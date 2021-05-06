@@ -9,7 +9,7 @@ const {
   switchCase,
   map,
 } = require("rubico");
-const { isEmpty, values, callProp } = require("rubico/x");
+const { isEmpty, values, callProp, defaultsDeep } = require("rubico/x");
 
 const uuid = require("uuid");
 
@@ -17,14 +17,17 @@ const path = require("path");
 const { DockerClient } = require("@grucloud/docker-axios");
 const fs = require("fs").promises;
 
-const runDockerJob = ({ params }) =>
+const dockerDefault = {
+  baseURL: "http://localhost/v1.40",
+  socketPath: "/var/run/docker.sock",
+  timeout: 15e3,
+};
+
+const runDockerJob = ({ dockerOptions, params }) =>
   pipe([
-    () =>
-      DockerClient({
-        baseURL: "http://localhost/v1.40",
-        socketPath: "/var/run/docker.sock",
-        timeout: 15e3,
-      }),
+    () => dockerOptions,
+    defaultsDeep(dockerDefault),
+    DockerClient,
     (docker) =>
       pipe([
         tap(() => {
@@ -39,7 +42,15 @@ const runDockerJob = ({ params }) =>
       ])(),
   ])();
 
-const runGcList = ({ jobId, env, containerImage = "grucloud-aws" }) =>
+const runGcList = ({
+  jobId,
+  env,
+  containerName = "grucloud-aws",
+  containerImage = "grucloud-aws",
+  localVolumePath = "output",
+  dockerOptions,
+  WorkingDir = "output",
+}) =>
   pipe([
     tap(() => {
       assert(true);
@@ -48,16 +59,13 @@ const runGcList = ({ jobId, env, containerImage = "grucloud-aws" }) =>
       outputGcList: `gc-list-${jobId}.json`,
       outputDot: `${jobId}.dot`,
       outputSvg: `${jobId}.svg`,
-      localVolume: "volume",
-      WorkingDir: "output",
       Env: pipe([
         map.entries(([key, value]) => [key, `${key}=${value}`]),
         values,
       ])(env),
     }),
     assign({
-      name: () => `${containerImage}-${jobId}`,
-      localVolumePath: ({ localVolume }) => path.resolve(localVolume),
+      name: () => `${containerName}-${jobId}`,
       Cmd: ({ outputGcList, outputDot }) => [
         "list",
         "--all",
@@ -69,14 +77,14 @@ const runGcList = ({ jobId, env, containerImage = "grucloud-aws" }) =>
       ],
     }),
     assign({
-      outputGcListLocalPath: ({ localVolumePath, outputGcList }) =>
-        path.resolve(localVolumePath, outputGcList),
-      outputDotLocalPath: ({ localVolumePath, outputDot }) =>
-        path.resolve(localVolumePath, outputDot),
-      outputSvgLocalPath: ({ localVolumePath, outputSvg }) =>
-        path.resolve(localVolumePath, outputSvg),
-      HostConfig: ({ localVolumePath }) => ({
-        Binds: [`${localVolumePath}:/app/output`],
+      outputGcListLocalPath: ({ outputGcList }) =>
+        path.resolve(WorkingDir, outputGcList),
+      outputDotLocalPath: ({ outputDot }) =>
+        path.resolve(WorkingDir, outputDot),
+      outputSvgLocalPath: ({ outputSvg }) =>
+        path.resolve(WorkingDir, outputSvg),
+      HostConfig: () => ({
+        Binds: [`${path.resolve(localVolumePath)}:/app/${WorkingDir}`],
       }),
     }),
     tap((input) => {
@@ -104,7 +112,7 @@ const runGcList = ({ jobId, env, containerImage = "grucloud-aws" }) =>
         tap((xxx) => {
           assert(true);
         }),
-        (params) => runDockerJob({ params }),
+        (params) => runDockerJob({ dockerOptions, params }),
         assign({
           list: pipe([
             () => fs.readFile(outputGcListLocalPath, "utf-8"),
@@ -162,6 +170,11 @@ exports.DiagramApi = (app) => {
   const log = require("logfilename")(__filename);
 
   const { models } = app.data.sequelize;
+  const { config } = app;
+  const dockerOptions = config.infra.docker;
+  assert(dockerOptions);
+  const { localVolumePath } = config.infra;
+  assert(localVolumePath);
 
   const api = {
     pathname: "/cloudDiagram",
@@ -268,7 +281,9 @@ exports.DiagramApi = (app) => {
                           jobId: id,
                           env: infra.providerAuth,
                           // use infra.providerType
-                          containerImage: "grucloud-aws",
+                          dockerOptions,
+                          localVolumePath,
+                          containerImage: config.infra.containerImage,
                         }),
                       tap((result) =>
                         models.Job.update(

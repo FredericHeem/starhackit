@@ -1,4 +1,9 @@
 {
+  "infra": { 
+    "docker": { "baseURL": "{{docker_base_url}}" },
+    "containerImage": "{{grucloud_image}}",
+    "localVolumePath": "/home/{{user}}/output"
+  },
   "jwtSecret": "{{jwt_secret}}",
   "db": {
     "url": "postgres://{{db_username}}:{{db_password}}@{{db_hostname}}:5432/{{db_database}}?sslmode=disable"

@@ -3,8 +3,8 @@ import { css } from "@emotion/react";
 import { observable, action, runInAction, toJS } from "mobx";
 import { createElement as h } from "react";
 import { observer } from "mobx-react";
-import { get, eq, pipe, map, switchCase, pick } from "rubico";
-import { size, isEmpty } from "rubico/x";
+import { get, eq, pipe, flatMap, fork, switchCase, pick, tap } from "rubico";
+import { size, isEmpty, pluck } from "rubico/x";
 import { MdEdit } from "react-icons/md";
 import formatDistance from "date-fns/formatDistance";
 import button from "mdlean/lib/button";
@@ -21,6 +21,14 @@ import alert from "components/alert";
 import page from "components/Page";
 import spinner from "components/spinner";
 import AwsLogo from "./assets/aws.svg";
+
+const getLivesFromJob = get("result.list.result.results[0].results");
+
+const resourceStats = pipe([
+  getLivesFromJob,
+  fork({ types: size, resources: pipe([flatMap(get("resources")), size]) }),
+  tap((xx) => {}),
+]);
 
 const Form = ({ children, cssOverride, ...other }) => (
   <form
@@ -49,7 +57,8 @@ const badgeRegion = ({ theme: { palette } }) => ({ region }) => (
       border-radius: 5px;
       color: ${palette.grey[500]};
       padding: 0.5rem;
-      margin: 0.5rem;
+      //margin: 0.5rem;
+      max-height: 1.2rem;
     `}
   >
     {region}
@@ -141,45 +150,76 @@ const createInfraItem = (context) => {
     </div>
   );
 
+  const ResourceStat = ({ stats }) => (
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        font-size: 1.3rem;
+        font-weight: 600;
+        > span {
+          margin: 0.3rem;
+        }
+      `}
+    >
+      <Label title="Resources" />
+      <div>{stats.resources}</div>
+    </div>
+  );
+
+  const Label = ({ title }) => (
+    <div
+      css={css`
+        font-size: 1rem;
+        font-weight: 600;
+        color: ${palette.grey[600]};
+        margin-bottom: 0.6rem;
+      `}
+    >
+      {title}
+    </div>
+  );
+  const ProjectName = ({ name }) => (
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        > div {
+        }
+      `}
+    >
+      <Label title="Project Name" />
+      <div
+        css={css`
+          font-size: 1.5rem;
+          font-weight: 600;
+        `}
+      >
+        {name}
+      </div>
+    </div>
+  );
   const InfraItem = ({ item, store, onClick }) => {
     return (
       <section
         data-infra-list-item
         css={css`
           box-shadow: 2px 2px 2px 2px grey;
-          margin: 1rem;
-          padding: 1rem;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          > * {
+            margin: 1rem;
+          }
         `}
         onClick={() => {
           onClick(item);
         }}
       >
-        <header
-          css={css`
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          `}
-        >
-          <div
-            css={css`
-              display: flex;
-              align-items: center;
-              * {
-                margin: 1rem;
-              }
-            `}
-          >
-            <h2>{item.name}</h2>
-            <ProviderLogo type="aws" />
-            <BadgeRegion region={item.providerAuth.AWSRegion} />
-          </div>
-        </header>
-
-        {item.Jobs[0] && (
-          <InfraLive store svg={store.svg} lives={store.lives} />
-        )}
+        <ProjectName name={item.name} />
+        {item.Jobs[0] && <ResourceStat stats={resourceStats(item.Jobs[0])} />}
+        <ProviderLogo type="aws" />
+        <BadgeRegion region={item.providerAuth.AWSRegion} />
       </section>
     );
   };
@@ -526,6 +566,7 @@ const createInfraDetail = (context) => {
         <div
           css={css`
             display: flex;
+            justify-content: space-between;
           `}
         >
           <ProviderLogo type="aws" />
@@ -612,20 +653,28 @@ const createInfraList = (context) => {
           label={tr.t("+ New Infrastructure")}
         />
       </header>
-
-      {store?.opGet?.data?.map((datum, key) => (
-        <InfraItem
-          store={store}
-          item={datum}
-          key={key}
-          onScan={(item) => store.scan(item)}
-          onClick={(item) => {
-            const state = { ...item };
-            console.log(state);
-            history.push(`/user/infra/detail/${item.id}`, toJS(item));
-          }}
-        ></InfraItem>
-      ))}
+      <ul
+        css={css`
+          display: inline-grid;
+          justify-content: space-around;
+          align-items: center;
+          > * {
+            margin: 1rem;
+          }
+        `}
+      >
+        {store?.opGet?.data?.map((datum, key) => (
+          <InfraItem
+            store={store}
+            item={datum}
+            key={datum.id}
+            onScan={(item) => store.scan(item)}
+            onClick={(item) => {
+              history.push(`/user/infra/detail/${item.id}`, toJS(item));
+            }}
+          ></InfraItem>
+        ))}
+      </ul>
     </Form>
   );
   return observer(InfraListView);
@@ -850,9 +899,7 @@ export default function (context) {
       opGetById: asyncOpCreate((id) => rest.get(`infra/${id}`)),
       getById: action(async (id) => {
         const infra = await infraDetailStore.opGetById.fetch(id);
-        infraDetailStore.lives = get(
-          "Jobs[0].result.list.result.results[0].results"
-        )(infra);
+        infraDetailStore.lives = getLivesFromJob(infra.Jobs[0]);
         infraDetailStore.svg = get("Jobs[0].result.svg")(infra);
       }),
       opScan: asyncOpCreate((infraItem) =>

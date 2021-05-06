@@ -5,8 +5,8 @@ const { DiagramApi } = require("./diagramApi");
 const { InfraApi } = require("./infraApi");
 
 module.exports = (app) => {
-  app.data.registerModel(__dirname, `JobModel`);
-  app.data.registerModel(__dirname, `InfraModel`);
+  app.data.registerModel(__dirname, `jobModel`);
+  app.data.registerModel(__dirname, `infraModel`);
 
   DiagramApi(app);
   InfraApi(app);

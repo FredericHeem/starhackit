@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import { get, eq, pipe, map, switchCase, pick } from "rubico";
 import { size, isEmpty } from "rubico/x";
 import { MdEdit } from "react-icons/md";
-
+import formatDistance from "date-fns/formatDistance";
 import button from "mdlean/lib/button";
 import alertAjax from "components/alertAjax";
 import formGroup from "components/FormGroup";
@@ -461,7 +461,33 @@ const createInfraDetail = (context) => {
       )}
     </div>
   ));
-
+  const ScanLastUpdated = ({ updatedAt }) => (
+    <div
+      title={updatedAt}
+      css={css`
+        color: ${palette.grey[500]};
+        > div {
+          margin: 0.4rem 0;
+        }
+      `}
+    >
+      <div
+        css={css`
+          font-weight: 700;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+        `}
+      >
+        Last Scan
+      </div>
+      <div
+        css={css`
+          font-weight: 500;
+          font-size: 0.9rem;
+        `}
+      >{`${formatDistance(new Date(updatedAt), new Date())} ago`}</div>
+    </div>
+  );
   const InfraDetail = observer(({ store, detail }) => (
     <Form
       data-infra-detail
@@ -527,6 +553,8 @@ const createInfraDetail = (context) => {
             color={palette.primary.main}
           />
         </div>
+        <ScanLastUpdated updatedAt={get("Jobs[0].updatedAt")(detail)} />
+
         {store.lives && <ResourcePerTypeTable lives={store.lives} />}
       </section>
       <section

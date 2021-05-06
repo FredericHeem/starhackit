@@ -7,6 +7,7 @@ export default async () => {
   const context = await Context({
     config: {
       base: "/user",
+      loginPath: "/user/auth/login",
       routeAfterLogin: "/user/infra",
       defaultPath: "/user/infra",
       title: "GruCloud",

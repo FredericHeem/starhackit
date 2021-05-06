@@ -42,7 +42,7 @@ export default function ({ config, history }, options = {}) {
             [401, 403].includes(error.response.status) &&
             !location.pathname.includes("login")
           ) {
-            history.push(`auth/login?nextPath=${location.pathname}`);
+            history.push(`${config.loginPath}?nextPath=${location.pathname}`);
           }
         }
         throw error;

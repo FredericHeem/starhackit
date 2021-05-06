@@ -50,7 +50,11 @@ exports.InfraApi = (app) => {
             pipe([
               () =>
                 models.Infra.findAll({
-                  include: { model: models.Job, limit: 1 },
+                  include: {
+                    model: models.Job,
+                    limit: 1,
+                    order: [["createdAt", "DESC"]],
+                  },
                   where: { user_id: context.state.user.id },
                 }),
               map(callProp("get")),
@@ -83,7 +87,11 @@ exports.InfraApi = (app) => {
                 pipe([
                   () =>
                     models.Infra.findOne({
-                      include: { model: models.Job, limit: 1 },
+                      include: {
+                        model: models.Job,
+                        limit: 1,
+                        order: [["createdAt", "DESC"]],
+                      },
                       where: {
                         id: context.params.id,
                         user_id: context.state.user.id,

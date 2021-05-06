@@ -22,8 +22,9 @@ import page from "components/Page";
 import spinner from "components/spinner";
 import AwsLogo from "./assets/aws.svg";
 
-const Form = ({ children, cssOverride }) => (
+const Form = ({ children, cssOverride, ...other }) => (
   <form
+    {...other}
     onSubmit={(e) => e.preventDefault()}
     css={[
       css`
@@ -142,7 +143,8 @@ const createInfraItem = (context) => {
 
   const InfraItem = ({ item, store, onClick }) => {
     return (
-      <div
+      <section
+        data-infra-list-item
         css={css`
           box-shadow: 2px 2px 2px 2px grey;
           margin: 1rem;
@@ -171,14 +173,14 @@ const createInfraItem = (context) => {
           >
             <h2>{item.name}</h2>
             <ProviderLogo type="aws" />
-            <BadgeRegion region={item.providerAuth.region} />
+            <BadgeRegion region={item.providerAuth.AWSRegion} />
           </div>
         </header>
 
         {item.Jobs[0] && (
           <InfraLive store svg={store.svg} lives={store.lives} />
         )}
-      </div>
+      </section>
     );
   };
   return observer(InfraItem);
@@ -199,14 +201,15 @@ const createInfraDelete = (context) => {
   });
 
   const InfraDeleteForm = ({ store }) => (
-    <Form>
+    <Form data-infra-delete>
       <h2>Delete Infrastructure</h2>
       <div>
         Please provide the name of the infrastructure to destroy:{" "}
         {store.data.name}
       </div>
-      <FormGroup className="infra-name">
+      <FormGroup data-delete-name>
         <Input
+          data-delete-name
           value={store.name}
           onChange={(e) => {
             store.setName(e.target.value);
@@ -223,6 +226,7 @@ const createInfraDelete = (context) => {
         `}
       >
         <Button
+          data-infra-button-delete
           primary
           raised
           disabled={!store.nameMatch}
@@ -259,7 +263,7 @@ const createInfraNew = (context) => {
   });
 
   const InfraNew = ({ store }) => (
-    <Form>
+    <Form data-infra-create>
       <h2>{tr.t("Create new Infrastructure")}</h2>
       <div>
         {tr.t(
@@ -297,13 +301,15 @@ const createInfraNew = (context) => {
           error={store.errors.secretKey && store.errors.secretKey[0]}
         />
       </FormGroup>
-      <AwsSelectRegion
-        placeholder="Select a region"
-        value={store.data.region}
-        onSelected={(item) => {
-          store.data.region = item;
-        }}
-      />
+      <FormGroup className="aws-region">
+        <AwsSelectRegion
+          placeholder="Select a region"
+          value={store.data.region}
+          onSelected={(item) => {
+            store.data.region = item;
+          }}
+        />
+      </FormGroup>
       <FormGroup
         css={css`
           border-top: 1px ${palette.grey[300]} solid;
@@ -317,6 +323,7 @@ const createInfraNew = (context) => {
         `}
       >
         <Button
+          data-infra-create-submit
           primary
           raised
           disabled={store.opScan.loading || store.op.loading}
@@ -357,7 +364,8 @@ const createInfraEdit = (context) => {
 
   const InfraDelete = observer(({ store }) => (
     <div>
-      <span
+      <a
+        data-infra-edit-delete-link
         css={css`
           color: red;
           cursor: pointer;
@@ -368,12 +376,12 @@ const createInfraEdit = (context) => {
         }}
       >
         Danger zone...
-      </span>
+      </a>
     </div>
   ));
 
   const InfraEdit = ({ store }) => (
-    <Form>
+    <Form data-infra-edit>
       <h2>Edit the Infrastructure</h2>
       <div>Edit the Infrastructure such as the name.</div>
       <FormGroup className="infra-name">
@@ -456,6 +464,7 @@ const createInfraDetail = (context) => {
 
   const InfraDetail = observer(({ store, detail }) => (
     <Form
+      data-infra-detail
       cssOverride={css`
         width: 100%;
         display: flex;
@@ -475,12 +484,13 @@ const createInfraDetail = (context) => {
         >
           <h2>{detail.name}</h2>
           <Button
+            data-infra-edit-button
             icon={<MdEdit size="1.5rem" />}
             onClick={() => {
               history.push(`${detail.id}/edit`, {
                 name: detail.name,
                 id: detail.id,
-                region: detail.providerAuth.region,
+                region: detail.providerAuth.AWSRegion,
                 accessKeyId: detail.providerAuth.AWSAccessKeyId,
                 secretKey: detail.providerAuth.AWSSecretKey,
               });
@@ -493,7 +503,7 @@ const createInfraDetail = (context) => {
           `}
         >
           <ProviderLogo type="aws" />
-          <BadgeRegion region={detail.providerAuth.region} />
+          <BadgeRegion region={detail.providerAuth.AWSRegion} />
         </div>
         <div
           css={css`
@@ -553,6 +563,7 @@ const createInfraList = (context) => {
 
   const InfraListView = ({ store }) => (
     <Form
+      data-infra-list
       cssOverride={css`
         //border: 1px solid red;
         width: 95%;
@@ -738,7 +749,7 @@ export default function (context) {
           providerAuth: {
             AWSAccessKeyId: data.accessKeyId.trim(),
             AWSSecretKey: data.secretKey,
-            region: data.region,
+            AWSRegion: data.region,
           },
         };
         try {
@@ -756,6 +767,7 @@ export default function (context) {
 
           alertStack.add(
             <Alert.Danger
+              data-alert-error-create
               message={tr.t(
                 "Error creating infrastructure, check the credentials"
               )}
@@ -821,6 +833,7 @@ export default function (context) {
       scan: action(async (infraItem) => {
         console.log("infraDetailStore scan", infraItem);
         await infraDetailStore.opScan.fetch(infraItem);
+        await infraDetailStore.getById(infraItem.id);
       }),
     });
 

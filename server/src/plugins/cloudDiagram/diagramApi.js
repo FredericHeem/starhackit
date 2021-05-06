@@ -155,7 +155,7 @@ const getJobStatus = switchCase([
 const getHttpStatus = switchCase([
   eq(get("StatusCode"), 0),
   () => 200,
-  () => 503,
+  () => 422,
 ]);
 
 exports.DiagramApi = (app) => {

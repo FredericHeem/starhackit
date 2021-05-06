@@ -525,7 +525,9 @@ const createInfraDetail = (context) => {
           font-weight: 500;
           font-size: 0.9rem;
         `}
-      >{`${formatDistance(new Date(updatedAt), new Date())} ago`}</div>
+      >{`${
+        updatedAt && formatDistance(new Date(updatedAt), new Date())
+      } ago`}</div>
     </div>
   );
   const InfraDetail = observer(({ store, detail }) => (
@@ -630,7 +632,7 @@ const createInfraList = (context) => {
   });
   const InfraItem = createInfraItem(context);
 
-  const InfraListView = ({ store }) => (
+  const InfraListView = observer(({ store, items }) => (
     <Form
       data-infra-list
       cssOverride={css`
@@ -663,21 +665,32 @@ const createInfraList = (context) => {
           }
         `}
       >
-        {store?.opGet?.data?.map((datum, key) => (
-          <InfraItem
-            store={store}
-            item={datum}
-            key={datum.id}
-            onScan={(item) => store.scan(item)}
-            onClick={(item) => {
-              history.push(`/user/infra/detail/${item.id}`, toJS(item));
-            }}
-          ></InfraItem>
-        ))}
+        {Array.isArray(items) &&
+          items.map((item) => (
+            <InfraItem
+              store={store}
+              item={item}
+              key={item.id}
+              onScan={(item) => store.scan(item)}
+              onClick={(item) => {
+                history.push(`/user/infra/detail/${item.id}`, toJS(item));
+              }}
+            ></InfraItem>
+          ))}
       </ul>
     </Form>
-  );
-  return observer(InfraListView);
+  ));
+
+  const InfraListContainer = observer(({ store }) => (
+    <div>
+      {store.opGet.data ? (
+        <InfraListView store={store} items={store.opGet.data} />
+      ) : (
+        <div>Loading Infrastrucure...</div>
+      )}
+    </div>
+  ));
+  return InfraListContainer;
 };
 
 export default function (context) {

@@ -1,5 +1,5 @@
 const infraName = "My Infra";
-describe.only("Infra", function () {
+describe("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
     client.page.login().login(done);

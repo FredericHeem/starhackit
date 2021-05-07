@@ -30,17 +30,42 @@ const resourceStats = pipe([
   tap((xx) => {}),
 ]);
 
-const Form = ({ children, cssOverride, ...other }) => (
+const createForm = ({ theme }) => ({ children, cssOverride, ...other }) => (
   <form
     {...other}
     onSubmit={(e) => e.preventDefault()}
     css={[
       css`
-        box-shadow: 2px 2px 2px 2px grey;
+        box-shadow: ${theme.shadows[1]};
         display: flex;
         flex-direction: column;
-        padding: 0rem 1rem 1rem 1rem;
+        justify-content: space-between;
+        padding: 0rem 1rem;
         margin-bottom: 2rem;
+        min-height: 300px;
+
+        header {
+          border-bottom: 1px solid ${theme.palette.grey[400]};
+          padding-top: 1rem;
+          margin-bottom: 1rem;
+          button {
+            margin-right: 10px;
+          }
+        }
+        main {
+          flex-grow: 1;
+          margin: 1rem 0;
+        }
+        footer {
+          border-top: 1px solid ${theme.palette.grey[400]};
+          padding: 1rem 0;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          button {
+            margin-right: 10px;
+          }
+        }
       `,
       cssOverride,
     ]}
@@ -84,10 +109,10 @@ const providerLogo = ({ theme: { palette } }) => ({ type }) => (
   ></img>
 );
 
-const createResourcePerTypeTable = (context) => ({ lives }) => (
+const createResourcePerTypeTable = ({ theme }) => ({ lives }) => (
   <table
     css={css`
-      box-shadow: 1px 1px 1px 1px lightgrey;
+      box-shadow: ${theme.shadows[1]};
       min-width: 200px;
       border-collapse: collapse;
       border-top: 0.5em solid transparent;
@@ -118,37 +143,14 @@ const createResourcePerTypeTable = (context) => ({ lives }) => (
 );
 
 const createInfraItem = (context) => {
-  const {
-    tr,
-    history,
-    rest,
-    theme: { palette },
-  } = context;
+  const { tr, history, rest, theme } = context;
 
+  const { palette } = theme;
   const BadgeRegion = badgeRegion(context);
   const ProviderLogo = providerLogo(context);
   const Button = button(context, {
     cssOverride: css``,
   });
-
-  const InfraLive = ({ lives, svg }) => (
-    <div
-      css={css`
-        //border: 1px solid blue;
-        display: flex;
-      `}
-    >
-      <span
-        css={css`
-          svg {
-          }
-        `}
-        dangerouslySetInnerHTML={{
-          __html: svg,
-        }}
-      />
-    </div>
-  );
 
   const ResourceStat = ({ stats }) => (
     <div
@@ -204,7 +206,7 @@ const createInfraItem = (context) => {
       <section
         data-infra-list-item
         css={css`
-          box-shadow: 2px 2px 2px 2px grey;
+          box-shadow: ${theme.shadows[1]};
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -228,6 +230,7 @@ const createInfraItem = (context) => {
 
 const createInfraDelete = (context) => {
   const { tr, history } = context;
+  const Form = createForm(context);
   const FormGroup = formGroup(context);
   const Input = input(context, {
     cssOverride: css`
@@ -242,29 +245,34 @@ const createInfraDelete = (context) => {
 
   const InfraDeleteForm = ({ store }) => (
     <Form data-infra-delete>
-      <h2>Delete Infrastructure</h2>
-      <div>
-        Please provide the name of the infrastructure to destroy:{" "}
-        {store.data.name}
-      </div>
-      <FormGroup data-delete-name>
-        <Input
-          data-delete-name
-          value={store.name}
-          onChange={(e) => {
-            store.setName(e.target.value);
-          }}
-          label={tr.t(`Type ${store.data.name}`)}
-          error={store.errors.name && store.errors.name[0]}
-        />
-      </FormGroup>
-      <FormGroup
-        css={css`
-          button {
-            margin: 10px;
-          }
-        `}
-      >
+      <header>
+        <h2>Delete Infrastructure</h2>
+      </header>
+      <main>
+        <div>
+          To prevent accidental deletion, please type the name of the
+          infrastructure to destroy:
+          <pre
+            css={css`
+              color: red;
+            `}
+          >
+            {store.data.name}
+          </pre>
+        </div>
+        <FormGroup data-delete-name>
+          <Input
+            data-delete-name
+            value={store.name}
+            onChange={(e) => {
+              store.setName(e.target.value);
+            }}
+            label={tr.t(`Type ${store.data.name}`)}
+            error={store.errors.name && store.errors.name[0]}
+          />
+        </FormGroup>
+      </main>
+      <footer>
         <Button
           data-infra-button-delete
           primary
@@ -274,7 +282,7 @@ const createInfraDelete = (context) => {
           label={tr.t("Delete Infrastructure")}
         />
         <Button onClick={() => history.back()} label={tr.t("Cancel")} />
-      </FormGroup>
+      </footer>
     </Form>
   );
   return observer(InfraDeleteForm);
@@ -286,6 +294,7 @@ const createInfraNew = (context) => {
     history,
     theme: { palette },
   } = context;
+  const Form = createForm(context);
   const FormGroup = formGroup(context);
   const Input = input(context, {
     cssOverride: css`
@@ -304,64 +313,57 @@ const createInfraNew = (context) => {
 
   const InfraNew = ({ store }) => (
     <Form data-infra-create>
-      <h2>{tr.t("Create new Infrastructure")}</h2>
-      <div>
-        {tr.t(
-          "Please provide the following information to create and scan a new infrastructure"
-        )}
-      </div>
-      <FormGroup className="infra-name">
-        <Input
-          value={store.data.name}
-          onChange={(e) => {
-            store.data.name = e.target.value;
-          }}
-          label={tr.t("Infrastructure Name")}
-          error={store.errors.name && store.errors.name[0]}
-        />
-      </FormGroup>
-      <FormGroup className="access-key">
-        <Input
-          value={store.data.accessKeyId}
-          onChange={(e) => {
-            store.data.accessKeyId = e.target.value;
-          }}
-          label={tr.t("AWS Access Key")}
-          error={store.errors.accessKeyId && store.errors.accessKeyId[0]}
-        />
-      </FormGroup>
-      <FormGroup className="secret-key">
-        <Input
-          value={store.data.secretKey}
-          onChange={(e) => {
-            store.data.secretKey = e.target.value;
-          }}
-          label={tr.t("AWS Secret Key")}
-          type="password"
-          error={store.errors.secretKey && store.errors.secretKey[0]}
-        />
-      </FormGroup>
-      <FormGroup className="aws-region">
-        <AwsSelectRegion
-          placeholder="Select a region"
-          value={store.data.region}
-          onSelected={(item) => {
-            store.data.region = item;
-          }}
-        />
-      </FormGroup>
-      <FormGroup
-        css={css`
-          border-top: 1px ${palette.grey[300]} solid;
-          padding-top: 1rem;
-          * {
-            margin-right: 10px;
-          }
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        `}
-      >
+      <header>
+        <h2>{tr.t("Create new Infrastructure")}</h2>
+      </header>
+      <main>
+        <div>
+          {tr.t(
+            "Please provide the following information to create and scan a new infrastructure"
+          )}
+        </div>
+        <FormGroup className="infra-name">
+          <Input
+            value={store.data.name}
+            onChange={(e) => {
+              store.data.name = e.target.value;
+            }}
+            label={tr.t("Infrastructure Name")}
+            error={store.errors.name && store.errors.name[0]}
+          />
+        </FormGroup>
+        <FormGroup className="access-key">
+          <Input
+            value={store.data.accessKeyId}
+            onChange={(e) => {
+              store.data.accessKeyId = e.target.value;
+            }}
+            label={tr.t("AWS Access Key")}
+            error={store.errors.accessKeyId && store.errors.accessKeyId[0]}
+          />
+        </FormGroup>
+        <FormGroup className="secret-key">
+          <Input
+            value={store.data.secretKey}
+            onChange={(e) => {
+              store.data.secretKey = e.target.value;
+            }}
+            label={tr.t("AWS Secret Key")}
+            type="password"
+            error={store.errors.secretKey && store.errors.secretKey[0]}
+          />
+        </FormGroup>
+        <FormGroup className="aws-region">
+          <AwsSelectRegion
+            placeholder="Select a region"
+            value={store.data.region}
+            onSelected={(item) => {
+              store.data.region = item;
+            }}
+          />
+        </FormGroup>
+      </main>
+      <footer>
         <Button
           data-infra-create-submit
           primary
@@ -380,7 +382,7 @@ const createInfraNew = (context) => {
           onClick={() => history.push(`/user/infra`)}
           label={tr.t("Cancel")}
         />
-      </FormGroup>
+      </footer>
     </Form>
   );
   return observer(InfraNew);
@@ -388,6 +390,7 @@ const createInfraNew = (context) => {
 
 const createInfraEdit = (context) => {
   const { tr, history } = context;
+  const Form = createForm(context);
   const FormGroup = formGroup(context);
   const Input = input(context, {
     cssOverride: css`
@@ -403,7 +406,7 @@ const createInfraEdit = (context) => {
   });
 
   const InfraDelete = observer(({ store }) => (
-    <div>
+    <p>
       <a
         data-infra-edit-delete-link
         css={css`
@@ -417,47 +420,51 @@ const createInfraEdit = (context) => {
       >
         Danger zone...
       </a>
-    </div>
+    </p>
   ));
 
   const InfraEdit = ({ store }) => (
     <Form data-infra-edit>
-      <h2>Edit the Infrastructure</h2>
-      <div>Edit the Infrastructure such as the name.</div>
-      <FormGroup className="infra-name">
-        <Input
-          value={store.data.name}
-          onChange={(e) => {
-            store.data.name = e.target.value;
+      <header>
+        <h2>Edit the Infrastructure</h2>
+      </header>
+      <main>
+        <div>Edit the Infrastructure such as the name.</div>
+        <FormGroup className="infra-name">
+          <Input
+            value={store.data.name}
+            onChange={(e) => {
+              store.data.name = e.target.value;
+            }}
+            label={tr.t("Infrastructure Name")}
+            error={store.errors.name && store.errors.name[0]}
+          />
+        </FormGroup>
+        <FormGroup className="access-key">
+          <Input
+            disabled
+            value={store.data.accessKeyId}
+            label={tr.t("AWS Access Key")}
+          />
+        </FormGroup>
+        <FormGroup className="secret-key">
+          <Input
+            disabled
+            value={store.data.secretKey}
+            label={tr.t("AWS Secret Key")}
+            type="password"
+          />
+        </FormGroup>
+        <AwsSelectRegion
+          disabled
+          placeholder="Select a region"
+          value={store.data.region}
+          onSelected={(item) => {
+            store.data.region = item;
           }}
-          label={tr.t("Infrastructure Name")}
-          error={store.errors.name && store.errors.name[0]}
         />
-      </FormGroup>
-      <FormGroup className="access-key">
-        <Input
-          disabled
-          value={store.data.accessKeyId}
-          label={tr.t("AWS Access Key")}
-        />
-      </FormGroup>
-      <FormGroup className="secret-key">
-        <Input
-          disabled
-          value={store.data.secretKey}
-          label={tr.t("AWS Secret Key")}
-          type="password"
-        />
-      </FormGroup>
-      <AwsSelectRegion
-        disabled
-        placeholder="Select a region"
-        value={store.data.region}
-        onSelected={(item) => {
-          store.data.region = item;
-        }}
-      />
-      <FormGroup
+      </main>
+      <footer
         css={css`
           button {
             margin-right: 10px;
@@ -471,7 +478,7 @@ const createInfraEdit = (context) => {
           label={tr.t("Update Infrastructure")}
         />
         <Button onClick={() => history.back()} label={tr.t("Cancel")} />
-      </FormGroup>
+      </footer>
       <InfraDelete store={store} />
     </Form>
   );
@@ -484,6 +491,7 @@ const createInfraDetail = (context) => {
     history,
     theme: { palette },
   } = context;
+  const Form = createForm(context);
   const BadgeRegion = badgeRegion(context);
   const ProviderLogo = providerLogo(context);
   const Spinner = spinner(context);
@@ -624,6 +632,7 @@ const createInfraDetail = (context) => {
 
 const createInfraList = (context) => {
   const { tr, history } = context;
+  const Form = createForm(context);
   const Page = page(context);
   const Button = button(context, {
     cssOverride: css`
@@ -791,11 +800,6 @@ export default function (context) {
         }
         console.log(response);
       }),
-      // opUpdate: asyncOpCreate((payload) => rest.patch("infra", payload)),
-      // update: action(async function () {
-      //   this.errors = {};
-      //   const response = await this.opUpdate.fetch(payload);
-      // }),
     });
 
     const defaultData = {

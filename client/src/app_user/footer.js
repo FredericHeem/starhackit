@@ -20,16 +20,13 @@ export default (context) => {
     return (
       <footer
         css={css`
-          padding: 20px;
           text-align: center;
           box-shadow: ${shadows[5]};
           color: ${palette.text.secondary};
         `}
       >
-        <div>
-          <p>{`Copyright © ${new Date().getFullYear()} GruCloud`}</p>
-        </div>
-        <div
+        <p>{`Copyright © ${new Date().getFullYear()} GruCloud`}</p>
+        <p
           css={css`
             font-size: 0.8rem;
           `}
@@ -37,7 +34,7 @@ export default (context) => {
           {`F${__VERSION__}`}
           {" - "}
           {versionStore.data ? `B${versionStore.data.version}` : "Fetching..."}
-        </div>
+        </p>
       </footer>
     );
   });

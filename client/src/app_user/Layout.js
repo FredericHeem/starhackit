@@ -36,6 +36,7 @@ export default (context) => {
       >
         <MainView>{children}</MainView>
       </div>
+      <Footer />
       <AlertStack />
     </div>
   );

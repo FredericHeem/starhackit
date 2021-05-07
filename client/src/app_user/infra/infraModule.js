@@ -30,6 +30,45 @@ const resourceStats = pipe([
   tap((xx) => {}),
 ]);
 
+const screenLoader = (context) => {
+  const {
+    tr,
+    theme: { palette },
+  } = context;
+  const Spinner = spinner(context);
+  return ({ loading, message = tr.t("Loading...") }) => (
+    <div
+      css={css`
+        position: fixed;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: ${palette.grey[200]};
+        transition: opacity 0.2s ease-out;
+        opacity: ${loading ? 0.9 : 0};
+        z-index: ${loading ? 3 : -3};
+      `}
+    >
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.3rem;
+          font-weight: 600;
+        `}
+      >
+        <span>{message}</span>
+        <Spinner />
+      </div>
+    </div>
+  );
+};
+
 const createForm = ({ theme }) => ({ children, cssOverride, ...other }) => (
   <form
     {...other}
@@ -499,14 +538,13 @@ const createInfraDetail = (context) => {
     cssOverride: css``,
   });
   const ResourcePerTypeTable = createResourcePerTypeTable(context);
-
+  const ScreenLoader = screenLoader(context);
   const InfraDetailContainer = observer(({ store }) => (
     <div>
       {store.opGetById.data ? (
         <InfraDetail store={store} detail={store.opGetById.data} />
-      ) : (
-        <div>Loading...</div>
-      )}
+      ) : null}
+      <ScreenLoader loading={store.opGetById.loading} />
     </div>
   ));
   const ScanLastUpdated = ({ updatedAt }) => (
@@ -639,6 +677,8 @@ const createInfraList = (context) => {
       width: 256px;
     `,
   });
+  const ScreenLoader = screenLoader(context);
+
   const InfraItem = createInfraItem(context);
 
   const InfraListView = observer(({ store, items }) => (
@@ -692,11 +732,13 @@ const createInfraList = (context) => {
 
   const InfraListContainer = observer(({ store }) => (
     <div>
-      {store.opGet.data ? (
+      {store.opGet.data && (
         <InfraListView store={store} items={store.opGet.data} />
-      ) : (
-        <div>Loading Infrastrucure...</div>
       )}
+      <ScreenLoader
+        loading={store.opGet.loading}
+        message={tr.t("Loading Infrastructures")}
+      />
     </div>
   ));
   return InfraListContainer;

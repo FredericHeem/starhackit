@@ -81,7 +81,6 @@ const createForm = ({ theme }) => ({ children, cssOverride, ...other }) => (
         justify-content: space-between;
         padding: 0rem 1rem;
         margin-bottom: 2rem;
-        min-height: 300px;
 
         header {
           border-bottom: 1px solid ${theme.palette.grey[400]};
@@ -242,7 +241,7 @@ const createInfraItem = (context) => {
   );
   const InfraItem = ({ item, store, onClick }) => {
     return (
-      <section
+      <li
         data-infra-list-item
         css={css`
           box-shadow: ${theme.shadows[1]};
@@ -261,7 +260,7 @@ const createInfraItem = (context) => {
         {item.Jobs[0] && <ResourceStat stats={resourceStats(item.Jobs[0])} />}
         <ProviderLogo type="aws" />
         <BadgeRegion region={item.providerAuth.AWSRegion} />
-      </section>
+      </li>
     );
   };
   return observer(InfraItem);
@@ -694,6 +693,9 @@ const createInfraList = (context) => {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          > h2 {
+            margin-right: 2rem;
+          }
         `}
       >
         <h2>Your Infrastructures</h2>

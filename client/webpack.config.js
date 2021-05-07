@@ -73,6 +73,7 @@ module.exports = function (options) {
           patterns: [
             { from: "./src/favicon.ico" },
             { from: "./locales/**/*.json" },
+            { from: "./assets/**/*" },
           ],
         }),
         new MiniCssExtractPlugin({

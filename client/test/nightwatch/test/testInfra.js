@@ -34,7 +34,7 @@ describe("Infra", function () {
       // AWSRegion
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
-      .pause(10e3);
+      .pause(5e3);
     //.assert.title('My Profile - StarHackIt')
   });
   it("list", async function (client, done) {

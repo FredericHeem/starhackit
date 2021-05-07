@@ -4,7 +4,7 @@ import button from "mdlean/lib/button";
 
 export default (context) => {
   const Button = button(context);
-  function AuthBar() {
+  function AuthBar({ register = false }) {
     return (
       <div
         css={css`
@@ -15,7 +15,9 @@ export default (context) => {
         `}
       >
         <Button primary raised label="Login" href="/user/auth/login" />
-        <Button primary label="Register" href="/user/auth/register" />
+        {register && (
+          <Button primary label="Register" href="/user/auth/register" />
+        )}
       </div>
     );
   }

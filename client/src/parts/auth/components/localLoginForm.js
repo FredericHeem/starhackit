@@ -55,6 +55,11 @@ export default (context) => {
     }),
   });
 
+  const ForgotLink = () => (
+    <a css={{ cursor: "pointer" }} onClick={() => history.push(`forgot`)}>
+      {tr.t("Forgot Password")}
+    </a>
+  );
   const LoginForm = observer(({ store }) => {
     const { errors } = store;
     return (
@@ -92,6 +97,7 @@ export default (context) => {
             onClick={() => store.login()}
           />
         </FormGroup>
+        <ForgotLink />
       </form>
     );
   });

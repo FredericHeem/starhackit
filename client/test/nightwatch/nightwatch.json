@@ -19,6 +19,13 @@
         "browserName": "chrome",
         "webStorageEnabled": true
       }
+    },
+    "prod": {
+      "launch_url": "https://starhack.it/user",
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "webStorageEnabled": true
+      }
     }
   }
 }

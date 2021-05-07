@@ -47,8 +47,8 @@ const screenLoader = (context) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: ${palette.grey[200]};
-        transition: opacity 0.2s ease-out;
+        background-color: ${palette.grey[100]};
+        transition: opacity 0.3s ease-in-out;
         opacity: ${loading ? 0.9 : 0};
         z-index: ${loading ? 3 : -3};
       `}

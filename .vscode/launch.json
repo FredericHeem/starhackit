@@ -24,13 +24,15 @@
       "port": 9229
     },
     {
+      "name": "API Server",
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/server/src/index.js",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/server",
-      "runtimeArgs": [],
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "port": 9229
     },
     {
       "name": "Debug test",

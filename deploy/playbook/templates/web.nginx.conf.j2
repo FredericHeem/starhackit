@@ -49,8 +49,8 @@ http {
         try_files $uri /admin/index.html;
         
     }
-    ssl_certificate      /etc/letsencrypt/live/starhack.it/fullchain.pem;
-    ssl_certificate_key  /etc/letsencrypt/live/starhack.it/privkey.pem;
+    ssl_certificate      /etc/letsencrypt/live/{{domain_name}}/fullchain.pem;
+    ssl_certificate_key  /etc/letsencrypt/live/{{domain_name}}/privkey.pem;
   }
 
   server {

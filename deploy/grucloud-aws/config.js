@@ -1,7 +1,8 @@
 const pkg = require("./package.json");
 
 module.exports = () => ({
-  domainName: "starhack.it",
-  keyPairName: "starhackit",
+  domainName: "grucloud.com",
+  keyPairName: "grucloud-app",
   projectName: pkg.name,
+  availabilityZoneSuffix: "b",
 });

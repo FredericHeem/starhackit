@@ -47,6 +47,6 @@
   "infra": {
     "docker": { "baseURL": "http://localhost/v1.40" },
     "localVolumePath": "output",
-    "containerImage": "fredericheem/grucloud-aws:v1.15.2"
+    "containerImage": "fredericheem/grucloud-cli:v1.16.0"
   }
 }

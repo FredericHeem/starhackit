@@ -31,7 +31,7 @@ describe("Infra", function () {
       .setValue("@nameInput", infraName)
       .setValue("@accessKeyIdInput", process.env.AWSAccessKeyId)
       .setValue("@secretKeyInput", process.env.AWSSecretKey)
-      // AWSRegion
+      // AWS_REGION
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
       .pause(5e3);

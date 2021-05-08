@@ -45,8 +45,9 @@ const runDockerJob = ({ dockerOptions, params }) =>
 const runGcList = ({
   jobId,
   env,
-  containerName = "grucloud-aws",
-  containerImage = "grucloud-aws",
+  provider,
+  containerName = "grucloud-cli",
+  containerImage = "grucloud-cli",
   localVolumePath = "output",
   dockerOptions,
   WorkingDir = "output",
@@ -54,6 +55,7 @@ const runGcList = ({
   pipe([
     tap(() => {
       assert(true);
+      assert(provider);
     }),
     () => ({
       outputGcList: `gc-list-${jobId}.json`,
@@ -68,6 +70,8 @@ const runGcList = ({
       name: () => `${containerName}-${jobId}`,
       Cmd: ({ outputGcList, outputDot }) => [
         "list",
+        "-p",
+        provider,
         "--all",
         "--graph",
         "--json",
@@ -123,7 +127,7 @@ const runGcList = ({
         }),
         tap((content) => {
           console.log(outputGcListLocalPath);
-          console.log(content);
+          console.log(JSON.stringify(content, null, 4));
         }),
       ])(),
   ])();
@@ -280,7 +284,7 @@ exports.DiagramApi = (app) => {
                         runGcList({
                           jobId: id,
                           env: infra.providerAuth,
-                          // use infra.providerType
+                          provider: infra.providerType,
                           dockerOptions,
                           localVolumePath,
                           containerImage: config.infra.containerImage,

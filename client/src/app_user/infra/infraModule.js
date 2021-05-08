@@ -84,7 +84,6 @@ const createForm = ({ theme }) => ({ children, cssOverride, ...other }) => (
 
         header {
           border-bottom: 1px solid ${theme.palette.grey[400]};
-          padding-top: 1rem;
           margin-bottom: 1rem;
           button {
             margin-right: 10px;
@@ -259,7 +258,7 @@ const createInfraItem = (context) => {
         <ProjectName name={item.name} />
         {item.Jobs[0] && <ResourceStat stats={resourceStats(item.Jobs[0])} />}
         <ProviderLogo type="aws" />
-        <BadgeRegion region={item.providerAuth.AWSRegion} />
+        <BadgeRegion region={item.providerAuth.AWS_REGION} />
       </li>
     );
   };
@@ -603,7 +602,7 @@ const createInfraDetail = (context) => {
               history.push(`${detail.id}/edit`, {
                 name: detail.name,
                 id: detail.id,
-                region: detail.providerAuth.AWSRegion,
+                region: detail.providerAuth.AWS_REGION,
                 accessKeyId: detail.providerAuth.AWSAccessKeyId,
                 secretKey: detail.providerAuth.AWSSecretKey,
               });
@@ -617,7 +616,7 @@ const createInfraDetail = (context) => {
           `}
         >
           <ProviderLogo type="aws" />
-          <BadgeRegion region={detail.providerAuth.AWSRegion} />
+          <BadgeRegion region={detail.providerAuth.AWS_REGION} />
         </div>
         <div
           css={css`
@@ -887,7 +886,7 @@ export default function (context) {
           providerAuth: {
             AWSAccessKeyId: data.accessKeyId.trim(),
             AWSSecretKey: data.secretKey,
-            AWSRegion: data.region,
+            AWS_REGION: data.region,
           },
         };
         try {

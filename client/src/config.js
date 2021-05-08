@@ -3,7 +3,6 @@ const config = {
     title: "StarHackIt",
     description: "React Mobx Emotion Node Starter Kit",
     apiUrl: "/api/v1/",
-    disableUsernamePasswordAuth: true,
     socialAuth: ["facebook", "google"],
     debug: {
       log: false,
@@ -13,6 +12,8 @@ const config = {
 
   development: {
     env: "development",
+    disableUsernamePasswordAuth: false,
+
     debug: {
       log: true,
       i18n: false,
@@ -21,6 +22,7 @@ const config = {
 
   production: {
     env: "production",
+    disableUsernamePasswordAuth: true,
   },
 };
 

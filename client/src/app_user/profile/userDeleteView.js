@@ -6,7 +6,7 @@ import input from "mdlean/lib/input";
 import button from "mdlean/lib/button";
 
 import paper from "components/Paper";
-import form from "components/Form";
+import form from "components/form";
 import formGroup from "components/FormGroup";
 
 export default (context) => {
@@ -41,6 +41,7 @@ export default (context) => {
           </div>
           <FormGroup data-delete-name>
             <Input
+              autoFocus
               data-delete-name
               value={store.input}
               onChange={(e) => {

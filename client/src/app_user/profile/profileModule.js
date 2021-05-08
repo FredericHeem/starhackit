@@ -8,7 +8,7 @@ import profileView from "./views/profileView";
 import userDeleteView from "./userDeleteView";
 
 export default function (context) {
-  const { rest, tr } = context;
+  const { rest, tr, config } = context;
   const asyncOpCreate = AsyncOp(context);
   const Alert = alert(context);
   function Routes(stores) {
@@ -114,7 +114,7 @@ export default function (context) {
         context.alertStack.add(
           <Alert.Danger message={tr.t("Account Deleted")} />
         );
-        context.history.push("/");
+        context.history.push(config.loginPath);
       }),
 
       get nameMatch() {

@@ -282,6 +282,7 @@ const createInfraNew = (context) => {
         </div>
         <FormGroup className="infra-name">
           <Input
+            autoFocus
             value={store.data.name}
             onChange={(e) => {
               store.data.name = e.target.value;

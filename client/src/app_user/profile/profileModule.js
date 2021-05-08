@@ -32,8 +32,6 @@ export default function (context) {
           return {
             routerContext,
             title: "Delete Profile",
-            //component: h(profileView(context), { store: stores.profile }),
-
             component: h(userDeleteView(context), { store: stores.userDelete }),
           };
         },

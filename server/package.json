@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "10.25.0",
+  "version": "10.26.0",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -10,7 +10,6 @@
   },
   "license": "NLPL",
   "scripts": {
-    "prestart": "npm run lint && npm run jscpd",
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
     "start:prod": "NODE_ENV=production node src/index.js",
     "test": "npm run cover",
@@ -65,6 +64,7 @@
     "nodemailer": "6.4.18",
     "oauth": "0.9.15",
     "passport-facebook": "3.0.0",
+    "passport-github": "1.1.0",
     "passport-google-id-token": "0.4.7",
     "passport-google-oauth20": "2.0.0",
     "passport-jwt": "4.0.0",

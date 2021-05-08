@@ -1,9 +1,8 @@
 {
   "name": "starhackit-ui",
-  "title": "StarHack.It",
-  "version": "10.24.0",
-  "description": "React + node starter kit. A fullstack boilerplate with authentication and authorisation",
-  "homepage": "https://github.com/FredericHeem/starhackit",
+  "title": "GruCloud",
+  "version": "10.26.0",
+  "description": "Visualize Cloud Infrastructure",
   "license": "NLPL",
   "scripts": {
     "start": "webpack serve --config webpack.dev.js --open",
@@ -24,13 +23,6 @@
     "docker:btp": "npm run docker:build && npm run docker:tag && npm run docker:push",
     "preversion": "npm test",
     "postversion": "git push && git push --tags"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:FredericHeem/starhackit.git"
-  },
-  "bugs": {
-    "url": "https://github.com/FredericHeem/starhackit/issues"
   },
   "browserslist": "last 2 versions, ie 11",
   "dependencies": {

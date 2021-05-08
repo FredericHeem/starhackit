@@ -21,6 +21,8 @@ import alert from "components/alert";
 import page from "components/Page";
 import spinner from "components/spinner";
 import AwsLogo from "./assets/aws.svg";
+import screenLoader from "components/screenLoader";
+import createForm from "components/form";
 
 const getLivesFromJob = get("result.list.result.results[0].results");
 
@@ -29,87 +31,6 @@ const resourceStats = pipe([
   fork({ types: size, resources: pipe([flatMap(get("resources")), size]) }),
   tap((xx) => {}),
 ]);
-
-const screenLoader = (context) => {
-  const {
-    tr,
-    theme: { palette },
-  } = context;
-  const Spinner = spinner(context);
-  return ({ loading, message = tr.t("Loading...") }) => (
-    <div
-      css={css`
-        position: fixed;
-        width: 100vw;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: ${palette.grey[100]};
-        transition: opacity 0.3s ease-in-out;
-        opacity: ${loading ? 0.9 : 0};
-        z-index: ${loading ? 3 : -3};
-      `}
-    >
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.3rem;
-          font-weight: 600;
-        `}
-      >
-        <span>{message}</span>
-        <Spinner />
-      </div>
-    </div>
-  );
-};
-
-const createForm = ({ theme }) => ({ children, cssOverride, ...other }) => (
-  <form
-    {...other}
-    onSubmit={(e) => e.preventDefault()}
-    css={[
-      css`
-        box-shadow: ${theme.shadows[1]};
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 0rem 1rem;
-        margin-bottom: 2rem;
-
-        header {
-          border-bottom: 1px solid ${theme.palette.grey[400]};
-          margin-bottom: 1rem;
-          button {
-            margin-right: 10px;
-          }
-        }
-        main {
-          flex-grow: 1;
-          margin: 1rem 0;
-        }
-        footer {
-          border-top: 1px solid ${theme.palette.grey[400]};
-          padding: 1rem 0;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          button {
-            margin-right: 10px;
-          }
-        }
-      `,
-      cssOverride,
-    ]}
-  >
-    {children}
-  </form>
-);
 
 const badgeRegion = ({ theme: { palette } }) => ({ region }) => (
   <div
@@ -349,7 +270,7 @@ const createInfraNew = (context) => {
   });
 
   const InfraNew = ({ store }) => (
-    <Form data-infra-create>
+    <Form spellCheck="false" autoCapitalize="none" data-infra-create>
       <header>
         <h2>{tr.t("Create new Infrastructure")}</h2>
       </header>
@@ -375,7 +296,8 @@ const createInfraNew = (context) => {
             onChange={(e) => {
               store.data.accessKeyId = e.target.value;
             }}
-            label={tr.t("AWS Access Key")}
+            autoComplete="off"
+            label={tr.t("AWS Access Key Id")}
             error={store.errors.accessKeyId && store.errors.accessKeyId[0]}
           />
         </FormGroup>
@@ -442,7 +364,7 @@ const createInfraEdit = (context) => {
     cssOverride: css``,
   });
 
-  const InfraDelete = observer(({ store }) => (
+  const InfraDeleteLink = observer(({ store }) => (
     <p>
       <a
         data-infra-edit-delete-link
@@ -516,7 +438,7 @@ const createInfraEdit = (context) => {
         />
         <Button onClick={() => history.back()} label={tr.t("Cancel")} />
       </footer>
-      <InfraDelete store={store} />
+      <InfraDeleteLink store={store} />
     </Form>
   );
   return observer(InfraEdit);

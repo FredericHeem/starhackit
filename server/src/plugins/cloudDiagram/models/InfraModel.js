@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   Infra.associate = (models) => {
     // Infra <-> User
     Infra.belongsTo(models.User, {
+      onDelete: "CASCADE",
       foreignKey: {
         name: "user_id",
         allowNull: false,

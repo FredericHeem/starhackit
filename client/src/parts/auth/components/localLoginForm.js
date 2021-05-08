@@ -83,7 +83,6 @@ export default (context) => {
             onChange={(e) => {
               store.username = e.target.value;
             }}
-            type="email"
             label={tr.t("Username")}
             error={errors.username && errors.username[0]}
           />

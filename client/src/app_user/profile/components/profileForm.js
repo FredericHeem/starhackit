@@ -6,11 +6,11 @@ import button from "mdlean/lib/button";
 import spinner from "components/spinner";
 import paper from "components/Paper";
 import formGroup from "components/FormGroup";
-
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
 
 export default (context) => {
-  const { tr } = context;
+  const { tr, history } = context;
   const FormGroup = formGroup(context);
   const Paper = paper(context);
   const Button = button(context, {
@@ -26,7 +26,25 @@ export default (context) => {
     `,
   });
 
-  function ProfileForm({ store }) {
+  const UserDeleteLink = observer(({ store }) => (
+    <p>
+      <a
+        data-profile-user-delete-link
+        css={css`
+          color: red;
+          cursor: pointer;
+          text-decoration: underline;
+        `}
+        onClick={() => {
+          history.push(`profile/delete`, toJS(store.data));
+        }}
+      >
+        Danger zone...
+      </a>
+    </p>
+  ));
+
+  return observer(function ProfileForm({ store }) {
     const { errors } = store;
     if (store.opGet.loading) {
       return h(spinner(context));
@@ -86,9 +104,10 @@ export default (context) => {
               label={tr.t("Update Profile")}
             />
           </FormGroup>
+
+          <UserDeleteLink store={store} />
         </form>
       </Paper>
     );
-  }
-  return observer(ProfileForm);
+  });
 };

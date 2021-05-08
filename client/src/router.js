@@ -5,11 +5,17 @@ import { parse } from "qs";
 import asyncView from "components/AsyncView";
 import ErrorBoundary from "components/ErrorBoundary";
 
-export function createPart({name, context, partParam, partCreate, routerContext}) {
-  if(context.parts[name]){
-    return
+export function createPart({
+  name,
+  context,
+  partParam,
+  partCreate,
+  routerContext,
+}) {
+  if (context.parts[name]) {
+    return;
   }
-  
+
   const part = partCreate.default(context, partParam);
   context.parts[name] = part;
   routerContext.route.children = part.routes();
@@ -19,27 +25,27 @@ export function createPart({name, context, partParam, partCreate, routerContext}
 export default ({ context, routes, layout }) => {
   const { tr, history, config } = context;
   const router = new Router(routes);
-  const onRenderComplete = title => {
+  const onRenderComplete = (title) => {
     document.title = `${title} - ${config.title}`;
   };
 
   const resolveRoute = async () => {
     try {
       return await router.resolve({
-        pathname: location.pathname.replace(config.base, ''),
-        query: parse(location.search)
+        pathname: location.pathname.replace(config.base, ""),
+        query: parse(location.search),
       });
     } catch (error) {
       console.error("Routing exception:", error, "route", location.pathname); // eslint-disable-line no-console
       const component = h(asyncView(context), {
-        getModule: () => import("./components/notFound")
+        getModule: () => import("./components/notFound"),
       });
       return { title: tr.t("Page Not Found"), component };
     }
   };
 
   async function onLocationChange(location) {
-    const { title, component, layout: layoutOverride} = await resolveRoute();
+    const { title, component, layout: layoutOverride } = await resolveRoute();
     const Layout = layoutOverride || layout(context);
 
     if (component) {
@@ -59,6 +65,6 @@ export default ({ context, routes, layout }) => {
     instance: router,
     start() {
       onLocationChange(history.location);
-    }
+    },
   };
 };

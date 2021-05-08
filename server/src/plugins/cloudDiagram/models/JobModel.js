@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
 
     // Job - User
     Job.belongsTo(models.User, {
+      onDelete: "CASCADE",
       foreignKey: {
         name: "user_id",
         allowNull: false,

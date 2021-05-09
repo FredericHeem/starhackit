@@ -32,6 +32,16 @@ export default (context) => {
           > * {
             margin: 0.5rem;
           }
+          .footer-version {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s ease-in 300ms, opacity 300ms;
+          }
+          :hover .footer-version {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s ease-out 0s, opacity 300ms;
+          }
         `}
       >
         <ul
@@ -77,19 +87,18 @@ export default (context) => {
           css={css`
             font-size: 0.8rem;
             font-weight: 300;
+            > * {
+              margin: 0.3rem;
+            }
             a {
               color: ${palette.grey[500]};
             }
           `}
         >
-          {`Copyright © ${new Date().getFullYear()} `}
-
-          <a href="https://grucloud.com">GruCloud.com</a>
-
-          {/* <p
+          <span
+            className="footer-version"
             css={css`
               font-size: 0.8rem;
-              display: none;
             `}
           >
             {`F${__VERSION__}`}
@@ -97,7 +106,10 @@ export default (context) => {
             {versionStore.data
               ? `B${versionStore.data.version}`
               : "Fetching..."}
-          </p> */}
+          </span>
+          <span>{`Copyright © ${new Date().getFullYear()} `}</span>
+
+          <a href="https://grucloud.com">GruCloud.com</a>
         </div>
       </footer>
     );

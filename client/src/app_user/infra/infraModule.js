@@ -338,10 +338,7 @@ const createInfraNew = (context) => {
           `}
           color={palette.primary.main}
         />
-        <Button
-          onClick={() => history.push(`/user/infra`)}
-          label={tr.t("Cancel")}
-        />
+        <Button onClick={() => history.push(`/infra`)} label={tr.t("Cancel")} />
       </footer>
     </Form>
   );
@@ -920,7 +917,7 @@ export default function (context) {
           alertStack.add(
             <Alert.Info message={tr.t("Infrastructure Deleted")} />
           );
-          history.push("/user/infra");
+          history.push("/infra");
           emitter.emit("infra.deleted", storeDelete.data);
         } catch (error) {
           console.error(error);

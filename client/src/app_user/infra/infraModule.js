@@ -646,7 +646,7 @@ const createInfraList = (context) => {
               key={item.id}
               onScan={(item) => store.scan(item)}
               onClick={(item) => {
-                history.push(`/user/infra/detail/${item.id}`, toJS(item));
+                history.push(`/infra/detail/${item.id}`, toJS(item));
               }}
             ></InfraItem>
           ))}
@@ -818,7 +818,7 @@ export default function (context) {
           alertStack.add(
             <Alert.Info message={tr.t("Infrastructure Created")} />
           );
-          history.push(`/user/infra/detail/${result.id}`, result);
+          history.push(`/infra/detail/${result.id}`, result);
           emitter.emit("infra.created", result);
         } catch (errors) {
           console.log(errors);

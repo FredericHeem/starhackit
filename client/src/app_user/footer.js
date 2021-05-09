@@ -4,6 +4,8 @@ import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
 import AsyncOp from "utils/asyncOp";
 
+import { RiTwitterFill, RiBugFill, RiMailSendLine } from "react-icons/ri";
+
 export default (context) => {
   const {
     tr,
@@ -11,6 +13,7 @@ export default (context) => {
     rest,
   } = context;
   const versionStore = AsyncOp(context)(() => rest.get(`version`));
+  const style = { color: palette.grey[500], fontSize: "0.8em" };
 
   const Footer = observer(() => {
     useEffect(() => {
@@ -21,20 +24,81 @@ export default (context) => {
       <footer
         css={css`
           text-align: center;
-          box-shadow: ${shadows[5]};
+          box-shadow: ${shadows[2]};
           color: ${palette.text.secondary};
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          > * {
+            margin: 0.5rem;
+          }
         `}
       >
-        <p>{`Copyright © ${new Date().getFullYear()} GruCloud`}</p>
-        <p
+        <ul
           css={css`
-            font-size: 0.8rem;
+            display: flex;
+
+            li {
+              margin: 0.5rem;
+              a {
+                display: flex;
+                text-decoration: none;
+                align-items: center;
+                font-size: 1.5rem;
+              }
+            }
           `}
         >
-          {`F${__VERSION__}`}
-          {" - "}
-          {versionStore.data ? `B${versionStore.data.version}` : "Fetching..."}
-        </p>
+          <li>
+            <a href="https://twitter.com/grucloud_iac">
+              <RiTwitterFill style={style} />
+            </a>
+          </li>
+          <li>
+            <a
+              css={css``}
+              title="Contact us via email"
+              href="mailto:hello@grucloud.com"
+            >
+              <RiMailSendLine style={style} />
+            </a>
+          </li>
+          <li>
+            <a
+              css={css``}
+              title="Report an issue"
+              href="https://github.com/grucloud/grucloud/issues"
+            >
+              <RiBugFill style={style} />
+            </a>
+          </li>
+        </ul>
+        <div
+          css={css`
+            font-size: 0.8rem;
+            font-weight: 300;
+            a {
+              color: ${palette.grey[500]};
+            }
+          `}
+        >
+          {`Copyright © ${new Date().getFullYear()} `}
+
+          <a href="https://grucloud.com">GruCloud.com</a>
+
+          {/* <p
+            css={css`
+              font-size: 0.8rem;
+              display: none;
+            `}
+          >
+            {`F${__VERSION__}`}
+            {" - "}
+            {versionStore.data
+              ? `B${versionStore.data.version}`
+              : "Fetching..."}
+          </p> */}
+        </div>
       </footer>
     );
   });

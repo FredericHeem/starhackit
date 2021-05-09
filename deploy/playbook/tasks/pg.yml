@@ -1,7 +1,7 @@
 ---
 - name: make pg_data directory
   file:
-    path: /home/{{user}}/pg_data/{{database}}
+    path: "{{data_dir}}/{{database}}"
     state: directory
     owner: "{{user}}"
     mode: 0777
@@ -19,7 +19,7 @@
       POSTGRES_DB: "{{database}}"
     user: 0
     volumes:
-    - /home/{{user}}/pg_data/{{database}}:/var/lib/postgresql/data:z
+    - "{{data_dir}}/{{database}}:/var/lib/postgresql/data:z"
     networks:
     - name: net
   tags:

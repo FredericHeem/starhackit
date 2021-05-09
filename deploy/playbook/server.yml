@@ -22,6 +22,7 @@
   - include_tasks: tasks/redis.yml
   - include_tasks: tasks/pg.yml
     vars:
+      data_dir: "{{db_data_dir}}"
       database: "{{db_database}}"
       hostname: "{{db_hostname}}"
       username: "{{db_username}}"

@@ -16,3 +16,5 @@ coverage
 .settings/
 .idea
 typings
+*.log
+env

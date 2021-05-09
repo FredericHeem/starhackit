@@ -52,9 +52,10 @@ export default ({ tr }) => {
       code,
       onRemove,
       className = "alert",
+      ...other
     }) {
       return (
-        <AlertView className={className} role="alert">
+        <AlertView {...other} className={className} role="alert">
           <div>
             <h3>
               {tr.t(name)} {code && `(${code})`}

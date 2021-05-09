@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "10.14.0",
+  "version": "10.29.0",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -10,12 +10,11 @@
   },
   "license": "NLPL",
   "scripts": {
-    "prestart": "npm run lint && npm run jscpd",
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
     "start:prod": "NODE_ENV=production node src/index.js",
     "test": "npm run cover",
     "mocha": "NODE_PATH=src mocha --file test/setup.js 'src/**/test*.js' --exit",
-    "mocha:watch": "npm run mocha --watch",
+    "mocha:watch": "npm run mocha -- --watch",
     "cover": "nyc npm run mocha",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
@@ -38,6 +37,9 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:migrate"
   },
   "dependencies": {
+    "@grucloud/core": "1.14.0",
+    "@grucloud/docker-axios": "1.15.0",
+    "@grucloud/provider-aws": "1.14.1",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",
     "bcryptjs": "2.4.3",
@@ -62,6 +64,7 @@
     "nodemailer": "6.4.18",
     "oauth": "0.9.15",
     "passport-facebook": "3.0.0",
+    "passport-github": "1.1.0",
     "passport-google-id-token": "0.4.7",
     "passport-google-oauth20": "2.0.0",
     "passport-jwt": "4.0.0",
@@ -70,9 +73,11 @@
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
     "qs": "6.9.6",
+    "rubico": "1.6.23",
     "sequelize": "6.5.0",
     "sequelize-cli": "6.2.0",
     "urijs": "1.19.6",
+    "uuid": "8.3.2",
     "winston": "3.3.3"
   },
   "devDependencies": {

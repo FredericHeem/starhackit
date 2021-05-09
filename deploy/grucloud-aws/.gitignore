@@ -1,5 +1,8 @@
+*.csv
+*.pem
 node_modules/
-.env
+*.env
 .nyc_output
 coverage
 *.log
+*.dot

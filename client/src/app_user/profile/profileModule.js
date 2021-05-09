@@ -5,9 +5,10 @@ import rules from "utils/rules";
 import AsyncOp from "utils/asyncOp";
 import alert from "components/alert";
 import profileView from "./views/profileView";
+import userDeleteView from "./userDeleteView";
 
-export default function(context) {
-  const { rest, tr } = context;
+export default function (context) {
+  const { rest, tr, config } = context;
   const asyncOpCreate = AsyncOp(context);
   const Alert = alert(context);
   function Routes(stores) {
@@ -15,15 +16,26 @@ export default function(context) {
       {
         path: "",
         protected: true,
-        action: routerContext => {
+        action: (routerContext) => {
           stores.profile.get();
           return {
             routerContext,
             title: "My Profile",
-            component: h(profileView(context), { store: stores.profile })
-          }
-        }
-      }
+            component: h(profileView(context), { store: stores.profile }),
+          };
+        },
+      },
+      {
+        path: "/delete",
+        protected: true,
+        action: (routerContext) => {
+          return {
+            routerContext,
+            title: "Delete Profile",
+            component: h(userDeleteView(context), { store: stores.userDelete }),
+          };
+        },
+      },
     ];
   }
 
@@ -42,21 +54,21 @@ export default function(context) {
       email: "",
       picture: null,
       profile: {
-        biography: ""
+        biography: "",
       },
       opGet: asyncOpCreate(() => rest.get("me")),
-      get: action(async function() {
+      get: action(async function () {
         const response = await this.opGet.fetch();
         merge(profileStore, response);
       }),
-      opUpdate: asyncOpCreate(payload => rest.patch("me", payload)),
-      update: action(async function() {
+      opUpdate: asyncOpCreate((payload) => rest.patch("me", payload)),
+      update: action(async function () {
         this.errors = {};
         const payload = {
-          biography: this.profile.biography || ""
+          biography: this.profile.biography || "",
         };
         const constraints = {
-          biography: rules.biography
+          biography: rules.biography,
         };
         const vErrors = validate(payload, constraints);
         if (vErrors) {
@@ -68,7 +80,7 @@ export default function(context) {
         context.alertStack.add(
           <Alert.Info message={tr.t("Profile updated")} />
         );
-      })/*,
+      }) /*,
       uploadPicture: action(async event => {
         const data = new FormData();
         const file = event.target.files[0];
@@ -87,11 +99,29 @@ export default function(context) {
             <Alert.Danger message={tr.t("Cannot upload file")} />
           );
         }
-      })*/
+      })*/,
     });
+    const userDeleteStore = observable({
+      input: "",
+      setInput: (input) => {
+        userDeleteStore.input = input;
+      },
+      opDestroy: asyncOpCreate(() => rest.del("me")),
+      destroy: action(async () => {
+        const response = await userDeleteStore.opDestroy.fetch();
+        context.alertStack.add(
+          <Alert.Danger message={tr.t("Account Deleted")} />
+        );
+        context.history.push(config.loginPath);
+      }),
 
+      get nameMatch() {
+        return userDeleteStore.input === "delete";
+      },
+    });
     return {
-      profile: profileStore
+      profile: profileStore,
+      userDelete: userDeleteStore,
     };
   }
 
@@ -99,6 +129,6 @@ export default function(context) {
 
   return {
     stores: () => stores,
-    routes: () => Routes(stores)
+    routes: () => Routes(stores),
   };
 }

@@ -1,4 +1,4 @@
-//import "./app.css";
+import "./app.css";
 import Router from "./router";
 import Log from "utils/log";
 import config from "./config";
@@ -10,9 +10,9 @@ const initialScreenFadeOut = () => {
   if (loading) {
     loading.classList.add("m-fadeOut");
   }
-}
+};
 
-export default async function({ context, routes, layout }) {
+export default async function ({ context, routes, layout }) {
   const router = Router({ context, routes, layout });
 
   initialScreenFadeOut();
@@ -21,6 +21,6 @@ export default async function({ context, routes, layout }) {
 
   return {
     context,
-    router
-  }
+    router,
+  };
 }

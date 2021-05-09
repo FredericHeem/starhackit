@@ -14,9 +14,9 @@ function createRegisterMobile(
     {
       usernameField: "userId",
       passwordField: "token",
-      passReqToCallback: false
+      passReqToCallback: false,
     },
-    async function(userID, token, done) {
+    async function (userID, token, done) {
       try {
         let res = await verifyMobile(models, publisherUser, userID, token);
         done(res.error, res.user);
@@ -28,23 +28,19 @@ function createRegisterMobile(
   passport.use(`${name}_mobile`, strategy);
 }
 
-async function verifyWeb(
-  models,
-  publisherUser,
-  userConfig
-) {
+async function verifyWeb(models, publisherUser, userConfig) {
   log.debug(`verifyWeb`, JSON.stringify(userConfig, null, 4));
   const userByEmail = await models.User.findByEmail(userConfig.email);
 
   if (userByEmail) {
     log.debug("email already registered ");
     await models.User.update(userConfig, {
-      where: { email: userConfig.email }
+      where: { email: userConfig.email },
     });
     const userUpdated = await models.User.findByEmail(userConfig.email);
-    log.debug("updated ", JSON.stringify(userUpdated.get(), null, 4) );
+    log.debug("updated ", JSON.stringify(userUpdated.get(), null, 4));
     return {
-      user: userUpdated.toJSON()
+      user: userUpdated.toJSON(),
     };
   }
   log.debug("creating user: ", userConfig);
@@ -56,17 +52,12 @@ async function verifyWeb(
     await publisherUser.publish("user.registered", JSON.stringify(userCreated));
   }
   return {
-    user: userCreated
+    user: userCreated,
   };
 }
 module.exports.verifyWeb = verifyWeb;
 
-async function createVerifyMobile(
-  getMe,
-  models,
-  publisherUser,
-  accessToken
-) {
+async function createVerifyMobile(getMe, models, publisherUser, accessToken) {
   log.debug("createVerifyMobile ", accessToken);
 
   try {
@@ -77,8 +68,8 @@ async function createVerifyMobile(
     log.error("verifyMobile ", error);
     return {
       error: {
-        message: "InvalidToken"
-      }
+        message: "InvalidToken",
+      },
     };
   }
 }

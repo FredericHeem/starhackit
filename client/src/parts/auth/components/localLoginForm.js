@@ -11,7 +11,7 @@ import AsyncOp from "utils/asyncOp";
 import rules from "utils/rules";
 
 export default (context) => {
-  const { tr, rest, emitter } = context;
+  const { tr, rest, emitter, history } = context;
   const FormGroup = formGroup(context);
   const Input = input(context, {
     cssOverride: css`
@@ -55,6 +55,23 @@ export default (context) => {
     }),
   });
 
+  const ForgotLink = ({}) => (
+    <div
+      css={css`
+        margin: 1rem 0;
+      `}
+    >
+      <a
+        css={css`
+          cursor: pointer;
+          text-decoration: underline;
+        `}
+        onClick={() => history.push(`forgot`)}
+      >
+        {tr.t("Forgot Password?")}
+      </a>
+    </div>
+  );
   const LoginForm = observer(({ store }) => {
     const { errors } = store;
     return (
@@ -66,7 +83,6 @@ export default (context) => {
             onChange={(e) => {
               store.username = e.target.value;
             }}
-            type="email"
             label={tr.t("Username")}
             error={errors.username && errors.username[0]}
           />
@@ -92,6 +108,7 @@ export default (context) => {
             onClick={() => store.login()}
           />
         </FormGroup>
+        <ForgotLink />
       </form>
     );
   });

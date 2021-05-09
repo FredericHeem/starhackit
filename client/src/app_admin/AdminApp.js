@@ -8,9 +8,10 @@ export default async () => {
     config: {
       base: "/admin",
       title: "Admin",
+      loginPath: "/admin/auth/login",
       routeAfterLogin: "/admin/users",
-      defaultPath: "/admin/users"
-    }
+      defaultPath: "/admin/users",
+    },
   });
 
   return App({ context, routes: createRoutes({ context }), layout });

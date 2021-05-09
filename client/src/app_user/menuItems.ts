@@ -1,15 +1,20 @@
 import { createElement as h } from "react";
 import { BiLogOutCircle } from "react-icons/bi";
-import { CgProfile } from "react-icons/cg";
+import { CgProfile,CgCloud } from "react-icons/cg";
 
 export default () => [
   {
-    route: "/user/profile",
+    route: "/infra",
+    text: "INFRA",
+    icon: h(CgCloud),
+  },
+  {
+    route: "/profile",
     text: "PROFILE",
     icon: h(CgProfile),
   },
   {
-    route: "/user/auth/logout",
+    route: "/auth/logout",
     text: "LOGOUT",
     icon: h(BiLogOutCircle),
   },

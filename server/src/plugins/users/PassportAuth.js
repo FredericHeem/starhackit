@@ -1,5 +1,5 @@
 const passport = require("koa-passport");
-const registerJwt =  require("./auth-strategy/JwtStrategy");
+const registerJwt = require("./auth-strategy/JwtStrategy");
 
 //TODO config
 const config = require("config");
@@ -12,7 +12,7 @@ function PassportAuth(app) {
 
   registerJwt(passport, models);
 
-  if (_.get(config,"authentication.facebook")) {
+  if (_.get(config, "authentication.facebook")) {
     const registerWeb = require("./auth-strategy/FacebookStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/FacebookStrategy")
@@ -20,21 +20,24 @@ function PassportAuth(app) {
     registerMobile(passport, models, publisher);
   }
 
-  if (_.get(config,"authentication.google")) {
+  if (_.get(config, "authentication.google")) {
     const registerWeb = require("./auth-strategy/GoogleStrategy").registerWeb;
     registerWeb(passport, models, publisher);
     const registerMobile = require("./auth-strategy/GoogleStrategy")
       .registerMobile;
     registerMobile(passport, models, publisher);
   }
-
-  passport.serializeUser(function(user, done) {
+  if (_.get(config, "authentication.github")) {
+    const registerWeb = require("./auth-strategy/GitHubStrategy").registerWeb;
+    registerWeb(passport, models, publisher);
+  }
+  passport.serializeUser(function (user, done) {
     log.debug("serializeUser user.id", user.id);
     //TODO use redis
     done(null, user);
   });
 
-  passport.deserializeUser(function(user, done) {
+  passport.deserializeUser(function (user, done) {
     log.debug("deserializeUser ", user.id);
     //TODO use redis
     done(null, user);

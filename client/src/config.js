@@ -1,26 +1,29 @@
 const config = {
   general: {
-    title: "StarHackIt",
-    description: "React Mobx Emotion Node Starter Kit",
+    title: "GruCloud",
+    description: "Visualize your cloud infrastructure",
     apiUrl: "/api/v1/",
-    socialAuth: ["facebook", "google"],
+    socialAuth: ["github", "facebook", "google"],
     debug: {
       log: false,
-      i18n: false
-    }
+      i18n: false,
+    },
   },
 
   development: {
     env: "development",
+    disableUsernamePasswordAuth: false,
+
     debug: {
       log: true,
-      i18n: false
-    }
+      i18n: false,
+    },
   },
 
   production: {
-    env: "production"
-  }
+    env: "production",
+    disableUsernamePasswordAuth: true,
+  },
 };
 
 /* global process */

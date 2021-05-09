@@ -7,7 +7,11 @@ import App from "../app";
 import createLink from "components/link";
 
 export default async () => {
-  const context = await Context();
+  const context = await Context({
+    config: {
+      base: "/micro",
+    },
+  });
   const {
     tr,
     theme: { palette },

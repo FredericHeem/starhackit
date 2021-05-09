@@ -4,6 +4,8 @@ import { observer } from "mobx-react";
 import { jsx, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 
+const deleteAfterDuration = 5e3;
+
 export default (context, { limit = 10 }) => {
   const store = observable({
     messages: [],
@@ -31,6 +33,7 @@ export default (context, { limit = 10 }) => {
 
       messages.push(message);
       setTimeout(() => store.setStatus(message.id, "inserted"), 400);
+      setTimeout(() => store.remove(message.id), deleteAfterDuration);
     },
     remove(id) {
       store.setStatus(id, "removing");

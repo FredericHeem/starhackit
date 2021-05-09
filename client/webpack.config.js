@@ -38,25 +38,25 @@ module.exports = function (options) {
         publicPath: "/",
       },
       plugins: [
-        new HtmlWebpackPlugin({
-          template: "src/index.ejs",
-          title: pkg.title,
-          chunks: ["micro"],
-          description: pkg.description,
-          filename: "index.html",
-        }),
-        new HtmlWebpackPlugin({
-          template: "src/index.ejs",
-          title: pkg.title,
-          chunks: ["public"],
-          description: pkg.description,
-          filename: "public/index.html",
-        }),
+        // new HtmlWebpackPlugin({
+        //   template: "src/index.ejs",
+        //   title: pkg.title,
+        //   chunks: ["micro"],
+        //   description: pkg.description,
+        //   filename: "index.html",
+        // }),
+        // new HtmlWebpackPlugin({
+        //   template: "src/index.ejs",
+        //   title: pkg.title,
+        //   chunks: ["public"],
+        //   description: pkg.description,
+        //   filename: "public/index.html",
+        // }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
           chunks: ["user"],
-          filename: "user/index.html",
+          filename: "index.html",
           description: pkg.description,
         }),
         new HtmlWebpackPlugin({

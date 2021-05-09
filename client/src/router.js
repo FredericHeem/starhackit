@@ -41,6 +41,7 @@ export default ({ context, routes, layout }) => {
       });
     } catch (error) {
       console.error("Routing exception:", error, "route", location.pathname); // eslint-disable-line no-console
+      console.log(router);
       const component = h(asyncView(context), {
         getModule: () => import("./components/notFound"),
       });

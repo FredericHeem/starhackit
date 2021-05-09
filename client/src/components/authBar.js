@@ -14,10 +14,8 @@ export default (context) => {
           }
         `}
       >
-        <Button primary raised label="Login" href="/user/auth/login" />
-        {register && (
-          <Button primary label="Register" href="/user/auth/register" />
-        )}
+        <Button primary raised label="Login" href="/auth/login" />
+        {register && <Button primary label="Register" href="/auth/register" />}
       </div>
     );
   }

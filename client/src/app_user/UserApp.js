@@ -6,10 +6,9 @@ import createRoutes from "./routes";
 export default async () => {
   const context = await Context({
     config: {
-      base: "/user",
-      loginPath: "/user/auth/login",
-      routeAfterLogin: "/user/infra",
-      defaultPath: "/user/infra",
+      loginPath: "/auth/login",
+      routeAfterLogin: "/infra",
+      defaultPath: "/infra",
       title: "GruCloud",
     },
   });

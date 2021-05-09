@@ -4,17 +4,17 @@ import { CgProfile,CgCloud } from "react-icons/cg";
 
 export default () => [
   {
-    route: "/user/infra",
+    route: "/infra",
     text: "INFRA",
     icon: h(CgCloud),
   },
   {
-    route: "/user/profile",
+    route: "/profile",
     text: "PROFILE",
     icon: h(CgProfile),
   },
   {
-    route: "/user/auth/logout",
+    route: "/auth/logout",
     text: "LOGOUT",
     icon: h(BiLogOutCircle),
   },

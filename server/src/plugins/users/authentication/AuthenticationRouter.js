@@ -7,6 +7,9 @@ const config = require("config");
 
 let log = require("logfilename")(__filename);
 
+const failureRedirect = "/auth/login";
+const successRedirect = "/auth/login";
+
 const errorMsg = (err, info) => {
   if (info && info.message) {
     return info.message;
@@ -161,6 +164,7 @@ function AuthenticationHttpController(app) {
 }
 
 function AuthenticationRouter(app) {
+  const { config } = app;
   let router = new Router();
   let authHttpController = AuthenticationHttpController(app);
   router.post("/login", authHttpController.login);
@@ -181,8 +185,8 @@ function AuthenticationRouter(app) {
   router.get(
     "/facebook/callback",
     passport.authenticate("facebook", {
-      failureRedirect: "/user/auth/login",
-      successRedirect: "/user/auth/login",
+      failureRedirect,
+      successRedirect,
     })
   );
   // Facebook Auth from mobile
@@ -196,8 +200,8 @@ function AuthenticationRouter(app) {
   router.get(
     "/google/callback",
     passport.authenticate("google", {
-      failureRedirect: "/user/auth/login",
-      successRedirect: "/user/auth/login",
+      failureRedirect,
+      successRedirect,
     })
   );
   router.post("/login_google", authHttpController.loginGoogle);
@@ -210,8 +214,8 @@ function AuthenticationRouter(app) {
   router.get(
     "/github/callback",
     passport.authenticate("github", {
-      failureRedirect: "/user/auth/login",
-      successRedirect: "/user/auth/login",
+      failureRedirect,
+      successRedirect,
     })
   );
 

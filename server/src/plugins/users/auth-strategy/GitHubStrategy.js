@@ -8,7 +8,7 @@ const config = require("config");
 const log = require("logfilename")(__filename);
 
 const profileToUser = (profile) => ({
-  firstName: profile.name,
+  username: profile.name,
   picture: { url: profile.avatar_url },
   email: profile.email,
   authProvider: {

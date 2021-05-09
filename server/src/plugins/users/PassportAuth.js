@@ -28,7 +28,7 @@ function PassportAuth(app) {
     registerMobile(passport, models, publisher);
   }
   if (_.get(config, "authentication.github")) {
-    const registerWeb = require("./auth-strategy/GithubStrategy").registerWeb;
+    const registerWeb = require("./auth-strategy/GitHubStrategy").registerWeb;
     registerWeb(passport, models, publisher);
   }
   passport.serializeUser(function (user, done) {

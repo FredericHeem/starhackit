@@ -3,7 +3,7 @@ import React, { createElement as h } from "react";
 import validate from "validate.js";
 import rules from "utils/rules";
 import AsyncOp from "utils/asyncOp";
-import alert from "components/alert";
+import alert from "mdlean/lib/alert";
 import profileView from "./views/profileView";
 import userDeleteView from "./userDeleteView";
 
@@ -78,7 +78,7 @@ export default function (context) {
         const response = await this.opUpdate.fetch(payload);
         merge(profileStore, response);
         context.alertStack.add(
-          <Alert.Info message={tr.t("Profile updated")} />
+          <Alert severity="success" message={tr.t("Profile updated")} />
         );
       }) /*,
       uploadPicture: action(async event => {
@@ -91,12 +91,12 @@ export default function (context) {
         try {
           await rest.upload("document/profile_picture", data);
           context.alertStack.add(
-            <Alert.Info message={tr.t("Picture uploaded")} />
+            <Alert severity="info" message={tr.t("Picture uploaded")} />
           );
         } catch (error) {
           console.error("uploadPicture ", error);
           context.alertStack.add(
-            <Alert.Danger message={tr.t("Cannot upload file")} />
+            <Alert severity="error" message={tr.t("Cannot upload file")} />
           );
         }
       })*/,
@@ -110,7 +110,7 @@ export default function (context) {
       destroy: action(async () => {
         const response = await userDeleteStore.opDestroy.fetch();
         context.alertStack.add(
-          <Alert.Danger message={tr.t("Account Deleted")} />
+          <Alert severity="error" message={tr.t("Account Deleted")} />
         );
         context.history.push(config.loginPath);
       }),

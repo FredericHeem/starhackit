@@ -17,7 +17,7 @@ import rules from "./rulesForm";
 import awsSelectRegion from "./awsSelectRegion";
 
 import AsyncOp from "utils/asyncOp";
-import alert from "components/alert";
+import alert from "mdlean/lib/alert";
 import page from "components/Page";
 import spinner from "components/spinner";
 import AwsLogo from "./assets/aws.svg";
@@ -813,7 +813,10 @@ export default function (context) {
           const result = await storeCreate.op.fetch(payload);
           await storeCreate.opScan.fetch(result);
           alertStack.add(
-            <Alert.Info message={tr.t("Infrastructure Created")} />
+            <Alert
+              severity="success"
+              message={tr.t("Infrastructure Created")}
+            />
           );
           history.push(`/infra/detail/${result.id}`, result);
           emitter.emit("infra.created", result);
@@ -823,7 +826,8 @@ export default function (context) {
           // backend should 422 if the credentials are incorrect
 
           alertStack.add(
-            <Alert.Danger
+            <Alert
+              severity="error"
               data-alert-error-create
               message={tr.t(
                 "Error creating infrastructure, check the credentials"
@@ -855,14 +859,18 @@ export default function (context) {
           );
           console.log(response);
           alertStack.add(
-            <Alert.Info message={tr.t("Infrastructure Updated")} />
+            <Alert
+              severity="success"
+              message={tr.t("Infrastructure Updated")}
+            />
           );
           history.back();
           emitter.emit("infra.updated", storeEdit.data);
         } catch (error) {
           console.error(error);
           alertStack.add(
-            <Alert.Danger
+            <Alert
+              severity="error"
               message={tr.t(
                 "An error occured while updating the infrastructure"
               )}
@@ -915,14 +923,18 @@ export default function (context) {
           await storeDelete.opDestroy.fetch();
 
           alertStack.add(
-            <Alert.Info message={tr.t("Infrastructure Deleted")} />
+            <Alert
+              severity="success"
+              message={tr.t("Infrastructure Deleted")}
+            />
           );
           history.push("/infra");
           emitter.emit("infra.deleted", storeDelete.data);
         } catch (error) {
           console.error(error);
           alertStack.add(
-            <Alert.Danger
+            <Alert
+              severity="error"
               message={tr.t(
                 "An error occured while destroying the infrastructure"
               )}

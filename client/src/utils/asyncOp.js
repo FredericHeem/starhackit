@@ -1,7 +1,7 @@
 import isString from "lodash/isString";
 import React from "react";
 import { observable, action, runInAction } from "mobx";
-import alert from "components/alert";
+import alert from "mdlean/lib/alert";
 import get from "lodash/get";
 
 function createHttpError(payload = {}) {
@@ -61,10 +61,12 @@ export default (context) => {
           const status = get(error, "response.status");
           if (![401, 422].includes(status)) {
             context.alertStack.add(
-              <Alert.Danger {...createHttpError(error)} />
+              <Alert severity="error" {...createHttpError(error)} />
             );
           } else if (!status) {
-            context.alertStack.add(<Alert.Danger message={error.toString()} />);
+            context.alertStack.add(
+              <Alert severity="error" message={error.toString()} />
+            );
           }
           throw error;
         } finally {

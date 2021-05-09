@@ -22,7 +22,7 @@ function createHttpError(payload = {}) {
   const errorOut = {
     name: name(),
     code: response.status,
-    message: message()
+    message: message(),
   };
   return errorOut;
 }
@@ -34,7 +34,7 @@ export default () =>
       loading: false,
       data: undefined,
       error: undefined,
-      execute: action(async function(fn, input) {
+      execute: action(async function (fn, input) {
         try {
           store.loading = true;
           store.error = null;
@@ -50,11 +50,13 @@ export default () =>
         } catch (error) {
           console.log("fetch error ", error);
           store.error = error;
-          const { response: { status } } = error;
+          const {
+            response: { status },
+          } = error;
           console.log("fetch status ", status);
           if (![401, 422].includes(status)) {
             /*context.alertStack.add(
-              <Alert.Danger {...createHttpError(error)} />
+              <Alert severity="error" {...createHttpError(error)} />
             );*/
           }
           throw error;
@@ -62,9 +64,9 @@ export default () =>
           store.loading = false;
         }
       }),
-      fetch: action(async function(input) {
+      fetch: action(async function (input) {
         return store.execute(api, input);
-      })
+      }),
     });
     return store;
   };

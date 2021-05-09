@@ -6,28 +6,30 @@ import alertStackCreate from "components/alertStack";
 import Rest from "./utils/rest";
 import palette from "./palette";
 import { createMuiTheme } from "@material-ui/core/styles";
+import { red, teal, orange, blue } from "@material-ui/core/colors";
 
 import intl from "utils/intl";
 import I18n from "utils/i18n";
- 
+
 import rootConfig from "./config";
 
 export default async (option = {}) => {
   const config = { ...rootConfig, ...option.config };
   const context = {
-    palette: palette(),
+    palette: palette(), //TODO REMOVE
+    colors: { red, teal, orange, blue },
     theme: createMuiTheme({
       palette: {
         primary: { main: "#3f51b5" },
-        secondary: { main: "#f50057" }
-      }
+        secondary: { main: "#f50057" },
+      },
     }),
     tr,
     formatter: formatter("en"),
     history: createBrowserHistory(),
     config,
     emitter: mitt(),
-    parts: {}
+    parts: {},
   };
   context.alertStack = alertStackCreate(context, { limit: 3 });
   context.rest = Rest(context);

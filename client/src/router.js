@@ -15,11 +15,15 @@ export function createPart({
   if (context.parts[name]) {
     return;
   }
-
-  const part = partCreate.default(context, partParam);
-  context.parts[name] = part;
-  routerContext.route.children = part.routes();
-  return routerContext.next();
+  try {
+    const part = partCreate.default(context, partParam);
+    context.parts[name] = part;
+    routerContext.route.children = part.routes();
+    return routerContext.next();
+  } catch (error) {
+    console.error(`Error loading part ${name}`);
+    throw error;
+  }
 }
 
 export default ({ context, routes, layout }) => {

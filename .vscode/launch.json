@@ -2,6 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "chrome",
+      "name": "Debug Frontend",
+      "request": "launch",
+      "url": "http://localhost:8080/infra",
+      "webRoot": "${workspaceFolder}/client/src"
+    },
+    {
       "name": "Debug Server Test",
       "type": "node",
       "request": "launch",

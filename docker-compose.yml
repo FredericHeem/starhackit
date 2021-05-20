@@ -53,7 +53,7 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_VERSION: "docker compose alpha build"
-    image: fredericheem/ui:v10.32.0
+    image: fredericheem/ui:v10.33.0
     expose:
       - "3000"
     ports:

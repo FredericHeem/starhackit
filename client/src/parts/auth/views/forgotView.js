@@ -1,16 +1,18 @@
 import React from "react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
+import validate from "validate.js";
+
 import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
-import validate from "validate.js";
+import formGroup from "mdlean/lib/formGroup";
+
 import page from "components/Page";
 import paper from "components/Paper";
-import formGroup from "components/FormGroup";
 import AsyncOp from "utils/asyncOp";
 import rules from "utils/rules";
 
-export default context => {
+export default (context) => {
   const { tr, rest } = context;
   const FormGroup = formGroup(context);
   const Page = page(context);
@@ -23,14 +25,14 @@ export default context => {
     step: "SendPasswordResetEmail",
     email: "",
     errors: {},
-    op: asyncOpCreate(payload => rest.post("auth/reset_password", payload)),
-    requestPasswordReset: action(async function() {
+    op: asyncOpCreate((payload) => rest.post("auth/reset_password", payload)),
+    requestPasswordReset: action(async function () {
       this.errors = {};
       const payload = {
-        email: this.email.trim()
+        email: this.email.trim(),
       };
       const constraints = {
-        email: rules.email
+        email: rules.email,
       };
       const vErrors = validate(payload, constraints);
       if (vErrors) {
@@ -43,7 +45,7 @@ export default context => {
       } catch (errors) {
         console.error(errors);
       }
-    })
+    }),
   });
 
   const CheckEmail = observer(() => (
@@ -68,7 +70,7 @@ export default context => {
   const SendPasswordResetEmail = observer(({ store }) => {
     const { errors } = store;
     return (
-      <form onSubmit={e => e.preventDefault()}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <h3>{tr.t("Forgot Password ?")}</h3>
         <p>
           <strong>
@@ -83,7 +85,7 @@ export default context => {
         <FormGroup>
           <EmailInput
             className="data-test-email-input"
-            onChange={e => {
+            onChange={(e) => {
               store.email = e.target.value;
             }}
             label={tr.t("Email")}
@@ -113,5 +115,5 @@ export default context => {
     </Page>
   ));
 
-  return props => <ForgotView store={store} {...props} />;
+  return (props) => <ForgotView store={store} {...props} />;
 };

@@ -4,10 +4,10 @@ import { observer } from "mobx-react";
 
 import input from "mdlean/lib/input";
 import button from "mdlean/lib/button";
+import form from "mdlean/lib/form";
+import formGroup from "mdlean/lib/formGroup";
 
 import paper from "components/Paper";
-import form from "components/form";
-import formGroup from "components/FormGroup";
 
 export default (context) => {
   const { tr, history } = context;

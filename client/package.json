@@ -1,7 +1,7 @@
 {
   "name": "starhackit-ui",
   "title": "GruCloud",
-  "version": "10.32.0",
+  "version": "10.33.0",
   "description": "Visualize Cloud Infrastructure",
   "license": "NLPL",
   "scripts": {
@@ -41,7 +41,7 @@
     "i18next-xhr-backend": "3.2.2",
     "intl": "1.2.5",
     "lodash": "4.17.21",
-    "mdlean": "0.38.0",
+    "mdlean": "0.41.0",
     "mitt": "2.1.0",
     "mobx": "6.3.0",
     "mobx-react": "7.1.0",

@@ -5,7 +5,7 @@ import paper from "components/Paper";
 import button from "mdlean/lib/button";
 import spinner from "components/spinner";
 
-export default context => {
+export default (context) => {
   const { tr } = context;
   const Page = page(context);
   const Paper = paper(context);

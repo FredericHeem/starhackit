@@ -1,29 +1,33 @@
 /* @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { observable, action, runInAction, toJS } from "mobx";
+import { observable, action, toJS } from "mobx";
 import { createElement as h } from "react";
 import { observer } from "mobx-react";
 import { get, eq, pipe, flatMap, fork, switchCase, pick, tap } from "rubico";
-import { size, isEmpty, pluck } from "rubico/x";
+import { size, isEmpty } from "rubico/x";
 import { MdEdit } from "react-icons/md";
 import formatDistance from "date-fns/formatDistance";
-import button from "mdlean/lib/button";
-import alertAjax from "components/alertAjax";
-import formGroup from "components/FormGroup";
-import input from "mdlean/lib/input";
-
 import validate from "validate.js";
+
+import button from "mdlean/lib/button";
+import formGroup from "mdlean/lib/formGroup";
+import input from "mdlean/lib/input";
+import createForm from "mdlean/lib/form";
+import alert from "mdlean/lib/alert";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
+
 import rules from "./rulesForm";
 import awsSelectRegion from "./awsSelectRegion";
 
-import AsyncOp from "utils/asyncOp";
-import alert from "mdlean/lib/alert";
 import page from "components/Page";
 import spinner from "components/spinner";
-import AwsLogo from "./assets/aws.svg";
 import screenLoader from "components/screenLoader";
-import createForm from "components/form";
-import createInfraNew from "./infraModuleNew";
+import wizardCreate from "./wizardCreate";
+
+import AwsLogo from "./assets/aws.svg";
+import GcpLogo from "./assets/gcp.svg";
+import AzureLogo from "./assets/azure.svg";
+
 const getLivesFromJob = get("result.list.result.results[0].results");
 
 const resourceStats = pipe([
@@ -52,6 +56,10 @@ const providerType2Logo = (type) =>
   switchCase([
     eq(type, "aws"),
     () => AwsLogo,
+    eq(type, "aws"),
+    () => GcpLogo,
+    eq(type, "aws"),
+    () => AzureLogo,
     (type) => {
       throw Error(`invalid type '${type}'`);
     },
@@ -64,6 +72,7 @@ const providerLogo = ({ theme: { palette } }) => ({ type }) => (
     `}
     width="60px"
     src={providerType2Logo(type)}
+    alt={type}
   ></img>
 );
 
@@ -596,7 +605,7 @@ export default function (context) {
           return {
             routerContext,
             title: "Create New Infrastructure",
-            component: h(createInfraNew(context), {
+            component: h(wizardCreate(context), {
               title: "Create",
               buttonTitle: "Create Infrastructure",
               store: stores.create,

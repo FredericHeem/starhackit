@@ -12,6 +12,7 @@ module.exports = function (options) {
   const config = _.merge(
     {},
     {
+      target: "web",
       devServer: {
         contentBase: path.join(__dirname, "src"),
         publicPath: "/",

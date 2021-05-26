@@ -1,4 +1,7 @@
 const assert = require("assert");
+const fs = require("fs").promises;
+const uuid = require("uuid");
+
 const {
   pipe,
   tap,
@@ -9,13 +12,16 @@ const {
   switchCase,
   map,
 } = require("rubico");
-const { isEmpty, values, callProp, defaultsDeep } = require("rubico/x");
-
-const uuid = require("uuid");
+const {
+  isEmpty,
+  values,
+  callProp,
+  defaultsDeep,
+  identity,
+} = require("rubico/x");
 
 const path = require("path");
 const { DockerClient } = require("@grucloud/docker-axios");
-const fs = require("fs").promises;
 
 const dockerDefault = {
   baseURL: "http://localhost/v1.40",
@@ -42,36 +48,59 @@ const runDockerJob = ({ dockerOptions, params }) =>
       ])(),
   ])();
 
+const gcpConfigFileContent = ({
+  credendialFileName,
+}) => `const path = require("path");
+  module.exports = ({ stage }) => ({
+    credentialFile: path.resolve(__dirname, "${credendialFileName}"),
+  });`;
+
+const writeGcpFiles = ({
+  configFileName,
+  credendialFileName,
+  credendialContent,
+}) =>
+  pipe([
+    () =>
+      fs.writeFile(
+        `input/${credendialFileName}`,
+        JSON.stringify(credendialContent)
+      ),
+    () =>
+      fs.writeFile(
+        configFileName,
+        gcpConfigFileContent({ credendialFileName })
+      ),
+  ])();
+
 const runGcList = ({
   jobId,
-  env,
+  providerAuth,
   provider,
   containerName = "grucloud-cli",
   containerImage = "grucloud-cli",
   localVolumePath = "output",
   dockerOptions,
-  WorkingDir = "output",
+  outputDir = "output",
+  inputDir = "input",
 }) =>
   pipe([
     tap(() => {
-      assert(true);
       assert(provider);
     }),
     () => ({
       outputGcList: `gc-list-${jobId}.json`,
       outputDot: `${jobId}.dot`,
       outputSvg: `${jobId}.svg`,
-      Env: pipe([
-        map.entries(([key, value]) => [key, `${key}=${value}`]),
-        values,
-      ])(env),
     }),
     assign({
       name: () => `${containerName}-${jobId}`,
       Cmd: ({ outputGcList, outputDot }) => [
         "list",
-        "-p",
+        "--provider",
         provider,
+        "--infra",
+        `iac_${provider}.js`,
         "--all",
         "--graph",
         "--json",
@@ -79,18 +108,39 @@ const runGcList = ({
         "--dot-file",
         `output/${outputDot}`,
       ],
-    }),
-    assign({
       outputGcListLocalPath: ({ outputGcList }) =>
-        path.resolve(WorkingDir, outputGcList),
-      outputDotLocalPath: ({ outputDot }) =>
-        path.resolve(WorkingDir, outputDot),
-      outputSvgLocalPath: ({ outputSvg }) =>
-        path.resolve(WorkingDir, outputSvg),
+        path.resolve(outputDir, outputGcList),
+      outputDotLocalPath: ({ outputDot }) => path.resolve(outputDir, outputDot),
+      outputSvgLocalPath: ({ outputSvg }) => path.resolve(outputDir, outputSvg),
       HostConfig: () => ({
-        Binds: [`${path.resolve(localVolumePath)}:/app/${WorkingDir}`],
+        Binds: [
+          `${path.resolve(localVolumePath)}:/app/${outputDir}`,
+          `${path.resolve(inputDir)}:/app/${inputDir}`,
+        ],
       }),
+      Env: () =>
+        pipe([
+          () => providerAuth,
+          map.entries(([key, value]) => [key, `${key}=${value}`]),
+          values,
+        ])(),
     }),
+    switchCase([
+      eq(provider, "google"),
+      pipe([
+        assign({
+          Cmd: ({ Cmd }) => [...Cmd, "--config", `input/config-${jobId}.js`],
+        }),
+        tap(() =>
+          writeGcpFiles({
+            configFileName: `input/config-${jobId}.js`,
+            credendialFileName: `gcp-credendial-${jobId}.json`,
+            credendialContent: providerAuth.credentials,
+          })
+        ),
+      ]),
+      identity,
+    ]),
     tap((input) => {
       //console.log(JSON.stringify(input, null, 4));
     }),
@@ -132,16 +182,18 @@ const runGcList = ({
       ])(),
   ])();
 
-const contextSet400 = ({ context, message }) => () => {
-  context.status = 400;
-  context.body = {
-    error: {
-      code: 400,
-      name: "BadRequest",
-      message,
-    },
+const contextSet400 =
+  ({ context, message }) =>
+  () => {
+    context.status = 400;
+    context.body = {
+      error: {
+        code: 400,
+        name: "BadRequest",
+        message,
+      },
+    };
   };
-};
 
 const contextSet404 = ({ context }) => {
   context.status = 404;
@@ -153,10 +205,12 @@ const contextSet404 = ({ context }) => {
   };
 };
 
-const contextSetOk = ({ context }) => (body) => {
-  context.status = 200;
-  context.body = body;
-};
+const contextSetOk =
+  ({ context }) =>
+  (body) => {
+    context.status = 200;
+    context.body = body;
+  };
 
 const getJobStatus = switchCase([
   eq(get("StatusCode"), 0),
@@ -254,7 +308,6 @@ exports.DiagramApi = (app) => {
                 assert(context.request);
                 assert(context.request.body);
                 assert(context.request.body.infra_id);
-
                 assert(context.state.user.id);
               }),
               () =>
@@ -283,7 +336,7 @@ exports.DiagramApi = (app) => {
                       () =>
                         runGcList({
                           jobId: id,
-                          env: infra.providerAuth,
+                          providerAuth: infra.providerAuth,
                           provider: infra.providerType,
                           dockerOptions,
                           localVolumePath,

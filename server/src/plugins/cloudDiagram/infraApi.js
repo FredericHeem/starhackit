@@ -5,16 +5,18 @@ const { isEmpty, callProp } = require("rubico/x");
 const uuid = require("uuid");
 
 // TODO in common file
-const contextSet400 = ({ context, message }) => () => {
-  context.status = 400;
-  context.body = {
-    error: {
-      code: 400,
-      name: "BadRequest",
-      message,
-    },
+const contextSet400 =
+  ({ context, message }) =>
+  () => {
+    context.status = 400;
+    context.body = {
+      error: {
+        code: 400,
+        name: "BadRequest",
+        message,
+      },
+    };
   };
-};
 
 const contextSet404 = ({ context }) => {
   context.status = 404;
@@ -26,10 +28,12 @@ const contextSet404 = ({ context }) => {
   };
 };
 
-const contextSetOk = ({ context }) => (body) => {
-  context.status = 200;
-  context.body = body;
-};
+const contextSetOk =
+  ({ context }) =>
+  (body) => {
+    context.status = 200;
+    context.body = body;
+  };
 
 exports.InfraApi = (app) => {
   const log = require("logfilename")(__filename);

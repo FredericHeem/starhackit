@@ -18,3 +18,4 @@ coverage
 typings
 *.log
 env
+grucloud-gcp.json

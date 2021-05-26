@@ -61,27 +61,12 @@ export default (context) => {
       content: ({}) => configViewFromProvider(store.providerType),
       enter: async () => console.log("Configuration enter"),
     },
-    {
-      name: "Scan",
-      header: () => <header>Scan</header>,
-      content: () => (
-        <div>
-          <Button
-            raised
-            onClick={() => emitter.emit("step.select", "Configuration")}
-          >
-            Back to Configuration
-          </Button>
-        </div>
-      ),
-      enter: async () => console.log("Scan enter"),
-    },
   ];
 
   const Wizard = wizard(context, { wizardDefs });
 
   // TODO only for testing
-  //store.selectProvider("Azure");
+  store.selectProvider("Azure");
 
   return observer(function WizardView() {
     return (

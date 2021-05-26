@@ -1,29 +1,73 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { observable } from "mobx";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
 import button from "mdlean/lib/button";
 import fileInput from "mdlean/lib/fileInput";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
+
+import createForm from "components/form";
+import alert from "mdlean/lib/alert";
 
 import IconUpload from "./assets/uploadIcon.svg";
 
 const gcpConfig = (context) => {
   const {
+    rest,
     tr,
     emitter,
     theme: { palette },
+    alertStack,
+    history,
   } = context;
+  const Alert = alert(context);
+  const Form = createForm(context);
   const Button = button(context);
   const FileInput = fileInput(context);
+  const asyncOpCreate = AsyncOp(context);
+
   const store = observable({
     fileName: "",
     projectName: "",
     content: {},
     error: "",
-    nextStep: () => {
-      emitter.emit("step.select", "Scan");
-    },
+    opScan: asyncOpCreate((infraItem) =>
+      rest.post(`cloudDiagram`, { infra_id: infraItem.id })
+    ),
+    op: asyncOpCreate((payload) => rest.post("infra", payload)),
+    create: action(async () => {
+      store.errors = {};
+
+      const payload = {
+        name: store.content.project_id,
+        providerType: "google",
+        providerAuth: { credentials: store.content },
+      };
+      try {
+        const result = await store.op.fetch(payload);
+        await store.opScan.fetch(result);
+        alertStack.add(
+          <Alert severity="success" message={tr.t("Infrastructure Created")} />
+        );
+        history.push(`/infra/detail/${result.id}`, result);
+        emitter.emit("infra.created", result);
+      } catch (errors) {
+        console.log(errors);
+
+        // backend should 422 if the credentials are incorrect
+
+        alertStack.add(
+          <Alert
+            severity="error"
+            data-alert-error-create
+            message={tr.t(
+              "Error creating infrastructure, check the credentials"
+            )}
+          />
+        );
+      }
+    }),
     setProjectName: (projectName) => {
       store.projectName = projectName;
     },
@@ -71,7 +115,7 @@ const gcpConfig = (context) => {
             margin: 1rem;
           }
           svg {
-            height: 3rem;
+            height: 2rem;
             path {
               fill: ${palette.text.primary};
             }
@@ -111,7 +155,7 @@ const gcpConfig = (context) => {
   );
 
   return observer(() => (
-    <form
+    <Form
       css={css`
         main {
           section {
@@ -208,12 +252,12 @@ const gcpConfig = (context) => {
           disabled={store.isDisabled}
           raised
           primary
-          onClick={() => store.nextStep()}
+          onClick={() => store.create()}
         >
           Save and Scan {store.content.project_id}
         </Button>
       </footer>
-    </form>
+    </Form>
   ));
 };
 

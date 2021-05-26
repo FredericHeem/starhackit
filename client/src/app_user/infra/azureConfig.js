@@ -1,20 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { observable } from "mobx";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-
-import form from "mdlean/lib/form";
+import { pipe, get, or, tap } from "rubico";
+import { isEmpty } from "rubico/x";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
+import alert from "mdlean/lib/alert";
+
+import form from "components/form";
 
 export default (context) => {
   const {
+    rest,
     tr,
     emitter,
     theme: { palette },
+    alertStack,
+    history,
   } = context;
+  const asyncOpCreate = AsyncOp(context);
 
+  const Alert = alert(context);
   const Form = form(context);
   const Button = button(context);
   const FormGroup = formGroup(context);
@@ -27,14 +36,60 @@ export default (context) => {
   });
 
   const store = observable({
-    map: observable.map(),
+    data: {
+      name: "",
+      SUBSCRIPTION_ID: "",
+      TENANT_ID: "",
+      APP_ID: "",
+      PASSWORD: "",
+    },
     errors: {},
+    onChange: action((field, value) => {
+      store.data[field] = value;
+    }),
     get isDisabled() {
-      return store.map.size < 4;
+      return or([
+        pipe([get("name"), isEmpty]),
+        pipe([get("SUBSCRIPTION_ID"), isEmpty]),
+        pipe([get("TENANT_ID"), isEmpty]),
+        pipe([get("APP_ID"), isEmpty]),
+        pipe([get("PASSWORD"), isEmpty]),
+      ])(store.data);
     },
-    nextStep: () => {
-      emitter.emit("step.select", "Scan");
-    },
+    opScan: asyncOpCreate((infraItem) =>
+      rest.post(`cloudDiagram`, { infra_id: infraItem.id })
+    ),
+    op: asyncOpCreate((payload) => rest.post("infra", payload)),
+    create: action(async () => {
+      store.errors = {};
+
+      const payload = {
+        providerType: "azure",
+        name: store.data.name,
+        providerAuth: store.data,
+      };
+      try {
+        const result = await store.op.fetch(payload);
+        await store.opScan.fetch(result);
+        alertStack.add(
+          <Alert severity="success" message={tr.t("Infrastructure Created")} />
+        );
+        history.push(`/infra/detail/${result.id}`, result);
+        emitter.emit("infra.created", result);
+      } catch (errors) {
+        console.log(errors);
+        // backend should 422 if the credentials are incorrect
+        alertStack.add(
+          <Alert
+            severity="error"
+            data-alert-error-create
+            message={tr.t(
+              "Error creating infrastructure, check the credentials"
+            )}
+          />
+        );
+      }
+    }),
   });
 
   return observer(() => (
@@ -72,61 +127,67 @@ export default (context) => {
           `}
         >
           <li>
+            <h3>Name</h3>
+            <p>Choose a name for this architecture.</p>
+            <Input
+              value={store.data.name}
+              onChange={(e) => store.onChange("name", e.target.value)}
+              label={tr.t("Infrastrucure Name")}
+              error={store.errors.name && store.errors.name[0]}
+            />
+          </li>
+          <li>
             <h3>Subscription ID</h3>
             <p>
               Retrieve the <em>Subscription ID</em> with the following command:{" "}
             </p>
             <pre>az account show --query id -otsv</pre>
             <Input
-              value={store.map.get("subscriptionId")}
-              onChange={(e) => {
-                store.map.set("subscriptionId", e.target.value);
-              }}
+              value={store.data.SUBSCRIPTION_ID}
+              onChange={(e) =>
+                store.onChange("SUBSCRIPTION_ID", e.target.value)
+              }
               label={tr.t("Subscription Id")}
-              error={store.errors.name && store.errors.name[0]}
+              error={
+                store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
+              }
             />
           </li>
           <li>
             <h3>Tenant ID</h3>
             <p>
-              Retrieve the <em>tenantId</em> with the following command:{" "}
-              <pre>az account show</pre>
+              Retrieve the <em>TENANT_ID</em> with the following command:{" "}
             </p>
+            <pre>az account show</pre>
             <Input
-              value={store.map.get("tenantId")}
-              onChange={(e) => {
-                store.map.set("tenantId", e.target.value);
-              }}
+              value={store.data.TENANT_ID}
+              onChange={(e) => store.onChange("TENANT_ID", e.target.value)}
               label={tr.t("Tenant Id")}
-              error={store.errors.name && store.errors.name[0]}
+              error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
             />
           </li>
           <li>
-            <h3>App ID and password</h3>
+            <h3>App ID and PASSWORD</h3>
             <p>
-              Retrieve the <em>appId</em> and <em>password</em> by creating a
+              Retrieve the <em>APP_ID</em> and <em>PASSWORD</em> by creating a
               service principal called grucloud:
-              <pre>az ad sp create-for-rbac -n "grucloud"</pre>
             </p>
+            <pre>az ad sp create-for-rbac -n "grucloud"</pre>
             <FormGroup>
               <Input
-                value={store.map.get("appId")}
-                onChange={(e) => {
-                  store.map.set("appId", e.target.value);
-                }}
+                value={store.data.APP_ID}
+                onChange={(e) => store.onChange("APP_ID", e.target.value)}
                 label={tr.t("App Id")}
-                error={store.errors.name && store.errors.name[0]}
+                error={store.errors.APP_ID && store.errors.APP_ID[0]}
               />
             </FormGroup>
             <FormGroup>
               <Input
-                type="password"
-                value={store.map.get("password")}
-                onChange={(e) => {
-                  store.map.set("password", e.target.value);
-                }}
+                type="PASSWORD"
+                value={store.data.PASSWORD}
+                onChange={(e) => store.onChange("PASSWORD", e.target.value)}
                 label={tr.t("Password")}
-                error={store.errors.name && store.errors.name[0]}
+                error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
               />
             </FormGroup>
           </li>
@@ -142,7 +203,7 @@ export default (context) => {
           disabled={store.isDisabled}
           raised
           primary
-          onClick={() => store.nextStep()}
+          onClick={() => store.create()}
         >
           Save and Scan
         </Button>

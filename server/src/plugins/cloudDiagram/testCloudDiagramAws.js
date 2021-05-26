@@ -5,7 +5,7 @@ const awsEnv = require("../../../aws.env.json");
 
 const testMngr = require("test/testManager");
 
-describe("CloudDiagram", function () {
+describe("CloudDiagramAws", function () {
   let client;
   before(async () => {
     await testMngr.start();
@@ -15,12 +15,12 @@ describe("CloudDiagram", function () {
   after(async () => {
     await testMngr.stop();
   });
-  it("create, list, get by id, delete", async () => {
+  it("aws create, list, get by id, delete", async () => {
     try {
       await pipe([
         // Create
         () => ({
-          name: "infra-test",
+          name: "infra-aws-test",
           providerType: "aws",
           providerAuth: awsEnv,
         }),
@@ -58,7 +58,6 @@ describe("CloudDiagram", function () {
       throw error;
     }
   });
-
   it("list infra", async () => {
     return tryCatch(
       pipe([

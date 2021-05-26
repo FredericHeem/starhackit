@@ -12,13 +12,13 @@ import validate from "validate.js";
 import button from "mdlean/lib/button";
 import formGroup from "mdlean/lib/formGroup";
 import input from "mdlean/lib/input";
-import createForm from "mdlean/lib/form";
 import alert from "mdlean/lib/alert";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 
 import rules from "./rulesForm";
 import awsSelectRegion from "./awsSelectRegion";
 
+import createForm from "components/form";
 import page from "components/Page";
 import spinner from "components/spinner";
 import screenLoader from "components/screenLoader";
@@ -36,78 +36,87 @@ const resourceStats = pipe([
   tap((xx) => {}),
 ]);
 
-const badgeRegion = ({ theme: { palette } }) => ({ region }) => (
-  <div
-    css={css`
-      display: inline-block;
-      border: 2px solid ${palette.grey[400]};
-      border-radius: 5px;
-      color: ${palette.grey[500]};
-      padding: 0.5rem;
-      //margin: 0.5rem;
-      max-height: 1.2rem;
-    `}
-  >
-    {region}
-  </div>
-);
+const badgeRegion =
+  ({ theme: { palette } }) =>
+  ({ region }) =>
+    (
+      <div
+        css={css`
+          display: inline-block;
+          border: 2px solid ${palette.grey[400]};
+          border-radius: 5px;
+          color: ${palette.grey[500]};
+          padding: 0.5rem;
+          //margin: 0.5rem;
+          max-height: 1.2rem;
+        `}
+      >
+        {region}
+      </div>
+    );
 
 const providerType2Logo = (type) =>
   switchCase([
     eq(type, "aws"),
     () => AwsLogo,
-    eq(type, "aws"),
+    eq(type, "google"),
     () => GcpLogo,
-    eq(type, "aws"),
+    eq(type, "azure"),
     () => AzureLogo,
     (type) => {
       throw Error(`invalid type '${type}'`);
     },
   ])();
 
-const providerLogo = ({ theme: { palette } }) => ({ type }) => (
-  <img
-    css={css`
-      filter: grayscale(100%);
-    `}
-    width="60px"
-    src={providerType2Logo(type)}
-    alt={type}
-  ></img>
-);
+const providerLogo =
+  ({ theme: { palette } }) =>
+  ({ type }) =>
+    (
+      <img
+        css={css`
+          filter: grayscale(100%);
+        `}
+        height="40px"
+        src={providerType2Logo(type)}
+        alt={type}
+      ></img>
+    );
 
-const createResourcePerTypeTable = ({ theme }) => ({ lives }) => (
-  <table
-    css={css`
-      box-shadow: ${theme.shadows[1]};
-      min-width: 200px;
-      border-collapse: collapse;
-      border-top: 0.5em solid transparent;
-      border-spacing: 0;
-      padding: 16px;
-      & td,
-      & th {
-        padding: 0.6rem 1rem 0.6rem 1rem;
-      }
-    `}
-  >
-    <thead>
-      <tr>
-        <th>Resource Type</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {lives &&
-        lives.map((live) => (
-          <tr key={live.type}>
-            <td>{live.type}</td>
-            <td>{live?.resources.length}</td>
+const createResourcePerTypeTable =
+  ({ theme }) =>
+  ({ lives }) =>
+    (
+      <table
+        css={css`
+          box-shadow: ${theme.shadows[1]};
+          min-width: 200px;
+          border-collapse: collapse;
+          border-top: 0.5em solid transparent;
+          border-spacing: 0;
+          padding: 16px;
+          & td,
+          & th {
+            padding: 0.6rem 1rem 0.6rem 1rem;
+          }
+        `}
+      >
+        <thead>
+          <tr>
+            <th>Resource Type</th>
+            <th>Total</th>
           </tr>
-        ))}
-    </tbody>
-  </table>
-);
+        </thead>
+        <tbody>
+          {lives &&
+            lives.map((live) => (
+              <tr key={live.type}>
+                <td>{live.type}</td>
+                <td>{live?.resources.length}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    );
 
 const createInfraItem = (context) => {
   const { tr, history, rest, theme } = context;
@@ -153,8 +162,7 @@ const createInfraItem = (context) => {
       css={css`
         display: flex;
         flex-direction: column;
-        > div {
-        }
+        white-space: nowrap;
       `}
     >
       <Label title="Project Name" />
@@ -187,7 +195,7 @@ const createInfraItem = (context) => {
       >
         <ProjectName name={item.name} />
         {item.Jobs[0] && <ResourceStat stats={resourceStats(item.Jobs[0])} />}
-        <ProviderLogo type="aws" />
+        <ProviderLogo type={item.providerType} />
         <BadgeRegion region={item.providerAuth.AWS_REGION} />
       </li>
     );
@@ -445,8 +453,10 @@ const createInfraDetail = (context) => {
             justify-content: space-between;
           `}
         >
-          <ProviderLogo type="aws" />
-          <BadgeRegion region={detail.providerAuth.AWS_REGION} />
+          <ProviderLogo type={detail.providerType} />
+          {detail.providerAuth.AWS_REGION && (
+            <BadgeRegion region={detail.providerAuth.AWS_REGION} />
+          )}
         </div>
         <div
           css={css`

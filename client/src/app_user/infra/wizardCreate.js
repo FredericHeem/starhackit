@@ -66,7 +66,7 @@ export default (context) => {
   const Wizard = wizard(context, { wizardDefs });
 
   // TODO only for testing
-  store.selectProvider("Azure");
+  //store.selectProvider("Azure");
 
   return observer(function WizardView() {
     return (

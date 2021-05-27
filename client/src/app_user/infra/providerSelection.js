@@ -17,10 +17,15 @@ export default function (context) {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        margin: 0.5rem;
         > button {
           margin: 1rem;
           padding: 1rem;
-          width: 30rem;
+          width: 32rem;
+          img {
+            margin: 0.5rem;
+            padding: 0.5rem;
+          }
         }
       `}
     >

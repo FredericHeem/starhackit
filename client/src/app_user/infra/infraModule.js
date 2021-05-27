@@ -23,10 +23,9 @@ import page from "components/Page";
 import spinner from "components/spinner";
 import screenLoader from "components/screenLoader";
 import wizardCreate from "./wizardCreate";
-
-import AwsLogo from "./assets/aws.svg";
-import GcpLogo from "./assets/gcp.svg";
-import AzureLogo from "./assets/azure.svg";
+import badgeRegion from "./badgeRegion";
+import providerLogo from "./providerLogo";
+import createResourcePerTypeTable from "./resourceTable";
 
 const getLivesFromJob = get("result.list.result.results[0].results");
 
@@ -36,98 +35,12 @@ const resourceStats = pipe([
   tap((xx) => {}),
 ]);
 
-const badgeRegion =
-  ({ theme: { palette } }) =>
-  ({ region }) =>
-    (
-      <div
-        css={css`
-          display: inline-block;
-          border: 2px solid ${palette.grey[400]};
-          border-radius: 5px;
-          color: ${palette.grey[500]};
-          padding: 0.5rem;
-          //margin: 0.5rem;
-          max-height: 1.2rem;
-        `}
-      >
-        {region}
-      </div>
-    );
-
-const providerType2Logo = (type) =>
-  switchCase([
-    eq(type, "aws"),
-    () => AwsLogo,
-    eq(type, "google"),
-    () => GcpLogo,
-    eq(type, "azure"),
-    () => AzureLogo,
-    (type) => {
-      throw Error(`invalid type '${type}'`);
-    },
-  ])();
-
-const providerLogo =
-  ({ theme: { palette } }) =>
-  ({ type }) =>
-    (
-      <img
-        css={css`
-          filter: grayscale(100%);
-        `}
-        height="40px"
-        src={providerType2Logo(type)}
-        alt={type}
-      ></img>
-    );
-
-const createResourcePerTypeTable =
-  ({ theme }) =>
-  ({ lives }) =>
-    (
-      <table
-        css={css`
-          box-shadow: ${theme.shadows[1]};
-          min-width: 200px;
-          border-collapse: collapse;
-          border-top: 0.5em solid transparent;
-          border-spacing: 0;
-          padding: 16px;
-          & td,
-          & th {
-            padding: 0.6rem 1rem 0.6rem 1rem;
-          }
-        `}
-      >
-        <thead>
-          <tr>
-            <th>Resource Type</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lives &&
-            lives.map((live) => (
-              <tr key={live.type}>
-                <td>{live.type}</td>
-                <td>{live?.resources.length}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    );
-
 const createInfraItem = (context) => {
   const { tr, history, rest, theme } = context;
 
   const { palette } = theme;
   const BadgeRegion = badgeRegion(context);
   const ProviderLogo = providerLogo(context);
-  const Button = button(context, {
-    cssOverride: css``,
-  });
-
   const ResourceStat = ({ stats }) => (
     <div
       css={css`
@@ -196,7 +109,9 @@ const createInfraItem = (context) => {
         <ProjectName name={item.name} />
         {item.Jobs[0] && <ResourceStat stats={resourceStats(item.Jobs[0])} />}
         <ProviderLogo type={item.providerType} />
-        <BadgeRegion region={item.providerAuth.AWS_REGION} />
+        {item.providerAuth.AWS_REGION && (
+          <BadgeRegion region={item.providerAuth.AWS_REGION} />
+        )}
       </li>
     );
   };

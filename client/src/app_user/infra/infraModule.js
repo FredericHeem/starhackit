@@ -5,8 +5,6 @@ import { createElement as h } from "react";
 import { observer } from "mobx-react";
 import { get, eq, pipe, flatMap, fork, switchCase, pick, tap } from "rubico";
 import { size, isEmpty } from "rubico/x";
-import { MdEdit } from "react-icons/md";
-import formatDistance from "date-fns/formatDistance";
 import validate from "validate.js";
 
 import button from "mdlean/lib/button";
@@ -16,16 +14,15 @@ import alert from "mdlean/lib/alert";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 
 import rules from "./rulesForm";
-import awsSelectRegion from "./awsSelectRegion";
 
 import createForm from "components/form";
 import page from "components/Page";
-import spinner from "components/spinner";
 import screenLoader from "components/screenLoader";
 import wizardCreate from "./wizardCreate";
 import badgeRegion from "./badgeRegion";
 import providerLogo from "./providerLogo";
-import createResourcePerTypeTable from "./resourceTable";
+import createInfraDetail from "./infraDetail";
+import createInfraEdit from "./infraEdit";
 
 const getLivesFromJob = get("result.list.result.results[0].results");
 
@@ -102,7 +99,7 @@ const createInfraItem = (context) => {
             margin: 1rem;
           }
         `}
-        onClick={() => {
+        onClick={(event) => {
           onClick(item);
         }}
       >
@@ -178,249 +175,6 @@ const createInfraDelete = (context) => {
   return observer(InfraDeleteForm);
 };
 
-const createInfraEdit = (context) => {
-  const { tr, history } = context;
-  const Form = createForm(context);
-  const FormGroup = formGroup(context);
-  const Input = input(context, {
-    cssOverride: css`
-      > input {
-        width: 300px;
-      }
-    `,
-  });
-  const AwsSelectRegion = awsSelectRegion(context);
-  ///const AlertAjax = alertAjax(context);
-  const Button = button(context, {
-    cssOverride: css``,
-  });
-
-  const InfraDeleteLink = observer(({ store }) => (
-    <p>
-      <a
-        data-infra-edit-delete-link
-        css={css`
-          color: red;
-          cursor: pointer;
-          text-decoration: underline;
-        `}
-        onClick={() => {
-          history.push(`delete`, toJS(store.data));
-        }}
-      >
-        Danger zone...
-      </a>
-    </p>
-  ));
-
-  const InfraEdit = ({ store }) => (
-    <Form data-infra-edit>
-      <header>
-        <h2>Edit the Infrastructure</h2>
-      </header>
-      <main>
-        <div>Edit the Infrastructure such as the name.</div>
-        <FormGroup className="infra-name">
-          <Input
-            value={store.data.name}
-            onChange={(e) => {
-              store.data.name = e.target.value;
-            }}
-            label={tr.t("Infrastructure Name")}
-            error={store.errors.name && store.errors.name[0]}
-          />
-        </FormGroup>
-        <FormGroup className="access-key">
-          <Input
-            disabled
-            value={store.data.accessKeyId}
-            label={tr.t("AWS Access Key")}
-          />
-        </FormGroup>
-        <FormGroup className="secret-key">
-          <Input
-            disabled
-            value={store.data.secretKey}
-            label={tr.t("AWS Secret Key")}
-            type="password"
-          />
-        </FormGroup>
-        <AwsSelectRegion
-          disabled
-          placeholder="Select a region"
-          value={store.data.region}
-          onSelected={(item) => {
-            store.data.region = item;
-          }}
-        />
-      </main>
-      <footer
-        css={css`
-          button {
-            margin-right: 10px;
-          }
-        `}
-      >
-        <Button
-          primary
-          raised
-          onClick={() => store.update()}
-          label={tr.t("Update Infrastructure")}
-        />
-        <Button onClick={() => history.back()} label={tr.t("Cancel")} />
-      </footer>
-      <InfraDeleteLink store={store} />
-    </Form>
-  );
-  return observer(InfraEdit);
-};
-
-const createInfraDetail = (context) => {
-  const {
-    tr,
-    history,
-    theme: { palette },
-  } = context;
-  const Form = createForm(context);
-  const BadgeRegion = badgeRegion(context);
-  const ProviderLogo = providerLogo(context);
-  const Spinner = spinner(context);
-  const Button = button(context, {
-    cssOverride: css``,
-  });
-  const ResourcePerTypeTable = createResourcePerTypeTable(context);
-  const ScreenLoader = screenLoader(context);
-  const InfraDetailContainer = observer(({ store }) => (
-    <div>
-      {store.opGetById.data ? (
-        <InfraDetail store={store} detail={store.opGetById.data} />
-      ) : null}
-      <ScreenLoader loading={store.opGetById.loading} />
-    </div>
-  ));
-  const ScanLastUpdated = ({ updatedAt }) => (
-    <div
-      title={updatedAt}
-      css={css`
-        color: ${palette.grey[500]};
-        > div {
-          margin: 0.4rem 0;
-        }
-      `}
-    >
-      <div
-        css={css`
-          font-weight: 700;
-          font-size: 0.7rem;
-          text-transform: uppercase;
-        `}
-      >
-        Last Scan
-      </div>
-      <div
-        css={css`
-          font-weight: 500;
-          font-size: 0.9rem;
-        `}
-      >{`${
-        updatedAt && formatDistance(new Date(updatedAt), new Date())
-      } ago`}</div>
-    </div>
-  );
-  const InfraDetail = observer(({ store, detail }) => (
-    <Form
-      data-infra-detail
-      cssOverride={css`
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-      `}
-    >
-      <section
-        css={css`
-          margin-right: 1rem;
-        `}
-      >
-        <header
-          css={css`
-            display: flex;
-            flex-direction: row;
-          `}
-        >
-          <h2>{detail.name}</h2>
-          <Button
-            data-infra-edit-button
-            icon={<MdEdit size="1.5rem" />}
-            onClick={() => {
-              history.push(`${detail.id}/edit`, {
-                name: detail.name,
-                id: detail.id,
-                region: detail.providerAuth.AWS_REGION,
-                accessKeyId: detail.providerAuth.AWSAccessKeyId,
-                secretKey: detail.providerAuth.AWSSecretKey,
-              });
-            }}
-          />
-        </header>
-        <div
-          css={css`
-            display: flex;
-            justify-content: space-between;
-          `}
-        >
-          <ProviderLogo type={detail.providerType} />
-          {detail.providerAuth.AWS_REGION && (
-            <BadgeRegion region={detail.providerAuth.AWS_REGION} />
-          )}
-        </div>
-        <div
-          css={css`
-            margin: 1rem 0rem 1rem 0rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-          `}
-        >
-          <Button
-            primary
-            raised
-            onClick={() => store.scan(detail)}
-            disabled={store.opScan.loading}
-            label={store.opScan.loading ? tr.t("Scanning") : tr.t("New Scan")}
-          />
-          <Spinner
-            css={css`
-              visibility: ${store.opScan.loading ? "visible" : "hidden"};
-            `}
-            color={palette.primary.main}
-          />
-        </div>
-        <ScanLastUpdated updatedAt={get("Jobs[0].updatedAt")(detail)} />
-
-        {store.lives && <ResourcePerTypeTable lives={store.lives} />}
-      </section>
-      <section
-        css={css`
-          display: flex;
-        `}
-      >
-        <span
-          css={css`
-            svg {
-              //height: 800px;
-            }
-          `}
-          dangerouslySetInnerHTML={{
-            __html: store.svg,
-          }}
-        />
-      </section>
-    </Form>
-  ));
-
-  return InfraDetailContainer;
-};
-
 const createInfraList = (context) => {
   const { tr, history } = context;
   const Form = createForm(context);
@@ -456,7 +210,7 @@ const createInfraList = (context) => {
         <Button
           primary
           raised
-          onClick={() => history.push(`infra/create`)}
+          onClick={() => history.push(`/infra/create`)}
           label={tr.t("+ New Infrastructure")}
         />
       </header>
@@ -478,7 +232,7 @@ const createInfraList = (context) => {
               key={item.id}
               onScan={(item) => store.scan(item)}
               onClick={(item) => {
-                history.push(`/infra/detail/${item.id}`, toJS(item));
+                history.push(`/infra/detail/${item.id}`);
               }}
             ></InfraItem>
           ))}
@@ -534,6 +288,7 @@ export default function (context) {
               title: "Create",
               buttonTitle: "Create Infrastructure",
               store: stores.create,
+              //TODO check
               onClick: () => stores.create.create(),
             }),
           };
@@ -571,9 +326,8 @@ export default function (context) {
       {
         path: "/detail/:id",
         protected: true,
-        action: (routerContext) => {
-          stores.infraDetail.getById(routerContext.params.id);
-
+        action: async (routerContext) => {
+          await stores.infraDetail.getById(routerContext.params.id);
           return {
             routerContext,
             title: "Infrastructure Detail",
@@ -607,6 +361,7 @@ export default function (context) {
       region: "us-east-1",
     };
 
+    //TODO remove
     const storeCreate = observable({
       data: defaultData,
       errors: {},
@@ -680,7 +435,9 @@ export default function (context) {
         storeEdit.data = defaultData;
       }),
       setData: action((data) => {
-        storeEdit.data = data;
+        if (data) {
+          storeEdit.data = data;
+        }
       }),
       opUpdate: asyncOpCreate((payload) =>
         rest.patch(`infra/${storeEdit.data.id}`, payload)

@@ -39,7 +39,7 @@ const rules = {
   },
 };
 
-const awsConfig = (context) => {
+export const awsConfig = (context) => {
   const {
     tr,
     history,
@@ -214,5 +214,3 @@ const awsConfig = (context) => {
     </Form>
   ));
 };
-
-export default awsConfig;

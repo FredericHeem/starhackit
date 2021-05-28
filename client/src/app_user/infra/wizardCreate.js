@@ -7,13 +7,12 @@ import button from "mdlean/lib/button";
 import wizard from "mdlean/lib/wizard";
 
 import providerSelection from "./providerSelection";
-import awsConfig from "./awsConfig";
-import gcpConfig from "./gcpConfig";
-import azureConfig from "./azureConfig";
+import { awsConfig } from "./awsConfig";
+import { gcpConfig } from "./gcpConfig";
+import { azureConfig } from "./azureConfig";
 
 export default (context) => {
   const { tr, emitter } = context;
-  const Button = button(context);
   const ProviderSelection = providerSelection(context);
   const store = observable({
     providerType: "",

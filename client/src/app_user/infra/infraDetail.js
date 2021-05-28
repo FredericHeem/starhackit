@@ -68,6 +68,7 @@ const createInfraDetail = (context) => {
       } ago`}</div>
     </div>
   );
+
   const InfraDetail = observer(({ store, detail }) => (
     <Form
       data-infra-detail
@@ -94,11 +95,10 @@ const createInfraDetail = (context) => {
             icon={<MdEdit size="1.5rem" />}
             onClick={() => {
               history.push(`${detail.id}/edit`, {
-                name: detail.name,
                 id: detail.id,
-                region: detail.providerAuth.AWS_REGION,
-                accessKeyId: detail.providerAuth.AWSAccessKeyId,
-                secretKey: detail.providerAuth.AWSSecretKey,
+                name: detail.name,
+                providerType: detail.providerType,
+                providerAuth: { ...detail.providerAuth },
               });
             }}
           />

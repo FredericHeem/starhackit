@@ -12,7 +12,7 @@ import alert from "mdlean/lib/alert";
 
 import form from "components/form";
 
-export default (context) => {
+export const azureConfig = (context) => {
   const {
     rest,
     tr,
@@ -97,7 +97,7 @@ export default (context) => {
       <main>
         <p>
           Please follow the instructions to setup a service principal used by
-          Grucloud to scan an Azure infrastructure.{" "}
+          Grucloud to scan an Azure infrastructure.
         </p>
         <ol
           css={css`

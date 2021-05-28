@@ -12,7 +12,7 @@ import alert from "mdlean/lib/alert";
 
 import IconUpload from "./assets/uploadIcon.svg";
 
-const gcpConfig = (context) => {
+export const gcpConfig = (context) => {
   const {
     rest,
     tr,
@@ -260,5 +260,3 @@ const gcpConfig = (context) => {
     </Form>
   ));
 };
-
-export default gcpConfig;

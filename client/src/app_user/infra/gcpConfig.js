@@ -86,6 +86,8 @@ export const createStoreGoogle = (context) => {
       };
       try {
         const result = await store.opUpdate.fetch(payload);
+        await store.opScan.fetch(result);
+
         alertStack.add(
           <Alert severity="success" message={tr.t("Infrastructure Updated")} />
         );
@@ -350,12 +352,12 @@ export const gcpFormEdit = (context) => {
   return observer(({ store }) => (
     <Form data-infra-create-google>
       <header>
-        <h2>{tr.t("Update GCP")}</h2>
+        <h2>{tr.t("Update GCP Infrastructure")}</h2>
       </header>
       <main>
         <FormGroup>
           <Input
-            value={store.name}
+            value={store.data.name}
             disabled={true}
             label={tr.t("Infrastrucure Name")}
           />
@@ -381,7 +383,7 @@ export const gcpFormEdit = (context) => {
         <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
         <Button
           data-infra-update-submit
-          disabled={store.isUpdating}
+          disabled={store.isUpdating || store.isDisabled}
           raised
           primary
           onClick={() => store.update()}
@@ -390,12 +392,20 @@ export const gcpFormEdit = (context) => {
         </Button>
         <Spinner
           css={css`
-            visibility: ${store.opUpdate.loading ? "visible" : "hidden"};
+            visibility: ${store.isUpdating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
       </footer>
       <InfraDeleteLink store={store} />
+
+      {/* <pre
+        css={css`
+          width: 300px;
+        `}
+      >
+        {JSON.stringify(store, null, 4)}
+      </pre> */}
     </Form>
   ));
 };

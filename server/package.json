@@ -37,9 +37,7 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:migrate"
   },
   "dependencies": {
-    "@grucloud/core": "1.14.0",
-    "@grucloud/docker-axios": "1.15.0",
-    "@grucloud/provider-aws": "1.14.1",
+    "@grucloud/docker-axios": "1.17.9",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",
     "bcryptjs": "2.4.3",

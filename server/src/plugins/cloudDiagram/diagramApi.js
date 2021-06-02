@@ -12,40 +12,22 @@ const {
   switchCase,
   map,
 } = require("rubico");
-const {
-  isEmpty,
-  values,
-  callProp,
-  defaultsDeep,
-  identity,
-} = require("rubico/x");
+const { isEmpty, values, callProp, identity } = require("rubico/x");
 
 const path = require("path");
-const { DockerClient } = require("@grucloud/docker-axios");
 
-const dockerDefault = {
-  baseURL: "http://localhost/v1.40",
-  socketPath: "/var/run/docker.sock",
-  timeout: 15e3,
-};
-
-const runDockerJob = ({ dockerOptions, params }) =>
+const runDockerJob = ({ dockerClient, params }) =>
   pipe([
-    () => dockerOptions,
-    defaultsDeep(dockerDefault),
-    DockerClient,
-    (docker) =>
-      pipe([
-        tap(() => {
-          assert(params.name);
-        }),
-        () => docker.container.create(params),
-        () => docker.container.start({ name: params.name }),
-        () => docker.container.wait({ name: params.name }),
-        tap((xxx) => {
-          assert(true);
-        }),
-      ])(),
+    tap(() => {
+      assert(params.name);
+      assert(dockerClient, "dockerClient");
+    }),
+    () => dockerClient.container.create(params),
+    () => dockerClient.container.start({ name: params.name }),
+    () => dockerClient.container.wait({ name: params.name }),
+    tap((xxx) => {
+      assert(true);
+    }),
   ])();
 
 const gcpConfigFileContent = ({
@@ -80,7 +62,7 @@ const runGcList = ({
   containerName = "grucloud-cli",
   containerImage = "grucloud-cli",
   localVolumePath = "output",
-  dockerOptions,
+  dockerClient,
   outputDir = "output",
   inputDir = "input",
 }) =>
@@ -166,7 +148,7 @@ const runGcList = ({
         tap((xxx) => {
           assert(true);
         }),
-        (params) => runDockerJob({ dockerOptions, params }),
+        (params) => runDockerJob({ dockerClient, params }),
         assign({
           list: pipe([
             () => fs.readFile(outputGcListLocalPath, "utf-8"),
@@ -228,9 +210,8 @@ exports.DiagramApi = (app) => {
   const log = require("logfilename")(__filename);
 
   const { models } = app.data.sequelize;
-  const { config } = app;
-  const dockerOptions = config.infra.docker;
-  assert(dockerOptions);
+  const { config, dockerClient } = app;
+  assert(dockerClient, "dockerClient");
   const { localVolumePath } = config.infra;
   assert(localVolumePath);
 
@@ -338,8 +319,8 @@ exports.DiagramApi = (app) => {
                           jobId: id,
                           providerAuth: infra.providerAuth,
                           provider: infra.providerType,
-                          dockerOptions,
                           localVolumePath,
+                          dockerClient,
                           containerImage: config.infra.containerImage,
                         }),
                       tap((result) =>

@@ -34,7 +34,7 @@ export default function createAvatar() {
   );
 
   const Avatar = observer(
-    ({ src, width = 50, height = 50, alt = "", circle, ...props }) => (
+    ({ src, width = 60, height = 60, alt = "", circle, ...props }) => (
       <AvatarView circle={circle} width={width} height={height} {...props}>
         {store.loading && ""}
         {store.error && "ERROR"}

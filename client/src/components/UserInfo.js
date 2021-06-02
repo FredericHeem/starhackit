@@ -7,13 +7,27 @@ import AsyncOp from "utils/asyncOp";
 import avatar from "./avatar";
 
 export default (context) => {
-  const { rest } = context;
+  const { rest, history } = context;
   const meStore = AsyncOp(context)(() => rest.get(`me`));
   const Avatar = avatar(context);
-  const Button = button(context);
+  const Button = button(context, {
+    cssOverride: css`
+      padding: 0px;
+      clip-path: polygon(
+        30% 0%,
+        70% 0%,
+        100% 30%,
+        100% 70%,
+        70% 100%,
+        30% 100%,
+        0% 70%,
+        0% 30%
+      );
+    `,
+  });
 
   const UserDetails = observer(() => (
-    <Button raised primary>
+    <Button raised primary onClick={() => history.push("/profile")}>
       {meStore.data.picture ? (
         <Avatar
           title={meStore.data.email}

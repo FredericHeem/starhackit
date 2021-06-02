@@ -48,7 +48,7 @@ const defaultData = {
   AWS_REGION: "us-east-1",
 };
 
-const buildPayload = ({data}) => ({
+const buildPayload = ({ data }) => ({
   name: data.name,
   providerType: "aws",
   providerAuth: {
@@ -56,14 +56,13 @@ const buildPayload = ({data}) => ({
     AWSSecretKey: data.AWSSecretKey,
     AWS_REGION: data.AWS_REGION,
   },
-}),
+});
 
 const constraints = {
   name: rules.infraName,
   AWSAccessKeyId: rules.AWSAccessKeyId,
   AWSSecretKey: rules.AWSSecretKey,
 };
-
 
 export const createStoreAws = (context) => {
   const { tr, history, alertStack, rest, emitter } = context;
@@ -89,13 +88,13 @@ export const createStoreAws = (context) => {
       rest.post(`cloudDiagram`, { infra_id: infraItem.id })
     ),
     op: asyncOpCreate((payload) => rest.post("infra", payload)),
-    get isCreating(){
-      return store.opScan.loading || store.op.loading
+    get isCreating() {
+      return store.opScan.loading || store.op.loading;
     },
     create: action(async () => {
       store.errors = {};
       const { data } = store;
-      
+
       const vErrors = validate(data, constraints);
       if (vErrors) {
         store.errors = vErrors;
@@ -126,8 +125,8 @@ export const createStoreAws = (context) => {
     opUpdate: asyncOpCreate((payload) =>
       rest.patch(`infra/${store.id}`, payload)
     ),
-    get isUpdating(){
-      return store.opScan.loading || store.opUpdate.loading
+    get isUpdating() {
+      return store.opScan.loading || store.opUpdate.loading;
     },
     update: action(async () => {
       store.errors = {};
@@ -157,7 +156,6 @@ export const createStoreAws = (context) => {
         );
       }
     }),
-    
   });
   return store;
 };
@@ -220,6 +218,7 @@ export const awsFormCreate = (context) => {
   const {
     tr,
     theme: { palette },
+    emitter,
   } = context;
   const Form = createForm(context);
   const Spinner = spinner(context);

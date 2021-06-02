@@ -93,6 +93,7 @@ const createInfraItem = (context) => {
     return (
       <li
         data-infra-list-item
+        data-infra-list-item-name={item.name}
         css={css`
           box-shadow: ${theme.shadows[1]};
           cursor: pointer;

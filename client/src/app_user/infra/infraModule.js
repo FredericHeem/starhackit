@@ -22,7 +22,10 @@ import wizardCreate from "./wizardCreate";
 import badgeRegion from "./badgeRegion";
 import providerLogo from "./providerLogo";
 import createInfraDetail from "./infraDetail";
-import createInfraEdit from "./infraEdit";
+import { awsFormEdit, createStoreAws } from "./awsConfig";
+import { gcpFormEdit, createStoreGoogle } from "./gcpConfig";
+import { azureFormEdit, createStoreAzure } from "./azureConfig";
+import { createInfraDelete } from "./infraDelete";
 
 const getLivesFromJob = get("result.list.result.results[0].results");
 
@@ -113,66 +116,6 @@ const createInfraItem = (context) => {
     );
   };
   return observer(InfraItem);
-};
-
-const createInfraDelete = (context) => {
-  const { tr, history } = context;
-  const Form = createForm(context);
-  const FormGroup = formGroup(context);
-  const Input = input(context, {
-    cssOverride: css`
-      > input {
-        width: 300px;
-      }
-    `,
-  });
-  const Button = button(context, {
-    cssOverride: css``,
-  });
-
-  const InfraDeleteForm = ({ store }) => (
-    <Form data-infra-delete>
-      <header>
-        <h2>Delete Infrastructure</h2>
-      </header>
-      <main>
-        <div>
-          To prevent accidental deletion, please type the name of the
-          infrastructure to destroy:
-          <pre
-            css={css`
-              color: red;
-            `}
-          >
-            {store.data.name}
-          </pre>
-        </div>
-        <FormGroup data-delete-name>
-          <Input
-            data-delete-name
-            value={store.name}
-            onChange={(e) => {
-              store.setName(e.target.value);
-            }}
-            label={tr.t(`Type ${store.data.name}`)}
-            error={store.errors.name && store.errors.name[0]}
-          />
-        </FormGroup>
-      </main>
-      <footer>
-        <Button
-          data-infra-button-delete
-          primary
-          raised
-          disabled={!store.nameMatch}
-          onClick={() => store.destroy({})}
-          label={tr.t("Delete Infrastructure")}
-        />
-        <Button onClick={() => history.back()} label={tr.t("Cancel")} />
-      </footer>
-    </Form>
-  );
-  return observer(InfraDeleteForm);
 };
 
 const createInfraList = (context) => {
@@ -295,16 +238,43 @@ export default function (context) {
         },
       },
       {
-        path: "/detail/:id/edit",
+        path: "/detail/:id/aws/edit",
         protected: true,
-        action: (routerContext) => {
-          stores.edit.setData(window.history.state.usr);
+        action: async (routerContext) => {
+          stores.aws.setData(window.history.state.usr);
           return {
             routerContext,
-            title: "Edit Infrastructure",
-            component: h(createInfraEdit(context), {
-              store: stores.edit,
-              onClick: () => stores.create.update(),
+            title: "Edit Aws Infrastructure",
+            component: h(awsFormEdit(context), {
+              store: stores.aws,
+            }),
+          };
+        },
+      },
+      {
+        path: "/detail/:id/google/edit",
+        protected: true,
+        action: async (routerContext) => {
+          stores.google.setData(window.history.state.usr);
+          return {
+            routerContext,
+            title: "Edit GCP Infrastructure",
+            component: h(gcpFormEdit(context), {
+              store: stores.google,
+            }),
+          };
+        },
+      },
+      {
+        path: "/detail/:id/azure/edit",
+        protected: true,
+        action: async (routerContext) => {
+          stores.azure.setData(window.history.state.usr);
+          return {
+            routerContext,
+            title: "Edit Azure Infrastructure",
+            component: h(azureFormEdit(context), {
+              store: stores.azure,
             }),
           };
         },
@@ -354,6 +324,7 @@ export default function (context) {
       }),
     });
 
+    //TODO remove
     const defaultData = {
       name: "",
       accessKeyId: "",
@@ -412,59 +383,13 @@ export default function (context) {
           emitter.emit("infra.created", result);
         } catch (errors) {
           console.log(errors);
-
           // backend should 422 if the credentials are incorrect
-
           alertStack.add(
             <Alert
               severity="error"
               data-alert-error-create
               message={tr.t(
                 "Error creating infrastructure, check the credentials"
-              )}
-            />
-          );
-        }
-      }),
-    });
-
-    const storeEdit = observable({
-      data: defaultData,
-      errors: {},
-      reset: action(() => {
-        storeEdit.data = defaultData;
-      }),
-      setData: action((data) => {
-        if (data) {
-          storeEdit.data = data;
-        }
-      }),
-      opUpdate: asyncOpCreate((payload) =>
-        rest.patch(`infra/${storeEdit.data.id}`, payload)
-      ),
-      update: action(async function () {
-        this.errors = {};
-
-        try {
-          const response = await this.opUpdate.fetch(
-            pick(["name"])(storeEdit.data)
-          );
-          console.log(response);
-          alertStack.add(
-            <Alert
-              severity="success"
-              message={tr.t("Infrastructure Updated")}
-            />
-          );
-          history.back();
-          emitter.emit("infra.updated", storeEdit.data);
-        } catch (error) {
-          console.error(error);
-          alertStack.add(
-            <Alert
-              severity="error"
-              message={tr.t(
-                "An error occured while updating the infrastructure"
               )}
             />
           );
@@ -537,9 +462,11 @@ export default function (context) {
     });
 
     return {
+      aws: createStoreAws(context),
+      google: createStoreGoogle(context),
+      azure: createStoreAzure(context),
       infra: infraStore,
       create: storeCreate,
-      edit: storeEdit,
       infraDetail: infraDetailStore,
       delete: storeDelete,
     };

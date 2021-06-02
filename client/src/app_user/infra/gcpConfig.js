@@ -4,38 +4,42 @@ import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
 import button from "mdlean/lib/button";
+import input from "mdlean/lib/input";
+
 import fileInput from "mdlean/lib/fileInput";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
+import formGroup from "mdlean/lib/formGroup";
 
 import createForm from "components/form";
 import alert from "mdlean/lib/alert";
+import spinner from "mdlean/lib/spinner";
 
 import IconUpload from "./assets/uploadIcon.svg";
 
-export const gcpConfig = (context) => {
-  const {
-    rest,
-    tr,
-    emitter,
-    theme: { palette },
-    alertStack,
-    history,
-  } = context;
+import { infraDeleteLink } from "./infraDeleteLink";
+
+export const createStoreGoogle = (context) => {
+  const { tr, history, alertStack, rest, emitter } = context;
   const Alert = alert(context);
-  const Form = createForm(context);
-  const Button = button(context);
-  const FileInput = fileInput(context);
   const asyncOpCreate = AsyncOp(context);
 
   const store = observable({
+    setData: action((data = {}) => {
+      store.id = data.id;
+      store.data = data.providerAuth;
+      store.data.name = data.name;
+    }),
+    id: "",
     fileName: "",
-    projectName: "",
     content: {},
     error: "",
     opScan: asyncOpCreate((infraItem) =>
       rest.post(`cloudDiagram`, { infra_id: infraItem.id })
     ),
     op: asyncOpCreate((payload) => rest.post("infra", payload)),
+    get isCreating() {
+      return store.opScan.loading || store.op.loading;
+    },
     create: action(async () => {
       store.errors = {};
 
@@ -54,9 +58,7 @@ export const gcpConfig = (context) => {
         emitter.emit("infra.created", result);
       } catch (errors) {
         console.log(errors);
-
         // backend should 422 if the credentials are incorrect
-
         alertStack.add(
           <Alert
             severity="error"
@@ -68,11 +70,42 @@ export const gcpConfig = (context) => {
         );
       }
     }),
-    setProjectName: (projectName) => {
-      store.projectName = projectName;
+    opUpdate: asyncOpCreate((payload) =>
+      rest.patch(`infra/${store.id}`, payload)
+    ),
+    get isUpdating() {
+      return store.opScan.loading || store.opUpdate.loading;
+    },
+    update: action(async () => {
+      store.errors = {};
+
+      const payload = {
+        providerType: "google",
+        name: store.data.name,
+        providerAuth: { credentials: store.content },
+      };
+      try {
+        const result = await store.opUpdate.fetch(payload);
+        alertStack.add(
+          <Alert severity="success" message={tr.t("Infrastructure Updated")} />
+        );
+        history.push(`/infra/detail/${result.id}`, result);
+        emitter.emit("infra.updated", result);
+      } catch (errors) {
+        alertStack.add(
+          <Alert
+            severity="error"
+            data-alert-error-update
+            message={tr.t("Error updating infrastructure")}
+          />
+        );
+      }
+    }),
+    setProjectName: (name) => {
+      store.data.name = name;
     },
     get() {
-      return store.projectName.length === 0;
+      return store.name.length === 0;
     },
     get isDisabled() {
       return !store.content.project_id;
@@ -103,59 +136,82 @@ export const gcpConfig = (context) => {
     },
   });
 
-  const FileInputLabel = ({}) => (
-    <div
-      css={[
-        css`
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          color: ${palette.text.primary};
-          > * {
-            margin: 1rem;
+  return store;
+};
+
+const credentialFile =
+  ({ theme: { palette } }) =>
+  ({ fileName, content }) =>
+    (
+      <table
+        css={css`
+          border-collapse: collapse;
+          td,
+          th {
+            border: 1px solid ${palette.grey[500]};
+            padding: 0.5rem;
+            text-align: left;
           }
-          svg {
-            height: 2rem;
-            path {
-              fill: ${palette.text.primary};
+        `}
+      >
+        <tbody>
+          <tr>
+            <th>Credential File</th> <td>{fileName}</td>
+          </tr>
+          <tr>
+            <th>Project Name</th> <td>{content.project_id}</td>
+          </tr>
+          <tr>
+            <th>Service Account</th> <td>{content.client_email}</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+const fileInputLabel =
+  ({ tr, theme: { palette } }) =>
+  ({}) =>
+    (
+      <div
+        css={[
+          css`
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            color: ${palette.text.primary};
+            > * {
+              margin: 1rem;
             }
-          }
-        `,
-      ]}
-    >
-      <img src={IconUpload} alt="uplpoad" />
-      <span>{tr.t("Choose a credential file to upload")}</span>
-    </div>
-  );
+            svg {
+              height: 2rem;
+              path {
+                fill: ${palette.text.primary};
+              }
+            }
+          `,
+        ]}
+      >
+        <img src={IconUpload} alt="uplpoad" />
+        <span>{tr.t("Choose a credential file to upload")}</span>
+      </div>
+    );
 
-  const CredentialFile = ({ fileName, content }) => (
-    <table
-      css={css`
-        border-collapse: collapse;
-        td,
-        th {
-          border: 1px solid ${palette.grey[500]};
-          padding: 0.5rem;
-          text-align: left;
-        }
-      `}
-    >
-      <tbody>
-        <tr>
-          <th>Credential File</th> <td>{fileName}</td>
-        </tr>
-        <tr>
-          <th>Project Name</th> <td>{content.project_id}</td>
-        </tr>
-        <tr>
-          <th>Service Account</th> <td>{content.client_email}</td>
-        </tr>
-      </tbody>
-    </table>
-  );
+export const gcpFormCreate = (context) => {
+  const {
+    tr,
+    theme: { palette },
+    emitter,
+  } = context;
+  const Form = createForm(context);
+  const Button = button(context);
+  const Spinner = spinner(context);
+  const FileInput = fileInput(context);
+  const CredentialFile = credentialFile(context);
+  const FileInputLabel = fileInputLabel(context);
 
-  return observer(() => (
+  return observer(({ store }) => (
     <Form
+      data-infra-create-google
       css={css`
         main {
           section {
@@ -227,6 +283,7 @@ export const gcpConfig = (context) => {
           </li>
         </ol>
         <FileInput
+          data-input-google-upload
           cssOverride={css`
             .filename-display {
               display: none;
@@ -249,14 +306,96 @@ export const gcpConfig = (context) => {
           {"\u25c0"} Back
         </Button>
         <Button
-          disabled={store.isDisabled}
+          data-infra-create-submit
+          disabled={store.isCreating}
           raised
           primary
           onClick={() => store.create()}
         >
-          Save and Scan {store.content.project_id}
+          {tr.t("Save and Scan")} {store.content.project_id}
         </Button>
+        <Spinner
+          css={css`
+            visibility: ${store.isCreating ? "visible" : "hidden"};
+          `}
+          color={palette.primary.main}
+        />
       </footer>
+    </Form>
+  ));
+};
+
+export const gcpFormEdit = (context) => {
+  const {
+    tr,
+    history,
+    theme: { palette },
+  } = context;
+  const Form = createForm(context);
+  const FormGroup = formGroup(context);
+  const Button = button(context);
+  const FileInput = fileInput(context);
+  const Spinner = spinner(context);
+  const Input = input(context, {
+    cssOverride: css`
+      input {
+        width: 25rem;
+      }
+    `,
+  });
+  const CredentialFile = credentialFile(context);
+  const FileInputLabel = fileInputLabel(context);
+  const InfraDeleteLink = infraDeleteLink(context);
+
+  return observer(({ store }) => (
+    <Form data-infra-create-google>
+      <header>
+        <h2>{tr.t("Update GCP")}</h2>
+      </header>
+      <main>
+        <FormGroup>
+          <Input
+            value={store.name}
+            disabled={true}
+            label={tr.t("Infrastrucure Name")}
+          />
+        </FormGroup>
+        <FileInput
+          data-input-google-upload
+          cssOverride={css`
+            .filename-display {
+              display: none;
+            }
+          `}
+          component={<FileInputLabel />}
+          name="file"
+          accept="application/JSON"
+          onChange={(evt) => store.onChangeFile(evt)}
+        />
+
+        {!store.isDisabled && (
+          <CredentialFile fileName={store.fileName} content={store.content} />
+        )}
+      </main>
+      <footer>
+        <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
+        <Button
+          data-infra-update-submit
+          disabled={store.isUpdating}
+          raised
+          primary
+          onClick={() => store.update()}
+        >
+          {tr.t("Update")} {store.content.project_id}
+        </Button>
+        <Spinner
+          css={css`
+            visibility: ${store.opUpdate.loading ? "visible" : "hidden"};
+          `}
+          color={palette.primary.main}
+        />
+      </footer>
+      <InfraDeleteLink store={store} />
     </Form>
   ));
 };

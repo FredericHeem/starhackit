@@ -1,5 +1,8 @@
+const path = require("path");
 const infraName = "My Infra";
-describe("Infra", function () {
+const googleCredentialFile = "grucloud-vm-tuto-1.json";
+
+describe.only("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
     client.page.login().login(done);
@@ -13,8 +16,8 @@ describe("Infra", function () {
     client.page
       .infraCreate()
       .navigate()
-      .waitForElementVisible("form[data-infra-create=true]", 5e3)
-
+      .waitForElementVisible("@formProviderSelect", 5e3)
+      .click("@buttonSelectAws")
       .setValue("@nameInput", infraName)
       .setValue("@accessKeyIdInput", Array(20).fill("K"))
       .setValue("@secretKeyInput", Array(40).fill("S"))
@@ -23,11 +26,13 @@ describe("Infra", function () {
       .waitForElementVisible("div[data-alert-error-create=true]", 50e3);
     //.assert.title('')
   });
-  it("create", function (client) {
+  it("create aws", function (client) {
     client.page
       .infraCreate()
       .navigate()
-      .waitForElementVisible("form[data-infra-create=true]", 5e3)
+      .waitForElementVisible("@formProviderSelect", 5e3)
+      .click("@buttonSelectAws")
+      .waitForElementVisible("form[data-infra-create-aws=true]", 5e3)
       .setValue("@nameInput", infraName)
       .setValue("@accessKeyIdInput", process.env.AWSAccessKeyId)
       .setValue("@secretKeyInput", process.env.AWSSecretKey)
@@ -35,7 +40,37 @@ describe("Infra", function () {
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
       .pause(5e3);
-    //.assert.title('My Profile - StarHackIt')
+  });
+  it("create azure", function (client) {
+    client.page
+      .infraCreate()
+      .navigate()
+      .waitForElementVisible("@formProviderSelect", 5e3)
+      .click("@buttonSelectAzure")
+      .waitForElementVisible("form[data-infra-create-azure=true]", 5e3)
+      .setValue("@inputAzureName", infraName)
+      .setValue("@inputSubscriptionId", process.env.SUBSCRIPTION_ID)
+      .setValue("@inputTenantId", process.env.TENANT_ID)
+      .setValue("@inputAppId", process.env.APP_ID)
+      .setValue("@inputPassword", process.env.PASSWORD)
+      .click("@submit")
+      .waitForElementVisible("form[data-infra-detail=true]", 50e3)
+      .pause(5e3);
+  });
+  it("create google", function (client) {
+    client.page
+      .infraCreate()
+      .navigate()
+      .waitForElementVisible("@formProviderSelect", 5e3)
+      .click("@buttonSelectGoogle")
+      .waitForElementVisible("form[data-infra-create-google=true]", 5e3)
+      .setValue(
+        "@inputFileGoogleUpload",
+        path.resolve(__dirname, googleCredentialFile)
+      )
+      .click("@submit")
+      .waitForElementVisible("form[data-infra-detail=true]", 50e3)
+      .pause(5e3);
   });
   it("list", async function (client, done) {
     const infraPage = await client.page

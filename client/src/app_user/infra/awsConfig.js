@@ -12,6 +12,7 @@ import spinner from "mdlean/lib/spinner";
 import alert from "mdlean/lib/alert";
 
 import createForm from "components/form";
+import { infraDeleteLink } from "./infraDeleteLink";
 
 import awsSelectRegion from "./awsSelectRegion";
 
@@ -23,14 +24,14 @@ const rules = {
       message: "must be at least 3 characters",
     },
   },
-  accessKeyId: {
+  AWSAccessKeyId: {
     presence: true,
     length: {
       minimum: 20,
       message: "must be at least 20 characters",
     },
   },
-  secretKey: {
+  AWSSecretKey: {
     presence: true,
     length: {
       minimum: 40,
@@ -39,78 +40,70 @@ const rules = {
   },
 };
 
-export const awsConfig = (context) => {
-  const {
-    tr,
-    history,
-    theme: { palette },
-    alertStack,
-    rest,
-    emitter,
-  } = context;
+const defaultData = {
+  id: "",
+  name: "",
+  AWSAccessKeyId: "",
+  AWSSecretKey: "",
+  AWS_REGION: "us-east-1",
+};
+
+const buildPayload = ({data}) => ({
+  name: data.name,
+  providerType: "aws",
+  providerAuth: {
+    AWSAccessKeyId: data.AWSAccessKeyId.trim(),
+    AWSSecretKey: data.AWSSecretKey,
+    AWS_REGION: data.AWS_REGION,
+  },
+}),
+
+const constraints = {
+  name: rules.infraName,
+  AWSAccessKeyId: rules.AWSAccessKeyId,
+  AWSSecretKey: rules.AWSSecretKey,
+};
+
+
+export const createStoreAws = (context) => {
+  const { tr, history, alertStack, rest, emitter } = context;
   const Alert = alert(context);
-  const Form = createForm(context);
-  const FormGroup = formGroup(context);
-  const Input = input(context, {
-    cssOverride: css`
-      > input {
-        width: 300px;
-      }
-    `,
-  });
-  const Spinner = spinner(context);
-  const AwsSelectRegion = awsSelectRegion(context);
-  const Button = button(context, {
-    cssOverride: css``,
-  });
   const asyncOpCreate = AsyncOp(context);
 
-  const defaultData = {
-    name: "",
-    accessKeyId: "",
-    secretKey: "",
-    region: "us-east-1",
-  };
-
   const store = observable({
+    id: "",
     data: defaultData,
     errors: {},
+    onChange: action((field, event) => {
+      store.data[field] = event.target.value;
+    }),
     reset: action(() => {
       store.data = defaultData;
     }),
     setData: action((data) => {
-      store.data = data;
+      store.id = data.id;
+      store.data = data.providerAuth;
+      store.data.name = data.name;
     }),
     opScan: asyncOpCreate((infraItem) =>
       rest.post(`cloudDiagram`, { infra_id: infraItem.id })
     ),
     op: asyncOpCreate((payload) => rest.post("infra", payload)),
+    get isCreating(){
+      return store.opScan.loading || store.op.loading
+    },
     create: action(async () => {
       store.errors = {};
       const { data } = store;
-
-      const constraints = {
-        name: rules.infraName,
-        accessKeyId: rules.accessKeyId,
-        secretKey: rules.secretKey,
-      };
-
+      
       const vErrors = validate(data, constraints);
       if (vErrors) {
         store.errors = vErrors;
         return;
       }
-      const payload = {
-        name: data.name,
-        providerType: "aws",
-        providerAuth: {
-          AWSAccessKeyId: data.accessKeyId.trim(),
-          AWSSecretKey: data.secretKey,
-          AWS_REGION: data.region,
-        },
-      };
+
       try {
-        const result = await store.op.fetch(payload);
+        const result = await store.op.fetch(buildPayload(store));
         await store.opScan.fetch(result);
         alertStack.add(
           <Alert severity="success" message={tr.t("Infrastructure Created")} />
@@ -118,10 +111,7 @@ export const awsConfig = (context) => {
         history.push(`/infra/detail/${result.id}`, result);
         emitter.emit("infra.created", result);
       } catch (errors) {
-        console.log(errors);
-
         // backend should 422 if the credentials are incorrect
-
         alertStack.add(
           <Alert
             severity="error"
@@ -133,12 +123,113 @@ export const awsConfig = (context) => {
         );
       }
     }),
+    opUpdate: asyncOpCreate((payload) =>
+      rest.patch(`infra/${store.id}`, payload)
+    ),
+    get isUpdating(){
+      return store.opScan.loading || store.opUpdate.loading
+    },
+    update: action(async () => {
+      store.errors = {};
+      const { data } = store;
+      const vErrors = validate(data, constraints);
+      if (vErrors) {
+        store.errors = vErrors;
+        return;
+      }
+
+      try {
+        const result = await store.opUpdate.fetch(buildPayload(store));
+        await store.opScan.fetch(result);
+
+        alertStack.add(
+          <Alert severity="success" message={tr.t("Infrastructure Udated")} />
+        );
+        history.push(`/infra/detail/${result.id}`, result);
+        emitter.emit("infra.updated", result);
+      } catch (errors) {
+        alertStack.add(
+          <Alert
+            severity="error"
+            data-alert-error-update
+            message={tr.t("Error updating the infrastructure")}
+          />
+        );
+      }
+    }),
+    
+  });
+  return store;
+};
+
+export const awsConfigForm = (context) => {
+  const { tr } = context;
+  const FormGroup = formGroup(context);
+  const AwsSelectRegion = awsSelectRegion(context);
+  const Input = input(context, {
+    cssOverride: css`
+      > input {
+        width: 300px;
+      }
+    `,
   });
 
-  return observer(() => (
-    <Form spellCheck="false" autoCapitalize="none" data-infra-create>
+  return observer(({ store }) => (
+    <>
+      <FormGroup className="infra-name">
+        <Input
+          autoFocus
+          value={store.data.name}
+          onChange={(event) => store.onChange("name", event)}
+          label={tr.t("Infrastructure Name")}
+          error={store.errors.name && store.errors.name[0]}
+        />
+      </FormGroup>
+      <FormGroup className="access-key">
+        <Input
+          value={store.data.AWSAccessKeyId}
+          onChange={(event) => store.onChange("AWSAccessKeyId", event)}
+          autoComplete="off"
+          label={tr.t("AWS Access Key Id")}
+          error={store.errors.AWSAccessKeyId && store.errors.AWSAccessKeyId[0]}
+        />
+      </FormGroup>
+      <FormGroup className="secret-key">
+        <Input
+          value={store.data.AWSSecretKey}
+          onChange={(event) => store.onChange("AWSSecretKey", event)}
+          label={tr.t("AWS Secret Key")}
+          type="password"
+          error={store.errors.AWSSecretKey && store.errors.AWSSecretKey[0]}
+        />
+      </FormGroup>
+      <FormGroup className="aws-region">
+        <AwsSelectRegion
+          placeholder="Select a region"
+          value={store.data.AWS_REGION}
+          onSelected={(region) => {
+            store.data.AWS_REGION = region;
+          }}
+        />
+      </FormGroup>
+    </>
+  ));
+};
+
+export const awsFormCreate = (context) => {
+  const {
+    tr,
+    theme: { palette },
+  } = context;
+  const Form = createForm(context);
+  const Spinner = spinner(context);
+  const Button = button(context);
+  const AwsConfigForm = awsConfigForm(context);
+
+  return observer(({ store }) => (
+    <Form spellCheck="false" autoCapitalize="none" data-infra-create-aws>
       <header>
-        <h2>{tr.t("Create new Infrastructure")}</h2>
+        <h2>{tr.t("Create new AWS Infrastructure")}</h2>
       </header>
       <main>
         <div>
@@ -146,48 +237,7 @@ export const awsConfig = (context) => {
             "Please provide the following information to create and scan a new infrastructure"
           )}
         </div>
-        <FormGroup className="infra-name">
-          <Input
-            autoFocus
-            value={store.data.name}
-            onChange={(e) => {
-              store.data.name = e.target.value;
-            }}
-            label={tr.t("Infrastructure Name")}
-            error={store.errors.name && store.errors.name[0]}
-          />
-        </FormGroup>
-        <FormGroup className="access-key">
-          <Input
-            value={store.data.accessKeyId}
-            onChange={(e) => {
-              store.data.accessKeyId = e.target.value;
-            }}
-            autoComplete="off"
-            label={tr.t("AWS Access Key Id")}
-            error={store.errors.accessKeyId && store.errors.accessKeyId[0]}
-          />
-        </FormGroup>
-        <FormGroup className="secret-key">
-          <Input
-            value={store.data.secretKey}
-            onChange={(e) => {
-              store.data.secretKey = e.target.value;
-            }}
-            label={tr.t("AWS Secret Key")}
-            type="password"
-            error={store.errors.secretKey && store.errors.secretKey[0]}
-          />
-        </FormGroup>
-        <FormGroup className="aws-region">
-          <AwsSelectRegion
-            placeholder="Select a region"
-            value={store.data.region}
-            onSelected={(item) => {
-              store.data.region = item;
-            }}
-          />
-        </FormGroup>
+        <AwsConfigForm store={store} />
       </main>
       <footer>
         <Button
@@ -200,17 +250,62 @@ export const awsConfig = (context) => {
           data-infra-create-submit
           primary
           raised
-          disabled={store.opScan.loading || store.op.loading}
+          disabled={store.isCreating}
           onClick={() => store.create()}
           label={tr.t("Create Infrastructure")}
         />
         <Spinner
           css={css`
-            visibility: ${store.opScan.loading ? "visible" : "hidden"};
+            visibility: ${store.isCreating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
       </footer>
+    </Form>
+  ));
+};
+
+export const awsFormEdit = (context) => {
+  const {
+    tr,
+    history,
+    theme: { palette },
+  } = context;
+
+  const Form = createForm(context);
+  const Spinner = spinner(context);
+  const Button = button(context, {
+    cssOverride: css``,
+  });
+  const AwsConfigForm = awsConfigForm(context);
+  const InfraDeleteLink = infraDeleteLink(context);
+
+  return observer(({ store }) => (
+    <Form spellCheck="false" autoCapitalize="none" data-infra-update>
+      <header>
+        <h2>{tr.t("Update AWS Infrastructure")}</h2>
+      </header>
+      <main>
+        <AwsConfigForm store={store} />
+      </main>
+      <footer>
+        <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
+        <Button
+          data-infra-update-submit
+          primary
+          raised
+          disabled={store.isUpdating}
+          onClick={() => store.update()}
+          label={tr.t("Update Infrastructure")}
+        />
+        <Spinner
+          css={css`
+            visibility: ${store.isUpdating ? "visible" : "hidden"};
+          `}
+          color={palette.primary.main}
+        />
+      </footer>
+      <InfraDeleteLink store={store} />
     </Form>
   ));
 };

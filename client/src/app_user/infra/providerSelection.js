@@ -10,9 +10,9 @@ import AzureLogo from "./assets/azure.svg";
 
 export default function (context) {
   const Button = button(context);
-
   return observer(({ store }) => (
-    <div
+    <form
+      data-form-provider-select
       css={css`
         display: flex;
         flex-direction: column;
@@ -29,15 +29,27 @@ export default function (context) {
         }
       `}
     >
-      <Button raised onClick={() => store.selectProvider("AWS")}>
+      <Button
+        data-button-select-aws
+        raised
+        onClick={() => store.selectProvider("AWS")}
+      >
         <img src={AwsLogo} alt="AWS" />
       </Button>
-      <Button raised onClick={() => store.selectProvider("GCP")}>
+      <Button
+        data-button-select-google
+        raised
+        onClick={() => store.selectProvider("GCP")}
+      >
         <img src={GcpLogo} alt="GCP" />
       </Button>
-      <Button raised onClick={() => store.selectProvider("Azure")}>
+      <Button
+        data-button-select-azure
+        raised
+        onClick={() => store.selectProvider("Azure")}
+      >
         <img src={AzureLogo} alt="Azure" />
       </Button>
-    </div>
+    </form>
   ));
 }

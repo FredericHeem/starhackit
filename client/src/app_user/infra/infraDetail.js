@@ -94,12 +94,16 @@ const createInfraDetail = (context) => {
             data-infra-edit-button
             icon={<MdEdit size="1.5rem" />}
             onClick={() => {
-              history.push(`${detail.id}/edit`, {
+              const state = {
                 id: detail.id,
                 name: detail.name,
                 providerType: detail.providerType,
-                providerAuth: { ...detail.providerAuth },
-              });
+                providerAuth: {
+                  ...detail.providerAuth,
+                  credentials: { ...detail.providerAuth.credentials },
+                },
+              };
+              history.push(`${detail.id}/${detail.providerType}/edit`, state);
             }}
           />
         </header>

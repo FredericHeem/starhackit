@@ -7,9 +7,9 @@ import button from "mdlean/lib/button";
 import wizard from "mdlean/lib/wizard";
 
 import providerSelection from "./providerSelection";
-import { awsConfig } from "./awsConfig";
-import { gcpConfig } from "./gcpConfig";
-import { azureConfig } from "./azureConfig";
+import { awsFormCreate, createStoreAws } from "./awsConfig";
+import { gcpFormCreate, createStoreGoogle } from "./gcpConfig";
+import { azureFormCreate, createStoreAzure } from "./azureConfig";
 
 export default (context) => {
   const { tr, emitter } = context;
@@ -25,18 +25,18 @@ export default (context) => {
     },
   });
 
-  const AwsConfig = awsConfig(context);
-  const GcpConfig = gcpConfig(context);
-  const AzureConfig = azureConfig(context);
+  const AwsFormCreate = awsFormCreate(context);
+  const GcpFormCreate = gcpFormCreate(context);
+  const AzureFormCreate = azureFormCreate(context);
 
   const configViewFromProvider = (providerType) => {
     switch (providerType) {
       case "AWS":
-        return <AwsConfig />;
+        return <AwsFormCreate store={createStoreAws(context)} />;
       case "GCP":
-        return <GcpConfig />;
+        return <GcpFormCreate store={createStoreGoogle(context)} />;
       case "Azure":
-        return <AzureConfig />;
+        return <AzureFormCreate store={createStoreAzure(context)} />;
       default:
         throw Error(`invalid provider type`);
     }
@@ -50,7 +50,6 @@ export default (context) => {
       enter: async () => {
         store.setProvider("");
       },
-      exit: async () => {},
     },
     {
       name: "Configuration",
@@ -58,7 +57,6 @@ export default (context) => {
         <header>Configuration {store.providerType}</header>
       )),
       content: ({}) => configViewFromProvider(store.providerType),
-      enter: async () => console.log("Configuration enter"),
     },
   ];
 

@@ -16,6 +16,7 @@ const {
   defaultsDeep,
   identity,
 } = require("rubico/x");
+const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
 
@@ -51,6 +52,7 @@ module.exports = (app) => {
       log.debug(`pull image: ${image}`);
       await dockerClient.image.pull({ image });
       log.debug(`pulled`);
+      await fs.mkdir("input", { recursive: true });
     },
 
     stop: async () => {},

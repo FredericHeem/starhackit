@@ -16,155 +16,6 @@ const { isEmpty, values, callProp, identity } = require("rubico/x");
 
 const path = require("path");
 
-const runDockerJob = ({ dockerClient, params }) =>
-  pipe([
-    tap(() => {
-      assert(params.name);
-      assert(dockerClient, "dockerClient");
-    }),
-    () => dockerClient.container.create(params),
-    () => dockerClient.container.start({ name: params.name }),
-    () => dockerClient.container.wait({ name: params.name }),
-    tap((xxx) => {
-      assert(true);
-    }),
-  ])();
-
-const gcpConfigFileContent = ({
-  credendialFileName,
-}) => `const path = require("path");
-  module.exports = ({ stage }) => ({
-    credentialFile: path.resolve(__dirname, "${credendialFileName}"),
-  });`;
-
-const writeGcpFiles = ({
-  configFileName,
-  credendialFileName,
-  credendialContent,
-}) =>
-  pipe([
-    () =>
-      fs.writeFile(
-        `input/${credendialFileName}`,
-        JSON.stringify(credendialContent)
-      ),
-    () =>
-      fs.writeFile(
-        configFileName,
-        gcpConfigFileContent({ credendialFileName })
-      ),
-  ])();
-
-const runGcList = ({
-  jobId,
-  providerAuth,
-  provider,
-  containerName = "grucloud-cli",
-  containerImage = "grucloud-cli",
-  localOutputPath = "output",
-  localInputPath = "input",
-  dockerClient,
-  outputDir = "output",
-  inputDir = "input",
-}) =>
-  pipe([
-    tap(() => {
-      assert(provider);
-    }),
-    () => ({
-      outputGcList: `gc-list-${jobId}.json`,
-      outputDot: `${jobId}.dot`,
-      outputSvg: `${jobId}.svg`,
-    }),
-    assign({
-      name: () => `${containerName}-${jobId}`,
-      Cmd: ({ outputGcList, outputDot }) => [
-        "list",
-        "--provider",
-        provider,
-        "--infra",
-        `iac_${provider}.js`,
-        "--all",
-        "--graph",
-        "--json",
-        `output/${outputGcList}`,
-        "--dot-file",
-        `output/${outputDot}`,
-      ],
-      outputGcListLocalPath: ({ outputGcList }) =>
-        path.resolve(outputDir, outputGcList),
-      outputDotLocalPath: ({ outputDot }) => path.resolve(outputDir, outputDot),
-      outputSvgLocalPath: ({ outputSvg }) => path.resolve(outputDir, outputSvg),
-      HostConfig: () => ({
-        Binds: [
-          `${path.resolve(localOutputPath)}:/app/${outputDir}`,
-          `${path.resolve(localInputPath)}:/app/${inputDir}`,
-        ],
-      }),
-      Env: () =>
-        pipe([
-          () => providerAuth,
-          map.entries(([key, value]) => [key, `${key}=${value}`]),
-          values,
-        ])(),
-    }),
-    switchCase([
-      eq(provider, "google"),
-      pipe([
-        assign({
-          Cmd: ({ Cmd }) => [...Cmd, "--config", `input/config-${jobId}.js`],
-        }),
-        tap(() =>
-          writeGcpFiles({
-            configFileName: `input/config-${jobId}.js`,
-            credendialFileName: `gcp-credendial-${jobId}.json`,
-            credendialContent: providerAuth.credentials,
-          })
-        ),
-      ]),
-      identity,
-    ]),
-    tap((input) => {
-      //console.log(JSON.stringify(input, null, 4));
-    }),
-    ({
-      name,
-      Cmd,
-      HostConfig,
-      Env,
-      outputGcListLocalPath,
-      outputSvgLocalPath,
-      outputDotLocalPath,
-    }) =>
-      pipe([
-        () => ({
-          name,
-          body: {
-            Image: containerImage,
-            Cmd,
-            Env,
-            HostConfig,
-          },
-        }),
-        tap((xxx) => {
-          assert(true);
-        }),
-        (params) => runDockerJob({ dockerClient, params }),
-        assign({
-          list: pipe([
-            () => fs.readFile(outputGcListLocalPath, "utf-8"),
-            JSON.parse,
-          ]),
-          dot: () => fs.readFile(outputDotLocalPath, "utf-8"),
-          svg: () => fs.readFile(outputSvgLocalPath, "utf-8"),
-        }),
-        tap((content) => {
-          console.log(outputGcListLocalPath);
-          console.log(JSON.stringify(content, null, 4));
-        }),
-      ])(),
-  ])();
-
 const contextSet400 =
   ({ context, message }) =>
   () => {
@@ -216,6 +67,162 @@ exports.DiagramApi = (app) => {
   const { localOutputPath, localInputPath } = config.infra;
   assert(localOutputPath);
   assert(localInputPath);
+
+  const runDockerJob = ({ dockerClient, params }) =>
+    pipe([
+      tap(() => {
+        assert(params.name);
+        assert(dockerClient, "dockerClient");
+      }),
+      () => dockerClient.container.create(params),
+      () => dockerClient.container.start({ name: params.name }),
+      () => dockerClient.container.wait({ name: params.name }),
+      tap((xxx) => {
+        assert(true);
+      }),
+    ])();
+
+  const gcpConfigFileContent = ({
+    credendialFileName,
+  }) => `const path = require("path");
+  module.exports = ({ stage }) => ({
+    credentialFile: path.resolve(__dirname, "${credendialFileName}"),
+  });`;
+
+  const writeGcpFiles = ({
+    configFileName,
+    credendialFileName,
+    credendialContent,
+  }) =>
+    pipe([
+      tap(() => {
+        log.debug(
+          `writeGcpFiles configFileName: ${configFileName}, credendialFileName: ${credendialFileName}`
+        );
+      }),
+      () =>
+        fs.writeFile(
+          `input/${credendialFileName}`,
+          JSON.stringify(credendialContent)
+        ),
+      () =>
+        fs.writeFile(
+          configFileName,
+          gcpConfigFileContent({ credendialFileName })
+        ),
+    ])();
+
+  const runGcList = ({
+    jobId,
+    providerAuth,
+    provider,
+    containerName = "grucloud-cli",
+    containerImage = "grucloud-cli",
+    localOutputPath = "output",
+    localInputPath = "input",
+    dockerClient,
+    outputDir = "output",
+    inputDir = "input",
+  }) =>
+    pipe([
+      tap(() => {
+        assert(provider);
+      }),
+      () => ({
+        outputGcList: `gc-list-${jobId}.json`,
+        outputDot: `${jobId}.dot`,
+        outputSvg: `${jobId}.svg`,
+      }),
+      assign({
+        name: () => `${containerName}-${jobId}`,
+        Cmd: ({ outputGcList, outputDot }) => [
+          "list",
+          "--provider",
+          provider,
+          "--infra",
+          `iac_${provider}.js`,
+          "--all",
+          "--graph",
+          "--json",
+          `output/${outputGcList}`,
+          "--dot-file",
+          `output/${outputDot}`,
+        ],
+        outputGcListLocalPath: ({ outputGcList }) =>
+          path.resolve(outputDir, outputGcList),
+        outputDotLocalPath: ({ outputDot }) =>
+          path.resolve(outputDir, outputDot),
+        outputSvgLocalPath: ({ outputSvg }) =>
+          path.resolve(outputDir, outputSvg),
+        HostConfig: () => ({
+          Binds: [
+            `${path.resolve(localOutputPath)}:/app/${outputDir}`,
+            `${path.resolve(localInputPath)}:/app/${inputDir}`,
+          ],
+        }),
+        Env: () =>
+          pipe([
+            () => providerAuth,
+            map.entries(([key, value]) => [key, `${key}=${value}`]),
+            values,
+          ])(),
+      }),
+      switchCase([
+        eq(provider, "google"),
+        pipe([
+          assign({
+            Cmd: ({ Cmd }) => [...Cmd, "--config", `input/config-${jobId}.js`],
+          }),
+          tap(() =>
+            writeGcpFiles({
+              configFileName: `input/config-${jobId}.js`,
+              credendialFileName: `gcp-credendial-${jobId}.json`,
+              credendialContent: providerAuth.credentials,
+            })
+          ),
+        ]),
+        identity,
+      ]),
+      tap((input) => {
+        log.debug(`runGcList: ${JSON.stringify(input, null, 4)}`);
+      }),
+      ({
+        name,
+        Cmd,
+        HostConfig,
+        Env,
+        outputGcListLocalPath,
+        outputSvgLocalPath,
+        outputDotLocalPath,
+      }) =>
+        pipe([
+          () => ({
+            name,
+            body: {
+              Image: containerImage,
+              Cmd,
+              Env,
+              HostConfig,
+            },
+          }),
+          tap((xxx) => {
+            assert(true);
+          }),
+          (params) => runDockerJob({ dockerClient, params }),
+          assign({
+            list: pipe([
+              () => fs.readFile(outputGcListLocalPath, "utf-8"),
+              JSON.parse,
+            ]),
+            dot: () => fs.readFile(outputDotLocalPath, "utf-8"),
+            svg: () => fs.readFile(outputSvgLocalPath, "utf-8"),
+          }),
+          tap((content) => {
+            console.log(outputGcListLocalPath);
+            console.log(JSON.stringify(content, null, 4));
+          }),
+        ])(),
+    ])();
 
   const api = {
     pathname: "/cloudDiagram",

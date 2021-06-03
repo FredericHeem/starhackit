@@ -2,7 +2,8 @@
   "infra": { 
     "docker": { "baseURL": "{{docker_base_url}}" },
     "containerImage": "{{grucloud_image}}",
-    "localVolumePath": "/home/{{user}}/output"
+    "localOutputPath": "/home/{{user}}/output",
+    "localInputPath": "/home/{{user}}/input"
   },
   "jwtSecret": "{{jwt_secret}}",
   "db": {

@@ -61,7 +61,8 @@ const runGcList = ({
   provider,
   containerName = "grucloud-cli",
   containerImage = "grucloud-cli",
-  localVolumePath = "output",
+  localOutputPath = "output",
+  localInputPath = "input",
   dockerClient,
   outputDir = "output",
   inputDir = "input",
@@ -96,8 +97,8 @@ const runGcList = ({
       outputSvgLocalPath: ({ outputSvg }) => path.resolve(outputDir, outputSvg),
       HostConfig: () => ({
         Binds: [
-          `${path.resolve(localVolumePath)}:/app/${outputDir}`,
-          `${path.resolve(inputDir)}:/app/${inputDir}`,
+          `${path.resolve(localOutputPath)}:/app/${outputDir}`,
+          `${path.resolve(localInputPath)}:/app/${inputDir}`,
         ],
       }),
       Env: () =>
@@ -212,8 +213,9 @@ exports.DiagramApi = (app) => {
   const { models } = app.data.sequelize;
   const { config, dockerClient } = app;
   assert(dockerClient, "dockerClient");
-  const { localVolumePath } = config.infra;
-  assert(localVolumePath);
+  const { localOutputPath, localInputPath } = config.infra;
+  assert(localOutputPath);
+  assert(localInputPath);
 
   const api = {
     pathname: "/cloudDiagram",
@@ -319,7 +321,8 @@ exports.DiagramApi = (app) => {
                           jobId: id,
                           providerAuth: infra.providerAuth,
                           provider: infra.providerType,
-                          localVolumePath,
+                          localOutputPath,
+                          localInputPath,
                           dockerClient,
                           containerImage: config.infra.containerImage,
                         }),

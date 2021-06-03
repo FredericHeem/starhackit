@@ -43,10 +43,10 @@
       }
     }
   },
-
   "infra": {
     "docker": { "baseURL": "http://localhost/v1.40" },
-    "localVolumePath": "output",
+    "localOutputPath": "output",
+    "localInputPath": "input",
     "containerImage": "fredericheem/grucloud-cli:v1.17.8"
   }
 }

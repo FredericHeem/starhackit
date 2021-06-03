@@ -8,8 +8,6 @@ import { size, isEmpty } from "rubico/x";
 import validate from "validate.js";
 
 import button from "mdlean/lib/button";
-import formGroup from "mdlean/lib/formGroup";
-import input from "mdlean/lib/input";
 import alert from "mdlean/lib/alert";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 
@@ -26,6 +24,8 @@ import { awsFormEdit, createStoreAws } from "./awsConfig";
 import { gcpFormEdit, createStoreGoogle } from "./gcpConfig";
 import { azureFormEdit, createStoreAzure } from "./azureConfig";
 import { createInfraDelete } from "./infraDelete";
+
+import { createRoutes } from "./infraRoutes";
 
 const getLivesFromJob = get("result.list.result.results[0].results");
 
@@ -203,115 +203,6 @@ export default function (context) {
   const asyncOpCreate = AsyncOp(context);
   const Alert = alert(context);
 
-  function Routes(stores) {
-    return [
-      {
-        path: "",
-        protected: true,
-        action: (routerContext) => {
-          stores.infra.get();
-          return {
-            routerContext,
-            title: "My Infra",
-            component: h(createInfraList(context), {
-              title: "Create",
-              store: stores.infra,
-            }),
-          };
-        },
-      },
-      {
-        path: "/create",
-        protected: true,
-        action: (routerContext) => {
-          stores.create.reset();
-          return {
-            routerContext,
-            title: "Create New Infrastructure",
-            component: h(wizardCreate(context), {
-              title: "Create",
-              buttonTitle: "Create Infrastructure",
-              store: stores.create,
-              //TODO check
-              onClick: () => stores.create.create(),
-            }),
-          };
-        },
-      },
-      {
-        path: "/detail/:id/aws/edit",
-        protected: true,
-        action: async (routerContext) => {
-          stores.aws.setData(window.history.state.usr);
-          return {
-            routerContext,
-            title: "Edit Aws Infrastructure",
-            component: h(awsFormEdit(context), {
-              store: stores.aws,
-            }),
-          };
-        },
-      },
-      {
-        path: "/detail/:id/google/edit",
-        protected: true,
-        action: async (routerContext) => {
-          stores.google.setData(window.history.state.usr);
-          return {
-            routerContext,
-            title: "Edit GCP Infrastructure",
-            component: h(gcpFormEdit(context), {
-              store: stores.google,
-            }),
-          };
-        },
-      },
-      {
-        path: "/detail/:id/azure/edit",
-        protected: true,
-        action: async (routerContext) => {
-          stores.azure.setData(window.history.state.usr);
-          return {
-            routerContext,
-            title: "Edit Azure Infrastructure",
-            component: h(azureFormEdit(context), {
-              store: stores.azure,
-            }),
-          };
-        },
-      },
-      {
-        path: "/detail/:id/delete",
-        protected: true,
-        action: (routerContext) => {
-          stores.delete.setData(window.history.state.usr);
-          return {
-            routerContext,
-            title: "Delete Infrastructure",
-            component: h(createInfraDelete(context), {
-              store: stores.delete,
-            }),
-          };
-        },
-      },
-      {
-        path: "/detail/:id",
-        protected: true,
-        action: async (routerContext) => {
-          await stores.infraDetail.getById(routerContext.params.id);
-          return {
-            routerContext,
-            title: "Infrastructure Detail",
-            component: h(createInfraDetail(context), {
-              store: stores.infraDetail,
-              detail: window.history.state.usr,
-            }),
-          };
-        },
-      },
-    ];
-  }
-
   function Stores() {
     const infraStore = observable({
       errors: {},
@@ -477,6 +368,6 @@ export default function (context) {
 
   return {
     stores: () => stores,
-    routes: () => Routes(stores),
+    routes: () => createRoutes({ context, stores }),
   };
 }

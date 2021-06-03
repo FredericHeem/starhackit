@@ -9,11 +9,11 @@ pip_install_packages:
   - name: docker
 
   
-grucloud_image: "fredericheem/grucloud-cli:v1.17.8"
+grucloud_image: "fredericheem/grucloud-cli:v1.18.0"
 docker_base_url: "http:/v1.41"
 # Docker image tag names
 api_image: "fredericheem/api"
-api_tag: v10.36.0
+api_tag: v10.37.0
 
 web_image: "fredericheem/ui"
 web_tag: v10.34.0

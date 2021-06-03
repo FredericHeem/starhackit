@@ -147,6 +147,8 @@ exports.DiagramApi = (app) => {
           `output/${outputGcList}`,
           "--dot-file",
           `output/${outputDot}`,
+          "--title",
+          "",
         ],
         outputGcListLocalPath: ({ outputGcList }) =>
           path.resolve(outputDir, outputGcList),

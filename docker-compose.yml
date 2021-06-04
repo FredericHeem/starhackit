@@ -25,7 +25,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: fredericheem/api:v10.36.0
+    image: fredericheem/api:v10.37.0
     expose:
       - "9000"
     ports:
@@ -53,7 +53,7 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_VERSION: "docker compose alpha build"
-    image: fredericheem/ui:v10.34.0
+    image: fredericheem/ui:v10.35.0
     expose:
       - "3000"
     ports:

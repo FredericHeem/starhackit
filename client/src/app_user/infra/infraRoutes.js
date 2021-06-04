@@ -10,7 +10,6 @@ import { createInfraDelete } from "./infraDelete";
 import { createInfraList } from "./infraList";
 
 export const createRoutes = ({ context, stores }) => {
-  debugger;
   return [
     {
       path: "",

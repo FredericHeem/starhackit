@@ -13,16 +13,19 @@ export default (context) => {
       label: `${tr.t("Sign in with")} GitHub`,
       href: "/api/v1/auth/github",
       icon: <img src={githubIcon} alt="github" width={20} />,
+      dataButtonLogin: "github",
     },
     facebook: {
       label: `${tr.t("Sign in with")} Facebook`,
       href: "/api/v1/auth/facebook",
       icon: <img src={fbIcon} alt="facebook" width={20} />,
+      dataButtonLogin: "facebook",
     },
     google: {
       label: `${tr.t("Sign in with")} Google`,
       href: "/api/v1/auth/google",
       icon: <img src={googleIcon} alt="google" width={20} />,
+      dataButtonLogin: "google",
     },
   };
 
@@ -31,11 +34,12 @@ export default (context) => {
     width: 256,
   });
 
-  function SocialButton({ label, href, icon }) {
+  function SocialButton({ label, href, icon, dataButtonLogin }) {
     const Button = button(context);
     return (
       <SocialButtonView>
         <Button
+          data-button-login={dataButtonLogin}
           fullWidth
           raised
           label={label}
@@ -59,6 +63,7 @@ export default (context) => {
               label={auth.label}
               href={auth.href}
               icon={auth.icon}
+              dataButtonLogin={auth.dataButtonLogin}
             />
           );
         })}

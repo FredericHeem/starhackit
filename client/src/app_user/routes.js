@@ -1,9 +1,13 @@
-import React, { createElement as h } from "react";
-
 import { createPart } from "../router";
 import Layout from "./LayoutUnauthenticated";
 
 export default ({ context }) => [
+  {
+    path: "/",
+    action: async (routerContext) => {
+      context.history.push("/infra");
+    },
+  },
   {
     path: "/profile",
     children: [],

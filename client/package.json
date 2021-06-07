@@ -1,7 +1,8 @@
 {
   "name": "starhackit-ui",
   "title": "GruCloud",
-  "version": "10.35.0",
+  "version": "10.37.0",
+  "private": true,
   "description": "Visualize Cloud Infrastructure",
   "license": "NLPL",
   "scripts": {

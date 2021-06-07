@@ -22,7 +22,7 @@ const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
     .pause(delay);
 };
 
-describe.only("Infra", function () {
+describe("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
     client.page.login().login(done);

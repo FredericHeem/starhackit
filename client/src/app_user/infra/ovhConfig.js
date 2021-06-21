@@ -3,7 +3,8 @@ import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import validate from "validate.js";
-import { get } from "rubico";
+import { get, or, pipe } from "rubico";
+import { isEmpty } from "rubico/x";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
@@ -82,7 +83,7 @@ const defaultData = {
 const buildPayload = ({ data }) => ({
   name: data.name,
   providerType: "openstack",
-  provideName: "ovh",
+  providerName: "ovh",
   providerAuth: {
     OS_AUTH_URL: data.OS_AUTH_URL,
     OS_PROJECT_NAME: data.OS_PROJECT_NAME.trim(),
@@ -119,6 +120,15 @@ export const createStoreOvh = (context) => {
     op: asyncOpCreate((payload) => rest.post("infra", payload)),
     get isCreating() {
       return store.opScan.loading || store.op.loading;
+    },
+    get isDisabled() {
+      return or([
+        pipe([get("name"), isEmpty]),
+        pipe([get("OS_PROJECT_NAME"), isEmpty]),
+        pipe([get("OS_PROJECT_ID"), isEmpty]),
+        pipe([get("OS_USERNAME"), isEmpty]),
+        pipe([get("OS_REGION_NAME"), isEmpty]),
+      ])(store.data);
     },
     create: action(async () => {
       store.errors = {};
@@ -298,7 +308,7 @@ export const ovhFormCreate = (context) => {
           data-infra-create-submit
           primary
           raised
-          disabled={store.isCreating}
+          disabled={store.isCreating || store.isDisabled}
           onClick={() => store.create()}
           label={tr.t("Create Infrastructure")}
         />

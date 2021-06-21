@@ -24,6 +24,7 @@ describe("Infra", function () {
         () => ({
           name: infraName,
           providerType: "aws",
+          providerName: "aws",
           providerAuth: awsEnv,
           options: {},
         }),

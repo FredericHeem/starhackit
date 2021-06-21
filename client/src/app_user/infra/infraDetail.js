@@ -98,12 +98,18 @@ const createInfraDetail = (context) => {
                 id: detail.id,
                 name: detail.name,
                 providerType: detail.providerType,
+                providerName: detail.providerName,
                 providerAuth: {
                   ...detail.providerAuth,
                   credentials: { ...detail.providerAuth.credentials },
                 },
               };
-              history.push(`${detail.id}/${detail.providerType}/edit`, state);
+              history.push(
+                `${detail.id}/${
+                  detail.providerName || detail.providerType
+                }/edit`,
+                state
+              );
             }}
           />
         </header>
@@ -113,7 +119,7 @@ const createInfraDetail = (context) => {
             justify-content: space-between;
           `}
         >
-          <ProviderLogo type={detail.providerType} />
+          <ProviderLogo name={detail.providerName || detail.providerType} />
           {detail.providerAuth.AWS_REGION && (
             <BadgeRegion region={detail.providerAuth.AWS_REGION} />
           )}

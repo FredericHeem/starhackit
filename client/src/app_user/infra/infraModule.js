@@ -36,79 +36,6 @@ export default function (context) {
       }),
     });
 
-    //TODO remove
-    const defaultData = {
-      name: "",
-      accessKeyId: "",
-      secretKey: "",
-      region: "us-east-1",
-    };
-
-    //TODO remove
-    const storeCreate = observable({
-      data: defaultData,
-      errors: {},
-      reset: action(() => {
-        storeCreate.data = defaultData;
-      }),
-      setData: action((data) => {
-        storeCreate.data = data;
-      }),
-      opScan: asyncOpCreate((infraItem) =>
-        rest.post(`cloudDiagram`, { infra_id: infraItem.id })
-      ),
-      op: asyncOpCreate((payload) => rest.post("infra", payload)),
-      create: action(async () => {
-        storeCreate.errors = {};
-        const { data } = storeCreate;
-
-        const constraints = {
-          name: rules.infraName,
-          accessKeyId: rules.accessKeyId,
-          secretKey: rules.secretKey,
-        };
-        const vErrors = validate(data, constraints);
-        if (vErrors) {
-          storeCreate.errors = vErrors;
-          return;
-        }
-
-        const payload = {
-          name: data.name,
-          providerType: "aws",
-          providerAuth: {
-            AWSAccessKeyId: data.accessKeyId.trim(),
-            AWSSecretKey: data.secretKey,
-            AWS_REGION: data.region,
-          },
-        };
-        try {
-          const result = await storeCreate.op.fetch(payload);
-          await storeCreate.opScan.fetch(result);
-          alertStack.add(
-            <Alert
-              severity="success"
-              message={tr.t("Infrastructure Created")}
-            />
-          );
-          history.push(`/infra/detail/${result.id}`, result);
-          emitter.emit("infra.created", result);
-        } catch (errors) {
-          console.log(errors);
-          // backend should 422 if the credentials are incorrect
-          alertStack.add(
-            <Alert
-              severity="error"
-              data-alert-error-create
-              message={tr.t(
-                "Error creating infrastructure, check the credentials"
-              )}
-            />
-          );
-        }
-      }),
-    });
-
     const infraDetailStore = observable({
       id: "",
       lives: [],
@@ -179,7 +106,6 @@ export default function (context) {
       azure: createStoreAzure(context),
       ovh: createStoreOvh(context),
       infra: infraStore,
-      create: storeCreate,
       infraDetail: infraDetailStore,
       delete: storeDelete,
     };

@@ -22,6 +22,7 @@ describe("CloudDiagramAws", function () {
         () => ({
           name: "infra-aws-test",
           providerType: "aws",
+          providerName: "aws",
           providerAuth: awsEnv,
         }),
         (input) => client.post("v1/infra", input),

@@ -94,7 +94,7 @@ const createInfraItem = (context) => {
       >
         <ProjectName name={item.name} />
         {item.Jobs[0] && <ResourceStat stats={resourceStats(item.Jobs[0])} />}
-        <ProviderLogo type={item.providerType} />
+        <ProviderLogo name={item.providerName || item.providerType} />
         {item.providerAuth.AWS_REGION && (
           <BadgeRegion region={item.providerAuth.AWS_REGION} />
         )}

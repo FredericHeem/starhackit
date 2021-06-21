@@ -34,18 +34,6 @@ describe.only("Infra", function () {
   //   client.page.logout().logout(done);
   // });
 
-  it("bad credentials", function (client) {
-    client.page
-      .infraCreate()
-      .navigate()
-      .waitForElementVisible("@formProviderSelect", delay)
-      .click("@buttonSelectAws")
-      .setValue("@nameInput", infraNameAws)
-      .setValue("@accessKeyIdInput", Array(20).fill("K"))
-      .setValue("@secretKeyInput", Array(40).fill("S"))
-      .click("@submit")
-      .waitForElementVisible("div[data-alert-error-create=true]", 50e3);
-  });
   it("create aws", function (client) {
     client.page
       .infraCreate()
@@ -123,5 +111,18 @@ describe.only("Infra", function () {
 
   it("delete ovh", async function (client, done) {
     await deleteInfra({ client, infraName: infraNameOvh });
+  });
+
+  it("bad credentials", function (client) {
+    client.page
+      .infraCreate()
+      .navigate()
+      .waitForElementVisible("@formProviderSelect", delay)
+      .click("@buttonSelectAws")
+      .setValue("@nameInput", infraNameAws)
+      .setValue("@accessKeyIdInput", Array(20).fill("K"))
+      .setValue("@secretKeyInput", Array(40).fill("S"))
+      .click("@submit")
+      .waitForElementVisible("div[data-alert-error-create=true]", 50e3);
   });
 });

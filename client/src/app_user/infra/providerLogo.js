@@ -7,31 +7,30 @@ import GcpLogo from "./assets/gcp.svg";
 import AzureLogo from "./assets/azure.svg";
 import OvhLogo from "./assets/ovh.svg";
 
-// TODO providerName
-const providerType2Logo = (type) =>
+const providerName2Logo = (name) =>
   switchCase([
-    eq(type, "aws"),
+    eq(name, "aws"),
     () => AwsLogo,
-    eq(type, "google"),
+    eq(name, "google"),
     () => GcpLogo,
-    eq(type, "azure"),
+    eq(name, "azure"),
     () => AzureLogo,
-    eq(type, "openstack"),
+    eq(name, "ovh"),
     () => OvhLogo,
     (type) => <div>{type}</div>,
   ])();
 
 const providerLogo =
   ({ theme: { palette } }) =>
-  ({ type }) =>
+  ({ name }) =>
     (
       <img
         css={css`
           filter: grayscale(100%);
         `}
         height="40px"
-        src={providerType2Logo(type)}
-        alt={type}
+        src={providerName2Logo(name)}
+        alt={name}
       ></img>
     );
 

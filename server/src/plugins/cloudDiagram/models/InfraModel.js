@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      providerName: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
       providerAuth: {
         type: DataTypes.JSONB,
       },

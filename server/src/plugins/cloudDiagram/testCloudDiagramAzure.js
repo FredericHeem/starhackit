@@ -28,6 +28,7 @@ describe("CloudDiagram Azure", function () {
         () => ({
           name: "infra-azure-test",
           providerType: "azure",
+          providerName: "azure",
           providerAuth: azureEnv,
         }),
         (input) => client.post("v1/infra", input),

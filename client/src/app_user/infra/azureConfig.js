@@ -56,6 +56,7 @@ export const createStoreAzure = (context) => {
       store.errors = {};
       const payload = {
         providerType: "azure",
+        providerName: "azure",
         name: store.data.name,
         providerAuth: store.data,
       };

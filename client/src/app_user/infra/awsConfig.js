@@ -51,6 +51,7 @@ const defaultData = {
 const buildPayload = ({ data }) => ({
   name: data.name,
   providerType: "aws",
+  providerName: "aws",
   providerAuth: {
     AWSAccessKeyId: data.AWSAccessKeyId.trim(),
     AWSSecretKey: data.AWSSecretKey,

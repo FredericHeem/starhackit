@@ -16,13 +16,13 @@ export default (context) => {
   const { tr, emitter } = context;
   const ProviderSelection = providerSelection(context);
   const store = observable({
-    providerType: "",
-    selectProvider: (providerType) => {
-      store.providerType = providerType;
+    providerName: "",
+    selectProvider: (providerName) => {
+      store.providerName = providerName;
       emitter.emit("step.select", "Configuration");
     },
-    setProvider: (providerType) => {
-      store.providerType = providerType;
+    setProvider: (providerName) => {
+      store.providerName = providerName;
     },
   });
 
@@ -31,8 +31,8 @@ export default (context) => {
   const AzureFormCreate = azureFormCreate(context);
   const OvhFormCreate = ovhFormCreate(context);
 
-  const configViewFromProvider = (providerType) => {
-    switch (providerType) {
+  const configViewFromProvider = (providerName) => {
+    switch (providerName) {
       case "AWS":
         return <AwsFormCreate store={createStoreAws(context)} />;
       case "GCP":
@@ -58,9 +58,9 @@ export default (context) => {
     {
       name: "Configuration",
       header: observer(() => (
-        <header>Configuration {store.providerType}</header>
+        <header>Configuration {store.providerName}</header>
       )),
-      content: ({}) => configViewFromProvider(store.providerType),
+      content: ({}) => configViewFromProvider(store.providerName),
     },
   ];
 

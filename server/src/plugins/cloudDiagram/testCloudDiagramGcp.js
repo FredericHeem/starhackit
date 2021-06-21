@@ -29,6 +29,7 @@ describe("CloudDiagram GCP", function () {
         () => ({
           name: "infra-gcp-test",
           providerType: "google",
+          providerName: "google",
           providerAuth: { credentials: gcpCredentials },
         }),
         (input) => client.post("v1/infra", input),

@@ -46,6 +46,7 @@ export const createStoreGoogle = (context) => {
       const payload = {
         name: store.content.project_id,
         providerType: "google",
+        providerName: "google",
         providerAuth: { credentials: store.content },
       };
       try {

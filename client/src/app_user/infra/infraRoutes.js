@@ -32,16 +32,12 @@ export const createRoutes = ({ context, stores }) => {
       path: "/create",
       protected: true,
       action: (routerContext) => {
-        stores.create.reset();
         return {
           routerContext,
           title: "Create Infrastructure",
           component: h(wizardCreate(context), {
             title: "Create",
             buttonTitle: "Create Infrastructure",
-            store: stores.create,
-            //TODO check
-            onClick: () => stores.create.create(),
           }),
         };
       },
@@ -88,9 +84,8 @@ export const createRoutes = ({ context, stores }) => {
         };
       },
     },
-    //TODO change to ovh
     {
-      path: "/detail/:id/openstack/edit",
+      path: "/detail/:id/ovh/edit",
       protected: true,
       action: async (routerContext) => {
         stores.ovh.setData(window.history.state.usr);

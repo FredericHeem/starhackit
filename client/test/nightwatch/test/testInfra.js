@@ -5,6 +5,7 @@ const infraNameAzure = "Azure Infra";
 const infraNameOvh = "Ovh Infra";
 
 const delay = 2e3;
+const pause = 300;
 const googleCredentialFile = "grucloud-vm-tuto-1.json";
 
 const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
@@ -14,14 +15,14 @@ const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
     .waitForElementVisible("form[data-infra-list=true]", delay)
     .click(`li[data-infra-list-item-name="${infraName}"`)
     .waitForElementVisible("form[data-infra-detail=true]", delay)
-    .pause(delay)
+    .pause(pause)
     .click("@editSettingsButton")
-    .pause(delay)
+    .pause(pause)
     .click("a[data-infra-edit-delete-link=true]")
-    .pause(delay)
+    .pause(pause)
     .setValue("div[data-delete-name=true] input", infraName)
     .click("button[data-infra-button-delete=true]")
-    .pause(delay);
+    .pause(pause);
 };
 
 describe.only("Infra", function () {
@@ -47,7 +48,7 @@ describe.only("Infra", function () {
       // AWS_REGION
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
-      .pause(delay);
+      .pause(pause);
   });
   it("delete aws", async function (client, done) {
     await deleteInfra({ client, infraName: infraNameAws });
@@ -66,7 +67,7 @@ describe.only("Infra", function () {
       .setValue("@inputPassword", process.env.PASSWORD)
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
-      .pause(delay);
+      .pause(pause);
   });
   it("delete azure", async function (client, done) {
     await deleteInfra({ client, infraName: infraNameAzure });
@@ -84,7 +85,7 @@ describe.only("Infra", function () {
       )
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
-      .pause(delay);
+      .pause(pause);
   });
   it("delete google", async function (client, done) {
     await deleteInfra({ client, infraName: infraNameGoogle });
@@ -106,7 +107,7 @@ describe.only("Infra", function () {
       // OS_REGION_NAME
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)
-      .pause(delay);
+      .pause(pause);
   });
 
   it("delete ovh", async function (client, done) {

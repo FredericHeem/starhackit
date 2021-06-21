@@ -29,7 +29,7 @@ const OVH_REGION = [
   "SYD1",
 ];
 
-import SelectRegion from "./SelectRegion";
+import selectRegion from "./SelectRegion";
 
 const rules = {
   name: {
@@ -202,11 +202,11 @@ export const createStoreOvh = (context) => {
 export const ovhConfigForm = (context) => {
   const { tr } = context;
   const FormGroup = formGroup(context);
-  const OvhSelectRegion = SelectRegion(context, { items: OVH_REGION });
+  const OvhSelectRegion = selectRegion(context, { items: OVH_REGION });
   const Input = input(context, {
     cssOverride: css`
       > input {
-        width: 300px;
+        width: 320px;
       }
     `,
   });

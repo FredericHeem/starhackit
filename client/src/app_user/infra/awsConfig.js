@@ -14,7 +14,27 @@ import alert from "mdlean/lib/alert";
 import createForm from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
 
-import awsSelectRegion from "./awsSelectRegion";
+const AWS_REGION = [
+  "eu-north-1",
+  "ap-south-1",
+  "eu-west-3",
+  "eu-west-2",
+  "eu-west-1",
+  "ap-northeast-3",
+  "ap-northeast-2",
+  "ap-northeast-1",
+  "sa-east-1",
+  "ca-central-1",
+  "ap-southeast-1",
+  "ap-southeast-2",
+  "eu-central-1",
+  "us-east-1",
+  "us-east-2",
+  "us-west-1",
+  "us-west-2",
+];
+
+import selectRegion from "./SelectRegion";
 
 const rules = {
   infraName: {
@@ -164,7 +184,7 @@ export const createStoreAws = (context) => {
 export const awsConfigForm = (context) => {
   const { tr } = context;
   const FormGroup = formGroup(context);
-  const AwsSelectRegion = awsSelectRegion(context);
+  const AwsSelectRegion = selectRegion(context, { items: AWS_REGION });
   const Input = input(context, {
     cssOverride: css`
       > input {

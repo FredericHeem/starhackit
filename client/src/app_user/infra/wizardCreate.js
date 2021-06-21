@@ -10,6 +10,7 @@ import providerSelection from "./providerSelection";
 import { awsFormCreate, createStoreAws } from "./awsConfig";
 import { gcpFormCreate, createStoreGoogle } from "./gcpConfig";
 import { azureFormCreate, createStoreAzure } from "./azureConfig";
+import { ovhFormCreate, createStoreOvh } from "./ovhConfig";
 
 export default (context) => {
   const { tr, emitter } = context;
@@ -28,6 +29,7 @@ export default (context) => {
   const AwsFormCreate = awsFormCreate(context);
   const GcpFormCreate = gcpFormCreate(context);
   const AzureFormCreate = azureFormCreate(context);
+  const OvhFormCreate = ovhFormCreate(context);
 
   const configViewFromProvider = (providerType) => {
     switch (providerType) {
@@ -37,6 +39,8 @@ export default (context) => {
         return <GcpFormCreate store={createStoreGoogle(context)} />;
       case "Azure":
         return <AzureFormCreate store={createStoreAzure(context)} />;
+      case "OVH":
+        return <OvhFormCreate store={createStoreOvh(context)} />;
       default:
         throw Error(`invalid provider type`);
     }

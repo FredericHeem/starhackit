@@ -5,7 +5,9 @@ import { get, eq, pipe, flatMap, fork, switchCase, pick, tap } from "rubico";
 import AwsLogo from "./assets/aws.svg";
 import GcpLogo from "./assets/gcp.svg";
 import AzureLogo from "./assets/azure.svg";
+import OvhLogo from "./assets/ovh.svg";
 
+// TODO providerName
 const providerType2Logo = (type) =>
   switchCase([
     eq(type, "aws"),
@@ -14,9 +16,9 @@ const providerType2Logo = (type) =>
     () => GcpLogo,
     eq(type, "azure"),
     () => AzureLogo,
-    (type) => {
-      throw Error(`invalid type '${type}' for logo`);
-    },
+    eq(type, "openstack"),
+    () => OvhLogo,
+    (type) => <div>{type}</div>,
   ])();
 
 const providerLogo =

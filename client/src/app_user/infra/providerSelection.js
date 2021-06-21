@@ -7,6 +7,7 @@ import button from "mdlean/lib/button";
 import AwsLogo from "./assets/aws.svg";
 import GcpLogo from "./assets/gcp.svg";
 import AzureLogo from "./assets/azure.svg";
+import OvhLogo from "./assets/ovh.svg";
 
 export default function (context) {
   const Button = button(context);
@@ -49,6 +50,13 @@ export default function (context) {
         onClick={() => store.selectProvider("Azure")}
       >
         <img src={AzureLogo} alt="Azure" />
+      </Button>
+      <Button
+        data-button-select-ovh
+        raised
+        onClick={() => store.selectProvider("OVH")}
+      >
+        <img src={OvhLogo} alt="OVH" />
       </Button>
     </form>
   ));

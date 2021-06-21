@@ -12,6 +12,7 @@ import rules from "./rulesForm";
 import { createStoreAws } from "./awsConfig";
 import { createStoreGoogle } from "./gcpConfig";
 import { createStoreAzure } from "./azureConfig";
+import { createStoreOvh } from "./ovhConfig";
 
 import { createRoutes } from "./infraRoutes";
 
@@ -176,6 +177,7 @@ export default function (context) {
       aws: createStoreAws(context),
       google: createStoreGoogle(context),
       azure: createStoreAzure(context),
+      ovh: createStoreOvh(context),
       infra: infraStore,
       create: storeCreate,
       infraDetail: infraDetailStore,

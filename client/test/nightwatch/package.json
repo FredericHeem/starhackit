@@ -6,8 +6,8 @@
   "license": "NLPL",
   "private": true,
   "scripts": {
-    "e2e": "dotenv -e ../../env nightwatch",
-    "e2e:prod": "dotenv -e ../../../env -- nightwatch --env prod"
+    "e2e": "dotenv -e ../../../env nightwatch",
+    "e2e:prod": "dotenv -e ../../env -- nightwatch --env prod"
   },
   "devDependencies": {
     "chromedriver": "90.0.0",

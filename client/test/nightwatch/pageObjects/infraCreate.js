@@ -19,6 +19,9 @@ module.exports = {
     buttonSelectAzure: {
       selector: "button[data-button-select-azure=true]",
     },
+    buttonSelectOvh: {
+      selector: "button[data-button-select-ovh=true]",
+    },
     submit: {
       selector: "button[data-infra-create-submit=true]",
     },
@@ -49,6 +52,11 @@ module.exports = {
     inputFileGoogleUpload: {
       selector: "input[data-input-google-upload=true]",
     },
+    inputInfraName: { selector: "input[name=infraName]" },
+    inputOsProjectId: { selector: "input[name=OS_PROJECT_ID]" },
+    inputOsProjectName: { selector: "input[name=OS_PROJECT_NAME]" },
+    inputOsUsername: { selector: "input[name=OS_USERNAME]" },
+    inputOsPassword: { selector: "input[name=OS_PASSWORD]" },
     alertError: {
       selector: "div[data-alert-error-create=true]",
     },

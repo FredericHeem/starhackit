@@ -2,6 +2,8 @@ const path = require("path");
 const infraNameAws = "Aws Infra";
 const infraNameGoogle = "grucloud-vm-tuto-1";
 const infraNameAzure = "Azure Infra";
+const infraNameOvh = "Ovh Infra";
+
 const delay = 2e3;
 const googleCredentialFile = "grucloud-vm-tuto-1.json";
 
@@ -22,7 +24,7 @@ const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
     .pause(delay);
 };
 
-describe("Infra", function () {
+describe.only("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
     client.page.login().login(done);
@@ -98,5 +100,28 @@ describe("Infra", function () {
   });
   it("delete google", async function (client, done) {
     await deleteInfra({ client, infraName: infraNameGoogle });
+  });
+
+  it("create ovh", function (client) {
+    client.page
+      .infraCreate()
+      .navigate()
+      .waitForElementVisible("@formProviderSelect", delay)
+      .click("@buttonSelectOvh")
+      .waitForElementVisible("form[data-infra-create-ovh=true]", delay)
+      .setValue("@inputInfraName", infraNameOvh)
+      .setValue("@inputOsProjectId", process.env.OS_PROJECT_ID)
+      .setValue("@inputOsProjectName", process.env.OS_PROJECT_NAME)
+      .setValue("@inputOsUsername", process.env.OS_USERNAME)
+      .setValue("@inputOsPassword", process.env.OS_PASSWORD)
+
+      // OS_REGION_NAME
+      .click("@submit")
+      .waitForElementVisible("form[data-infra-detail=true]", 50e3)
+      .pause(delay);
+  });
+
+  it("delete ovh", async function (client, done) {
+    await deleteInfra({ client, infraName: infraNameOvh });
   });
 });

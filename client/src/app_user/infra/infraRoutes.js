@@ -6,6 +6,8 @@ import createInfraDetail from "./infraDetail";
 import { awsFormEdit } from "./awsConfig";
 import { gcpFormEdit } from "./gcpConfig";
 import { azureFormEdit } from "./azureConfig";
+import { ovhFormEdit } from "./ovhConfig";
+
 import { createInfraDelete } from "./infraDelete";
 import { createInfraList } from "./infraList";
 
@@ -82,6 +84,21 @@ export const createRoutes = ({ context, stores }) => {
           title: "Edit Azure Infrastructure",
           component: h(azureFormEdit(context), {
             store: stores.azure,
+          }),
+        };
+      },
+    },
+    //TODO change to ovh
+    {
+      path: "/detail/:id/openstack/edit",
+      protected: true,
+      action: async (routerContext) => {
+        stores.ovh.setData(window.history.state.usr);
+        return {
+          routerContext,
+          title: "Edit OVH Infrastructure",
+          component: h(ovhFormEdit(context), {
+            store: stores.ovh,
           }),
         };
       },

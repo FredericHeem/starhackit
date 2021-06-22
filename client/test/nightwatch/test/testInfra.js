@@ -120,9 +120,9 @@ describe.only("Infra", function () {
       .navigate()
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectAws")
-      .setValue("@nameInput", infraNameAws)
-      .setValue("@accessKeyIdInput", Array(20).fill("K"))
-      .setValue("@secretKeyInput", Array(40).fill("S"))
+      .setValue("@inputInfraName", infraNameAws)
+      .setValue("@inputAccessKeyId", Array(20).fill("K"))
+      .setValue("@inputSecretKey", Array(40).fill("S"))
       .click("@submit")
       .waitForElementVisible("div[data-alert-error-create=true]", 50e3);
   });

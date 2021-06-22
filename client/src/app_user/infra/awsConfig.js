@@ -3,6 +3,8 @@ import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import validate from "validate.js";
+import { get, or, pipe } from "rubico";
+import { isEmpty } from "rubico/x";
 
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 import button from "mdlean/lib/button";
@@ -112,6 +114,13 @@ export const createStoreAws = (context) => {
     get isCreating() {
       return store.opScan.loading || store.op.loading;
     },
+    get isDisabled() {
+      return or([
+        pipe([get("name"), isEmpty]),
+        pipe([get("AWSAccessKeyId"), isEmpty]),
+        pipe([get("AWSSecretKey"), isEmpty]),
+      ])(store.data);
+    },
     create: action(async () => {
       store.errors = {};
       const { data } = store;
@@ -202,7 +211,7 @@ export const awsConfigForm = (context) => {
           value={store.data.name}
           onChange={(event) => store.onChange("name", event)}
           label={tr.t("Infrastructure Name")}
-          error={store.errors.name && store.errors.name[0]}
+          error={get("name[0]")(store.errors)}
         />
       </FormGroup>
       <FormGroup>
@@ -212,7 +221,7 @@ export const awsConfigForm = (context) => {
           onChange={(event) => store.onChange("AWSAccessKeyId", event)}
           autoComplete="off"
           label={tr.t("AWS Access Key Id")}
-          error={store.errors.AWSAccessKeyId && store.errors.AWSAccessKeyId[0]}
+          error={get("AWSAccessKeyId[0]")(store.errors)}
         />
       </FormGroup>
       <FormGroup>
@@ -222,7 +231,7 @@ export const awsConfigForm = (context) => {
           onChange={(event) => store.onChange("AWSSecretKey", event)}
           label={tr.t("AWS Secret Key")}
           type="password"
-          error={store.errors.AWSSecretKey && store.errors.AWSSecretKey[0]}
+          error={get("AWSSecretKey[0]")(store.errors)}
         />
       </FormGroup>
       <FormGroup className="aws-region">
@@ -273,7 +282,7 @@ export const awsFormCreate = (context) => {
           data-infra-create-submit
           primary
           raised
-          disabled={store.isCreating}
+          disabled={store.isCreating || store.isDisabled}
           onClick={() => store.create()}
           label={tr.t("Create Infrastructure")}
         />

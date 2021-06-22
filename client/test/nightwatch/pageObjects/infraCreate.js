@@ -28,15 +28,10 @@ module.exports = {
     submitUpdate: {
       selector: "button[data-infra-update-submit=true]",
     },
-    nameInput: {
-      selector: ".infra-name input",
-    },
-    accessKeyIdInput: {
-      selector: ".access-key input",
-    },
-    secretKeyInput: {
-      selector: ".secret-key input",
-    },
+
+    inputAccessKeyId: { selector: "input[name=AWSAccessKeyId]" },
+    inputSecretKey: { selector: "input[name=AWSSecretKey]" },
+
     formCreateAzure: {
       selector: "data-infra-create-azure",
     },

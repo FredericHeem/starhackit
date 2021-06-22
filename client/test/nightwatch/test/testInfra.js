@@ -42,9 +42,9 @@ describe.only("Infra", function () {
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectAws")
       .waitForElementVisible("form[data-infra-create-aws=true]", delay)
-      .setValue("@nameInput", infraNameAws)
-      .setValue("@accessKeyIdInput", process.env.AWSAccessKeyId)
-      .setValue("@secretKeyInput", process.env.AWSSecretKey)
+      .setValue("@inputInfraName", infraNameAws)
+      .setValue("@inputAccessKeyId", process.env.AWSAccessKeyId)
+      .setValue("@inputSecretKey", process.env.AWSSecretKey)
       // AWS_REGION
       .click("@submit")
       .waitForElementVisible("form[data-infra-detail=true]", 50e3)

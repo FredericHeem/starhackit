@@ -195,17 +195,19 @@ export const awsConfigForm = (context) => {
 
   return observer(({ store }) => (
     <>
-      <FormGroup className="infra-name">
+      <FormGroup>
         <Input
           autoFocus
+          name="infraName"
           value={store.data.name}
           onChange={(event) => store.onChange("name", event)}
           label={tr.t("Infrastructure Name")}
           error={store.errors.name && store.errors.name[0]}
         />
       </FormGroup>
-      <FormGroup className="access-key">
+      <FormGroup>
         <Input
+          name="AWSAccessKeyId"
           value={store.data.AWSAccessKeyId}
           onChange={(event) => store.onChange("AWSAccessKeyId", event)}
           autoComplete="off"
@@ -213,8 +215,9 @@ export const awsConfigForm = (context) => {
           error={store.errors.AWSAccessKeyId && store.errors.AWSAccessKeyId[0]}
         />
       </FormGroup>
-      <FormGroup className="secret-key">
+      <FormGroup>
         <Input
+          name="AWSSecretKey"
           value={store.data.AWSSecretKey}
           onChange={(event) => store.onChange("AWSSecretKey", event)}
           label={tr.t("AWS Secret Key")}

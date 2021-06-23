@@ -3,7 +3,7 @@ const assert = require("assert");
 const testMngr = require("test/testManager");
 const FormData = require("form-data");
 
-describe("Document No Auth", function () {
+describe.skip("Document No Auth", function () {
   let client;
   before(async () => {
     await testMngr.start();
@@ -25,7 +25,7 @@ describe("Document No Auth", function () {
   });
 });
 
-describe("Document", function () {
+describe.skip("Document", function () {
   let client;
   before(async () => {
     await testMngr.start();

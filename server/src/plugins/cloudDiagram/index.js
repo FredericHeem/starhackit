@@ -15,6 +15,7 @@ const {
   callProp,
   defaultsDeep,
   identity,
+  forEach,
 } = require("rubico/x");
 const fs = require("fs").promises;
 
@@ -22,6 +23,15 @@ const { DockerClient } = require("@grucloud/docker-axios");
 
 const { DiagramApi } = require("./diagramApi");
 const { InfraApi } = require("./infraApi");
+const { GitCredentialRestApi } = require("./gitCredentialApi");
+const { GitRepositoryRestApi } = require("./gitRepositoryApi");
+
+const models = [
+  "JobModel",
+  "InfraModel",
+  "GitCredentialModel",
+  "GitRepositoryModel",
+];
 
 const dockerDefault = {
   baseURL: "http://localhost/v1.40",
@@ -31,9 +41,9 @@ const dockerDefault = {
 
 module.exports = (app) => {
   const log = require("logfilename")(__filename);
-
-  app.data.registerModel(__dirname, `models/JobModel`);
-  app.data.registerModel(__dirname, `models/InfraModel`);
+  forEach((model) => app.data.registerModel(__dirname, `models/${model}`))(
+    models
+  );
 
   const dockerClient = pipe([
     () => app.config.infra.docker,
@@ -45,6 +55,8 @@ module.exports = (app) => {
 
   DiagramApi(app);
   InfraApi(app);
+  GitCredentialRestApi(app);
+  GitRepositoryRestApi(app);
 
   return {
     start: async () => {

@@ -7,6 +7,21 @@ module.exports = {
     return this.api.launchUrl + "/infra/create";
   },
   elements: {
+    submit: {
+      selector: "button[data-button-submit=true]",
+    },
+    formGitCredential: {
+      selector: "form[data-form-git-credential-config=true]",
+    },
+    inputGitUsername: { selector: "input[name=gitUsername]" },
+    inputGitPassword: { selector: "input[name=gitPassword]" },
+
+    formRepository: {
+      selector: "form[data-form-repository-config=true]",
+    },
+    inputRepositoryUrl: { selector: "input[name=repositoryUrl]" },
+    inputRepositoryBranch: { selector: "input[name=repositoryBranch]" },
+
     formProviderSelect: {
       selector: "form[data-form-provider-select=true]",
     },
@@ -21,9 +36,6 @@ module.exports = {
     },
     buttonSelectOvh: {
       selector: "button[data-button-select-ovh=true]",
-    },
-    submit: {
-      selector: "button[data-infra-create-submit=true]",
     },
     submitUpdate: {
       selector: "button[data-infra-update-submit=true]",

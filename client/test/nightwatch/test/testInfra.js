@@ -4,7 +4,7 @@ const infraNameGoogle = "grucloud-vm-tuto-1";
 const infraNameAzure = "Azure Infra";
 const infraNameOvh = "Ovh Infra";
 
-const delay = 2e3;
+const delay = 5e3;
 const pause = 300;
 const googleCredentialFile = "grucloud-vm-tuto-1.json";
 
@@ -25,6 +25,19 @@ const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
     .pause(pause);
 };
 
+const gitConfiguration = ({ client }) => {
+  client.page
+    .infraCreate()
+    .navigate()
+    .waitForElementVisible("@formGitCredential", delay)
+    .setValue("@inputGitUsername", process.env.GIT_USERNAME)
+    .setValue("@inputGitPassword", process.env.PERSONAL_ACCESS_TOKEN)
+    .click("@submit")
+    .waitForElementVisible("@formRepository", delay)
+    .setValue("@inputRepositoryUrl", process.env.GIT_REPOSITORY)
+    .click("@submit")
+    .waitForElementVisible("@formProviderSelect", delay);
+};
 describe.only("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
@@ -36,9 +49,10 @@ describe.only("Infra", function () {
   // });
 
   it("create aws", function (client) {
+    gitConfiguration({ client });
+
     client.page
       .infraCreate()
-      .navigate()
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectAws")
       .waitForElementVisible("form[data-infra-create-aws=true]", delay)
@@ -54,9 +68,10 @@ describe.only("Infra", function () {
     await deleteInfra({ client, infraName: infraNameAws });
   });
   it("create azure", function (client) {
+    gitConfiguration({ client });
+
     client.page
       .infraCreate()
-      .navigate()
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectAzure")
       .waitForElementVisible("form[data-infra-create-azure=true]", delay)
@@ -73,9 +88,9 @@ describe.only("Infra", function () {
     await deleteInfra({ client, infraName: infraNameAzure });
   });
   it("create google", function (client) {
+    gitConfiguration({ client });
     client.page
       .infraCreate()
-      .navigate()
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectGoogle")
       .waitForElementVisible("form[data-infra-create-google=true]", delay)
@@ -92,9 +107,10 @@ describe.only("Infra", function () {
   });
 
   it("create ovh", function (client) {
+    gitConfiguration({ client });
+
     client.page
       .infraCreate()
-      .navigate()
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectOvh")
       .waitForElementVisible("form[data-infra-create-ovh=true]", delay)
@@ -115,9 +131,9 @@ describe.only("Infra", function () {
   });
 
   it("bad credentials", function (client) {
+    gitConfiguration({ client });
     client.page
       .infraCreate()
-      .navigate()
       .waitForElementVisible("@formProviderSelect", delay)
       .click("@buttonSelectAws")
       .setValue("@inputInfraName", infraNameAws)

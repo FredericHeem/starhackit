@@ -3,6 +3,7 @@ const { pipe, tap, tryCatch } = require("rubico");
 const { first } = require("rubico/x");
 
 let gcpCredentials;
+const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN } = process.env;
 
 const testMngr = require("test/testManager");
 
@@ -25,8 +26,15 @@ describe("CloudDiagram GCP", function () {
   it("gcp create, list, get by id, delete", async () => {
     try {
       await pipe([
-        // Create
-        () => ({
+        // use createGitInfo
+        () =>
+          client.post("v1/git_credential", {
+            providerType: "GitHub",
+            username: GIT_USERNAME,
+            password: PERSONAL_ACCESS_TOKEN,
+          }),
+        ({ id: git_credential_id }) => ({
+          git_credential_id,
           name: "infra-gcp-test",
           providerType: "google",
           providerName: "google",

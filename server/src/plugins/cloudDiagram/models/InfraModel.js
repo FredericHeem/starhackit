@@ -37,12 +37,31 @@ module.exports = (sequelize, DataTypes) => {
         name: "user_id",
         allowNull: false,
       },
+      as: "user",
     });
     models.User.hasMany(models.Infra, {
       foreignKey: {
         name: "user_id",
         allowNull: true,
       },
+    });
+
+    // Infra has one GitCredential
+    Infra.belongsTo(models.GitCredential, {
+      foreignKey: {
+        name: "git_credential_id",
+        allowNull: true,
+      },
+      as: "gitCredential",
+    });
+
+    // Infra has one GitRepository
+    Infra.belongsTo(models.GitRepository, {
+      foreignKey: {
+        name: "git_repository_id",
+        allowNull: true,
+      },
+      as: "gitRepository",
     });
   };
   return Infra;

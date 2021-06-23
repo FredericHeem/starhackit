@@ -4,36 +4,71 @@ const { isEmpty, callProp } = require("rubico/x");
 
 const uuid = require("uuid");
 
-// TODO in common file
-const contextSet400 =
-  ({ context, message }) =>
-  () => {
-    context.status = 400;
-    context.body = {
-      error: {
-        code: 400,
-        name: "BadRequest",
-        message,
-      },
-    };
-  };
+const { contextSet400, contextSet404, contextSetOk } = require("./common");
 
-const contextSet404 = ({ context }) => {
-  context.status = 404;
-  context.body = {
-    error: {
-      code: 404,
-      name: "NotFound",
-    },
-  };
-};
+const infraFindOne = ({ models }) =>
+  pipe([
+    ({ id }) =>
+      models.Infra.findOne({
+        include: [
+          {
+            model: models.Job,
+            limit: 1,
+            order: [["createdAt", "DESC"]],
+          },
+          {
+            model: models.GitCredential,
+            as: "gitCredential",
+          },
+          {
+            model: models.GitRepository,
+            as: "gitRepository",
+          },
+          {
+            model: models.User,
+            as: "user",
+          },
+        ],
+        where: {
+          id,
+        },
+      }),
+  ]);
 
-const contextSetOk =
-  ({ context }) =>
-  (body) => {
-    context.status = 200;
-    context.body = body;
-  };
+exports.infraFindOne = infraFindOne;
+
+const infraFindAll = ({ models }) =>
+  pipe([
+    ({ user_id }) =>
+      models.Infra.findAll({
+        include: [
+          {
+            model: models.Job,
+            limit: 1,
+            order: [["createdAt", "DESC"]],
+          },
+          {
+            model: models.GitCredential,
+            as: "gitCredential",
+          },
+          {
+            model: models.GitRepository,
+            as: "gitRepository",
+          },
+          {
+            model: models.User,
+            as: "user",
+          },
+        ],
+        where: {
+          user_id,
+        },
+      }),
+    map(callProp("get")),
+    tap((xxx) => {
+      assert(true);
+    }),
+  ]);
 
 exports.InfraApi = (app) => {
   const log = require("logfilename")(__filename);
@@ -53,18 +88,7 @@ exports.InfraApi = (app) => {
           tryCatch(
             pipe([
               () =>
-                models.Infra.findAll({
-                  include: {
-                    model: models.Job,
-                    limit: 1,
-                    order: [["createdAt", "DESC"]],
-                  },
-                  where: { user_id: context.state.user.id },
-                }),
-              map(callProp("get")),
-              tap((xxx) => {
-                assert(true);
-              }),
+                infraFindAll({ models })({ user_id: context.state.user.id }),
               contextSetOk({ context }),
             ]),
             pipe([
@@ -90,16 +114,8 @@ exports.InfraApi = (app) => {
                 // valid id
                 pipe([
                   () =>
-                    models.Infra.findOne({
-                      include: {
-                        model: models.Job,
-                        limit: 1,
-                        order: [["createdAt", "DESC"]],
-                      },
-                      where: {
-                        id: context.params.id,
-                        user_id: context.state.user.id,
-                      },
+                    infraFindOne({ models })({
+                      id: context.params.id,
                     }),
                   tap((xxx) => {
                     assert(true);
@@ -167,7 +183,6 @@ exports.InfraApi = (app) => {
                     models.Infra.destroy({
                       where: {
                         id: context.params.id,
-                        user_id: context.state.user.id,
                       },
                     }),
                   tap(contextSetOk({ context })),
@@ -198,9 +213,6 @@ exports.InfraApi = (app) => {
                 () => uuid.validate(context.params.id),
                 // valid id
                 pipe([
-                  tap((xxx) => {
-                    assert(true);
-                  }),
                   () =>
                     models.Infra.update(context.request.body, {
                       where: {
@@ -208,12 +220,10 @@ exports.InfraApi = (app) => {
                       },
                     }),
                   () =>
-                    models.Infra.findOne({
-                      where: {
-                        id: context.params.id,
-                      },
+                    infraFindOne({ models })({
+                      id: context.params.id,
                     }),
-                  callProp("get"),
+                  callProp("toJSON"),
                   tap((xxx) => {
                     assert(true);
                   }),

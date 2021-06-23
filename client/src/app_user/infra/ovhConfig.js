@@ -80,24 +80,29 @@ const defaultData = {
   OS_REGION_NAME: "UK1",
 };
 
-const buildPayload = ({ data }) => ({
-  name: data.name,
-  providerType: "openstack",
-  providerName: "ovh",
-  providerAuth: {
-    OS_AUTH_URL: data.OS_AUTH_URL,
-    OS_PROJECT_NAME: data.OS_PROJECT_NAME.trim(),
-    OS_PROJECT_ID: data.OS_PROJECT_ID.trim(),
-    OS_USERNAME: data.OS_USERNAME.trim(),
-    OS_PASSWORD: data.OS_PASSWORD,
-    OS_REGION_NAME: data.OS_REGION_NAME,
-  },
-});
-
-export const createStoreOvh = (context) => {
+export const createStoreOvh = (
+  context,
+  { gitCredentialStore, gitRepositoryStore }
+) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const Alert = alert(context);
   const asyncOpCreate = AsyncOp(context);
+
+  const buildPayload = ({ data }) => ({
+    name: data.name,
+    providerType: "openstack",
+    providerName: "ovh",
+    providerAuth: {
+      OS_AUTH_URL: data.OS_AUTH_URL,
+      OS_PROJECT_NAME: data.OS_PROJECT_NAME.trim(),
+      OS_PROJECT_ID: data.OS_PROJECT_ID.trim(),
+      OS_USERNAME: data.OS_USERNAME.trim(),
+      OS_PASSWORD: data.OS_PASSWORD,
+      OS_REGION_NAME: data.OS_REGION_NAME,
+    },
+    git_credential_id: gitCredentialStore.id,
+    git_repository_id: gitRepositoryStore.id,
+  });
 
   const store = observable({
     id: "",
@@ -170,7 +175,7 @@ export const createStoreOvh = (context) => {
     update: action(async () => {
       store.errors = {};
       const { data } = store;
-      const vErrors = validate(data, constraints);
+      const vErrors = validate(data, rules);
       if (vErrors) {
         store.errors = vErrors;
         return;
@@ -305,7 +310,7 @@ export const ovhFormCreate = (context) => {
         </Button>
 
         <Button
-          data-infra-create-submit
+          data-button-submit
           primary
           raised
           disabled={store.isCreating || store.isDisabled}

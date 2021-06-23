@@ -12,8 +12,8 @@
   "scripts": {
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
     "start:prod": "NODE_ENV=production node src/index.js",
-    "test": "npm run cover",
-    "mocha": "NODE_PATH=src mocha --file test/setup.js 'src/**/test*.js' --exit",
+    "test": "npm run mocha",
+    "mocha": "NODE_PATH=src dotenv -e ../env -- mocha --file test/setup.js 'src/**/test*.js' --exit",
     "mocha:watch": "npm run mocha -- --watch",
     "cover": "nyc npm run mocha",
     "lint": "eslint src",
@@ -46,6 +46,7 @@
     "config": "3.3.3",
     "ejs": "3.1.6",
     "ioredis": "4.22.0",
+    "isomorphic-git": "1.8.3",
     "jsonschema": "1.4.0",
     "jsonwebtoken": "8.5.1",
     "kcors": "2.2.2",
@@ -81,6 +82,8 @@
   "devDependencies": {
     "async": "3.2.0",
     "chai": "4.3.0",
+    "dotenv": "10.0.0",
+    "dotenv-cli": "4.0.0",
     "eslint": "7.20.0",
     "eslint-plugin-mocha": "8.0.0",
     "faker": "5.4.0",

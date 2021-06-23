@@ -1,5 +1,4 @@
 const assert = require("assert");
-const fs = require("fs").promises;
 const uuid = require("uuid");
 
 const {
@@ -13,39 +12,14 @@ const {
   map,
 } = require("rubico");
 const { isEmpty, values, callProp, identity } = require("rubico/x");
-
+const fs = require("fs");
+const pfs = fs.promises;
 const path = require("path");
 
-const contextSet400 =
-  ({ context, message }) =>
-  () => {
-    context.status = 400;
-    context.body = {
-      error: {
-        code: 400,
-        name: "BadRequest",
-        message,
-      },
-    };
-  };
+const { contextSet400, contextSet404, contextSetOk } = require("./common");
 
-const contextSet404 = ({ context }) => {
-  context.status = 404;
-  context.body = {
-    error: {
-      code: 404,
-      name: "NotFound",
-    },
-  };
-};
-
-const contextSetOk =
-  ({ context }) =>
-  (body) => {
-    context.status = 200;
-    context.body = body;
-  };
-
+const { infraFindOne } = require("./infraApi");
+const { gitPush } = require("./gitUtils");
 const getJobStatus = switchCase([
   eq(get("StatusCode"), 0),
   () => "done",
@@ -101,15 +75,24 @@ exports.DiagramApi = (app) => {
         );
       }),
       () =>
-        fs.writeFile(
+        pfs.writeFile(
           `input/${credendialFileName}`,
           JSON.stringify(credendialContent)
         ),
       () =>
-        fs.writeFile(
+        pfs.writeFile(
           configFileName,
           gcpConfigFileContent({ credendialFileName })
         ),
+    ])();
+
+  const buildGitDirName = ({ user_id }) =>
+    path.resolve(process.cwd(), `output/user-${user_id}`);
+
+  const gitDir = ({ user_id }) =>
+    pipe([
+      () => buildGitDirName({ user_id }),
+      tap((dir) => pfs.mkdir(dir, { recursive: true })),
     ])();
 
   const runGcList = ({
@@ -213,11 +196,11 @@ exports.DiagramApi = (app) => {
           (params) => runDockerJob({ dockerClient, params }),
           assign({
             list: pipe([
-              () => fs.readFile(outputGcListLocalPath, "utf-8"),
+              () => pfs.readFile(outputGcListLocalPath, "utf-8"),
               JSON.parse,
             ]),
-            dot: () => fs.readFile(outputDotLocalPath, "utf-8"),
-            svg: () => fs.readFile(outputSvgLocalPath, "utf-8"),
+            dot: () => pfs.readFile(outputDotLocalPath, "utf-8"),
+            svg: () => pfs.readFile(outputSvgLocalPath, "utf-8"),
           }),
           tap((content) => {
             console.log(outputGcListLocalPath);
@@ -242,7 +225,7 @@ exports.DiagramApi = (app) => {
                 models.Job.findAll({
                   where: { user_id: context.state.user.id },
                 }),
-              map(callProp("get")),
+              map(callProp("toJSON")),
               contextSetOk({ context }),
             ]),
             pipe([
@@ -275,7 +258,7 @@ exports.DiagramApi = (app) => {
                   switchCase([
                     isEmpty,
                     tap(() => contextSet404({ context })),
-                    pipe([callProp("get"), contextSetOk({ context })]),
+                    pipe([callProp("toJSON"), contextSetOk({ context })]),
                   ]),
                 ]),
                 // invalid uuid
@@ -303,14 +286,10 @@ exports.DiagramApi = (app) => {
                 assert(context.state.user.id);
               }),
               () =>
-                models.Infra.findOne({
-                  where: {
-                    id: context.request.body.infra_id,
-                  },
+                infraFindOne({ models })({
+                  id: context.request.body.infra_id,
                 }),
-              tap((xxx) => {
-                assert(true);
-              }),
+              callProp("toJSON"),
               (infra) =>
                 pipe([
                   () => ({
@@ -341,6 +320,10 @@ exports.DiagramApi = (app) => {
                           { where: { id } }
                         )
                       ),
+
+                      assign({ dir: () => gitDir(infra) }),
+                      //TODO ignore if error
+                      tap(gitPush({ infra })),
                       tap((result) => {
                         context.body = result;
                         context.status = getHttpStatus(result);

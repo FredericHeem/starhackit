@@ -3,19 +3,23 @@ const { pipe, tap, tryCatch } = require("rubico");
 const { first } = require("rubico/x");
 const testMngr = require("test/testManager");
 
-let azureEnv;
+const { TENANT_ID, SUBSCRIPTION_ID, APP_ID, PASSWORD, LOCATION } = process.env;
+const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN } = process.env;
 
 describe("CloudDiagram Azure", function () {
   let client;
   before(async function () {
+    if (!TENANT_ID) {
+      return this.skip();
+    }
+
+    assert(SUBSCRIPTION_ID);
+    assert(GIT_USERNAME);
+    assert(PERSONAL_ACCESS_TOKEN);
+
     await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
-    try {
-      azureEnv = require("../../../azure.env.json");
-    } catch (error) {
-      this.skip();
-    }
   });
   after(async () => {
     await testMngr.stop();
@@ -24,12 +28,25 @@ describe("CloudDiagram Azure", function () {
   it("azure create, list, get by id, delete", async () => {
     try {
       await pipe([
-        // Create
-        () => ({
+        // use createGitInfo
+        () =>
+          client.post("v1/git_credential", {
+            providerType: "GitHub",
+            username: GIT_USERNAME,
+            password: PERSONAL_ACCESS_TOKEN,
+          }),
+        ({ id: git_credential_id }) => ({
           name: "infra-azure-test",
+          git_credential_id,
           providerType: "azure",
           providerName: "azure",
-          providerAuth: azureEnv,
+          providerAuth: {
+            TENANT_ID,
+            SUBSCRIPTION_ID,
+            APP_ID,
+            PASSWORD,
+            LOCATION,
+          },
         }),
         (input) => client.post("v1/infra", input),
         tap((result) => {

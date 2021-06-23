@@ -6,7 +6,7 @@
   "license": "NLPL",
   "private": true,
   "scripts": {
-    "e2e": "dotenv -e ../../../env nightwatch",
+    "e2e": "dotenv -e ../../../env -- nightwatch",
     "e2e:prod": "dotenv -e ../../env -- nightwatch --env prod"
   },
   "devDependencies": {

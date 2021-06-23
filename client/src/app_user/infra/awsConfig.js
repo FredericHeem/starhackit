@@ -15,6 +15,7 @@ import alert from "mdlean/lib/alert";
 
 import createForm from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
+import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 
 const AWS_REGION = [
   "eu-north-1",
@@ -39,7 +40,7 @@ const AWS_REGION = [
 import selectRegion from "./SelectRegion";
 
 const rules = {
-  infraName: {
+  name: {
     presence: true,
     length: {
       minimum: 3,
@@ -70,27 +71,26 @@ const defaultData = {
   AWS_REGION: "us-east-1",
 };
 
-const buildPayload = ({ data }) => ({
-  name: data.name,
-  providerType: "aws",
-  providerName: "aws",
-  providerAuth: {
-    AWSAccessKeyId: data.AWSAccessKeyId.trim(),
-    AWSSecretKey: data.AWSSecretKey,
-    AWS_REGION: data.AWS_REGION,
-  },
-});
-
-const constraints = {
-  name: rules.infraName,
-  AWSAccessKeyId: rules.AWSAccessKeyId,
-  AWSSecretKey: rules.AWSSecretKey,
-};
-
-export const createStoreAws = (context) => {
+export const createStoreAws = (
+  context,
+  { gitCredentialStore, gitRepositoryStore }
+) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const Alert = alert(context);
   const asyncOpCreate = AsyncOp(context);
+
+  const buildPayload = ({ data }) => ({
+    name: data.name,
+    providerType: "aws",
+    providerName: "aws",
+    providerAuth: {
+      AWSAccessKeyId: data.AWSAccessKeyId.trim(),
+      AWSSecretKey: data.AWSSecretKey,
+      AWS_REGION: data.AWS_REGION,
+    },
+    git_credential_id: gitCredentialStore.id,
+    git_repository_id: gitRepositoryStore.id,
+  });
 
   const store = observable({
     id: "",
@@ -125,14 +125,14 @@ export const createStoreAws = (context) => {
       store.errors = {};
       const { data } = store;
 
-      const vErrors = validate(data, constraints);
+      const vErrors = validate(data, rules);
       if (vErrors) {
         store.errors = vErrors;
         return;
       }
 
       try {
-        const result = await store.op.fetch(buildPayload(store));
+        const result = await store.op.fetch(buildPayload({ data: store.data }));
         await store.opScan.fetch(result);
         alertStack.add(
           <Alert severity="success" message={tr.t("Infrastructure Created")} />
@@ -161,7 +161,7 @@ export const createStoreAws = (context) => {
     update: action(async () => {
       store.errors = {};
       const { data } = store;
-      const vErrors = validate(data, constraints);
+      const vErrors = validate(data, rules);
       if (vErrors) {
         store.errors = vErrors;
         return;
@@ -251,11 +251,12 @@ export const awsFormCreate = (context) => {
   const {
     tr,
     theme: { palette },
-    emitter,
   } = context;
   const Form = createForm(context);
   const Spinner = spinner(context);
   const Button = button(context);
+  const ButtonWizardBack = buttonWizardBack(context);
+
   const AwsConfigForm = awsConfigForm(context);
 
   return observer(({ store }) => (
@@ -272,14 +273,9 @@ export const awsFormCreate = (context) => {
         <AwsConfigForm store={store} />
       </main>
       <footer>
+        <ButtonWizardBack />
         <Button
-          onClick={() => emitter.emit("step.select", "ProviderSelection")}
-        >
-          {"\u25c0"} Back
-        </Button>
-
-        <Button
-          data-infra-create-submit
+          data-button-submit
           primary
           raised
           disabled={store.isCreating || store.isDisabled}
@@ -311,6 +307,7 @@ export const awsFormEdit = (context) => {
   });
   const AwsConfigForm = awsConfigForm(context);
   const InfraDeleteLink = infraDeleteLink(context);
+  const ButtonHistoryBack = buttonHistoryBack(context);
 
   return observer(({ store }) => (
     <Form spellCheck="false" autoCapitalize="none" data-infra-update>
@@ -321,7 +318,7 @@ export const awsFormEdit = (context) => {
         <AwsConfigForm store={store} />
       </main>
       <footer>
-        <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
+        <ButtonHistoryBack />
         <Button
           data-infra-update-submit
           primary

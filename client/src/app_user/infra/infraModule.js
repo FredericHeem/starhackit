@@ -7,7 +7,8 @@ import validate from "validate.js";
 import alert from "mdlean/lib/alert";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 
-import rules from "./rulesForm";
+import { repositoryCreateStore } from "./repositoryConfig";
+import { gitCredentialCreateStore } from "./gitCredentialConfig";
 
 import { createStoreAws } from "./awsConfig";
 import { createStoreGoogle } from "./gcpConfig";
@@ -100,11 +101,20 @@ export default function (context) {
       }),
     });
 
+    const gitCredentialStore = gitCredentialCreateStore(context);
+    const gitRepositoryStore = repositoryCreateStore(context);
+
     return {
-      aws: createStoreAws(context),
-      google: createStoreGoogle(context),
-      azure: createStoreAzure(context),
-      ovh: createStoreOvh(context),
+      aws: createStoreAws(context, { gitCredentialStore, gitRepositoryStore }),
+      google: createStoreGoogle(context, {
+        gitCredentialStore,
+        gitRepositoryStore,
+      }),
+      azure: createStoreAzure(context, {
+        gitCredentialStore,
+        gitRepositoryStore,
+      }),
+      ovh: createStoreOvh(context, { gitCredentialStore, gitRepositoryStore }),
       infra: infraStore,
       infraDetail: infraDetailStore,
       delete: storeDelete,

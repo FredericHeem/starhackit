@@ -1,5 +1,5 @@
 const testMngr = require("../src/test/testManager");
 
-before(() => {
-  return testMngr.seed();
+before(async function () {
+  await testMngr.seed();
 });

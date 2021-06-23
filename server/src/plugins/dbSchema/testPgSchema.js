@@ -1,12 +1,12 @@
 const assert = require("assert");
-const testMngr = require('test/testManager');
+const testMngr = require("test/testManager");
 
-describe("PostgresSchema", function() {
+describe.skip("PostgresSchema", function () {
   let client;
-  before(async function() {
+  before(async function () {
     await testMngr.start();
   });
-  beforeEach(async function() {
+  beforeEach(async function () {
     if (!testMngr.app.config.db) {
       console.log("SKIP PostgresSchema");
       this.skip();

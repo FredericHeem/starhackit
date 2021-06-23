@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { observable } from "mobx";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
 import button from "mdlean/lib/button";
@@ -12,9 +12,36 @@ import { gcpFormCreate, createStoreGoogle } from "./gcpConfig";
 import { azureFormCreate, createStoreAzure } from "./azureConfig";
 import { ovhFormCreate, createStoreOvh } from "./ovhConfig";
 
-export default (context) => {
+import { repositoryConfig, repositoryCreateStore } from "./repositoryConfig";
+import {
+  gitCredentialConfig,
+  gitCredentialCreateStore,
+} from "./gitCredentialConfig";
+
+export const buttonWizardBack = (context) => {
+  const Button = button(context);
+  return () => (
+    <Button onClick={() => context.emitter.emit("step.previous")}>
+      {"\u25c0"} Back
+    </Button>
+  );
+};
+
+export const buttonHistoryBack = (context) => {
+  const Button = button(context);
+  return () => (
+    <Button onClick={() => context.emitter.emit("step.previous")}>
+      {"\u25c0"} Back
+    </Button>
+  );
+};
+
+export const wizardCreate = (context) => {
   const { tr, emitter } = context;
   const ProviderSelection = providerSelection(context);
+  const RepositoryConfig = repositoryConfig(context);
+  const GitCredentialConfig = gitCredentialConfig(context);
+
   const store = observable({
     providerName: "",
     selectProvider: (providerName) => {
@@ -26,6 +53,9 @@ export default (context) => {
     },
   });
 
+  const gitCredentialStore = gitCredentialCreateStore(context);
+  const gitRepositoryStore = repositoryCreateStore(context);
+
   const AwsFormCreate = awsFormCreate(context);
   const GcpFormCreate = gcpFormCreate(context);
   const AzureFormCreate = azureFormCreate(context);
@@ -34,19 +64,57 @@ export default (context) => {
   const configViewFromProvider = (providerName) => {
     switch (providerName) {
       case "AWS":
-        return <AwsFormCreate store={createStoreAws(context)} />;
+        return (
+          <AwsFormCreate
+            store={createStoreAws(context, {
+              gitCredentialStore,
+              gitRepositoryStore,
+            })}
+          />
+        );
       case "GCP":
-        return <GcpFormCreate store={createStoreGoogle(context)} />;
+        return (
+          <GcpFormCreate
+            store={createStoreGoogle(context, {
+              gitCredentialStore,
+              gitRepositoryStore,
+            })}
+          />
+        );
       case "Azure":
-        return <AzureFormCreate store={createStoreAzure(context)} />;
+        return (
+          <AzureFormCreate
+            store={createStoreAzure(context, {
+              gitCredentialStore,
+              gitRepositoryStore,
+            })}
+          />
+        );
       case "OVH":
-        return <OvhFormCreate store={createStoreOvh(context)} />;
+        return (
+          <OvhFormCreate
+            store={createStoreOvh(context, {
+              gitCredentialStore,
+              gitRepositoryStore,
+            })}
+          />
+        );
       default:
         throw Error(`invalid provider type`);
     }
   };
 
   const wizardDefs = [
+    {
+      name: "GitCredential",
+      header: observer(() => <header>Git Credential</header>),
+      content: ({}) => <GitCredentialConfig store={gitCredentialStore} />,
+    },
+    {
+      name: "GitRepository",
+      header: observer(() => <header>Git Repository</header>),
+      content: ({}) => <RepositoryConfig store={gitRepositoryStore} />,
+    },
     {
       name: "ProviderSelection",
       header: () => <header>{tr.t("Select Provider")}</header>,
@@ -57,9 +125,7 @@ export default (context) => {
     },
     {
       name: "Configuration",
-      header: observer(() => (
-        <header>Configuration {store.providerName}</header>
-      )),
+      header: observer(() => <header>Configuration</header>),
       content: ({}) => configViewFromProvider(store.providerName),
     },
   ];
@@ -68,6 +134,7 @@ export default (context) => {
 
   // TODO only for testing
   //store.selectProvider("Azure");
+  //emitter.emit("step.select", "Repository");
 
   return observer(function WizardView() {
     return (

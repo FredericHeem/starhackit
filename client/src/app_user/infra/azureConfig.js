@@ -14,8 +14,12 @@ import spinner from "mdlean/lib/spinner";
 
 import form from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
+import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 
-export const createStoreAzure = (context) => {
+export const createStoreAzure = (
+  context,
+  { gitCredentialStore, gitRepositoryStore }
+) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const Alert = alert(context);
   const asyncOpCreate = AsyncOp(context);
@@ -59,6 +63,8 @@ export const createStoreAzure = (context) => {
         providerName: "azure",
         name: store.data.name,
         providerAuth: store.data,
+        git_credential_id: gitCredentialStore.id,
+        git_repository_id: gitRepositoryStore.id,
       };
       try {
         const result = await store.op.fetch(payload);
@@ -132,6 +138,7 @@ export const azureFormCreate = (context) => {
       }
     `,
   });
+  const ButtonWizardBack = buttonWizardBack(context);
 
   return observer(({ store }) => (
     <Form data-infra-create-azure>
@@ -240,13 +247,9 @@ export const azureFormCreate = (context) => {
         </ol>
       </main>
       <footer>
+        <ButtonWizardBack />
         <Button
-          onClick={() => emitter.emit("step.select", "ProviderSelection")}
-        >
-          {"\u25c0"} Back
-        </Button>
-        <Button
-          data-infra-create-submit
+          data-button-submit
           disabled={store.isCreating}
           raised
           primary
@@ -282,6 +285,7 @@ export const azureFormEdit = (context) => {
     `,
   });
   const InfraDeleteLink = infraDeleteLink(context);
+  const ButtonHistoryBack = buttonHistoryBack(context);
 
   return observer(({ store }) => (
     <Form>
@@ -334,7 +338,7 @@ export const azureFormEdit = (context) => {
         </FormGroup>
       </main>
       <footer>
-        <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
+        <ButtonHistoryBack />
         <Button
           disabled={store.isDisabled}
           raised

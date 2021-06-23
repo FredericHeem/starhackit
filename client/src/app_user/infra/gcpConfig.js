@@ -17,8 +17,12 @@ import spinner from "mdlean/lib/spinner";
 import IconUpload from "./assets/uploadIcon.svg";
 
 import { infraDeleteLink } from "./infraDeleteLink";
+import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 
-export const createStoreGoogle = (context) => {
+export const createStoreGoogle = (
+  context,
+  { gitCredentialStore, gitRepositoryStore }
+) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const Alert = alert(context);
   const asyncOpCreate = AsyncOp(context);
@@ -48,6 +52,8 @@ export const createStoreGoogle = (context) => {
         providerType: "google",
         providerName: "google",
         providerAuth: { credentials: store.content },
+        git_credential_id: gitCredentialStore.id,
+        git_repository_id: gitRepositoryStore.id,
       };
       try {
         const result = await store.op.fetch(payload);
@@ -211,6 +217,7 @@ export const gcpFormCreate = (context) => {
   const FileInput = fileInput(context);
   const CredentialFile = credentialFile(context);
   const FileInputLabel = fileInputLabel(context);
+  const ButtonWizardBack = buttonWizardBack(context);
 
   return observer(({ store }) => (
     <Form
@@ -303,13 +310,9 @@ export const gcpFormCreate = (context) => {
         )}
       </main>
       <footer>
+        <ButtonWizardBack />
         <Button
-          onClick={() => emitter.emit("step.select", "ProviderSelection")}
-        >
-          {"\u25c0"} Back
-        </Button>
-        <Button
-          data-infra-create-submit
+          data-button-submit
           disabled={store.isCreating}
           raised
           primary
@@ -349,6 +352,7 @@ export const gcpFormEdit = (context) => {
   const CredentialFile = credentialFile(context);
   const FileInputLabel = fileInputLabel(context);
   const InfraDeleteLink = infraDeleteLink(context);
+  const ButtonHistoryBack = buttonHistoryBack(context);
 
   return observer(({ store }) => (
     <Form data-infra-create-google>
@@ -381,7 +385,7 @@ export const gcpFormEdit = (context) => {
         )}
       </main>
       <footer>
-        <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
+        <ButtonHistoryBack />
         <Button
           data-infra-update-submit
           disabled={store.isUpdating || store.isDisabled}

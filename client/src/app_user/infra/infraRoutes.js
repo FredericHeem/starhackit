@@ -1,7 +1,7 @@
 /* @jsxImportSource @emotion/react */
 import { createElement as h } from "react";
 
-import wizardCreate from "./wizardCreate";
+import { wizardCreate } from "./wizardCreate";
 import createInfraDetail from "./infraDetail";
 import { awsFormEdit } from "./awsConfig";
 import { gcpFormEdit } from "./gcpConfig";

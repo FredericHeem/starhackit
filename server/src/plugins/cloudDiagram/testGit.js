@@ -22,7 +22,7 @@ describe("Git", function () {
   });
   after(async () => {});
 
-  it("gitPush", async () => {
+  it.only("gitPush", async () => {
     const infra = {
       gitCredential: {
         username: GIT_USERNAME,

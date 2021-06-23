@@ -1,5 +1,4 @@
 const assert = require("assert");
-const uuid = require("uuid");
 
 const {
   pipe,
@@ -11,6 +10,8 @@ const {
   switchCase,
   map,
   or,
+  and,
+  not,
 } = require("rubico");
 const { isEmpty, values, callProp, identity } = require("rubico/x");
 const git = require("isomorphic-git");
@@ -28,12 +29,62 @@ const gitDir = ({ user_id }) =>
     tap((dir) => pfs.mkdir(dir, { recursive: true })),
   ])();
 
+const gitIsConfigured = ({ gitCredential, gitRepository }) =>
+  and([() => !isEmpty(gitCredential), () => !isEmpty(gitRepository)]);
+
+const gitCloneOrPull = ({
+  fs,
+  http,
+  dir,
+  gitRepository,
+  gitCredential,
+  user,
+}) =>
+  pipe([
+    tap(() => {
+      assert(user.username);
+      assert(user.email);
+      assert(dir);
+      assert(gitRepository.url);
+      assert(gitRepository.branch);
+      assert(gitCredential.username);
+      assert(gitCredential.password);
+    }),
+    switchCase([
+      tryCatch(pipe([() => git.log({ fs, dir }), () => true]), () => false),
+      () =>
+        git.pull({
+          fs,
+          http,
+          dir,
+          ref: gitRepository.branch,
+          singleBranch: true,
+          author: {
+            email: user.email,
+            name: user.username,
+          },
+          onAuth: (url) => {
+            return gitCredential;
+          },
+        }),
+      () =>
+        git.clone({
+          fs,
+          http,
+          dir,
+          url: gitRepository.url,
+          ref: gitRepository.branch,
+          singleBranch: true,
+          depth: 1,
+        }),
+    ]),
+  ])();
+
 exports.gitPush = ({
   infra: { gitCredential, gitRepository, user, user_id },
 }) =>
   switchCase([
-    or([() => isEmpty(gitCredential), () => isEmpty(gitRepository)]),
-    () => undefined,
+    gitIsConfigured({ gitCredential, gitRepository }),
     pipe([
       assign({ dir: () => gitDir({ user_id }) }),
       ({ dir, list }) =>
@@ -49,34 +100,15 @@ exports.gitPush = ({
               assert(gitCredential.username);
               assert(gitCredential.password);
             }),
-            switchCase([
-              tryCatch(
-                pipe([() => git.log({ fs, dir }), () => true]),
-                () => false
-              ),
-              () =>
-                git.pull({
-                  fs,
-                  http,
-                  dir,
-                  ref: gitRepository.branch,
-                  singleBranch: true,
-                  author: {
-                    email: user.email,
-                    name: user.username,
-                  },
-                }),
-              () =>
-                git.clone({
-                  fs,
-                  http,
-                  dir,
-                  url: gitRepository.url,
-                  ref: gitRepository.branch,
-                  singleBranch: true,
-                  depth: 1,
-                }),
-            ]),
+            () =>
+              gitCloneOrPull({
+                fs,
+                http,
+                dir,
+                gitRepository,
+                gitCredential,
+                user,
+              }),
             tap((result) => {
               assert(true);
             }),
@@ -115,4 +147,5 @@ exports.gitPush = ({
           }
         )(),
     ]),
+    () => undefined,
   ]);

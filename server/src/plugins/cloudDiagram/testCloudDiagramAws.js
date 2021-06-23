@@ -39,7 +39,7 @@ describe("CloudDiagramAws", function () {
   after(async () => {
     await testMngr.stop();
   });
-  it.only("aws create, list, get by id, delete", async () => {
+  it("aws create, list, get by id, delete", async () => {
     try {
       await pipe([
         // Create

@@ -86,15 +86,6 @@ exports.DiagramApi = (app) => {
         ),
     ])();
 
-  const buildGitDirName = ({ user_id }) =>
-    path.resolve(process.cwd(), `output/user-${user_id}`);
-
-  const gitDir = ({ user_id }) =>
-    pipe([
-      () => buildGitDirName({ user_id }),
-      tap((dir) => pfs.mkdir(dir, { recursive: true })),
-    ])();
-
   const runGcList = ({
     jobId,
     providerAuth,
@@ -320,9 +311,6 @@ exports.DiagramApi = (app) => {
                           { where: { id } }
                         )
                       ),
-
-                      assign({ dir: () => gitDir(infra) }),
-                      //TODO ignore if error
                       tap(gitPush({ infra })),
                       tap((result) => {
                         context.body = result;

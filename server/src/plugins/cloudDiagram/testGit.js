@@ -7,6 +7,8 @@ const http = require("isomorphic-git/http/node");
 const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
+const uuid = require("uuid");
+const { gitPush } = require("./gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
 
@@ -19,6 +21,25 @@ describe("Git", function () {
     assert(GIT_REPOSITORY);
   });
   after(async () => {});
+
+  it("gitPush", async () => {
+    const infra = {
+      gitCredential: {
+        username: GIT_USERNAME,
+        password: PERSONAL_ACCESS_TOKEN,
+      },
+      gitRepository: { url: GIT_REPOSITORY, branch: "main" },
+      user: { username: "topolino", email: "topolino@mail.com" },
+      user_id: uuid.v4(),
+    };
+
+    const input = {
+      list: {},
+    };
+
+    await gitPush({ infra })(input);
+    await gitPush({ infra })(input);
+  });
 
   it("clone", async () => {
     await tryCatch(

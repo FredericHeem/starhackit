@@ -1,18 +1,18 @@
-const Redis = require('ioredis');
+const Redis = require("ioredis");
 
 function Store(config = {}) {
   let log = require("logfilename")(__filename);
-  let client
+  let client;
   return {
     client() {
       return client;
     },
     async start() {
       log.debug("start ", config);
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         if (config.redis) {
           client = new Redis(config.redis.url);
-          client.on("error", err => {
+          client.on("error", (err) => {
             log.error("Error " + err);
             reject(err);
           });
@@ -27,7 +27,7 @@ function Store(config = {}) {
             log.info("reconnecting ");
           });
           client.on("end", () => {
-            log.error("end ");
+            log.info("end ");
             reject();
           });
         } else {
@@ -63,7 +63,7 @@ function Store(config = {}) {
       } else {
         log.warn("publish: not configured");
       }
-    }
+    },
   };
 }
 

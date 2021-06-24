@@ -19,13 +19,17 @@ const http = require("isomorphic-git/http/node");
 const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
+const changeCase = require("change-case");
 
-const buildGitDirName = ({ user_id }) =>
-  path.resolve(process.cwd(), `output/user-${user_id}`);
+const buildGitDirName = ({ user_id, name }) =>
+  path.resolve(
+    process.cwd(),
+    `output/user-${user_id}-${changeCase.snakeCase(name)}`
+  );
 
-const gitDir = ({ user_id }) =>
+const gitDir = ({ user_id, name }) =>
   pipe([
-    () => buildGitDirName({ user_id }),
+    () => buildGitDirName({ user_id, name }),
     tap((dir) => pfs.mkdir(dir, { recursive: true })),
   ])();
 
@@ -145,14 +149,14 @@ exports.gitPush = ({
   ])();
 
 exports.gitPushInventory = ({
-  infra: { gitCredential, gitRepository, user, user_id },
+  infra: { name, gitCredential, gitRepository, user, user_id },
   message = "update inventory",
 }) =>
   switchCase([
     gitIsConfigured({ gitCredential, gitRepository }),
     pipe([
-      assign({ dir: () => gitDir({ user_id }) }),
-      ({ dir, list }) =>
+      assign({ dir: () => gitDir({ user_id, name }) }),
+      ({ dir, list, svg }) =>
         tryCatch(
           pipe([
             tap(() => {
@@ -165,6 +169,12 @@ exports.gitPushInventory = ({
               assert(gitRepository.branch);
               assert(gitCredential.username);
               assert(gitCredential.password);
+              console.log("name");
+              console.log(name);
+              console.log("gitRepository");
+              console.log(gitRepository);
+              console.log("dir");
+              console.log(dir);
             }),
             () =>
               gitCloneOrPull({
@@ -185,6 +195,8 @@ exports.gitPushInventory = ({
                 "utf8"
               ),
             () => git.add({ fs, dir, filepath: "inventory.json" }),
+            () => pfs.writeFile(`${dir}/inventory.svg`, svg, "utf8"),
+            () => git.add({ fs, dir, filepath: "inventory.svg" }),
             () =>
               git.commit({
                 fs,

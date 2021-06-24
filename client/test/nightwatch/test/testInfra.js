@@ -5,8 +5,15 @@ const infraNameAzure = "Azure Infra";
 const infraNameOvh = "Ovh Infra";
 
 const delay = 5e3;
-const pause = 300;
+const pause = 1e3;
 const googleCredentialFile = "grucloud-vm-tuto-1.json";
+
+const {
+  GIT_REPOSITORY_AWS,
+  GIT_REPOSITORY_GCP,
+  GIT_REPOSITORY_AZURE,
+  GIT_REPOSITORY_OPENSTACK,
+} = process.env;
 
 const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
   await client.page
@@ -21,24 +28,28 @@ const deleteInfra = async ({ client, infraName, delay = 3e3 }) => {
     .click("a[data-infra-edit-delete-link=true]")
     .pause(pause)
     .setValue("div[data-delete-name=true] input", infraName)
+    .pause(pause)
     .click("button[data-infra-button-delete=true]")
     .pause(pause);
 };
 
-const gitConfiguration = ({ client }) => {
+const gitConfiguration = ({ client, repositoryUrl }) => {
   client.page
     .infraCreate()
     .navigate()
     .waitForElementVisible("@formGitCredential", delay)
     .setValue("@inputGitUsername", process.env.GIT_USERNAME)
+    .pause(pause)
     .setValue("@inputGitPassword", process.env.PERSONAL_ACCESS_TOKEN)
+    .pause(pause)
     .click("@submit")
     .waitForElementVisible("@formRepository", delay)
-    .setValue("@inputRepositoryUrl", process.env.GIT_REPOSITORY)
+    .setValue("@inputRepositoryUrl", repositoryUrl)
+    .pause(pause)
     .click("@submit")
     .waitForElementVisible("@formProviderSelect", delay);
 };
-describe.only("Infra", function () {
+describe("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
     client.page.login().login(done);
@@ -49,7 +60,7 @@ describe.only("Infra", function () {
   // });
 
   it("create aws", function (client) {
-    gitConfiguration({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
 
     client.page
       .infraCreate()
@@ -68,7 +79,7 @@ describe.only("Infra", function () {
     await deleteInfra({ client, infraName: infraNameAws });
   });
   it("create azure", function (client) {
-    gitConfiguration({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AZURE });
 
     client.page
       .infraCreate()
@@ -88,7 +99,7 @@ describe.only("Infra", function () {
     await deleteInfra({ client, infraName: infraNameAzure });
   });
   it("create google", function (client) {
-    gitConfiguration({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_GCP });
     client.page
       .infraCreate()
       .waitForElementVisible("@formProviderSelect", delay)
@@ -107,7 +118,7 @@ describe.only("Infra", function () {
   });
 
   it("create ovh", function (client) {
-    gitConfiguration({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_OPENSTACK });
 
     client.page
       .infraCreate()
@@ -131,7 +142,7 @@ describe.only("Infra", function () {
   });
 
   it("bad credentials", function (client) {
-    gitConfiguration({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
     client.page
       .infraCreate()
       .waitForElementVisible("@formProviderSelect", delay)

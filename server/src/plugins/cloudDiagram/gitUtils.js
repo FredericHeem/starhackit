@@ -21,7 +21,7 @@ const pfs = fs.promises;
 const path = require("path");
 const changeCase = require("change-case");
 
-const buildGitDirName = ({ user_id, name }) =>
+const buildGitDirName = ({ user_id, name = "" }) =>
   path.resolve(
     process.cwd(),
     `output/user-${user_id}-${changeCase.snakeCase(name)}`
@@ -48,6 +48,8 @@ const gitCloneOrPull = ({
     tap(() => {
       assert(user.username);
       assert(user.email);
+      console.log("gitCloneOrPull", dir);
+      console.log("gitRepository", gitRepository);
       assert(dir);
       assert(gitRepository.url);
       assert(gitRepository.branch);
@@ -55,7 +57,23 @@ const gitCloneOrPull = ({
       assert(gitCredential.password);
     }),
     switchCase([
-      tryCatch(pipe([() => git.log({ fs, dir }), () => true]), () => false),
+      tryCatch(
+        pipe([
+          () => git.log({ fs, dir }),
+          pipe([
+            () => {
+              console.log("git log ok");
+            },
+            () => true,
+          ]),
+        ]),
+        pipe([
+          () => {
+            console.log("git log not ok");
+          },
+          () => false,
+        ])
+      ),
       () =>
         git.pull({
           fs,
@@ -99,6 +117,8 @@ exports.gitPush = ({
           assert(message);
           assert(user_id);
           assert(dir);
+          console.log("gitPush");
+          console.log(gitRepository);
         }),
         () =>
           gitCloneOrPull({
@@ -109,7 +129,6 @@ exports.gitPush = ({
             gitCredential,
             user,
           }),
-        //() => git.checkout({ fs, dir, ref: gitRepository.branch }),
         () => files,
         tap(
           map((filepath) =>
@@ -139,13 +158,16 @@ exports.gitPush = ({
           }),
         tap((result) => {
           //assert(result.ok);
+          console.log("gitPush done", result);
         }),
       ]),
       (error) => {
         throw error;
       }
     ),
-    () => undefined,
+    () => {
+      console.log("gitPush no credentials");
+    },
   ])();
 
 exports.gitPushInventory = ({
@@ -165,10 +187,12 @@ exports.gitPushInventory = ({
               assert(user.username);
               assert(user.email);
               assert(dir);
+              assert(name);
               assert(gitRepository.url);
               assert(gitRepository.branch);
               assert(gitCredential.username);
               assert(gitCredential.password);
+              console.log("gitPushInventory");
               console.log("name");
               console.log(name);
               console.log("gitRepository");

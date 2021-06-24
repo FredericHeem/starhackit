@@ -61,6 +61,7 @@ const createInfraItem = (context) => {
         display: flex;
         flex-direction: column;
         white-space: nowrap;
+        min-width: 15rem;
       `}
     >
       <Label title="Project Name" />

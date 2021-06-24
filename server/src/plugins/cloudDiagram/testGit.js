@@ -32,6 +32,7 @@ describe("Git", function () {
 
   it("gitPushInventory", async () => {
     const infra = {
+      name: "my-project",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -43,6 +44,7 @@ describe("Git", function () {
 
     const input = {
       list: {},
+      svg: "",
     };
 
     await gitPushInventory({
@@ -68,7 +70,7 @@ describe("Git", function () {
     await gitPush({
       infra,
       files: filesInfraProject,
-      dirSource: path.resolve(__dirname, "template/gcp/empty"),
+      dirSource: path.resolve(__dirname, "template/google/empty"),
       dir: await pfs.mkdtemp(path.join(os.tmpdir(), "grucloud-template")),
       message: "new infra project",
     });
@@ -89,7 +91,7 @@ describe("Git", function () {
                 http,
                 dir,
                 url: GIT_REPOSITORY,
-                ref: "main",
+                ref: "master",
                 singleBranch: true,
                 depth: 2,
               }),

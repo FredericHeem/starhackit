@@ -5,7 +5,7 @@ const { first } = require("rubico/x");
 const testMngr = require("test/testManager");
 
 const { AWSAccessKeyId, AWSSecretKey, AWS_REGION } = process.env;
-const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN, GIT_REPOSITORY } = process.env;
+const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN, GIT_REPOSITORY_AWS } = process.env;
 
 //TODO put in common
 const createGitInfo = ({ client }) =>
@@ -18,7 +18,7 @@ const createGitInfo = ({ client }) =>
       }),
     repository: () =>
       client.post("v1/git_repository", {
-        url: GIT_REPOSITORY,
+        url: GIT_REPOSITORY_AWS,
       }),
   });
 
@@ -31,7 +31,7 @@ describe("CloudDiagramAws", function () {
     assert(AWS_REGION);
     assert(GIT_USERNAME);
     assert(PERSONAL_ACCESS_TOKEN);
-    assert(GIT_REPOSITORY);
+    assert(GIT_REPOSITORY_AWS);
     await testMngr.start();
     client = testMngr.client("alice");
     await client.login();

@@ -86,7 +86,7 @@ export const repositoryConfig = (context) => {
   const Input = input(context, {
     cssOverride: css`
       > input {
-        width: 400px;
+        width: 500px;
       }
     `,
   });

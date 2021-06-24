@@ -139,6 +139,7 @@ const createInfraDetail = (context) => {
             disabled={store.opScan.loading}
             label={store.opScan.loading ? tr.t("Scanning") : tr.t("New Scan")}
           />
+
           <Spinner
             css={css`
               visibility: ${store.opScan.loading ? "visible" : "hidden"};
@@ -147,7 +148,13 @@ const createInfraDetail = (context) => {
           />
         </div>
         <ScanLastUpdated updatedAt={get("Jobs[0].updatedAt")(detail)} />
-
+        <div
+          css={css`
+            margin: 1rem 0rem 1rem 0rem;
+          `}
+        >
+          <Button href={detail.gitRepository.url} label="Open GitHub" />
+        </div>
         {store.lives && <ResourcePerTypeTable lives={store.lives} />}
       </section>
       <section

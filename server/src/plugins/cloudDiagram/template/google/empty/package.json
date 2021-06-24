@@ -12,8 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@grucloud/core": "^1.18.1",
-    "@grucloud/provider-google": "^1.19.0",
-    "rubico": "^1.6.23"
+    "@grucloud/core": "^1.19.1",
+    "@grucloud/provider-google": "^1.19.1",
+    "rubico": "^1.6.29"
   }
 }

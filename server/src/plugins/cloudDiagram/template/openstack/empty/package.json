@@ -6,14 +6,14 @@
   "main": "index.js",
   "scripts": {
     "graph-target": "gc graph",
-    "graph-live": "gc list --graph",
+    "graph-live": "gc list --graph --default-exclude --all --json gc-list.json",
     "e2e": "gc d -f && gc d && gc l && gc a -f && gc a && gc d -f && gc d && gc l -o"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@grucloud/core": "^1.18.1",
-    "@grucloud/provider-openstack": "^1.19.0",
-    "rubico": "^1.6.23"
+    "@grucloud/core": "^1.19.1",
+    "@grucloud/provider-openstack": "^1.19.1",
+    "rubico": "^1.6.29"
   }
 }

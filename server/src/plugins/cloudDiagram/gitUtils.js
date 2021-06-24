@@ -63,9 +63,7 @@ const gitCloneOrPull = ({
             email: user.email,
             name: user.username,
           },
-          onAuth: (url) => {
-            return gitCredential;
-          },
+          onAuth: () => gitCredential,
         }),
       () =>
         git.clone({
@@ -76,12 +74,79 @@ const gitCloneOrPull = ({
           ref: gitRepository.branch,
           singleBranch: true,
           depth: 1,
+          onAuth: () => gitCredential,
         }),
     ]),
   ])();
 
 exports.gitPush = ({
   infra: { gitCredential, gitRepository, user, user_id },
+  files,
+  dirSource,
+  dir,
+  message,
+}) =>
+  switchCase([
+    gitIsConfigured({ gitCredential, gitRepository }),
+    tryCatch(
+      pipe([
+        tap(() => {
+          assert(Array.isArray(files));
+          assert(message);
+          assert(user_id);
+          assert(dir);
+        }),
+        () =>
+          gitCloneOrPull({
+            fs,
+            http,
+            dir,
+            gitRepository,
+            gitCredential,
+            user,
+          }),
+        //() => git.checkout({ fs, dir, ref: gitRepository.branch }),
+        () => files,
+        tap(
+          map((filepath) =>
+            pfs.copyFile(
+              path.resolve(dirSource, filepath),
+              path.resolve(dir, filepath)
+            )
+          )
+        ),
+        tap(map((filepath) => git.add({ fs, dir, filepath }))),
+        () =>
+          git.commit({
+            fs,
+            dir,
+            message,
+            author: {
+              name: user.username,
+              email: user.email,
+            },
+          }),
+        (result) =>
+          git.push({
+            fs,
+            dir,
+            http,
+            onAuth: () => gitCredential,
+          }),
+        tap((result) => {
+          //assert(result.ok);
+        }),
+      ]),
+      (error) => {
+        throw error;
+      }
+    ),
+    () => undefined,
+  ])();
+
+exports.gitPushInventory = ({
+  infra: { gitCredential, gitRepository, user, user_id },
+  message = "update inventory",
 }) =>
   switchCase([
     gitIsConfigured({ gitCredential, gitRepository }),
@@ -91,7 +156,8 @@ exports.gitPush = ({
         tryCatch(
           pipe([
             tap(() => {
-              assert(user_id);
+              //assert(Array.isArray(files));
+              assert(message), assert(user_id);
               assert(user.username);
               assert(user.email);
               assert(dir);
@@ -123,7 +189,7 @@ exports.gitPush = ({
               git.commit({
                 fs,
                 dir,
-                message: "inventory.json update",
+                message,
                 author: {
                   name: user.username,
                   email: user.email,

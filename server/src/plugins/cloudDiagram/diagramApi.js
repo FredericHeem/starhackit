@@ -19,7 +19,7 @@ const path = require("path");
 const { contextSet400, contextSet404, contextSetOk } = require("./common");
 
 const { infraFindOne } = require("./infraApi");
-const { gitPush } = require("./gitUtils");
+const { gitPushInventory } = require("./gitUtils");
 const getJobStatus = switchCase([
   eq(get("StatusCode"), 0),
   () => "done",
@@ -311,7 +311,7 @@ exports.DiagramApi = (app) => {
                           { where: { id } }
                         )
                       ),
-                      tap(gitPush({ infra })),
+                      tap(gitPushInventory({ infra })),
                       tap((result) => {
                         context.body = result;
                         context.status = getHttpStatus(result);

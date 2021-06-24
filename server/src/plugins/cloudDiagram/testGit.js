@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { pipe, tap, tryCatch } = require("rubico");
+const { pipe, tap, tryCatch, map } = require("rubico");
 const { first } = require("rubico/x");
 const path = require("path");
 const git = require("isomorphic-git");
@@ -8,9 +8,17 @@ const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
 const uuid = require("uuid");
-const { gitPush } = require("./gitUtils");
+const { gitPush, gitPushInventory } = require("./gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
+
+const filesInfraProject = [
+  "iac.js",
+  "config.js",
+  "package.json",
+  "hook.js",
+  "README.md",
+];
 
 describe("Git", function () {
   before(async function () {
@@ -22,7 +30,7 @@ describe("Git", function () {
   });
   after(async () => {});
 
-  it.only("gitPush", async () => {
+  it("gitPushInventory", async () => {
     const infra = {
       gitCredential: {
         username: GIT_USERNAME,
@@ -37,8 +45,33 @@ describe("Git", function () {
       list: {},
     };
 
-    await gitPush({ infra })(input);
-    await gitPush({ infra })(input);
+    await gitPushInventory({
+      infra,
+    })(input);
+
+    await gitPushInventory({
+      infra,
+      messsage: "update inventory again",
+    })(input);
+  });
+  it("gitCreateProject", async () => {
+    const infra = {
+      gitCredential: {
+        username: GIT_USERNAME,
+        password: PERSONAL_ACCESS_TOKEN,
+      },
+      gitRepository: { url: GIT_REPOSITORY, branch: "main" },
+      user: { username: "topolino", email: "topolino@mail.com" },
+      user_id: uuid.v4(),
+    };
+
+    await gitPush({
+      infra,
+      files: filesInfraProject,
+      dirSource: path.resolve(__dirname, "template/gcp/empty"),
+      dir: await pfs.mkdtemp(path.join(os.tmpdir(), "grucloud-template")),
+      message: "new infra project",
+    });
   });
 
   it("clone", async () => {

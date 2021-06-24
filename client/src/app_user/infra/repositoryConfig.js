@@ -38,7 +38,7 @@ export const repositoryCreateStore = (context) => {
 
   const defaultData = {
     url: "",
-    branch: "main",
+    branch: "master",
   };
 
   const store = observable({

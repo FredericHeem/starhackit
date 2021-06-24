@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       branch: {
         type: DataTypes.TEXT,
         allowNull: false,
-        defaultValue: "main",
+        defaultValue: "master",
       },
       options: DataTypes.JSONB,
     },

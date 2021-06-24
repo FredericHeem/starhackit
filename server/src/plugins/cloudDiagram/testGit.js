@@ -36,7 +36,7 @@ describe("Git", function () {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
       },
-      gitRepository: { url: GIT_REPOSITORY, branch: "main" },
+      gitRepository: { url: GIT_REPOSITORY, branch: "master" },
       user: { username: "topolino", email: "topolino@mail.com" },
       user_id: uuid.v4(),
     };
@@ -60,7 +60,7 @@ describe("Git", function () {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
       },
-      gitRepository: { url: GIT_REPOSITORY, branch: "main" },
+      gitRepository: { url: GIT_REPOSITORY, branch: "master" },
       user: { username: "topolino", email: "topolino@mail.com" },
       user_id: uuid.v4(),
     };

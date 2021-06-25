@@ -42,7 +42,7 @@ export const repositoryCreateStore = (context) => {
   };
 
   const store = observable({
-    id: "",
+    id: undefined,
     data: defaultData,
     errors: {},
     onChange: action((field, event) => {

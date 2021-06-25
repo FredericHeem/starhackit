@@ -12,11 +12,16 @@ import { gcpFormCreate, createStoreGoogle } from "./gcpConfig";
 import { azureFormCreate, createStoreAzure } from "./azureConfig";
 import { ovhFormCreate, createStoreOvh } from "./ovhConfig";
 
-import { repositoryConfig, repositoryCreateStore } from "./repositoryConfig";
+import { repositoryConfig, repositoryCreateStore } from "./gitRepositoryConfig";
 import {
   gitCredentialConfig,
   gitCredentialCreateStore,
 } from "./gitCredentialConfig";
+
+import {
+  importProjectForm,
+  importProjectCreateStore,
+} from "./importProjectForm";
 
 export const buttonWizardBack = (context) => {
   const Button = button(context);
@@ -41,20 +46,25 @@ export const wizardCreate = (context) => {
   const ProviderSelection = providerSelection(context);
   const RepositoryConfig = repositoryConfig(context);
   const GitCredentialConfig = gitCredentialConfig(context);
+  const ImportProjectForm = importProjectForm(context);
 
   const store = observable({
     providerName: "",
     selectProvider: (providerName) => {
       store.providerName = providerName;
-      emitter.emit("step.select", "Configuration");
+      emitter.emit("step.next");
     },
     setProvider: (providerName) => {
       store.providerName = providerName;
+    },
+    get supportImport() {
+      return store.providerName === "GCP";
     },
   });
 
   const gitCredentialStore = gitCredentialCreateStore(context);
   const gitRepositoryStore = repositoryCreateStore(context);
+  const importProjectStore = importProjectCreateStore(context);
 
   const AwsFormCreate = awsFormCreate(context);
   const GcpFormCreate = gcpFormCreate(context);
@@ -124,6 +134,13 @@ export const wizardCreate = (context) => {
       },
     },
     {
+      name: "Import",
+      header: observer(() => <header>Import</header>),
+      content: ({}) => (
+        <ImportProjectForm store={importProjectStore} storeProvider={store} />
+      ),
+    },
+    {
       name: "Configuration",
       header: observer(() => <header>Configuration</header>),
       content: ({}) => configViewFromProvider(store.providerName),
@@ -134,15 +151,14 @@ export const wizardCreate = (context) => {
 
   // TODO only for testing
   //store.selectProvider("Azure");
-  //emitter.emit("step.select", "Repository");
+  //emitter.emit("step.select", "ProviderSelection");
+  //store.selectProvider("GCP");
+  //emitter.emit("step.select", "ProviderSelection");
+  //emitter.emit("step.select", "Import");
 
   return observer(function WizardView() {
     return (
-      <div
-        css={css`
-          max-width: 800px;
-        `}
-      >
+      <div css={css``}>
         <Wizard.View />
       </div>
     );

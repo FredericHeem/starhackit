@@ -7,7 +7,7 @@ import validate from "validate.js";
 import alert from "mdlean/lib/alert";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 
-import { repositoryCreateStore } from "./repositoryConfig";
+import { repositoryCreateStore } from "./gitRepositoryConfig";
 import { gitCredentialCreateStore } from "./gitCredentialConfig";
 
 import { createStoreAws } from "./awsConfig";

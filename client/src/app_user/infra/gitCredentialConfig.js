@@ -41,7 +41,7 @@ export const gitCredentialCreateStore = (context) => {
   };
 
   const store = observable({
-    id: "",
+    id: undefined,
     data: defaultData,
     errors: {},
     onChange: action((field, event) => {

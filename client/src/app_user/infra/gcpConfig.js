@@ -124,7 +124,7 @@ export const createStoreGoogle = (
       if (file) {
         store.fileName = file.name;
 
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = () => {
           try {
@@ -165,13 +165,16 @@ const credentialFile =
       >
         <tbody>
           <tr>
-            <th>Credential File</th> <td>{fileName}</td>
+            <th>Credential File</th>
+            <td>{fileName}</td>
           </tr>
           <tr>
-            <th>Project Name</th> <td>{content.project_id}</td>
+            <th>Project Name</th>
+            <td>{content.project_id}</td>
           </tr>
           <tr>
-            <th>Service Account</th> <td>{content.client_email}</td>
+            <th>Service Account</th>
+            <td>{content.client_email}</td>
           </tr>
         </tbody>
       </table>

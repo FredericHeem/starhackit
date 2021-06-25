@@ -19,18 +19,18 @@ const createForm =
             padding: 0rem 1rem;
             margin-bottom: 2rem;
 
-            header {
+            > header {
               border-bottom: 1px solid ${theme.palette.grey[400]};
               margin-bottom: 1rem;
               button {
                 margin-right: 10px;
               }
             }
-            main {
+            > main {
               flex-grow: 1;
               margin: 1rem 0;
             }
-            footer {
+            > footer {
               border-top: 1px solid ${theme.palette.grey[400]};
               padding: 1rem 0;
               display: flex;

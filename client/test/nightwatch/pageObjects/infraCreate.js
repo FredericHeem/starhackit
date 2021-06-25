@@ -7,6 +7,12 @@ module.exports = {
     return this.api.launchUrl + "/infra/create";
   },
   elements: {
+    formImportProject: {
+      selector: "form[data-form-import-project=true]",
+    },
+    buttonSelectionProjectImportExisting: {
+      selector: "button[data-selection-project-import-existing=true]",
+    },
     submit: {
       selector: "button[data-button-submit=true]",
     },

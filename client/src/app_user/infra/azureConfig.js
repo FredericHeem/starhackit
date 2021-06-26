@@ -5,11 +5,9 @@ import { observer } from "mobx-react";
 import { pipe, get, or, tap } from "rubico";
 import { isEmpty } from "rubico/x";
 
-import AsyncOp from "mdlean/lib/utils/asyncOp";
 import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
-import alert from "mdlean/lib/alert";
 import spinner from "mdlean/lib/spinner";
 
 import form from "components/form";
@@ -21,32 +19,34 @@ export const createStoreAzure = (
   context,
   { gitCredentialStore, gitRepositoryStore }
 ) => {
-  const buildPayload = ({ data }) => ({
-    name: data.name,
-    providerType: "azure",
-    providerName: "azure",
-    providerAuth: data,
-    git_credential_id: gitCredentialStore.id,
-    git_repository_id: gitRepositoryStore.id,
-  });
-
-  const isDisabled = ({ data }) => {
-    return or([
-      pipe([get("name"), isEmpty]),
-      pipe([get("SUBSCRIPTION_ID"), isEmpty]),
-      pipe([get("TENANT_ID"), isEmpty]),
-      pipe([get("APP_ID"), isEmpty]),
-      pipe([get("PASSWORD"), isEmpty]),
-    ])(data);
-  };
-
-  return providerCreateStore({
+  const core = providerCreateStore({
     context,
     defaultData: {},
     rules: {},
-    buildPayload,
-    isDisabled,
   });
+
+  const { data } = core;
+  const store = observable({
+    buildPayload: () => ({
+      name: data.name,
+      providerType: "azure",
+      providerName: "azure",
+      providerAuth: data,
+      git_credential_id: gitCredentialStore.id,
+      git_repository_id: gitRepositoryStore.id,
+    }),
+    get isDisabled() {
+      return or([
+        pipe([get("name"), isEmpty]),
+        pipe([get("SUBSCRIPTION_ID"), isEmpty]),
+        pipe([get("TENANT_ID"), isEmpty]),
+        pipe([get("APP_ID"), isEmpty]),
+        pipe([get("PASSWORD"), isEmpty]),
+      ])(data);
+    },
+    core,
+  });
+  return store;
 };
 
 export const azureFormCreate = (context) => {
@@ -68,7 +68,7 @@ export const azureFormCreate = (context) => {
   });
   const ButtonWizardBack = buttonWizardBack(context);
 
-  return observer(({ store }) => (
+  return observer(({ store: { core: store, buildPayload, isDisabled } }) => (
     <Form data-infra-create-azure>
       <main>
         <p>
@@ -176,10 +176,10 @@ export const azureFormCreate = (context) => {
         <ButtonWizardBack />
         <Button
           data-button-submit
-          disabled={store.isCreating}
+          disabled={store.isCreating || isDisabled}
           raised
           primary
-          onClick={() => store.create()}
+          onClick={() => store.create({ data: buildPayload() })}
         >
           Save and Scan
         </Button>
@@ -213,7 +213,7 @@ export const azureFormEdit = (context) => {
   const InfraDeleteLink = infraDeleteLink(context);
   const ButtonHistoryBack = buttonHistoryBack(context);
 
-  return observer(({ store }) => (
+  return observer(({ store: { core: store, buildPayload, isDisabled } }) => (
     <Form>
       <header>
         <h2>{tr.t("Update Azure Infrastructure")}</h2>
@@ -266,10 +266,10 @@ export const azureFormEdit = (context) => {
       <footer>
         <ButtonHistoryBack />
         <Button
-          disabled={store.isDisabled}
+          disabled={isDisabled}
           raised
           primary
-          onClick={() => store.update()}
+          onClick={() => store.update({ data: buildPayload() })}
         >
           {tr.t("Update")}
         </Button>

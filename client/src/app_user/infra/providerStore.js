@@ -5,13 +5,7 @@ import validate from "validate.js";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 import createAlert from "mdlean/lib/alert";
 
-export const providerCreateStore = ({
-  context,
-  defaultData,
-  buildPayload,
-  rules,
-  isDisabled,
-}) => {
+export const providerCreateStore = ({ context, defaultData, rules }) => {
   const { tr, rest, emitter, alertStack, history } = context;
   const Alert = createAlert(context);
   const asyncOpCreate = AsyncOp(context);
@@ -49,9 +43,6 @@ export const providerCreateStore = ({
     get isCreating() {
       return store.opScan.loading || store.op.loading;
     },
-    get isDisabled() {
-      return isDisabled({ data: store.data });
-    },
     validate: action(async () => {
       store.errors = {};
       const vErrors = validate(store.data, rules);
@@ -62,12 +53,13 @@ export const providerCreateStore = ({
         return true;
       }
     }),
-    create: action(async () => {
+    create: action(async ({ data }) => {
       if (!store.validate()) {
         return;
       }
+      console.log("create", data);
       try {
-        const result = await store.op.fetch(buildPayload({ data: store.data }));
+        const result = await store.op.fetch(data);
         await store.opScan.fetch(result);
         alertStack.add(
           <Alert severity="success" message={tr.t("Infrastructure Created")} />
@@ -94,9 +86,10 @@ export const providerCreateStore = ({
     get isUpdating() {
       return store.opScan.loading || store.opUpdate.loading;
     },
-    update: action(async () => {
+    update: action(async ({ data }) => {
       store.errors = {};
-      const { data } = store;
+      console.log("update", data);
+
       const vErrors = validate(data, rules);
       if (vErrors) {
         store.errors = vErrors;
@@ -104,7 +97,7 @@ export const providerCreateStore = ({
       }
 
       try {
-        const result = await store.opUpdate.fetch(buildPayload(store));
+        const result = await store.opUpdate.fetch(data);
         await store.opScan.fetch(result);
 
         alertStack.add(

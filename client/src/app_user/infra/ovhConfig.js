@@ -85,43 +85,42 @@ export const createStoreOvh = (
   context,
   { gitCredentialStore, gitRepositoryStore }
 ) => {
-  const { tr, history, alertStack, rest, emitter } = context;
-  const Alert = alert(context);
-  const asyncOpCreate = AsyncOp(context);
-
-  const buildPayload = ({ data }) => ({
-    name: data.name,
-    providerType: "openstack",
-    providerName: "ovh",
-    providerAuth: {
-      OS_AUTH_URL: data.OS_AUTH_URL,
-      OS_PROJECT_NAME: data.OS_PROJECT_NAME.trim(),
-      OS_PROJECT_ID: data.OS_PROJECT_ID.trim(),
-      OS_USERNAME: data.OS_USERNAME.trim(),
-      OS_PASSWORD: data.OS_PASSWORD,
-      OS_REGION_NAME: data.OS_REGION_NAME,
-    },
-    git_credential_id: gitCredentialStore.id,
-    git_repository_id: gitRepositoryStore.id,
-  });
-
-  const isDisabled = ({ data }) => {
-    return or([
-      pipe([get("name"), isEmpty]),
-      pipe([get("OS_PROJECT_NAME"), isEmpty]),
-      pipe([get("OS_PROJECT_ID"), isEmpty]),
-      pipe([get("OS_USERNAME"), isEmpty]),
-      pipe([get("OS_REGION_NAME"), isEmpty]),
-    ])(data);
-  };
-
-  return providerCreateStore({
+  const core = providerCreateStore({
     context,
     defaultData,
     rules,
-    buildPayload,
-    isDisabled,
   });
+
+  const { data } = core;
+
+  const store = observable({
+    buildPayload: () => ({
+      name: data.name,
+      providerType: "openstack",
+      providerName: "ovh",
+      providerAuth: {
+        OS_AUTH_URL: data.OS_AUTH_URL,
+        OS_PROJECT_NAME: data.OS_PROJECT_NAME.trim(),
+        OS_PROJECT_ID: data.OS_PROJECT_ID.trim(),
+        OS_USERNAME: data.OS_USERNAME.trim(),
+        OS_PASSWORD: data.OS_PASSWORD,
+        OS_REGION_NAME: data.OS_REGION_NAME,
+      },
+      git_credential_id: gitCredentialStore.id,
+      git_repository_id: gitRepositoryStore.id,
+    }),
+    get isDisabled() {
+      return or([
+        pipe([get("name"), isEmpty]),
+        pipe([get("OS_PROJECT_NAME"), isEmpty]),
+        pipe([get("OS_PROJECT_ID"), isEmpty]),
+        pipe([get("OS_USERNAME"), isEmpty]),
+        pipe([get("OS_REGION_NAME"), isEmpty]),
+      ])(data);
+    },
+    core,
+  });
+  return store;
 };
 
 export const ovhConfigForm = (context) => {
@@ -220,7 +219,7 @@ export const ovhFormCreate = (context) => {
             "Please provide the following information to create and scan a new infrastructure"
           )}
         </div>
-        <OvhConfigForm store={store} />
+        <OvhConfigForm store={store.core} />
       </main>
       <footer>
         <Button
@@ -233,13 +232,13 @@ export const ovhFormCreate = (context) => {
           data-button-submit
           primary
           raised
-          disabled={store.isCreating || store.isDisabled}
-          onClick={() => store.create()}
+          disabled={store.core.isCreating || store.isDisabled}
+          onClick={() => store.core.create({ data: store.buildPayload() })}
           label={tr.t("Create Infrastructure")}
         />
         <Spinner
           css={css`
-            visibility: ${store.isCreating ? "visible" : "hidden"};
+            visibility: ${store.core.isCreating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
@@ -269,7 +268,7 @@ export const ovhFormEdit = (context) => {
         <h2>{tr.t("Update OVH Infrastructure")}</h2>
       </header>
       <main>
-        <OvhConfigForm store={store} />
+        <OvhConfigForm store={store.core} />
       </main>
       <footer>
         <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
@@ -277,18 +276,18 @@ export const ovhFormEdit = (context) => {
           data-infra-update-submit
           primary
           raised
-          disabled={store.isUpdating}
-          onClick={() => store.update()}
+          disabled={store.core.isUpdating}
+          onClick={() => store.core.update({ data: store.buildPayload() })}
           label={tr.t("Update Infrastructure")}
         />
         <Spinner
           css={css`
-            visibility: ${store.isUpdating ? "visible" : "hidden"};
+            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
       </footer>
-      <InfraDeleteLink store={store} />
+      <InfraDeleteLink store={store.core} />
     </Form>
   ));
 };

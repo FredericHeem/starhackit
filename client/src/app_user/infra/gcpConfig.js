@@ -19,104 +19,29 @@ import IconUpload from "./assets/uploadIcon.svg";
 import { infraDeleteLink } from "./infraDeleteLink";
 import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 import { providerCreateStore } from "./providerStore";
+import { MdStoreMallDirectory } from "react-icons/md";
 
 export const createStoreGoogle = (
   context,
   { gitCredentialStore, gitRepositoryStore }
 ) => {
-  const { tr, history, alertStack, rest, emitter } = context;
-  const Alert = alert(context);
-  const asyncOpCreate = AsyncOp(context);
+  const core = providerCreateStore({
+    context,
+    defaultData: {},
+    rules: {},
+  });
 
   const store = observable({
-    setData: action((data = {}) => {
-      store.id = data.id;
-      store.data = data.providerAuth;
-      store.data.name = data.name;
-    }),
-    id: "",
     fileName: "",
     content: {},
-    error: "",
-    opScan: asyncOpCreate((infraItem) =>
-      rest.post(`cloudDiagram`, { infra_id: infraItem.id })
-    ),
-    op: asyncOpCreate((payload) => rest.post("infra", payload)),
-    get isCreating() {
-      return store.opScan.loading || store.op.loading;
-    },
-    create: action(async () => {
-      store.errors = {};
-
-      const payload = {
-        name: store.content.project_id,
-        providerType: "google",
-        providerName: "google",
-        providerAuth: { credentials: store.content },
-        git_credential_id: gitCredentialStore.id,
-        git_repository_id: gitRepositoryStore.id,
-      };
-      try {
-        const result = await store.op.fetch(payload);
-        await store.opScan.fetch(result);
-        alertStack.add(
-          <Alert severity="success" message={tr.t("Infrastructure Created")} />
-        );
-        history.push(`/infra/detail/${result.id}`, result);
-        emitter.emit("infra.created", result);
-      } catch (errors) {
-        console.log(errors);
-        // backend should 422 if the credentials are incorrect
-        alertStack.add(
-          <Alert
-            severity="error"
-            data-alert-error-create
-            message={tr.t(
-              "Error creating infrastructure, check the credentials"
-            )}
-          />
-        );
-      }
+    buildPayload: () => ({
+      name: store.content.project_id,
+      providerType: "google",
+      providerName: "google",
+      providerAuth: { credentials: store.content },
+      git_credential_id: gitCredentialStore.id,
+      git_repository_id: gitRepositoryStore.id,
     }),
-    opUpdate: asyncOpCreate((payload) =>
-      rest.patch(`infra/${store.id}`, payload)
-    ),
-    get isUpdating() {
-      return store.opScan.loading || store.opUpdate.loading;
-    },
-    update: action(async () => {
-      store.errors = {};
-
-      const payload = {
-        providerType: "google",
-        name: store.data.name,
-        providerAuth: { credentials: store.content },
-      };
-      try {
-        const result = await store.opUpdate.fetch(payload);
-        await store.opScan.fetch(result);
-
-        alertStack.add(
-          <Alert severity="success" message={tr.t("Infrastructure Updated")} />
-        );
-        history.push(`/infra/detail/${result.id}`, result);
-        emitter.emit("infra.updated", result);
-      } catch (errors) {
-        alertStack.add(
-          <Alert
-            severity="error"
-            data-alert-error-update
-            message={tr.t("Error updating infrastructure")}
-          />
-        );
-      }
-    }),
-    setProjectName: (name) => {
-      store.data.name = name;
-    },
-    get() {
-      return store.name.length === 0;
-    },
     get isDisabled() {
       return !store.content.project_id;
     },
@@ -124,7 +49,6 @@ export const createStoreGoogle = (
       const file = event.target.files[0];
       if (file) {
         store.fileName = file.name;
-
         const reader = new FileReader();
         reader.readAsText(file);
         reader.onload = () => {
@@ -141,9 +65,11 @@ export const createStoreGoogle = (
           console.log(reader.error);
         };
       } else {
+        //TODO
         store.input = "";
       }
     },
+    core,
   });
 
   return store;
@@ -204,7 +130,7 @@ const fileInputLabel =
           `,
         ]}
       >
-        <img src={IconUpload} alt="uplpoad" />
+        <img src={IconUpload} alt="upload" />
         <span>{tr.t("Choose a credential file to upload")}</span>
       </div>
     );
@@ -317,16 +243,20 @@ export const gcpFormCreate = (context) => {
         <ButtonWizardBack />
         <Button
           data-button-submit
-          disabled={store.isCreating}
+          disabled={store.core.isCreating || store.isDisabled}
           raised
           primary
-          onClick={() => store.create()}
+          onClick={() =>
+            store.core.create({
+              data: store.buildPayload(),
+            })
+          }
         >
           {tr.t("Save and Scan")} {store.content.project_id}
         </Button>
         <Spinner
           css={css`
-            visibility: ${store.isCreating ? "visible" : "hidden"};
+            visibility: ${store.core.isCreating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
@@ -366,7 +296,7 @@ export const gcpFormEdit = (context) => {
       <main>
         <FormGroup>
           <Input
-            value={store.data.name}
+            value={store.core.data.name}
             disabled={true}
             label={tr.t("Infrastrucure Name")}
           />
@@ -392,21 +322,21 @@ export const gcpFormEdit = (context) => {
         <ButtonHistoryBack />
         <Button
           data-infra-update-submit
-          disabled={store.isUpdating || store.isDisabled}
+          disabled={store.core.isUpdating || store.isDisabled}
           raised
           primary
-          onClick={() => store.update()}
+          onClick={() => store.core.update(store.buildPayload())}
         >
           {tr.t("Update")} {store.content.project_id}
         </Button>
         <Spinner
           css={css`
-            visibility: ${store.isUpdating ? "visible" : "hidden"};
+            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
       </footer>
-      <InfraDeleteLink store={store} />
+      <InfraDeleteLink store={store.core} />
 
       {/* <pre
         css={css`

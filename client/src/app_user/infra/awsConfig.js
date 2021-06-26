@@ -2,16 +2,13 @@
 import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import validate from "validate.js";
 import { get, or, pipe } from "rubico";
 import { isEmpty } from "rubico/x";
 
-import AsyncOp from "mdlean/lib/utils/asyncOp";
 import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
 import spinner from "mdlean/lib/spinner";
-import alert from "mdlean/lib/alert";
 
 import createForm from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
@@ -76,34 +73,35 @@ export const createStoreAws = (
   context,
   { gitCredentialStore, gitRepositoryStore }
 ) => {
-  const buildPayload = ({ data }) => ({
-    name: data.name,
-    providerType: "aws",
-    providerName: "aws",
-    providerAuth: {
-      AWSAccessKeyId: data.AWSAccessKeyId.trim(),
-      AWSSecretKey: data.AWSSecretKey,
-      AWS_REGION: data.AWS_REGION,
-    },
-    git_credential_id: gitCredentialStore.id,
-    git_repository_id: gitRepositoryStore.id,
-  });
-
-  const isDisabled = ({ data }) => {
-    return or([
-      pipe([get("name"), isEmpty]),
-      pipe([get("AWSAccessKeyId"), isEmpty]),
-      pipe([get("AWSSecretKey"), isEmpty]),
-    ])(data);
-  };
-
-  return providerCreateStore({
+  const core = providerCreateStore({
     context,
     defaultData,
     rules,
-    buildPayload,
-    isDisabled,
   });
+  const { data } = core;
+  const store = observable({
+    get isDisabled() {
+      return or([
+        pipe([get("name"), isEmpty]),
+        pipe([get("AWSAccessKeyId"), isEmpty]),
+        pipe([get("AWSSecretKey"), isEmpty]),
+      ])(data);
+    },
+    buildPayload: () => ({
+      name: data.name,
+      providerType: "aws",
+      providerName: "aws",
+      providerAuth: {
+        AWSAccessKeyId: data.AWSAccessKeyId.trim(),
+        AWSSecretKey: data.AWSSecretKey,
+        AWS_REGION: data.AWS_REGION,
+      },
+      git_credential_id: gitCredentialStore.id,
+      git_repository_id: gitRepositoryStore.id,
+    }),
+    core,
+  });
+  return store;
 };
 
 export const awsConfigForm = (context) => {
@@ -186,7 +184,7 @@ export const awsFormCreate = (context) => {
             "Please provide the following information to create and scan a new infrastructure"
           )}
         </div>
-        <AwsConfigForm store={store} />
+        <AwsConfigForm store={store.core} />
       </main>
       <footer>
         <ButtonWizardBack />
@@ -194,13 +192,17 @@ export const awsFormCreate = (context) => {
           data-button-submit
           primary
           raised
-          disabled={store.isCreating || store.isDisabled}
-          onClick={() => store.create()}
+          disabled={store.core.isCreating || store.isDisabled}
+          onClick={() =>
+            store.core.create({
+              data: store.buildPayload(),
+            })
+          }
           label={tr.t("Create Infrastructure")}
         />
         <Spinner
           css={css`
-            visibility: ${store.isCreating ? "visible" : "hidden"};
+            visibility: ${store.core.isCreating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
@@ -231,7 +233,7 @@ export const awsFormEdit = (context) => {
         <h2>{tr.t("Update AWS Infrastructure")}</h2>
       </header>
       <main>
-        <AwsConfigForm store={store} />
+        <AwsConfigForm store={store.core} />
       </main>
       <footer>
         <ButtonHistoryBack />
@@ -239,18 +241,18 @@ export const awsFormEdit = (context) => {
           data-infra-update-submit
           primary
           raised
-          disabled={store.isUpdating}
-          onClick={() => store.update()}
+          disabled={store.core.isUpdating}
+          onClick={() => store.core.update({ data: store.buildPayload() })}
           label={tr.t("Update Infrastructure")}
         />
         <Spinner
           css={css`
-            visibility: ${store.isUpdating ? "visible" : "hidden"};
+            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
           `}
           color={palette.primary.main}
         />
       </footer>
-      <InfraDeleteLink store={store} />
+      <InfraDeleteLink store={store.core} />
     </Form>
   ));
 };

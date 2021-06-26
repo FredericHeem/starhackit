@@ -46,7 +46,7 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/aws/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.aws.setData(window.history.state.usr);
+        stores.aws.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit Aws Infrastructure",
@@ -60,7 +60,7 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/google/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.google.setData(window.history.state.usr);
+        stores.google.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit GCP Infrastructure",
@@ -74,7 +74,7 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/azure/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.azure.setData(window.history.state.usr);
+        stores.azure.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit Azure Infrastructure",
@@ -88,7 +88,7 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/ovh/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.ovh.setData(window.history.state.usr);
+        stores.ovh.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit OVH Infrastructure",

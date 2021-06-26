@@ -5,14 +5,10 @@ import { observer } from "mobx-react";
 import { get, or, pipe } from "rubico";
 import { isEmpty } from "rubico/x";
 
-import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
-import spinner from "mdlean/lib/spinner";
 
 import createForm from "components/form";
-import { infraDeleteLink } from "./infraDeleteLink";
-import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 import { providerCreateStore } from "./providerStore";
 import {
   providerConfigCreateFooter,
@@ -166,10 +162,7 @@ export const awsConfigForm = (context) => {
 };
 
 export const awsFormCreate = (context) => {
-  const {
-    tr,
-    theme: { palette },
-  } = context;
+  const { tr } = context;
   const Form = createForm(context);
   const Footer = providerConfigCreateFooter(context);
   const AwsConfigForm = awsConfigForm(context);
@@ -193,10 +186,7 @@ export const awsFormCreate = (context) => {
 };
 
 export const awsFormEdit = (context) => {
-  const {
-    tr,
-    theme: { palette },
-  } = context;
+  const { tr } = context;
 
   const Form = createForm(context);
   const AwsConfigForm = awsConfigForm(context);

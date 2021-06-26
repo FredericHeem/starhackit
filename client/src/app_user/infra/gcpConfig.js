@@ -3,16 +3,12 @@ import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 
 import fileInput from "mdlean/lib/fileInput";
-import AsyncOp from "mdlean/lib/utils/asyncOp";
 import formGroup from "mdlean/lib/formGroup";
 
 import createForm from "components/form";
-import alert from "mdlean/lib/alert";
-import spinner from "mdlean/lib/spinner";
 
 import IconUpload from "./assets/uploadIcon.svg";
 
@@ -137,11 +133,7 @@ const fileInputLabel =
     );
 
 export const gcpFormCreate = (context) => {
-  const {
-    tr,
-    theme: { palette },
-    emitter,
-  } = context;
+  const { tr } = context;
   const Form = createForm(context);
   const FileInput = fileInput(context);
   const CredentialFile = credentialFile(context);
@@ -244,11 +236,7 @@ export const gcpFormCreate = (context) => {
 };
 
 export const gcpFormEdit = (context) => {
-  const {
-    tr,
-    history,
-    theme: { palette },
-  } = context;
+  const { tr } = context;
   const Form = createForm(context);
   const FormGroup = formGroup(context);
   const FileInput = fileInput(context);
@@ -294,14 +282,6 @@ export const gcpFormEdit = (context) => {
         )}
       </main>
       <Footer store={store} />
-
-      {/* <pre
-        css={css`
-          width: 300px;
-        `}
-      >
-        {JSON.stringify(store, null, 4)}
-      </pre> */}
     </Form>
   ));
 };

@@ -4,10 +4,8 @@ import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import { get, or, pipe } from "rubico";
 import { isEmpty } from "rubico/x";
-import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
-import spinner from "mdlean/lib/spinner";
 
 import createForm from "components/form";
 import { providerCreateStore } from "./providerStore";
@@ -198,11 +196,7 @@ export const ovhConfigForm = (context) => {
 };
 
 export const ovhFormCreate = (context) => {
-  const {
-    tr,
-    theme: { palette },
-    emitter,
-  } = context;
+  const { tr } = context;
   const Form = createForm(context);
   const OvhConfigForm = ovhConfigForm(context);
   const Footer = providerConfigCreateFooter(context);

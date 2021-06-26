@@ -31,7 +31,7 @@ const rules = {
   },
 };
 
-export const gitCredentialCreateStore = (context) => {
+export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const asyncOpCreate = AsyncOp(context);
 

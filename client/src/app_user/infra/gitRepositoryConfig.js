@@ -32,7 +32,11 @@ const rules = {
   },
 };
 
-export const repositoryCreateStore = (context) => {
+export const repositoryCreateStore = ({
+  context,
+  infraSettingsStore,
+  gitCredentialStore,
+}) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const asyncOpCreate = AsyncOp(context);
 

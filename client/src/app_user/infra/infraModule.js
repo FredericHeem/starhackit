@@ -2,18 +2,10 @@
 import { observable, action, toJS } from "mobx";
 import { get } from "rubico";
 import { isEmpty } from "rubico/x";
-import validate from "validate.js";
 
 import alert from "mdlean/lib/alert";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
-
-import { repositoryCreateStore } from "./gitRepositoryConfig";
-import { gitCredentialCreateStore } from "./gitCredentialConfig";
-
-import { createStoreAws } from "./awsConfig";
-import { createStoreGoogle } from "./gcpConfig";
-import { createStoreAzure } from "./azureConfig";
-import { createStoreOvh } from "./ovhConfig";
+import { wizardStoreCreate } from "./wizardCreate";
 
 import { createRoutes } from "./infraRoutes";
 
@@ -23,7 +15,7 @@ export default function (context) {
   const { rest, tr, history, alertStack, emitter } = context;
   const asyncOpCreate = AsyncOp(context);
   const Alert = alert(context);
-
+  const wizardStore = wizardStoreCreate(context);
   function Stores() {
     const infraStore = observable({
       errors: {},
@@ -101,23 +93,11 @@ export default function (context) {
       }),
     });
 
-    const gitCredentialStore = gitCredentialCreateStore(context);
-    const gitRepositoryStore = repositoryCreateStore(context);
-
     return {
-      aws: createStoreAws(context, { gitCredentialStore, gitRepositoryStore }),
-      google: createStoreGoogle(context, {
-        gitCredentialStore,
-        gitRepositoryStore,
-      }),
-      azure: createStoreAzure(context, {
-        gitCredentialStore,
-        gitRepositoryStore,
-      }),
-      ovh: createStoreOvh(context, { gitCredentialStore, gitRepositoryStore }),
       infra: infraStore,
       infraDetail: infraDetailStore,
       delete: storeDelete,
+      wizard: wizardStore,
     };
   }
 

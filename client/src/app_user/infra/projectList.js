@@ -2,7 +2,7 @@ const url = "https://github.com/grucloud/grucloud/";
 const branch = "main";
 
 export const PROJECTS = {
-  AWS: [
+  aws: [
     {
       title: "EC2 an instance with public address",
       description:
@@ -19,7 +19,7 @@ export const PROJECTS = {
       directory: "packages/modules/aws/eks/example",
     },
   ],
-  Azure: [
+  azure: [
     {
       title: "Virtual machine",
       description:
@@ -29,7 +29,7 @@ export const PROJECTS = {
       directory: "examples/azure",
     },
   ],
-  GCP: [
+  google: [
     {
       title: "Virtual machine",
       description: "Deploy a virtual machine on the default network",

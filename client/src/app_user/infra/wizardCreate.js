@@ -1,15 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import validate from "validate.js";
-
-import AsyncOp from "mdlean/lib/utils/asyncOp";
 
 import button from "mdlean/lib/button";
 import wizard from "mdlean/lib/wizard";
 
-import providerSelection from "./providerSelection";
+import {
+  providerSelection,
+  providerSelectionCreateStore,
+} from "./providerSelection";
 import { awsFormCreate, createStoreAws } from "./awsConfig";
 import { gcpFormCreate, createStoreGoogle } from "./gcpConfig";
 import { azureFormCreate, createStoreAzure } from "./azureConfig";
@@ -20,6 +19,7 @@ import {
   gitCredentialConfig,
   gitCredentialCreateStore,
 } from "./gitCredentialConfig";
+import { infraSettings, infraSettingsCreateStore } from "./infraSettings";
 
 import {
   importProjectForm,
@@ -44,97 +44,142 @@ export const buttonHistoryBack = (context) => {
   );
 };
 
-export const wizardCreate = (context) => {
+export const wizardStoreCreate = (context) => {
+  const providerSelectionStore = providerSelectionCreateStore({ context });
+
+  const importProjectStore = importProjectCreateStore(context);
+
+  const infraSettingsStore = infraSettingsCreateStore({
+    context,
+    providerSelectionStore,
+    importProjectStore,
+  });
+
+  const gitCredentialStore = gitCredentialCreateStore({
+    context,
+    infraSettingsStore,
+  });
+
+  const gitRepositoryStore = repositoryCreateStore({
+    context,
+    infraSettingsStore,
+    gitCredentialStore,
+  });
+
+  const aws = createStoreAws(context, {
+    importProjectStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+    infraSettingsStore,
+  });
+
+  const google = createStoreGoogle(context, {
+    importProjectStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+    infraSettingsStore,
+  });
+
+  const azure = createStoreAzure(context, {
+    importProjectStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+    infraSettingsStore,
+  });
+
+  const ovh = createStoreOvh(context, {
+    importProjectStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+    infraSettingsStore,
+  });
+
+  return {
+    providerSelectionStore,
+    importProjectStore,
+    infraSettingsStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+    aws,
+    azure,
+    google,
+    ovh,
+  };
+};
+
+export const wizardCreate = ({ context, stores }) => {
   const { tr, emitter } = context;
   const ProviderSelection = providerSelection(context);
+  const InfraSettings = infraSettings(context);
   const RepositoryConfig = repositoryConfig(context);
   const GitCredentialConfig = gitCredentialConfig(context);
   const ImportProjectForm = importProjectForm(context);
-  const gitCredentialStore = gitCredentialCreateStore(context);
-  const gitRepositoryStore = repositoryCreateStore(context);
-  const importProjectStore = importProjectCreateStore(context);
 
   const AwsFormCreate = awsFormCreate(context);
   const GcpFormCreate = gcpFormCreate(context);
   const AzureFormCreate = azureFormCreate(context);
   const OvhFormCreate = ovhFormCreate(context);
 
-  const store = observable({
-    providerName: "",
-    selectProvider: (providerName) => {
-      store.providerName = providerName;
-      emitter.emit("step.next");
-    },
-    setProvider: (providerName) => {
-      store.providerName = providerName;
-    },
-    get supportImport() {
-      return store.providerName === "GCP";
-    },
-  });
+  const {
+    providerSelectionStore,
+    importProjectStore,
+    infraSettingsStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+    aws,
+    google,
+    azure,
+    ovh,
+  } = stores.wizard;
 
   const configViewFromProvider = (providerName) => {
     switch (providerName) {
-      case "AWS":
-        return (
-          <AwsFormCreate
-            store={createStoreAws(context, {
-              importProjectStore,
-              gitCredentialStore,
-              gitRepositoryStore,
-            })}
-          />
-        );
-      case "GCP":
-        return (
-          <GcpFormCreate
-            store={createStoreGoogle(context, {
-              importProjectStore,
-              gitCredentialStore,
-              gitRepositoryStore,
-            })}
-          />
-        );
-      case "Azure":
-        return (
-          <AzureFormCreate
-            store={createStoreAzure(context, {
-              importProjectStore,
-              gitCredentialStore,
-              gitRepositoryStore,
-            })}
-          />
-        );
-      case "OVH":
-        return (
-          <OvhFormCreate
-            store={createStoreOvh(context, {
-              importProjectStore,
-              gitCredentialStore,
-              gitRepositoryStore,
-            })}
-          />
-        );
+      case "aws":
+        return <AwsFormCreate store={aws} />;
+      case "google":
+        return <GcpFormCreate store={google} />;
+      case "azure":
+        return <AzureFormCreate store={azure} />;
+      case "ovh":
+        return <OvhFormCreate store={ovh} />;
       default:
         throw Error(`invalid provider type`);
     }
   };
-
   const wizardDefs = [
     {
       name: "ProviderSelection",
       header: () => <header>{tr.t("Select Provider")}</header>,
-      content: () => <ProviderSelection store={store} />,
+      content: () => <ProviderSelection store={providerSelectionStore} />,
       enter: async () => {
-        store.setProvider("");
+        stores.providerSelectionStore.setProvider("");
       },
     },
     {
       name: "Import",
       header: observer(() => <header>Import</header>),
       content: ({}) => (
-        <ImportProjectForm store={importProjectStore} storeProvider={store} />
+        <ImportProjectForm
+          store={importProjectStore}
+          storeProvider={providerSelectionStore}
+        />
       ),
+      enter: async () => {
+        stores.importProjectStore.project = {};
+      },
+    },
+    {
+      name: "Settings",
+      header: observer(() => <header>Settings</header>),
+      content: ({}) => (
+        <InfraSettings
+          store={infraSettingsStore}
+          storeProvider={providerSelectionStore}
+        />
+      ),
+      enter: async () => {
+        infraSettingsStore.data.name = importProjectStore.project.title;
+      },
     },
     {
       name: "GitCredential",
@@ -149,7 +194,8 @@ export const wizardCreate = (context) => {
     {
       name: "Configuration",
       header: observer(() => <header>Configuration</header>),
-      content: ({}) => configViewFromProvider(store.providerName),
+      content: ({}) =>
+        configViewFromProvider(providerSelectionStore.data.providerName),
     },
   ];
 

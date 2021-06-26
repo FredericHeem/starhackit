@@ -3,15 +3,16 @@ const infraNameAws = "Aws Infra";
 const infraNameGoogle = "grucloud-vm-tuto-1";
 const infraNameAzure = "Azure Infra";
 const infraNameOvh = "Ovh Infra";
-const infraNewName = (name) => `${name}-newname`;
-const timeout = 5e3;
-const timeoutLong = 30e3;
+const infraNewName = (name) => `${name}`;
+const timeout = 500e3;
+const timeoutLong = 300e3;
 
 const pause = 100;
 const googleCredentialFile = "grucloud-vm-tuto-1.json";
 
 const {
   GIT_REPOSITORY_AWS,
+  GIT_REPOSITORY_AWS_EKS,
   GIT_REPOSITORY_GCP,
   GIT_REPOSITORY_AZURE,
   GIT_REPOSITORY_OPENSTACK,
@@ -122,12 +123,21 @@ const providerSelectOvh = ({ client }) => {
     .click("@buttonSelectOvh");
 };
 
+// Infra Settings
+
+const infraSettings = ({ client, infraName }) => {
+  client.page
+    .infraCreate()
+    .waitForElementVisible("form[data-form-infra-settings=true]", timeout)
+    .setValue('input[name="infraName"]', infraName)
+    .setValue('input[name="stage"]', "uat")
+    .click("button[data-button-submit=true]");
+};
 // Config
 const configAWS = ({ client }) => {
   client.page
     .infraCreate()
     .waitForElementVisible("form[data-infra-create=true]", timeout)
-    .setValue("@inputInfraName", infraNameAws)
     .setValue("@inputAccessKeyId", process.env.AWSAccessKeyId)
     .setValue("@inputSecretKey", process.env.AWSSecretKey)
     // AWS_REGION
@@ -140,7 +150,6 @@ const configAzure = ({ client }) => {
   client.page
     .infraCreate()
     .waitForElementVisible("form[data-infra-create=true]", timeout)
-    .setValue("@inputAzureName", infraNameAzure)
     .setValue("@inputSubscriptionId", process.env.SUBSCRIPTION_ID)
     .setValue("@inputTenantId", process.env.TENANT_ID)
     .setValue("@inputAppId", process.env.APP_ID)
@@ -167,7 +176,6 @@ const configOvh = ({ client }) => {
   client.page
     .infraCreate()
     .waitForElementVisible("form[data-infra-create=true]", timeout)
-    .setValue("@inputInfraName", infraNameOvh)
     .setValue("@inputOsProjectId", process.env.OS_PROJECT_ID)
     .setValue("@inputOsProjectName", process.env.OS_PROJECT_NAME)
     .setValue("@inputOsUsername", process.env.OS_USERNAME)
@@ -187,8 +195,6 @@ const updateAWS = ({ client, infraName }) => {
     .infraCreate()
     .click("button[data-infra-edit-button=true]")
     .waitForElementVisible("form[data-infra-update=true]", timeout)
-    .clearValue("@inputInfraName")
-    .setValue("@inputInfraName", infraNewName(infraName))
     .click("button[data-infra-update-submit=true]")
     .waitForElementVisible("form[data-infra-detail=true]", timeoutLong)
     .pause(pause);
@@ -200,8 +206,8 @@ const updateAzure = ({ client, infraName }) => {
     .infraCreate()
     .click("button[data-infra-edit-button=true]")
     .waitForElementVisible("form[data-infra-update=true]", timeout)
-    .clearValue("@inputAzureName")
-    .setValue("@inputAzureName", infraNewName(infraName))
+    // .clearValue("@inputAzureName")
+    // .setValue("@inputAzureName", infraNewName(infraName))
     .click("button[data-infra-update-submit=true]")
     .waitForElementVisible("form[data-infra-detail=true]", timeoutLong)
     .pause(pause);
@@ -232,8 +238,8 @@ const updateOvh = ({ client, infraName }) => {
     .infraCreate()
     .click("button[data-infra-edit-button=true]")
     .waitForElementVisible("form[data-infra-update=true]", timeout)
-    .clearValue("@inputInfraName")
-    .setValue("@inputInfraName", infraNewName(infraName))
+    // .clearValue("@inputInfraName")
+    // .setValue("@inputInfraName", infraNewName(infraName))
     .click("button[data-infra-update-submit=true]")
     .pause(pause);
 };
@@ -253,14 +259,7 @@ describe.only("Infra", function () {
     navigate({ client });
     providerSelectAws({ client });
     projectImportExisting({ client });
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
-    configAWS({ client });
-  });
-
-  it("create aws from template", function (client) {
-    navigate({ client });
-    providerSelectAws({ client });
-    projectImportFromTemplate({ client, directory: "examples/aws/ec2" });
+    infraSettings({ client, infraName: infraNameAws });
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
     configAWS({ client });
   });
@@ -277,6 +276,7 @@ describe.only("Infra", function () {
     navigate({ client });
     providerSelectAzure({ client });
     projectImportExisting({ client });
+    infraSettings({ client, infraName: infraNameAzure });
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AZURE });
     configAzure({ client });
   });
@@ -293,6 +293,7 @@ describe.only("Infra", function () {
     navigate({ client });
     providerSelectGoogle({ client });
     projectImportExisting({ client });
+    infraSettings({ client, infraName: infraNameGoogle });
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_GCP });
     configGoogle({ client });
   });
@@ -310,6 +311,7 @@ describe.only("Infra", function () {
     navigate({ client });
     providerSelectOvh({ client });
     projectImportExisting({ client });
+    infraSettings({ client, infraName: infraNameOvh });
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_OPENSTACK });
     configOvh({ client });
   });
@@ -327,7 +329,7 @@ describe.only("Infra", function () {
     navigate({ client });
     providerSelectAws({ client });
     projectImportExisting({ client });
-
+    infraSettings({ client, infraName: infraNameAws });
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
 
     client.page
@@ -337,5 +339,25 @@ describe.only("Infra", function () {
       .setValue("@inputSecretKey", Array(40).fill("S"))
       .click("@submit")
       .waitForElementVisible("div[data-alert-error-create=true]", 50e3);
+  });
+
+  it("create aws from template ec2", function (client) {
+    navigate({ client });
+    providerSelectAws({ client });
+    projectImportFromTemplate({ client, directory: "examples/aws/ec2" });
+    infraSettings({ client, infraName: "ec2" });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
+    configAWS({ client });
+  });
+  it("create aws from template eks", function (client) {
+    navigate({ client });
+    providerSelectAws({ client });
+    projectImportFromTemplate({
+      client,
+      directory: "packages/modules/aws/eks/example",
+    });
+    infraSettings({ client, infraName: "eks" });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS_EKS });
+    configAWS({ client });
   });
 });

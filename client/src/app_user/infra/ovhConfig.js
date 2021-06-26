@@ -34,13 +34,6 @@ const OVH_REGION = [
 import selectRegion from "./SelectRegion";
 
 const rules = {
-  name: {
-    presence: true,
-    length: {
-      minimum: 3,
-      message: "must be at least 3 characters",
-    },
-  },
   OS_PROJECT_NAME: {
     presence: true,
     length: {
@@ -84,20 +77,24 @@ const defaultData = {
 
 export const createStoreOvh = (
   context,
-  { importProjectStore, gitCredentialStore, gitRepositoryStore }
+  {
+    infraSettingsStore,
+    importProjectStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+  }
 ) => {
   const core = providerCreateStore({
     context,
     defaultData,
     rules,
-    importProjectStore,
+    infraSettingsStore,
     gitCredentialStore,
     gitRepositoryStore,
   });
 
   const store = observable({
     buildPayload: ({ data }) => ({
-      name: data.name,
       providerType: "openstack",
       providerName: "ovh",
       providerAuth: {
@@ -111,7 +108,6 @@ export const createStoreOvh = (
     }),
     get isDisabled() {
       return or([
-        pipe([get("name"), isEmpty]),
         pipe([get("OS_PROJECT_NAME"), isEmpty]),
         pipe([get("OS_PROJECT_ID"), isEmpty]),
         pipe([get("OS_USERNAME"), isEmpty]),
@@ -137,16 +133,6 @@ export const ovhConfigForm = (context) => {
 
   return observer(({ store }) => (
     <>
-      <FormGroup>
-        <Input
-          autoFocus
-          name="infraName"
-          value={store.data.name}
-          onChange={(event) => store.onChange("name", event)}
-          label={tr.t("Infrastructure Name")}
-          error={get("name[0]")(store.errors)}
-        />
-      </FormGroup>
       <FormGroup>
         <Input
           name="OS_PROJECT_NAME"

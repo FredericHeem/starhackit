@@ -39,13 +39,6 @@ const AWS_REGION = [
 import selectRegion from "./SelectRegion";
 
 const rules = {
-  name: {
-    presence: true,
-    length: {
-      minimum: 3,
-      message: "must be at least 3 characters",
-    },
-  },
   AWSAccessKeyId: {
     presence: true,
     length: {
@@ -72,12 +65,18 @@ const defaultData = {
 
 export const createStoreAws = (
   context,
-  { importProjectStore, gitCredentialStore, gitRepositoryStore }
+  {
+    infraSettingsStore,
+    importProjectStore,
+    gitCredentialStore,
+    gitRepositoryStore,
+  }
 ) => {
   const core = providerCreateStore({
     context,
     defaultData,
     rules,
+    infraSettingsStore,
     importProjectStore,
     gitCredentialStore,
     gitRepositoryStore,
@@ -85,13 +84,11 @@ export const createStoreAws = (
   const store = observable({
     get isDisabled() {
       return or([
-        pipe([get("name"), isEmpty]),
         pipe([get("AWSAccessKeyId"), isEmpty]),
         pipe([get("AWSSecretKey"), isEmpty]),
       ])(core.data);
     },
     buildPayload: ({ data }) => ({
-      name: data.name,
       providerType: "aws",
       providerName: "aws",
       providerAuth: {
@@ -119,16 +116,6 @@ export const awsConfigForm = (context) => {
 
   return observer(({ store }) => (
     <>
-      <FormGroup>
-        <Input
-          autoFocus
-          name="infraName"
-          value={store.data.name}
-          onChange={(event) => store.onChange("name", event)}
-          label={tr.t("Infrastructure Name")}
-          error={get("name[0]")(store.errors)}
-        />
-      </FormGroup>
       <FormGroup>
         <Input
           name="AWSAccessKeyId"

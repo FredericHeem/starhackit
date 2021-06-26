@@ -35,7 +35,7 @@ export const createRoutes = ({ context, stores }) => {
         return {
           routerContext,
           title: "Create Infrastructure",
-          component: h(wizardCreate(context), {
+          component: h(wizardCreate({ context, stores }), {
             title: "Create",
             buttonTitle: "Create Infrastructure",
           }),
@@ -46,12 +46,12 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/aws/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.aws.core.setData(window.history.state.usr);
+        stores.wizard.aws.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit Aws Infrastructure",
           component: h(awsFormEdit(context), {
-            store: stores.aws,
+            store: stores.wizard.aws,
           }),
         };
       },
@@ -60,12 +60,12 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/google/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.google.core.setData(window.history.state.usr);
+        stores.wizard.google.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit GCP Infrastructure",
           component: h(gcpFormEdit(context), {
-            store: stores.google,
+            store: stores.wizard.google,
           }),
         };
       },
@@ -74,12 +74,12 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/azure/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.azure.core.setData(window.history.state.usr);
+        stores.wizard.azure.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit Azure Infrastructure",
           component: h(azureFormEdit(context), {
-            store: stores.azure,
+            store: stores.wizard.azure,
           }),
         };
       },
@@ -88,12 +88,12 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/ovh/edit",
       protected: true,
       action: async (routerContext) => {
-        stores.ovh.core.setData(window.history.state.usr);
+        stores.wizard.ovh.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit OVH Infrastructure",
           component: h(ovhFormEdit(context), {
-            store: stores.ovh,
+            store: stores.wizard.ovh,
           }),
         };
       },

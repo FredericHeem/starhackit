@@ -101,7 +101,7 @@ const createInfraDetail = (context) => {
                 providerName: detail.providerName,
                 providerAuth: {
                   ...detail.providerAuth,
-                  credentials: { ...detail.providerAuth.credentials },
+                  credentials: { ...detail.providerAuth?.credentials },
                 },
               };
               history.push(

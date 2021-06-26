@@ -9,7 +9,7 @@ export const providerCreateStore = ({
   context,
   defaultData,
   rules,
-  importProjectStore,
+  infraSettingsStore,
   gitCredentialStore,
   gitRepositoryStore,
 }) => {
@@ -21,7 +21,6 @@ export const providerCreateStore = ({
     id: "",
     data: defaultData,
     errors: {},
-    providerName: "",
     onChange: action((field, event) => {
       store.data[field] = event.target.value;
     }),
@@ -33,22 +32,15 @@ export const providerCreateStore = ({
       store.data = data.providerAuth;
       store.data.name = data.name;
     }),
-    selectProvider: (providerName) => {
-      store.providerName = providerName;
-      emitter.emit("step.next");
-    },
-    setProvider: (providerName) => {
-      store.providerName = providerName;
-    },
     get supportImport() {
-      return store.providerName === "GCP";
+      return store.providerName === "google";
     },
     opScan: asyncOpCreate((infraItem) =>
       rest.post(`cloudDiagram`, { infra_id: infraItem.id })
     ),
     op: asyncOpCreate((payload) => rest.post("infra", payload)),
     get isCreating() {
-      return store.opScan.loading || store.op.loading;
+      return store.opScan.loading || store.opUpdate.loading;
     },
     validate: action(async ({ data }) => {
       store.errors = {};
@@ -74,14 +66,14 @@ export const providerCreateStore = ({
             pipe([
               () => ({
                 ...data,
+                id: infraSettingsStore.id,
                 git_credential_id: gitCredentialStore.id,
                 git_repository_id: gitRepositoryStore.id,
-                project: { ...importProjectStore.project },
               }),
               tap((payload) => {
                 console.log("create payload", payload);
               }),
-              (payload) => store.op.fetch(payload),
+              (payload) => store.opUpdate.fetch(payload),
               tap(() => {
                 alertStack.add(
                   <Alert
@@ -119,8 +111,9 @@ export const providerCreateStore = ({
         ]),
       ])()
     ),
+    //TODO use id in the payload
     opUpdate: asyncOpCreate((payload) =>
-      rest.patch(`infra/${store.id}`, payload)
+      rest.patch(`infra/${store.id || infraSettingsStore.id}`, payload)
     ),
     get isUpdating() {
       return store.opScan.loading || store.opUpdate.loading;

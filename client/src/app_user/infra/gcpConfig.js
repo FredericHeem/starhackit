@@ -20,13 +20,13 @@ import {
 
 export const createStoreGoogle = (
   context,
-  { importProjectStore, gitCredentialStore, gitRepositoryStore }
+  { infraSettingsStore, gitCredentialStore, gitRepositoryStore }
 ) => {
   const core = providerCreateStore({
     context,
     defaultData: {},
     rules: {},
-    importProjectStore,
+    infraSettingsStore,
     gitCredentialStore,
     gitRepositoryStore,
   });
@@ -35,7 +35,6 @@ export const createStoreGoogle = (
     fileName: "",
     content: {},
     buildPayload: () => ({
-      name: store.content.project_id,
       providerType: "google",
       providerName: "google",
       providerAuth: { credentials: store.content },

@@ -18,27 +18,25 @@ import {
 
 export const createStoreAzure = (
   context,
-  { importProjectStore, gitCredentialStore, gitRepositoryStore }
+  { infraSettingsStore, gitCredentialStore, gitRepositoryStore }
 ) => {
   const core = providerCreateStore({
     context,
     defaultData: {},
     rules: {},
-    importProjectStore,
+    infraSettingsStore,
     gitCredentialStore,
     gitRepositoryStore,
   });
 
   const store = observable({
     buildPayload: ({ data }) => ({
-      name: data.name,
       providerType: "azure",
       providerName: "azure",
       providerAuth: data,
     }),
     get isDisabled() {
       return or([
-        pipe([get("name"), isEmpty]),
         pipe([get("SUBSCRIPTION_ID"), isEmpty]),
         pipe([get("TENANT_ID"), isEmpty]),
         pipe([get("APP_ID"), isEmpty]),
@@ -96,17 +94,6 @@ export const azureFormContent = (context) => {
           }
         `}
       >
-        <li>
-          <h3>Name</h3>
-          <p>Choose a name for this architecture.</p>
-          <Input
-            data-input-azure-name
-            value={store.data.name}
-            onChange={(e) => store.onChange("name", e)}
-            label={tr.t("Infrastrucure Name")}
-            error={store.errors.name && store.errors.name[0]}
-          />
-        </li>
         <li>
           <h3>Subscription ID</h3>
           <p>

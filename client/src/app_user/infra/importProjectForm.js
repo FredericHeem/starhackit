@@ -165,7 +165,7 @@ export const importProjectForm = (context) => {
     >
       <ModalNewFromTemplate
         store={store}
-        projects={PROJECTS[storeProvider.providerName]}
+        projects={PROJECTS[storeProvider.data.providerName]}
       />
       <ModalImportFromCloud store={store} />
 

@@ -36,42 +36,10 @@ const infraFindOne = ({ models }) =>
           id,
         },
       }),
+    switchCase([isEmpty, () => undefined, callProp("toJSON")]),
   ]);
 
 exports.infraFindOne = infraFindOne;
-
-const infraFindAll = ({ models }) =>
-  pipe([
-    ({ user_id }) =>
-      models.Infra.findAll({
-        include: [
-          {
-            model: models.Job,
-            limit: 1,
-            order: [["createdAt", "DESC"]],
-          },
-          {
-            model: models.GitCredential,
-            as: "gitCredential",
-          },
-          {
-            model: models.GitRepository,
-            as: "gitRepository",
-          },
-          {
-            model: models.User,
-            as: "user",
-          },
-        ],
-        where: {
-          user_id,
-        },
-      }),
-    map(callProp("get")),
-    tap((xxx) => {
-      assert(true);
-    }),
-  ]);
 
 const filesInfraProject = [
   "iac.js",
@@ -81,86 +49,107 @@ const filesInfraProject = [
   "README.md",
 ];
 
-exports.InfraApi = (app) => {
+const InfraApi = ({ models, model, log }) => ({
+  findOne: infraFindOne({ models }),
+  findAll: ({ user_id }) =>
+    pipe([
+      () =>
+        model.findAll({
+          include: [
+            {
+              model: models.Job,
+              limit: 1,
+              order: [["createdAt", "DESC"]],
+            },
+            {
+              model: models.GitCredential,
+              as: "gitCredential",
+            },
+            {
+              model: models.GitRepository,
+              as: "gitRepository",
+            },
+            {
+              model: models.User,
+              as: "user",
+            },
+          ],
+          where: {
+            user_id,
+          },
+        }),
+      map(callProp("toJSON")),
+      tap((xxx) => {
+        assert(true);
+      }),
+    ])(),
+  create: ({ data }) =>
+    pipe([
+      () => model.create(data),
+      tap((xxx) => {
+        assert(true);
+      }),
+      callProp("toJSON"),
+      tap((param) => {
+        log.debug(`created infra result: ${JSON.stringify(param, null, 4)}`);
+      }),
+      ({ id }) => infraFindOne({ models })({ id }),
+      tap((param) => {
+        log.debug(`created infraFindOne: ${JSON.stringify(param, null, 4)}`);
+      }),
+      tap(async (infra) =>
+        gitPush({
+          infra,
+          files: filesInfraProject,
+          dirSource: path.resolve(
+            __dirname,
+            `template/${infra.providerType}/empty`
+          ),
+          dir: await pfs.mkdtemp(path.join(os.tmpdir(), "grucloud-template")),
+          message: "new infra project",
+        })
+      ),
+    ])(),
+  patch: ({ id, data }) =>
+    pipe([
+      () =>
+        model.update(data, {
+          where: {
+            id,
+          },
+        }),
+      () => infraFindOne({ models })({ id }),
+    ])(),
+  destroy: ({ id }) =>
+    pipe([
+      () =>
+        model.destroy({
+          where: {
+            id,
+          },
+        }),
+    ])(),
+});
+
+exports.InfraRestApi = (app) => {
   const log = require("logfilename")(__filename);
 
   const { models } = app.data.sequelize;
+  const api = InfraApi({ model: models.Infra, models, log });
 
-  const api = {
+  const apiSpec = {
     pathname: "/infra",
     middlewares: [
       app.server.auth.isAuthenticated /*,app.server.auth.isAuthorized*/,
     ],
     ops: {
-      // createTemplate: {
-      //   pathname: "/:id/create_template",
-      //   method: "post",
-      //   handler: (context) =>
-      //     tryCatch(
-      //       pipe([
-      //         tap(() => {
-      //           assert(context.params.id);
-      //           assert(context.state.user.id);
-      //         }),
-      //         switchCase([
-      //           () => uuid.validate(context.params.id),
-      //           // valid id
-      //           pipe([
-      //             () =>
-      //               infraFindOne({ models })({
-      //                 id: context.params.id,
-      //               }),
-      //             tap((xxx) => {
-      //               assert(true);
-      //             }),
-      //             switchCase([
-      //               isEmpty,
-      //               tap(() => contextSet404({ context })),
-      //               pipe([
-      //                 callProp("toJSON"),
-      //                 tap((xxx) => {
-      //                   assert(true);
-      //                 }),
-      //                 tap(async (infra) =>
-      //                   gitPush({
-      //                     infra,
-      //                     files: filesInfraProject,
-      //                     dirSource: path.resolve(
-      //                       __dirname,
-      //                       `template/${infra.providerType}/empty`
-      //                     ),
-      //                     dir: await pfs.mkdtemp(
-      //                       path.join(os.tmpdir(), "grucloud-template")
-      //                     ),
-      //                     message: "new infra project",
-      //                   })
-      //                 ),
-      //                 tap((xxx) => {
-      //                   assert(true);
-      //                 }),
-      //                 contextSetOk({ context }),
-      //               ]),
-      //             ]),
-      //           ]),
-      //           // invalid uuid
-      //           contextSet400({ context, message: "invalid uuid" }),
-      //         ]),
-      //       ]),
-      //       pipe([
-      //         (error) => {
-      //           throw error;
-      //         },
-      //       ])
-      //     )(),
-      // },
       getAll: {
         pathname: "/",
         method: "get",
         handler: (context) =>
           tryCatch(
             pipe([
-              () =>
-                infraFindAll({ models })({ user_id: context.state.user.id }),
+              () => api.findAll({ user_id: context.state.user.id }),
               contextSetOk({ context }),
             ]),
             pipe([
@@ -186,7 +175,7 @@ exports.InfraApi = (app) => {
                 // valid id
                 pipe([
                   () =>
-                    infraFindOne({ models })({
+                    api.findOne({
                       id: context.params.id,
                     }),
                   tap((xxx) => {
@@ -195,7 +184,7 @@ exports.InfraApi = (app) => {
                   switchCase([
                     isEmpty,
                     tap(() => contextSet404({ context })),
-                    pipe([callProp("get"), contextSetOk({ context })]),
+                    pipe([contextSetOk({ context })]),
                   ]),
                 ]),
                 // invalid uuid
@@ -225,38 +214,7 @@ exports.InfraApi = (app) => {
                 ...context.request.body,
                 user_id: context.state.user.id,
               }),
-              tap((param) => {
-                log.debug(`create infra : ${JSON.stringify(param, null, 4)}`);
-              }),
-              (params) => models.Infra.create(params),
-              callProp("toJSON"),
-              tap((param) => {
-                log.debug(
-                  `created infra result: ${JSON.stringify(param, null, 4)}`
-                );
-              }),
-              ({ id }) => infraFindOne({ models })({ id }),
-              callProp("toJSON"),
-
-              tap((param) => {
-                log.debug(
-                  `created infraFindOne: ${JSON.stringify(param, null, 4)}`
-                );
-              }),
-              tap(async (infra) =>
-                gitPush({
-                  infra,
-                  files: filesInfraProject,
-                  dirSource: path.resolve(
-                    __dirname,
-                    `template/${infra.providerType}/empty`
-                  ),
-                  dir: await pfs.mkdtemp(
-                    path.join(os.tmpdir(), "grucloud-template")
-                  ),
-                  message: "new infra project",
-                })
-              ),
+              (data) => api.create({ data }),
               contextSetOk({ context }),
             ])(),
           pipe([
@@ -281,12 +239,7 @@ exports.InfraApi = (app) => {
                 () => uuid.validate(context.params.id),
                 // valid id
                 pipe([
-                  () =>
-                    models.Infra.destroy({
-                      where: {
-                        id: context.params.id,
-                      },
-                    }),
+                  () => api.destroy({ id: context.params.id }),
                   tap(contextSetOk({ context })),
                 ]),
                 // invalid uuid
@@ -316,19 +269,10 @@ exports.InfraApi = (app) => {
                 // valid id
                 pipe([
                   () =>
-                    models.Infra.update(context.request.body, {
-                      where: {
-                        id: context.params.id,
-                      },
-                    }),
-                  () =>
-                    infraFindOne({ models })({
+                    api.patch({
                       id: context.params.id,
+                      data: context.request.body,
                     }),
-                  callProp("toJSON"),
-                  tap((xxx) => {
-                    assert(true);
-                  }),
                   tap(contextSetOk({ context })),
                 ]),
                 // invalid uuid
@@ -345,6 +289,6 @@ exports.InfraApi = (app) => {
     },
   };
 
-  app.server.createRouter(api);
-  return { api };
+  app.server.createRouter(apiSpec);
+  return { api: apiSpec };
 };

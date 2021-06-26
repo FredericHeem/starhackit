@@ -287,7 +287,6 @@ exports.DiagramApi = (app) => {
                 infraFindOne({ models })({
                   id: context.request.body.infra_id,
                 }),
-              callProp("toJSON"),
               (infra) =>
                 pipe([
                   () => ({

@@ -17,7 +17,7 @@ exports.createApiByUser = ({ model }) => ({
         model.findAll({
           where: { user_id },
         }),
-      map(callProp("get")),
+      map(callProp("toJSON")),
     ])(),
   findOne: ({ id }) =>
     pipe([
@@ -29,12 +29,7 @@ exports.createApiByUser = ({ model }) => ({
         }),
       switchCase([isEmpty, identity, callProp("get")]),
     ])(),
-  create: ({ data }) =>
-    pipe([
-      () => model.create(data),
-      //
-      callProp("get"),
-    ])(),
+  create: ({ data }) => pipe([() => model.create(data), callProp("toJSON")])(),
   patch: ({ id, data }) =>
     pipe([
       () =>
@@ -49,7 +44,7 @@ exports.createApiByUser = ({ model }) => ({
             id,
           },
         }),
-      callProp("get"),
+      callProp("toJSON"),
     ])(),
   destroy: ({ id }) =>
     pipe([

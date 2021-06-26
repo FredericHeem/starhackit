@@ -78,6 +78,8 @@ export const createStoreAws = (
     context,
     defaultData,
     rules,
+    gitCredentialStore,
+    gitRepositoryStore,
   });
   const store = observable({
     get isDisabled() {
@@ -96,8 +98,6 @@ export const createStoreAws = (
         AWSSecretKey: data.AWSSecretKey,
         AWS_REGION: data.AWS_REGION,
       },
-      git_credential_id: gitCredentialStore.id,
-      git_repository_id: gitRepositoryStore.id,
     }),
     core,
   });

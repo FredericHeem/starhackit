@@ -26,6 +26,8 @@ export const createStoreGoogle = (
     context,
     defaultData: {},
     rules: {},
+    gitCredentialStore,
+    gitRepositoryStore,
   });
 
   const store = observable({
@@ -36,8 +38,6 @@ export const createStoreGoogle = (
       providerType: "google",
       providerName: "google",
       providerAuth: { credentials: store.content },
-      git_credential_id: gitCredentialStore.id,
-      git_repository_id: gitRepositoryStore.id,
     }),
     get isDisabled() {
       return !store.content.project_id;

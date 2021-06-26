@@ -24,6 +24,8 @@ export const createStoreAzure = (
     context,
     defaultData: {},
     rules: {},
+    gitCredentialStore,
+    gitRepositoryStore,
   });
 
   const store = observable({
@@ -32,8 +34,6 @@ export const createStoreAzure = (
       providerType: "azure",
       providerName: "azure",
       providerAuth: data,
-      git_credential_id: gitCredentialStore.id,
-      git_repository_id: gitRepositoryStore.id,
     }),
     get isDisabled() {
       return or([

@@ -90,6 +90,8 @@ export const createStoreOvh = (
     context,
     defaultData,
     rules,
+    gitCredentialStore,
+    gitRepositoryStore,
   });
 
   const store = observable({
@@ -105,8 +107,6 @@ export const createStoreOvh = (
         OS_PASSWORD: data.OS_PASSWORD,
         OS_REGION_NAME: data.OS_REGION_NAME,
       },
-      git_credential_id: gitCredentialStore.id,
-      git_repository_id: gitRepositoryStore.id,
     }),
     get isDisabled() {
       return or([

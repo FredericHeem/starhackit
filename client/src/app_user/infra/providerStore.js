@@ -5,7 +5,13 @@ import { pipe, switchCase, tryCatch, tap } from "rubico";
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 import createAlert from "mdlean/lib/alert";
 
-export const providerCreateStore = ({ context, defaultData, rules }) => {
+export const providerCreateStore = ({
+  context,
+  defaultData,
+  rules,
+  gitCredentialStore,
+  gitRepositoryStore,
+}) => {
   const { tr, rest, emitter, alertStack, history } = context;
   const Alert = createAlert(context);
   const asyncOpCreate = AsyncOp(context);
@@ -65,7 +71,12 @@ export const providerCreateStore = ({ context, defaultData, rules }) => {
           () => store.validate({ data }),
           tryCatch(
             pipe([
-              () => store.op.fetch(data),
+              () =>
+                store.op.fetch({
+                  ...data,
+                  git_credential_id: gitCredentialStore.id,
+                  git_repository_id: gitRepositoryStore.id,
+                }),
               tap(() => {
                 alertStack.add(
                   <Alert

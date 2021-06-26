@@ -16,10 +16,11 @@ import spinner from "mdlean/lib/spinner";
 
 import IconUpload from "./assets/uploadIcon.svg";
 
-import { infraDeleteLink } from "./infraDeleteLink";
-import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 import { providerCreateStore } from "./providerStore";
-import { MdStoreMallDirectory } from "react-icons/md";
+import {
+  providerConfigCreateFooter,
+  providerConfigUpdateFooter,
+} from "./providerConfigCommon";
 
 export const createStoreGoogle = (
   context,
@@ -142,12 +143,10 @@ export const gcpFormCreate = (context) => {
     emitter,
   } = context;
   const Form = createForm(context);
-  const Button = button(context);
-  const Spinner = spinner(context);
   const FileInput = fileInput(context);
   const CredentialFile = credentialFile(context);
   const FileInputLabel = fileInputLabel(context);
-  const ButtonWizardBack = buttonWizardBack(context);
+  const Footer = providerConfigCreateFooter(context);
 
   return observer(({ store }) => (
     <Form
@@ -239,28 +238,7 @@ export const gcpFormCreate = (context) => {
           <CredentialFile fileName={store.fileName} content={store.content} />
         )}
       </main>
-      <footer>
-        <ButtonWizardBack />
-        <Button
-          data-button-submit
-          disabled={store.core.isCreating || store.isDisabled}
-          raised
-          primary
-          onClick={() =>
-            store.core.create({
-              data: store.buildPayload(),
-            })
-          }
-        >
-          {tr.t("Save and Scan")} {store.content.project_id}
-        </Button>
-        <Spinner
-          css={css`
-            visibility: ${store.core.isCreating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
+      <Footer store={store} />
     </Form>
   ));
 };
@@ -273,9 +251,7 @@ export const gcpFormEdit = (context) => {
   } = context;
   const Form = createForm(context);
   const FormGroup = formGroup(context);
-  const Button = button(context);
   const FileInput = fileInput(context);
-  const Spinner = spinner(context);
   const Input = input(context, {
     cssOverride: css`
       input {
@@ -285,8 +261,7 @@ export const gcpFormEdit = (context) => {
   });
   const CredentialFile = credentialFile(context);
   const FileInputLabel = fileInputLabel(context);
-  const InfraDeleteLink = infraDeleteLink(context);
-  const ButtonHistoryBack = buttonHistoryBack(context);
+  const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
     <Form data-infra-create-google>
@@ -318,25 +293,7 @@ export const gcpFormEdit = (context) => {
           <CredentialFile fileName={store.fileName} content={store.content} />
         )}
       </main>
-      <footer>
-        <ButtonHistoryBack />
-        <Button
-          data-infra-update-submit
-          disabled={store.core.isUpdating || store.isDisabled}
-          raised
-          primary
-          onClick={() => store.core.update(store.buildPayload())}
-        >
-          {tr.t("Update")} {store.content.project_id}
-        </Button>
-        <Spinner
-          css={css`
-            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
-      <InfraDeleteLink store={store.core} />
+      <Footer store={store} />
 
       {/* <pre
         css={css`

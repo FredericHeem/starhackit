@@ -2,19 +2,19 @@
 import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import validate from "validate.js";
 import { get, or, pipe } from "rubico";
 import { isEmpty } from "rubico/x";
-import AsyncOp from "mdlean/lib/utils/asyncOp";
 import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
 import spinner from "mdlean/lib/spinner";
-import alert from "mdlean/lib/alert";
 
 import createForm from "components/form";
-import { infraDeleteLink } from "./infraDeleteLink";
 import { providerCreateStore } from "./providerStore";
+import {
+  providerConfigCreateFooter,
+  providerConfigUpdateFooter,
+} from "./providerConfigCommon";
 
 const OVH_REGION = [
   "UK1",
@@ -204,9 +204,8 @@ export const ovhFormCreate = (context) => {
     emitter,
   } = context;
   const Form = createForm(context);
-  const Spinner = spinner(context);
-  const Button = button(context);
   const OvhConfigForm = ovhConfigForm(context);
+  const Footer = providerConfigCreateFooter(context);
 
   return observer(({ store }) => (
     <Form spellCheck="false" autoCapitalize="none" data-infra-create-ovh>
@@ -221,46 +220,16 @@ export const ovhFormCreate = (context) => {
         </div>
         <OvhConfigForm store={store.core} />
       </main>
-      <footer>
-        <Button
-          onClick={() => emitter.emit("step.select", "ProviderSelection")}
-        >
-          {"\u25c0"} Back
-        </Button>
-
-        <Button
-          data-button-submit
-          primary
-          raised
-          disabled={store.core.isCreating || store.isDisabled}
-          onClick={() => store.core.create({ data: store.buildPayload() })}
-          label={tr.t("Create Infrastructure")}
-        />
-        <Spinner
-          css={css`
-            visibility: ${store.core.isCreating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
+      <Footer store={store} />
     </Form>
   ));
 };
 
 export const ovhFormEdit = (context) => {
-  const {
-    tr,
-    history,
-    theme: { palette },
-  } = context;
-
+  const { tr } = context;
   const Form = createForm(context);
-  const Spinner = spinner(context);
-  const Button = button(context, {
-    cssOverride: css``,
-  });
   const OvhConfigForm = ovhConfigForm(context);
-  const InfraDeleteLink = infraDeleteLink(context);
+  const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
     <Form spellCheck="false" autoCapitalize="none" data-infra-update>
@@ -270,24 +239,7 @@ export const ovhFormEdit = (context) => {
       <main>
         <OvhConfigForm store={store.core} />
       </main>
-      <footer>
-        <Button onClick={() => history.back()}>{"\u25c0"} Back</Button>
-        <Button
-          data-infra-update-submit
-          primary
-          raised
-          disabled={store.core.isUpdating}
-          onClick={() => store.core.update({ data: store.buildPayload() })}
-          label={tr.t("Update Infrastructure")}
-        />
-        <Spinner
-          css={css`
-            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
-      <InfraDeleteLink store={store.core} />
+      <Footer store={store} />
     </Form>
   ));
 };

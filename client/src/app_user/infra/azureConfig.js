@@ -11,9 +11,11 @@ import formGroup from "mdlean/lib/formGroup";
 import spinner from "mdlean/lib/spinner";
 
 import form from "components/form";
-import { infraDeleteLink } from "./infraDeleteLink";
-import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 import { providerCreateStore } from "./providerStore";
+import {
+  providerConfigCreateFooter,
+  providerConfigUpdateFooter,
+} from "./providerConfigCommon";
 
 export const createStoreAzure = (
   context,
@@ -49,15 +51,11 @@ export const createStoreAzure = (
   return store;
 };
 
-export const azureFormCreate = (context) => {
+export const azureFormCreateContent = (context) => {
   const {
     tr,
-    emitter,
     theme: { palette },
   } = context;
-  const Spinner = spinner(context);
-  const Form = form(context);
-  const Button = button(context);
   const FormGroup = formGroup(context);
   const Input = input(context, {
     cssOverride: css`
@@ -66,221 +64,199 @@ export const azureFormCreate = (context) => {
       }
     `,
   });
-  const ButtonWizardBack = buttonWizardBack(context);
-
-  return observer(({ store: { core: store, buildPayload, isDisabled } }) => (
-    <Form data-infra-create-azure>
-      <main>
-        <p>
-          Please follow the instructions to setup a service principal used by
-          Grucloud to scan an Azure infrastructure.
-        </p>
-        <ol
-          css={css`
-            list-style: none;
-            counter-reset: counter;
-            padding-left: 40px;
-            > li {
-              counter-increment: counter;
-              margin: 0 0 0.5rem 0;
-              position: relative;
-              ::before {
-                background-color: ${palette.primary.main};
-                color: ${palette.primary.contrastText};
-                content: counter(counter) ".";
-                font-weight: bold;
-                position: absolute;
-                --size: 32px;
-                left: calc(-1 * var(--size) - 10px);
-                line-height: var(--size);
-                width: var(--size);
-                height: var(--size);
-                top: -0.3rem;
-                border-radius: 50%;
-                text-align: center;
-              }
+  return observer(({ store }) => (
+    <main>
+      <p>
+        Please follow the instructions to setup a service principal used by
+        Grucloud to scan an Azure infrastructure.
+      </p>
+      <ol
+        css={css`
+          list-style: none;
+          counter-reset: counter;
+          padding-left: 40px;
+          > li {
+            counter-increment: counter;
+            margin: 0 0 0.5rem 0;
+            position: relative;
+            ::before {
+              background-color: ${palette.primary.main};
+              color: ${palette.primary.contrastText};
+              content: counter(counter) ".";
+              font-weight: bold;
+              position: absolute;
+              --size: 32px;
+              left: calc(-1 * var(--size) - 10px);
+              line-height: var(--size);
+              width: var(--size);
+              height: var(--size);
+              top: -0.3rem;
+              border-radius: 50%;
+              text-align: center;
             }
-          `}
-        >
-          <li>
-            <h3>Name</h3>
-            <p>Choose a name for this architecture.</p>
-            <Input
-              data-input-azure-name
-              value={store.data.name}
-              onChange={(e) => store.onChange("name", e)}
-              label={tr.t("Infrastrucure Name")}
-              error={store.errors.name && store.errors.name[0]}
-            />
-          </li>
-          <li>
-            <h3>Subscription ID</h3>
-            <p>
-              Retrieve the <em>Subscription ID</em> with the following command:{" "}
-            </p>
-            <pre>az account show --query id -otsv</pre>
-            <Input
-              data-input-azure-subscription-id
-              value={store.data.SUBSCRIPTION_ID}
-              onChange={(event) => store.onChange("SUBSCRIPTION_ID", event)}
-              label={tr.t("Subscription Id")}
-              error={
-                store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
-              }
-            />
-          </li>
-          <li>
-            <h3>Tenant ID</h3>
-            <p>
-              Retrieve the <em>TENANT_ID</em> with the following command:{" "}
-            </p>
-            <pre>az account show</pre>
-            <Input
-              data-input-azure-tenant-id
-              value={store.data.TENANT_ID}
-              onChange={(e) => store.onChange("TENANT_ID", e)}
-              label={tr.t("Tenant Id")}
-              error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
-            />
-          </li>
-          <li>
-            <h3>App ID and PASSWORD</h3>
-            <p>
-              Retrieve the <em>APP_ID</em> and <em>PASSWORD</em> by creating a
-              service principal called grucloud:
-            </p>
-            <pre>az ad sp create-for-rbac -n "grucloud"</pre>
-            <FormGroup>
-              <Input
-                data-input-azure-app-id
-                value={store.data.APP_ID}
-                onChange={(e) => store.onChange("APP_ID", e)}
-                label={tr.t("App Id")}
-                error={store.errors.APP_ID && store.errors.APP_ID[0]}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                data-input-azure-password
-                type="PASSWORD"
-                value={store.data.PASSWORD}
-                onChange={(e) => store.onChange("PASSWORD", e)}
-                label={tr.t("Password")}
-                error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
-              />
-            </FormGroup>
-          </li>
-        </ol>
-      </main>
-      <footer>
-        <ButtonWizardBack />
-        <Button
-          data-button-submit
-          disabled={store.isCreating || isDisabled}
-          raised
-          primary
-          onClick={() => store.create({ data: buildPayload() })}
-        >
-          Save and Scan
-        </Button>
-        <Spinner
-          css={css`
-            visibility: ${store.isCreating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
-    </Form>
-  ));
-};
-export const azureFormEdit = (context) => {
-  const {
-    tr,
-    history,
-    theme: { palette },
-  } = context;
-  const Spinner = spinner(context);
-  const Form = form(context);
-  const Button = button(context);
-  const FormGroup = formGroup(context);
-  const Input = input(context, {
-    cssOverride: css`
-      input {
-        width: 25rem;
-      }
-    `,
-  });
-  const InfraDeleteLink = infraDeleteLink(context);
-  const ButtonHistoryBack = buttonHistoryBack(context);
-
-  return observer(({ store: { core: store, buildPayload, isDisabled } }) => (
-    <Form>
-      <header>
-        <h2>{tr.t("Update Azure Infrastructure")}</h2>
-      </header>
-      <main>
-        <FormGroup>
+          }
+        `}
+      >
+        <li>
+          <h3>Name</h3>
+          <p>Choose a name for this architecture.</p>
           <Input
+            data-input-azure-name
             value={store.data.name}
-            onChange={(e) => store.onChange("name", e.target.value)}
+            onChange={(e) => store.onChange("name", e)}
             label={tr.t("Infrastrucure Name")}
             error={store.errors.name && store.errors.name[0]}
           />
-        </FormGroup>
-        <FormGroup>
+        </li>
+        <li>
+          <h3>Subscription ID</h3>
+          <p>
+            Retrieve the <em>Subscription ID</em> with the following command:{" "}
+          </p>
+          <pre>az account show --query id -otsv</pre>
           <Input
+            data-input-azure-subscription-id
             value={store.data.SUBSCRIPTION_ID}
-            onChange={(e) => store.onChange("SUBSCRIPTION_ID", e.target.value)}
+            onChange={(event) => store.onChange("SUBSCRIPTION_ID", event)}
             label={tr.t("Subscription Id")}
             error={
               store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
             }
           />
-        </FormGroup>
-        <FormGroup>
+        </li>
+        <li>
+          <h3>Tenant ID</h3>
+          <p>
+            Retrieve the <em>TENANT_ID</em> with the following command:{" "}
+          </p>
+          <pre>az account show</pre>
           <Input
+            data-input-azure-tenant-id
             value={store.data.TENANT_ID}
-            onChange={(e) => store.onChange("TENANT_ID", e.target.value)}
+            onChange={(e) => store.onChange("TENANT_ID", e)}
             label={tr.t("Tenant Id")}
             error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
           />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            value={store.data.APP_ID}
-            onChange={(e) => store.onChange("APP_ID", e.target.value)}
-            label={tr.t("App Id")}
-            error={store.errors.APP_ID && store.errors.APP_ID[0]}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            type="PASSWORD"
-            value={store.data.PASSWORD}
-            onChange={(e) => store.onChange("PASSWORD", e.target.value)}
-            label={tr.t("Password")}
-            error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
-          />
-        </FormGroup>
-      </main>
-      <footer>
-        <ButtonHistoryBack />
-        <Button
-          disabled={isDisabled}
-          raised
-          primary
-          onClick={() => store.update({ data: buildPayload() })}
-        >
-          {tr.t("Update")}
-        </Button>
-        <Spinner
-          css={css`
-            visibility: ${store.opUpdate.loading ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
+        </li>
+        <li>
+          <h3>App ID and PASSWORD</h3>
+          <p>
+            Retrieve the <em>APP_ID</em> and <em>PASSWORD</em> by creating a
+            service principal called grucloud:
+          </p>
+          <pre>az ad sp create-for-rbac -n "grucloud"</pre>
+          <FormGroup>
+            <Input
+              data-input-azure-app-id
+              value={store.data.APP_ID}
+              onChange={(e) => store.onChange("APP_ID", e)}
+              label={tr.t("App Id")}
+              error={store.errors.APP_ID && store.errors.APP_ID[0]}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Input
+              data-input-azure-password
+              type="PASSWORD"
+              value={store.data.PASSWORD}
+              onChange={(e) => store.onChange("PASSWORD", e)}
+              label={tr.t("Password")}
+              error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
+            />
+          </FormGroup>
+        </li>
+      </ol>
+    </main>
+  ));
+};
+
+export const azureFormCreate = (context) => {
+  const { tr } = context;
+  const Form = form(context);
+  const Content = azureFormCreateContent(context);
+  const Footer = providerConfigCreateFooter(context);
+
+  return observer(({ store }) => (
+    <Form data-infra-create-azure>
+      <Content store={store.core} />
+      <Footer store={store} />
+    </Form>
+  ));
+};
+
+export const azureFormEditContent = (context) => {
+  const { tr } = context;
+  const FormGroup = formGroup(context);
+  const Input = input(context, {
+    cssOverride: css`
+      input {
+        width: 25rem;
+      }
+    `,
+  });
+
+  return observer(({ store }) => (
+    <main>
+      <FormGroup>
+        <Input
+          value={store.data.name}
+          onChange={(e) => store.onChange("name", e.target.value)}
+          label={tr.t("Infrastrucure Name")}
+          error={store.errors.name && store.errors.name[0]}
         />
-      </footer>
-      <InfraDeleteLink store={store} />
+      </FormGroup>
+      <FormGroup>
+        <Input
+          value={store.data.SUBSCRIPTION_ID}
+          onChange={(e) => store.onChange("SUBSCRIPTION_ID", e.target.value)}
+          label={tr.t("Subscription Id")}
+          error={
+            store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
+          }
+        />
+      </FormGroup>
+      <FormGroup>
+        <Input
+          value={store.data.TENANT_ID}
+          onChange={(e) => store.onChange("TENANT_ID", e.target.value)}
+          label={tr.t("Tenant Id")}
+          error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
+        />
+      </FormGroup>
+      <FormGroup>
+        <Input
+          value={store.data.APP_ID}
+          onChange={(e) => store.onChange("APP_ID", e.target.value)}
+          label={tr.t("App Id")}
+          error={store.errors.APP_ID && store.errors.APP_ID[0]}
+        />
+      </FormGroup>
+      <FormGroup>
+        <Input
+          type="PASSWORD"
+          value={store.data.PASSWORD}
+          onChange={(e) => store.onChange("PASSWORD", e.target.value)}
+          label={tr.t("Password")}
+          error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
+        />
+      </FormGroup>
+    </main>
+  ));
+};
+
+export const azureFormEdit = (context) => {
+  const { tr } = context;
+  const Form = form(context);
+  const Content = azureFormEditContent(context);
+  const Footer = providerConfigUpdateFooter(context);
+
+  return observer(({ store }) => (
+    <Form>
+      <header>
+        <h2>{tr.t("Update Azure Infrastructure")}</h2>
+      </header>
+      <Content store={store.core} />
+      <Footer store={store} />
     </Form>
   ));
 };

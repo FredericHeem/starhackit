@@ -14,6 +14,10 @@ import createForm from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
 import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
 import { providerCreateStore } from "./providerStore";
+import {
+  providerConfigCreateFooter,
+  providerConfigUpdateFooter,
+} from "./providerConfigCommon";
 
 const AWS_REGION = [
   "eu-north-1",
@@ -167,10 +171,7 @@ export const awsFormCreate = (context) => {
     theme: { palette },
   } = context;
   const Form = createForm(context);
-  const Spinner = spinner(context);
-  const Button = button(context);
-  const ButtonWizardBack = buttonWizardBack(context);
-
+  const Footer = providerConfigCreateFooter(context);
   const AwsConfigForm = awsConfigForm(context);
 
   return observer(({ store }) => (
@@ -186,27 +187,7 @@ export const awsFormCreate = (context) => {
         </div>
         <AwsConfigForm store={store.core} />
       </main>
-      <footer>
-        <ButtonWizardBack />
-        <Button
-          data-button-submit
-          primary
-          raised
-          disabled={store.core.isCreating || store.isDisabled}
-          onClick={() =>
-            store.core.create({
-              data: store.buildPayload(),
-            })
-          }
-          label={tr.t("Create Infrastructure")}
-        />
-        <Spinner
-          css={css`
-            visibility: ${store.core.isCreating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
+      <Footer store={store} />
     </Form>
   ));
 };
@@ -214,18 +195,12 @@ export const awsFormCreate = (context) => {
 export const awsFormEdit = (context) => {
   const {
     tr,
-    history,
     theme: { palette },
   } = context;
 
   const Form = createForm(context);
-  const Spinner = spinner(context);
-  const Button = button(context, {
-    cssOverride: css``,
-  });
   const AwsConfigForm = awsConfigForm(context);
-  const InfraDeleteLink = infraDeleteLink(context);
-  const ButtonHistoryBack = buttonHistoryBack(context);
+  const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
     <Form spellCheck="false" autoCapitalize="none" data-infra-update>
@@ -235,24 +210,7 @@ export const awsFormEdit = (context) => {
       <main>
         <AwsConfigForm store={store.core} />
       </main>
-      <footer>
-        <ButtonHistoryBack />
-        <Button
-          data-infra-update-submit
-          primary
-          raised
-          disabled={store.core.isUpdating}
-          onClick={() => store.core.update({ data: store.buildPayload() })}
-          label={tr.t("Update Infrastructure")}
-        />
-        <Spinner
-          css={css`
-            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
-      </footer>
-      <InfraDeleteLink store={store.core} />
+      <Footer store={store} />
     </Form>
   ));
 };

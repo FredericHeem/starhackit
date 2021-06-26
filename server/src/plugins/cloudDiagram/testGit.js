@@ -56,7 +56,7 @@ describe("Git", function () {
       messsage: "update inventory again",
     })(input);
   });
-  it("gitCreateProject from template", async () => {
+  it("gitCreateProject from template ec2", async () => {
     const infra = {
       providerType: "aws",
       providerName: "aws",
@@ -75,8 +75,35 @@ describe("Git", function () {
       },
     };
   });
-
-  it.only("gitCreateProject from empty template", async () => {
+  it("gitCreateProject from template eks", async () => {
+    const infra = {
+      providerType: "aws",
+      providerName: "aws",
+      gitCredential: {
+        username: GIT_USERNAME,
+        password: PERSONAL_ACCESS_TOKEN,
+      },
+      gitRepository: { url: GIT_REPOSITORY, branch: "master" },
+      user: { username: "topolino", email: "topolino@mail.com" },
+      user_id: uuid.v4(),
+      project: {
+        url: "https://github.com/grucloud/grucloud/",
+        title: "Deploy a kubernetes cluster with EKS",
+        directory: "packages/modules/aws/eks/example",
+        branch: "main",
+      },
+    };
+    await gitPush({
+      infra,
+      files: filesInfraProject,
+      dirTemplate: await path.join(os.tmpdir(), "grucloud-example-template"),
+      dir: await pfs.mkdtemp(
+        path.join(os.tmpdir(), `grucloud-git-${infra.user_id}`)
+      ),
+      message: "new infra project",
+    });
+  });
+  it("gitCreateProject from empty template", async () => {
     const infra = {
       providerType: "aws",
       providerName: "aws",
@@ -98,6 +125,43 @@ describe("Git", function () {
       ),
       message: "new infra project",
     });
+  });
+  it("gitCreateProject repo 404", async () => {
+    const infra = {
+      providerType: "aws",
+      providerName: "aws",
+      gitCredential: {
+        username: GIT_USERNAME,
+        password: PERSONAL_ACCESS_TOKEN,
+      },
+      gitRepository: {
+        url: "https://github.com/FredericHeem/i-do-not-exist.git",
+        branch: "master",
+      },
+      user: { username: "topolino", email: "topolino@mail.com" },
+      user_id: uuid.v4(),
+      project: {
+        url: "https://github.com/grucloud/grucloud/",
+        title: "Deploy a kubernetes cluster with EKS",
+        directory: "packages/modules/aws/eks/example",
+        branch: "main",
+      },
+    };
+    try {
+      await gitPush({
+        infra,
+        files: filesInfraProject,
+        dirTemplate: await path.join(os.tmpdir(), "grucloud-example-template"),
+        dir: await pfs.mkdtemp(
+          path.join(os.tmpdir(), `grucloud-git-${infra.user_id}`)
+        ),
+        message: "new infra project",
+      });
+      assert(false, "should not be here");
+    } catch (error) {
+      assert.equal(error.code, "HttpError");
+      assert.equal(error.data.statusCode, 404);
+    }
   });
   it("clone", async () => {
     await tryCatch(

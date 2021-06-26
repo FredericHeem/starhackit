@@ -1,5 +1,6 @@
 const assert = require("assert");
-
+const { resolve } = require("path");
+const { readdir } = require("fs").promises;
 const {
   pipe,
   tap,
@@ -12,10 +13,11 @@ const {
   or,
   and,
   not,
+  filter,
 } = require("rubico");
 const {
   isEmpty,
-  values,
+  includes,
   callProp,
   identity,
   defaultsDeep,
@@ -26,6 +28,28 @@ const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
 const changeCase = require("change-case");
+
+const ExcludesFiles = [".DS_Store", ".git"];
+
+const getFilesWalk = ({ dir, dirResolved, excludesFiles }) =>
+  pipe([
+    () => readdir(dir, { withFileTypes: true }),
+    filter(({ name }) => !includes(name)(excludesFiles)),
+    map((dirent) => {
+      const res = resolve(dir, dirent.name);
+      return dirent.isDirectory()
+        ? getFilesWalk({ dir: res, dirResolved })
+        : res;
+    }),
+    (files) => files.flat(),
+    map((file) => file.replace(`${dirResolved}/`, "")),
+  ])();
+
+const getFiles = async ({ dir, excludesFiles = ExcludesFiles }) => {
+  const dirResolved = resolve(dir);
+  const files = await getFilesWalk({ dir, excludesFiles, dirResolved });
+  return files;
+};
 
 const buildGitDirName = ({ user_id, name = "" }) =>
   path.resolve(
@@ -175,7 +199,16 @@ exports.gitPush = ({
             gitCredential,
             user,
           }),
-        () => files,
+        () =>
+          getFiles({
+            dir: path.resolve(
+              dirTemplate,
+              getProject({ providerName, project }).directory
+            ),
+          }),
+        tap((files) => {
+          console.log(files);
+        }),
         tap(
           map((filepath) =>
             pfs.copyFile(
@@ -188,9 +221,6 @@ exports.gitPush = ({
             )
           )
         ),
-        tap((files) => {
-          console.log(files);
-        }),
         tap(map((filepath) => git.add({ fs, dir, filepath }))),
         () =>
           git.commit({

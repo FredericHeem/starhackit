@@ -9,6 +9,7 @@ export const providerCreateStore = ({
   context,
   defaultData,
   rules,
+  importProjectStore,
   gitCredentialStore,
   gitRepositoryStore,
 }) => {
@@ -71,12 +72,16 @@ export const providerCreateStore = ({
           () => store.validate({ data }),
           tryCatch(
             pipe([
-              () =>
-                store.op.fetch({
-                  ...data,
-                  git_credential_id: gitCredentialStore.id,
-                  git_repository_id: gitRepositoryStore.id,
-                }),
+              () => ({
+                ...data,
+                git_credential_id: gitCredentialStore.id,
+                git_repository_id: gitRepositoryStore.id,
+                project: { ...importProjectStore.project },
+              }),
+              tap((payload) => {
+                console.log("create payload", payload);
+              }),
+              (payload) => store.op.fetch(payload),
               tap(() => {
                 alertStack.add(
                   <Alert

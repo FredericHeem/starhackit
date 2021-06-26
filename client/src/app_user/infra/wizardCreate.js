@@ -79,6 +79,7 @@ export const wizardCreate = (context) => {
         return (
           <AwsFormCreate
             store={createStoreAws(context, {
+              importProjectStore,
               gitCredentialStore,
               gitRepositoryStore,
             })}
@@ -88,6 +89,7 @@ export const wizardCreate = (context) => {
         return (
           <GcpFormCreate
             store={createStoreGoogle(context, {
+              importProjectStore,
               gitCredentialStore,
               gitRepositoryStore,
             })}
@@ -97,6 +99,7 @@ export const wizardCreate = (context) => {
         return (
           <AzureFormCreate
             store={createStoreAzure(context, {
+              importProjectStore,
               gitCredentialStore,
               gitRepositoryStore,
             })}
@@ -106,6 +109,7 @@ export const wizardCreate = (context) => {
         return (
           <OvhFormCreate
             store={createStoreOvh(context, {
+              importProjectStore,
               gitCredentialStore,
               gitRepositoryStore,
             })}

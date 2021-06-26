@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import { get, or, pipe } from "rubico";
 import { isEmpty } from "rubico/x";

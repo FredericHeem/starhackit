@@ -84,12 +84,13 @@ const defaultData = {
 
 export const createStoreOvh = (
   context,
-  { gitCredentialStore, gitRepositoryStore }
+  { importProjectStore, gitCredentialStore, gitRepositoryStore }
 ) => {
   const core = providerCreateStore({
     context,
     defaultData,
     rules,
+    importProjectStore,
     gitCredentialStore,
     gitRepositoryStore,
   });

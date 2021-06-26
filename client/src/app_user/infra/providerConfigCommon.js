@@ -4,11 +4,30 @@ import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import { get, or, pipe } from "rubico";
 import { isEmpty } from "rubico/x";
+import createForm from "components/form";
 
 import button from "mdlean/lib/button";
 import spinner from "mdlean/lib/spinner";
 import { infraDeleteLink } from "./infraDeleteLink";
 import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
+
+export const providerFormCreate = (context) => {
+  const Form = createForm(context);
+  return ({ children }) => (
+    <Form spellCheck="false" autoCapitalize="none" data-infra-create>
+      {children}
+    </Form>
+  );
+};
+
+export const providerFormUpdate = (context) => {
+  const Form = createForm(context);
+  return ({ children }) => (
+    <Form spellCheck="false" autoCapitalize="none" data-infra-update>
+      {children}
+    </Form>
+  );
+};
 
 export const providerConfigCreateFooter = (context) => {
   const {
@@ -33,7 +52,7 @@ export const providerConfigCreateFooter = (context) => {
         disabled={store.core.isCreating || store.isDisabled}
         onClick={() =>
           store.core.create({
-            data: store.buildPayload(),
+            data: store.buildPayload({ data: store.core.data }),
           })
         }
         label={tr.t("Create Infrastructure")}
@@ -71,7 +90,11 @@ export const providerConfigUpdateFooter = (context) => {
           primary
           raised
           disabled={store.core.isUpdating}
-          onClick={() => store.core.update({ data: store.buildPayload() })}
+          onClick={() =>
+            store.core.update({
+              data: store.buildPayload({ data: store.core.data }),
+            })
+          }
           label={tr.t("Update Infrastructure")}
         />
         <Spinner

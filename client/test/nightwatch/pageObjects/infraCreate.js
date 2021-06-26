@@ -51,7 +51,7 @@ module.exports = {
     inputSecretKey: { selector: "input[name=AWSSecretKey]" },
 
     formCreateAzure: {
-      selector: "data-infra-create-azure",
+      selector: "data-infra-create",
     },
     inputAzureName: {
       selector: "input[data-input-azure-name=true]",

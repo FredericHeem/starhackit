@@ -11,6 +11,8 @@ import formGroup from "mdlean/lib/formGroup";
 import form from "components/form";
 import { providerCreateStore } from "./providerStore";
 import {
+  providerFormCreate,
+  providerFormUpdate,
   providerConfigCreateFooter,
   providerConfigUpdateFooter,
 } from "./providerConfigCommon";
@@ -25,9 +27,8 @@ export const createStoreAzure = (
     rules: {},
   });
 
-  const { data } = core;
   const store = observable({
-    buildPayload: () => ({
+    buildPayload: ({ data }) => ({
       name: data.name,
       providerType: "azure",
       providerName: "azure",
@@ -42,14 +43,14 @@ export const createStoreAzure = (
         pipe([get("TENANT_ID"), isEmpty]),
         pipe([get("APP_ID"), isEmpty]),
         pipe([get("PASSWORD"), isEmpty]),
-      ])(data);
+      ])(core.data);
     },
     core,
   });
   return store;
 };
 
-export const azureFormCreateContent = (context) => {
+export const azureFormContent = (context) => {
   const {
     tr,
     theme: { palette },
@@ -170,91 +171,32 @@ export const azureFormCreateContent = (context) => {
 
 export const azureFormCreate = (context) => {
   const { tr } = context;
-  const Form = form(context);
-  const Content = azureFormCreateContent(context);
+  const FormCreate = providerFormCreate(context);
+  const Content = azureFormContent(context);
   const Footer = providerConfigCreateFooter(context);
 
   return observer(({ store }) => (
-    <Form data-infra-create-azure>
+    <FormCreate>
       <Content store={store.core} />
       <Footer store={store} />
-    </Form>
-  ));
-};
-
-export const azureFormEditContent = (context) => {
-  const { tr } = context;
-  const FormGroup = formGroup(context);
-  const Input = input(context, {
-    cssOverride: css`
-      input {
-        width: 25rem;
-      }
-    `,
-  });
-
-  return observer(({ store }) => (
-    <main>
-      <FormGroup>
-        <Input
-          value={store.data.name}
-          onChange={(e) => store.onChange("name", e.target.value)}
-          label={tr.t("Infrastrucure Name")}
-          error={store.errors.name && store.errors.name[0]}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          value={store.data.SUBSCRIPTION_ID}
-          onChange={(e) => store.onChange("SUBSCRIPTION_ID", e.target.value)}
-          label={tr.t("Subscription Id")}
-          error={
-            store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
-          }
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          value={store.data.TENANT_ID}
-          onChange={(e) => store.onChange("TENANT_ID", e.target.value)}
-          label={tr.t("Tenant Id")}
-          error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          value={store.data.APP_ID}
-          onChange={(e) => store.onChange("APP_ID", e.target.value)}
-          label={tr.t("App Id")}
-          error={store.errors.APP_ID && store.errors.APP_ID[0]}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Input
-          type="PASSWORD"
-          value={store.data.PASSWORD}
-          onChange={(e) => store.onChange("PASSWORD", e.target.value)}
-          label={tr.t("Password")}
-          error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
-        />
-      </FormGroup>
-    </main>
+    </FormCreate>
   ));
 };
 
 export const azureFormEdit = (context) => {
   const { tr } = context;
-  const Form = form(context);
-  const Content = azureFormEditContent(context);
+  const FormUpdate = providerFormUpdate(context);
+
+  const Content = azureFormContent(context);
   const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
-    <Form>
+    <FormUpdate>
       <header>
         <h2>{tr.t("Update Azure Infrastructure")}</h2>
       </header>
       <Content store={store.core} />
       <Footer store={store} />
-    </Form>
+    </FormUpdate>
   ));
 };

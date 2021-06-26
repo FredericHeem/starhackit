@@ -14,6 +14,8 @@ import IconUpload from "./assets/uploadIcon.svg";
 
 import { providerCreateStore } from "./providerStore";
 import {
+  providerFormCreate,
+  providerFormUpdate,
   providerConfigCreateFooter,
   providerConfigUpdateFooter,
 } from "./providerConfigCommon";
@@ -134,29 +136,15 @@ const fileInputLabel =
 
 export const gcpFormCreate = (context) => {
   const { tr } = context;
-  const Form = createForm(context);
+  const FormCreate = providerFormCreate(context);
+
   const FileInput = fileInput(context);
   const CredentialFile = credentialFile(context);
   const FileInputLabel = fileInputLabel(context);
   const Footer = providerConfigCreateFooter(context);
 
   return observer(({ store }) => (
-    <Form
-      data-infra-create-google
-      css={css`
-        main {
-          section {
-            box-shadow: none;
-          }
-          margin: 1rem 0;
-        }
-        footer {
-          button {
-            margin: 1rem;
-          }
-        }
-      `}
-    >
+    <FormCreate>
       <main>
         <p>
           GruCloud requires a read-only service account to scan a project's
@@ -231,13 +219,13 @@ export const gcpFormCreate = (context) => {
         )}
       </main>
       <Footer store={store} />
-    </Form>
+    </FormCreate>
   ));
 };
 
 export const gcpFormEdit = (context) => {
   const { tr } = context;
-  const Form = createForm(context);
+  const FormUpdate = providerFormUpdate(context);
   const FormGroup = formGroup(context);
   const FileInput = fileInput(context);
   const Input = input(context, {
@@ -252,7 +240,7 @@ export const gcpFormEdit = (context) => {
   const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
-    <Form data-infra-create-google>
+    <FormUpdate>
       <header>
         <h2>{tr.t("Update GCP Infrastructure")}</h2>
       </header>
@@ -282,6 +270,6 @@ export const gcpFormEdit = (context) => {
         )}
       </main>
       <Footer store={store} />
-    </Form>
+    </FormUpdate>
   ));
 };

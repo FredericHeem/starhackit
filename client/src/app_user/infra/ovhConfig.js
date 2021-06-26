@@ -10,6 +10,8 @@ import formGroup from "mdlean/lib/formGroup";
 import createForm from "components/form";
 import { providerCreateStore } from "./providerStore";
 import {
+  providerFormCreate,
+  providerFormUpdate,
   providerConfigCreateFooter,
   providerConfigUpdateFooter,
 } from "./providerConfigCommon";
@@ -89,10 +91,8 @@ export const createStoreOvh = (
     rules,
   });
 
-  const { data } = core;
-
   const store = observable({
-    buildPayload: () => ({
+    buildPayload: ({ data }) => ({
       name: data.name,
       providerType: "openstack",
       providerName: "ovh",
@@ -114,7 +114,7 @@ export const createStoreOvh = (
         pipe([get("OS_PROJECT_ID"), isEmpty]),
         pipe([get("OS_USERNAME"), isEmpty]),
         pipe([get("OS_REGION_NAME"), isEmpty]),
-      ])(data);
+      ])(core.data);
     },
     core,
   });
@@ -197,12 +197,14 @@ export const ovhConfigForm = (context) => {
 
 export const ovhFormCreate = (context) => {
   const { tr } = context;
+  const FormCreate = providerFormCreate(context);
+
   const Form = createForm(context);
   const OvhConfigForm = ovhConfigForm(context);
   const Footer = providerConfigCreateFooter(context);
 
   return observer(({ store }) => (
-    <Form spellCheck="false" autoCapitalize="none" data-infra-create-ovh>
+    <FormCreate>
       <header>
         <h2>{tr.t("Create new OVH Infrastructure")}</h2>
       </header>
@@ -215,18 +217,20 @@ export const ovhFormCreate = (context) => {
         <OvhConfigForm store={store.core} />
       </main>
       <Footer store={store} />
-    </Form>
+    </FormCreate>
   ));
 };
 
 export const ovhFormEdit = (context) => {
   const { tr } = context;
+  const FormUpdate = providerFormUpdate(context);
+
   const Form = createForm(context);
   const OvhConfigForm = ovhConfigForm(context);
   const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
-    <Form spellCheck="false" autoCapitalize="none" data-infra-update>
+    <FormUpdate>
       <header>
         <h2>{tr.t("Update OVH Infrastructure")}</h2>
       </header>
@@ -234,6 +238,6 @@ export const ovhFormEdit = (context) => {
         <OvhConfigForm store={store.core} />
       </main>
       <Footer store={store} />
-    </Form>
+    </FormUpdate>
   ));
 };

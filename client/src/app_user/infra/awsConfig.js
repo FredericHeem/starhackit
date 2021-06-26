@@ -11,6 +11,8 @@ import formGroup from "mdlean/lib/formGroup";
 import createForm from "components/form";
 import { providerCreateStore } from "./providerStore";
 import {
+  providerFormCreate,
+  providerFormUpdate,
   providerConfigCreateFooter,
   providerConfigUpdateFooter,
 } from "./providerConfigCommon";
@@ -78,16 +80,15 @@ export const createStoreAws = (
     defaultData,
     rules,
   });
-  const { data } = core;
   const store = observable({
     get isDisabled() {
       return or([
         pipe([get("name"), isEmpty]),
         pipe([get("AWSAccessKeyId"), isEmpty]),
         pipe([get("AWSSecretKey"), isEmpty]),
-      ])(data);
+      ])(core.data);
     },
-    buildPayload: () => ({
+    buildPayload: ({ data }) => ({
       name: data.name,
       providerType: "aws",
       providerName: "aws",
@@ -163,12 +164,12 @@ export const awsConfigForm = (context) => {
 
 export const awsFormCreate = (context) => {
   const { tr } = context;
-  const Form = createForm(context);
+  const FormCreate = providerFormCreate(context);
   const Footer = providerConfigCreateFooter(context);
   const AwsConfigForm = awsConfigForm(context);
 
   return observer(({ store }) => (
-    <Form spellCheck="false" autoCapitalize="none" data-infra-create-aws>
+    <FormCreate>
       <header>
         <h2>{tr.t("Create new AWS Infrastructure")}</h2>
       </header>
@@ -181,19 +182,18 @@ export const awsFormCreate = (context) => {
         <AwsConfigForm store={store.core} />
       </main>
       <Footer store={store} />
-    </Form>
+    </FormCreate>
   ));
 };
 
 export const awsFormEdit = (context) => {
   const { tr } = context;
-
-  const Form = createForm(context);
+  const FormUpdate = providerFormUpdate(context);
   const AwsConfigForm = awsConfigForm(context);
   const Footer = providerConfigUpdateFooter(context);
 
   return observer(({ store }) => (
-    <Form spellCheck="false" autoCapitalize="none" data-infra-update>
+    <FormUpdate>
       <header>
         <h2>{tr.t("Update AWS Infrastructure")}</h2>
       </header>
@@ -201,6 +201,6 @@ export const awsFormEdit = (context) => {
         <AwsConfigForm store={store.core} />
       </main>
       <Footer store={store} />
-    </Form>
+    </FormUpdate>
   ));
 };

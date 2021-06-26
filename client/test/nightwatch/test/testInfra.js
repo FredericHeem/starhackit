@@ -3,9 +3,11 @@ const infraNameAws = "Aws Infra";
 const infraNameGoogle = "grucloud-vm-tuto-1";
 const infraNameAzure = "Azure Infra";
 const infraNameOvh = "Ovh Infra";
-
+const infraNewName = (name) => `${name}-newname`;
 const timeout = 5e3;
-const pause = 200;
+const timeoutLong = 30e3;
+
+const pause = 100;
 const googleCredentialFile = "grucloud-vm-tuto-1.json";
 
 const {
@@ -17,11 +19,28 @@ const {
 
 const urlExamples = "https://github.com/grucloud/grucloud/";
 
+const navigateInfra = async ({ client, infraName, timeout = 3e3 }) => {
+  await client.page
+    .infra()
+    .waitForElementVisible("form[data-infra-list=true]", timeout)
+    .waitForElementVisible(
+      `li[data-infra-list-item-name="${infraName}"`,
+      timeout
+    )
+    .click(`li[data-infra-list-item-name="${infraName}"`)
+    .waitForElementVisible("form[data-infra-detail=true]", timeout);
+};
+
 const deleteInfra = async ({ client, infraName, timeout = 3e3 }) => {
   await client.page
     .infra()
     .navigate()
     .waitForElementVisible("form[data-infra-list=true]", timeout)
+    .waitForElementVisible(
+      `li[data-infra-list-item-name="${infraName}"`,
+      timeout
+    )
+
     .click(`li[data-infra-list-item-name="${infraName}"`)
     .waitForElementVisible("form[data-infra-detail=true]", timeout)
     .pause(pause)
@@ -34,8 +53,13 @@ const deleteInfra = async ({ client, infraName, timeout = 3e3 }) => {
     .click("button[data-infra-button-delete=true]")
     .pause(pause);
 };
+
 const navigate = ({ client }) => {
   client.page.infraCreate().navigate();
+};
+
+const navigateInfraList = ({ client }) => {
+  client.page.infra().navigate();
 };
 
 const gitConfiguration = ({ client, repositoryUrl }) => {
@@ -102,7 +126,7 @@ const providerSelectOvh = ({ client }) => {
 const configAWS = ({ client }) => {
   client.page
     .infraCreate()
-    .waitForElementVisible("form[data-infra-create-aws=true]", timeout)
+    .waitForElementVisible("form[data-infra-create=true]", timeout)
     .setValue("@inputInfraName", infraNameAws)
     .setValue("@inputAccessKeyId", process.env.AWSAccessKeyId)
     .setValue("@inputSecretKey", process.env.AWSSecretKey)
@@ -115,7 +139,7 @@ const configAWS = ({ client }) => {
 const configAzure = ({ client }) => {
   client.page
     .infraCreate()
-    .waitForElementVisible("form[data-infra-create-azure=true]", timeout)
+    .waitForElementVisible("form[data-infra-create=true]", timeout)
     .setValue("@inputAzureName", infraNameAzure)
     .setValue("@inputSubscriptionId", process.env.SUBSCRIPTION_ID)
     .setValue("@inputTenantId", process.env.TENANT_ID)
@@ -129,7 +153,7 @@ const configAzure = ({ client }) => {
 const configGoogle = ({ client }) => {
   client.page
     .infraCreate()
-    .waitForElementVisible("form[data-infra-create-google=true]", timeout)
+    .waitForElementVisible("form[data-infra-create=true]", timeout)
     .setValue(
       "@inputFileGoogleUpload",
       path.resolve(__dirname, googleCredentialFile)
@@ -142,7 +166,7 @@ const configGoogle = ({ client }) => {
 const configOvh = ({ client }) => {
   client.page
     .infraCreate()
-    .waitForElementVisible("form[data-infra-create-ovh=true]", timeout)
+    .waitForElementVisible("form[data-infra-create=true]", timeout)
     .setValue("@inputInfraName", infraNameOvh)
     .setValue("@inputOsProjectId", process.env.OS_PROJECT_ID)
     .setValue("@inputOsProjectName", process.env.OS_PROJECT_NAME)
@@ -155,6 +179,66 @@ const configOvh = ({ client }) => {
     .pause(pause);
 };
 
+// Update
+const updateAWS = ({ client, infraName }) => {
+  navigateInfra({ client, infraName });
+
+  client.page
+    .infraCreate()
+    .click("button[data-infra-edit-button=true]")
+    .waitForElementVisible("form[data-infra-update=true]", timeout)
+    .clearValue("@inputInfraName")
+    .setValue("@inputInfraName", infraNewName(infraName))
+    .click("button[data-infra-update-submit=true]")
+    .waitForElementVisible("form[data-infra-detail=true]", timeoutLong)
+    .pause(pause);
+};
+const updateAzure = ({ client, infraName }) => {
+  navigateInfra({ client, infraName });
+
+  client.page
+    .infraCreate()
+    .click("button[data-infra-edit-button=true]")
+    .waitForElementVisible("form[data-infra-update=true]", timeout)
+    .clearValue("@inputAzureName")
+    .setValue("@inputAzureName", infraNewName(infraName))
+    .click("button[data-infra-update-submit=true]")
+    .waitForElementVisible("form[data-infra-detail=true]", timeoutLong)
+    .pause(pause);
+};
+const updateGoogle = ({ client, infraName }) => {
+  navigateInfra({ client, infraName });
+
+  client.page
+    .infraCreate()
+    .click("button[data-infra-edit-button=true]")
+    .waitForElementVisible("form[data-infra-update=true]", timeout)
+    .clearValue("@inputFileGoogleUpload")
+
+    .setValue(
+      "@inputFileGoogleUpload",
+      path.resolve(__dirname, googleCredentialFile)
+    )
+    .click("@submit")
+    .click("button[data-infra-update-submit=true]")
+    .waitForElementVisible("form[data-infra-detail=true]", timeoutLong)
+    .pause(pause);
+};
+
+const updateOvh = ({ client, infraName }) => {
+  navigateInfra({ client, infraName });
+
+  client.page
+    .infraCreate()
+    .click("button[data-infra-edit-button=true]")
+    .waitForElementVisible("form[data-infra-update=true]", timeout)
+    .clearValue("@inputInfraName")
+    .setValue("@inputInfraName", infraNewName(infraName))
+    .click("button[data-infra-update-submit=true]")
+    .pause(pause);
+};
+
+// TEST
 describe.only("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
@@ -181,8 +265,13 @@ describe.only("Infra", function () {
     configAWS({ client });
   });
 
+  it("update aws", function (client) {
+    navigateInfraList({ client });
+    updateAWS({ client, infraName: infraNameAws });
+  });
+
   it("delete aws", async function (client, done) {
-    await deleteInfra({ client, infraName: infraNameAws });
+    await deleteInfra({ client, infraName: infraNewName(infraNameAws) });
   });
   it("create azure", function (client) {
     navigate({ client });
@@ -191,8 +280,12 @@ describe.only("Infra", function () {
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AZURE });
     configAzure({ client });
   });
+  it("update azure", function (client) {
+    navigateInfraList({ client });
+    updateAzure({ client, infraName: infraNameAzure });
+  });
   it("delete azure", async function (client, done) {
-    await deleteInfra({ client, infraName: infraNameAzure });
+    await deleteInfra({ client, infraName: infraNewName(infraNameAzure) });
   });
 
   // Google
@@ -202,6 +295,11 @@ describe.only("Infra", function () {
     projectImportExisting({ client });
     gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_GCP });
     configGoogle({ client });
+  });
+
+  it("update google", function (client) {
+    navigateInfraList({ client });
+    updateGoogle({ client, infraName: infraNameGoogle });
   });
   it("delete google", async function (client, done) {
     await deleteInfra({ client, infraName: infraNameGoogle });
@@ -216,11 +314,16 @@ describe.only("Infra", function () {
     configOvh({ client });
   });
 
-  it("delete ovh", async function (client, done) {
-    await deleteInfra({ client, infraName: infraNameOvh });
+  it("update ovh", function (client) {
+    navigateInfraList({ client });
+    updateOvh({ client, infraName: infraNameOvh });
   });
 
-  it("bad credentials", function (client) {
+  it("delete ovh", async function (client, done) {
+    await deleteInfra({ client, infraName: infraNewName(infraNameOvh) });
+  });
+
+  it.skip("bad credentials", function (client) {
     navigate({ client });
     providerSelectAws({ client });
     projectImportExisting({ client });

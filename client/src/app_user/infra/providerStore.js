@@ -60,7 +60,7 @@ export const providerCreateStore = ({ context, defaultData, rules }) => {
       console.log("create", data);
       try {
         const result = await store.op.fetch(data);
-        await store.opScan.fetch(result);
+        //await store.opScan.fetch(result);
         alertStack.add(
           <Alert severity="success" message={tr.t("Infrastructure Created")} />
         );
@@ -89,8 +89,10 @@ export const providerCreateStore = ({ context, defaultData, rules }) => {
     update: action(async ({ data }) => {
       store.errors = {};
       console.log("update", data);
-
-      const vErrors = validate(data, rules);
+      const vErrors = validate(
+        { name: data.name, ...data.providerAuth },
+        rules
+      );
       if (vErrors) {
         store.errors = vErrors;
         return;
@@ -98,7 +100,7 @@ export const providerCreateStore = ({ context, defaultData, rules }) => {
 
       try {
         const result = await store.opUpdate.fetch(data);
-        await store.opScan.fetch(result);
+        //await store.opScan.fetch(result);
 
         alertStack.add(
           <Alert severity="success" message={tr.t("Infrastructure Udated")} />

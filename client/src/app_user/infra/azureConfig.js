@@ -15,110 +15,38 @@ import spinner from "mdlean/lib/spinner";
 import form from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
 import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
+import { providerCreateStore } from "./providerStore";
 
 export const createStoreAzure = (
   context,
   { gitCredentialStore, gitRepositoryStore }
 ) => {
-  const { tr, history, alertStack, rest, emitter } = context;
-  const Alert = alert(context);
-  const asyncOpCreate = AsyncOp(context);
-  const store = observable({
-    setData: action((data) => {
-      store.id = data.id;
-      store.data = data.providerAuth;
-    }),
-    id: "",
-    data: {
-      name: "",
-      SUBSCRIPTION_ID: "",
-      TENANT_ID: "",
-      APP_ID: "",
-      PASSWORD: "",
-    },
-    errors: {},
-    onChange: action((field, value) => {
-      store.data[field] = value;
-    }),
-    get isDisabled() {
-      return or([
-        pipe([get("name"), isEmpty]),
-        pipe([get("SUBSCRIPTION_ID"), isEmpty]),
-        pipe([get("TENANT_ID"), isEmpty]),
-        pipe([get("APP_ID"), isEmpty]),
-        pipe([get("PASSWORD"), isEmpty]),
-      ])(store.data);
-    },
-    opScan: asyncOpCreate((infraItem) =>
-      rest.post(`cloudDiagram`, { infra_id: infraItem.id })
-    ),
-    op: asyncOpCreate((payload) => rest.post("infra", payload)),
-    get isCreating() {
-      return store.opScan.loading || store.op.loading;
-    },
-    create: action(async () => {
-      store.errors = {};
-      const payload = {
-        providerType: "azure",
-        providerName: "azure",
-        name: store.data.name,
-        providerAuth: store.data,
-        git_credential_id: gitCredentialStore.id,
-        git_repository_id: gitRepositoryStore.id,
-      };
-      try {
-        const result = await store.op.fetch(payload);
-        await store.opScan.fetch(result);
-        alertStack.add(
-          <Alert severity="success" message={tr.t("Infrastructure Created")} />
-        );
-        history.push(`/infra/detail/${result.id}`, result);
-        emitter.emit("infra.created", result);
-      } catch (errors) {
-        console.log(errors);
-        // backend should 422 if the credentials are incorrect
-        alertStack.add(
-          <Alert
-            severity="error"
-            data-alert-error-create
-            message={tr.t(
-              "Error creating infrastructure, check the credentials"
-            )}
-          />
-        );
-      }
-    }),
-    opUpdate: asyncOpCreate((payload) =>
-      rest.patch(`infra/${store.id}`, payload)
-    ),
-    update: action(async () => {
-      store.errors = {};
-
-      const payload = {
-        providerType: "azure",
-        name: store.data.name,
-        providerAuth: store.data,
-      };
-      try {
-        const result = await store.opUpdate.fetch(payload);
-        alertStack.add(
-          <Alert severity="success" message={tr.t("Infrastructure Updated")} />
-        );
-        history.push(`/infra/detail/${result.id}`, result);
-        emitter.emit("infra.updated", result);
-      } catch (errors) {
-        console.log(errors);
-        alertStack.add(
-          <Alert
-            severity="error"
-            data-alert-error-update
-            message={tr.t("Error updating infrastructure")}
-          />
-        );
-      }
-    }),
+  const buildPayload = ({ data }) => ({
+    name: data.name,
+    providerType: "azure",
+    providerName: "azure",
+    providerAuth: data,
+    git_credential_id: gitCredentialStore.id,
+    git_repository_id: gitRepositoryStore.id,
   });
-  return store;
+
+  const isDisabled = ({ data }) => {
+    return or([
+      pipe([get("name"), isEmpty]),
+      pipe([get("SUBSCRIPTION_ID"), isEmpty]),
+      pipe([get("TENANT_ID"), isEmpty]),
+      pipe([get("APP_ID"), isEmpty]),
+      pipe([get("PASSWORD"), isEmpty]),
+    ])(data);
+  };
+
+  return providerCreateStore({
+    context,
+    defaultData: {},
+    rules: {},
+    buildPayload,
+    isDisabled,
+  });
 };
 
 export const azureFormCreate = (context) => {
@@ -180,7 +108,7 @@ export const azureFormCreate = (context) => {
             <Input
               data-input-azure-name
               value={store.data.name}
-              onChange={(e) => store.onChange("name", e.target.value)}
+              onChange={(e) => store.onChange("name", e)}
               label={tr.t("Infrastrucure Name")}
               error={store.errors.name && store.errors.name[0]}
             />
@@ -194,9 +122,7 @@ export const azureFormCreate = (context) => {
             <Input
               data-input-azure-subscription-id
               value={store.data.SUBSCRIPTION_ID}
-              onChange={(e) =>
-                store.onChange("SUBSCRIPTION_ID", e.target.value)
-              }
+              onChange={(event) => store.onChange("SUBSCRIPTION_ID", event)}
               label={tr.t("Subscription Id")}
               error={
                 store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
@@ -212,7 +138,7 @@ export const azureFormCreate = (context) => {
             <Input
               data-input-azure-tenant-id
               value={store.data.TENANT_ID}
-              onChange={(e) => store.onChange("TENANT_ID", e.target.value)}
+              onChange={(e) => store.onChange("TENANT_ID", e)}
               label={tr.t("Tenant Id")}
               error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
             />
@@ -228,7 +154,7 @@ export const azureFormCreate = (context) => {
               <Input
                 data-input-azure-app-id
                 value={store.data.APP_ID}
-                onChange={(e) => store.onChange("APP_ID", e.target.value)}
+                onChange={(e) => store.onChange("APP_ID", e)}
                 label={tr.t("App Id")}
                 error={store.errors.APP_ID && store.errors.APP_ID[0]}
               />
@@ -238,7 +164,7 @@ export const azureFormCreate = (context) => {
                 data-input-azure-password
                 type="PASSWORD"
                 value={store.data.PASSWORD}
-                onChange={(e) => store.onChange("PASSWORD", e.target.value)}
+                onChange={(e) => store.onChange("PASSWORD", e)}
                 label={tr.t("Password")}
                 error={store.errors.PASSWORD && store.errors.PASSWORD[0]}
               />

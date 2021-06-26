@@ -34,11 +34,13 @@ const deleteInfra = async ({ client, infraName, timeout = 3e3 }) => {
     .click("button[data-infra-button-delete=true]")
     .pause(pause);
 };
+const navigate = ({ client }) => {
+  client.page.infraCreate().navigate();
+};
 
 const gitConfiguration = ({ client, repositoryUrl }) => {
   client.page
     .infraCreate()
-    .navigate()
     .waitForElementVisible("@formGitCredential", timeout)
     .setValue("@inputGitUsername", process.env.GIT_USERNAME)
     .pause(pause)
@@ -48,8 +50,7 @@ const gitConfiguration = ({ client, repositoryUrl }) => {
     .waitForElementVisible("@formRepository", timeout)
     .setValue("@inputRepositoryUrl", repositoryUrl)
     .pause(pause)
-    .click("@submit")
-    .waitForElementVisible("@formProviderSelect", timeout);
+    .click("@submit");
 };
 
 const projectImportExisting = ({ client }) => {
@@ -165,16 +166,18 @@ describe.only("Infra", function () {
   // });
 
   it("create aws from existing", function (client) {
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
+    navigate({ client });
     providerSelectAws({ client });
     projectImportExisting({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
     configAWS({ client });
   });
 
   it("create aws from template", function (client) {
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
+    navigate({ client });
     providerSelectAws({ client });
     projectImportFromTemplate({ client, directory: "examples/aws/ec2" });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
     configAWS({ client });
   });
 
@@ -182,9 +185,10 @@ describe.only("Infra", function () {
     await deleteInfra({ client, infraName: infraNameAws });
   });
   it("create azure", function (client) {
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AZURE });
+    navigate({ client });
     providerSelectAzure({ client });
     projectImportExisting({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AZURE });
     configAzure({ client });
   });
   it("delete azure", async function (client, done) {
@@ -193,9 +197,10 @@ describe.only("Infra", function () {
 
   // Google
   it("create google", function (client) {
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_GCP });
+    navigate({ client });
     providerSelectGoogle({ client });
     projectImportExisting({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_GCP });
     configGoogle({ client });
   });
   it("delete google", async function (client, done) {
@@ -204,9 +209,10 @@ describe.only("Infra", function () {
 
   // OVH
   it("create ovh", function (client) {
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_OPENSTACK });
+    navigate({ client });
     providerSelectOvh({ client });
     projectImportExisting({ client });
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_OPENSTACK });
     configOvh({ client });
   });
 
@@ -215,9 +221,11 @@ describe.only("Infra", function () {
   });
 
   it("bad credentials", function (client) {
-    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
+    navigate({ client });
     providerSelectAws({ client });
     projectImportExisting({ client });
+
+    gitConfiguration({ client, repositoryUrl: GIT_REPOSITORY_AWS });
 
     client.page
       .infraCreate()

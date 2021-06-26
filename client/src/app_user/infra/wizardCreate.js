@@ -2,6 +2,9 @@
 import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
+import validate from "validate.js";
+
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 
 import button from "mdlean/lib/button";
 import wizard from "mdlean/lib/wizard";
@@ -47,6 +50,14 @@ export const wizardCreate = (context) => {
   const RepositoryConfig = repositoryConfig(context);
   const GitCredentialConfig = gitCredentialConfig(context);
   const ImportProjectForm = importProjectForm(context);
+  const gitCredentialStore = gitCredentialCreateStore(context);
+  const gitRepositoryStore = repositoryCreateStore(context);
+  const importProjectStore = importProjectCreateStore(context);
+
+  const AwsFormCreate = awsFormCreate(context);
+  const GcpFormCreate = gcpFormCreate(context);
+  const AzureFormCreate = azureFormCreate(context);
+  const OvhFormCreate = ovhFormCreate(context);
 
   const store = observable({
     providerName: "",
@@ -61,15 +72,6 @@ export const wizardCreate = (context) => {
       return store.providerName === "GCP";
     },
   });
-
-  const gitCredentialStore = gitCredentialCreateStore(context);
-  const gitRepositoryStore = repositoryCreateStore(context);
-  const importProjectStore = importProjectCreateStore(context);
-
-  const AwsFormCreate = awsFormCreate(context);
-  const GcpFormCreate = gcpFormCreate(context);
-  const AzureFormCreate = azureFormCreate(context);
-  const OvhFormCreate = ovhFormCreate(context);
 
   const configViewFromProvider = (providerName) => {
     switch (providerName) {
@@ -116,16 +118,6 @@ export const wizardCreate = (context) => {
 
   const wizardDefs = [
     {
-      name: "GitCredential",
-      header: observer(() => <header>Git Credential</header>),
-      content: ({}) => <GitCredentialConfig store={gitCredentialStore} />,
-    },
-    {
-      name: "GitRepository",
-      header: observer(() => <header>Git Repository</header>),
-      content: ({}) => <RepositoryConfig store={gitRepositoryStore} />,
-    },
-    {
       name: "ProviderSelection",
       header: () => <header>{tr.t("Select Provider")}</header>,
       content: () => <ProviderSelection store={store} />,
@@ -139,6 +131,16 @@ export const wizardCreate = (context) => {
       content: ({}) => (
         <ImportProjectForm store={importProjectStore} storeProvider={store} />
       ),
+    },
+    {
+      name: "GitCredential",
+      header: observer(() => <header>Git Credential</header>),
+      content: ({}) => <GitCredentialConfig store={gitCredentialStore} />,
+    },
+    {
+      name: "GitRepository",
+      header: observer(() => <header>Git Repository</header>),
+      content: ({}) => <RepositoryConfig store={gitRepositoryStore} />,
     },
     {
       name: "Configuration",

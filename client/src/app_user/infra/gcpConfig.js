@@ -18,6 +18,7 @@ import IconUpload from "./assets/uploadIcon.svg";
 
 import { infraDeleteLink } from "./infraDeleteLink";
 import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
+import { providerCreateStore } from "./providerStore";
 
 export const createStoreGoogle = (
   context,

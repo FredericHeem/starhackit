@@ -120,7 +120,7 @@ const createInfraDetail = (context) => {
           `}
         >
           <ProviderLogo name={detail.providerName || detail.providerType} />
-          {detail.providerAuth.AWS_REGION && (
+          {detail.providerAuth?.AWS_REGION && (
             <BadgeRegion region={detail.providerAuth.AWS_REGION} />
           )}
         </div>

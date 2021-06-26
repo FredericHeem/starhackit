@@ -16,6 +16,7 @@ import alert from "mdlean/lib/alert";
 import createForm from "components/form";
 import { infraDeleteLink } from "./infraDeleteLink";
 import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
+import { providerCreateStore } from "./providerStore";
 
 const AWS_REGION = [
   "eu-north-1",
@@ -75,10 +76,6 @@ export const createStoreAws = (
   context,
   { gitCredentialStore, gitRepositoryStore }
 ) => {
-  const { tr, history, alertStack, rest, emitter } = context;
-  const Alert = alert(context);
-  const asyncOpCreate = AsyncOp(context);
-
   const buildPayload = ({ data }) => ({
     name: data.name,
     providerType: "aws",
@@ -92,102 +89,21 @@ export const createStoreAws = (
     git_repository_id: gitRepositoryStore.id,
   });
 
-  const store = observable({
-    id: "",
-    data: defaultData,
-    errors: {},
-    onChange: action((field, event) => {
-      store.data[field] = event.target.value;
-    }),
-    reset: action(() => {
-      store.data = defaultData;
-    }),
-    setData: action((data) => {
-      store.id = data.id;
-      store.data = data.providerAuth;
-      store.data.name = data.name;
-    }),
-    opScan: asyncOpCreate((infraItem) =>
-      rest.post(`cloudDiagram`, { infra_id: infraItem.id })
-    ),
-    op: asyncOpCreate((payload) => rest.post("infra", payload)),
-    get isCreating() {
-      return store.opScan.loading || store.op.loading;
-    },
-    get isDisabled() {
-      return or([
-        pipe([get("name"), isEmpty]),
-        pipe([get("AWSAccessKeyId"), isEmpty]),
-        pipe([get("AWSSecretKey"), isEmpty]),
-      ])(store.data);
-    },
-    create: action(async () => {
-      store.errors = {};
-      const { data } = store;
+  const isDisabled = ({ data }) => {
+    return or([
+      pipe([get("name"), isEmpty]),
+      pipe([get("AWSAccessKeyId"), isEmpty]),
+      pipe([get("AWSSecretKey"), isEmpty]),
+    ])(data);
+  };
 
-      const vErrors = validate(data, rules);
-      if (vErrors) {
-        store.errors = vErrors;
-        return;
-      }
-
-      try {
-        const result = await store.op.fetch(buildPayload({ data: store.data }));
-        await store.opScan.fetch(result);
-        alertStack.add(
-          <Alert severity="success" message={tr.t("Infrastructure Created")} />
-        );
-        history.push(`/infra/detail/${result.id}`, result);
-        emitter.emit("infra.created", result);
-      } catch (errors) {
-        // backend should 422 if the credentials are incorrect
-        alertStack.add(
-          <Alert
-            severity="error"
-            data-alert-error-create
-            message={tr.t(
-              "Error creating infrastructure, check the credentials"
-            )}
-          />
-        );
-      }
-    }),
-    opUpdate: asyncOpCreate((payload) =>
-      rest.patch(`infra/${store.id}`, payload)
-    ),
-    get isUpdating() {
-      return store.opScan.loading || store.opUpdate.loading;
-    },
-    update: action(async () => {
-      store.errors = {};
-      const { data } = store;
-      const vErrors = validate(data, rules);
-      if (vErrors) {
-        store.errors = vErrors;
-        return;
-      }
-
-      try {
-        const result = await store.opUpdate.fetch(buildPayload(store));
-        await store.opScan.fetch(result);
-
-        alertStack.add(
-          <Alert severity="success" message={tr.t("Infrastructure Udated")} />
-        );
-        history.push(`/infra/detail/${result.id}`, result);
-        emitter.emit("infra.updated", result);
-      } catch (errors) {
-        alertStack.add(
-          <Alert
-            severity="error"
-            data-alert-error-update
-            message={tr.t("Error updating the infrastructure")}
-          />
-        );
-      }
-    }),
+  return providerCreateStore({
+    context,
+    defaultData,
+    rules,
+    buildPayload,
+    isDisabled,
   });
-  return store;
 };
 
 export const awsConfigForm = (context) => {

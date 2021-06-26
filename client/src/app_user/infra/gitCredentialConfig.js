@@ -73,7 +73,7 @@ export const gitCredentialCreateStore = (context) => {
       emitter.emit("step.next");
     }),
     skip: () => {
-      emitter.emit("step.select", "ProviderSelection");
+      emitter.emit("step.select", "Configuration");
     },
   });
 

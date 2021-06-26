@@ -52,10 +52,6 @@ export const importProjectCreateStore = (context) => {
     showNewProjectFromTemplate: action((show) => {
       store.modalOpenNewProjectFromTemplate = show;
     }),
-    selectProjectTemplate: action((project) => {
-      store.modalOpenNewProjectFromTemplate = false;
-      emitter.emit("step.select", "Configuration", { pippo: "pippo" });
-    }),
     onSelectProject: (project) => {
       store.modalOpenNewProjectFromTemplate = false;
       store.project = project;
@@ -67,7 +63,7 @@ export const importProjectCreateStore = (context) => {
     }),
     selectImportFormCloud: action((project) => {
       store.modalOpenNewProjectFromTemplate = false;
-      emitter.emit("step.select", "Configuration", { pippo: "pippo" });
+      emitter.emit("step.next", { pippo: "pippo" });
     }),
   });
 
@@ -191,7 +187,7 @@ export const importProjectForm = (context) => {
             data-selection-project-import-existing
             title={tr.t("Import an existing infrastructure")}
             description="Choose this option to visualize an existing infrastructure."
-            onClick={() => emitter.emit("step.select", "Configuration")}
+            onClick={() => emitter.emit("step.next")}
           />
           <Selection
             data-selection-project-new-from-template

@@ -17,11 +17,11 @@ import { PROJECTS } from "./projectList";
 
 const selection =
   ({ theme: { palette, shadows } }) =>
-  ({ title, description, url, directory, onClick, ...leftover }) =>
+  ({ title, description, url, directory, branch, onClick, ...leftover }) =>
     (
       <button
         {...leftover}
-        onClick={() => onClick({ title, url, directory })}
+        onClick={() => onClick({ title, url, directory, branch })}
         css={css`
           width: 100%;
           border: 1px none ${palette.grey[400]};

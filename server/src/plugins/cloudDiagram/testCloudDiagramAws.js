@@ -55,6 +55,12 @@ describe("CloudDiagramAws", function () {
           },
           git_credential_id: credential.id,
           git_repository_id: repository.id,
+          project: {
+            url: "https://github.com/grucloud/grucloud/",
+            title: "EC2 an instance with public address",
+            directory: "examples/aws/ec2",
+            branch: "main",
+          },
         }),
         (input) => client.post("v1/infra", input),
         tap((result) => {
@@ -64,7 +70,6 @@ describe("CloudDiagramAws", function () {
           options: {},
           infra_id,
         }),
-
         (input) => client.post("v1/cloudDiagram", input),
         tap((result) => {
           assert(result);

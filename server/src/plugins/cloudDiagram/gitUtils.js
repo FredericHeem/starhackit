@@ -13,7 +13,13 @@ const {
   and,
   not,
 } = require("rubico");
-const { isEmpty, values, callProp, identity } = require("rubico/x");
+const {
+  isEmpty,
+  values,
+  callProp,
+  identity,
+  defaultsDeep,
+} = require("rubico/x");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
 const fs = require("fs");
@@ -40,7 +46,7 @@ const gitCloneOrPull = ({
   fs,
   http,
   dir,
-  gitRepository,
+  gitRepository: { url, branch = "master" },
   gitCredential,
   user,
 }) =>
@@ -49,10 +55,9 @@ const gitCloneOrPull = ({
       assert(user.username);
       assert(user.email);
       console.log("gitCloneOrPull", dir);
-      console.log("gitRepository", gitRepository);
+      console.log("gitRepository url ", url);
       assert(dir);
-      assert(gitRepository.url);
-      assert(gitRepository.branch);
+      assert(url);
       assert(gitCredential.username);
       assert(gitCredential.password);
     }),
@@ -79,7 +84,7 @@ const gitCloneOrPull = ({
           fs,
           http,
           dir,
-          ref: gitRepository.branch,
+          ref: branch,
           singleBranch: true,
           author: {
             email: user.email,
@@ -92,8 +97,8 @@ const gitCloneOrPull = ({
           fs,
           http,
           dir,
-          url: gitRepository.url,
-          ref: gitRepository.branch,
+          url,
+          ref: branch,
           singleBranch: true,
           depth: 1,
           onAuth: () => gitCredential,
@@ -101,10 +106,39 @@ const gitCloneOrPull = ({
     ]),
   ])();
 
+const getProject = ({ providerName, project }) =>
+  pipe([
+    switchCase([
+      () => isEmpty(project),
+      pipe([
+        switchCase([
+          () => providerName === "aws",
+          () => "examples/aws/empty",
+          () => providerName === "google",
+          () => "examples/google/empty",
+          () => providerName === "azure",
+          () => "examples/azure/empty",
+          () => providerName === "ovh",
+          () => "examples/openstack/empty",
+        ]),
+        (directory) => ({
+          directory,
+          url: "https://github.com/grucloud/grucloud/",
+          branch: "main",
+        }),
+      ]),
+      () => project,
+    ]),
+    defaultsDeep({ directory: "", branch: "main" }),
+    tap((defaulted) => {
+      assert(defaulted);
+    }),
+  ])();
+
 exports.gitPush = ({
-  infra: { gitCredential, gitRepository, user, user_id },
+  infra: { providerName, gitCredential, gitRepository, user, user_id, project },
   files,
-  dirSource,
+  dirTemplate,
   dir,
   message,
 }) =>
@@ -119,7 +153,19 @@ exports.gitPush = ({
           assert(dir);
           console.log("gitPush");
           console.log(gitRepository);
+          console.log(project);
         }),
+        // Clone template
+        () =>
+          gitCloneOrPull({
+            fs,
+            http,
+            dir: dirTemplate,
+            gitRepository: getProject({ providerName, project }),
+            gitCredential,
+            user,
+          }),
+        // Clone user git repot
         () =>
           gitCloneOrPull({
             fs,
@@ -133,11 +179,18 @@ exports.gitPush = ({
         tap(
           map((filepath) =>
             pfs.copyFile(
-              path.resolve(dirSource, filepath),
+              path.resolve(
+                dirTemplate,
+                getProject({ providerName, project }).directory,
+                filepath
+              ),
               path.resolve(dir, filepath)
             )
           )
         ),
+        tap((files) => {
+          console.log(files);
+        }),
         tap(map((filepath) => git.add({ fs, dir, filepath }))),
         () =>
           git.commit({

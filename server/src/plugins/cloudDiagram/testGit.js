@@ -56,8 +56,30 @@ describe("Git", function () {
       messsage: "update inventory again",
     })(input);
   });
-  it("gitCreateProject", async () => {
+  it("gitCreateProject from template", async () => {
     const infra = {
+      providerType: "aws",
+      providerName: "aws",
+      gitCredential: {
+        username: GIT_USERNAME,
+        password: PERSONAL_ACCESS_TOKEN,
+      },
+      gitRepository: { url: GIT_REPOSITORY, branch: "master" },
+      user: { username: "topolino", email: "topolino@mail.com" },
+      user_id: uuid.v4(),
+      project: {
+        url: "https://github.com/grucloud/grucloud/",
+        title: "EC2 an instance with public address",
+        directory: "examples/aws/ec2",
+        branch: "main",
+      },
+    };
+  });
+
+  it.only("gitCreateProject from empty template", async () => {
+    const infra = {
+      providerType: "aws",
+      providerName: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -70,12 +92,13 @@ describe("Git", function () {
     await gitPush({
       infra,
       files: filesInfraProject,
-      dirSource: path.resolve(__dirname, "template/google/empty"),
-      dir: await pfs.mkdtemp(path.join(os.tmpdir(), "grucloud-template")),
+      dirTemplate: await path.join(os.tmpdir(), "grucloud-example-template"),
+      dir: await pfs.mkdtemp(
+        path.join(os.tmpdir(), `grucloud-git-${infra.user_id}`)
+      ),
       message: "new infra project",
     });
   });
-
   it("clone", async () => {
     await tryCatch(
       pipe([

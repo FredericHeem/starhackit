@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       providerAuth: {
         type: DataTypes.JSONB,
       },
+      project: DataTypes.JSONB,
       options: DataTypes.JSONB,
     },
     {

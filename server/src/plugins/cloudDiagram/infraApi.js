@@ -101,9 +101,9 @@ const InfraApi = ({ models, model, log }) => ({
         gitPush({
           infra,
           files: filesInfraProject,
-          dirSource: path.resolve(
-            __dirname,
-            `template/${infra.providerType}/empty`
+          dirTemplate: await path.join(
+            os.tmpdir(),
+            "grucloud-example-template"
           ),
           dir: await pfs.mkdtemp(path.join(os.tmpdir(), "grucloud-template")),
           message: "new infra project",

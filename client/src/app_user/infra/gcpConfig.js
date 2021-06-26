@@ -8,8 +8,6 @@ import input from "mdlean/lib/input";
 import fileInput from "mdlean/lib/fileInput";
 import formGroup from "mdlean/lib/formGroup";
 
-import createForm from "components/form";
-
 import IconUpload from "./assets/uploadIcon.svg";
 
 import { providerCreateStore } from "./providerStore";

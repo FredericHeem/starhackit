@@ -8,7 +8,6 @@ import { isEmpty } from "rubico/x";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
 
-import form from "components/form";
 import { providerCreateStore } from "./providerStore";
 import {
   providerFormCreate,

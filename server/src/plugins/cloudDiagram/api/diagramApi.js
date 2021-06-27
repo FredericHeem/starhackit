@@ -15,11 +15,10 @@ const { isEmpty, values, callProp, identity } = require("rubico/x");
 const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
-
-const { contextSet400, contextSet404, contextSetOk } = require("../common");
+const { createRestApiByUser } = require("../apiFactory");
 
 const { infraFindOne } = require("./infraApi");
-const { gitPushInventory } = require("../gitUtils");
+
 const getJobStatus = switchCase([
   eq(get("StatusCode"), 0),
   () => "done",
@@ -207,192 +206,124 @@ exports.DiagramApi = (app) => {
         ])(),
     ])();
 
-  const api = {
-    pathname: "/cloudDiagram",
-    middlewares: [
-      app.server.auth.isAuthenticated /*,app.server.auth.isAuthorized*/,
-    ],
-    ops: {
-      getAll: {
-        pathname: "/",
-        method: "get",
-        handler: (context) =>
-          tryCatch(
-            pipe([
-              () =>
-                models.Job.findAll({
-                  where: { user_id: context.state.user.id },
-                }),
-              map(callProp("toJSON")),
-              contextSetOk({ context }),
-            ]),
-            pipe([
-              (error) => {
-                throw error;
+  const diagramFindOne = ({ models }) =>
+    pipe([
+      ({ id }) =>
+        models.Job.findOne({
+          include: [
+            {
+              model: models.Infra,
+              as: "infra",
+            },
+            {
+              model: models.User,
+              as: "user",
+            },
+          ],
+          where: {
+            id,
+          },
+        }),
+      switchCase([isEmpty, () => undefined, callProp("toJSON")]),
+    ]);
+
+  const DiagramApi = ({ models, model, log }) => ({
+    findOne: diagramFindOne({ models }),
+    findAll: ({ user_id }) =>
+      pipe([
+        () =>
+          model.findAll({
+            include: [
+              {
+                model: models.Infra,
+                as: "infra",
               },
-            ])
-          )(),
-      },
-      getOne: {
-        pathname: "/:id",
-        method: "get",
-        handler: (context) =>
-          tryCatch(
-            pipe([
-              tap(() => {
-                assert(context.params.id);
-                assert(context.state.user.id);
-              }),
-              switchCase([
-                () => uuid.validate(context.params.id),
-                // valid id
-                pipe([
-                  () =>
-                    models.Job.findOne({
-                      where: {
-                        id: context.params.id,
-                      },
-                    }),
-                  switchCase([
-                    isEmpty,
-                    tap(() => contextSet404({ context })),
-                    pipe([callProp("toJSON"), contextSetOk({ context })]),
-                  ]),
-                ]),
-                // invalid uuid
-                contextSet400({ context, message: "invalid uuid" }),
-              ]),
-            ]),
-            pipe([
-              (error) => {
-                throw error;
+              {
+                model: models.User,
+                as: "user",
               },
-            ])
-          )(),
-      },
-      create: {
-        pathname: "/",
-        method: "post",
-        handler: tryCatch(
-          (context) =>
-            pipe([
-              tap(() => {
-                assert(context);
-                assert(context.request);
-                assert(context.request.body);
-                assert(context.request.body.infra_id);
-                assert(context.state.user.id);
-              }),
-              () =>
-                infraFindOne({ models })({
-                  id: context.request.body.infra_id,
-                }),
-              (infra) =>
-                pipe([
-                  () => ({
-                    ...context.request.body,
-                    user_id: context.state.user.id,
-                    kind: "list",
-                    status: "created",
-                  }),
-                  (params) => models.Job.create(params),
-                  ({ id }) =>
-                    pipe([
-                      tap(() => {
-                        assert(id);
-                      }),
-                      () =>
-                        runGcList({
-                          jobId: id,
-                          providerAuth: infra.providerAuth,
-                          provider: infra.providerType,
-                          localOutputPath,
-                          localInputPath,
-                          dockerClient,
-                          containerImage: config.infra.containerImage,
-                        }),
-                      tap((result) =>
-                        models.Job.update(
-                          { result, status: getJobStatus(result) },
-                          { where: { id } }
-                        )
-                      ),
-                      tap(gitPushInventory({ infra })),
-                      tap((result) => {
-                        context.body = result;
-                        context.status = getHttpStatus(result);
-                      }),
-                    ])(),
-                ])(),
-            ])(),
+            ],
+            where: {
+              user_id,
+            },
+          }),
+        map(callProp("toJSON")),
+        tap((xxx) => {
+          assert(true);
+        }),
+      ])(),
+    create: ({ data }) =>
+      pipe([
+        tap(() => {
+          assert(data.infra_id);
+        }),
+        () =>
+          infraFindOne({ models })({
+            id: data.infra_id,
+          }),
+        (infra) =>
           pipe([
-            tap((error) => {
-              log.error(`post error: ${JSON.stringify(error, null, 4)}`);
-              throw error;
+            () => ({
+              ...data,
+              kind: "list",
+              status: "created",
             }),
-          ])
+            (params) => models.Job.create(params),
+            ({ id }) =>
+              pipe([
+                tap(() => {
+                  assert(id);
+                }),
+                () =>
+                  runGcList({
+                    jobId: id,
+                    providerAuth: infra.providerAuth,
+                    provider: infra.providerType,
+                    localOutputPath,
+                    localInputPath,
+                    dockerClient,
+                    containerImage: config.infra.containerImage,
+                  }),
+                tap((result) =>
+                  models.Job.update(
+                    { result, status: getJobStatus(result) },
+                    { where: { id } }
+                  )
+                ),
+                tap((result) => {
+                  context.body = result;
+                  context.status = getHttpStatus(result);
+                }),
+              ])(),
+          ])(),
+      ])(),
+    patch: ({ id, data }) =>
+      pipe([
+        () => diagramFindOne({ models })({ id }),
+        (current) => defaultsDeep(current)(data),
+        tap((merged) =>
+          model.update(merged, {
+            where: {
+              id,
+            },
+          })
         ),
-      },
-      delete: {
-        pathname: "/:id",
-        method: "delete",
-        handler: (context) =>
-          tryCatch(
-            pipe([
-              tap(() => {
-                assert(context.params.id);
-                assert(context.state.user.id);
-              }),
-              switchCase([
-                () => uuid.validate(context.params.id),
-                // valid id
-                pipe([
-                  () =>
-                    models.Job.destroy({
-                      where: {
-                        id: context.params.id,
-                        user_id: context.state.user.id,
-                      },
-                    }),
-                  tap(contextSetOk({ context })),
-                ]),
-                // invalid uuid
-                contextSet400({ context, message: "invalid uuid" }),
-              ]),
-            ]),
-            pipe([
-              (error) => {
-                throw error;
-              },
-            ])
-          )(),
-      },
+        () => diagramFindOne({ models })({ id }),
+        tap((param) => {
+          log.debug(`patched: ${JSON.stringify(param, null, 4)}`);
+        }),
+      ])(),
+    destroy: ({ id }) =>
+      pipe([
+        () =>
+          model.destroy({
+            where: {
+              id,
+            },
+          }),
+      ])(),
+  });
 
-      //update: {
-      //   pathname: "/:id",
-      //   method: "patch",
-      //   handler: async (context) => {
-      //     const { id } = context.params;
-      //     const user_id = context.state.user.id;
-      //     await models.CloudDiagram.update(context.request.body, {
-      //       where: {
-      //         id,
-      //         user_id,
-      //       },
-      //     });
-      //     const cloudDiagram = await models.CloudDiagram.findOne({
-      //       where: {
-      //         id,
-      //         user_id,
-      //       },
-      //     });
-      //     context.body = cloudDiagram.get();
-      //     context.status = 200;
-      //   },
-      // },
-    },
-  };
-
-  app.server.createRouter(api);
-  return { api };
+  const api = DiagramApi({ model: models.Job, models, log });
+  return createRestApiByUser({ pathname: "cloudDiagram", api, app });
 };

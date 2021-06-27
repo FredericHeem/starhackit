@@ -8,7 +8,7 @@ import strike from "components/Strike";
 import page from "components/Page";
 import registerForm from "../components/registerForm";
 import mediaSigninButtons from "../components/mediaSigninButtons";
-import AsyncOp from "utils/asyncOp";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 import rules from "utils/rules";
 
 export default (context) => {

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
 import button from "mdlean/lib/button";
-import AsyncOp from "utils/asyncOp";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 import avatar from "./avatar";
 
 export default (context) => {

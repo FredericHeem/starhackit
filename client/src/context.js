@@ -3,7 +3,7 @@ import { createBrowserHistory } from "history";
 import mitt from "mitt";
 import formatter from "utils/formatter";
 import alertStackCreate from "components/alertStack";
-import Rest from "./utils/rest";
+import Rest from "mdlean/lib/utils/rest";
 import palette from "./palette";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { red, teal, orange, blue } from "@material-ui/core/colors";

@@ -57,7 +57,6 @@ const rules = {
 
 const defaultData = {
   id: "",
-  name: "",
   AWSAccessKeyId: "",
   AWSSecretKey: "",
   AWS_REGION: "us-east-1",
@@ -179,7 +178,7 @@ export const awsFormEdit = (context) => {
   const AwsConfigForm = awsConfigForm(context);
   const Footer = providerConfigUpdateFooter(context);
 
-  return observer(({ store }) => (
+  return observer(({ store, infraSettingsStore }) => (
     <FormUpdate>
       <header>
         <h2>{tr.t("Update AWS Infrastructure")}</h2>
@@ -187,7 +186,7 @@ export const awsFormEdit = (context) => {
       <main>
         <AwsConfigForm store={store.core} />
       </main>
-      <Footer store={store} />
+      <Footer store={store} infraSettingsStore={infraSettingsStore} />
     </FormUpdate>
   ));
 };

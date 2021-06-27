@@ -4,14 +4,14 @@ import { toJS } from "mobx";
 import { observer } from "mobx-react";
 
 export const infraDeleteLink = ({ history }) =>
-  observer(({ store }) => (
+  observer(({ store, infraSettingsStore }) => (
     <p>
       {/* <pre
         css={css`
           width: 300px;
         `}
       >
-        {JSON.stringify(store, null, 4)}
+        {JSON.stringify(infraSettingsStore.data, null, 4)}
       </pre> */}
       <a
         data-infra-edit-delete-link
@@ -23,7 +23,7 @@ export const infraDeleteLink = ({ history }) =>
         onClick={() => {
           history.push(`/infra/detail/${store.id}/delete`, {
             id: store.id,
-            ...toJS(store.data),
+            ...toJS(infraSettingsStore.data),
           });
         }}
       >

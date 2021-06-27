@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import { get, or, pipe } from "rubico";
+import { get, or, pipe, tap, switchCase, tryCatch, get, eq } from "rubico";
 import { isEmpty } from "rubico/x";
 import validate from "validate.js";
 
@@ -12,7 +12,7 @@ import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
 import spinner from "mdlean/lib/spinner";
 
-import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
+import { buttonWizardBack } from "./wizardCreate";
 import form from "components/form";
 
 const rules = {
@@ -49,30 +49,99 @@ export const repositoryCreateStore = ({
     id: undefined,
     data: defaultData,
     errors: {},
+    setError: action((error) => {
+      store.errors = error;
+    }),
+    setData: action((data) => {
+      store.data = data;
+    }),
     onChange: action((field, event) => {
       store.data[field] = event.target.value;
     }),
     opSaveGitConfig: asyncOpCreate((gitConfig) =>
       rest.post(`git_repository`, gitConfig)
     ),
+    opPatchInfra: asyncOpCreate(
+      pipe([
+        tap(({ id }) => {}),
+        ({ id }) =>
+          rest.patch(`infra/${infraSettingsStore.id}`, {
+            id: infraSettingsStore.id,
+            git_credential_id: gitCredentialStore.id,
+            git_repository_id: id,
+          }),
+      ])
+    ),
+    opPushCode: asyncOpCreate(() =>
+      rest.post(`infra/${infraSettingsStore.id}/push_code`)
+    ),
     get isSaving() {
-      return store.opSaveGitConfig.loading;
+      return or([
+        get("opSaveGitConfig.loading"),
+        get("opPatchInfra.loading"),
+        get("opPushCode.loading"),
+      ])(store);
     },
     get isDisabled() {
       return or([pipe([get("url"), isEmpty])])(store.data);
     },
-    save: action(async () => {
+    validate: action(async ({ data }) => {
       store.errors = {};
-      const vErrors = validate(store.data, rules);
+      const vErrors = validate(data, rules);
       if (vErrors) {
         store.errors = vErrors;
-        return;
+        return false;
+      } else {
+        return true;
       }
-
-      const { id } = await store.opSaveGitConfig.fetch(store.data);
-      store.id = id;
-      emitter.emit("step.next");
     }),
+    save: action(async () =>
+      pipe([
+        tap(() => {
+          console.log("save", store.data);
+        }),
+        switchCase([
+          () => store.validate({ data: store.data }),
+          tryCatch(
+            pipe([
+              () => store.opSaveGitConfig.fetch(store.data),
+              tap(({ id }) => {
+                store.id = id;
+              }),
+              tap(({ id }) => store.opPatchInfra.fetch({ id })),
+              tap(() => store.opPushCode.fetch()),
+              tap(() => {
+                emitter.emit("step.next");
+              }),
+            ]),
+            (error) =>
+              pipe([
+                tap(() => {
+                  console.error("save", error);
+                }),
+                () => error,
+                switchCase([
+                  eq(get("response.data.code"), "UrlParseError"),
+                  () => {
+                    store.setError({ url: [error.response.data.message] });
+                  },
+                  eq(get("response.data.data.statusCode"), 404),
+                  () => {
+                    store.setError({
+                      url: [error.response.data.data.statusMessage],
+                    });
+                  },
+                  (error) => {
+                    //TODO alert
+                    console.error("save  error.response", error.response);
+                  },
+                ]),
+              ])()
+          ),
+          () => undefined,
+        ]),
+      ])()
+    ),
   });
 
   return store;
@@ -118,7 +187,7 @@ export const repositoryConfig = (context) => {
           <Input
             autoFocus
             name="repositoryUrl"
-            value={store.data.repositoryUrl}
+            value={store.data.url}
             onChange={(event) => store.onChange("url", event)}
             label={tr.t("Git Repository URL")}
             error={get("url[0]")(store.errors)}
@@ -141,7 +210,7 @@ export const repositoryConfig = (context) => {
           primary
           raised
           disabled={store.isSaving || store.isDisabled}
-          onClick={() => store.save()}
+          onClick={() => store.save({ data: store.data })}
           label={tr.t("Next")}
         />
         <Spinner

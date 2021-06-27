@@ -1,6 +1,6 @@
 const assert = require("assert");
 const path = require("path");
-const { pipe, tap, tryCatch, switchCase, map } = require("rubico");
+const { pipe, tap, tryCatch, switchCase, eq, get, or } = require("rubico");
 const uuid = require("uuid");
 const fs = require("fs");
 const pfs = fs.promises;
@@ -71,7 +71,16 @@ exports.InfraPushCodeRestApi = (app) => {
                 contextSet400({ context, message: "invalid uuid" }),
               ]),
             ]),
-            contextHandleError
+            (error) =>
+              pipe([
+                tap(() => {
+                  console.error(error);
+                }),
+                () => {
+                  context.status = 422;
+                  context.body = { ...error, message: error.toString() };
+                },
+              ])()
           )(),
       },
     },

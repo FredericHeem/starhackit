@@ -165,7 +165,7 @@ export const wizardCreate = ({ context, stores }) => {
         />
       ),
       enter: async () => {
-        stores.importProjectStore.project = {};
+        importProjectStore.project = {};
       },
     },
     {
@@ -202,11 +202,27 @@ export const wizardCreate = ({ context, stores }) => {
   const Wizard = wizard(context, { wizardDefs });
 
   // TODO only for testing
-  //store.selectProvider("Azure");
-  //emitter.emit("step.select", "ProviderSelection");
-  //store.selectProvider("GCP");
-  //emitter.emit("step.select", "ProviderSelection");
-  //emitter.emit("step.select", "Import");
+  // providerSelectionStore.selectProvider({ providerName: "aws" });
+  // importProjectStore.onSelectProject({
+  //   title: "EKS",
+  //   description: "Deploy a kubernetes cluster with EKS",
+  //   url: "https://github.com/grucloud/grucloud/",
+  //   branch: "main",
+  //   directory: "packages/modules/aws/eks/example",
+  // });
+
+  // infraSettingsStore.save({ data: { name: "EKS infra", stage: "dev" } });
+  // gitCredentialStore.save({
+  //   data: {
+  //     username: "",
+  //     password: "",
+  //   },
+  // });
+  // gitRepositoryStore.setData({
+  //   url: "https://github.com/grucloud/xxxxxxx",
+  //   branch: "master",
+  // });
+  // gitRepositoryStore.save();
 
   return observer(function WizardView() {
     return (

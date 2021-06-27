@@ -195,6 +195,8 @@ const updateAWS = ({ client, infraName }) => {
     .infraCreate()
     .click("button[data-infra-edit-button=true]")
     .waitForElementVisible("form[data-infra-update=true]", timeout)
+    .setValue("@inputAccessKeyId", process.env.AWSAccessKeyId)
+    .setValue("@inputSecretKey", process.env.AWSSecretKey)
     .click("button[data-infra-update-submit=true]")
     .waitForElementVisible("form[data-infra-detail=true]", timeoutLong)
     .pause(pause);
@@ -264,6 +266,43 @@ describe.only("Infra", function () {
     configAWS({ client });
   });
 
+  it("error pushing repo 404", function (client) {
+    navigate({ client });
+    providerSelectAws({ client });
+    projectImportExisting({ client });
+    infraSettings({ client, infraName: infraNameAws });
+    gitConfiguration({
+      client,
+      repositoryUrl: "https://github.com/grucloud/grucloud/xxxxx",
+    });
+
+    client.page
+      .infraCreate()
+      .waitForElementVisible(`div[data-input-error="repositoryUrl"]`, timeout)
+      .assert.containsText(
+        `div[data-input-error="repositoryUrl"]`,
+        "Not Found"
+      );
+  });
+
+  it("error repo url malformed", function (client) {
+    navigate({ client });
+    providerSelectAws({ client });
+    projectImportExisting({ client });
+    infraSettings({ client, infraName: infraNameAws });
+    gitConfiguration({
+      client,
+      repositoryUrl: "xxxxx",
+    });
+
+    client.page
+      .infraCreate()
+      .waitForElementVisible(`div[data-input-error="repositoryUrl"]`, timeout)
+      .assert.containsText(
+        `div[data-input-error="repositoryUrl"]`,
+        "UrlParseError"
+      );
+  });
   it("update aws", function (client) {
     navigateInfraList({ client });
     updateAWS({ client, infraName: infraNameAws });

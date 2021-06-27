@@ -80,7 +80,7 @@ export const providerConfigUpdateFooter = (context) => {
   const ButtonHistoryBack = buttonHistoryBack(context);
   const InfraDeleteLink = infraDeleteLink(context);
 
-  return observer(({ store }) => (
+  return observer(({ store, infraSettingsStore }) => (
     <>
       <footer>
         <ButtonHistoryBack />
@@ -103,7 +103,10 @@ export const providerConfigUpdateFooter = (context) => {
           color={palette.primary.main}
         />
       </footer>
-      <InfraDeleteLink store={store.core} />
+      <InfraDeleteLink
+        store={store.core}
+        infraSettingsStore={infraSettingsStore}
+      />
     </>
   ));
 };

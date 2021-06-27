@@ -237,7 +237,7 @@ export const gcpFormEdit = (context) => {
   const FileInputLabel = fileInputLabel(context);
   const Footer = providerConfigUpdateFooter(context);
 
-  return observer(({ store }) => (
+  return observer(({ store, infraSettingsStore }) => (
     <FormUpdate>
       <header>
         <h2>{tr.t("Update GCP Infrastructure")}</h2>
@@ -267,7 +267,7 @@ export const gcpFormEdit = (context) => {
           <CredentialFile fileName={store.fileName} content={store.content} />
         )}
       </main>
-      <Footer store={store} />
+      <Footer store={store} infraSettingsStore={infraSettingsStore} />
     </FormUpdate>
   ));
 };

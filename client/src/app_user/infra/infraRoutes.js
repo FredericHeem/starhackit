@@ -46,12 +46,14 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/aws/edit",
       protected: true,
       action: async (routerContext) => {
+        stores.wizard.infraSettingsStore.setData(window.history.state.usr);
         stores.wizard.aws.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit Aws Infrastructure",
           component: h(awsFormEdit(context), {
             store: stores.wizard.aws,
+            infraSettingsStore: stores.wizard.infraSettingsStore,
           }),
         };
       },
@@ -60,12 +62,14 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/google/edit",
       protected: true,
       action: async (routerContext) => {
+        stores.wizard.infraSettingsStore.setData(window.history.state.usr);
         stores.wizard.google.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit GCP Infrastructure",
           component: h(gcpFormEdit(context), {
             store: stores.wizard.google,
+            infraSettingsStore: stores.wizard.infraSettingsStore,
           }),
         };
       },
@@ -74,12 +78,14 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/azure/edit",
       protected: true,
       action: async (routerContext) => {
+        stores.wizard.infraSettingsStore.setData(window.history.state.usr);
         stores.wizard.azure.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit Azure Infrastructure",
           component: h(azureFormEdit(context), {
             store: stores.wizard.azure,
+            infraSettingsStore: stores.wizard.infraSettingsStore,
           }),
         };
       },
@@ -88,12 +94,14 @@ export const createRoutes = ({ context, stores }) => {
       path: "/detail/:id/ovh/edit",
       protected: true,
       action: async (routerContext) => {
+        stores.wizard.infraSettingsStore.setData(window.history.state.usr);
         stores.wizard.ovh.core.setData(window.history.state.usr);
         return {
           routerContext,
           title: "Edit OVH Infrastructure",
           component: h(ovhFormEdit(context), {
             store: stores.wizard.ovh,
+            infraSettingsStore: stores.wizard.infraSettingsStore,
           }),
         };
       },

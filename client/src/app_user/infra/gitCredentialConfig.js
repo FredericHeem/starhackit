@@ -59,15 +59,15 @@ export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
         pipe([get("password"), isEmpty]),
       ])(store.data);
     },
-    save: action(async () => {
+    save: action(async ({ data }) => {
       store.errors = {};
-      const vErrors = validate(store.data, rules);
+      const vErrors = validate(data, rules);
       if (vErrors) {
         store.errors = vErrors;
         return;
       }
 
-      const { id } = await store.opSaveGitConfig.fetch(store.data);
+      const { id } = await store.opSaveGitConfig.fetch(data);
       store.id = id;
 
       emitter.emit("step.next");
@@ -150,7 +150,7 @@ export const gitCredentialConfig = (context) => {
           primary
           raised
           disabled={store.isSaving || store.isDisabled}
-          onClick={() => store.save()}
+          onClick={() => store.save({ data: store.data })}
           label={tr.t("Next")}
         />
 

@@ -177,13 +177,13 @@ export const azureFormEdit = (context) => {
   const Content = azureFormContent(context);
   const Footer = providerConfigUpdateFooter(context);
 
-  return observer(({ store }) => (
+  return observer(({ store, infraSettingsStore }) => (
     <FormUpdate>
       <header>
         <h2>{tr.t("Update Azure Infrastructure")}</h2>
       </header>
       <Content store={store.core} />
-      <Footer store={store} />
+      <Footer store={store} infraSettingsStore={infraSettingsStore} />
     </FormUpdate>
   ));
 };

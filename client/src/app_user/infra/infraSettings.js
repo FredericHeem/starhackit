@@ -52,6 +52,9 @@ export const infraSettingsCreateStore = ({
     id: undefined,
     data: defaultData,
     errors: {},
+    setData: action((data) => {
+      store.data = data;
+    }),
     onChange: action((field, event) => {
       store.data[field] = event.target.value;
     }),
@@ -72,7 +75,7 @@ export const infraSettingsCreateStore = ({
         return true;
       }
     }),
-    save: action(async (data) =>
+    save: action(async ({ data }) =>
       pipe([
         tap(() => {
           console.log("save", data);
@@ -93,14 +96,6 @@ export const infraSettingsCreateStore = ({
               tap((result) => {
                 store.id = result.id;
               }),
-              // tap(() => {
-              //   alertStack.add(
-              //     <Alert
-              //       severity="success"
-              //       message={tr.t("Infrastructure Created")}
-              //     />
-              //   );
-              // }),
               tap(() => {
                 emitter.emit("step.next");
               }),
@@ -173,7 +168,7 @@ export const infraSettings = (context) => {
           primary
           raised
           disabled={store.isSaving || store.isDisabled}
-          onClick={() => store.save(store.data)}
+          onClick={() => store.save({ data: store.data })}
           label={tr.t("Next")}
         />
         <Spinner

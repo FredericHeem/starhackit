@@ -7,7 +7,6 @@ import { isEmpty } from "rubico/x";
 
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
-import createForm from "components/form";
 import { providerCreateStore } from "./providerStore";
 
 import {
@@ -210,12 +209,10 @@ export const ovhFormCreate = (context) => {
 export const ovhFormEdit = (context) => {
   const { tr } = context;
   const FormUpdate = providerFormUpdate(context);
-
-  const Form = createForm(context);
   const OvhConfigForm = ovhConfigForm(context);
   const Footer = providerConfigUpdateFooter(context);
 
-  return observer(({ store }) => (
+  return observer(({ store, infraSettingsStore }) => (
     <FormUpdate>
       <header>
         <h2>{tr.t("Update OVH Infrastructure")}</h2>
@@ -223,7 +220,7 @@ export const ovhFormEdit = (context) => {
       <main>
         <OvhConfigForm store={store.core} />
       </main>
-      <Footer store={store} />
+      <Footer store={store} infraSettingsStore={infraSettingsStore} />
     </FormUpdate>
   ));
 };

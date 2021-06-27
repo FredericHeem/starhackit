@@ -2,6 +2,8 @@
 import { observable, action } from "mobx";
 import validate from "validate.js";
 import { pipe, switchCase, tryCatch, tap } from "rubico";
+const { defaultsDeep } = require("rubico/x");
+
 import AsyncOp from "mdlean/lib/utils/asyncOp";
 import createAlert from "mdlean/lib/alert";
 
@@ -29,8 +31,7 @@ export const providerCreateStore = ({
     }),
     setData: action((data) => {
       store.id = data.id;
-      store.data = data.providerAuth;
-      store.data.name = data.name;
+      store.data = defaultsDeep(defaultData)(data.providerAuth);
     }),
     get supportImport() {
       return store.providerName === "google";

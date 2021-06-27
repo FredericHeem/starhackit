@@ -1,4 +1,4 @@
-const { createApiByUser, createRestApiByUser } = require("./apiFactory");
+const { createApiByUser, createRestApiByUser } = require("../apiFactory");
 
 exports.GitCredentialRestApi = (app) => {
   const { models } = app.data.sequelize;

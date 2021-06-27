@@ -21,10 +21,10 @@ const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
 
-const { DiagramApi } = require("./diagramApi");
-const { InfraRestApi } = require("./infraApi");
-const { GitCredentialRestApi } = require("./gitCredentialApi");
-const { GitRepositoryRestApi } = require("./gitRepositoryApi");
+const { DiagramApi } = require("./api/diagramApi");
+const { InfraRestApi } = require("./api/infraApi");
+const { GitCredentialRestApi } = require("./api/gitCredentialApi");
+const { GitRepositoryRestApi } = require("./api/gitRepositoryApi");
 
 const models = [
   "JobModel",

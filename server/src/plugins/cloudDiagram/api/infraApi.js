@@ -6,9 +6,8 @@ const uuid = require("uuid");
 const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
-const { contextSet400, contextSet404, contextSetOk } = require("./common");
-const { gitPush } = require("./gitUtils");
-const { createRestApiByUser } = require("./apiFactory");
+const { gitPush } = require("../gitUtils");
+const { createRestApiByUser } = require("../apiFactory");
 
 const infraFindOne = ({ models }) =>
   pipe([

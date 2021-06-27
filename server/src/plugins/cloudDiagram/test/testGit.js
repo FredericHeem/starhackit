@@ -8,7 +8,7 @@ const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
 const uuid = require("uuid");
-const { gitPush, gitPushInventory } = require("./gitUtils");
+const { gitPush, gitPushInventory } = require("../gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
 

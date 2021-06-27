@@ -16,10 +16,10 @@ const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
 
-const { contextSet400, contextSet404, contextSetOk } = require("./common");
+const { contextSet400, contextSet404, contextSetOk } = require("../common");
 
 const { infraFindOne } = require("./infraApi");
-const { gitPushInventory } = require("./gitUtils");
+const { gitPushInventory } = require("../gitUtils");
 const getJobStatus = switchCase([
   eq(get("StatusCode"), 0),
   () => "done",

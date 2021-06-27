@@ -22,6 +22,7 @@ const fs = require("fs").promises;
 const { DockerClient } = require("@grucloud/docker-axios");
 
 const { DiagramApi } = require("./api/diagramApi");
+const { InfraPushCodeRestApi } = require("./api/infraPushCodeApi");
 const { InfraRestApi } = require("./api/infraApi");
 const { GitCredentialRestApi } = require("./api/gitCredentialApi");
 const { GitRepositoryRestApi } = require("./api/gitRepositoryApi");
@@ -54,6 +55,7 @@ module.exports = (app) => {
   app.dockerClient = dockerClient;
 
   DiagramApi(app);
+  InfraPushCodeRestApi(app);
   InfraRestApi(app);
   GitCredentialRestApi(app);
   GitRepositoryRestApi(app);

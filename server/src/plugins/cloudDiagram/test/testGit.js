@@ -12,14 +12,6 @@ const { gitPush, gitPushInventory } = require("../gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
 
-const filesInfraProject = [
-  "iac.js",
-  "config.js",
-  "package.json",
-  "hook.js",
-  "README.md",
-];
-
 describe("Git", function () {
   before(async function () {
     if (!PERSONAL_ACCESS_TOKEN) {
@@ -95,7 +87,6 @@ describe("Git", function () {
     };
     await gitPush({
       infra,
-      files: filesInfraProject,
       dirTemplate: await path.join(os.tmpdir(), "grucloud-example-template"),
       dir: await pfs.mkdtemp(
         path.join(os.tmpdir(), `grucloud-git-${infra.user_id}`)
@@ -118,7 +109,6 @@ describe("Git", function () {
 
     await gitPush({
       infra,
-      files: filesInfraProject,
       dirTemplate: await path.join(os.tmpdir(), "grucloud-example-template"),
       dir: await pfs.mkdtemp(
         path.join(os.tmpdir(), `grucloud-git-${infra.user_id}`)
@@ -150,7 +140,6 @@ describe("Git", function () {
     try {
       await gitPush({
         infra,
-        files: filesInfraProject,
         dirTemplate: await path.join(os.tmpdir(), "grucloud-example-template"),
         dir: await pfs.mkdtemp(
           path.join(os.tmpdir(), `grucloud-git-${infra.user_id}`)

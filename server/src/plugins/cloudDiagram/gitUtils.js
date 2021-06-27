@@ -161,7 +161,6 @@ const getProject = ({ providerName, project }) =>
 
 exports.gitPush = ({
   infra: { providerName, gitCredential, gitRepository, user, user_id, project },
-  files,
   dirTemplate,
   dir,
   message,
@@ -171,7 +170,6 @@ exports.gitPush = ({
     tryCatch(
       pipe([
         tap(() => {
-          assert(Array.isArray(files));
           assert(message);
           assert(user_id);
           assert(dir);

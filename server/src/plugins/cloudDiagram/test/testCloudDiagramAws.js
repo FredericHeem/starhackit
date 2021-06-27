@@ -54,7 +54,7 @@ describe("CloudDiagramAws", function () {
         tap(({ infra }) => {
           assert(infra);
         }),
-        //pushCodeFromTemplate({ client }),
+        pushCodeFromTemplate({ client }),
         ({ infra }) => ({
           id: infra.id,
           providerAuth: {

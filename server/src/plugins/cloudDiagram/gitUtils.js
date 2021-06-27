@@ -209,18 +209,25 @@ exports.gitPush = ({
         tap((files) => {
           console.log(files);
         }),
-        tap(
-          map((filepath) =>
-            pfs.copyFile(
-              path.resolve(
-                dirTemplate,
-                getProject({ providerName, project }).directory,
-                filepath
-              ),
-              path.resolve(dir, filepath)
-            )
-          )
+        map((filepath) => ({
+          source: path.resolve(
+            dirTemplate,
+            getProject({ providerName, project }).directory,
+            filepath
+          ),
+          destination: path.resolve(dir, filepath),
+          destinationRelative: filepath,
+        })),
+        map(({ source, destination, destinationRelative }) =>
+          pipe([
+            () => pfs.mkdir(path.dirname(destination), { recursive: true }),
+            () => pfs.copyFile(source, destination),
+            () => destinationRelative,
+          ])()
         ),
+        tap((files) => {
+          //console.log("destination:", files, dir);
+        }),
         tap(map((filepath) => git.add({ fs, dir, filepath }))),
         () =>
           git.commit({

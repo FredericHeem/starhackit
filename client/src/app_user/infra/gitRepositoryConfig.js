@@ -11,9 +11,9 @@ import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
 import spinner from "mdlean/lib/spinner";
-
 import { buttonWizardBack } from "./wizardCreate";
 import form from "components/form";
+import alertAxios from "mdlean/lib/alertAjax";
 
 const rules = {
   url: {
@@ -39,6 +39,7 @@ export const repositoryCreateStore = ({
 }) => {
   const { tr, history, alertStack, rest, emitter } = context;
   const asyncOpCreate = AsyncOp(context);
+  const AlertAxios = alertAxios(context);
 
   const defaultData = {
     url: "",
@@ -56,6 +57,7 @@ export const repositoryCreateStore = ({
       store.data = data;
     }),
     onChange: action((field, event) => {
+      store.errors = {};
       store.data[field] = event.target.value;
     }),
     opSaveGitConfig: asyncOpCreate((gitConfig) =>
@@ -117,7 +119,7 @@ export const repositoryCreateStore = ({
             (error) =>
               pipe([
                 tap(() => {
-                  console.error("save", error);
+                  //console.error("save", error);
                 }),
                 () => error,
                 switchCase([
@@ -131,10 +133,18 @@ export const repositoryCreateStore = ({
                       url: [error.response.data.data.statusMessage],
                     });
                   },
-                  (error) => {
-                    //TODO alert
-                    console.error("save  error.response", error.response);
+                  eq(get("response.data.data.statusCode"), 401),
+                  () => {
+                    gitCredentialStore.setError({
+                      username: [error.response.data.data.response],
+                      password: [error.response.data.data.response],
+                    });
+                    emitter.emit("step.previous");
                   },
+                  tap(() => {
+                    console.error("save error.response", error.response);
+                    alertStack.add(<AlertAxios error={error} />);
+                  }),
                 ]),
               ])()
           ),

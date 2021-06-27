@@ -63,13 +63,17 @@ const navigateInfraList = ({ client }) => {
   client.page.infra().navigate();
 };
 
-const gitConfiguration = ({ client, repositoryUrl }) => {
+const gitConfiguration = ({
+  client,
+  repositoryUrl,
+  password = process.env.PERSONAL_ACCESS_TOKEN,
+}) => {
   client.page
     .infraCreate()
     .waitForElementVisible("@formGitCredential", timeout)
     .setValue("@inputGitUsername", process.env.GIT_USERNAME)
     .pause(pause)
-    .setValue("@inputGitPassword", process.env.PERSONAL_ACCESS_TOKEN)
+    .setValue("@inputGitPassword", password)
     .pause(pause)
     .click("@submit")
     .waitForElementVisible("@formRepository", timeout)
@@ -266,6 +270,25 @@ describe.only("Infra", function () {
     configAWS({ client });
   });
 
+  it("error git credential", function (client) {
+    navigate({ client });
+    providerSelectAws({ client });
+    projectImportExisting({ client });
+    infraSettings({ client, infraName: infraNameAws });
+    gitConfiguration({
+      client,
+      repositoryUrl: GIT_REPOSITORY_AWS,
+      password: "xxxxxx",
+    });
+
+    client.page
+      .infraCreate()
+      .waitForElementVisible(`div[data-input-error="gitUsername"]`, timeout)
+      .assert.containsText(
+        `div[data-input-error="gitUsername"]`,
+        "Invalid username or password"
+      );
+  });
   it("error pushing repo 404", function (client) {
     navigate({ client });
     providerSelectAws({ client });

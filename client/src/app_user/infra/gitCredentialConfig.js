@@ -44,7 +44,11 @@ export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
     id: undefined,
     data: defaultData,
     errors: {},
+    setError: action((error) => {
+      store.errors = error;
+    }),
     onChange: action((field, event) => {
+      store.errors = {};
       store.data[field] = event.target.value;
     }),
     opSaveGitConfig: asyncOpCreate((gitConfig) =>
@@ -80,6 +84,45 @@ export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
   return store;
 };
 
+export const gitCredentialFormContent = (context) => {
+  const {
+    tr,
+    theme: { palette },
+  } = context;
+  const FormGroup = formGroup(context);
+  const Input = input(context, {
+    cssOverride: css`
+      > input {
+        width: 400px;
+      }
+    `,
+  });
+
+  return observer(({ store }) => (
+    <>
+      <FormGroup>
+        <Input
+          name="gitUsername"
+          value={store.data.username}
+          onChange={(event) => store.onChange("username", event)}
+          label={tr.t("Git username")}
+          error={get("username[0]")(store.errors)}
+        />
+      </FormGroup>
+      <FormGroup>
+        <Input
+          name="gitPassword"
+          value={store.data.password}
+          onChange={(event) => store.onChange("password", event)}
+          label={tr.t("Git password or Personnal access code")}
+          error={get("password[0]")(store.errors)}
+          type="password"
+        />
+      </FormGroup>
+    </>
+  ));
+};
+
 export const gitCredentialConfig = (context) => {
   const {
     tr,
@@ -90,14 +133,7 @@ export const gitCredentialConfig = (context) => {
   const Spinner = spinner(context);
   const Button = button(context);
   const ButtonHistoryBack = buttonHistoryBack(context);
-  const FormGroup = formGroup(context);
-  const Input = input(context, {
-    cssOverride: css`
-      > input {
-        width: 400px;
-      }
-    `,
-  });
+  const GitCredentialFormContent = gitCredentialFormContent(context);
 
   return observer(({ store }) => (
     <Form
@@ -117,25 +153,7 @@ export const gitCredentialConfig = (context) => {
           The resources inventory and generated code are stored on your source
           code git repository.
         </p>
-        <FormGroup>
-          <Input
-            name="gitUsername"
-            value={store.data.username}
-            onChange={(event) => store.onChange("username", event)}
-            label={tr.t("Git username")}
-            error={get("username[0]")(store.errors)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            name="gitPassword"
-            value={store.data.password}
-            onChange={(event) => store.onChange("password", event)}
-            label={tr.t("Git password or Personnal access code")}
-            error={get("password[0]")(store.errors)}
-            type="password"
-          />
-        </FormGroup>
+        <GitCredentialFormContent store={store} />
       </main>
       <footer>
         <ButtonHistoryBack />

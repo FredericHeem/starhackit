@@ -59,7 +59,7 @@ describe("InfraPushCode", function () {
     }
   });
 
-  it.only("Cannot parse remote URL", async () => {
+  it("Cannot parse remote URL", async () => {
     try {
       await pipe([
         createInfra({

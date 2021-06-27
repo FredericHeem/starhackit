@@ -154,7 +154,11 @@ const createInfraDetail = (context) => {
           `}
         >
           {detail.gitRepository && (
-            <Button href={detail.gitRepository.url} label="Open GitHub" />
+            <Button
+              target="_blank"
+              href={detail.gitRepository.url}
+              label="Open GitHub"
+            />
           )}
         </div>
         {store.lives && <ResourcePerTypeTable lives={store.lives} />}

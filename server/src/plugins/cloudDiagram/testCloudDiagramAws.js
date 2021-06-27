@@ -3,24 +3,31 @@ const { pipe, tap, tryCatch, fork } = require("rubico");
 const { first } = require("rubico/x");
 
 const testMngr = require("test/testManager");
-
+const { createInfra, pushCodeFromTemplate } = require("./apiTestUtils");
 const { AWSAccessKeyId, AWSSecretKey, AWS_REGION } = process.env;
 const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN, GIT_REPOSITORY_AWS } = process.env;
 
-//TODO put in common
-const createGitInfo = ({ client }) =>
-  fork({
-    credential: () =>
-      client.post("v1/git_credential", {
-        providerType: "GitHub",
-        username: GIT_USERNAME,
-        password: PERSONAL_ACCESS_TOKEN,
-      }),
-    repository: () =>
-      client.post("v1/git_repository", {
-        url: GIT_REPOSITORY_AWS,
-      }),
-  });
+const config = {
+  infra: {
+    name: "infra-aws-test",
+    providerType: "aws",
+    providerName: "aws",
+    project: {
+      url: "https://github.com/grucloud/grucloud/",
+      title: "EC2 an instance with public address",
+      directory: "examples/aws/ec2",
+      branch: "main",
+    },
+  },
+  gitCredential: {
+    providerType: "GitHub",
+    username: GIT_USERNAME,
+    password: PERSONAL_ACCESS_TOKEN,
+  },
+  gitRepository: {
+    url: GIT_REPOSITORY_AWS,
+  },
+};
 
 describe("CloudDiagramAws", function () {
   let client;
@@ -43,26 +50,23 @@ describe("CloudDiagramAws", function () {
     try {
       await pipe([
         // Create
-        createGitInfo({ client }),
-        ({ credential, repository }) => ({
-          name: "infra-aws-test",
-          providerType: "aws",
-          providerName: "aws",
+        createInfra({ client, config }),
+        tap(({ infra }) => {
+          assert(infra);
+        }),
+        //pushCodeFromTemplate({ client }),
+        ({ infra }) => ({
+          id: infra.id,
           providerAuth: {
             AWSAccessKeyId,
             AWSSecretKey,
             AWS_REGION,
           },
-          git_credential_id: credential.id,
-          git_repository_id: repository.id,
-          project: {
-            url: "https://github.com/grucloud/grucloud/",
-            title: "EC2 an instance with public address",
-            directory: "examples/aws/ec2",
-            branch: "main",
-          },
         }),
-        (input) => client.post("v1/infra", input),
+        tap((input) => {
+          assert(input);
+        }),
+        (input) => client.patch(`v1/infra/${input.id}`, input),
         tap((result) => {
           assert(result);
         }),

@@ -1,7 +1,7 @@
 const assert = require("assert");
 const path = require("path");
 const { pipe, tap, tryCatch, switchCase, map } = require("rubico");
-const { isEmpty, callProp } = require("rubico/x");
+const { isEmpty, callProp, defaultsDeep } = require("rubico/x");
 const uuid = require("uuid");
 const fs = require("fs");
 const pfs = fs.promises;
@@ -40,14 +40,6 @@ const infraFindOne = ({ models }) =>
   ]);
 
 exports.infraFindOne = infraFindOne;
-
-const filesInfraProject = [
-  "iac.js",
-  "config.js",
-  "package.json",
-  "hook.js",
-  "README.md",
-];
 
 const InfraApi = ({ models, model, log }) => ({
   findOne: infraFindOne({ models }),
@@ -100,7 +92,6 @@ const InfraApi = ({ models, model, log }) => ({
       tap(async (infra) =>
         gitPush({
           infra,
-          files: filesInfraProject,
           dirTemplate: await path.join(
             os.tmpdir(),
             "grucloud-example-template"
@@ -112,13 +103,19 @@ const InfraApi = ({ models, model, log }) => ({
     ])(),
   patch: ({ id, data }) =>
     pipe([
-      () =>
-        model.update(data, {
+      () => infraFindOne({ models })({ id }),
+      (current) => defaultsDeep(current)(data),
+      tap((merged) =>
+        model.update(merged, {
           where: {
             id,
           },
-        }),
+        })
+      ),
       () => infraFindOne({ models })({ id }),
+      tap((param) => {
+        log.debug(`created infraFindOne: ${JSON.stringify(param, null, 4)}`);
+      }),
     ])(),
   destroy: ({ id }) =>
     pipe([

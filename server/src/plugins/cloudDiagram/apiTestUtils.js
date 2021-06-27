@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { pipe, tap, tryCatch } = require("rubico");
+const { pipe, tap, tryCatch, fork } = require("rubico");
 
 exports.apiTestCrud = ({ client, endpoint, payloadCreate, payloadUpdate }) =>
   tryCatch(
@@ -41,3 +41,30 @@ exports.apiTestCrud = ({ client, endpoint, payloadCreate, payloadUpdate }) =>
       throw error;
     }
   )();
+
+exports.createInfra = ({
+  client,
+  config: { infra, gitCredential, gitRepository },
+}) =>
+  pipe([
+    fork({
+      infra: () => client.post("v1/infra", infra),
+      credential: () => client.post("v1/git_credential", gitCredential),
+      repository: () => client.post("v1/git_repository", gitRepository),
+    }),
+    tap(({ infra, credential, repository }) =>
+      client.patch(`v1/infra/${infra.id}`, {
+        id: infra.id,
+        git_credential_id: credential.id,
+        git_repository_id: repository.id,
+      })
+    ),
+  ]);
+
+exports.pushCodeFromTemplate = ({ client }) =>
+  pipe([
+    tap(({ infra }) => {
+      assert(infra.id);
+    }),
+    tap(({ infra }) => client.post(`v1/infra/${infra.id}/push_code`, {})),
+  ]);

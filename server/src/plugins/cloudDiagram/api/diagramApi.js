@@ -290,10 +290,7 @@ exports.DiagramApi = (app) => {
                     { where: { id } }
                   )
                 ),
-                tap((result) => {
-                  context.body = result;
-                  context.status = getHttpStatus(result);
-                }),
+                (body) => ({ body, status: getHttpStatus(body) }),
               ])(),
           ])(),
       ])(),

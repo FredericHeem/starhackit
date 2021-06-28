@@ -30,6 +30,13 @@ exports.contextSetOk =
     context.body = body;
   };
 
+exports.contextSet =
+  ({ context }) =>
+  ({ body, status }) => {
+    context.status = status;
+    context.body = body;
+  };
+
 exports.contextHandleError = (error, context) =>
   pipe([
     tap(() => {

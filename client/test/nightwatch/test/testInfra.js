@@ -71,8 +71,10 @@ const gitConfiguration = ({
   client.page
     .infraCreate()
     .waitForElementVisible("@formGitCredential", timeout)
+    .clearValue("@inputGitUsername")
     .setValue("@inputGitUsername", process.env.GIT_USERNAME)
     .pause(pause)
+    .clearValue("@inputGitPassword")
     .setValue("@inputGitPassword", password)
     .pause(pause)
     .click("@submit")

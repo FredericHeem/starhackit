@@ -2,8 +2,8 @@
 import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import { get, or, pipe } from "rubico";
-import { isEmpty } from "rubico/x";
+import { get, or, pipe, tap, switchCase, tryCatch } from "rubico";
+import { isEmpty, size, first, defaultsDeep } from "rubico/x";
 import validate from "validate.js";
 
 import AsyncOp from "mdlean/lib/utils/asyncOp";
@@ -44,18 +44,40 @@ export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
     id: undefined,
     data: defaultData,
     errors: {},
-    setError: action((error) => {
-      store.errors = error;
+    setErrors: action((errors) => {
+      store.errors = errors;
+    }),
+    setData: action((data) => {
+      //console.log("setData data", data);
+      store.data = defaultsDeep(defaultData)(data);
     }),
     onChange: action((field, event) => {
       store.errors = {};
       store.data[field] = event.target.value;
     }),
-    opSaveGitConfig: asyncOpCreate((gitConfig) =>
-      rest.post(`git_credential`, gitConfig)
+    opSave: asyncOpCreate((payload) => rest.post(`git_credential`, payload)),
+    opUpdate: asyncOpCreate((payload) =>
+      rest.patch(`git_credential/${store.data.id}`, payload)
     ),
+    opGetAll: asyncOpCreate(() => rest.get(`git_credential`)),
+    getAll: action(
+      pipe([
+        () => store.opGetAll.fetch(),
+        tap((result) => {
+          console.log("getAll result", result);
+        }),
+        first,
+        //TODO check if empty
+        tap((result) => {
+          store.setData(result);
+        }),
+      ])
+    ),
+    get defaultCredential() {
+      return first(store.opGetAll.data);
+    },
     get isSaving() {
-      return store.opSaveGitConfig.loading;
+      return store.opSave.loading;
     },
     get isDisabled() {
       return or([
@@ -63,19 +85,68 @@ export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
         pipe([get("password"), isEmpty]),
       ])(store.data);
     },
-    save: action(async ({ data }) => {
-      store.errors = {};
+    validate: action(async ({ data }) => {
+      store.setErrors({});
       const vErrors = validate(data, rules);
       if (vErrors) {
-        store.errors = vErrors;
-        return;
+        store.setErrors(vErrors);
+        return false;
+      } else {
+        return true;
       }
-
-      const { id } = await store.opSaveGitConfig.fetch(data);
-      store.id = id;
-
-      emitter.emit("step.next");
     }),
+    save: action(
+      pipe([
+        tap(() => {
+          console.log("save", store.data);
+        }),
+        switchCase([
+          () => store.validate(store),
+          tryCatch(
+            pipe([
+              switchCase([
+                () => isEmpty(store.data.id),
+                () => store.create(store.data),
+                () => store.update(store.data),
+              ]),
+              tap(() => {
+                emitter.emit("step.next");
+              }),
+            ]),
+            (error) => {
+              console.error("save error", error);
+            }
+          ),
+          () => undefined,
+        ]),
+      ])
+    ),
+    create: action(
+      pipe([
+        tap((data) => {
+          console.log("create ", data);
+        }),
+        (data) => store.opSave.fetch(data),
+        tap(({ id }) => {
+          console.log("created ", id);
+        }),
+        tap(({ id }) => {
+          store.id = id;
+        }),
+      ])
+    ),
+    update: action(
+      pipe([
+        tap((data) => {
+          console.log("update ", data);
+          store.id = store.data.id;
+        }),
+        (data) => store.opUpdate.fetch(data),
+        tap((result) => {
+          console.log("updated ", result);
+        }),
+      ])
+    ),
     skip: () => {
       emitter.emit("step.select", "Configuration");
     },
@@ -150,8 +221,8 @@ export const gitCredentialConfig = (context) => {
       </header>
       <main>
         <p>
-          The resources inventory and generated code are stored on your source
-          code git repository.
+          The project template, resources inventory and generated code will be
+          stored on your source code git repository.
         </p>
         <GitCredentialFormContent store={store} />
       </main>
@@ -168,16 +239,11 @@ export const gitCredentialConfig = (context) => {
           primary
           raised
           disabled={store.isSaving || store.isDisabled}
-          onClick={() => store.save({ data: store.data })}
+          onClick={() => store.save()}
           label={tr.t("Next")}
         />
 
-        <Spinner
-          css={css`
-            visibility: ${store.isSaving ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
+        <Spinner visibility={store.isSaving} color={palette.primary.main} />
       </footer>
     </Form>
   ));

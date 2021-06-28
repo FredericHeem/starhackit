@@ -171,12 +171,7 @@ export const infraSettings = (context) => {
           onClick={() => store.save({ data: store.data })}
           label={tr.t("Next")}
         />
-        <Spinner
-          css={css`
-            visibility: ${store.isSaving ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
+        <Spinner visibility={store.isSaving} color={palette.primary.main} />
       </footer>
     </Form>
   ));

@@ -65,13 +65,15 @@ export const repositoryCreateStore = ({
     ),
     opPatchInfra: asyncOpCreate(
       pipe([
-        tap(({ id }) => {}),
-        ({ id }) =>
-          rest.patch(`infra/${infraSettingsStore.id}`, {
-            id: infraSettingsStore.id,
-            git_credential_id: gitCredentialStore.id,
-            git_repository_id: id,
-          }),
+        ({ id }) => ({
+          id: infraSettingsStore.id,
+          git_credential_id: gitCredentialStore.id,
+          git_repository_id: id,
+        }),
+        tap((payload) => {
+          console.log("patch infra ", infraSettingsStore.id, payload);
+        }),
+        (payload) => rest.patch(`infra/${infraSettingsStore.id}`, payload),
       ])
     ),
     opPushCode: asyncOpCreate(() =>
@@ -135,7 +137,7 @@ export const repositoryCreateStore = ({
                   },
                   eq(get("response.data.data.statusCode"), 401),
                   () => {
-                    gitCredentialStore.setError({
+                    gitCredentialStore.setErrors({
                       username: [error.response.data.data.response],
                       password: [error.response.data.data.response],
                     });
@@ -223,12 +225,7 @@ export const repositoryConfig = (context) => {
           onClick={() => store.save({ data: store.data })}
           label={tr.t("Next")}
         />
-        <Spinner
-          css={css`
-            visibility: ${store.isSaving ? "visible" : "hidden"};
-          `}
-          color={palette.primary.main}
-        />
+        <Spinner visibility={store.isSaving} color={palette.primary.main} />
       </footer>
     </Form>
   ));

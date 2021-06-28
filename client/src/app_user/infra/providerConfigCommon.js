@@ -57,9 +57,7 @@ export const providerConfigCreateFooter = (context) => {
         label={tr.t("Create Infrastructure")}
       />
       <Spinner
-        css={css`
-          visibility: ${store.core.isCreating ? "visible" : "hidden"};
-        `}
+        visibility={store.core.isCreating}
         color={palette.primary.main}
       />
     </footer>
@@ -97,9 +95,7 @@ export const providerConfigUpdateFooter = (context) => {
           label={tr.t("Update Infrastructure")}
         />
         <Spinner
-          css={css`
-            visibility: ${store.core.isUpdating ? "visible" : "hidden"};
-          `}
+          visibility={store.core.isUpdating}
           color={palette.primary.main}
         />
       </footer>

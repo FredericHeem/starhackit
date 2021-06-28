@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 
 import button from "mdlean/lib/button";
 import wizard from "mdlean/lib/wizard";
+import screenLoader from "components/screenLoader";
 
 import {
   providerSelection,
@@ -109,6 +110,9 @@ export const wizardStoreCreate = (context) => {
 
 export const wizardCreate = ({ context, stores }) => {
   const { tr, emitter } = context;
+
+  const ScreenLoader = screenLoader(context);
+
   const ProviderSelection = providerSelection(context);
   const InfraSettings = infraSettings(context);
   const RepositoryConfig = repositoryConfig(context);
@@ -184,7 +188,16 @@ export const wizardCreate = ({ context, stores }) => {
     {
       name: "GitCredential",
       header: observer(() => <header>Git Credential</header>),
-      content: ({}) => <GitCredentialConfig store={gitCredentialStore} />,
+      content: observer(({}) =>
+        gitCredentialStore.opGetAll.loading ? (
+          <ScreenLoader
+            loading={true}
+            message={tr.t("Loading Git Credentials")}
+          />
+        ) : (
+          <GitCredentialConfig store={gitCredentialStore} />
+        )
+      ),
       enter: async () => {
         gitCredentialStore.getAll();
       },
@@ -204,29 +217,32 @@ export const wizardCreate = ({ context, stores }) => {
 
   const Wizard = wizard(context, { wizardDefs });
 
-  // TODO only for testing
-  // providerSelectionStore.selectProvider({ providerName: "aws" });
-  // importProjectStore.showNewProjectFromTemplate(true);
-  // importProjectStore.onSelectProject({
-  //   title: "EKS",
-  //   description: "Deploy a kubernetes cluster with EKS",
-  //   url: "https://github.com/grucloud/grucloud/",
-  //   branch: "main",
-  //   directory: "packages/modules/aws/eks/example",
-  // });
+  //TODO only for testing
+  const testWorkflow = async () => {
+    providerSelectionStore.selectProvider({ providerName: "aws" });
+    importProjectStore.showNewProjectFromTemplate(true);
+    importProjectStore.onSelectProject({
+      title: "EKS",
+      description: "Deploy a kubernetes cluster with EKS",
+      url: "https://github.com/grucloud/grucloud/",
+      branch: "main",
+      directory: "packages/modules/aws/eks/example",
+    });
 
-  // infraSettingsStore.save({ data: { name: "EKS infra", stage: "dev" } });
-  // gitCredentialStore.save({
-  //   data: {
-  //     username: "",
-  //     password: "",
-  //   },
-  // });
-  // gitRepositoryStore.setData({
-  //   url: "https://github.com/grucloud/xxxxxxx",
-  //   branch: "master",
-  // });
-  // gitRepositoryStore.save();
+    infraSettingsStore.save({ data: { name: "EKS infra", stage: "dev" } });
+    await gitCredentialStore.getAll();
+    gitCredentialStore.setData({
+      username: "TODO",
+      password: "xxxxxx",
+    });
+    gitCredentialStore.save();
+    gitRepositoryStore.setData({
+      url: "https://github.com/FredericHeem/grucloud-aws-demo.git",
+      branch: "master",
+    });
+    //  gitRepositoryStore.save();
+  };
+  //testWorkflow();
 
   return observer(function WizardView() {
     return (

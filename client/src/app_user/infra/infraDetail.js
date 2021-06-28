@@ -141,9 +141,7 @@ const createInfraDetail = (context) => {
           />
 
           <Spinner
-            css={css`
-              visibility: ${store.opScan.loading ? "visible" : "hidden"};
-            `}
+            visibility={store.opScan.loading}
             color={palette.primary.main}
           />
         </div>

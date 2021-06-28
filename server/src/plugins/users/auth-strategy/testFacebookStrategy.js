@@ -14,12 +14,8 @@ const profile = {
 
 describe("FacebookStrategy", function () {
   let models = testMngr.app.data.sequelize.models;
-  before(async () => {
-    await testMngr.start();
-  });
-  after(async () => {
-    await testMngr.stop();
-  });
+  before(async () => {});
+  after(async () => {});
   beforeEach(async function () {
     if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();

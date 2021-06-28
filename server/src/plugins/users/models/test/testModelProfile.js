@@ -1,26 +1,22 @@
-const assert = require('chai').assert;
-const testMngr = require('test/testManager');
+const assert = require("chai").assert;
+const testMngr = require("test/testManager");
 
-describe('profileModel', function(){
+describe("profileModel", function () {
   let models = testMngr.app.data.models();
   let profileModel = models.Profile;
 
-  before(async () => {
-      await testMngr.start();
-  });
-  after(async () => {
-      await testMngr.stop();
-  });
-  it('create a profile', async() => {
+  before(async () => {});
+  after(async () => {});
+  it("create a profile", async () => {
     let profileData = {
-      biography: "Ciao"
+      biography: "Ciao",
     };
     let profile = await profileModel.create(profileData);
-    let user = await models.User.findByUsername('admin');
+    let user = await models.User.findByUsername("admin");
     await profile.setUser(user.get().id);
   });
 
-  it('should count profiles', async () =>  {
+  it("should count profiles", async () => {
     let count = await profileModel.count();
     assert.isAbove(count, 0);
   });

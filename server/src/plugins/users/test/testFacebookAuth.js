@@ -1,21 +1,17 @@
 const assert = require("assert");
 const _ = require("lodash");
-const testMngr = require('test/testManager');
+const testMngr = require("test/testManager");
 
-describe("FacebookAuth", function() {
+describe("FacebookAuth", function () {
   let client;
 
-  before(async function() {
-    await testMngr.start();
-  });
-  beforeEach(async function() {
+  before(async function () {});
+  beforeEach(async function () {
     if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   beforeEach(async () => {
     client = testMngr.createClient();

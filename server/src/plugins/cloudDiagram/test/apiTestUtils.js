@@ -80,41 +80,46 @@ exports.testInfra = ({ client, config }) =>
     tap(({ infra }) => {
       assert(infra);
     }),
-    pushCodeFromTemplate({ client }),
-    ({ infra }) => ({
-      id: infra.id,
-      providerAuth: config.infra.providerAuth,
-    }),
-    tap((input) => {
-      assert(input);
-    }),
-    (input) => client.patch(`v1/infra/${input.id}`, input),
-    tap((result) => {
-      assert(result);
-    }),
-    ({ id: infra_id }) => ({
-      options: {},
-      infra_id,
-    }),
-    (input) => client.post("v1/cloudDiagram", input),
-    tap((result) => {
-      assert(result);
-      //TODO add jobId
-    }),
-    () => client.get("v1/cloudDiagram"),
-    // List
-    tap((results) => {
-      assert(Array.isArray(results));
-    }),
-    first,
-    tap(({ id }) => client.get(`v1/cloudDiagram/${id}`)),
-    tap((result) => {
-      assert(result);
-      assert(result.id);
-      assert(result.user_id);
-    }),
-    //tap(({ id }) => client.delete(`v1/cloudDiagram/${id}`)),
-    tap((xxx) => {
-      assert(true);
-    }),
+    ({ infra }) =>
+      pipe([
+        () => ({ infra }),
+        pushCodeFromTemplate({ client }),
+        () => ({
+          id: infra.id,
+          providerAuth: config.infra.providerAuth,
+        }),
+        tap((input) => {
+          assert(input);
+        }),
+        (input) => client.patch(`v1/infra/${input.id}`, input),
+        tap((result) => {
+          assert(result);
+        }),
+        () => ({
+          options: {},
+          infra_id: infra.id,
+        }),
+        (input) => client.post("v1/cloudDiagram", input),
+        tap((result) => {
+          assert(result);
+          //TODO add jobId
+        }),
+        () => client.get("v1/cloudDiagram"),
+        // List
+        tap((results) => {
+          assert(Array.isArray(results));
+        }),
+        first,
+        tap(({ id }) => client.get(`v1/cloudDiagram/${id}`)),
+        tap((result) => {
+          assert(result);
+          assert(result.id);
+          assert(result.user_id);
+        }),
+        tap(({ id }) => client.delete(`v1/cloudDiagram/${id}`)),
+        tap((xxx) => {
+          assert(true);
+        }),
+        tap(() => client.delete(`v1/infra/${infra.id}`)),
+      ])(),
   ]);

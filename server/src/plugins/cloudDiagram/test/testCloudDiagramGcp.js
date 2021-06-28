@@ -39,7 +39,6 @@ let config;
 describe("CloudDiagram GCP", function () {
   let client;
   before(async function () {
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
     try {
@@ -49,9 +48,7 @@ describe("CloudDiagram GCP", function () {
       this.skip();
     }
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   it("gcp create, list, get by id, delete", async () => {
     try {

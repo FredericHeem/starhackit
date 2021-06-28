@@ -44,13 +44,10 @@ describe("CloudDiagramAws", function () {
     assert(GIT_USERNAME);
     assert(PERSONAL_ACCESS_TOKEN);
     assert(GIT_REPOSITORY_AWS);
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
   it("aws create, list, get by id, delete", async () => {
     try {
       await pipe([
@@ -93,18 +90,22 @@ describe("CloudDiagramAws", function () {
 describe("CloudDiagram No Auth", function () {
   let client;
   before(async () => {
-    await testMngr.start();
-    client = testMngr.client("bob");
+    try {
+      client = testMngr.client("bob");
+    } catch (error) {
+      throw error;
+    }
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   it("should get a 401 when getting all cloudDiagrams", async () => {
     try {
       await client.get("v1/cloudDiagram");
       assert(false, "should not be here");
     } catch (error) {
+      console.log(error);
+
+      console.log(error.response);
       assert.equal(error.response.data, "Unauthorized");
       assert.equal(error.response.status, 401);
     }

@@ -1,23 +1,19 @@
-const assert = require('assert');
-const testMngr = require('test/testManager');
+const assert = require("assert");
+const testMngr = require("test/testManager");
 
-describe('AuthProviderModel', function(){
+describe("AuthProviderModel", function () {
   let models = testMngr.app.data.sequelize.models;
 
-  before(async () => {
-      await testMngr.start();
-  });
-  after(async () => {
-      await testMngr.stop();
-  });
+  before(async () => {});
+  after(async () => {});
 
-  it('should successfully create an entry', async () => {
+  it("should successfully create an entry", async () => {
     const providerData = {
-      name: 'facebook',
-      authId: '1234567890'
+      name: "facebook",
+      authId: "1234567890",
     };
     let authProvider = await models.AuthProvider.create(providerData);
-    let user = await models.User.findByUsername('admin');
+    let user = await models.User.findByUsername("admin");
     assert(user.get().id);
     await authProvider.setUser(user.get().id);
   });

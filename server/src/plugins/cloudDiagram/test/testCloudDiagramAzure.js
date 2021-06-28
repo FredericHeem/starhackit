@@ -61,13 +61,10 @@ describe("CloudDiagram Azure", function () {
     assert(GIT_USERNAME);
     assert(PERSONAL_ACCESS_TOKEN);
 
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   it("azure create, list, get by id, delete", async () => {
     try {

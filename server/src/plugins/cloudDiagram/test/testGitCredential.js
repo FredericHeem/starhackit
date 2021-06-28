@@ -15,13 +15,10 @@ const payloadUpdate = {
 describe("GitCredential", function () {
   let client;
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
   it("git_credential create, get one, get all, destroy", async () => {
     await apiTestCrud({ client, endpoint, payloadCreate, payloadUpdate });
   });

@@ -5,17 +5,13 @@ const testMngr = require("test/testManager");
 describe("GoogleMobileIdToken", function () {
   let client;
 
-  before(async function () {
-    await testMngr.start();
-  });
+  before(async function () {});
   beforeEach(async function () {
     if (!_.get(testMngr.app.config, "authentication.google")) {
       this.skip();
     }
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   beforeEach(async () => {
     client = testMngr.createClient();

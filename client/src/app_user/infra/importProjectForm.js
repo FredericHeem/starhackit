@@ -11,36 +11,34 @@ import button from "mdlean/lib/button";
 import input from "mdlean/lib/input";
 import formGroup from "mdlean/lib/formGroup";
 import spinner from "mdlean/lib/spinner";
-import { buttonWizardBack, buttonHistoryBack } from "./wizardCreate";
+import { list, listItem } from "mdlean/lib/list";
+import { buttonHistoryBack } from "./wizardCreate";
 import form from "components/form";
 import { PROJECTS } from "./projectList";
 
-const selection =
-  ({ theme: { palette, shadows } }) =>
-  ({ title, description, url, directory, branch, onClick, ...leftover }) =>
-    (
-      <button
-        {...leftover}
-        onClick={() => onClick({ title, url, directory, branch })}
-        css={css`
-          width: 100%;
-          border: 1px none ${palette.grey[400]};
-          box-shadow: ${shadows[2]};
-          border-radius: 2px;
-          padding: 0rem 1rem;
-          cursor: pointer;
-          background-color: transparent;
-          text-align: start;
-          max-width: 500px;
-          :hover {
-            box-shadow: ${shadows[5]};
-          }
-        `}
-      >
-        <h3>{title}</h3>
-        <p>{description}</p>
-      </button>
-    );
+const projectId = (project) => `${project.url}${project.directory}`;
+
+const projectItem = (context) => {
+  const ListItem = listItem(context);
+  const ProjectItem = ({ item, store, ...leftOver }) => (
+    <ListItem onClick={() => store.onSelectProject(item)} {...leftOver} raised>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+    </ListItem>
+  );
+  return ProjectItem;
+};
+
+const importTypeItem = (context) => {
+  const ListItem = listItem(context);
+  const ImportTypeItem = ({ item, onClick, ...leftOver }) => (
+    <ListItem {...leftOver} onClick={() => onClick(item)} raised>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+    </ListItem>
+  );
+  return ImportTypeItem;
+};
 
 export const importProjectCreateStore = (context) => {
   const { emitter } = context;
@@ -68,12 +66,12 @@ export const importProjectCreateStore = (context) => {
 
   return store;
 };
-const projectId = (project) => `${project.url}${project.directory}`;
 
 const modalNewFromTemplate = (context) => {
   const Modal = modal(context);
   const Button = button(context);
-  const Selection = selection(context);
+  const List = list(context);
+  const ProjectItem = projectItem(context);
 
   return observer(({ store, projects = [] }) => (
     <Modal
@@ -96,15 +94,12 @@ const modalNewFromTemplate = (context) => {
             }
           `}
         >
-          {projects.map((project) => (
-            <li key={projectId(project)}>
-              <Selection
-                {...project}
-                data-template={projectId(project)}
-                onClick={(project) => store.onSelectProject(project)}
-              />
-            </li>
-          ))}
+          <List
+            items={projects}
+            toId={({ item }) => projectId(item)}
+            itemRenderer={ProjectItem}
+            store={store}
+          />
         </ul>
       </main>
       <footer>
@@ -147,7 +142,7 @@ const modalImportFromCloud = (context) => {
 
 export const importProjectForm = (context) => {
   const { tr, theme, emitter } = context;
-  const Selection = selection(context);
+  const ImportTypeItem = importTypeItem(context);
   const Form = form(context);
   const ButtonHistoryBack = buttonHistoryBack(context);
   const ModalNewFromTemplate = modalNewFromTemplate(context);
@@ -182,23 +177,32 @@ export const importProjectForm = (context) => {
             }
           `}
         >
-          <Selection
+          <ImportTypeItem
             data-selection-project-import-existing
-            title={tr.t("Import an existing infrastructure")}
-            description="Choose this option to visualize an existing infrastructure."
+            item={{
+              title: tr.t("Import an existing infrastructure"),
+              description:
+                "Choose this option to visualize an existing infrastructure.",
+            }}
             onClick={() => emitter.emit("step.next")}
           />
-          <Selection
+          <ImportTypeItem
             data-selection-project-new-from-template
-            title={tr.t("Create new infrastrucure from a template")}
-            description="This option lets you create an infrastructure from a selection of ready made template."
+            item={{
+              title: tr.t("Create new infrastrucure from a template"),
+              description:
+                "This option lets you create an infrastructure from a selection of ready made template.",
+            }}
             onClick={() => store.showNewProjectFromTemplate(true)}
           />
           {storeProvider.supportImport && (
-            <Selection
+            <ImportTypeItem
               data-selection-project-import-from-cloud
-              title={tr.t("Import from an OpenStack Cloud Provider")}
-              description="Do you have an existing infrastructure on a cloud provider supporting the OpenStack API such as Red Hat, OVH, IBM etc...? Would you like to migrate this infractstructure ?  The new infrastructure code will be generated from your current inventory."
+              item={{
+                title: tr.t("Import from an OpenStack Cloud Provider"),
+                description:
+                  "Do you have an existing infrastructure on a cloud provider supporting the OpenStack API such as Red Hat, OVH, IBM etc...? Would you like to migrate this infractstructure ?  The new infrastructure code will be generated from your current inventory.",
+              }}
               onClick={() => store.showImportFromCloud(true)}
             />
           )}

@@ -95,7 +95,7 @@ const projectImportFromTemplate = ({ client, directory }) => {
     .waitForElementVisible("form[data-form-import-project=true]", timeout)
     .click("button[data-selection-project-new-from-template=true]")
     .pause(pause)
-    .click(`button[data-template="${urlExamples}${directory}"]`);
+    .click(`button[data-id="${urlExamples}${directory}"]`);
 };
 
 // ProviderSelect

@@ -4,7 +4,7 @@ import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import Paginator from "react-pagify";
 import segmentize from "segmentize";
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 import alertAjax from "components/alertAjax";
 import Debug from "debug";
 import table from "components/table";
@@ -17,8 +17,8 @@ export default (context, store, { columns }) => {
   const { tr } = context;
   const AlertAjax = alertAjax(context);
 
-  const Loading = observer(
-    loading => (loading === true ? h(spinner(context)) : null)
+  const Loading = observer((loading) =>
+    loading === true ? h(spinner(context)) : null
   );
 
   const Error = observer(() => {
@@ -45,9 +45,9 @@ export default (context, store, { columns }) => {
               pages,
               beginPages: 3,
               endPages: 3,
-              sidePages: 2
+              sidePages: 2,
             })}
-            onSelect={page => store.selectPage(page)}
+            onSelect={(page) => store.selectPage(page)}
           >
             <Paginator.Button page={pagination.page - 1}>
               {tr.t("Previous")}

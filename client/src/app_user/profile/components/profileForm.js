@@ -8,7 +8,7 @@ import input from "mdlean/lib/input";
 import button from "mdlean/lib/button";
 import formGroup from "mdlean/lib/formGroup";
 
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 import paper from "components/Paper";
 
 export default (context) => {

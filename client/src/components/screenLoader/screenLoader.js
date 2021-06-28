@@ -1,6 +1,6 @@
 /* @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 
 const screenLoader = (context) => {
   const {

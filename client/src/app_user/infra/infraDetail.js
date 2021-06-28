@@ -9,7 +9,7 @@ import formatDistance from "date-fns/formatDistance";
 import button from "mdlean/lib/button";
 
 import createForm from "components/form";
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 import screenLoader from "components/screenLoader";
 
 import badgeRegion from "./badgeRegion";
@@ -139,7 +139,6 @@ const createInfraDetail = (context) => {
             disabled={store.opScan.loading}
             label={store.opScan.loading ? tr.t("Scanning") : tr.t("New Scan")}
           />
-
           <Spinner
             visibility={store.opScan.loading}
             color={palette.primary.main}

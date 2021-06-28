@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import page from "components/Page";
 import paper from "components/Paper";
 import button from "mdlean/lib/button";
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 
 export default (context) => {
   const { tr } = context;

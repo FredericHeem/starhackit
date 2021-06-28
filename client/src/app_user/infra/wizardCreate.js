@@ -152,7 +152,7 @@ export const wizardCreate = ({ context, stores }) => {
       header: () => <header>{tr.t("Select Provider")}</header>,
       content: () => <ProviderSelection store={providerSelectionStore} />,
       enter: async () => {
-        stores.providerSelectionStore.setProvider("");
+        providerSelectionStore.setProvider("");
       },
     },
     {
@@ -185,6 +185,9 @@ export const wizardCreate = ({ context, stores }) => {
       name: "GitCredential",
       header: observer(() => <header>Git Credential</header>),
       content: ({}) => <GitCredentialConfig store={gitCredentialStore} />,
+      enter: async () => {
+        gitCredentialStore.getAll();
+      },
     },
     {
       name: "GitRepository",
@@ -203,6 +206,7 @@ export const wizardCreate = ({ context, stores }) => {
 
   // TODO only for testing
   // providerSelectionStore.selectProvider({ providerName: "aws" });
+  // importProjectStore.showNewProjectFromTemplate(true);
   // importProjectStore.onSelectProject({
   //   title: "EKS",
   //   description: "Deploy a kubernetes cluster with EKS",

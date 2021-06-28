@@ -1,5 +1,6 @@
 const assert = require("assert");
 const { pipe, tap, tryCatch, fork } = require("rubico");
+const { first } = require("rubico/x");
 
 exports.apiTestCrud = ({ client, endpoint, payloadCreate, payloadUpdate }) =>
   tryCatch(
@@ -42,7 +43,7 @@ exports.apiTestCrud = ({ client, endpoint, payloadCreate, payloadUpdate }) =>
     }
   )();
 
-exports.createInfra = ({
+const createInfra = ({
   client,
   config: { infra, gitCredential, gitRepository },
 }) =>
@@ -61,10 +62,59 @@ exports.createInfra = ({
     ),
   ]);
 
-exports.pushCodeFromTemplate = ({ client }) =>
+exports.createInfra = createInfra;
+
+const pushCodeFromTemplate = ({ client }) =>
   pipe([
     tap(({ infra }) => {
       assert(infra.id);
     }),
     tap(({ infra }) => client.post(`v1/infra/${infra.id}/push_code`, {})),
+  ]);
+
+exports.pushCodeFromTemplate = pushCodeFromTemplate;
+
+exports.testInfra = ({ client, config }) =>
+  pipe([
+    createInfra({ client, config }),
+    tap(({ infra }) => {
+      assert(infra);
+    }),
+    pushCodeFromTemplate({ client }),
+    ({ infra }) => ({
+      id: infra.id,
+      providerAuth: config.infra.providerAuth,
+    }),
+    tap((input) => {
+      assert(input);
+    }),
+    (input) => client.patch(`v1/infra/${input.id}`, input),
+    tap((result) => {
+      assert(result);
+    }),
+    ({ id: infra_id }) => ({
+      options: {},
+      infra_id,
+    }),
+    (input) => client.post("v1/cloudDiagram", input),
+    tap((result) => {
+      assert(result);
+      //TODO add jobId
+    }),
+    () => client.get("v1/cloudDiagram"),
+    // List
+    tap((results) => {
+      assert(Array.isArray(results));
+    }),
+    first,
+    tap(({ id }) => client.get(`v1/cloudDiagram/${id}`)),
+    tap((result) => {
+      assert(result);
+      assert(result.id);
+      assert(result.user_id);
+    }),
+    //tap(({ id }) => client.delete(`v1/cloudDiagram/${id}`)),
+    tap((xxx) => {
+      assert(true);
+    }),
   ]);

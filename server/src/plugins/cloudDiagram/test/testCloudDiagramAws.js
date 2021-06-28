@@ -3,7 +3,7 @@ const { pipe, tap, tryCatch, fork } = require("rubico");
 const { first } = require("rubico/x");
 
 const testMngr = require("test/testManager");
-const { createInfra, pushCodeFromTemplate } = require("./apiTestUtils");
+const { testInfra } = require("./apiTestUtils");
 const { AWSAccessKeyId, AWSSecretKey, AWS_REGION } = process.env;
 const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN, GIT_REPOSITORY_AWS } = process.env;
 
@@ -12,6 +12,11 @@ const config = {
     name: "infra-aws-test",
     providerType: "aws",
     providerName: "aws",
+    providerAuth: {
+      AWSAccessKeyId,
+      AWSSecretKey,
+      AWS_REGION,
+    },
     project: {
       url: "https://github.com/grucloud/grucloud/",
       title: "EC2 an instance with public address",
@@ -50,55 +55,7 @@ describe("CloudDiagramAws", function () {
     try {
       await pipe([
         // Create
-        createInfra({ client, config }),
-        tap(({ infra }) => {
-          assert(infra);
-        }),
-        pushCodeFromTemplate({ client }),
-        ({ infra }) => ({
-          id: infra.id,
-          providerAuth: {
-            AWSAccessKeyId,
-            AWSSecretKey,
-            AWS_REGION,
-          },
-        }),
-        tap((input) => {
-          assert(input);
-        }),
-        (input) => client.patch(`v1/infra/${input.id}`, input),
-        tap((result) => {
-          assert(result);
-        }),
-        ({ id: infra_id }) => ({
-          options: {},
-          infra_id,
-        }),
-        (input) => client.post("v1/cloudDiagram", input),
-        tap((result) => {
-          assert(result);
-          //TODO add jobId
-        }),
-        () => client.get("v1/cloudDiagram"),
-        // List
-        tap((results) => {
-          assert(Array.isArray(results));
-        }),
-        first,
-        tap(({ id }) => client.get(`v1/cloudDiagram/${id}`)),
-        tap((result) => {
-          assert(result);
-          assert(result.id);
-          assert(result.user_id);
-        }),
-        () => client.get("v1/infra"),
-        tap((results) => {
-          assert(Array.isArray(results));
-        }),
-        //tap(({ id }) => client.delete(`v1/cloudDiagram/${id}`)),
-        tap((xxx) => {
-          assert(true);
-        }),
+        testInfra({ client, config }),
       ])();
     } catch (error) {
       throw error;

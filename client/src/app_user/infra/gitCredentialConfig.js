@@ -47,8 +47,7 @@ export const gitCredentialCreateStore = ({ context, infraSettingsStore }) => {
     setErrors: action((errors) => {
       store.errors = errors;
     }),
-    setData: action((data) => {
-      //console.log("setData data", data);
+    setData: action((data = {}) => {
       store.data = defaultsDeep(defaultData)(data);
     }),
     onChange: action((field, event) => {

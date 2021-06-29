@@ -16,6 +16,7 @@ const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
 const { createRestApiByUser } = require("../apiFactory");
+const { gitPushInventory } = require("../gitUtils");
 
 const { infraFindOne } = require("./infraApi");
 
@@ -116,7 +117,7 @@ exports.DiagramApi = (app) => {
           `iac_${provider}.js`,
           "--all",
           "--graph",
-          "--default-exclude",
+          //"--default-exclude",
           "--types-exclude",
           "IamBinding",
           "--types-exclude",
@@ -290,6 +291,9 @@ exports.DiagramApi = (app) => {
                     { where: { id } }
                   )
                 ),
+                gitPushInventory({
+                  infra,
+                }),
                 (body) => ({ body, status: getHttpStatus(body) }),
               ])(),
           ])(),

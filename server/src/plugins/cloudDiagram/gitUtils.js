@@ -337,5 +337,7 @@ exports.gitPushInventory = ({
           }
         )(),
     ]),
-    () => undefined,
+    () => {
+      console.log("gitPushInventory: git not configured");
+    },
   ]);

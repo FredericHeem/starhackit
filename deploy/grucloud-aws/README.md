@@ -24,7 +24,7 @@ Install the dependencies
 npm i
 ```
 
-Generate a graph of the infrastrucure:s
+Generate a graph of the infrastructure:
 
 ```sh
 gc graph

@@ -189,7 +189,7 @@ export const importProjectForm = (context) => {
           <ImportTypeItem
             data-selection-project-new-from-template
             item={{
-              title: tr.t("Create new infrastrucure from a template"),
+              title: tr.t("Create new infrastructure from a template"),
               description:
                 "This option lets you create an infrastructure from a selection of ready made template.",
             }}

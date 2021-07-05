@@ -39,9 +39,7 @@ export const buttonWizardBack = (context) => {
 export const buttonHistoryBack = (context) => {
   const Button = button(context);
   return () => (
-    <Button onClick={() => context.emitter.emit("step.previous")}>
-      {"\u25c0"} Back
-    </Button>
+    <Button onClick={() => context.history.back()}>{"\u25c0"} Back</Button>
   );
 };
 

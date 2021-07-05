@@ -14,6 +14,7 @@ const badgeRegion =
           padding: 0.5rem;
           //margin: 0.5rem;
           max-height: 1.2rem;
+          white-space: nowrap;
         `}
       >
         {region}

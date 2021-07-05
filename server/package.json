@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "10.38.0",
+  "version": "10.40.0",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -43,6 +43,7 @@
     "bcryptjs": "2.4.3",
     "bluebird": "3.7.2",
     "chance": "1.1.7",
+    "change-case": "4.1.2",
     "config": "3.3.3",
     "ejs": "3.1.6",
     "ioredis": "4.22.0",
@@ -72,7 +73,7 @@
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
     "qs": "6.9.6",
-    "rubico": "1.6.23",
+    "rubico": "1.6.30",
     "sequelize": "6.5.0",
     "sequelize-cli": "6.2.0",
     "urijs": "1.19.6",

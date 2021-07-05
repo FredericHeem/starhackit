@@ -18,6 +18,13 @@ export const PROJECTS = {
       branch,
       directory: "packages/modules/aws/eks/example",
     },
+    {
+      title: "Route53 TXT Record",
+      description: "Create an Hosted Zone and a TXT record",
+      url,
+      branch,
+      directory: "examples/aws/route53/dns-validation-record-txt",
+    },
   ],
   azure: [
     {
@@ -52,11 +59,11 @@ export const PROJECTS = {
       ],
     },
     {
-      title: "Secure static webite",
+      title: "Secure static website",
       description: "Deploy a static website served with HTTPS",
       url,
       branch,
-      directory: "examples/google/storage-https",
+      directory: "examples/google/storage/website-https",
     },
     {
       title: "DNS records",

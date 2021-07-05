@@ -10,18 +10,18 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
   const Device = "/dev/sdf";
   const deviceMounted = "/dev/xvdf";
   const mountPoint = "/data";
-  const vpc = await provider.makeVpc({
+  const vpc = provider.ec2.makeVpc({
     name: "vpc",
     properties: () => ({
       CidrBlock: "10.1.0.0/16",
     }),
   });
-  const ig = await provider.makeInternetGateway({
+  const ig = provider.ec2.makeInternetGateway({
     name: "ig",
     dependencies: { vpc },
   });
 
-  const subnet = await provider.makeSubnet({
+  const subnet = provider.ec2.makeSubnet({
     name: "subnet",
     dependencies: { vpc },
     properties: () => ({
@@ -30,17 +30,17 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     }),
   });
 
-  const routeTable = await provider.makeRouteTable({
+  const routeTable = provider.ec2.makeRouteTable({
     name: "route-table",
     dependencies: { vpc, subnets: [subnet] },
   });
 
-  const route = await provider.makeRoute({
+  const route = provider.ec2.makeRoute({
     name: "route-ig",
     dependencies: { routeTable, ig },
   });
 
-  const securityGroup = await provider.makeSecurityGroup({
+  const securityGroup = provider.ec2.makeSecurityGroup({
     name: "securityGroup",
     dependencies: { vpc, subnet },
     properties: () => ({
@@ -50,7 +50,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       },
     }),
   });
-  const sgRuleIngressSsh = await provider.makeSecurityGroupRuleIngress({
+  const sgRuleIngressSsh = provider.ec2.makeSecurityGroupRuleIngress({
     name: "sg-rule-ingress-ssh",
     dependencies: {
       securityGroup,
@@ -75,7 +75,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       ],
     }),
   });
-  const sgRuleIngressHttp = await provider.makeSecurityGroupRuleIngress({
+  const sgRuleIngressHttp = provider.ec2.makeSecurityGroupRuleIngress({
     name: "sg-rule-ingress-http",
     dependencies: {
       securityGroup,
@@ -100,7 +100,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       ],
     }),
   });
-  const sgRuleIngressHttps = await provider.makeSecurityGroupRuleIngress({
+  const sgRuleIngressHttps = provider.ec2.makeSecurityGroupRuleIngress({
     name: "sg-rule-ingress-https",
     dependencies: {
       securityGroup,
@@ -125,7 +125,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       ],
     }),
   });
-  const sgRuleIngressIcmp = await provider.makeSecurityGroupRuleIngress({
+  const sgRuleIngressIcmp = provider.ec2.makeSecurityGroupRuleIngress({
     name: "sg-rule-ingress-icmp",
     dependencies: {
       securityGroup,
@@ -151,11 +151,11 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     }),
   });
 
-  const eip = await provider.makeElasticIpAddress({
+  const eip = provider.ec2.makeElasticIpAddress({
     name: "ip",
   });
 
-  const image = await provider.useImage({
+  const image = provider.ec2.useImage({
     name: "ubuntu 20.04",
     properties: () => ({
       Filters: [
@@ -171,7 +171,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     }),
   });
 
-  const volume = await provider.makeVolume({
+  const volume = provider.ec2.makeVolume({
     name: "volume",
     properties: () => ({
       Size: 10,
@@ -182,7 +182,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
   });
 
   // Allocate a server
-  const server = await provider.makeEC2({
+  const server = provider.ec2.makeInstance({
     name: "server",
     dependencies: {
       keyPair,
@@ -199,18 +199,18 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     }),
   });
 
-  const domain = await provider.useRoute53Domain({
+  const domain = provider.route53Domain.useDomain({
     name: domainName,
   });
 
   const hostedZoneName = `${domainName}.`;
-  const hostedZone = await provider.makeHostedZone({
+  const hostedZone = provider.route53.makeHostedZone({
     name: hostedZoneName,
     dependencies: { domain },
     properties: ({}) => ({}),
   });
 
-  const recordA = await provider.makeRoute53Record({
+  const recordA = provider.route53.makeRecord({
     name: `app.${hostedZoneName}`,
     dependencies: { hostedZone, eip },
     properties: ({ dependencies: { eip } }) => {
@@ -227,7 +227,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     },
   });
 
-  const recordAGitPage = await provider.makeRoute53Record({
+  const recordAGitPage = provider.route53.makeRecord({
     name: `${hostedZoneName}`,
     dependencies: { hostedZone },
     properties: ({ dependencies }) => {
@@ -246,7 +246,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       };
     },
   });
-  const recordWww = await provider.makeRoute53Record({
+  const recordWww = provider.route53.makeRecord({
     name: `${hostedZoneName}-gitpage-record-www`,
     dependencies: { hostedZone },
     properties: () => {
@@ -263,7 +263,7 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
     },
   });
 
-  const recordMx = await provider.makeRoute53Record({
+  const recordMx = provider.route53.makeRecord({
     name: `${hostedZoneName}-mx`,
     dependencies: { hostedZone },
     properties: () => {
@@ -302,7 +302,7 @@ exports.createStack = async ({ config, stage }) => {
   const { keyPairName } = provider.config;
   assert(keyPairName);
 
-  const keyPair = await provider.useKeyPair({
+  const keyPair = provider.ec2.useKeyPair({
     name: keyPairName,
   });
   const resources = await createResources({ provider, resources: { keyPair } });

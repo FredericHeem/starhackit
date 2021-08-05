@@ -56,23 +56,21 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       securityGroup,
     },
     properties: () => ({
-      IpPermissions: [
-        {
-          FromPort: 22,
-          IpProtocol: "tcp",
-          IpRanges: [
-            {
-              CidrIp: "0.0.0.0/0",
-            },
-          ],
-          Ipv6Ranges: [
-            {
-              CidrIpv6: "::/0",
-            },
-          ],
-          ToPort: 22,
-        },
-      ],
+      IpPermission: {
+        FromPort: 22,
+        IpProtocol: "tcp",
+        IpRanges: [
+          {
+            CidrIp: "0.0.0.0/0",
+          },
+        ],
+        Ipv6Ranges: [
+          {
+            CidrIpv6: "::/0",
+          },
+        ],
+        ToPort: 22,
+      },
     }),
   });
   const sgRuleIngressHttp = provider.ec2.makeSecurityGroupRuleIngress({
@@ -81,23 +79,21 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       securityGroup,
     },
     properties: () => ({
-      IpPermissions: [
-        {
-          FromPort: 80,
-          IpProtocol: "tcp",
-          IpRanges: [
-            {
-              CidrIp: "0.0.0.0/0",
-            },
-          ],
-          Ipv6Ranges: [
-            {
-              CidrIpv6: "::/0",
-            },
-          ],
-          ToPort: 80,
-        },
-      ],
+      IpPermission: {
+        FromPort: 80,
+        IpProtocol: "tcp",
+        IpRanges: [
+          {
+            CidrIp: "0.0.0.0/0",
+          },
+        ],
+        Ipv6Ranges: [
+          {
+            CidrIpv6: "::/0",
+          },
+        ],
+        ToPort: 80,
+      },
     }),
   });
   const sgRuleIngressHttps = provider.ec2.makeSecurityGroupRuleIngress({
@@ -106,23 +102,21 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       securityGroup,
     },
     properties: () => ({
-      IpPermissions: [
-        {
-          FromPort: 443,
-          IpProtocol: "tcp",
-          IpRanges: [
-            {
-              CidrIp: "0.0.0.0/0",
-            },
-          ],
-          Ipv6Ranges: [
-            {
-              CidrIpv6: "::/0",
-            },
-          ],
-          ToPort: 443,
-        },
-      ],
+      IpPermission: {
+        FromPort: 443,
+        IpProtocol: "tcp",
+        IpRanges: [
+          {
+            CidrIp: "0.0.0.0/0",
+          },
+        ],
+        Ipv6Ranges: [
+          {
+            CidrIpv6: "::/0",
+          },
+        ],
+        ToPort: 443,
+      },
     }),
   });
   const sgRuleIngressIcmp = provider.ec2.makeSecurityGroupRuleIngress({
@@ -131,23 +125,21 @@ const createResources = async ({ provider, resources: { keyPair } }) => {
       securityGroup,
     },
     properties: () => ({
-      IpPermissions: [
-        {
-          FromPort: -1,
-          IpProtocol: "icmp",
-          IpRanges: [
-            {
-              CidrIp: "0.0.0.0/0",
-            },
-          ],
-          Ipv6Ranges: [
-            {
-              CidrIpv6: "::/0",
-            },
-          ],
-          ToPort: -1,
-        },
-      ],
+      IpPermission: {
+        FromPort: -1,
+        IpProtocol: "icmp",
+        IpRanges: [
+          {
+            CidrIp: "0.0.0.0/0",
+          },
+        ],
+        Ipv6Ranges: [
+          {
+            CidrIpv6: "::/0",
+          },
+        ],
+        ToPort: -1,
+      },
     }),
   });
 

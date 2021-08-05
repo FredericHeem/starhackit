@@ -30,7 +30,7 @@ Generate a graph of the infrastructure:
 gc graph
 ```
 
-![Graph](diagram-target.svg)
+![Graph](artifacts/diagram-target.svg)
 
 Deploy the infrastructure with:
 

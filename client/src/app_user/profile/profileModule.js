@@ -2,11 +2,11 @@ import { observable, action } from "mobx";
 import React, { createElement as h } from "react";
 import validate from "validate.js";
 import rules from "utils/rules";
-import AsyncOp from "utils/asyncOp";
-import alert from "components/alert";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
+import alert from "mdlean/lib/alert";
 import profileView from "./views/profileView";
 
-export default function(context) {
+export default function (context) {
   const { rest, tr } = context;
   const asyncOpCreate = AsyncOp(context);
   const Alert = alert(context);
@@ -15,15 +15,15 @@ export default function(context) {
       {
         path: "",
         protected: true,
-        action: routerContext => {
+        action: (routerContext) => {
           stores.profile.get();
           return {
             routerContext,
             title: "My Profile",
-            component: h(profileView(context), { store: stores.profile })
-          }
-        }
-      }
+            component: h(profileView(context), { store: stores.profile }),
+          };
+        },
+      },
     ];
   }
 
@@ -42,21 +42,21 @@ export default function(context) {
       email: "",
       picture: null,
       profile: {
-        biography: ""
+        biography: "",
       },
       opGet: asyncOpCreate(() => rest.get("me")),
-      get: action(async function() {
+      get: action(async function () {
         const response = await this.opGet.fetch();
         merge(profileStore, response);
       }),
-      opUpdate: asyncOpCreate(payload => rest.patch("me", payload)),
-      update: action(async function() {
+      opUpdate: asyncOpCreate((payload) => rest.patch("me", payload)),
+      update: action(async function () {
         this.errors = {};
         const payload = {
-          biography: this.profile.biography || ""
+          biography: this.profile.biography || "",
         };
         const constraints = {
-          biography: rules.biography
+          biography: rules.biography,
         };
         const vErrors = validate(payload, constraints);
         if (vErrors) {
@@ -66,9 +66,13 @@ export default function(context) {
         const response = await this.opUpdate.fetch(payload);
         merge(profileStore, response);
         context.alertStack.add(
-          <Alert.Info message={tr.t("Profile updated")} />
+          <Alert
+            data-alert-profile-updated
+            severity="success"
+            message={tr.t("Profile updated")}
+          />
         );
-      })/*,
+      }) /*,
       uploadPicture: action(async event => {
         const data = new FormData();
         const file = event.target.files[0];
@@ -79,19 +83,19 @@ export default function(context) {
         try {
           await rest.upload("document/profile_picture", data);
           context.alertStack.add(
-            <Alert.Info message={tr.t("Picture uploaded")} />
+            <Alert severity="success" message={tr.t("Picture uploaded")} />
           );
         } catch (error) {
           console.error("uploadPicture ", error);
           context.alertStack.add(
-            <Alert.Danger message={tr.t("Cannot upload file")} />
+            <Alert severity="error" message={tr.t("Cannot upload file")} />
           );
         }
-      })*/
+      })*/,
     });
 
     return {
-      profile: profileStore
+      profile: profileStore,
     };
   }
 
@@ -99,6 +103,6 @@ export default function(context) {
 
   return {
     stores: () => stores,
-    routes: () => Routes(stores)
+    routes: () => Routes(stores),
   };
 }

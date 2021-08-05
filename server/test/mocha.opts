@@ -1,4 +1,4 @@
---timeout 20000
+--timeout 40e3
 --bail
 --exit
 --file test/setup.js

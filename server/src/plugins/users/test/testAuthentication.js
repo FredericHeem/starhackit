@@ -1,136 +1,132 @@
-const assert = require('chai').assert;
-const testMngr = require('test/testManager');
+const assert = require("chai").assert;
+const testMngr = require("test/testManager");
 
-describe('Authentication', function(){
+describe("Authentication", function () {
   let client;
 
-  before(async () => {
-      await testMngr.start();
-  });
-  after(async () => {
-      await testMngr.stop();
-  });
+  before(async () => {});
+  after(async () => {});
 
   beforeEach(async () => {
     client = testMngr.createClient();
   });
 
-  describe('After Login', () => {
+  describe("After Login", () => {
     let postParam = {
-        password:"password",
-        username:"alice@mail.com"
+      password: "password",
+      username: "alice@mail.com",
     };
     beforeEach(async () => {
       await client.login(postParam);
     });
 
-    it('should logout', async () => {
-      await client.post('v1/auth/logout');
+    it("should logout", async () => {
+      await client.post("v1/auth/logout");
       try {
-        let res = await client.get('v1/me');
+        let res = await client.get("v1/me");
         console.log(res);
         assert(false);
-      } catch(err){
+      } catch (err) {
         assert(err);
       }
     });
   });
 
-  it('login without parameters should return bad request', async () => {
+  it("login without parameters should return bad request", async () => {
     try {
       await client.login();
       assert(false);
-    } catch(err){
+    } catch (err) {
       assert(err);
       assert.equal(err.response.status, 401);
       assert.equal(err.response.data, "Bad Request");
     }
   });
 
-  it('logout without login should fail', async () => {
+  it("logout without login should fail", async () => {
     try {
-      await client.post('v1/auth/logout');
+      await client.post("v1/auth/logout");
       //assert(false);
-    } catch(err){
+    } catch (err) {
       assert(err);
       assert.equal(err.statusCode, 401);
       //assert.equal(err.body, "Unauthorized");
     }
   });
 
-  it('session without login should fail', async () => {
+  it("session without login should fail", async () => {
     try {
-      await client.get('v1/me');
+      await client.get("v1/me");
       assert(false);
-    } catch(err){
+    } catch (err) {
       assert(err);
       assert.equal(err.response.status, 401);
       assert.equal(err.response.data, "Unauthorized");
     }
   });
 
-  it('should not login with unknown username', async () => {
+  it("should not login with unknown username", async () => {
     let postParam = {
-        username:"idonotexist",
-        password:"password"
+      username: "idonotexist",
+      password: "password",
     };
 
     try {
       await client.login(postParam);
       assert(false);
-    } catch(err){
+    } catch (err) {
       assert(err);
       assert.equal(err.response.status, 401);
       //assert.equal(err.body, "Unauthorized");
     }
   });
 
-  it('should not login with empty password', async () => {
+  it("should not login with empty password", async () => {
     let postParam = {
-        username:"bob"
+      username: "bob",
     };
 
     try {
       await client.login(postParam);
       assert(false);
-    } catch(err){
+    } catch (err) {
       assert(err);
       assert.equal(err.response.status, 401);
       //assert.equal(err.body, "Bad Request");
     }
   });
 
-  it('should not login with wrong password', async () => {
+  it("should not login with wrong password", async () => {
     let postParam = {
-        username:"admin",
-        password:"passwordaaaaaa"
+      username: "admin",
+      password: "passwordaaaaaa",
     };
 
     try {
       await client.login(postParam);
       assert(false);
-    } catch(err){
+    } catch (err) {
       assert(err);
       assert.equal(err.response.status, 401);
       //assert.equal(err.body, "Unauthorized");
     }
   });
-  it('should login with params', async () => {
+  it("should login with params", async () => {
     let postParam = {
-        username:"alice",
-        password:"password",
-        email:"alice@mail.com"
+      username: "alice",
+      password: "password",
+      email: "alice@mail.com",
     };
 
-    let res =  await client.login(postParam);
+    let res = await client.login(postParam);
     assert(res);
     assert.isString(res.token);
-    let {user} = res;
+    let { user } = res;
     assert.equal(user.username, postParam.username);
     assert(!user.password);
     assert(!user.passwordHash);
   });
-  it('should login admin with testManager', async () => {
+  it("should login admin with testManager", async () => {
     let clientAdmin = testMngr.client("admin");
     let res = await clientAdmin.login();
     assert(res);

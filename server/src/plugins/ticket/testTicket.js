@@ -1,15 +1,12 @@
 const assert = require("assert");
-const testMngr = require('test/testManager');
+const testMngr = require("test/testManager");
 
-describe("Ticket No Auth", function() {
+describe("Ticket No Auth", function () {
   let client;
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("bob");
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   it("should get a 401 when getting all tickets", async () => {
     try {
@@ -31,19 +28,16 @@ describe("Ticket No Auth", function() {
   });
 });
 
-describe("Ticket", function() {
+describe("Ticket", function () {
   let client;
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
   it("should create a ticket", async () => {
     const input = {
-      subject: "Ciao Bella"
+      subject: "Ciao Bella",
     };
     let ticket = await client.post("v1/ticket", input);
     assert(ticket);
@@ -52,18 +46,21 @@ describe("Ticket", function() {
   });
   it("should update a ticket", async () => {
     const inputNew = {
-      subject: "Ciao Mundo"
+      subject: "Ciao Mundo",
     };
     const newTicket = await client.post("v1/ticket", inputNew);
     const inputUpdated = {
-      subject: "Hello World"
+      subject: "Hello World",
     };
-    const updatedTicket = await client.patch(`v1/ticket/${newTicket.id}`, inputUpdated);
+    const updatedTicket = await client.patch(
+      `v1/ticket/${newTicket.id}`,
+      inputUpdated
+    );
     assert.equal(updatedTicket.subject, inputUpdated.subject);
   });
   it("should delete a ticket", async () => {
     const inputNew = {
-      subject: "Ciao Mundo"
+      subject: "Ciao Mundo",
     };
     const newTicket = await client.post("v1/ticket", inputNew);
     const ticketsBeforeDelete = await client.get("v1/ticket");

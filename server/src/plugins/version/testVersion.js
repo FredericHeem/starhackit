@@ -1,19 +1,15 @@
 const assert = require("assert");
-const testMngr = require('test/testManager');
+const testMngr = require("test/testManager");
 
-describe("Version", function() {
+describe("Version", function () {
   let client;
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("bob");
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   it("should get a the version", async () => {
-      const {version} = await client.get("v1/version");
-      assert(version);
+    const { version } = await client.get("v1/version");
+    assert(version);
   });
 });
-

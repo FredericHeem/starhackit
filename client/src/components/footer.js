@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
-import AsyncOp from "utils/asyncOp";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 
 export default (context) => {
   const {

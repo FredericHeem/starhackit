@@ -1,25 +1,22 @@
 const assert = require("assert");
 const _ = require("lodash");
-const testMngr = require('test/testManager');
+const testMngr = require("test/testManager");
 const { verifyWeb } = require("./StrategyUtils");
+const uuid = require("uuid");
 
 const profile = {
   username: "justin time",
   email: "justin.time@gmail.com",
   gender: "male",
   last_name: "Time",
-  first_name: "justin"
+  first_name: "justin",
 };
 
-describe("FacebookStrategy", function() {
+describe("FacebookStrategy", function () {
   let models = testMngr.app.data.sequelize.models;
-  before(async () => {
-    await testMngr.start();
-  });
-  after(async () => {
-    await testMngr.stop();
-  });
-  beforeEach(async function() {
+  before(async () => {});
+  after(async () => {});
+  beforeEach(async function () {
     if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
@@ -38,7 +35,7 @@ describe("FacebookStrategy", function() {
     assert(res.user);
     assert(!res.user.password);
 
-    profile.id = require("uuid/v4")();
+    profile.id = uuid.v4();
     res = await verifyWeb(models, null, profile);
     //console.log(res.err)
     assert(!res.err);

@@ -8,7 +8,8 @@ const pluginsName = [
   "dbSchema",
   "document",
   "ticket",
-  "expoPush"
+  "expoPush",
+  //"cloudDiagram",
 ];
 
 function Plugins(app) {
@@ -17,8 +18,8 @@ function Plugins(app) {
     return map;
   }, {});
 
-  const action = async ops =>
-    await Promise.each(_.values(plugins), obj => obj[ops] && obj[ops](app));
+  const action = async (ops) =>
+    await Promise.each(_.values(plugins), (obj) => obj[ops] && obj[ops](app));
 
   return {
     get() {
@@ -29,7 +30,7 @@ function Plugins(app) {
     },
     async stop() {
       await action("stop");
-    }
+    },
   };
 }
 

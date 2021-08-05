@@ -6,12 +6,9 @@ const FormData = require("form-data");
 describe("Document No Auth", function () {
   let client;
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("bob");
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
 
   it("should get a 401 when getting all documents", async () => {
     try {
@@ -28,13 +25,10 @@ describe("Document No Auth", function () {
 describe("Document", function () {
   let client;
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
   it("should upload a document", async () => {
     const formData = new FormData();
     formData.append("name", "IMG_20180316_153034.jpg");

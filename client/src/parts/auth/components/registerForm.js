@@ -1,15 +1,18 @@
 /* @jsxImportSource @emotion/react */
 import { jsx, css } from "@emotion/react";
 import { observer } from "mobx-react";
-import alertAjax from "components/alertAjax";
-import formGroup from "components/FormGroup";
+
+import formGroup from "mdlean/lib/formGroup";
 import input from "mdlean/lib/input";
+import button from "mdlean/lib/button";
+
+import alertAjax from "components/alertAjax";
 
 export default (context) => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const AlertAjax = alertAjax(context);
-  const ButtonLoading = require("mdlean/lib/button").default(context);
+  const ButtonLoading = button(context);
   const Input = input(context, {
     cssOverride: css`
       > input {

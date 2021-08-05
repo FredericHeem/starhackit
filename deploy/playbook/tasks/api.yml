@@ -15,6 +15,10 @@
     recreate: yes
     volumes:
     - /home/{{user}}/api.json:/app/config/production.json
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /home/{{user}}/output:/app/output
+    - /home/{{user}}/input:/app/input
+
     published_ports:
     - "9000:9000"
     env:

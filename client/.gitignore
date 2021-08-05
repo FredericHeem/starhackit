@@ -12,3 +12,4 @@ build
 deploy/keys
 selenium-debug.log
 chromedriver.log
+grucloud-vm-tuto-1.json

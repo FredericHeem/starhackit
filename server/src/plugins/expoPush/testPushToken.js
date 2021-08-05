@@ -1,21 +1,18 @@
-const testMngr = require('test/testManager');
+const testMngr = require("test/testManager");
 const Axios = require("axios");
 const { sendToUser } = require("./sendNotification");
 //TODO error Request failed with status code 503
-describe("Expo Push Notification", function() {
+describe("Expo Push Notification", function () {
   let client;
   const models = testMngr.app.data.models();
   before(async () => {
-    await testMngr.start();
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {
-    await testMngr.stop();
-  });
+  after(async () => {});
   it("should get all token for the current user", async () => {
     const body = {
-      token: "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]"
+      token: "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
     };
     await client.post("v1/push_token/", body);
     await client.post("v1/push_token/", body);
@@ -25,25 +22,28 @@ describe("Expo Push Notification", function() {
     const data = {
       to: "ExponentPushToken[8giJthMgGEyYUr8H5NsPWO]",
       title: "Someone apply",
-      body: "Someone apply to your job"
+      body: "Someone apply to your job",
     };
     await Axios({
       method: "post",
       url: "https://exp.host/--/api/v2/push/send",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      data
+      data,
     });
   });
   it("send to user", async () => {
     const user = await models.User.findByEmail("alice@mail.com");
     const user_id = user.get().id;
-    await models.PushToken.upsert({token: 'ExponentPushToken[8giJthMgGEyYUr8H5NsPWO]', user_id});
+    await models.PushToken.upsert({
+      token: "ExponentPushToken[8giJthMgGEyYUr8H5NsPWO]",
+      user_id,
+    });
     const res = await sendToUser(models, user_id, {
       title: "test notif",
       body: "Ciao ciccio",
-      sound: 'default'
+      sound: "default",
     });
     console.log("res: ", res);
   });

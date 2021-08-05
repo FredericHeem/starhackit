@@ -3,17 +3,15 @@ import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import validate from "validate.js";
 import paper from "components/Paper";
-import alert from "components/alert";
+import alert from "mdlean/lib/alert";
 import strike from "components/Strike";
 import page from "components/Page";
 import registerForm from "../components/registerForm";
 import mediaSigninButtons from "../components/mediaSigninButtons";
-import AsyncOp from "utils/asyncOp";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 import rules from "utils/rules";
 
-
-
-export default context => {
+export default (context) => {
   const { tr, rest } = context;
   const Paper = paper(context);
   const Page = page(context);
@@ -27,18 +25,18 @@ export default context => {
     email: "",
     password: "",
     errors: {},
-    op: asyncOpCreate(payload => rest.post("auth/register", payload)),
-    register: action(async function() {
+    op: asyncOpCreate((payload) => rest.post("auth/register", payload)),
+    register: action(async function () {
       this.errors = {};
       const payload = {
         username: this.username.trim(),
         email: this.email.trim(),
-        password: this.password
+        password: this.password,
       };
       const constraints = {
         username: rules.username,
         email: rules.email,
-        password: rules.password
+        password: rules.password,
       };
       const vErrors = validate(payload, constraints);
       if (vErrors) {
@@ -46,7 +44,7 @@ export default context => {
         return;
       }
       await this.op.fetch(payload);
-    })
+    }),
   });
 
   function RegisterFormComponent(props) {
@@ -62,7 +60,8 @@ export default context => {
 
   function RegisterComplete() {
     return (
-      <Alert.Info
+      <Alert
+        severity="info"
         className="registration-request-complete"
         message={tr.t(
           "A confirmation email has been sent. Click on the link to verify your email address and activate your account."
@@ -86,6 +85,6 @@ export default context => {
         </Paper>
       </Page>
     );
-  })
-  return props => <RegisterView store={store} {...props}/>;
+  });
+  return (props) => <RegisterView store={store} {...props} />;
 };

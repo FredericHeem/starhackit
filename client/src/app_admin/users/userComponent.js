@@ -3,10 +3,10 @@ import { observer } from "mobx-react";
 import page from "components/Page";
 import paper from "components/Paper";
 import input from "mdlean/lib/input";
-import spinner from "components/spinner";
-import formGroup from "components/FormGroup";
+import spinner from "mdlean/lib/spinner";
+import formGroup from "mdlean/lib/formGroup";
 
-export default context => {
+export default (context) => {
   const { tr } = context;
   const FormGroup = formGroup(context);
   const Page = page(context);

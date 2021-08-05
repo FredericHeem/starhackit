@@ -1,0 +1,22 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "worker reading from a message queue",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha 'test/*.test.js' --exit",
+    "test:watch": "mocha 'test/*.test.js' -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grucloud/core": "^1.14.0",
+    "@grucloud/provider-aws": "^1.14.1",
+    "rsmq": "^0.12.3",
+    "rsmq-promise-native": "0.0.4",
+    "rubico": "^1.6.27"
+  },
+  "devDependencies": {
+    "mocha": "^8.3.2"
+  }
+}

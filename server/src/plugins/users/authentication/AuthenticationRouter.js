@@ -7,6 +7,10 @@ const config = require("config");
 
 let log = require("logfilename")(__filename);
 
+//TODO configure
+const failureRedirect = "/user/auth/login";
+const successRedirect = "/user/auth/login";
+
 const errorMsg = (err, info) => {
   if (info && info.message) {
     return info.message;
@@ -17,36 +21,38 @@ const errorMsg = (err, info) => {
   }
 };
 
-const localAuthCB = ctx => (err, user, info = {}) => {
-  const jwtConfig = _.defaults(config.jwt, { secret: "secret" });
-  log.debug(
-    "localAuthCB %s, %s, %s",
-    JSON.stringify(user),
-    JSON.stringify(info),
-    JSON.stringify(err)
-  );
-  if (user) {
-    ctx.body = {
-      user,
-      token: jwt.sign(user, jwtConfig.secret, jwtConfig.options)
-    };
-    ctx.login(user, error => {
-      if (error) {
-        log.error("login ", error);
-        throw error;
-      } else {
-        log.debug("login ok ");
-      }
-    });
-  } else {
-    ctx.status = 401;
-    ctx.body = {
-      error: {
-        message: errorMsg(err, info)
-      }
-    };
-  }
-};
+const localAuthCB =
+  (ctx) =>
+  (err, user, info = {}) => {
+    const jwtConfig = _.defaults(config.jwt, { secret: "secret" });
+    log.debug(
+      "localAuthCB %s, %s, %s",
+      JSON.stringify(user),
+      JSON.stringify(info),
+      JSON.stringify(err)
+    );
+    if (user) {
+      ctx.body = {
+        user,
+        token: jwt.sign(user, jwtConfig.secret, jwtConfig.options),
+      };
+      ctx.login(user, (error) => {
+        if (error) {
+          log.error("login ", error);
+          throw error;
+        } else {
+          log.debug("login ok ");
+        }
+      });
+    } else {
+      ctx.status = 401;
+      ctx.body = {
+        error: {
+          message: errorMsg(err, info),
+        },
+      };
+    }
+  };
 
 async function verifyLogin(models, username, password) {
   log.debug("verifyLogin username: ", username);
@@ -55,8 +61,8 @@ async function verifyLogin(models, username, password) {
     log.info("userBasic invalid username user: ", username);
     return {
       error: {
-        message: "Username and Password do not match"
-      }
+        message: "Username and Password do not match",
+      },
     };
   }
   //log.info("userBasic user: ", user.get());
@@ -64,14 +70,14 @@ async function verifyLogin(models, username, password) {
   if (result) {
     log.debug("verifyLogin valid password for user: ", user.toJSON());
     return {
-      user: user.toJSON()
+      user: user.toJSON(),
     };
   } else {
     log.debug("verifyLogin invalid password user: ", user.get());
     return {
       error: {
-        message: "Username and Password do not match"
-      }
+        message: "Username and Password do not match",
+      },
     };
   }
 }
@@ -88,12 +94,12 @@ async function login(ctx, models) {
     ctx.status = 200;
     ctx.body = {
       user,
-      token: jwt.sign(user, config.jwt.secret, config.jwt.options)
+      token: jwt.sign(user, config.jwt.secret, config.jwt.options),
     };
   } else {
     ctx.status = 401;
     ctx.body = {
-      error
+      error,
     };
   }
 }
@@ -110,27 +116,27 @@ function AuthenticationHttpController(app) {
       log.debug("logout");
       ctx.logout();
       ctx.body = {
-        success: true
+        success: true,
       };
     },
     async register(context) {
       return respond(context, authApi, authApi.createPending, [
-        context.request.body
+        context.request.body,
       ]);
     },
     async verifyEmailCode(context) {
       return respond(context, authApi, authApi.verifyEmailCode, [
-        context.request.body
+        context.request.body,
       ]);
     },
     async resetPassword(context) {
       return respond(context, authApi, authApi.resetPassword, [
-        context.request.body
+        context.request.body,
       ]);
     },
     async verifyResetPasswordToken(context) {
       return respond(context, authApi, authApi.verifyResetPasswordToken, [
-        context.request.body
+        context.request.body,
       ]);
     },
     async loginFacebook(context, next) {
@@ -150,11 +156,18 @@ function AuthenticationHttpController(app) {
         context,
         next
       );
-    }
+    },
+    async loginGitHub(context, next) {
+      return passport.authenticate("github", localAuthCB(context))(
+        context,
+        next
+      );
+    },
   };
 }
 
 function AuthenticationRouter(app) {
+  const { config } = app;
   let router = new Router();
   let authHttpController = AuthenticationHttpController(app);
   router.post("/login", authHttpController.login);
@@ -175,8 +188,8 @@ function AuthenticationRouter(app) {
   router.get(
     "/facebook/callback",
     passport.authenticate("facebook", {
-      failureRedirect: "/user/auth/login",
-      successRedirect: "/user/auth/login"
+      failureRedirect,
+      successRedirect,
     })
   );
   // Facebook Auth from mobile
@@ -190,13 +203,24 @@ function AuthenticationRouter(app) {
   router.get(
     "/google/callback",
     passport.authenticate("google", {
-      failureRedirect: "/user/auth/login",
-      successRedirect: "/user/auth/login"
+      failureRedirect,
+      successRedirect,
     })
   );
   router.post("/login_google", authHttpController.loginGoogle);
 
   router.post("/login_google_id_token", authHttpController.loginGoogleIdToken);
+
+  //Github
+  router.get("/github", passport.authenticate("github"));
+  router.post("/login_github", authHttpController.loginGitHub);
+  router.get(
+    "/github/callback",
+    passport.authenticate("github", {
+      failureRedirect,
+      successRedirect,
+    })
+  );
 
   app.server.baseRouter().mount("auth", router);
 

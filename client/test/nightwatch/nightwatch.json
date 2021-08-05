@@ -1,24 +1,30 @@
 {
-  "src_folders" : ["test"],
-  "output_folder" : "reports",
-  "page_objects_path" : "pageObjects",
+  "src_folders": ["test"],
+  "output_folder": "reports",
+  "page_objects_path": "pageObjects",
 
-  "test_runner" : "mocha",
+  "test_runner": "mocha",
 
   "webdriver": {
     "start_process": true,
-    "server_path": "../../node_modules/.bin/chromedriver",
-    "cli_args": [
-      "--verbose"
-    ],
+    "server_path": "node_modules/.bin/chromedriver",
+    "cli_args": ["--verbose"],
     "port": 9515
   },
 
-  "test_settings" : {
-    "default" : {
-      "launch_url" : "http://localhost:8080/user",
-      "desiredCapabilities" : {
-        "browserName" : "chrome"
+  "test_settings": {
+    "default": {
+      "launch_url": "http://localhost:8080/user",
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "webStorageEnabled": true
+      }
+    },
+    "prod": {
+      "launch_url": "https://starhack.it/user",
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "webStorageEnabled": true
       }
     }
   }

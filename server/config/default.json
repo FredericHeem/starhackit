@@ -7,7 +7,7 @@
       "colorize": true
     }
   },
-  "redis":{
+  "redis": {
     "url": "//localhost:7379"
   },
   "koa": {
@@ -16,11 +16,11 @@
     "cookieSecret": ["your-super-session-secret"],
     "staticContent": ["build"],
     "logger": true,
-    "cors":{
+    "cors": {
       "credentials": true
     }
   },
-  "db":{
+  "db": {
     "url": "postgres://postgres:password@localhost:6432/dev?sslmode=disable",
     "options": {
       "logging": true
@@ -42,6 +42,5 @@
         "pass": "11111111111111111111"
       }
     }
-    
   }
 }

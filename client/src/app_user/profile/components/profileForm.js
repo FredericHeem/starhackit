@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { createElement as h } from "react";
 import input from "mdlean/lib/input";
 import button from "mdlean/lib/button";
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 import paper from "components/Paper";
 import formGroup from "components/FormGroup";
 

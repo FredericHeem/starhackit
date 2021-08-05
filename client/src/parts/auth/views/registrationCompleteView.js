@@ -2,10 +2,10 @@ import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import page from "components/Page";
 import paper from "components/Paper";
-import spinner from "components/spinner";
+import spinner from "mdlean/lib/spinner";
 import alertAjax from "components/alertAjax";
 
-export default context => {
+export default (context) => {
   const { tr } = context;
   const Page = page(context);
   const AlertAjax = alertAjax(context);
@@ -20,8 +20,7 @@ export default context => {
           <AlertAjax
             error={error}
             className="register-complete-error-view"
-          />
-{" "}
+          />{" "}
           {!error && h(spinner(context))}
         </Paper>
       </Page>

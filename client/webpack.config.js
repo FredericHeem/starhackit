@@ -12,6 +12,7 @@ module.exports = function (options) {
   const config = _.merge(
     {},
     {
+      target: "web",
       devServer: {
         contentBase: path.join(__dirname, "src"),
         publicPath: "/",
@@ -24,6 +25,7 @@ module.exports = function (options) {
             { from: /^\/user/, to: "/user/index.html" },
             { from: /^\/admin/, to: "/admin/index.html" },
             { from: /^\/public/, to: "/public/index.html" },
+            { from: /^\/infra/, to: "/infra/index.html" },
           ],
         },
         stats: "minimal",
@@ -65,6 +67,12 @@ module.exports = function (options) {
           chunks: ["admin"],
           filename: "admin/index.html",
         }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          chunks: ["infra"],
+          filename: "infra/index.html",
+        }),
 
         new webpack.DefinePlugin({
           __VERSION__: JSON.stringify(pkg.version),
@@ -73,6 +81,7 @@ module.exports = function (options) {
           patterns: [
             { from: "./src/favicon.ico" },
             { from: "./locales/**/*.json" },
+            { from: "./assets/**/*" },
           ],
         }),
         new MiniCssExtractPlugin({

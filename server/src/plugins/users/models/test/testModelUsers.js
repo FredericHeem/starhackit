@@ -1,29 +1,25 @@
-const _ = require('lodash');
-const assert = require('assert');
-const testMngr = require('test/testManager');
-const Chance = require('chance');
+const _ = require("lodash");
+const assert = require("assert");
+const testMngr = require("test/testManager");
+const Chance = require("chance");
 
 let chance = new Chance();
 
 //let fixtures = require(__dirname + '/../fixtures/models/users');
 
-describe('UserModel', function(){
+describe("UserModel", function () {
   let models = testMngr.app.data.sequelize.models;
   let userModel = models.User;
 
-  before(async () => {
-      await testMngr.start();
-  });
-  after(async () => {
-      await testMngr.stop();
-  });
+  before(async () => {});
+  after(async () => {});
 
-  it('should successfully create an entry', async () => {
+  it("should successfully create an entry", async () => {
     let username = chance.name();
     let userConfig = {
-        username: username,
-        password: "password",
-        email: username + "@mail.com"
+      username: username,
+      password: "password",
+      email: username + "@mail.com",
     };
     let userCreated = await userModel.createUserInGroups(userConfig, ["User"]);
     assert(userCreated);
@@ -34,7 +30,7 @@ describe('UserModel', function(){
     try {
       await userModel.createUserInGroups(userConfig, ["User"]);
       assert(false);
-    } catch(err){
+    } catch (err) {
       assert.equal(err.name, "SequelizeUniqueConstraintError");
       // mail or username, depending on sqlite or postgres
       assert(err.errors[0].message.includes("must be unique"));
@@ -42,15 +38,15 @@ describe('UserModel', function(){
 
     await userCreated.destroy();
   });
-  it('should successfully create an entry with facebook auth', async () => {
+  it("should successfully create an entry with facebook auth", async () => {
     let username = chance.name();
     let userConfig = {
-        username: username,
-        email: username + "@mail.com",
-        authProvider: {
-          name: "facebook",
-          authId: "1234567890"
-        }
+      username: username,
+      email: username + "@mail.com",
+      authProvider: {
+        name: "facebook",
+        authId: "1234567890",
+      },
     };
     let userCreated = await userModel.createUserInGroups(userConfig, ["User"]);
     assert(userCreated);
@@ -62,16 +58,16 @@ describe('UserModel', function(){
 
     await userCreated.destroy();
   });
-  it('should not create an empty entry', async() => {
+  it("should not create an empty entry", async () => {
     try {
       await userModel.create({});
-    } catch(err){
+    } catch (err) {
       assert.equal(err.name, "SequelizeValidationError");
       assert.equal(err.errors[0].message, "User.username cannot be null");
     }
   });
-  it('should find the user ', async () => {
-    let res = await userModel.findByUsername('alice');
+  it("should find the user ", async () => {
+    let res = await userModel.findByUsername("alice");
     assert(res);
     assert(res.get().username);
     assert(!res.get().password);
@@ -80,58 +76,56 @@ describe('UserModel', function(){
     assert(!userJson.password);
   });
 
-  it('should not create a user with invalid group', async () => {
+  it("should not create a user with invalid group", async () => {
     let username = chance.name();
     let userConfig = {
-        username: username,
-        password: "password",
-        email: username + "@mail.com"
+      username: username,
+      password: "password",
+      email: username + "@mail.com",
     };
     try {
-      await userModel.createUserInGroups(userConfig,["GroupNotExist"]);
-    } catch(err){
+      await userModel.createUserInGroups(userConfig, ["GroupNotExist"]);
+    } catch (err) {
       assert.equal(err.name, "GroupNotFound");
     }
   });
 
-  it('should count users', async () =>  {
+  it("should count users", async () => {
     let count = await userModel.count();
     assert(count > 0);
   });
-  it('should list users', async () => {
-    let res = await userModel.findAll({attributes: [ 'id', 'username' ]});
+  it("should list users", async () => {
+    let res = await userModel.findAll({ attributes: ["id", "username"] });
     assert(res);
-    _.each(res, user => {
-       //console.log("user: ", user.get());
-       assert(user.get().username);
+    _.each(res, (user) => {
+      //console.log("user: ", user.get());
+      assert(user.get().username);
     });
   });
-  it('should find admin user, without attributes', async () => {
-    let adminUsername = 'admin';
+  it("should find admin user, without attributes", async () => {
+    let adminUsername = "admin";
     let res = await userModel.findOne({
-        include:[
-           {model: models.Profile, as: 'profile'}
-         ],
-          where:{
-             username:adminUsername
-          }
+      include: [{ model: models.Profile, as: "profile" }],
+      where: {
+        username: adminUsername,
+      },
     });
     assert(res.get().profile.get());
     assert(res.get().username);
   });
-  it('should find admin user, with attributes', async () => {
-    let adminUsername = 'admin';
+  it("should find admin user, with attributes", async () => {
+    let adminUsername = "admin";
     let res = await userModel.findOne({
-           attributes: [ 'id', 'username' ],
-           where:{
-             username:adminUsername
-           }
-         });
+      attributes: ["id", "username"],
+      where: {
+        username: adminUsername,
+      },
+    });
     assert(res.get().username);
   });
-  it('findByUserId', async () => {
-    let adminUsername = 'admin';
-    let user = await models.User.findByUsername('admin');
+  it("findByUserId", async () => {
+    let adminUsername = "admin";
+    let user = await models.User.findByUsername("admin");
     let res = await userModel.findByUserId(user.get().id);
     assert(res.toJSON().profile);
     assert.equal(res.get().username, adminUsername);

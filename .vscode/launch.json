@@ -1,31 +1,59 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/server/src/index.js",
-            "cwd": "${workspaceFolder}/server",
-            "runtimeArgs": [],
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        },
-        {
-            "name": "Debug test",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceRoot}/server/node_modules/mocha/bin/_mocha",
-            "stopOnEntry": false,
-            "args": ["--no-timeouts", "--colors"], //you can specify paths to specific tests here
-            "cwd": "${workspaceRoot}/server",
-            "runtimeExecutable": null,
-            "internalConsoleOptions": "openOnSessionStart",
-            "env": {
-              "NODE_PATH": "src"
-            }
-          }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "name": "Debug Frontend",
+      "request": "launch",
+      "url": "http://localhost:8080/infra",
+      "webRoot": "${workspaceFolder}/client/src"
+    },
+    {
+      "name": "Debug Server Test",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "mocha", "--", "--inspect-brk=9229"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/server",
+      "port": 9229
+    },
+    {
+      "name": "Debug Worker Test",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test", "--", "--inspect-brk=9229"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/services/worker",
+      "port": 9229
+    },
+    {
+      "name": "API Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/server",
+      "port": 9229
+    },
+    {
+      "name": "Debug test",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/server/node_modules/mocha/bin/_mocha",
+      "stopOnEntry": false,
+      "args": ["--no-timeouts", "--colors"], //you can specify paths to specific tests here
+      "cwd": "${workspaceRoot}/server",
+      "runtimeExecutable": null,
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "NODE_PATH": "src"
+      }
+    }
+  ]
 }

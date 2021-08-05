@@ -1,17 +1,16 @@
 import React, { createElement as h } from "react";
 import { observable, action } from "mobx";
-import AsyncOp from "utils/asyncOp";
+import AsyncOp from "mdlean/lib/utils/asyncOp";
 import asyncView from "components/AsyncView";
 import logoutView from "./views/logoutView";
 import registrationCompleteView from "./views/registrationCompleteView";
 import { redirect } from "./authUtils";
 
-export default function(context, partParam) {
+export default function (context, partParam) {
   const { rest, history, config, emitter } = context;
-  const layout = partParam.Layout(context)
+  const layout = partParam.Layout(context);
   const asyncOpCreate = AsyncOp(context);
   const AsyncView = asyncView(context);
-
   const authStore = observable({
     authenticated: false,
     setAuthenticated() {
@@ -33,37 +32,37 @@ export default function(context, partParam) {
       } catch (errors) {
         authStore.reset();
       }
-    }
+    },
   });
 
-  emitter.on("login.ok", ({token}) => {
+  emitter.on("login.ok", ({ token }) => {
     authStore.setToken(token);
     redirect(history, config);
-  })
+  });
 
   function Stores() {
     return {
       auth: authStore,
       logout: observable({
         op: asyncOpCreate(() => rest.post("auth/logout")),
-        execute: action(async function() {
+        execute: action(async function () {
           authStore.reset();
           await this.op.fetch();
-        })
+        }),
       }),
       verifyEmailCode: observable({
-        op: asyncOpCreate(payload =>
+        op: asyncOpCreate((payload) =>
           rest.post("auth/verify_email_code", payload)
         ),
-        execute: action(async function(param) {
+        execute: action(async function (param) {
           try {
             await this.op.fetch(param);
             context.history.push(`login`);
           } catch (errors) {
             //
           }
-        })
-      })
+        }),
+      }),
     };
   }
 
@@ -74,7 +73,7 @@ export default function(context, partParam) {
         children: [
           {
             path: "/login",
-            action: async routerContext => {
+            action: async (routerContext) => {
               await authStore.redirectFromSocialLogin();
               return {
                 routerContext,
@@ -85,47 +84,47 @@ export default function(context, partParam) {
                     authStore={authStore}
                     getModule={() => import("./views/loginView")}
                   />
-                )
+                ),
               };
-            }
+            },
           },
           {
             path: "/register",
-            action: routerContext => ({
+            action: (routerContext) => ({
               title: "Register",
               routerContext,
               layout,
               component: (
                 <AsyncView getModule={() => import("./views/registerView")} />
-              )
-            })
+              ),
+            }),
           },
           {
             path: "/logout",
-            action: routerContext => {
+            action: (routerContext) => {
               stores.logout.execute();
               return {
                 routerContext,
                 title: "Logout",
                 layout,
-                component: h(logoutView(context), { store: stores.auth })
+                component: h(logoutView(context), { store: stores.auth }),
               };
-            }
+            },
           },
           {
             path: "/forgot",
-            action: routerContext => ({
+            action: (routerContext) => ({
               routerContext,
               title: "Forgot password",
               layout,
               component: (
                 <AsyncView getModule={() => import("./views/forgotView")} />
-              )
-            })
+              ),
+            }),
           },
           {
             path: "/resetPassword/:token",
-            action: routerContext => ({
+            action: (routerContext) => ({
               routerContext,
               title: "Reset password",
               layout,
@@ -134,27 +133,27 @@ export default function(context, partParam) {
                   params={routerContext.params}
                   getModule={() => import("./views/resetPasswordView")}
                 />
-              )
-            })
+              ),
+            }),
           },
           {
             path: "/verifyEmail/:code",
-            action: routerContext => {
+            action: (routerContext) => {
               stores.verifyEmailCode.execute({
-                code: routerContext.params.code
+                code: routerContext.params.code,
               });
               return {
                 routerContext,
                 title: "Verify Email",
                 layout,
                 component: h(registrationCompleteView(context), {
-                  store: stores.verifyEmailCode
-                })
+                  store: stores.verifyEmailCode,
+                }),
               };
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     ];
   }
 
@@ -162,6 +161,6 @@ export default function(context, partParam) {
 
   return {
     stores: () => stores,
-    routes: () => Routes(stores)
+    routes: () => Routes(stores),
   };
 }

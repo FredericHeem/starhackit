@@ -1,4 +1,10 @@
 {
+  "infra": { 
+    "docker": { "baseURL": "{{docker_base_url}}" },
+    "containerImage": "{{grucloud_image}}",
+    "localOutputPath": "/home/{{user}}/output",
+    "localInputPath": "/home/{{user}}/input"
+  },
   "jwtSecret": "{{jwt_secret}}",
   "db": {
     "url": "postgres://{{db_username}}:{{db_password}}@{{db_hostname}}:5432/{{db_database}}?sslmode=disable"
@@ -23,6 +29,11 @@
       "clientID": "{{google_client_id}}",
       "clientSecret": "{{google_client_secret}}",
       "callbackURL": "{{website_url}}/api/v1/auth/google/callback"
+    },
+    "github":{
+      "clientID": "{{github_client_id}}",
+      "clientSecret": "{{github_client_secret}}",
+      "callbackURL": "{{website_url}}/api/v1/auth/github/callback"
     }
   },
   

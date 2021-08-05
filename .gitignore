@@ -16,3 +16,6 @@ coverage
 .settings/
 .idea
 typings
+*.log
+env
+grucloud-gcp.json

@@ -1,7 +1,7 @@
 const config = {
   general: {
-    title: "GruCloud",
-    description: "Visualize your cloud infrastructure",
+    title: "StarHackIt",
+    description: "Full Stack Starter Kit",
     apiUrl: "/api/v1/",
     socialAuth: ["github", "facebook", "google"],
     debug: {

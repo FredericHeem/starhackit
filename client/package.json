@@ -3,7 +3,7 @@
   "title": "StarHackIt",
   "version": "10.40.0",
   "private": true,
-  "description": "Visualize Cloud Infrastructure",
+  "description": "React + node starter kit. A fullstack boilerplate with authentication and authorisation",
   "license": "NLPL",
   "scripts": {
     "start": "webpack serve --config webpack.dev.js --open",

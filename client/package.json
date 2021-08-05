@@ -1,6 +1,6 @@
 {
   "name": "starhackit-ui",
-  "title": "GruCloud",
+  "title": "StarHackIt",
   "version": "10.40.0",
   "private": true,
   "description": "Visualize Cloud Infrastructure",
@@ -10,6 +10,7 @@
     "start:admin": "webpack serve --config webpack.dev.js --open-page=admin/users",
     "start:user": "webpack serve --config webpack.dev.js --open-page=user/profile",
     "start:public": "webpack serve --config webpack.dev.js --open-page=public",
+    "start:infra": "webpack serve --config webpack.dev.js --open-page=infra",
     "start:prod": "http-server dist/",
     "cpd": "jscpd -r console --format 'javascript,typescript' ./src",
     "build": "webpack --config webpack.prod.js",

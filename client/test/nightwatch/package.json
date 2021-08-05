@@ -10,9 +10,9 @@
     "e2e:prod": "dotenv -e ../../env -- nightwatch --env prod"
   },
   "devDependencies": {
-    "chromedriver": "90.0.0",
-    "mocha": "8.4.0",
-    "nightwatch": "1.6.3"
+    "chromedriver": "92.0.1",
+    "mocha": "9.0.3",
+    "nightwatch": "1.7.8"
   },
   "engines": {
     "node": ">14.x",

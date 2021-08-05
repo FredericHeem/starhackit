@@ -253,7 +253,7 @@ const updateOvh = ({ client, infraName }) => {
 };
 
 // TEST
-describe.only("Infra", function () {
+describe.skip("Infra", function () {
   before(function (client, done) {
     this.timeout(40e3);
     client.page.login().login(done);

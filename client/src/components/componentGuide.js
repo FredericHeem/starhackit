@@ -1,22 +1,19 @@
 import React, { createElement as h } from "react";
 import styled from "@emotion/styled";
-import spinners from "./spinner/spinner.examples";
-import alerts from "./alert/alert.examples";
-import panels from "./panel/panel.examples";
 
-export default context => {
+export default (context) => {
   const { tr, parts } = context;
 
   const ViewContainer = styled("div")({
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   });
 
   const GuideView = styled("div")({
     //height: "100vh",
     display: "flex",
-    margin: 20
+    margin: 20,
   });
 
   const Content = styled("div")({
@@ -40,9 +37,6 @@ export default context => {
           <ViewContainer>
             {h(buttons(context))}
             {h(inputs(context))}
-            {h(alerts(context))}
-            {h(spinners(context))}
-            {h(panels(context))}
           </ViewContainer>
           <h2>{tr.t("Authentication")}</h2>
           {/*<ViewContainer>

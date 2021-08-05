@@ -1,14 +1,14 @@
 import React, { createElement as h } from "react";
 import { observer } from "mobx-react";
 import navBar from "components/navbar";
-import footer from "components/footer";
+import footer from "./footer";
 import RootView from "components/RootView";
 import MainView from "components/MainView";
 import authBar from "components/authBar";
 
-export default context => {
+export default (context) => {
   const {
-    alertStack: { View: AlertStack }
+    alertStack: { View: AlertStack },
   } = context;
 
   const NavBar = navBar(context);
@@ -26,6 +26,6 @@ export default context => {
 
   return ({ children }) =>
     h(observer(Layout), {
-      children
+      children,
     });
 };

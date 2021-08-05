@@ -14,7 +14,7 @@
     "@grucloud/provider-aws": "^1.14.1",
     "rsmq": "^0.12.3",
     "rsmq-promise-native": "0.0.4",
-    "rubico": "^1.6.23"
+    "rubico": "^1.6.27"
   },
   "devDependencies": {
     "mocha": "^8.3.2"

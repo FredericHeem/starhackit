@@ -14,14 +14,14 @@
 
   "test_settings": {
     "default": {
-      "launch_url": "http://localhost:8080",
+      "launch_url": "http://localhost:8080/user",
       "desiredCapabilities": {
         "browserName": "chrome",
         "webStorageEnabled": true
       }
     },
     "prod": {
-      "launch_url": "https://app.grucloud.com",
+      "launch_url": "https://starhack.it/user",
       "desiredCapabilities": {
         "browserName": "chrome",
         "webStorageEnabled": true

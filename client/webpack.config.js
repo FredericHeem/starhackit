@@ -25,6 +25,7 @@ module.exports = function (options) {
             { from: /^\/user/, to: "/user/index.html" },
             { from: /^\/admin/, to: "/admin/index.html" },
             { from: /^\/public/, to: "/public/index.html" },
+            { from: /^\/infra/, to: "/infra/index.html" },
           ],
         },
         stats: "minimal",
@@ -39,25 +40,25 @@ module.exports = function (options) {
         publicPath: "/",
       },
       plugins: [
-        // new HtmlWebpackPlugin({
-        //   template: "src/index.ejs",
-        //   title: pkg.title,
-        //   chunks: ["micro"],
-        //   description: pkg.description,
-        //   filename: "index.html",
-        // }),
-        // new HtmlWebpackPlugin({
-        //   template: "src/index.ejs",
-        //   title: pkg.title,
-        //   chunks: ["public"],
-        //   description: pkg.description,
-        //   filename: "public/index.html",
-        // }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          chunks: ["micro"],
+          description: pkg.description,
+          filename: "index.html",
+        }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          chunks: ["public"],
+          description: pkg.description,
+          filename: "public/index.html",
+        }),
         new HtmlWebpackPlugin({
           template: "src/index.ejs",
           title: pkg.title,
           chunks: ["user"],
-          filename: "index.html",
+          filename: "user/index.html",
           description: pkg.description,
         }),
         new HtmlWebpackPlugin({
@@ -65,6 +66,12 @@ module.exports = function (options) {
           title: pkg.title,
           chunks: ["admin"],
           filename: "admin/index.html",
+        }),
+        new HtmlWebpackPlugin({
+          template: "src/index.ejs",
+          title: pkg.title,
+          chunks: ["infra"],
+          filename: "infra/index.html",
         }),
 
         new webpack.DefinePlugin({

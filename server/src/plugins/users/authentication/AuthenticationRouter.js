@@ -7,8 +7,9 @@ const config = require("config");
 
 let log = require("logfilename")(__filename);
 
-const failureRedirect = "/auth/login";
-const successRedirect = "/auth/login";
+//TODO configure
+const failureRedirect = "/user/auth/login";
+const successRedirect = "/user/auth/login";
 
 const errorMsg = (err, info) => {
   if (info && info.message) {
@@ -20,36 +21,38 @@ const errorMsg = (err, info) => {
   }
 };
 
-const localAuthCB = (ctx) => (err, user, info = {}) => {
-  const jwtConfig = _.defaults(config.jwt, { secret: "secret" });
-  log.debug(
-    "localAuthCB %s, %s, %s",
-    JSON.stringify(user),
-    JSON.stringify(info),
-    JSON.stringify(err)
-  );
-  if (user) {
-    ctx.body = {
-      user,
-      token: jwt.sign(user, jwtConfig.secret, jwtConfig.options),
-    };
-    ctx.login(user, (error) => {
-      if (error) {
-        log.error("login ", error);
-        throw error;
-      } else {
-        log.debug("login ok ");
-      }
-    });
-  } else {
-    ctx.status = 401;
-    ctx.body = {
-      error: {
-        message: errorMsg(err, info),
-      },
-    };
-  }
-};
+const localAuthCB =
+  (ctx) =>
+  (err, user, info = {}) => {
+    const jwtConfig = _.defaults(config.jwt, { secret: "secret" });
+    log.debug(
+      "localAuthCB %s, %s, %s",
+      JSON.stringify(user),
+      JSON.stringify(info),
+      JSON.stringify(err)
+    );
+    if (user) {
+      ctx.body = {
+        user,
+        token: jwt.sign(user, jwtConfig.secret, jwtConfig.options),
+      };
+      ctx.login(user, (error) => {
+        if (error) {
+          log.error("login ", error);
+          throw error;
+        } else {
+          log.debug("login ok ");
+        }
+      });
+    } else {
+      ctx.status = 401;
+      ctx.body = {
+        error: {
+          message: errorMsg(err, info),
+        },
+      };
+    }
+  };
 
 async function verifyLogin(models, username, password) {
   log.debug("verifyLogin username: ", username);

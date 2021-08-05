@@ -6,7 +6,7 @@ describe("Login", function () {
     client.page
       .login()
       .navigate()
-      .waitForElementVisible(".login-page", 5000)
+      .waitForElementVisible("@loginPage", 5000)
       .setValue("@emailInput", "alice")
       .click("@submit")
       .waitForElementVisible(".username", 5000)
@@ -19,7 +19,7 @@ describe("Login", function () {
     client.page
       .login()
       .navigate()
-      .waitForElementVisible(".login-page", 5000)
+      .waitForElementVisible("@loginPage", 5000)
       .setValue("@emailInput", "alice")
       .setValue("@passwordInput", "pass")
       .click("@submit")
@@ -33,20 +33,20 @@ describe("Login", function () {
     client.page
       .login()
       .navigate()
-      .waitForElementVisible(".login-page", 5000)
+      .waitForElementVisible("@loginPage", 5000)
       .setValue("@passwordInput", "password")
       .click("@submit")
       .waitForElementVisible(".password", 5000)
       .assert.containsText(
         ".local-login-form",
-        "Username must be at least 3 characters"
+        "Username must be at least 2 characters"
       );
   });
   it("login with incorrect password", function (client) {
     client.page
       .login()
       .navigate()
-      .waitForElementVisible(".login-page", 5000)
+      .waitForElementVisible("@loginPage", 5000)
       .setValue("@emailInput", "alice")
       .setValue("@passwordInput", "wrongpassword")
       .click("@submit")
@@ -57,7 +57,7 @@ describe("Login", function () {
     client.page
       .login()
       .navigate()
-      .waitForElementVisible("div[data-login-page=true]", 5000)
+      .waitForElementVisible("@loginPage", 5000)
       .setValue("@emailInput", "alice")
       .setValue("@passwordInput", "password")
       .click("@submit")

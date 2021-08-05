@@ -42,5 +42,11 @@
         "pass": "11111111111111111111"
       }
     }
+  },
+  "infra": {
+    "docker": { "baseURL": "http://localhost/v1.40" },
+    "localOutputPath": "output",
+    "localInputPath": "input",
+    "containerImage": "fredericheem/grucloud-cli:v1.23.0"
   }
 }

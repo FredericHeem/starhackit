@@ -29,6 +29,9 @@ const config = {
 describe("InfraPushCode", function () {
   let client;
   before(async function () {
+    if (!testMngr.app.config.infra) {
+      this.skip();
+    }
     assert(GIT_USERNAME);
     assert(PERSONAL_ACCESS_TOKEN);
 

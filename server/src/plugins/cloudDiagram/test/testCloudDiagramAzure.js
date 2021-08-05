@@ -53,10 +53,10 @@ const config = {
 describe("CloudDiagram Azure", function () {
   let client;
   before(async function () {
-    if (!TENANT_ID) {
-      return this.skip();
+    if (!testMngr.app.config.infra) {
+      this.skip();
     }
-
+    assert(TENANT_ID);
     assert(SUBSCRIPTION_ID);
     assert(GIT_USERNAME);
     assert(PERSONAL_ACCESS_TOKEN);

@@ -37,8 +37,8 @@ const config = {
 describe("CloudDiagramAws", function () {
   let client;
   before(async function () {
-    if (!AWSAccessKeyId) {
-      return this.skip();
+    if (!testMngr.app.config.infra) {
+      this.skip();
     }
     assert(AWS_REGION);
     assert(GIT_USERNAME);
@@ -89,7 +89,10 @@ describe("CloudDiagramAws", function () {
 
 describe("CloudDiagram No Auth", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.infra) {
+      this.skip();
+    }
     try {
       client = testMngr.client("bob");
     } catch (error) {

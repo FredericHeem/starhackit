@@ -66,7 +66,11 @@ export default function (context) {
         const response = await this.opUpdate.fetch(payload);
         merge(profileStore, response);
         context.alertStack.add(
-          <Alert.Info message={tr.t("Profile updated")} />
+          <Alert
+            data-alert-profile-updated
+            severity="success"
+            message={tr.t("Profile updated")}
+          />
         );
       }) /*,
       uploadPicture: action(async event => {
@@ -79,12 +83,12 @@ export default function (context) {
         try {
           await rest.upload("document/profile_picture", data);
           context.alertStack.add(
-            <Alert.Info message={tr.t("Picture uploaded")} />
+            <Alert severity="success" message={tr.t("Picture uploaded")} />
           );
         } catch (error) {
           console.error("uploadPicture ", error);
           context.alertStack.add(
-            <Alert.Danger message={tr.t("Cannot upload file")} />
+            <Alert severity="error" message={tr.t("Cannot upload file")} />
           );
         }
       })*/,

@@ -14,7 +14,10 @@ const payloadUpdate = {
 
 describe("GitCredential", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.infra) {
+      this.skip();
+    }
     client = testMngr.client("alice");
     await client.login();
   });

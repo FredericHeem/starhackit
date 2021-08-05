@@ -8,15 +8,18 @@ const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
 const uuid = require("uuid");
+const testMngr = require("test/testManager");
+
 const { gitPush, gitPushInventory } = require("../gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
 
 describe("Git", function () {
   before(async function () {
-    if (!PERSONAL_ACCESS_TOKEN) {
-      return this.skip();
+    if (!testMngr.app.config.infra) {
+      this.skip();
     }
+    assert(PERSONAL_ACCESS_TOKEN);
     assert(GIT_USERNAME);
     assert(GIT_REPOSITORY);
   });

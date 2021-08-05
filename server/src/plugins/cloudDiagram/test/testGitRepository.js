@@ -5,7 +5,6 @@ const { apiTestCrud } = require("./apiTestUtils");
 const endpoint = "v1/git_repository";
 
 const { GIT_REPOSITORY } = process.env;
-assert(GIT_REPOSITORY);
 const payloadCreate = {
   url: GIT_REPOSITORY,
 };
@@ -16,7 +15,11 @@ const payloadUpdate = {
 
 describe("GitRepository", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.infra) {
+      this.skip();
+    }
+    assert(GIT_REPOSITORY);
     client = testMngr.client("alice");
     await client.login();
   });

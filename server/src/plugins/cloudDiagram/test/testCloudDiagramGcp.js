@@ -39,6 +39,9 @@ let config;
 describe("CloudDiagram GCP", function () {
   let client;
   before(async function () {
+    if (!testMngr.app.config.infra) {
+      this.skip();
+    }
     client = testMngr.client("alice");
     await client.login();
     try {

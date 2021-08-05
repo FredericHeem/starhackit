@@ -5,7 +5,7 @@ const { githubUserName, gitHubPassword } = process.env;
 const { googleUserName, googlePassword } = process.env;
 const { facebookUserName, facebookPassword } = process.env;
 
-describe("Social Login", function () {
+describe.skip("Social Login", function () {
   afterEach(function (client, done) {
     client.page.logout().logout(done);
   });

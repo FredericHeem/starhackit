@@ -11,7 +11,7 @@ import table from "components/table";
 
 const debug = new Debug("restTableComponent");
 
-import "react-pagify/style.css";
+//import "react-pagify/style.css";
 
 export default (context, store, { columns }) => {
   const { tr } = context;

@@ -20,7 +20,7 @@ const config = {
     project: {
       url: "https://github.com/grucloud/grucloud/",
       title: "EC2 an instance with public address",
-      directory: "examples/aws/ec2",
+      directory: "examples/aws/ec2/ec2",
       branch: "main",
     },
   },

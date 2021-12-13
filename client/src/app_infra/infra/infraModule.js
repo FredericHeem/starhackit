@@ -23,7 +23,7 @@ export default function (context) {
       get: action(async function () {
         const response = await this.opGet.fetch();
         if (isEmpty(response)) {
-          context.history.push("infra/create");
+          context.history.push("/infra/create");
         }
         console.log(response);
       }),

@@ -1,7 +1,7 @@
 const assert = require("assert");
 const testMngr = require("test/testManager");
 
-describe("PostgresSchema", function () {
+describe.skip("PostgresSchema", function () {
   let client;
   before(async function () {});
   beforeEach(async function () {

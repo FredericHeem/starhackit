@@ -5,7 +5,10 @@ const { sendToUser } = require("./sendNotification");
 describe("Expo Push Notification", function () {
   let client;
   const models = testMngr.app.data.models();
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.expo) {
+      this.skip();
+    }
     client = testMngr.client("alice");
     await client.login();
   });

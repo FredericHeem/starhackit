@@ -3,7 +3,10 @@ const testMngr = require("test/testManager");
 
 describe("Ticket No Auth", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.ticket) {
+      this.skip();
+    }
     client = testMngr.client("bob");
   });
   after(async () => {});
@@ -30,7 +33,10 @@ describe("Ticket No Auth", function () {
 
 describe("Ticket", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.ticket) {
+      this.skip();
+    }
     client = testMngr.client("alice");
     await client.login();
   });

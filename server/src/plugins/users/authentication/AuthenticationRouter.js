@@ -9,7 +9,7 @@ let log = require("logfilename")(__filename);
 
 //TODO configure
 const failureRedirect = "/user/auth/login";
-const successRedirect = "/user/auth/login";
+const successRedirect = "/infra/";
 
 const errorMsg = (err, info) => {
   if (info && info.message) {

@@ -34,10 +34,15 @@ const models = [
   "GitRepositoryModel",
 ];
 
-const dockerDefault = {
-  baseURL: "http://localhost/v1.40",
-  socketPath: "/var/run/docker.sock",
-  timeout: 15e3,
+const configDefault = {
+  containerImage: "fredericheem/grucloud-cli:v1.23.0",
+  localOutputPath: "output",
+  localInputPath: "input",
+  docker: {
+    baseURL: "http://localhost/v1.40",
+    socketPath: "/var/run/docker.sock",
+    timeout: 15e3,
+  },
 };
 
 module.exports = (app) => {
@@ -46,9 +51,13 @@ module.exports = (app) => {
     models
   );
 
+  app.config = assign({
+    infra: pipe([get("infra", {}), defaultsDeep(configDefault)]),
+  })(app.config);
+
   const dockerClient = pipe([
-    () => app.config.infra.docker,
-    defaultsDeep(dockerDefault),
+    () => app.config,
+    get("infra.docker"),
     DockerClient,
   ])();
 
@@ -61,14 +70,14 @@ module.exports = (app) => {
   GitRepositoryRestApi(app);
 
   return {
-    start: async () => {
-      const image = app.config.infra.containerImage;
-      log.debug(`pull image: ${image}`);
-      await dockerClient.image.pull({ image });
-      log.debug(`pulled`);
-      await fs.mkdir("input", { recursive: true });
-    },
-
+    start: pipe([
+      () => ({ image: app.config.infra.containerImage }),
+      tap(({ image }) => {
+        assert(image);
+      }),
+      dockerClient.image.pull,
+      () => fs.mkdir(app.config.infra.localInputPath, { recursive: true }),
+    ]),
     stop: async () => {},
   };
 };

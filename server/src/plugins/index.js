@@ -5,11 +5,11 @@ const _ = require("lodash");
 const pluginsName = [
   "version",
   "users",
-  "dbSchema",
-  "document",
-  "ticket",
-  "expoPush",
-  //"cloudDiagram",
+  //"dbSchema",
+  //"document",
+  //"ticket",
+  //"expoPush",
+  "cloudDiagram",
 ];
 
 function Plugins(app) {

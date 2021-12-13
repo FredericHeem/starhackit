@@ -5,7 +5,10 @@ const FormData = require("form-data");
 
 describe("Document No Auth", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.document) {
+      this.skip();
+    }
     client = testMngr.client("bob");
   });
   after(async () => {});
@@ -24,7 +27,10 @@ describe("Document No Auth", function () {
 
 describe("Document", function () {
   let client;
-  before(async () => {
+  before(async function () {
+    if (!testMngr.app.config.document) {
+      this.skip();
+    }
     client = testMngr.client("alice");
     await client.login();
   });

@@ -1,9 +1,9 @@
 import React, { createElement as h } from "react";
-import * as Table from "reactabular-table";
+//import * as Table from "reactabular-table";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import Paginator from "react-pagify";
-import segmentize from "segmentize";
+//import Paginator from "react-pagify";
+//import segmentize from "segmentize";
 import spinner from "mdlean/lib/spinner";
 import alertAjax from "components/alertAjax";
 import Debug from "debug";
@@ -38,7 +38,7 @@ export default (context, store, { columns }) => {
     return (
       <div className="controls">
         <div className="pagination">
-          <Paginator.Context
+          {/* <Paginator.Context 
             className="pagify-pagination"
             segments={segmentize({
               page: pagination.page,
@@ -76,7 +76,7 @@ export default (context, store, { columns }) => {
             <Paginator.Button page={pagination.page + 1}>
               {tr.t("Next")}
             </Paginator.Button>
-          </Paginator.Context>
+          </Paginator.Context>*/}
         </div>
       </div>
     );
@@ -89,10 +89,11 @@ export default (context, store, { columns }) => {
     return (
       <div>
         <Pagination />
-        <TableProvider columns={columns} style={{ overflowX: "auto" }}>
+        <div>TODO</div>
+        {/* <TableProvider columns={columns} style={{ overflowX: "auto" }}>
           <Table.Header />
           <Table.Body onRow={onRow} rows={data} rowKey="id" />
-        </TableProvider>
+        </TableProvider> */}
       </div>
     );
   });

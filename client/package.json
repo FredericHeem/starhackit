@@ -51,10 +51,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "4.2.0",
-    "react-pagify": "2.4.0",
-    "reactabular-table": "8.14.0",
     "rubico": "1.6.25",
-    "segmentize": "0.4.1",
     "universal-router": "9.0.1",
     "validate.js": "0.13.1"
   },

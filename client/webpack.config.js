@@ -14,11 +14,8 @@ module.exports = function (options) {
     {
       target: "web",
       devServer: {
-        contentBase: path.join(__dirname, "src"),
-        publicPath: "/",
         open: true,
         hot: true,
-        inline: true,
         historyApiFallback: {
           rewrites: [
             { from: /^\/$/, to: "/index.html" },
@@ -28,7 +25,6 @@ module.exports = function (options) {
             { from: /^\/infra/, to: "/infra/index.html" },
           ],
         },
-        stats: "minimal",
         proxy: {
           "/api/v1/*": "http://localhost:9000",
         },

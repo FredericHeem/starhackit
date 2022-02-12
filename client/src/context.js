@@ -5,8 +5,8 @@ import formatter from "utils/formatter";
 import alertStackCreate from "components/alertStack";
 import Rest from "mdlean/lib/utils/rest";
 import palette from "./palette";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { red, teal, orange, blue } from "@material-ui/core/colors";
+import { createTheme } from "@mui/material/styles";
+import { red, teal, orange, blue } from "@mui/material/colors";
 
 import intl from "utils/intl";
 import I18n from "utils/i18n";
@@ -18,7 +18,7 @@ export default async (option = {}) => {
   const context = {
     palette: palette(), //TODO REMOVE
     colors: { red, teal, orange, blue },
-    theme: createMuiTheme({
+    theme: createTheme({
       palette: {
         primary: { main: "#3f51b5" },
         secondary: { main: "#f50057" },

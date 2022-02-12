@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import XHR from "i18next-xhr-backend";
+import HttpApi from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Debug from "debug";
 
@@ -17,29 +17,29 @@ const languagesDetectorOption = {
   lookupLocalStorage: "i18nextLng",
 
   // cache user language on
-  caches: ["localStorage", "cookie"]
+  caches: ["localStorage", "cookie"],
 
   // optional expire and domain for set cookie
   //cookieMinutes: 10,
   //cookieDomain: 'myDomain'
 };
 
-export default config => ({
+export default (config) => ({
   load() {
     debug("load");
     return new Promise((resolve /*, reject*/) => {
-      i18next.on("languageChanged", function(lng) {
+      i18next.on("languageChanged", function (lng) {
         debug("languageChanged to ", lng);
         resolve(lng);
       });
 
-      i18next.on("initialized", function(option) {
+      i18next.on("initialized", function (option) {
         debug("initialized:  ", option);
       });
 
       i18next
         .use(LanguageDetector)
-        .use(XHR)
+        .use(HttpApi)
         .init(
           {
             fallbackLng: "en",
@@ -48,11 +48,11 @@ export default config => ({
             defaultNS: "common",
             debug: config.debug,
             interpolation: {
-              escapeValue: false // not needed for react!!
+              escapeValue: false, // not needed for react!!
             },
-            detection: languagesDetectorOption
+            detection: languagesDetectorOption,
           },
-          err => {
+          (err) => {
             if (err) {
               debug("error loading i18n: ", err);
             } else {
@@ -61,5 +61,5 @@ export default config => ({
           }
         );
     });
-  }
+  },
 });

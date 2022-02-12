@@ -16,7 +16,7 @@ export const PROJECTS = {
       description: "Deploy a kubernetes cluster with EKS",
       url,
       branch,
-      directory: "packages/modules/aws/eks/example",
+      directory: "examples/aws/EKS/eks-simple",
     },
     {
       title: "Route53 TXT Record",
@@ -33,7 +33,7 @@ export const PROJECTS = {
         "Deploy a virtual machine with a public address, protected by a firewall",
       url,
       branch,
-      directory: "examples/azure",
+      directory: "examples/azure/Compute/vm",
     },
   ],
   google: [

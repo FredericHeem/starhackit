@@ -7,11 +7,11 @@ const webpackDevConfig = {
   overrides: {
     mode: "development",
     entry: {
-      micro: ["webpack-hud", "./src/app_micro/index.js"],
-      public: ["webpack-hud", "./src/app_public/index.js"],
-      user: ["webpack-hud", "./src/app_user/index.js"],
-      admin: ["webpack-hud", "./src/app_admin/index.js"],
-      infra: ["webpack-hud", "./src/app_infra/index.js"],
+      micro: ["./src/app_micro/index.js"],
+      public: ["./src/app_public/index.js"],
+      user: ["./src/app_user/index.js"],
+      admin: ["./src/app_admin/index.js"],
+      infra: ["./src/app_infra/index.js"],
     },
   },
 

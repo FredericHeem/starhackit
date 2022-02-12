@@ -1,4 +1,4 @@
-FROM node:14-alpine as build
+FROM node:16-alpine as build
 
 ARG BUILD_VERSION
 ENV BUILD_VERSION $BUILD_VERSION

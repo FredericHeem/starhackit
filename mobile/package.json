@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "10.0.5",
-    "axios": "0.19.0",
+    "axios": "0.21.2",
     "bignumber.js": "9.0.0",
     "expo": "34.0.4",
     "glamorous-native": "1.4.2",

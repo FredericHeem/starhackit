@@ -2,6 +2,7 @@ FROM node:16-alpine as build
 
 ARG BUILD_VERSION
 ENV BUILD_VERSION $BUILD_VERSION
+ENV PUPPETEER_SKIP_DOWNLOAD true
 
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
@@ -11,7 +12,6 @@ WORKDIR /app
 
 COPY package.json .
 #COPY package-lock.json .
-
 
 RUN npm install
 COPY . .

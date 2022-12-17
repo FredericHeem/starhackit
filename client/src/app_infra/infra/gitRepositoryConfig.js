@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-import { get, or, pipe, tap, switchCase, tryCatch, get, eq } from "rubico";
+import { get, or, pipe, tap, switchCase, tryCatch, eq } from "rubico";
 import { isEmpty } from "rubico/x";
 import validate from "validate.js";
 

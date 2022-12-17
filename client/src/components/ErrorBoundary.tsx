@@ -1,13 +1,17 @@
 import React, { createElement as h } from "react";
 
-export default class ErrorBoundary extends React.Component {
+interface IProps {
+  children: any;
+}
+
+export default class ErrorBoundary extends React.Component<IProps> {
   public state = { error: null, info: null };
 
   public componentDidCatch(error, info) {
     this.setState({
       hasError: true,
       error: error.toString(),
-      info: JSON.stringify(info, null, 4)
+      info: JSON.stringify(info, null, 4),
     });
   }
 

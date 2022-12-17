@@ -5,8 +5,6 @@ import { observer } from "mobx-react";
 import validate from "validate.js";
 import Debug from "debug";
 
-
-
 import button from "mdlean/lib/button";
 import formGroup from "mdlean/lib/formGroup";
 import input from "mdlean/lib/input";
@@ -20,7 +18,7 @@ import alertAjax from "components/alertAjax";
 
 const debug = new Debug("resetPasword");
 
-export default context => {
+export default (context) => {
   const { tr, rest } = context;
 
   const FormGroup = formGroup(context);
@@ -35,17 +33,17 @@ export default context => {
     step: "SetPassword",
     password: "",
     errors: {},
-    op: asyncOpCreate(payload =>
+    op: asyncOpCreate((payload) =>
       rest.post("auth/verify_reset_password_token", payload)
     ),
-    resetPassword: action(async function(token) {
+    resetPassword: action(async function (token) {
       this.errors = {};
       const payload = {
         password: this.password,
-        token
+        token,
       };
       const constraints = {
-        password: rules.password
+        password: rules.password,
       };
       const vErrors = validate(payload, constraints);
       if (vErrors) {
@@ -58,10 +56,9 @@ export default context => {
       } catch (errors) {
         console.error("resetPassword ", errors);
       }
-    })
-  }),
-  
-  
+    }),
+  });
+
   const SetNewPasswordDone = observer(({ store }) => {
     console.log("SetNewPasswordDone ", store.op);
     if (!get(store.op, "data.success")) {
@@ -90,7 +87,7 @@ export default context => {
         <FormGroup className="password">
           <PasswordInput
             id="password"
-            onChange={e => {
+            onChange={(e) => {
               store.password = e.target.value;
             }}
             label={tr.t("Password")}
@@ -111,7 +108,7 @@ export default context => {
     );
   });
 
-  const  ResetPasswordForm = observer(({ store, params }) => {
+  const ResetPasswordForm = observer(({ store, params }) => {
     // console.log("ResetPasswordForm ", store.op);
     return (
       <Page className="reset-password-page">
@@ -126,7 +123,7 @@ export default context => {
         </Paper>
       </Page>
     );
-  })
+  });
 
-  return props => <ResetPasswordForm store={store} {...props}/>;
+  return (props) => <ResetPasswordForm store={store} {...props} />;
 };

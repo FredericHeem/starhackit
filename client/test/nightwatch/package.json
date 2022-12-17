@@ -10,16 +10,16 @@
     "e2e:prod": "dotenv -e ../../env -- nightwatch --env prod"
   },
   "devDependencies": {
-    "chromedriver": "97.0.0",
-    "mocha": "9.2.0",
-    "nightwatch": "2.0.7"
+    "chromedriver": "108.0.0",
+    "mocha": "10.2.0",
+    "nightwatch": "2.5.4"
   },
   "engines": {
     "node": ">14.x",
     "npm": ">6.x"
   },
   "dependencies": {
-    "dotenv": "^16.0.0",
-    "dotenv-cli": "^5.0.0"
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^6.0.0"
   }
 }

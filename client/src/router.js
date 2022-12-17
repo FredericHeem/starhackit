@@ -1,6 +1,7 @@
 import React, { createElement as h } from "react";
 import Router from "universal-router";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
+
 import { parse } from "qs";
 import asyncView from "components/AsyncView";
 import ErrorBoundary from "components/ErrorBoundary";
@@ -41,7 +42,6 @@ export default ({ context, routes, layout }) => {
       });
     } catch (error) {
       console.error("Routing exception:", error, "route", location.pathname); // eslint-disable-line no-console
-      console.log(router);
       const component = h(asyncView(context), {
         getModule: () => import("./components/notFound"),
       });
@@ -54,13 +54,13 @@ export default ({ context, routes, layout }) => {
     const Layout = layoutOverride || layout(context);
 
     if (component) {
-      context.rootInstance = render(
+      const root = createRoot(document.getElementById("application"));
+      root.render(
         <ErrorBoundary>
           <Layout>{component}</Layout>
-        </ErrorBoundary>,
-        document.getElementById("application"),
-        () => onRenderComplete(title, location)
+        </ErrorBoundary>
       );
+      onRenderComplete(title, location);
     }
   }
 

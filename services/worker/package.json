@@ -17,6 +17,6 @@
     "rubico": "^1.6.27"
   },
   "devDependencies": {
-    "mocha": "^8.3.2"
+    "mocha": "^10.2.0"
   }
 }

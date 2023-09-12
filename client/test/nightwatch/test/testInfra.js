@@ -156,8 +156,8 @@ const configAzure = ({ client }) => {
   client.page
     .infraCreate()
     .waitForElementVisible("form[data-infra-create=true]", timeout)
-    .setValue("@inputSubscriptionId", process.env.SUBSCRIPTION_ID)
-    .setValue("@inputTenantId", process.env.TENANT_ID)
+    .setValue("@inputSubscriptionId", process.env.AZURE_SUBSCRIPTION_ID)
+    .setValue("@inputTenantId", process.env.AZURE_TENANT_ID)
     .setValue("@inputAppId", process.env.APP_ID)
     .setValue("@inputPassword", process.env.PASSWORD)
     .click("@submit")

@@ -43,6 +43,7 @@ exports.contextHandleError = (error, context) =>
       console.error(error);
     }),
     () => {
-      throw error;
+      context.status = 500;
+      context.body = error.toString();
     },
   ])();

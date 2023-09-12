@@ -2,9 +2,9 @@
 
 This project can use the most popular SQL databases such as PostgreSQL, MySQL, Oracle, MSSQL and Sqlite. This is achieved with [Sequelize](http://docs.sequelizejs.com/en/latest/), the most popular [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping) for Node.js
 
-## Install and Start 
+## Install and Start
 
-Start the postgres database asnd other services:
+Start the postgres database and other services:
 
     $ npm run docker:up
 
@@ -37,7 +37,7 @@ Run the following command to migrate the database:
 
 [sequelize-cli](https://github.com/sequelize/cli) helps to manage the database migration and rollback.
 
-By using the *model:create* command, a new sequelize model is created alongside its migration script for database update and rollback
+By using the _model:create_ command, a new sequelize model is created alongside its migration script for database update and rollback
 
     $ ./node_modules/.bin/sequelize model:create --name User --attributes "name:text, password:text"
 
@@ -46,7 +46,8 @@ By using the *model:create* command, a new sequelize model is created alongside 
     $ ./node_modules/.bin/sequelize model:create --name PasswordReset --attributes "user_id:integer, token:string(32)"
 
 2 files will be generated:
-  * the javascript sequelize model in the *models* directory
-  * the sql migration script in the *migrations* directory
 
-Eventually change the sql table name to *underscore_case*
+- the javascript sequelize model in the _models_ directory
+- the sql migration script in the _migrations_ directory
+
+Eventually change the sql table name to _underscore_case_

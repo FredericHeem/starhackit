@@ -1,18 +1,18 @@
 const assert = require("assert");
-const { pipe, tap, tryCatch } = require("rubico");
-const { first } = require("rubico/x");
+const { pipe, tap } = require("rubico");
 const testMngr = require("test/testManager");
 const { testInfra } = require("./apiTestUtils");
 
 const {
-  TENANT_ID,
-  SUBSCRIPTION_ID,
-  APP_ID,
-  PASSWORD,
+  AZURE_TENANT_ID,
+  AZURE_SUBSCRIPTION_ID,
+  AZURE_CLIENT_ID,
+  AZURE_CLIENT_SECRET,
   LOCATION,
   GIT_REPOSITORY_AZURE,
+  GIT_USERNAME,
+  PERSONAL_ACCESS_TOKEN,
 } = process.env;
-const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN } = process.env;
 
 const config = {
   infra: {
@@ -20,23 +20,23 @@ const config = {
     providerType: "azure",
     providerName: "azure",
     providerAuth: {
-      TENANT_ID,
-      SUBSCRIPTION_ID,
-      APP_ID,
-      PASSWORD,
+      AZURE_TENANT_ID,
+      AZURE_SUBSCRIPTION_ID,
+      AZURE_CLIENT_ID,
+      AZURE_CLIENT_SECRET,
       LOCATION,
     },
     project: {
       url: "https://github.com/grucloud/grucloud/",
       title: "Instance with public address in a network",
-      directory: "examples/azure/vm",
+      directory: "examples/azure/Compute/vm",
       branch: "main",
     },
     providerAuth: {
-      TENANT_ID,
-      SUBSCRIPTION_ID,
-      APP_ID,
-      PASSWORD,
+      AZURE_TENANT_ID,
+      AZURE_SUBSCRIPTION_ID,
+      AZURE_CLIENT_ID,
+      AZURE_CLIENT_SECRET,
       LOCATION,
     },
   },
@@ -56,8 +56,12 @@ describe("CloudDiagram Azure", function () {
     if (!testMngr.app.config.infra) {
       this.skip();
     }
-    assert(TENANT_ID);
-    assert(SUBSCRIPTION_ID);
+
+    assert(AZURE_TENANT_ID);
+    assert(AZURE_SUBSCRIPTION_ID);
+    assert(AZURE_CLIENT_ID);
+    assert(AZURE_CLIENT_SECRET);
+    assert(GIT_REPOSITORY_AZURE);
     assert(GIT_USERNAME);
     assert(PERSONAL_ACCESS_TOKEN);
 
@@ -73,6 +77,7 @@ describe("CloudDiagram Azure", function () {
         testInfra({ client, config }),
       ])();
     } catch (error) {
+      console.log(error);
       throw error;
     }
   });

@@ -6,22 +6,12 @@ const {
   tap,
   tryCatch,
   assign,
-  get,
-  eq,
   switchCase,
   map,
-  or,
   and,
-  not,
   filter,
 } = require("rubico");
-const {
-  isEmpty,
-  includes,
-  callProp,
-  identity,
-  defaultsDeep,
-} = require("rubico/x");
+const { isEmpty, includes, defaultsDeep } = require("rubico/x");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
 const fs = require("fs");

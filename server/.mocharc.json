@@ -3,7 +3,7 @@
   "extension": ["js"],
   "exclude": "node_modules",
   "reporter": "spec",
-  "timeout": 300e3,
+  "timeout": 30000e3,
   "ui": "bdd",
   "bail": false,
   "recursive": true

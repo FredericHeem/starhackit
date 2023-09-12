@@ -1,22 +1,6 @@
 const assert = require("assert");
-const {
-  pipe,
-  tap,
-  tryCatch,
-  assign,
-  get,
-  eq,
-  switchCase,
-  map,
-} = require("rubico");
-const {
-  isEmpty,
-  values,
-  callProp,
-  defaultsDeep,
-  identity,
-  forEach,
-} = require("rubico/x");
+const { pipe, tap, assign, get } = require("rubico");
+const { defaultsDeep, forEach } = require("rubico/x");
 const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
@@ -35,13 +19,13 @@ const models = [
 ];
 
 const configDefault = {
-  containerImage: "fredericheem/grucloud-cli:v1.23.0",
+  containerImage: "fredericheem/grucloud-cli:v12.6.2",
   localOutputPath: "output",
   localInputPath: "input",
   docker: {
-    baseURL: "http://localhost/v1.40",
+    baseURL: "http://localhost/v1.41",
     socketPath: "/var/run/docker.sock",
-    timeout: 15e3,
+    timeout: 3000e3,
   },
 };
 

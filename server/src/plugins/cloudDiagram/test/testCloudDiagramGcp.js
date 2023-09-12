@@ -1,6 +1,5 @@
 const assert = require("assert");
-const { pipe, tap, tryCatch } = require("rubico");
-const { first } = require("rubico/x");
+const { pipe, tap } = require("rubico");
 const { testInfra } = require("./apiTestUtils");
 
 let gcpCredentials;
@@ -42,6 +41,11 @@ describe("CloudDiagram GCP", function () {
     if (!testMngr.app.config.infra) {
       this.skip();
     }
+
+    assert(GIT_USERNAME);
+    assert(PERSONAL_ACCESS_TOKEN);
+    assert(GIT_REPOSITORY_GCP);
+
     client = testMngr.client("alice");
     await client.login();
     try {

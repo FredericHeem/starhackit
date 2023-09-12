@@ -14,8 +14,8 @@ const config = {
     providerName: "aws",
     project: {
       url: "https://github.com/grucloud/grucloud/",
-      title: "EC2 an instance with public address",
-      directory: "examples/aws/ec2/ec2",
+      title: "an EC2 instance with a public address",
+      directory: "examples/aws/EC2/Instance/ec2-vpc",
       branch: "main",
     },
   },

@@ -37,8 +37,8 @@ export const createStoreAzure = (
     }),
     get isDisabled() {
       return or([
-        pipe([get("SUBSCRIPTION_ID"), isEmpty]),
-        pipe([get("TENANT_ID"), isEmpty]),
+        pipe([get("AZURE_SUBSCRIPTION_ID"), isEmpty]),
+        pipe([get("AZURE_TENANT_ID"), isEmpty]),
         pipe([get("APP_ID"), isEmpty]),
         pipe([get("PASSWORD"), isEmpty]),
       ])(core.data);
@@ -102,26 +102,29 @@ export const azureFormContent = (context) => {
           <pre>az account show --query id -otsv</pre>
           <Input
             data-input-azure-subscription-id
-            value={store.data.SUBSCRIPTION_ID}
-            onChange={(event) => store.onChange("SUBSCRIPTION_ID", event)}
+            value={store.data.AZURE_SUBSCRIPTION_ID}
+            onChange={(event) => store.onChange("AZURE_SUBSCRIPTION_ID", event)}
             label={tr.t("Subscription Id")}
             error={
-              store.errors.SUBSCRIPTION_ID && store.errors.SUBSCRIPTION_ID[0]
+              store.errors.AZURE_SUBSCRIPTION_ID &&
+              store.errors.AZURE_SUBSCRIPTION_ID[0]
             }
           />
         </li>
         <li>
           <h3>Tenant ID</h3>
           <p>
-            Retrieve the <em>TENANT_ID</em> with the following command:{" "}
+            Retrieve the <em>AZURE_TENANT_ID</em> with the following command:{" "}
           </p>
           <pre>az account show</pre>
           <Input
             data-input-azure-tenant-id
-            value={store.data.TENANT_ID}
-            onChange={(e) => store.onChange("TENANT_ID", e)}
+            value={store.data.AZURE_TENANT_ID}
+            onChange={(e) => store.onChange("AZURE_TENANT_ID", e)}
             label={tr.t("Tenant Id")}
-            error={store.errors.TENANT_ID && store.errors.TENANT_ID[0]}
+            error={
+              store.errors.AZURE_TENANT_ID && store.errors.AZURE_TENANT_ID[0]
+            }
           />
         </li>
         <li>

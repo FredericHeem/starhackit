@@ -6,22 +6,12 @@ const {
   tap,
   tryCatch,
   assign,
-  get,
-  eq,
   switchCase,
   map,
-  or,
   and,
-  not,
   filter,
 } = require("rubico");
-const {
-  isEmpty,
-  includes,
-  callProp,
-  identity,
-  defaultsDeep,
-} = require("rubico/x");
+const { isEmpty, includes, defaultsDeep, when } = require("rubico/x");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
 const fs = require("fs");
@@ -70,7 +60,7 @@ const gitCloneOrPull = ({
   fs,
   http,
   dir,
-  gitRepository: { url, branch = "master" },
+  gitRepository: { url, branch = "main" },
   gitCredential,
   user,
 }) =>
@@ -132,27 +122,19 @@ const gitCloneOrPull = ({
 
 const getProject = ({ providerName, project }) =>
   pipe([
-    switchCase([
-      () => isEmpty(project),
+    tap(() => {
+      assert(providerName);
+    }),
+    () => project,
+    when(
+      isEmpty,
       pipe([
-        switchCase([
-          () => providerName === "aws",
-          () => "examples/aws/empty",
-          () => providerName === "google",
-          () => "examples/google/empty",
-          () => providerName === "azure",
-          () => "examples/azure/empty",
-          () => providerName === "ovh",
-          () => "examples/openstack/empty",
-        ]),
-        (directory) => ({
-          directory,
+        () => ({
+          directory: `packages/core/template/${providerName}`,
           url: "https://github.com/grucloud/grucloud/",
-          branch: "main",
         }),
-      ]),
-      () => project,
-    ]),
+      ])
+    ),
     defaultsDeep({ directory: "", branch: "main" }),
     tap((defaulted) => {
       assert(defaulted);

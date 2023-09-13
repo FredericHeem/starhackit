@@ -13,7 +13,7 @@
     "start": "NODE_PATH=src nodemon -e ts,js,graphql -x node src/index.js",
     "start:prod": "NODE_ENV=production node src/index.js",
     "test": "npm run mocha",
-    "mocha": "NODE_PATH=src dotenv -e ../env -- mocha --file test/setup.js 'src/**/test*.js' --exit",
+    "mocha": "NODE_PATH=src node --env-file env  node_modules/mocha/bin/_mocha --file test/setup.js 'src/**/test*.js' --exit",
     "mocha:watch": "npm run mocha -- --watch",
     "cover": "nyc npm run mocha",
     "lint": "eslint src",
@@ -37,7 +37,7 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:migrate"
   },
   "dependencies": {
-    "@grucloud/docker-axios": "10.0.0",
+    "@grucloud/docker-axios": "12.1.0",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",
     "bcryptjs": "2.4.3",
@@ -73,7 +73,7 @@
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
     "qs": "6.9.6",
-    "rubico": "1.6.30",
+    "rubico": "1.9.3",
     "sequelize": "6.5.0",
     "sequelize-cli": "6.2.0",
     "urijs": "1.19.6",
@@ -83,8 +83,6 @@
   "devDependencies": {
     "async": "3.2.0",
     "chai": "4.3.0",
-    "dotenv": "10.0.0",
-    "dotenv-cli": "4.0.0",
     "eslint": "7.20.0",
     "eslint-plugin-mocha": "8.0.0",
     "faker": "5.4.0",
@@ -120,6 +118,6 @@
     "all": true
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   }
 }

@@ -1,16 +1,6 @@
 const assert = require("assert");
-const uuid = require("uuid");
 
-const {
-  pipe,
-  tap,
-  tryCatch,
-  assign,
-  get,
-  eq,
-  switchCase,
-  map,
-} = require("rubico");
+const { pipe, tap, assign, get, eq, switchCase, map } = require("rubico");
 const { isEmpty, values, callProp, identity } = require("rubico/x");
 const fs = require("fs");
 const pfs = fs.promises;
@@ -114,20 +104,17 @@ exports.DiagramApi = (app) => {
           "--provider",
           provider,
           "--infra",
-          `iac_${provider}.js`,
-          "--all",
+          `/app/iac_${provider}.js`,
+          "--config",
+          `/app/input/config_${provider}.js`,
           "--graph",
           //"--default-exclude",
           "--types-exclude",
-          "IamBinding",
-          "--types-exclude",
-          "IamPolicy",
-          "--types-exclude",
           "ServiceAccount",
           "--json",
-          `output/${outputGcList}`,
+          `${outputGcList}`,
           "--dot-file",
-          `output/${outputDot}`,
+          `${outputDot}`,
           "--title",
           "",
         ],
@@ -154,7 +141,11 @@ exports.DiagramApi = (app) => {
         eq(provider, "google"),
         pipe([
           assign({
-            Cmd: ({ Cmd }) => [...Cmd, "--config", `input/config-${jobId}.js`],
+            Cmd: ({ Cmd }) => [
+              ...Cmd,
+              "--config",
+              `/app/input/config-${jobId}.js`,
+            ],
           }),
           tap(() =>
             writeGcpFiles({
@@ -186,6 +177,7 @@ exports.DiagramApi = (app) => {
               Cmd,
               Env,
               HostConfig,
+              WorkingDir: "/app/output",
             },
           }),
           tap((xxx) => {

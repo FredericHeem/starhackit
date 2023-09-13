@@ -1,6 +1,5 @@
 const assert = require("assert");
-const { pipe, tap, tryCatch, fork } = require("rubico");
-const { first } = require("rubico/x");
+const { pipe, tap, tryCatch } = require("rubico");
 
 const testMngr = require("test/testManager");
 const { testInfra } = require("./apiTestUtils");
@@ -19,8 +18,8 @@ const config = {
     },
     project: {
       url: "https://github.com/grucloud/grucloud/",
-      title: "EC2 an instance with public address",
-      directory: "examples/aws/ec2/ec2",
+      title: "An EC2 instance with a public address",
+      directory: "examples/aws/EC2/Instance/ec2-vpc",
       branch: "main",
     },
   },

@@ -84,7 +84,7 @@ describe("Git", function () {
       project: {
         url: "https://github.com/grucloud/grucloud/",
         title: "Deploy a kubernetes cluster with EKS",
-        directory: "packages/modules/aws/eks/example",
+        directory: "examples/aws/EKS/eks-simple",
         branch: "main",
       },
     };

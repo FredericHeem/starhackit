@@ -1,5 +1,4 @@
 const Axios = require("axios");
-const fs = require('fs');
 let log;
 
 class Client {
@@ -9,32 +8,31 @@ class Client {
     this.url = this.config.url || "http://localhost:9000/api/";
     this.axios = Axios.create({
       baseURL: this.url,
-      timeout: 30e3,
-      withCredentials: true
+      timeout: 3000e3,
+      withCredentials: true,
     });
   }
   _ops({ method, pathname, resCodes, formData, data }) {
-    let headers = {
-    }
+    let headers = {};
 
     if (this.jwt) {
-      headers.Authorization = `Bearer ${this.jwt}`
+      headers.Authorization = `Bearer ${this.jwt}`;
     }
 
-    if(formData){
-      headers = {...headers, ...formData.getHeaders()}
+    if (formData) {
+      headers = { ...headers, ...formData.getHeaders() };
     }
     return this.axios
       .request({
         method,
         url: pathname,
         headers,
-        data
+        data,
       })
-      .then(res => {
+      .then((res) => {
         console.log(JSON.stringify(res.data, null, 4));
         return res.data;
-      })
+      });
   }
 
   get(pathname, param) {
@@ -58,7 +56,7 @@ class Client {
       method: "POST",
       pathname,
       resCodes: [200, 201, 204],
-      data
+      data,
     });
   }
   upload(pathname, formData) {
@@ -67,17 +65,17 @@ class Client {
       pathname,
       resCodes: [200, 201, 204],
       formData,
-      data: formData
+      data: formData,
     });
   }
   login(param) {
     let paramDefault = {
       email: this.config.email,
       username: this.config.username,
-      password: this.config.password
+      password: this.config.password,
     };
 
-    return this.post("v1/auth/login", param || paramDefault).then(body => {
+    return this.post("v1/auth/login", param || paramDefault).then((body) => {
       if (body.token) {
         log.debug("jwt token ", body.token);
         this.jwt = body.token;

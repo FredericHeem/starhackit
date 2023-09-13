@@ -3,7 +3,7 @@ const FbWebStrategy = require("passport-facebook").Strategy;
 const {
   createRegisterMobile,
   createVerifyMobile,
-  verifyWeb
+  verifyWeb,
 } = require("./StrategyUtils");
 
 //TODO
@@ -14,23 +14,24 @@ const log = require("logfilename")(__filename);
 
 const axios = Axios.create({
   baseURL: "https://graph.facebook.com/",
-  timeout: 30e3
+  timeout: 30e3,
 });
 
-const profileToUser = profile => ({
-  username: `${profile.first_name} ${profile.middle_name &&
-    profile.middle_name} ${profile.last_name}`,
+const profileToUser = (profile) => ({
+  username: `${profile.first_name} ${
+    profile.middle_name && profile.middle_name
+  } ${profile.last_name}`,
   email: profile.email,
   firstName: profile.first_name,
   lastName: profile.last_name,
   picture: profile.picture && profile.picture.data,
   authProvider: {
     name: "facebook",
-    authId: profile.id
-  }
+    authId: profile.id,
+  },
 });
 
-const profileMobileToUser = profile => ({
+const profileMobileToUser = (profile) => ({
   username: profile.name,
   email: profile.email,
   firstName: profile.given_name,
@@ -38,8 +39,8 @@ const profileMobileToUser = profile => ({
   picture: profile.picture && profile.picture.data,
   authProvider: {
     name: "facebook",
-    authId: profile.id
-  }
+    authId: profile.id,
+  },
 });
 
 async function verifyMobile(models, publisherUser, profile, accessToken) {
@@ -49,14 +50,14 @@ async function verifyMobile(models, publisherUser, profile, accessToken) {
       .get("me", {
         params: {
           fields: "name,email,picture,first_name,last_name",
-          access_token: accessToken
-        }
+          access_token: accessToken,
+        },
       })
-      .then(res => {
+      .then((res) => {
         log.debug("verifyMobile fb me: ", JSON.stringify(res.data, null, 4));
         return res;
       })
-      .then(res => profileMobileToUser(res.data));
+      .then((res) => profileMobileToUser(res.data));
 
   return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
@@ -78,11 +79,11 @@ function registerWeb(passport, models, publisherUser) {
           "link",
           "locale",
           "name",
-          "timezone"
+          "timezone",
         ],
-        enableProof: false
+        enableProof: false,
       },
-      async function(req, accessToken, refreshToken, profile, done) {
+      async function (req, accessToken, refreshToken, profile, done) {
         try {
           log.info("registerWeb ", JSON.stringify(profile, null, 4));
           let res = await verifyWeb(
@@ -109,28 +110,6 @@ function registerMobile(passport, models, publisherUser) {
     publisherUser
   );
 }
-
-/*
-const savePicture = async ({ models, user, fbId, token }) => {
-  try {
-    const result = await axios.get(`${fbId}/picture`, {
-      params: {
-        redirect: false,
-        type: "large",
-        height: 480,
-        access_token: token
-      }
-    });
-    log.debug("picture ", result.data);
-    const picture = _.get(result.data, "data");
-
-    await models.User.update({ picture }, { where: { id: user.id } });
-  } catch (error) {
-    log.error("savePicture ", error);
-    throw error;
-  }
-};
-*/
 
 exports.registerWeb = registerWeb;
 exports.registerMobile = registerMobile;

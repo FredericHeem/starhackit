@@ -73,7 +73,7 @@
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
     "qs": "6.9.6",
-    "rubico": "1.6.30",
+    "rubico": "1.9.3",
     "sequelize": "6.5.0",
     "sequelize-cli": "6.2.0",
     "urijs": "1.19.6",
@@ -118,6 +118,6 @@
     "all": true
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   }
 }

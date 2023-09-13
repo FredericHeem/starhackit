@@ -141,7 +141,11 @@ exports.DiagramApi = (app) => {
         eq(provider, "google"),
         pipe([
           assign({
-            Cmd: ({ Cmd }) => [...Cmd, "--config", `input/config-${jobId}.js`],
+            Cmd: ({ Cmd }) => [
+              ...Cmd,
+              "--config",
+              `/app/input/config-${jobId}.js`,
+            ],
           }),
           tap(() =>
             writeGcpFiles({

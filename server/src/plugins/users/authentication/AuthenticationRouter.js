@@ -8,8 +8,8 @@ const config = require("config");
 let log = require("logfilename")(__filename);
 
 //TODO configure
-const failureRedirect = "/user/auth/login";
-const successRedirect = "/infra/";
+const failureRedirect = "/login";
+const successRedirect = "/";
 
 const errorMsg = (err, info) => {
   if (info && info.message) {
@@ -157,12 +157,6 @@ function AuthenticationHttpController(app) {
         next
       );
     },
-    async loginGitHub(context, next) {
-      return passport.authenticate("github", localAuthCB(context))(
-        context,
-        next
-      );
-    },
   };
 }
 
@@ -212,14 +206,31 @@ function AuthenticationRouter(app) {
   router.post("/login_google_id_token", authHttpController.loginGoogleIdToken);
 
   //Github
-  router.get("/github", passport.authenticate("github"));
-  router.post("/login_github", authHttpController.loginGitHub);
+  router.get(
+    "/github",
+    passport.authenticate("github", {
+      scope: ["repo"],
+      state: { redirect: "/" },
+    })
+  );
   router.get(
     "/github/callback",
-    passport.authenticate("github", {
-      failureRedirect,
-      successRedirect,
-    })
+    passport.authenticate("github"),
+    (context, next) => {
+      if (context.req.user) {
+        context.cookies.set(
+          "github-access-token",
+          context.req.user.access_token,
+          {
+            httpOnly: false,
+          }
+        );
+        context.redirect("/");
+      } else {
+        context.redirect("/login");
+      }
+      next();
+    }
   );
 
   app.server.baseRouter().mount("auth", router);

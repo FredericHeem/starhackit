@@ -25,7 +25,7 @@ function registerWeb(passport, models, publisherUser) {
       {
         ...authenticationGHConfig,
       },
-      async function (req, accessToken, refreshToken, profile, done) {
+      async function (_accessToken, _refreshToken, params, profile, done) {
         try {
           log.info("registerWeb ", JSON.stringify(profile, null, 4));
 
@@ -34,7 +34,7 @@ function registerWeb(passport, models, publisherUser) {
             publisherUser,
             profileToUser(profile._json)
           );
-          done(res.err, res.user);
+          done(res.err, { ...params, ...res.user });
         } catch (err) {
           done(err);
         }

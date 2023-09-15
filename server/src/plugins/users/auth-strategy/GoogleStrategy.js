@@ -4,7 +4,7 @@ const GoogleTokenStrategy = require("passport-google-id-token");
 const {
   createRegisterMobile,
   createVerifyMobile,
-  verifyWeb
+  verifyWeb,
 } = require("./StrategyUtils");
 
 const Axios = require("axios");
@@ -14,35 +14,35 @@ const log = require("logfilename")(__filename);
 
 const axios = Axios.create({
   baseURL: "https://www.googleapis.com/",
-  timeout: 30e3
+  timeout: 30e3,
 });
 
-const profileWebToUser = profile => ({
+const profileWebToUser = (profile) => ({
   username: profile.displayName,
   email: profile.emails[0].value,
   firstName: profile.name.givenName,
   lastName: profile.name.familyName,
   picture: {
-    url: profile.photos[0].value
+    url: profile.photos[0].value,
   },
   authProvider: {
     name: "google",
-    authId: profile.id
-  }
+    authId: profile.id,
+  },
 });
 
-const profileMobileToUser = profile => ({
+const profileMobileToUser = (profile) => ({
   username: profile.name,
   email: profile.email,
   firstName: profile.given_name,
   lastName: profile.family_name,
   picture: {
-    url: profile.picture
+    url: profile.picture,
   },
   authProvider: {
     name: "google",
-    authId: profile.id
-  }
+    authId: profile.id,
+  },
 });
 
 function verifyMobile(models, publisherUser, profile, accessToken) {
@@ -50,14 +50,14 @@ function verifyMobile(models, publisherUser, profile, accessToken) {
     axios
       .get("userinfo/v2/me", {
         headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .then(res => {
+      .then((res) => {
         log.debug("verifyMobile me: ", JSON.stringify(res.data, null, 4));
         return res;
       })
-      .then(res => profileMobileToUser(res.data));
+      .then((res) => profileMobileToUser(res.data));
 
   return createVerifyMobile(getMe, models, publisherUser, accessToken);
 }
@@ -65,7 +65,7 @@ function verifyMobile(models, publisherUser, profile, accessToken) {
 function registerWeb(passport, models, publisherUser) {
   const googleConfig = config.authentication.google;
   if (googleConfig && !_.isEmpty(googleConfig.clientID)) {
-    const strategy = new Strategy(googleConfig, async function(
+    const strategy = new Strategy(googleConfig, async function (
       accessToken,
       refreshToken,
       profile,

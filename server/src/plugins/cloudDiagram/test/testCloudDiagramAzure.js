@@ -17,9 +17,9 @@ const {
 const config = {
   infra: {
     name: "infra-azure-test",
-    providerType: "azure",
-    providerName: "azure",
-    providerAuth: {
+    provider_type: "azure",
+    provider_name: "azure",
+    provider_auth: {
       AZURE_TENANT_ID,
       AZURE_SUBSCRIPTION_ID,
       AZURE_CLIENT_ID,
@@ -32,7 +32,7 @@ const config = {
       directory: "examples/azure/Compute/vm",
       branch: "main",
     },
-    providerAuth: {
+    provider_auth: {
       AZURE_TENANT_ID,
       AZURE_SUBSCRIPTION_ID,
       AZURE_CLIENT_ID,
@@ -41,7 +41,7 @@ const config = {
     },
   },
   gitCredential: {
-    providerType: "GitHub",
+    provider_type: "GitHub",
     username: GIT_USERNAME,
     password: PERSONAL_ACCESS_TOKEN,
   },

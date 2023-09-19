@@ -28,3 +28,4 @@ config/travis.json
 yarn-error.log
 gc-list*.json
 *.env.json
+bun.lockb

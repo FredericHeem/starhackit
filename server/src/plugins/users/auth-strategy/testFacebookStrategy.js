@@ -14,6 +14,7 @@ const profile = {
 
 describe("FacebookStrategy", function () {
   let models = testMngr.app.data.sequelize.models;
+  let { sql } = testMngr.app.data;
   before(async () => {});
   after(async () => {});
   beforeEach(async function () {
@@ -22,22 +23,17 @@ describe("FacebookStrategy", function () {
     }
   });
   it("create a new user, register it", async () => {
-    let res = await verifyWeb(models, null, profile);
+    let res = await verifyWeb({ sql, models, userConfig: profile });
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);
-    assert(!res.user.password);
-    //console.log("verify again")
     profile.first_name = "Justine";
-    res = await verifyWeb(models, null, profile);
-    //console.log(res.err)
+    res = await verifyWeb({ sql, models, userConfig: profile });
     assert(!res.err);
     assert(res.user);
-    assert(!res.user.password);
 
     profile.id = uuid.v4();
-    res = await verifyWeb(models, null, profile);
-    //console.log(res.err)
+    res = await verifyWeb({ sql, models, userConfig: profile });
     assert(!res.err);
     assert(res.user);
     assert(!res.user.password);

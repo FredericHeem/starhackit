@@ -4,10 +4,13 @@ const passport = require("koa-passport");
 const AuthenticationApi = require("./AuthenticationApi");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const { comparePassword } = require("utils/hashPassword");
 
 let log = require("logfilename")(__filename);
 
 //TODO configure
+// const failureRedirect = "/user/auth/login";
+// const successRedirect = "/infra/";
 const failureRedirect = "/login";
 const successRedirect = "/";
 
@@ -54,11 +57,12 @@ const localAuthCB =
     }
   };
 
-async function verifyLogin(models, username, password) {
-  log.debug("verifyLogin username: ", username);
-  let user = await models.User.findByUsernameOrEmail(username);
+async function verifyLogin({ models, email, password }) {
+  //assert(email);
+  log.debug("verifyLogin username: ", email);
+  let user = await models.User.findByUsernameOrEmail(email);
   if (!user) {
-    log.info("userBasic invalid username user: ", username);
+    log.info("userBasic invalid username user: ", email);
     return {
       error: {
         message: "Username and Password do not match",
@@ -82,23 +86,59 @@ async function verifyLogin(models, username, password) {
   }
 }
 
-async function login(ctx, models) {
-  const { username, password } = ctx.request.body;
-  if (!username || !password) {
-    ctx.status = 401;
-    ctx.body = "Bad Request";
+// async function verifyLogin({ sql, models, email, password }) {
+//   log.debug("verifyLogin username: ", email);
+//   let user = await sql.user.getByEmail({ email });
+//   if (!user) {
+//     log.info("userBasic invalid username email: ", email);
+//     return {
+//       error: {
+//         message: "Username and Password do not match",
+//       },
+//     };
+//   }
+//   let result = await comparePassword({
+//     password,
+//     password_hash: user.password_hash,
+//   });
+
+//   if (result) {
+//     //log.debug("verifyLogin valid password for user: ", user);
+//     return {
+//       user,
+//     };
+//   } else {
+//     log.debug("verifyLogin invalid password user: ", user);
+//     return {
+//       error: {
+//         message: "Username and Password do not match",
+//       },
+//     };
+//   }
+// }
+
+async function login({ context, sql, models }) {
+  const { email, password } = context.request.body;
+  if (!email || !password) {
+    context.status = 401;
+    context.body = "Bad Request";
     return;
   }
-  const { user, error } = await verifyLogin(models, username, password);
+  const { user, error } = await verifyLogin({
+    sql,
+    models,
+    email,
+    password,
+  });
   if (user) {
-    ctx.status = 200;
-    ctx.body = {
+    context.status = 200;
+    context.body = {
       user,
       token: jwt.sign(user, config.jwt.secret, config.jwt.options),
     };
   } else {
-    ctx.status = 401;
-    ctx.body = {
+    context.status = 401;
+    context.body = {
       error,
     };
   }
@@ -107,10 +147,10 @@ function AuthenticationHttpController(app) {
   log.debug("AuthenticationHttpController");
   let authApi = AuthenticationApi(app);
   let respond = app.utils.http.respond;
-
+  const { sql } = app.data;
   return {
-    login(ctx, next) {
-      return login(ctx, app.data.models());
+    login(context, next) {
+      return login({ context, sql, models: app.data.models() });
     },
     logout(ctx) {
       log.debug("logout");
@@ -194,6 +234,7 @@ function AuthenticationRouter(app) {
     "/google",
     passport.authenticate("google", { scope: ["email", "profile"] })
   );
+  // TODO  Get state from query string
   router.get(
     "/google/callback",
     passport.authenticate("google", {
@@ -206,6 +247,7 @@ function AuthenticationRouter(app) {
   router.post("/login_google_id_token", authHttpController.loginGoogleIdToken);
 
   //Github
+  // TODO  Get redirect from query string
   router.get(
     "/github",
     passport.authenticate("github", {

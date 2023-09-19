@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      providerType: {
+      provider_type: {
         type: DataTypes.TEXT,
         allowNull: false,
         defaultValue: "",
@@ -21,9 +21,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       options: DataTypes.JSONB,
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
     },
     {
       tableName: "git_credential",
+      timestamps: false,
     }
   );
 

@@ -11,20 +11,20 @@ const createConfig = ({ credentials }) => {
   return {
     infra: {
       name: "infra-google-test",
-      providerType: "google",
-      providerName: "google",
+      provider_type: "google",
+      provider_name: "google",
       project: {
         url: "https://github.com/grucloud/grucloud/",
         title: "Instance with public address in a network",
         directory: "examples/google/vm-network",
         branch: "main",
       },
-      providerAuth: {
+      provider_auth: {
         credentials,
       },
     },
     gitCredential: {
-      providerType: "GitHub",
+      provider_type: "GitHub",
       username: GIT_USERNAME,
       password: PERSONAL_ACCESS_TOKEN,
     },

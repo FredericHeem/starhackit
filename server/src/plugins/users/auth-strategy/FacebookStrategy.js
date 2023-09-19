@@ -1,3 +1,4 @@
+const assert = require("assert");
 const _ = require("lodash");
 const FbWebStrategy = require("passport-facebook").Strategy;
 const {
@@ -22,29 +23,28 @@ const profileToUser = (profile) => ({
     profile.middle_name && profile.middle_name
   } ${profile.last_name}`,
   email: profile.email,
-  firstName: profile.first_name,
-  lastName: profile.last_name,
+  first_name: profile.first_name,
+  last_name: profile.last_name,
   picture: profile.picture && profile.picture.data,
-  authProvider: {
-    name: "facebook",
-    authId: profile.id,
-  },
+  auth_type: "facebook",
+  auth_id: profile.id,
 });
 
 const profileMobileToUser = (profile) => ({
   username: profile.name,
   email: profile.email,
-  firstName: profile.given_name,
-  lastName: profile.family_name,
+  first_name: profile.given_name,
+  last_name: profile.family_name,
   picture: profile.picture && profile.picture.data,
-  authProvider: {
-    name: "facebook",
-    authId: profile.id,
-  },
+  auth_type: "facebook",
+  auth_id: profile.id,
 });
 
-async function verifyMobile(models, publisherUser, profile, accessToken) {
-  log.info("verifyMobile ", JSON.stringify(profile, null, 4));
+async function verifyMobile({ models, sql, publisherUser, accessToken }) {
+  assert(sql);
+  assert(accessToken);
+  assert(profile);
+  log.debug("verifyMobile ");
   const getMe = () =>
     axios
       .get("me", {
@@ -59,12 +59,13 @@ async function verifyMobile(models, publisherUser, profile, accessToken) {
       })
       .then((res) => profileMobileToUser(res.data));
 
-  return createVerifyMobile(getMe, models, publisherUser, accessToken);
+  return createVerifyMobile({ getMe, models, sql, publisherUser, accessToken });
 }
 
 module.exports.verifyMobile = verifyMobile;
 
-function registerWeb(passport, models, publisherUser) {
+function registerWeb({ passport, models, sql, publisherUser }) {
+  assert(sql);
   let authenticationFbConfig = config.authentication.facebook;
   if (authenticationFbConfig && !_.isEmpty(authenticationFbConfig.clientID)) {
     log.info("configuring facebook authentication strategy");
@@ -86,11 +87,12 @@ function registerWeb(passport, models, publisherUser) {
       async function (req, accessToken, refreshToken, profile, done) {
         try {
           log.info("registerWeb ", JSON.stringify(profile, null, 4));
-          let res = await verifyWeb(
+          let res = await verifyWeb({
+            sql,
             models,
             publisherUser,
-            profileToUser(profile._json)
-          );
+            userConfig: profileToUser(profile._json),
+          });
           done(res.err, res.user);
         } catch (err) {
           done(err);
@@ -101,14 +103,15 @@ function registerWeb(passport, models, publisherUser) {
   }
 }
 
-function registerMobile(passport, models, publisherUser) {
-  createRegisterMobile(
-    "facebook",
+function registerMobile({ passport, models, sql, publisherUser }) {
+  assert(sql);
+  createRegisterMobile({
+    name: "facebook",
     verifyMobile,
     passport,
     models,
-    publisherUser
-  );
+    publisherUser,
+  });
 }
 
 exports.registerWeb = registerWeb;

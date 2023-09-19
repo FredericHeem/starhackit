@@ -38,18 +38,15 @@
       "runtimeArgs": ["run", "start"],
       "internalConsoleOptions": "openOnSessionStart",
       "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/server",
-      "port": 9229
+      "cwd": "${workspaceFolder}/server"
     },
     {
       "name": "Debug test",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/server/node_modules/mocha/bin/_mocha",
-      "stopOnEntry": false,
-      "args": ["--no-timeouts", "--colors"], //you can specify paths to specific tests here
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test"],
       "cwd": "${workspaceRoot}/server",
-      "runtimeExecutable": null,
       "internalConsoleOptions": "openOnSessionStart",
       "env": {
         "NODE_PATH": "src"

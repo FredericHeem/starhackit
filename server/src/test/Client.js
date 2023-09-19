@@ -69,12 +69,7 @@ class Client {
     });
   }
   login(param) {
-    let paramDefault = {
-      email: this.config.email,
-      username: this.config.username,
-      password: this.config.password,
-    };
-
+    let paramDefault = this.config;
     return this.post("v1/auth/login", param || paramDefault).then((body) => {
       if (body.token) {
         log.debug("jwt token ", body.token);

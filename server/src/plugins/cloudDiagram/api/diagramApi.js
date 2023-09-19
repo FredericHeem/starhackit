@@ -78,7 +78,7 @@ exports.DiagramApi = (app) => {
 
   const runGcList = ({
     jobId,
-    providerAuth,
+    provider_auth,
     provider,
     containerName = "grucloud-cli",
     containerImage = "grucloud-cli",
@@ -132,7 +132,7 @@ exports.DiagramApi = (app) => {
         }),
         Env: () =>
           pipe([
-            () => providerAuth,
+            () => provider_auth,
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),
@@ -151,7 +151,7 @@ exports.DiagramApi = (app) => {
             writeGcpFiles({
               configFileName: `input/config-${jobId}.js`,
               credendialFileName: `gcp-credendial-${jobId}.json`,
-              credendialContent: providerAuth.credentials,
+              credendialContent: provider_auth.credentials,
             })
           ),
         ]),
@@ -270,8 +270,8 @@ exports.DiagramApi = (app) => {
                 () =>
                   runGcList({
                     jobId: id,
-                    providerAuth: infra.providerAuth,
-                    provider: infra.providerType,
+                    provider_auth: infra.provider_auth,
+                    provider: infra.provider_type,
                     localOutputPath,
                     localInputPath,
                     dockerClient,

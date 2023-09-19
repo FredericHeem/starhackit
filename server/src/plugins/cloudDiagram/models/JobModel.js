@@ -18,9 +18,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       result: DataTypes.JSONB,
       error: DataTypes.JSONB,
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
     },
     {
       tableName: "job",
+      timestamps: false,
     }
   );
 

@@ -10,8 +10,8 @@ const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN } = process.env;
 const config = {
   infra: {
     name: "infra-aws-test",
-    providerType: "aws",
-    providerName: "aws",
+    provider_type: "aws",
+    provider_name: "aws",
     project: {
       url: "https://github.com/grucloud/grucloud/",
       title: "an EC2 instance with a public address",
@@ -20,7 +20,7 @@ const config = {
     },
   },
   gitCredential: {
-    providerType: "GitHub",
+    provider_type: "GitHub",
     username: GIT_USERNAME,
     password: PERSONAL_ACCESS_TOKEN,
   },

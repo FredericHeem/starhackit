@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const Promise = require("bluebird");
-const hashPasswordHook = require('./utils/hashPasswordHook');
+const nanoid = require("nanoid");
 const Op = require("sequelize").Op;
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const log = require("logfilename")(__filename);
   const models = sequelize.models;
 
@@ -10,138 +10,123 @@ module.exports = function(sequelize, DataTypes) {
     "User",
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.TEXT,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
+        allowNull: false,
       },
       username: {
         type: DataTypes.STRING(64),
-        unique: true,
-        allowNull: false
+        allowNull: true,
+      },
+      user_type: {
+        type: DataTypes.TEXT,
       },
       email: {
         type: DataTypes.STRING(64),
         unique: true,
-        allowNull: false
+        allowNull: false,
       },
-      firstName: {
+      first_name: {
         type: DataTypes.STRING(64),
-        field: "first_name"
+        field: "first_name",
       },
-      lastName: {
+      last_name: {
         type: DataTypes.STRING(64),
-        field: "last_name"
+        field: "last_name",
       },
       picture: {
-        type: DataTypes.JSONB
+        type: DataTypes.JSONB,
       },
+      biography: {
+        type: DataTypes.STRING(2048),
+      },
+      password_reset_token: DataTypes.STRING(32),
       password: DataTypes.VIRTUAL,
-      passwordHash: {
+      password_hash: {
         type: DataTypes.TEXT,
-        field: "password_hash"
-      }
+        field: "password_hash",
+      },
+      auth_type: DataTypes.TEXT,
+      auth_id: DataTypes.TEXT,
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
     },
     {
       tableName: "users",
-      hooks: {
-        beforeCreate: hashPasswordHook,
-        beforeUpdate: hashPasswordHook
-      }
+      timestamps: false,
+      hooks: {},
     }
   );
 
-  User.seedDefault = async function() {
-    let usersJson = require("./fixtures/users.json");
-    //log.debug("seedDefault: ", JSON.stringify(usersJson, null, 4));
-    for (let userJson of usersJson) {
-      await User.createUserInGroups(userJson, userJson.groups);
-    }
-  };
+  User.seedDefault = async function () {};
 
-  User.findByKey = async function(key, value) {
+  User.findByKey = async function (key, value) {
     return this.findOne({
-      include: [
-        {
-          model: models.Profile,
-          as: "profile",
-          attributes: ["biography"]
-        },
-        {
-          model: models.AuthProvider,
-          as: "auth_provider",
-          attributes: ["name", "authId"]
-        }
-      ],
       where: { [key]: value },
-      attributes: ["id", "email", "username", "picture", "createdAt", "updatedAt"]
+      attributes: [
+        "id",
+        "user_type",
+        "email",
+        "username",
+        "picture",
+        "created_at",
+        "updated_at",
+      ],
     });
   };
-  User.findByEmail = async function(email) {
+  User.findByEmail = async function (email) {
     return this.findByKey("email", email);
   };
-  User.findByUserId = async function(userid) {
+  User.findByUserId = async function (userid) {
     return this.findByKey("id", userid);
   };
 
-  User.findByUsername = async function(userName) {
+  User.findByUsername = async function (userName) {
     return this.findByKey("username", userName);
   };
-  User.findByUsernameOrEmail = async function(username) {
+  User.findByUsernameOrEmail = async function (username) {
     return this.findOne({
       where: {
-        [Op.or]: [{ email: username }, { username: username }]
-      }
+        [Op.or]: [{ email: username }, { username: username }],
+      },
     });
   };
-  User.createUserInGroups = async function(userJson, groups) {
+  User.createUserInGroups = async function (userJson, groups) {
     log.debug("createUserInGroups user:%s, group: ", userJson, groups);
     return sequelize
-      .transaction(async function(t) {
-        let userCreated = await models.User.create(userJson, {
-          transaction: t
-        });
-        const userId = userCreated.get().id;
-        await models.UserGroup.addUserIdInGroups(groups, userId, t);
-        //Create the profile
-        let profile = await models.Profile.create(
-          { ...userJson.profile, user_id: userId },
-          { transaction: t }
-        );
-        log.debug("profile created ", profile.get());
-        //Create the eventual authentication provider
-        if (userJson.authProvider) {
-          await models.AuthProvider.create(
-            { ...userJson.authProvider, user_id: userId },
-            { transaction: t }
-          );
-        }
-        /*
-            sqlite doesn't support this
-            await models.UserPending.destroy({
-              where: {
-                email: userJson.email
-              }
-            },{transaction: t});
-            */
-        return userCreated;
-      })
-      .then(async userCreated => {
-        await models.UserPending.destroy({
-          where: {
-            email: userJson.email
+      .transaction(async function (t) {
+        const user_id = nanoid.nanoid(10);
+        let userCreated = await models.User.create(
+          { ...userJson, id: user_id },
+          {
+            transaction: t,
           }
-        });
+        );
         return userCreated;
       })
-      .catch(function(err) {
+      .then(async (userCreated) => {
+        // await models.UserPending.destroy({
+        //   where: {
+        //     email: userJson.email,
+        //   },
+        // });
+        return userCreated;
+      })
+      .catch(function (err) {
         log.error("createUserInGroups: rolling back", err);
         throw err;
       });
   };
-  User.checkUserPermission = async function(userId, resource, action) {
+  User.checkUserPermission = async function (userId, resource, action) {
     log.debug("Checking %s permission for %s on %s", action, userId, resource);
     let where = {
-      resource: resource
+      resource: resource,
     };
     where[action.toUpperCase()] = true;
     let res = await this.findOne({
@@ -151,42 +136,42 @@ module.exports = function(sequelize, DataTypes) {
           include: [
             {
               model: models.Permission,
-              where: where
-            }
-          ]
-        }
+              where: where,
+            },
+          ],
+        },
       ],
       where: {
-        id: userId
-      }
+        id: userId,
+      },
     });
     let authorized = res.Groups.length > 0 ? true : false;
     return authorized;
   };
 
-  User.getPermissions = function(username) {
+  User.getPermissions = function (username) {
     return this.findOne({
       include: [
         {
           model: models.Group,
           include: [
             {
-              model: models.Permission
-            }
-          ]
-        }
+              model: models.Permission,
+            },
+          ],
+        },
       ],
       where: {
-        username: username
-      }
+        username: username,
+      },
     });
   };
 
-  User.prototype.comparePassword = function(candidatePassword) {
+  User.prototype.comparePassword = function (candidatePassword) {
     let me = this;
-    return new Promise(function(resolve, reject) {
-      let hashPassword = me.get("passwordHash") || "";
-      bcrypt.compare(candidatePassword, hashPassword, function(err, isMatch) {
+    return new Promise(function (resolve, reject) {
+      let hashPassword = me.get("password_hash") || "";
+      bcrypt.compare(candidatePassword, hashPassword, function (err, isMatch) {
         if (err) {
           return reject(err);
         }
@@ -195,9 +180,9 @@ module.exports = function(sequelize, DataTypes) {
     });
   };
 
-  User.prototype.toJSON = function() {
+  User.prototype.toJSON = function () {
     let values = this.get({ clone: true });
-    delete values.passwordHash;
+    delete values.password_hash;
     return values;
   };
 

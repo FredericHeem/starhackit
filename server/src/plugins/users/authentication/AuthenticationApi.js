@@ -1,163 +1,154 @@
-const _ = require('lodash');
-const Chance = require('chance');
+const _ = require("lodash");
+const Chance = require("chance");
 let chance = new Chance();
 
 function AuthenticationApi(app) {
   let log = require("logfilename")(__filename);
-  const {publisher} = app;
+  const { publisher } = app;
   let models = app.data.sequelize.models;
+  const { sql } = app.data;
   let validateJson = app.utils.api.validateJson;
   return {
     async createPending(userPendingIn) {
-      validateJson(userPendingIn, require('./schema/createPending.json'));
+      //validateJson(userPendingIn, require("./schema/createPending.json"));
       log.debug("createPending: ", userPendingIn);
-
-      let userByUsername = await models.User.findByUsername(userPendingIn.username);
-      let userPendingByUsername = await models.UserPending.findOne({
-        where:{
-          username: userPendingIn.username
-        }
+      let user = await sql.user.getByEmail({ email: userPendingIn.email });
+      let userPendingEmail = await sql.userPending.getByEmail({
+        email: userPendingIn.email,
       });
-      if(userByUsername || userPendingByUsername){
+      if (user || userPendingEmail) {
         throw {
           code: 422,
-          name: "UsernameExists",
-          message: "The username is already used."
+          name: "EmailExists",
+          message: "The email is already used.",
         };
       }
-      let user = await models.User.findByEmail(userPendingIn.email);
-
-      if (!user) {
-        let code = createToken();
-        let userPendingOut = {
-          code: code,
-          username: userPendingIn.username,
-          email: userPendingIn.email,
-          password: userPendingIn.password
-        };
-        log.debug("createPending code ", userPendingOut.code);
-        await models.UserPending.create(userPendingOut);
-        await publisher.publish("user.registering", JSON.stringify(userPendingOut));
-      } else {
-        log.info("already registered", userPendingIn.email);
-      }
+      await sql.userPending.insert(userPendingIn);
+      await publisher.publish(
+        "user.registering",
+        JSON.stringify(userPendingIn)
+      );
       return {
         success: true,
-        message: "confirm email"
+        message: "confirm email",
       };
     },
-    async verifyEmailCode(param){
+    async verifyEmailCode(param) {
       log.debug("verifyEmailCode: ", param);
-      validateJson(param, require('./schema/verifyEmailCode.json'));
-      let res = await models.UserPending.findOne({
-        where: {
-          code: param.code
-        }
+      validateJson(param, require("./schema/verifyEmailCode.json"));
+      let userPending = await sql.userPending.getByCode({
+        code: param.code,
       });
 
-      if(res){
-        let userPending = res.get();
+      if (userPending) {
         log.debug("verifyEmailCode: userPending: ", userPending);
-        let userToCreate = _.pick(userPending, 'username', 'email', 'passwordHash');
-        let user = await models.User.createUserInGroups(userToCreate, ["User"]);
+        let userToCreate = _.pick(userPending, "email", "password_hash");
+        let user = await sql.user.insert(userToCreate);
+        await sql.userPending.deleteByEmail(userToCreate);
         //log.debug("verifyEmailCode: created user ", user.toJSON());
-        await publisher.publish("user.registered", JSON.stringify(user.toJSON()));
-        return user.toJSON();
+        await publisher.publish("user.registered", JSON.stringify(user));
+        return user;
       } else {
         log.warn("verifyEmailCode: no such code ", param.code);
         throw {
-          code:422,
-          name:"NoSuchCode",
-          message: "The email verification code is no longer valid."
+          code: 422,
+          name: "NoSuchCode",
+          message: "The email verification code is no longer valid.",
         };
       }
     },
-    async resetPassword(payload){
-      validateJson(payload, require('./schema/resetPassword.json'));
+    async resetPassword(payload) {
+      validateJson(payload, require("./schema/resetPassword.json"));
       let email = payload.email;
       log.info("resetPassword: ", email);
-      let user = await models.User.findByEmail(email);
-      if(user){
-        log.info("resetPassword: find user id: ", user.get().id);
+      let user = await sql.user.getByEmail({ email });
+      if (user) {
+        log.info("resetPassword: find user id: ", user.id);
         let token = createToken();
         let passwordReset = {
-          token: token,
-          user_id: user.id
+          // TODO use user.user_id
+          data: {
+            password_reset_token: token,
+            password_reset_date: new Date().toISOString(),
+          },
+          where: { id: user.id },
         };
-        await models.PasswordReset.upsert(passwordReset);
+        await sql.user.update(passwordReset);
         // send password reset email with the token.
         let passwordResetPublished = {
           code: token,
-          email: user.email
+          email: user.email,
         };
-        log.debug("resetPassword: publish: ", passwordResetPublished);
-        await publisher.publish('user.resetpassword', JSON.stringify(passwordResetPublished));
+        //log.debug("resetPassword: publish: ", passwordResetPublished);
+        await publisher.publish(
+          "user.resetpassword",
+          JSON.stringify(passwordResetPublished)
+        );
       } else {
         log.info("resetPassword: no such email: ", email);
       }
 
       return {
-        success:true
+        success: true,
       };
     },
-    async verifyResetPasswordToken(payload){
-      validateJson(payload, require('./schema/verifyResetPasswordToken.json'));
-      let {token, password} = payload;
+    async verifyResetPasswordToken(payload) {
+      validateJson(payload, require("./schema/verifyResetPasswordToken.json"));
+      const { token, password } = payload;
 
       log.info("verifyResetPasswordToken: ", token);
       // Has the token expired ?
       // find the user
-      let user = await models.User.findOne({
-        include: [{
-          model: models.PasswordReset,
-          where: {
-            token: token
-          }
-        }]
+      let user = await sql.user.getByPasswordResetToken({
+        password_reset_token: token,
       });
       //log.debug("verifyResetPasswordToken: password ", password);
 
-      if(user){
+      if (user) {
         const now = new Date();
-        const paswordResetDate = user.get().PasswordReset.get().createdAt;
+        const paswordResetDate = user.password_reset_date;
         // Valid for 24 hours
         paswordResetDate.setUTCHours(paswordResetDate.getUTCHours() + 24);
-
-        await models.PasswordReset.destroy({
-          where: {
-            token
-          }
+        await sql.user.update({
+          // TODO use user.user_id
+          data: {
+            password_reset_token: null,
+          },
+          where: { id: user.id },
         });
 
-        if(now < paswordResetDate) {
-          await user.update({password: password});
+        if (now < paswordResetDate) {
+          await sql.user.updatePassword({
+            user_id: user.id,
+            password: password,
+          });
           return {
-            success:true
+            success: true,
           };
         } else {
           throw {
-            code:422,
-            name:"TokenInvalid",
-            message: "The token has expired."
+            code: 422,
+            name: "TokenInvalid",
+            message: "The token has expired.",
           };
         }
       } else {
         log.warn("verifyResetPasswordToken: no such token ", token);
 
         throw {
-          code:422,
-          name:"TokenInvalid",
-          message: "The token is invalid or has expired."
+          code: 422,
+          name: "TokenInvalid",
+          message: "The token is invalid or has expired.",
         };
       }
-    }
+    },
   };
 }
 
-function createToken(){
+function createToken() {
   return chance.string({
     length: 16,
-    pool:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    pool: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
   });
 }
 

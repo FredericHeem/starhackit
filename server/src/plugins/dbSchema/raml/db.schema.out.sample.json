@@ -1,48 +1,5 @@
 {
   "tables": {
-    "auth_provider": {
-      "table_schema": "public",
-      "table_name": "auth_provider",
-      "obj_description": null,
-      "columns": {
-        "id": {
-          "table_schema": "public",
-          "table_name": "auth_provider",
-          "column_name": "id",
-          "column_default": "nextval('auth_provider_id_seq'::regclass)",
-          "is_nullable": false,
-          "data_type": "integer",
-          "col_description": null
-        },
-        "name": {
-          "table_schema": "public",
-          "table_name": "auth_provider",
-          "column_name": "name",
-          "column_default": null,
-          "is_nullable": false,
-          "data_type": "character varying",
-          "col_description": null
-        },
-        "authId": {
-          "table_schema": "public",
-          "table_name": "auth_provider",
-          "column_name": "authId",
-          "column_default": null,
-          "is_nullable": false,
-          "data_type": "character varying",
-          "col_description": null
-        },
-        "user_id": {
-          "table_schema": "public",
-          "table_name": "auth_provider",
-          "column_name": "user_id",
-          "column_default": null,
-          "is_nullable": true,
-          "data_type": "uuid",
-          "col_description": null
-        }
-      }
-    },
     "group_permissions": {
       "table_schema": "public",
       "table_name": "group_permissions",
@@ -308,10 +265,10 @@
           "data_type": "text",
           "col_description": null
         },
-        "createdAt": {
+        "created_at": {
           "table_schema": "public",
           "table_name": "tickets",
-          "column_name": "createdAt",
+          "column_name": "created_at",
           "column_default": null,
           "is_nullable": false,
           "data_type": "timestamp with time zone",
@@ -403,10 +360,10 @@
           "data_type": "character varying",
           "col_description": null
         },
-        "passwordHash": {
+        "password_hash": {
           "table_schema": "public",
           "table_name": "user_pendings",
-          "column_name": "passwordHash",
+          "column_name": "password_hash",
           "column_default": null,
           "is_nullable": true,
           "data_type": "character varying",
@@ -421,10 +378,10 @@
           "data_type": "text",
           "col_description": null
         },
-        "createdAt": {
+        "created_at": {
           "table_schema": "public",
           "table_name": "user_pendings",
-          "column_name": "createdAt",
+          "column_name": "created_at",
           "column_default": null,
           "is_nullable": false,
           "data_type": "timestamp with time zone",
@@ -473,37 +430,37 @@
           "data_type": "character varying",
           "col_description": null
         },
-        "firstName": {
+        "first_name": {
           "table_schema": "public",
           "table_name": "users",
-          "column_name": "firstName",
+          "column_name": "first_name",
           "column_default": null,
           "is_nullable": true,
           "data_type": "character varying",
           "col_description": null
         },
-        "lastName": {
+        "last_name": {
           "table_schema": "public",
           "table_name": "users",
-          "column_name": "lastName",
+          "column_name": "last_name",
           "column_default": null,
           "is_nullable": true,
           "data_type": "character varying",
           "col_description": null
         },
-        "passwordHash": {
+        "password_hash": {
           "table_schema": "public",
           "table_name": "users",
-          "column_name": "passwordHash",
+          "column_name": "password_hash",
           "column_default": null,
           "is_nullable": true,
           "data_type": "text",
           "col_description": null
         },
-        "createdAt": {
+        "created_at": {
           "table_schema": "public",
           "table_name": "users",
-          "column_name": "createdAt",
+          "column_name": "created_at",
           "column_default": null,
           "is_nullable": false,
           "data_type": "timestamp with time zone",
@@ -522,366 +479,252 @@
     }
   },
   "constraints": {
-    "auth_provider": {
-      "user_id": [{
-        "table_schema": "public",
-        "table_name": "auth_provider",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "auth_provider_user_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "id"
-      }],
-      "id": [{
-        "table_schema": "public",
-        "table_name": "auth_provider",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "auth_provider_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "auth_provider",
-        "referenced_column": "id"
-      }]
-    },
-    "group_permissions": {
-      "group_id": [{
-        "table_schema": "public",
-        "table_name": "group_permissions",
-        "column_name": "group_id",
-        "constraint_schema": "public",
-        "constraint_name": "group_permissions_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "group_permissions",
-        "referenced_column": "permission_id"
-      }, {
-        "table_schema": "public",
-        "table_name": "group_permissions",
-        "column_name": "group_id",
-        "constraint_schema": "public",
-        "constraint_name": "group_permissions_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "group_permissions",
-        "referenced_column": "group_id"
-      }, {
-        "table_schema": "public",
-        "table_name": "group_permissions",
-        "column_name": "group_id",
-        "constraint_schema": "public",
-        "constraint_name": "group_permissions_group_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "groups",
-        "referenced_column": "id"
-      }],
-      "permission_id": [{
-        "table_schema": "public",
-        "table_name": "group_permissions",
-        "column_name": "permission_id",
-        "constraint_schema": "public",
-        "constraint_name": "group_permissions_permission_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "permissions",
-        "referenced_column": "id"
-      }, {
-        "table_schema": "public",
-        "table_name": "group_permissions",
-        "column_name": "permission_id",
-        "constraint_schema": "public",
-        "constraint_name": "group_permissions_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "group_permissions",
-        "referenced_column": "group_id"
-      }, {
-        "table_schema": "public",
-        "table_name": "group_permissions",
-        "column_name": "permission_id",
-        "constraint_schema": "public",
-        "constraint_name": "group_permissions_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "group_permissions",
-        "referenced_column": "permission_id"
-      }]
-    },
-    "groups": {
-      "id": [{
-        "table_schema": "public",
-        "table_name": "groups",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "groups_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "groups",
-        "referenced_column": "id"
-      }],
-      "name": [{
-        "table_schema": "public",
-        "table_name": "groups",
-        "column_name": "name",
-        "constraint_schema": "public",
-        "constraint_name": "groups_name_key",
-        "constraint_type": "UNIQUE",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "groups",
-        "referenced_column": "name"
-      }]
-    },
     "password_resets": {
-      "user_id": [{
-        "table_schema": "public",
-        "table_name": "password_resets",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "password_resets_user_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "id"
-      }],
-      "id": [{
-        "table_schema": "public",
-        "table_name": "password_resets",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "password_resets_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "password_resets",
-        "referenced_column": "id"
-      }]
+      "user_id": [
+        {
+          "table_schema": "public",
+          "table_name": "password_resets",
+          "column_name": "user_id",
+          "constraint_schema": "public",
+          "constraint_name": "password_resets_user_id_fkey",
+          "constraint_type": "FOREIGN KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "id"
+        }
+      ],
+      "id": [
+        {
+          "table_schema": "public",
+          "table_name": "password_resets",
+          "column_name": "id",
+          "constraint_schema": "public",
+          "constraint_name": "password_resets_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "password_resets",
+          "referenced_column": "id"
+        }
+      ]
     },
     "permissions": {
-      "id": [{
-        "table_schema": "public",
-        "table_name": "permissions",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "permissions_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "permissions",
-        "referenced_column": "id"
-      }]
+      "id": [
+        {
+          "table_schema": "public",
+          "table_name": "permissions",
+          "column_name": "id",
+          "constraint_schema": "public",
+          "constraint_name": "permissions_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "permissions",
+          "referenced_column": "id"
+        }
+      ]
     },
     "profile": {
-      "user_id": [{
-        "table_schema": "public",
-        "table_name": "profile",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "profile_user_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "id"
-      }],
-      "id": [{
-        "table_schema": "public",
-        "table_name": "profile",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "profile_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "profile",
-        "referenced_column": "id"
-      }]
+      "user_id": [
+        {
+          "table_schema": "public",
+          "table_name": "profile",
+          "column_name": "user_id",
+          "constraint_schema": "public",
+          "constraint_name": "profile_user_id_fkey",
+          "constraint_type": "FOREIGN KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "id"
+        }
+      ],
+      "id": [
+        {
+          "table_schema": "public",
+          "table_name": "profile",
+          "column_name": "id",
+          "constraint_schema": "public",
+          "constraint_name": "profile_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "profile",
+          "referenced_column": "id"
+        }
+      ]
     },
     "tickets": {
-      "user_id": [{
-        "table_schema": "public",
-        "table_name": "tickets",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "tickets_user_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "id"
-      }],
-      "id": [{
-        "table_schema": "public",
-        "table_name": "tickets",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "tickets_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "tickets",
-        "referenced_column": "id"
-      }]
+      "user_id": [
+        {
+          "table_schema": "public",
+          "table_name": "tickets",
+          "column_name": "user_id",
+          "constraint_schema": "public",
+          "constraint_name": "tickets_user_id_fkey",
+          "constraint_type": "FOREIGN KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "id"
+        }
+      ],
+      "id": [
+        {
+          "table_schema": "public",
+          "table_name": "tickets",
+          "column_name": "id",
+          "constraint_schema": "public",
+          "constraint_name": "tickets_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "tickets",
+          "referenced_column": "id"
+        }
+      ]
     },
     "user_groups": {
-      "user_id": [{
-        "table_schema": "public",
-        "table_name": "user_groups",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "user_groups_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "user_groups",
-        "referenced_column": "user_id"
-      }, {
-        "table_schema": "public",
-        "table_name": "user_groups",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "user_groups_user_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "id"
-      }, {
-        "table_schema": "public",
-        "table_name": "user_groups",
-        "column_name": "user_id",
-        "constraint_schema": "public",
-        "constraint_name": "user_groups_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "user_groups",
-        "referenced_column": "group_id"
-      }],
-      "group_id": [{
-        "table_schema": "public",
-        "table_name": "user_groups",
-        "column_name": "group_id",
-        "constraint_schema": "public",
-        "constraint_name": "user_groups_group_id_fkey",
-        "constraint_type": "FOREIGN KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "groups",
-        "referenced_column": "id"
-      }, {
-        "table_schema": "public",
-        "table_name": "user_groups",
-        "column_name": "group_id",
-        "constraint_schema": "public",
-        "constraint_name": "user_groups_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "user_groups",
-        "referenced_column": "group_id"
-      }, {
-        "table_schema": "public",
-        "table_name": "user_groups",
-        "column_name": "group_id",
-        "constraint_schema": "public",
-        "constraint_name": "user_groups_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "user_groups",
-        "referenced_column": "user_id"
-      }]
+      "user_id": [
+        {
+          "table_schema": "public",
+          "table_name": "user_groups",
+          "column_name": "user_id",
+          "constraint_schema": "public",
+          "constraint_name": "user_groups_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "user_groups",
+          "referenced_column": "user_id"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_groups",
+          "column_name": "user_id",
+          "constraint_schema": "public",
+          "constraint_name": "user_groups_user_id_fkey",
+          "constraint_type": "FOREIGN KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "id"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_groups",
+          "column_name": "user_id",
+          "constraint_schema": "public",
+          "constraint_name": "user_groups_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "user_groups",
+          "referenced_column": "group_id"
+        }
+      ],
+      "group_id": [
+        {
+          "table_schema": "public",
+          "table_name": "user_groups",
+          "column_name": "group_id",
+          "constraint_schema": "public",
+          "constraint_name": "user_groups_group_id_fkey",
+          "constraint_type": "FOREIGN KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "groups",
+          "referenced_column": "id"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_groups",
+          "column_name": "group_id",
+          "constraint_schema": "public",
+          "constraint_name": "user_groups_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "user_groups",
+          "referenced_column": "group_id"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_groups",
+          "column_name": "group_id",
+          "constraint_schema": "public",
+          "constraint_name": "user_groups_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "user_groups",
+          "referenced_column": "user_id"
+        }
+      ]
     },
     "user_pendings": {
-      "id": [{
-        "table_schema": "public",
-        "table_name": "user_pendings",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "user_pendings_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "user_pendings",
-        "referenced_column": "id"
-      }]
+      "id": [
+        {
+          "table_schema": "public",
+          "table_name": "user_pendings",
+          "column_name": "id",
+          "constraint_schema": "public",
+          "constraint_name": "user_pendings_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "user_pendings",
+          "referenced_column": "id"
+        }
+      ]
     },
     "users": {
-      "email": [{
-        "table_schema": "public",
-        "table_name": "users",
-        "column_name": "email",
-        "constraint_schema": "public",
-        "constraint_name": "users_email_key",
-        "constraint_type": "UNIQUE",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "email"
-      }],
-      "username": [{
-        "table_schema": "public",
-        "table_name": "users",
-        "column_name": "username",
-        "constraint_schema": "public",
-        "constraint_name": "users_username_key",
-        "constraint_type": "UNIQUE",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "username"
-      }],
-      "id": [{
-        "table_schema": "public",
-        "table_name": "users",
-        "column_name": "id",
-        "constraint_schema": "public",
-        "constraint_name": "users_pkey",
-        "constraint_type": "PRIMARY KEY",
-        "check_clause": null,
-        "referenced_schema": "public",
-        "referenced_table": "users",
-        "referenced_column": "id"
-      }]
+      "email": [
+        {
+          "table_schema": "public",
+          "table_name": "users",
+          "column_name": "email",
+          "constraint_schema": "public",
+          "constraint_name": "users_email_key",
+          "constraint_type": "UNIQUE",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "email"
+        }
+      ],
+      "username": [
+        {
+          "table_schema": "public",
+          "table_name": "users",
+          "column_name": "username",
+          "constraint_schema": "public",
+          "constraint_name": "users_username_key",
+          "constraint_type": "UNIQUE",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "username"
+        }
+      ],
+      "id": [
+        {
+          "table_schema": "public",
+          "table_name": "users",
+          "column_name": "id",
+          "constraint_schema": "public",
+          "constraint_name": "users_pkey",
+          "constraint_type": "PRIMARY KEY",
+          "check_clause": null,
+          "referenced_schema": "public",
+          "referenced_table": "users",
+          "referenced_column": "id"
+        }
+      ]
     }
   },
   "sequences": {
-    "auth_provider": {
-      "id": {
-        "table_schema": "public",
-        "table_name": "user_pendings",
-        "column_name": "id",
-        "sequence_name": "user_pendings_id_seq",
-        "start_value": "1",
-        "minimum_value": "1",
-        "increment": "1"
-      }
-    },
-    "groups": {
-      "id": {
-        "table_schema": "public",
-        "table_name": "user_pendings",
-        "column_name": "id",
-        "sequence_name": "user_pendings_id_seq",
-        "start_value": "1",
-        "minimum_value": "1",
-        "increment": "1"
-      }
-    },
     "password_resets": {
       "id": {
         "table_schema": "public",
@@ -893,39 +736,7 @@
         "increment": "1"
       }
     },
-    "permissions": {
-      "id": {
-        "table_schema": "public",
-        "table_name": "user_pendings",
-        "column_name": "id",
-        "sequence_name": "user_pendings_id_seq",
-        "start_value": "1",
-        "minimum_value": "1",
-        "increment": "1"
-      }
-    },
-    "profile": {
-      "id": {
-        "table_schema": "public",
-        "table_name": "user_pendings",
-        "column_name": "id",
-        "sequence_name": "user_pendings_id_seq",
-        "start_value": "1",
-        "minimum_value": "1",
-        "increment": "1"
-      }
-    },
-    "tickets": {
-      "id": {
-        "table_schema": "public",
-        "table_name": "user_pendings",
-        "column_name": "id",
-        "sequence_name": "user_pendings_id_seq",
-        "start_value": "1",
-        "minimum_value": "1",
-        "increment": "1"
-      }
-    },
+
     "user_pendings": {
       "id": {
         "table_schema": "public",

@@ -16,36 +16,18 @@
           "type": "string",
           "format": "email"
         },
-        "firstName": {
+        "first_name": {
           "type": "string",
-          "format": "firstName"
+          "format": "first_name"
         },
-        "lastName": {
+        "last_name": {
           "type": "string"
         },
-        "auth_providers": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "authId": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "name",
-              "authId"
-            ]
-          }
-        },
-        "createdAt": {
+        "created_at": {
           "type": "string",
           "format": "datePast"
         },
-        "updatedAt": {
+        "updated_at": {
           "type": "string",
           "format": "datePast"
         }
@@ -54,20 +36,16 @@
         "id",
         "username",
         "email",
-        "firstName",
-        "lastName",
-        "auth_providers",
-        "createdAt",
-        "updatedAt"
+        "first_name",
+        "last_name",
+        "created_at",
+        "updated_at"
       ]
     },
     "token": {
       "type": "string",
-      "format":"jwtToken"
+      "format": "jwtToken"
     }
   },
-  "required": [
-    "user",
-    "token"
-  ]
+  "required": ["user", "token"]
 }

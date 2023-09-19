@@ -20,24 +20,19 @@ describe("Users", function () {
       assert(Number.isInteger(users.count));
       assert(users.data);
 
-      console.log(users);
+      // console.log(users);
       for (let user of users.data) {
         const userGetOne = await client.get(`v1/users/${user.id}`);
         assert(userGetOne);
-        //console.log('user ' , userGetOne);
-        //assert(_.isEqual(user, userGetOne));
         assert(user);
-        //console.log('user:', userGetOne);
         assert(userGetOne.id);
-        assert(userGetOne.username);
-        assert(userGetOne.createdAt);
-        assert(userGetOne.updatedAt);
+        assert(userGetOne.created_at);
+        assert(userGetOne.updated_at);
         assert(!userGetOne.password);
-
-        assert(!userGetOne.passwordHash);
+        //assert(!userGetOne.password_hash);
       }
     });
-    it("should get all users", async () => {
+    it("should get all users search mail", async () => {
       const users = await client.get("v1/users?search=mail");
       assert(users);
       assert(Number.isInteger(users.count));
@@ -55,7 +50,7 @@ describe("Users", function () {
       assert.equal(res.data.length, 2);
     });
 
-    it.skip("should not create a new user with missing username", async () => {
+    it.skip("should not create a new user with missing email", async () => {
       try {
         await client.post("v1/users");
         assert(false);

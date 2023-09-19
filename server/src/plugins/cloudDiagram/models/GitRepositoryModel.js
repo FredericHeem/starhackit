@@ -17,9 +17,18 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "master",
       },
       options: DataTypes.JSONB,
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
     },
     {
       tableName: "git_repository",
+      timestamps: false,
     }
   );
 

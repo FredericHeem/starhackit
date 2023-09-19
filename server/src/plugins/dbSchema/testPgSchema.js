@@ -12,7 +12,7 @@ describe.skip("PostgresSchema", function () {
   });
   after(async () => {});
 
-  describe("User Basic ", async () => {
+  describe("Pg Schema", async () => {
     before(async () => {
       client = testMngr.client("admin");
       assert(client);

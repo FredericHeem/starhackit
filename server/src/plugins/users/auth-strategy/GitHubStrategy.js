@@ -1,3 +1,4 @@
+const assert = require("assert");
 const _ = require("lodash");
 const GitHubStrategy = require("passport-github").Strategy;
 const { verifyWeb } = require("./StrategyUtils");
@@ -11,13 +12,12 @@ const profileToUser = (profile) => ({
   username: profile.name,
   picture: { url: profile.avatar_url },
   email: profile.email,
-  authProvider: {
-    name: "github",
-    authId: profile.id,
-  },
+  auth_type: "github",
+  auth_id: profile.id,
 });
 
-function registerWeb(passport, models, publisherUser) {
+function registerWeb({ passport, models, sql, publisherUser }) {
+  assert(sql);
   let authenticationGHConfig = config.authentication.github;
   if (authenticationGHConfig && !_.isEmpty(authenticationGHConfig.clientID)) {
     log.info("configuring github authentication strategy");
@@ -28,12 +28,12 @@ function registerWeb(passport, models, publisherUser) {
       async function (_accessToken, _refreshToken, params, profile, done) {
         try {
           log.info("registerWeb ", JSON.stringify(profile, null, 4));
-
-          let res = await verifyWeb(
+          let res = await verifyWeb({
             models,
+            sql,
             publisherUser,
-            profileToUser(profile._json)
-          );
+            userConfig: profileToUser(profile._json),
+          });
           done(res.err, { ...params, ...res.user });
         } catch (err) {
           done(err);

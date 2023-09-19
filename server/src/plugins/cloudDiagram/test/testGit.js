@@ -53,8 +53,8 @@ describe("Git", function () {
   });
   it("gitCreateProject from template ec2", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -72,8 +72,8 @@ describe("Git", function () {
   });
   it("gitCreateProject from template eks", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -99,8 +99,8 @@ describe("Git", function () {
   });
   it("gitCreateProject from empty template", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -121,8 +121,8 @@ describe("Git", function () {
   });
   it("gitCreateProject repo 404", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,

@@ -3,7 +3,7 @@ const testMngr = require("test/testManager");
 const { apiTestCrud } = require("./apiTestUtils");
 const endpoint = "v1/git_credential";
 const payloadCreate = {
-  providerType: "GitHub",
+  provider_type: "GitHub",
   username: "username",
   password: "password",
 };

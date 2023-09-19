@@ -11,22 +11,31 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      providerType: {
+      provider_type: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      providerName: {
+      provider_name: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      providerAuth: {
+      provider_auth: {
         type: DataTypes.JSONB,
       },
       project: DataTypes.JSONB,
       options: DataTypes.JSONB,
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal("NOW()"),
+      },
     },
     {
       tableName: "infra",
+      timestamps: false,
     }
   );
 

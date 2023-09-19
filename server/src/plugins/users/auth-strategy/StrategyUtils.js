@@ -1,24 +1,35 @@
+const assert = require("assert");
 const { Strategy } = require("passport-local");
 
 const log = require("logfilename")(__filename);
 
-function createRegisterMobile(
+function createRegisterMobile({
   name,
   verifyMobile,
   passport,
   models,
-  publisherUser
-) {
+  sql,
+  publisherUser,
+}) {
   log.debug(`createRegisterMobile  ${name}`);
+  assert(sql);
+  assert(name);
+  assert(verifyMobile);
   const strategy = new Strategy(
     {
       usernameField: "userId",
       passwordField: "token",
       passReqToCallback: false,
     },
-    async function (userID, token, done) {
+    async function (profile, accessToken, done) {
       try {
-        let res = await verifyMobile(models, publisherUser, userID, token);
+        let res = await verifyMobile({
+          models,
+          sql,
+          publisherUser,
+          profile,
+          accessToken,
+        });
         done(res.error, res.user);
       } catch (err) {
         done(err);
@@ -28,24 +39,28 @@ function createRegisterMobile(
   passport.use(`${name}_mobile`, strategy);
 }
 
-async function verifyWeb(models, publisherUser, userConfig) {
+async function verifyWeb({ sql, models, publisherUser, userConfig }) {
+  assert(userConfig);
+  assert(models);
+  assert(sql);
   log.debug(`verifyWeb`, JSON.stringify(userConfig, null, 4));
-  const userByEmail = await models.User.findByEmail(userConfig.email);
+  const userByEmail = await sql.user.getByEmail({ email: userConfig.email });
 
   if (userByEmail) {
     log.debug("email already registered ");
-    await models.User.update(userConfig, {
+    // TODO
+    await sql.user.update({
+      data: userConfig,
       where: { email: userConfig.email },
     });
-    const userUpdated = await models.User.findByEmail(userConfig.email);
-    log.debug("updated ", JSON.stringify(userUpdated.get(), null, 4));
+    const userUpdated = await sql.user.getByEmail({ email: userConfig.email });
+    // log.debug("updated ", JSON.stringify(userUpdated, null, 4));
     return {
-      user: userUpdated.toJSON(),
+      user: userUpdated,
     };
   }
   log.debug("creating user: ", userConfig);
-  let user = await models.User.createUserInGroups(userConfig, ["User"]);
-  let userCreated = user.toJSON();
+  let userCreated = await sql.user.insert(userConfig);
 
   log.debug("register created new user ", userCreated);
   if (publisherUser) {
@@ -57,13 +72,22 @@ async function verifyWeb(models, publisherUser, userConfig) {
 }
 module.exports.verifyWeb = verifyWeb;
 
-async function createVerifyMobile(getMe, models, publisherUser, accessToken) {
-  log.debug("createVerifyMobile ", accessToken);
+async function createVerifyMobile({
+  getMe,
+  models,
+  sql,
+  publisherUser,
+  accessToken,
+}) {
+  assert(getMe);
+  assert(sql);
+  assert(accessToken);
+  log.debug("createVerifyMobile ");
 
   try {
-    const profile = await getMe();
+    const userConfig = await getMe();
     log.debug("profile ", JSON.stringify(profile, null, 4));
-    return verifyWeb(models, publisherUser, profile);
+    return verifyWeb({ models, sql, publisherUser, userConfig });
   } catch (error) {
     log.error("verifyMobile ", error);
     return {

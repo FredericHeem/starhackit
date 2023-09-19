@@ -1,8 +1,7 @@
 const assert = require("assert");
 const path = require("path");
-const { pipe, tap, tryCatch, switchCase, map } = require("rubico");
+const { pipe, tap, switchCase, map } = require("rubico");
 const { isEmpty, callProp, defaultsDeep } = require("rubico/x");
-const uuid = require("uuid");
 const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
@@ -17,7 +16,7 @@ const infraFindOne = ({ models }) =>
           {
             model: models.Job,
             limit: 1,
-            order: [["createdAt", "DESC"]],
+            order: [["created_at", "DESC"]],
           },
           {
             model: models.GitCredential,
@@ -51,7 +50,7 @@ const InfraApi = ({ models, model, log }) => ({
             {
               model: models.Job,
               limit: 1,
-              order: [["createdAt", "DESC"]],
+              order: [["created_at", "DESC"]],
             },
             {
               model: models.GitCredential,

@@ -9,9 +9,9 @@ const { GIT_USERNAME, PERSONAL_ACCESS_TOKEN, GIT_REPOSITORY_AWS } = process.env;
 const config = {
   infra: {
     name: "infra-aws-test",
-    providerType: "aws",
-    providerName: "aws",
-    providerAuth: {
+    provider_type: "aws",
+    provider_name: "aws",
+    provider_auth: {
       AWSAccessKeyId,
       AWSSecretKey,
       AWS_REGION,
@@ -24,7 +24,7 @@ const config = {
     },
   },
   gitCredential: {
-    providerType: "GitHub",
+    provider_type: "GitHub",
     username: GIT_USERNAME,
     password: PERSONAL_ACCESS_TOKEN,
   },

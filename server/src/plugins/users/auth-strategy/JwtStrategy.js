@@ -1,18 +1,19 @@
+const assert = require("assert");
 const passportJwt = require("passport-jwt");
-const {Strategy, ExtractJwt} = passportJwt;
+const { Strategy, ExtractJwt } = passportJwt;
 //TODO config
-const config = require('config');
+const config = require("config");
 
-let log = require('logfilename')(__filename);
+let log = require("logfilename")(__filename);
 
-function register(passport, models) {
+function register({ passport }) {
   log.debug("register");
 
   //More options at https://github.com/themikenicholson/passport-jwt#configure-strategy
   const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
-    secretOrKey: config.jwt.secret || 'secret',
-    jsonWebTokenOptions: config.jwt.options
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("Bearer"),
+    secretOrKey: config.jwt.secret || "secret",
+    jsonWebTokenOptions: config.jwt.options,
   };
 
   let strategy = new Strategy(opts, async (jwtPayload, done) => {
@@ -27,7 +28,7 @@ function register(passport, models) {
     }
   });
 
-  passport.use('jwt', strategy);
-};
+  passport.use("jwt", strategy);
+}
 
 module.exports = register;

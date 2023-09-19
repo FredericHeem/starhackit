@@ -86,7 +86,7 @@ exports.testInfra = ({ client, config }) =>
         pushCodeFromTemplate({ client }),
         () => ({
           id: infra.id,
-          providerAuth: config.infra.providerAuth,
+          provider_auth: config.infra.provider_auth,
         }),
         tap((input) => {
           assert(input);

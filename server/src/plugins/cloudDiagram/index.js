@@ -5,6 +5,8 @@ const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
 
+const OrganisationSql = require("./sql/OrganisationSql");
+
 const { DiagramApi } = require("./api/diagramApi");
 const { InfraPushCodeRestApi } = require("./api/infraPushCodeApi");
 const { InfraRestApi } = require("./api/infraApi");
@@ -16,6 +18,8 @@ const models = [
   "InfraModel",
   "GitCredentialModel",
   "GitRepositoryModel",
+  //  "OrganisationModel",
+  //  "UserOrgModel",
 ];
 
 const configDefault = {

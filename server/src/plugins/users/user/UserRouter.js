@@ -1,10 +1,10 @@
 const assert = require("assert");
 const { tap, pipe, get, switchCase, fork } = require("rubico");
-const { isEmpty, first } = require("rubico/x");
+const { isEmpty } = require("rubico/x");
 const Qs = require("qs");
 
-function UserRouter(app) {
-  const { sql } = app.data;
+function UserRouter({ app, models }) {
+  assert(models);
   const api = {
     pathname: "/users",
     middlewares: [
@@ -20,8 +20,8 @@ function UserRouter(app) {
             () => context.request.querystring,
             Qs.parse,
             fork({
-              count: sql.user.count,
-              data: sql.user.findAll,
+              count: models.user.count,
+              data: models.user.findAll,
             }),
             switchCase([
               get("count"),
@@ -47,7 +47,7 @@ function UserRouter(app) {
         handler: (context) =>
           pipe([
             () => ({ user_id: context.params.id }),
-            sql.user.getById,
+            models.user.getById,
             switchCase([
               isEmpty,
               () => {
@@ -69,8 +69,7 @@ function UserRouter(app) {
     },
   };
 
-  app.server.createRouter(api);
-  return {};
+  return api;
 }
 
 module.exports = UserRouter;

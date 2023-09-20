@@ -12,7 +12,10 @@ function AuthenticationApi(app) {
     async createPending(userPendingIn) {
       //validateJson(userPendingIn, require("./schema/createPending.json"));
       log.debug("createPending: ", userPendingIn);
-      const user = await sql.user.getByEmail({ email: userPendingIn.email });
+      const user = await sql.user.findOne({
+        attributes: ["email"],
+        where: { email: userPendingIn.email },
+      });
       const userPendingEmail = await sql.userPending.findOne({
         attributes: ["email"],
         where: { email: userPendingIn.email },
@@ -63,7 +66,12 @@ function AuthenticationApi(app) {
       validateJson(payload, require("./schema/resetPassword.json"));
       let email = payload.email;
       log.info("resetPassword: ", email);
-      let user = await sql.user.getByEmail({ email });
+
+      const user = await sql.user.findOne({
+        attributes: ["user_id", "email"],
+        where: { email },
+      });
+
       if (user) {
         log.info("resetPassword: find user id: ", user.user_id);
         let token = createToken();
@@ -99,13 +107,16 @@ function AuthenticationApi(app) {
       log.info("verifyResetPasswordToken: ", token);
       // Has the token expired ?
       // find the user
-      let user = await sql.user.getByPasswordResetToken({
-        password_reset_token: token,
+      const user = await sql.user.findOne({
+        attributes: ["password_reset_date", "user_id"],
+        where: { password_reset_token: token },
       });
-      //log.debug("verifyResetPasswordToken: password ", password);
 
       if (user) {
         const now = new Date();
+        assert(user.password_reset_date);
+        assert(user.user_id);
+
         const paswordResetDate = user.password_reset_date;
         // Valid for 24 hours
         paswordResetDate.setUTCHours(paswordResetDate.getUTCHours() + 24);

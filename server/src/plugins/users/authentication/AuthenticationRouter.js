@@ -60,7 +60,10 @@ const localAuthCB =
 
 async function verifyLogin({ sql, email, password }) {
   log.debug("verifyLogin username: ", email);
-  let user = await sql.user.getByEmail({ email });
+  const user = await sql.user.findOne({
+    attributes: ["*"],
+    where: { email },
+  });
   if (!user) {
     log.info("userBasic invalid username email: ", email);
     return {
@@ -172,7 +175,9 @@ function AuthenticationHttpController(app) {
   };
 }
 
-function AuthenticationRouter(app) {
+function AuthenticationRouter({ app, models }) {
+  assert(models);
+
   const { config } = app;
   let router = new Router();
   let authHttpController = AuthenticationHttpController(app);

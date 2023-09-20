@@ -36,10 +36,10 @@ describe("PasswordReset", function () {
     let res = await client.post("v1/auth/reset_password", resetPaswordData);
     assert(res);
 
-    let user = await sql.user.getByEmail({
-      email,
+    const user = await sql.user.findOne({
+      attributes: ["password_reset_token"],
+      where: { email },
     });
-
     assert(user);
 
     let { password_reset_token } = user;
@@ -58,9 +58,9 @@ describe("PasswordReset", function () {
     );
     assert(res);
 
-    // Verify that the reset token has been deleted
-    const userPasswordReset = await sql.user.getByPasswordResetToken({
-      password_reset_token,
+    const userPasswordReset = await sql.user.findOne({
+      attributes: ["password_reset_token"],
+      where: { password_reset_token },
     });
     assert(!userPasswordReset);
 
@@ -91,8 +91,11 @@ describe("PasswordReset", function () {
     assert(res);
 
     // Verify that the reset token has been created
-    let user = await sql.user.getByEmail({ email });
-
+    const user = await sql.user.findOne({
+      attributes: ["password_reset_token"],
+      where: { email },
+    });
+    assert(user);
     let token = user.password_reset_token;
     assert(token);
     //Set the token creation date to the past

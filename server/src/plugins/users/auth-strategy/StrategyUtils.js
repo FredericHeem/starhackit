@@ -44,8 +44,10 @@ async function verifyWeb({ sql, models, publisherUser, userConfig }) {
   assert(models);
   assert(sql);
   log.debug(`verifyWeb`, JSON.stringify(userConfig, null, 4));
-  const userByEmail = await sql.user.getByEmail({ email: userConfig.email });
-
+  const userByEmail = await sql.user.findOne({
+    attributes: ["email"],
+    where: { email: userConfig.email },
+  });
   if (userByEmail) {
     log.debug("email already registered ");
     // TODO
@@ -53,22 +55,28 @@ async function verifyWeb({ sql, models, publisherUser, userConfig }) {
       data: userConfig,
       where: { email: userConfig.email },
     });
-    const userUpdated = await sql.user.getByEmail({ email: userConfig.email });
-    // log.debug("updated ", JSON.stringify(userUpdated, null, 4));
+    const userUpdated = await sql.user.findOne({
+      attributes: ["*"],
+      where: { email: userConfig.email },
+    });
     return {
       user: userUpdated,
     };
-  }
-  log.debug("creating user: ", userConfig);
-  let userCreated = await sql.user.insert(userConfig);
+  } else {
+    log.debug("creating user: ", userConfig);
+    let userCreated = await sql.user.insert(userConfig);
 
-  log.debug("register created new user ", userCreated);
-  if (publisherUser) {
-    await publisherUser.publish("user.registered", JSON.stringify(userCreated));
+    log.debug("register created new user ", userCreated);
+    if (publisherUser) {
+      await publisherUser.publish(
+        "user.registered",
+        JSON.stringify(userCreated)
+      );
+    }
+    return {
+      user: userCreated,
+    };
   }
-  return {
-    user: userCreated,
-  };
 }
 module.exports.verifyWeb = verifyWeb;
 

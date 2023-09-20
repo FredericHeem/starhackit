@@ -8,18 +8,18 @@ const MailJob = require("./jobs/mail/MailJob");
 const MeRouter = require("./me/MeRouter");
 const UserRouter = require("./user/UserRouter");
 const AuthenticationRouter = require("./authentication/AuthenticationRouter");
+
 function UserPlugin(app) {
   let log = require("logfilename")(__filename);
   const sqlAdaptor = require("utils/SqlAdapter")(app.data.sqlClient);
-
-  app.data.registerModelsFromDir(__dirname, "./models");
-  app.data.sql = {
+  const models = {
     user: sqlAdaptor(require("./sql/UserSql")()),
     userPending: sqlAdaptor(require("./sql/UserPendingSql")()),
   };
+  app.data.sql = models;
   setupAuthentication(app);
 
-  setupRouter(app);
+  setupRouter({ app, models });
 
   let parts = [];
   if (config.mail && config.mail.smtp) {
@@ -29,10 +29,7 @@ function UserPlugin(app) {
   }
 
   return {
-    models: {
-      user: sqlAdaptor(require("./sql/UserSql")()),
-      userPending: sqlAdaptor(require("./sql/UserPendingSql")()),
-    },
+    models,
     async start() {
       try {
         for (let part of parts) {
@@ -49,15 +46,13 @@ function UserPlugin(app) {
   };
 }
 
-function setupRouter(app) {
+function setupRouter({ app, models }) {
   //Authentication
-  AuthenticationRouter(app);
+  AuthenticationRouter({ app, models });
 
-  //Me
-  MeRouter(app);
-
-  //Users
-  UserRouter(app);
+  [MeRouter, UserRouter].forEach((router) =>
+    app.server.createRouter(router({ app, models }))
+  );
 }
 
 function setupAuthentication(app) {

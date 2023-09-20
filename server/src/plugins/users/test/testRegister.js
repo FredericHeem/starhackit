@@ -75,8 +75,10 @@ describe("UserRegister", function () {
       const me = await client.get("v1/me");
       assert.equal(me.email, userConfig.email);
       await client.delete("v1/me");
-      const user = await sql.user.getByEmail({
-        email: userConfig.email,
+
+      const user = await sql.user.findOne({
+        attributes: ["email"],
+        where: { email: userConfig.email },
       });
       assert(!user);
     } catch (error) {

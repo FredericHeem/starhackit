@@ -44,7 +44,7 @@ describe("Org", function () {
     client = testMngr.client("alice");
     await client.login();
   });
-  it("should create a org", async () => {
+  it("org CRUD", async () => {
     try {
       // Create
       const org = await client.post("v1/org", orgPayload);

@@ -18,8 +18,8 @@ const getFromContext = pipe([
   }),
 ]);
 
-function MeRouter(app) {
-  const { sql } = app.data;
+function MeRouter({ app, models }) {
+  assert(models);
   const api = {
     pathname: "/me",
     middlewares: [app.server.auth.isAuthenticated],
@@ -32,7 +32,7 @@ function MeRouter(app) {
             () => context,
             getFromContext,
             get("where"),
-            sql.user.getById,
+            models.user.getById,
             switchCase([
               isEmpty,
               () => {
@@ -52,7 +52,7 @@ function MeRouter(app) {
           pipe([
             () => context,
             getFromContext,
-            sql.user.destroy,
+            models.user.destroy,
             () => {
               context.logout();
               context.status = 204;
@@ -66,9 +66,9 @@ function MeRouter(app) {
           pipe([
             () => context,
             getFromContext,
-            tap(sql.user.update),
+            tap(models.user.update),
             get("where"),
-            sql.user.getById,
+            models.user.getById,
             (body) => {
               context.body = body;
               context.status = 200;
@@ -77,8 +77,7 @@ function MeRouter(app) {
       },
     },
   };
-
-  app.server.createRouter(api);
+  return api;
 }
 
 module.exports = MeRouter;

@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { switchCase, tryCatch, pipe, tap, get } = require("rubico");
+const { switchCase, fork, tryCatch, pipe, tap, get, pick } = require("rubico");
 const { isEmpty, defaultsDeep } = require("rubico/x");
 const {
   contextSet404,
@@ -7,7 +7,21 @@ const {
   contextHandleError,
 } = require("utils/koaCommon");
 
-const getFromContext = require("../utils");
+const getFromContext = pipe([
+  tap((context) => {
+    assert(context);
+  }),
+  fork({
+    where: pipe([
+      get("state.user"),
+      pick(["user_id"]),
+      tap((id) => {
+        assert(id);
+      }),
+    ]),
+    data: get("request.body"),
+  }),
+]);
 
 exports.OrgApi = ({ app, models }) => {
   return {
@@ -46,6 +60,9 @@ exports.OrgApi = ({ app, models }) => {
         handler: tryCatch(
           (context) =>
             pipe([
+              tap((param) => {
+                assert(true);
+              }),
               () => context,
               getFromContext,
               get("where"),

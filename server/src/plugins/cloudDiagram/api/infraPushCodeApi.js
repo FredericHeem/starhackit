@@ -6,7 +6,7 @@ const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
 
-const { contextSet400, contextSetOk } = require("../common");
+const { contextSet400, contextSetOk } = require("utils/koaCommon");
 const { gitPush } = require("../gitUtils");
 const { infraFindOne } = require("./infraApi");
 

@@ -8,7 +8,7 @@ const { DockerClient } = require("@grucloud/docker-axios");
 const { DiagramApi } = require("./api/diagramApi");
 const { InfraPushCodeRestApi } = require("./api/infraPushCodeApi");
 const { InfraRestApi } = require("./api/infraApi");
-const { GitCredentialRestApi } = require("./api/gitCredentialApi");
+const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { GitRepositoryRestApi } = require("./api/gitRepositoryApi");
 const { OrgApi } = require("./api/orgApi");
 
@@ -28,7 +28,8 @@ module.exports = (app) => {
 
   const models = {
     org: sqlAdaptor(require("./sql/OrganisationSql")()),
-    gitCredentialSql: sqlAdaptor(require("./sql/GitCredentialSql")()),
+    userOrg: sqlAdaptor(require("./sql/UserOrgSql")()),
+    gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")()),
   };
 
   app.config = assign({
@@ -43,14 +44,13 @@ module.exports = (app) => {
 
   app.dockerClient = dockerClient;
 
-  [OrgApi].forEach((router) =>
+  [OrgApi, GitCredentialApi].forEach((router) =>
     app.server.createRouter(router({ app, models }))
   );
 
   DiagramApi(app);
   InfraPushCodeRestApi(app);
   InfraRestApi(app);
-  GitCredentialRestApi(app);
   GitRepositoryRestApi(app);
 
   return {

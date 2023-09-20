@@ -31,8 +31,6 @@ module.exports = (app) => {
     gitCredentialSql: sqlAdaptor(require("./sql/GitCredentialSql")()),
   };
 
-  const log = require("logfilename")(__filename);
-
   app.config = assign({
     infra: pipe([get("infra", {}), defaultsDeep(configDefault)]),
   })(app.config);
@@ -44,7 +42,11 @@ module.exports = (app) => {
   ])();
 
   app.dockerClient = dockerClient;
-  OrgApi({ app, models });
+
+  [OrgApi].forEach((router) =>
+    app.server.createRouter(router({ app, models }))
+  );
+
   DiagramApi(app);
   InfraPushCodeRestApi(app);
   InfraRestApi(app);

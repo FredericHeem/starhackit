@@ -1,30 +1,16 @@
 const assert = require("assert");
-const { switchCase, tryCatch, fork, pipe, tap, get, pick } = require("rubico");
+const { switchCase, tryCatch, pipe, tap, get } = require("rubico");
 const { isEmpty, defaultsDeep } = require("rubico/x");
 const {
   contextSet404,
   contextSetOk,
   contextHandleError,
-} = require("../common");
+} = require("utils/koaCommon");
 
-const getFromContext = pipe([
-  tap((context) => {
-    assert(context);
-  }),
-  fork({
-    where: pipe([
-      get("state.user"),
-      pick(["user_id"]),
-      tap((id) => {
-        assert(id);
-      }),
-    ]),
-    data: get("request.body"),
-  }),
-]);
+const getFromContext = require("../utils");
 
 exports.OrgApi = ({ app, models }) => {
-  const api = {
+  return {
     pathname: "/org",
     middlewares: [app.server.auth.isAuthenticated],
     ops: {
@@ -35,13 +21,14 @@ exports.OrgApi = ({ app, models }) => {
           (context) =>
             pipe([
               tap(() => {
-                assert(context);
-                assert(context.request);
                 assert(context.request.body);
                 assert(context.state.user.user_id);
               }),
               () => context.request.body,
               models.org.insert,
+              tap((param) => {
+                assert(true);
+              }),
               tap(
                 pipe([
                   defaultsDeep({ user_id: context.state.user.user_id }),
@@ -56,29 +43,26 @@ exports.OrgApi = ({ app, models }) => {
       getAll: {
         pathname: "/",
         method: "get",
-        handler: (context) =>
-          pipe([
-            () => context,
-            getFromContext,
-            get("where"),
-            tap((param) => {
-              assert(true);
-            }),
-            models.org.getAllByUser,
-            tap((param) => {
-              assert(true);
-            }),
-            (body) => {
-              context.body = body;
-              context.status = 200;
-            },
-          ])(),
+        handler: tryCatch(
+          (context) =>
+            pipe([
+              () => context,
+              getFromContext,
+              get("where"),
+              models.org.getAllByUser,
+              tap((param) => {
+                assert(true);
+              }),
+              contextSetOk({ context }),
+            ])(),
+          contextHandleError
+        ),
       },
       getOne: {
         pathname: "/:id",
         method: "get",
-        handler: (context) =>
-          tryCatch(
+        handler: tryCatch(
+          (context) =>
             pipe([
               tap(() => {
                 assert(context.params.id);
@@ -94,32 +78,35 @@ exports.OrgApi = ({ app, models }) => {
               }),
               switchCase([
                 isEmpty,
-                tap(() => contextSet404({ context })),
+                tap(contextSet404({ context })),
                 tap(contextSetOk({ context })),
               ]),
-            ]),
-            contextHandleError
-          )(),
+            ])(),
+          contextHandleError
+        ),
       },
       delete: {
         pathname: "/:id",
         method: "delete",
-        handler: (context) =>
-          pipe([
-            tap((param) => {
-              assert(context.params.id);
-            }),
-            () => ({
-              where: {
-                org_id: context.params.id,
-                user_id: context.state.user.user_id,
+        handler: tryCatch(
+          (context) =>
+            pipe([
+              tap((param) => {
+                assert(context.params.id);
+              }),
+              () => ({
+                where: {
+                  org_id: context.params.id,
+                  user_id: context.state.user.user_id,
+                },
+              }),
+              models.org.destroy,
+              () => {
+                context.status = 204;
               },
-            }),
-            models.org.destroy,
-            () => {
-              context.status = 204;
-            },
-          ])(),
+            ])(),
+          contextHandleError
+        ),
       },
       patch: {
         pathname: "/:id",
@@ -144,15 +131,9 @@ exports.OrgApi = ({ app, models }) => {
               },
             }),
             models.org.findOne,
-            (body) => {
-              context.body = body;
-              context.status = 200;
-            },
+            contextSetOk({ context }),
           ])(),
       },
     },
   };
-
-  app.server.createRouter(api);
-  return api;
 };

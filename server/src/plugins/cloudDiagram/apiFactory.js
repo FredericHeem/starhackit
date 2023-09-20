@@ -8,7 +8,7 @@ const {
   contextSet404,
   contextSetOk,
   contextHandleError,
-} = require("./common");
+} = require("utils/koaCommon");
 
 exports.createApiByUser = ({ model }) => ({
   findAll: ({ user_id }) =>
@@ -93,7 +93,7 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
                   () => api.findOne({ id: context.params.id }),
                   switchCase([
                     isEmpty,
-                    tap(() => contextSet404({ context })),
+                    tap(contextSet404({ context })),
                     tap(contextSetOk({ context })),
                   ]),
                 ]),

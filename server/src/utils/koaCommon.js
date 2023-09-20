@@ -1,3 +1,4 @@
+const assert = require("assert");
 const { pipe, tap } = require("rubico");
 
 exports.contextSet400 =
@@ -13,15 +14,17 @@ exports.contextSet400 =
     };
   };
 
-exports.contextSet404 = ({ context }) => {
-  context.status = 404;
-  context.body = {
-    error: {
-      code: 404,
-      name: "NotFound",
-    },
+exports.contextSet404 =
+  ({ context }) =>
+  () => {
+    context.status = 404;
+    context.body = {
+      error: {
+        code: 404,
+        name: "NotFound",
+      },
+    };
   };
-};
 
 exports.contextSetOk =
   ({ context }) =>
@@ -40,6 +43,7 @@ exports.contextSet =
 exports.contextHandleError = (error, context) =>
   pipe([
     tap(() => {
+      assert(context);
       console.error(error);
     }),
     () => {

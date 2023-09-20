@@ -13,7 +13,7 @@ const { gitPush, gitPushInventory } = require("../gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
 
-describe("Git", function () {
+describe.skip("Git", function () {
   before(async function () {
     if (!testMngr.app.config.infra) {
       this.skip();

@@ -2,6 +2,8 @@ let Promise = require("bluebird");
 const Koa = require("koa");
 const Router = require("koa-66");
 const _ = require("lodash");
+const { tap, map } = require("rubico");
+const { forEach } = require("rubico/x");
 
 function KoaServer(app) {
   let log = require("logfilename")(__filename);
@@ -22,18 +24,18 @@ function KoaServer(app) {
       koaApp.use(rootRouter.routes());
     },
     displayRoutes() {
-      rootRouter.stacks.forEach(function(stack) {
+      rootRouter.stacks.forEach(function (stack) {
         log.debug(`${stack.methods} : ${stack.path}`);
       });
     },
     createRouter(api) {
-      const router = new Router();
-      _.each(api.middlewares, middleware => router.use(middleware));
-      _.each(api.ops, ({ pathname, method, handler }) =>
-        router[method](pathname, handler)
-      );
-
-      baseRouter.mount(api.pathname, router);
+      _.each(api.ops, ({ middlewares = [], pathname, method, handler }) => {
+        const router = new Router();
+        forEach((m) => router.use(m))(api.middlewares);
+        forEach((m) => router.use(m))(middlewares);
+        router[method](pathname, handler);
+        baseRouter.mount(api.pathname, router);
+      });
     },
     /**
      * Start the koa server
@@ -43,8 +45,8 @@ function KoaServer(app) {
       let port = process.env.PORT || configHttp.port;
 
       log.info("start koa on port %s", port);
-      return new Promise(function(resolve) {
-        httpHandle = koaApp.listen(port, function() {
+      return new Promise(function (resolve) {
+        httpHandle = koaApp.listen(port, function () {
           log.info("koa server started");
           resolve();
         });
@@ -60,13 +62,13 @@ function KoaServer(app) {
         log.info("koa server is already stopped");
         return;
       }
-      return new Promise(function(resolve) {
-        httpHandle.close(function() {
+      return new Promise(function (resolve) {
+        httpHandle.close(function () {
           log.info("koa server is stopped");
           resolve();
         });
       });
-    }
+    },
   };
 
   function middlewareInit(app, koaApp, config) {

@@ -9,7 +9,6 @@ describe("Org No Auth", function () {
     }
     client = testMngr.client("bob");
   });
-  after(async () => {});
 
   it("should get a 401 when getting all orgs", async () => {
     try {
@@ -81,11 +80,27 @@ describe("Org", function () {
   });
   it("should get 404 when the org is not found", async () => {
     try {
-      let orgs = await client.get("v1/org/123456");
-      assert(orgs);
+      await client.get("v1/org/123456");
+      assert(false);
     } catch (error) {
-      assert(error.response.data.error);
-      assert.equal(error.response.data.error.name, "NotFound");
+      assert.equal(error.response.status, 404);
+    }
+  });
+  it("should get 404 getting a differnet org ", async () => {
+    try {
+      await client.get("v1/org/org-bob");
+      assert(false);
+    } catch (error) {
+      assert(error.response.status);
+      assert.equal(error.response.status, 404);
+    }
+  });
+  it("should get 404 deleting a differnet org ", async () => {
+    try {
+      await client.delete("v1/org/org-bob");
+      assert(false);
+    } catch (error) {
+      assert(error.response.status);
       assert.equal(error.response.status, 404);
     }
   });

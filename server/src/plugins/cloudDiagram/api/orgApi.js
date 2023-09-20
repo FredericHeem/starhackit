@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { switchCase, fork, tryCatch, pipe, tap, get, pick } = require("rubico");
+const { switchCase, tryCatch, pipe, tap } = require("rubico");
 const { isEmpty, defaultsDeep } = require("rubico/x");
 const {
   contextSet404,
@@ -7,21 +7,7 @@ const {
   contextHandleError,
 } = require("utils/koaCommon");
 
-const getFromContext = pipe([
-  tap((context) => {
-    assert(context);
-  }),
-  fork({
-    where: pipe([
-      get("state.user"),
-      pick(["user_id"]),
-      tap((id) => {
-        assert(id);
-      }),
-    ]),
-    data: get("request.body"),
-  }),
-]);
+const { middlewareUserBelongsToOrg } = require("../utils");
 
 exports.OrgApi = ({ app, models }) => {
   return {
@@ -61,11 +47,11 @@ exports.OrgApi = ({ app, models }) => {
           (context) =>
             pipe([
               tap((param) => {
-                assert(true);
+                assert(context.state.user.user_id);
               }),
-              () => context,
-              getFromContext,
-              get("where"),
+              () => ({
+                user_id: context.state.user.user_id,
+              }),
               models.org.getAllByUser,
               tap((param) => {
                 assert(true);
@@ -76,18 +62,19 @@ exports.OrgApi = ({ app, models }) => {
         ),
       },
       getOne: {
-        pathname: "/:id",
+        pathname: "/:org_id",
         method: "get",
+        middlewares: [middlewareUserBelongsToOrg(models)],
         handler: tryCatch(
           (context) =>
             pipe([
               tap(() => {
-                assert(context.params.id);
+                assert(context.params.org_id);
                 assert(context.state.user.user_id);
               }),
               () => ({
                 attributes: ["name", "org_id"],
-                where: { org_id: context.params.id },
+                where: { org_id: context.params.org_id },
               }),
               models.org.findOne,
               tap((param) => {
@@ -103,17 +90,18 @@ exports.OrgApi = ({ app, models }) => {
         ),
       },
       delete: {
-        pathname: "/:id",
+        pathname: "/:org_id",
         method: "delete",
+        middlewares: [middlewareUserBelongsToOrg(models)],
         handler: tryCatch(
           (context) =>
             pipe([
               tap((param) => {
-                assert(context.params.id);
+                assert(context.params.org_id);
               }),
               () => ({
                 where: {
-                  org_id: context.params.id,
+                  org_id: context.params.org_id,
                   user_id: context.state.user.user_id,
                 },
               }),
@@ -126,17 +114,18 @@ exports.OrgApi = ({ app, models }) => {
         ),
       },
       patch: {
-        pathname: "/:id",
+        pathname: "/:org_id",
         method: "patch",
+        middlewares: [middlewareUserBelongsToOrg(models)],
         handler: (context) =>
           pipe([
             tap((param) => {
-              assert(context.params.id);
+              assert(context.params.org_id);
             }),
             () => ({
               data: context.request.body,
               where: {
-                org_id: context.params.id,
+                org_id: context.params.org_id,
                 user_id: context.state.user.user_id,
               },
             }),
@@ -144,7 +133,7 @@ exports.OrgApi = ({ app, models }) => {
             () => ({
               attributes: ["name", "org_id"],
               where: {
-                org_id: context.params.id,
+                org_id: context.params.org_id,
               },
             }),
             models.org.findOne,

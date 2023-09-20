@@ -18,14 +18,11 @@ exports.middlewareUserBelongsToOrg = (models) => (context, next) =>
     }),
     (where) => ({ attributes: ["user_id"], where }),
     models.userOrg.findOne,
-    tap((context) => {
-      assert(context);
-    }),
     switchCase([
       isEmpty,
       () => {
-        context.status = 401;
-        context.body = "Unauthorized";
+        context.status = 404;
+        context.body = "NotFound";
       },
       () => next(),
     ]),

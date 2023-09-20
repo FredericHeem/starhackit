@@ -5,9 +5,9 @@ function Document(app) {
   const { models } = app.data.sequelize;
   app.data.registerModel(__dirname, `DocumentModel`);
 
-  const readContent = async file =>
+  const readContent = async (file) =>
     new Promise((resolve, reject) => {
-      fs.readFile(file.path, "binary", function(err, data) {
+      fs.readFile(file.path, "binary", function (err, data) {
         fs.unlink(file.path);
         if (err) throw reject(err);
         const data64 = new Buffer(data, "binary").toString("base64");
@@ -22,29 +22,32 @@ function Document(app) {
       getAll: {
         pathname: "/",
         method: "get",
-        handler: async context => {
+        handler: async (context) => {
           const documents = await models.Document.findAll({
-            where: { user_id: context.state.user.id }
+            where: { user_id: context.state.user.user_id },
           });
-          context.body = documents.map(document => document.get());
+          context.body = documents.map((document) => document.get());
           context.status = 200;
-        }
+        },
       },
       getOne: {
         pathname: "/:type",
         method: "get",
-        handler: async context => {
+        handler: async (context) => {
           const document = await models.Document.findOne({
-            where: { user_id: context.state.user.id, type: context.params.type }
+            where: {
+              user_id: context.state.user.user_id,
+              type: context.params.type,
+            },
           });
           context.body = document ? document.get() : {};
           context.status = 200;
-        }
+        },
       },
       update: {
         pathname: "/:type",
         method: "post",
-        handler: async context => {
+        handler: async (context) => {
           const config = { limits: { fileSize: 1000000 } };
           const { files, fields } = await asyncBusboy(context.req, config);
           const file = files[0];
@@ -58,17 +61,17 @@ function Document(app) {
               name: fields.name,
               file_type: fields.file_type,
               type: context.params.type,
-              user_id: context.state.user.id
+              user_id: context.state.user.user_id,
             });
 
             context.status = 200;
           }
-        }
+        },
       },
       upload: {
         pathname: "/",
         method: "post",
-        handler: async context => {
+        handler: async (context) => {
           const config = { limits: { fileSize: 1000000 } };
           const { files, fields } = await asyncBusboy(context.req, config);
           const file = files[0];
@@ -82,17 +85,17 @@ function Document(app) {
               name: fields.name,
               file_type: fields.file_type,
               type: fields.type,
-              user_id: context.state.user.id
+              user_id: context.state.user.user_id,
             });
             context.status = 200;
           }
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   app.server.createRouter(api);
   return {};
-};
+}
 
 module.exports = Document;

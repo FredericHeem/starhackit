@@ -30,12 +30,12 @@ function PassportAuth(app) {
     registerWeb({ passport, models, sql, publisher });
   }
   passport.serializeUser(function (user, done) {
-    log.debug("serializeUser user.id", user.id);
+    log.debug("serializeUser user.user_id", user.user_id);
     done(null, user);
   });
 
   passport.deserializeUser(function (user, done) {
-    log.debug("deserializeUser ", user.id);
+    log.debug("deserializeUser ", user.user_id);
     done(null, user);
   });
 }

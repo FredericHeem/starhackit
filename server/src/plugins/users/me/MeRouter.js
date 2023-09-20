@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { switchCase, fork, pipe, tap, get } = require("rubico");
+const { switchCase, fork, pipe, tap, get, pick } = require("rubico");
 const { isEmpty } = require("rubico/x");
 
 const getFromContext = pipe([
@@ -7,10 +7,11 @@ const getFromContext = pipe([
     assert(context);
   }),
   fork({
-    user_id: pipe([
-      get("state.user.id"),
+    where: pipe([
+      get("state.user"),
+      pick(["user_id"]),
       tap((id) => {
-        //assert(id);
+        assert(id);
       }),
     ]),
     data: get("request.body"),
@@ -18,7 +19,6 @@ const getFromContext = pipe([
 ]);
 
 function MeRouter(app) {
-  const { models } = app.data.sequelize;
   const { sql } = app.data;
   const api = {
     pathname: "/me",
@@ -31,6 +31,7 @@ function MeRouter(app) {
           pipe([
             () => context,
             getFromContext,
+            get("where"),
             sql.user.getById,
             switchCase([
               isEmpty,
@@ -51,7 +52,7 @@ function MeRouter(app) {
           pipe([
             () => context,
             getFromContext,
-            sql.user.delete,
+            sql.user.destroy,
             () => {
               context.logout();
               context.status = 204;
@@ -65,14 +66,8 @@ function MeRouter(app) {
           pipe([
             () => context,
             getFromContext,
-            tap(({ data, user_id }) =>
-              sql.user.update({
-                data,
-                where: {
-                  id: user_id,
-                },
-              })
-            ),
+            tap(sql.user.update),
+            get("where"),
             sql.user.getById,
             (body) => {
               context.body = body;

@@ -29,6 +29,10 @@ function UserPlugin(app) {
   }
 
   return {
+    models: {
+      user: sqlAdaptor(require("./sql/UserSql")()),
+      userPending: sqlAdaptor(require("./sql/UserPendingSql")()),
+    },
     async start() {
       try {
         for (let part of parts) {

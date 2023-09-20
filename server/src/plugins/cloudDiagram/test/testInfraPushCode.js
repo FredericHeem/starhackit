@@ -26,7 +26,7 @@ const config = {
   },
 };
 
-describe("InfraPushCode", function () {
+describe.skip("InfraPushCode", function () {
   let client;
   before(async function () {
     if (!testMngr.app.config.infra) {

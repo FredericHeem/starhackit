@@ -1,29 +1,21 @@
-const { pipe } = require("rubico");
+const { pipe, get, fork, assign, omit } = require("rubico");
+const { identity } = require("rubico/x");
 const nanoid = require("nanoid");
 
+const { insert } = require("utils/SqlOps");
 const { hashPassword } = require("utils/hashPassword");
 
 module.exports = () => {
+  const tableName = "user_pending";
   return {
-    insert: ({ email, password }) =>
-      pipe([
-        () => password,
-        hashPassword,
-        (password_hash) =>
-          `INSERT INTO user_pending (email, password_hash, code) VALUES ('${email}','${password_hash}', '${nanoid.nanoid(
-            16
-          )}');`,
-      ])(),
-    deleteByEmail: ({ email }) =>
-      `DELETE FROM user_pending WHERE email='${email}'`,
-    getByEmail: ({ email }) => `
-    SELECT email, code
-    FROM user_pending
-    WHERE email = '${email}';`,
-    getByCode: ({ code }) => `
-    SELECT email,
-        code, password_hash, created_at
-    FROM user_pending
-    WHERE code = '${code}';`,
+    tableName,
+    insert: pipe([
+      assign({
+        code: () => nanoid.nanoid(16),
+        password_hash: pipe([get("password"), hashPassword]),
+      }),
+      omit(["password"]),
+      fork({ out: identity, query: insert({ tableName }) }),
+    ]),
   };
 };

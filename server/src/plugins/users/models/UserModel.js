@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
   const User = sequelize.define(
     "User",
     {
-      id: {
+      user_id: {
         type: DataTypes.TEXT,
         primaryKey: true,
         allowNull: false,
@@ -70,7 +70,7 @@ module.exports = function (sequelize, DataTypes) {
     return this.findOne({
       where: { [key]: value },
       attributes: [
-        "id",
+        "user_id",
         "user_type",
         "email",
         "username",
@@ -84,7 +84,7 @@ module.exports = function (sequelize, DataTypes) {
     return this.findByKey("email", email);
   };
   User.findByUserId = async function (userid) {
-    return this.findByKey("id", userid);
+    return this.findByKey("user_id", userid);
   };
 
   User.findByUsername = async function (userName) {
@@ -103,7 +103,7 @@ module.exports = function (sequelize, DataTypes) {
       .transaction(async function (t) {
         const user_id = nanoid.nanoid(10);
         let userCreated = await models.User.create(
-          { ...userJson, id: user_id },
+          { ...userJson, user_id },
           {
             transaction: t,
           }
@@ -122,49 +122,6 @@ module.exports = function (sequelize, DataTypes) {
         log.error("createUserInGroups: rolling back", err);
         throw err;
       });
-  };
-  User.checkUserPermission = async function (userId, resource, action) {
-    log.debug("Checking %s permission for %s on %s", action, userId, resource);
-    let where = {
-      resource: resource,
-    };
-    where[action.toUpperCase()] = true;
-    let res = await this.findOne({
-      include: [
-        {
-          model: models.Group,
-          include: [
-            {
-              model: models.Permission,
-              where: where,
-            },
-          ],
-        },
-      ],
-      where: {
-        id: userId,
-      },
-    });
-    let authorized = res.Groups.length > 0 ? true : false;
-    return authorized;
-  };
-
-  User.getPermissions = function (username) {
-    return this.findOne({
-      include: [
-        {
-          model: models.Group,
-          include: [
-            {
-              model: models.Permission,
-            },
-          ],
-        },
-      ],
-      where: {
-        username: username,
-      },
-    });
   };
 
   User.prototype.comparePassword = function (candidatePassword) {

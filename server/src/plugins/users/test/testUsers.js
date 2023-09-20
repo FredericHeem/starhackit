@@ -22,10 +22,11 @@ describe("Users", function () {
 
       // console.log(users);
       for (let user of users.data) {
-        const userGetOne = await client.get(`v1/users/${user.id}`);
+        assert(user.user_id);
+        const userGetOne = await client.get(`v1/users/${user.user_id}`);
         assert(userGetOne);
         assert(user);
-        assert(userGetOne.id);
+        assert(userGetOne.user_id);
         assert(userGetOne.created_at);
         assert(userGetOne.updated_at);
         assert(!userGetOne.password);
@@ -42,8 +43,7 @@ describe("Users", function () {
     it("should get all users with filter ASC", async () => {
       let res = await client.get("v1/users?offset=1&order=ASC&limit=2");
       assert.equal(res.data.length, 2);
-      //console.log(res.data[0])
-      assert(res.data[0].id);
+      assert(res.data[0].user_id);
     });
     it("should get all users with filter DESC", async () => {
       let res = await client.get("v1/users?offset=10&limit=2");

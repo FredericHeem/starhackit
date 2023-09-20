@@ -1,4 +1,10 @@
-INSERT INTO users (id, email, username, password_hash, user_type)
+INSERT INTO users (
+        user_id,
+        email,
+        username,
+        password_hash,
+        user_type
+    )
 VALUES (
         'user-test-1234567890',
         'test@mail.com',
@@ -28,6 +34,10 @@ VALUES (
         'admin'
     );
 INSERT INTO org (org_id, name)
-VALUES ('org-12345678', 'test-org');
+VALUES ('org-alice', 'org alice');
 INSERT INTO user_orgs (org_id, user_id)
-VALUES ('org-12345678', 'user-test-1234567890');
+VALUES ('org-alice', 'alice-1234567890');
+INSERT INTO org (org_id, name)
+VALUES ('org-bob', 'org bob');
+INSERT INTO user_orgs (org_id, user_id)
+VALUES ('org-bob', 'bob-1234567890');

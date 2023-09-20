@@ -19,19 +19,17 @@ describe("UserPendinSql", function () {
   it("user_pending create, get one, get all, destroy", () =>
     pipe([
       // Insert user pending
-      () => ({ email, password: "password" }),
-      userPendingSql.insert,
-      tap((rows) => {
-        assert(rows);
+      () => ({
+        email,
+        code: "fgc3Tm4mOXXwq80z",
+        password: "password",
       }),
-      // Get user by email
-      () => ({ email }),
-      userPendingSql.getByEmail,
-      tap((rows) => {
-        assert(rows);
+      userPendingSql.insert,
+      tap((userPending) => {
+        assert(userPending.password_hash);
       }),
       // Delete user pending
-      () => ({ email }),
-      userPendingSql.deleteByEmail,
+      () => ({ where: { email } }),
+      userPendingSql.destroy,
     ])());
 });

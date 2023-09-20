@@ -6,7 +6,7 @@ const { sqlClient } = testMngr;
 const sqlAdaptor = require("utils/SqlAdapter")(sqlClient);
 const orgSql = sqlAdaptor(require("../OrganisationSql")());
 
-let user_id = "user-test-1234567890";
+const user_id = "user-test-1234567890";
 const org_id = `org-${faker.random.alphaNumeric(8)}`;
 
 describe("OrganisationSql", function () {
@@ -30,8 +30,14 @@ describe("OrganisationSql", function () {
         assert(rows);
         assert(rows.length);
       }),
+      //Update
+      () => ({ data: { name: "new org" }, where: { org_id, user_id } }),
+      orgSql.update,
+      tap((params) => {
+        assert(params);
+      }),
       // Delete Org
-      () => ({ org_id }),
-      orgSql.delete,
+      () => ({ where: { org_id, user_id } }),
+      orgSql.destroy,
     ])());
 });

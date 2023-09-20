@@ -1,6 +1,5 @@
 const assert = require("assert");
 const { pipe, tap, tryCatch, map } = require("rubico");
-const { first } = require("rubico/x");
 const path = require("path");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
@@ -50,25 +49,6 @@ describe("Git", function () {
       infra,
       messsage: "update inventory again",
     })(input);
-  });
-  it("gitCreateProject from template ec2", async () => {
-    const infra = {
-      provider_type: "aws",
-      provider_name: "aws",
-      gitCredential: {
-        username: GIT_USERNAME,
-        password: PERSONAL_ACCESS_TOKEN,
-      },
-      gitRepository: { url: GIT_REPOSITORY, branch: "master" },
-      user: { username: "topolino", email: "topolino@mail.com" },
-      user_id: uuid.v4(),
-      project: {
-        url: "https://github.com/grucloud/grucloud/",
-        title: "EC2 an instance with public address",
-        directory: "examples/aws/ec2",
-        branch: "main",
-      },
-    };
   });
   it("gitCreateProject from template eks", async () => {
     const infra = {

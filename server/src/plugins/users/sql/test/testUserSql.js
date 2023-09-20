@@ -30,9 +30,15 @@ describe("UserSql", function () {
       tap((rows) => {
         assert(rows);
       }),
+      // Get user by id
+      () => ({ where: { user_id }, attributes: ["user_id"] }),
+      userSql.findOne,
+      tap((rows) => {
+        assert(rows);
+      }),
       // Delete user
-      () => ({ user_id }),
-      userSql.delete,
+      () => ({ where: { user_id } }),
+      userSql.destroy,
     ])());
   it("findAll", () =>
     pipe([

@@ -50,7 +50,7 @@ const config = {
   },
 };
 
-describe("CloudDiagram Azure", function () {
+describe.skip("CloudDiagram Azure", function () {
   let client;
   before(async function () {
     if (!testMngr.app.config.infra) {

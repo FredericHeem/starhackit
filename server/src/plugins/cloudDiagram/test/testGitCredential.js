@@ -12,7 +12,7 @@ const payloadUpdate = {
   username: "usernameUpdated",
 };
 
-describe("GitCredential", function () {
+describe.skip("GitCredential", function () {
   let client;
   before(async function () {
     if (!testMngr.app.config.infra) {

@@ -1,3 +1,4 @@
+const assert = require("assert");
 const _ = require("lodash");
 const Router = require("koa-66");
 const passport = require("koa-passport");
@@ -57,27 +58,29 @@ const localAuthCB =
     }
   };
 
-async function verifyLogin({ models, email, password }) {
-  //assert(email);
+async function verifyLogin({ sql, email, password }) {
   log.debug("verifyLogin username: ", email);
-  let user = await models.User.findByUsernameOrEmail(email);
+  let user = await sql.user.getByEmail({ email });
   if (!user) {
-    log.info("userBasic invalid username user: ", email);
+    log.info("userBasic invalid username email: ", email);
     return {
       error: {
         message: "Username and Password do not match",
       },
     };
   }
-  //log.info("userBasic user: ", user.get());
-  let result = await user.comparePassword(password);
+  let result = await comparePassword({
+    password,
+    password_hash: user.password_hash,
+  });
+
   if (result) {
-    log.debug("verifyLogin valid password for user: ", user.toJSON());
+    //log.debug("verifyLogin valid password for user: ", user);
     return {
-      user: user.toJSON(),
+      user,
     };
   } else {
-    log.debug("verifyLogin invalid password user: ", user.get());
+    log.debug("verifyLogin invalid password user: ", user);
     return {
       error: {
         message: "Username and Password do not match",
@@ -85,37 +88,6 @@ async function verifyLogin({ models, email, password }) {
     };
   }
 }
-
-// async function verifyLogin({ sql, models, email, password }) {
-//   log.debug("verifyLogin username: ", email);
-//   let user = await sql.user.getByEmail({ email });
-//   if (!user) {
-//     log.info("userBasic invalid username email: ", email);
-//     return {
-//       error: {
-//         message: "Username and Password do not match",
-//       },
-//     };
-//   }
-//   let result = await comparePassword({
-//     password,
-//     password_hash: user.password_hash,
-//   });
-
-//   if (result) {
-//     //log.debug("verifyLogin valid password for user: ", user);
-//     return {
-//       user,
-//     };
-//   } else {
-//     log.debug("verifyLogin invalid password user: ", user);
-//     return {
-//       error: {
-//         message: "Username and Password do not match",
-//       },
-//     };
-//   }
-// }
 
 async function login({ context, sql, models }) {
   const { email, password } = context.request.body;

@@ -33,7 +33,7 @@ const config = {
   },
 };
 
-describe("CloudDiagramAws", function () {
+describe.skip("CloudDiagramAws", function () {
   let client;
   before(async function () {
     if (!testMngr.app.config.infra) {

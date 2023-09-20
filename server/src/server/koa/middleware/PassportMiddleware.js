@@ -1,3 +1,4 @@
+const assert = require("assert");
 const passport = require("koa-passport");
 
 function PassportMiddleware(app, koaApp /*, config*/) {
@@ -42,6 +43,7 @@ function PassportMiddleware(app, koaApp /*, config*/) {
         context.status = 401;
         context.body = "Unauthorized";
       }
+      assert(user.user_type);
       let authorized = user.user_type === "admin";
       log.debug("isAuthorized ", authorized);
       if (authorized) {

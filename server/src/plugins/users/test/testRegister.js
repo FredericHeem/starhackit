@@ -45,38 +45,43 @@ describe("UserRegister", function () {
   });
 
   it("shoud register a user", async () => {
-    let userConfig = await userUtils.registerRandom({ sql, models, client });
-    //The user shoud no longer be in the user_pendings table
-    let res = await sql.userPending.getByEmail({
-      email: userConfig.email,
-    });
-    assert(!res);
-
     try {
-      res = await client.post("v1/auth/register", userConfig);
-      assert(false, "should not be here");
+      let userConfig = await userUtils.registerRandom({ sql, models, client });
+      //The user shoud no longer be in the user_pendings table
+      const res = await sql.userPending.findOne({
+        attributes: ["email"],
+        where: { email: userConfig.email },
+      });
+      assert(!res);
+
+      try {
+        res = await client.post("v1/auth/register", userConfig);
+        assert(false, "should not be here");
+      } catch (error) {
+        //console.log(error);
+        assert.equal(error.response.status, 422);
+        assert.equal(error.response.data.error.name, "EmailExists");
+      }
+
+      // Should login now
+      let loginParam = {
+        password: userConfig.password,
+        email: userConfig.email,
+      };
+
+      let loginRes = await client.login(loginParam);
+      assert(loginRes);
+      //console.log(loginRes);
+      const me = await client.get("v1/me");
+      assert.equal(me.email, userConfig.email);
+      await client.delete("v1/me");
+      const user = await sql.user.getByEmail({
+        email: userConfig.email,
+      });
+      assert(!user);
     } catch (error) {
-      //console.log(error);
-      assert.equal(error.response.status, 422);
-      assert.equal(error.response.data.error.name, "EmailExists");
+      throw error;
     }
-
-    // Should login now
-    let loginParam = {
-      password: userConfig.password,
-      email: userConfig.email,
-    };
-
-    let loginRes = await client.login(loginParam);
-    assert(loginRes);
-    //console.log(loginRes);
-    const me = await client.get("v1/me");
-    assert.equal(me.email, userConfig.email);
-    await client.delete("v1/me");
-    const user = await sql.user.getByEmail({
-      email: userConfig.email,
-    });
-    assert(!user);
   });
   it("invalid email code", async () => {
     try {

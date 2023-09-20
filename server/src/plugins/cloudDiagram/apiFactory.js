@@ -70,7 +70,7 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
         handler: (context) =>
           tryCatch(
             pipe([
-              () => api.findAll({ user_id: context.state.user.id }),
+              () => api.findAll({ user_id: context.state.user.user_id }),
               contextSetOk({ context }),
             ]),
             contextHandleError
@@ -84,7 +84,7 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
             pipe([
               tap(() => {
                 assert(context.params.id);
-                assert(context.state.user.id);
+                assert(context.state.user.user_id);
               }),
               switchCase([
                 () => uuid.validate(context.params.id),
@@ -114,11 +114,11 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
                 assert(context);
                 assert(context.request);
                 assert(context.request.body);
-                assert(context.state.user.id);
+                assert(context.state.user.user_id);
               }),
               () => ({
                 ...context.request.body,
-                user_id: context.state.user.id,
+                user_id: context.state.user.user_id,
               }),
               (data) => api.create({ data }),
               contextSetOk({ context }),
@@ -134,7 +134,7 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
             pipe([
               tap(() => {
                 assert(context.params.id);
-                assert(context.state.user.id);
+                assert(context.state.user.user_id);
               }),
               switchCase([
                 () => uuid.validate(context.params.id),
@@ -150,7 +150,6 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
             contextHandleError
           )(),
       },
-
       update: {
         pathname: "/:id",
         method: "patch",
@@ -159,7 +158,7 @@ exports.createRestApiByUser = ({ pathname, api, app }) => {
             pipe([
               tap(() => {
                 assert(context.params.id);
-                assert(context.state.user.id);
+                assert(context.state.user.user_id);
               }),
               switchCase([
                 () => uuid.validate(context.params.id),

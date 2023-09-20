@@ -23,19 +23,19 @@ function userUtils() {
     assert.equal(res.message, "confirm email");
 
     //Retrieve the code in the db
-    let userPending = await sql.userPending.getByEmail({
-      email: userConfig.email,
+    let userPending = await sql.userPending.findOne({
+      attributes: ["code", "email"],
+      where: { email: userConfig.email },
     });
     assert.equal(userPending.email, userConfig.email);
     assert(userPending.code);
 
-    //console.log("verify user ", userConfig);
     await client.post("v1/auth/verify_email_code", { code: userPending.code });
-    let user = await sql.user.getByEmail({
-      email: userConfig.email,
+    let user = await sql.user.findOne({
+      attributes: ["email"],
+      where: { email: userConfig.email },
     });
     assert.equal(user.email, userConfig.email);
-    //console.log("user created ", user);
     return userConfig;
   }
 

@@ -49,7 +49,7 @@ exports.InfraPushCodeRestApi = (app) => {
             pipe([
               tap(() => {
                 assert(context.params.id);
-                assert(context.state.user.id);
+                assert(context.state.user.user_id);
               }),
               switchCase([
                 () => uuid.validate(context.params.id),

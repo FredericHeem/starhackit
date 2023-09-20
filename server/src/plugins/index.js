@@ -9,7 +9,7 @@ const pluginsName = [
   //"document",
   //"ticket",
   //"expoPush",
-  //"cloudDiagram",
+  "cloudDiagram",
 ];
 
 function Plugins(app) {

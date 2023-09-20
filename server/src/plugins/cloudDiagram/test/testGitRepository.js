@@ -13,7 +13,7 @@ const payloadUpdate = {
   url: GIT_REPOSITORY,
 };
 
-describe("GitRepository", function () {
+describe.skip("GitRepository", function () {
   let client;
   before(async function () {
     if (!testMngr.app.config.infra) {

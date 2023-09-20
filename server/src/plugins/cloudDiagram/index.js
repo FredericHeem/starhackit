@@ -5,22 +5,12 @@ const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
 
-const OrganisationSql = require("./sql/OrganisationSql");
-
 const { DiagramApi } = require("./api/diagramApi");
 const { InfraPushCodeRestApi } = require("./api/infraPushCodeApi");
 const { InfraRestApi } = require("./api/infraApi");
 const { GitCredentialRestApi } = require("./api/gitCredentialApi");
 const { GitRepositoryRestApi } = require("./api/gitRepositoryApi");
-
-const models = [
-  "JobModel",
-  "InfraModel",
-  "GitCredentialModel",
-  "GitRepositoryModel",
-  //  "OrganisationModel",
-  //  "UserOrgModel",
-];
+const { OrgApi } = require("./api/orgApi");
 
 const configDefault = {
   containerImage: "fredericheem/grucloud-cli:v12.6.2",
@@ -34,10 +24,14 @@ const configDefault = {
 };
 
 module.exports = (app) => {
+  const sqlAdaptor = require("utils/SqlAdapter")(app.data.sqlClient);
+
+  const models = {
+    org: sqlAdaptor(require("./sql/OrganisationSql")()),
+    gitCredentialSql: sqlAdaptor(require("./sql/GitCredentialSql")()),
+  };
+
   const log = require("logfilename")(__filename);
-  forEach((model) => app.data.registerModel(__dirname, `models/${model}`))(
-    models
-  );
 
   app.config = assign({
     infra: pipe([get("infra", {}), defaultsDeep(configDefault)]),
@@ -50,7 +44,7 @@ module.exports = (app) => {
   ])();
 
   app.dockerClient = dockerClient;
-
+  OrgApi({ app, models });
   DiagramApi(app);
   InfraPushCodeRestApi(app);
   InfraRestApi(app);
@@ -58,6 +52,7 @@ module.exports = (app) => {
   GitRepositoryRestApi(app);
 
   return {
+    models,
     start: pipe([
       () => ({ image: app.config.infra.containerImage }),
       tap(({ image }) => {

@@ -13,27 +13,25 @@ const profile = {
 };
 
 describe("FacebookStrategy", function () {
-  let models = testMngr.app.data.sequelize.models;
-  let { sql } = testMngr.app.data;
-  before(async () => {});
-  after(async () => {});
-  beforeEach(async function () {
+  const { models } = testMngr.app.plugins.get().users;
+
+  before(async function () {
     if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
   });
   it("create a new user, register it", async () => {
-    let res = await verifyWeb({ sql, models, userConfig: profile });
+    let res = await verifyWeb({ models, userConfig: profile });
     //console.log(res.err)
     assert(!res.err);
     assert(res.user);
     profile.first_name = "Justine";
-    res = await verifyWeb({ sql, models, userConfig: profile });
+    res = await verifyWeb({ models, userConfig: profile });
     assert(!res.err);
     assert(res.user);
 
     profile.id = uuid.v4();
-    res = await verifyWeb({ sql, models, userConfig: profile });
+    res = await verifyWeb({ models, userConfig: profile });
     assert(!res.err);
     assert(res.user);
     assert(!res.user.password);

@@ -16,8 +16,8 @@ const profileToUser = (profile) => ({
   auth_id: profile.id,
 });
 
-function registerWeb({ passport, models, sql, publisherUser }) {
-  assert(sql);
+function registerWeb({ passport, models, publisherUser }) {
+  assert(models);
   let authenticationGHConfig = config.authentication.github;
   if (authenticationGHConfig && !_.isEmpty(authenticationGHConfig.clientID)) {
     log.info("configuring github authentication strategy");
@@ -30,7 +30,6 @@ function registerWeb({ passport, models, sql, publisherUser }) {
           log.info("registerWeb ", JSON.stringify(profile, null, 4));
           let res = await verifyWeb({
             models,
-            sql,
             publisherUser,
             userConfig: profileToUser(profile._json),
           });

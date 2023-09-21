@@ -5,9 +5,9 @@ const testMngr = require("test/testManager");
 const UserUtils = require("./userUtils");
 
 describe("UserRegister", function () {
-  let app = testMngr.app;
+  const { app } = testMngr;
   this.timeout(300e3);
-  let models = app.data.models();
+  const { models } = app.plugins.get().users;
   let { sql } = app.data;
 
   let client;
@@ -17,7 +17,6 @@ describe("UserRegister", function () {
     sandbox = sinon.createSandbox();
     assert(app.plugins);
     sinon.stub(app.publisher, "publish").callsFake((key, msg) => {
-      //console.log("publish has been called");
       //assert.equal(key, "user.registered");
       assert(msg);
     });
@@ -30,13 +29,13 @@ describe("UserRegister", function () {
     client = testMngr.createClient();
   });
   it("shoud register up to n users", async () => {
-    let countBefore = await sql.user.count();
+    let countBefore = await models.user.count();
     assert(countBefore > 0);
     let usersToAdd = 10;
     // Limit to 1 when using sqlite
     let limit = 2;
     await userUtils.createBulk({ sql, models, client, usersToAdd, limit });
-    let countAfter = await sql.user.count();
+    let countAfter = await models.user.count();
     //console.log("users to add ", usersToAdd);
     //console.log("#users before ", countBefore);
     //console.log("#users after ", countAfter);
@@ -48,7 +47,7 @@ describe("UserRegister", function () {
     try {
       let userConfig = await userUtils.registerRandom({ sql, models, client });
       //The user shoud no longer be in the user_pendings table
-      const res = await sql.userPending.findOne({
+      const res = await models.userPending.findOne({
         attributes: ["email"],
         where: { email: userConfig.email },
       });
@@ -76,7 +75,7 @@ describe("UserRegister", function () {
       assert.equal(me.email, userConfig.email);
       await client.delete("v1/me");
 
-      const user = await sql.user.findOne({
+      const user = await models.user.findOne({
         attributes: ["email"],
         where: { email: userConfig.email },
       });

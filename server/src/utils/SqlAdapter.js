@@ -5,16 +5,17 @@ const { first } = require("rubico/x");
 const { findOne, insert, update, destroy } = require("utils/SqlOps");
 
 module.exports =
-  (sqlClient) =>
+  ({ sql }) =>
   ({ tableName, ...sqlOps }) => {
+    assert(sql);
     assert(tableName);
     return {
       ...new Proxy(
         {
-          findOne: findOne({ tableName }),
-          insert: insert({ tableName }),
-          update: update({ tableName }),
-          destroy: destroy({ tableName }),
+          findOne: findOne({ tableName, sql }),
+          insert: insert({ tableName, sql }),
+          update: update({ tableName, sql }),
+          destroy: destroy({ tableName, sql }),
           ...sqlOps,
         },
         {
@@ -22,34 +23,33 @@ module.exports =
             (target, name) =>
             (...args) =>
               pipe([
-                () => target[name](...args),
-                tap((param) => {
-                  assert(param);
-                  console.log(param);
-                }),
                 tryCatch(
-                  (query) =>
+                  () =>
                     pipe([
-                      () => sqlClient.query(query?.query ?? query),
-                      tap((param) => {
-                        assert(param);
-                      }),
                       switchCase([
                         // insert
-                        () => name.startsWith("insert"),
+                        () =>
+                          name.startsWith("insert") ||
+                          name.startsWith("update"),
                         pipe([
+                          () => target[name](...args),
                           tap((param) => {
-                            assert(param);
+                            assert(true);
                           }),
-                          () => query.out,
+                          //tap(({ out, query }) => query.execute()),
+                          tap((param) => {
+                            assert(true);
+                          }),
+                          get("out"),
+                          // () => query.out,
                         ]),
                         // Find one
                         () => name.startsWith("getBy") || name == "findOne",
-                        pipe([get("rows"), first]),
+                        pipe([() => target[name](...args), first]),
                         // Count
                         () => name.startsWith("count"),
                         pipe([
-                          get("rows"),
+                          () => target[name](...args),
                           first,
                           get("count"),
                           tap((param) => {
@@ -58,7 +58,7 @@ module.exports =
                           Number,
                         ]),
                         // Default
-                        pipe([get("rows")]),
+                        pipe([() => target[name](...args)]),
                       ]),
                     ])(),
                   (error, query) => {

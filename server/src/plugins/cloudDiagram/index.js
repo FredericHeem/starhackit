@@ -24,12 +24,13 @@ const configDefault = {
 };
 
 module.exports = (app) => {
-  const sqlAdaptor = require("utils/SqlAdapter")(app.data.sqlClient);
+  const { sql } = app.data;
 
+  const sqlAdaptor = require("utils/SqlAdapter")({ sql });
   const models = {
-    org: sqlAdaptor(require("./sql/OrganisationSql")()),
-    userOrg: sqlAdaptor(require("./sql/UserOrgSql")()),
-    gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")()),
+    org: sqlAdaptor(require("./sql/OrganisationSql")({ sql })),
+    userOrg: sqlAdaptor(require("./sql/UserOrgSql")({ sql })),
+    gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")({ sql })),
   };
 
   app.config = assign({

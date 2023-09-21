@@ -1,10 +1,10 @@
 const { tap, pipe, fork } = require("rubico");
 const assert = require("assert");
-const { defaultsDeep, identity } = require("rubico/x");
+const { defaultsDeep, identity, keys } = require("rubico/x");
 const nanoid = require("nanoid");
-const { insert, buildUpdateSet } = require("utils/SqlOps");
+const { insert } = require("utils/SqlOps");
 
-module.exports = () => {
+module.exports = ({ sql }) => {
   const tableName = "org";
   return {
     tableName,
@@ -12,7 +12,7 @@ module.exports = () => {
       pipe([
         () => data,
         defaultsDeep({ org_id: `org-${nanoid.nanoid(8)}` }),
-        fork({ out: identity, query: insert({ tableName }) }),
+        fork({ out: identity, query: insert({ tableName, sql }) }),
       ])(),
     update: ({ data, where: { org_id, user_id } }) =>
       pipe([
@@ -21,16 +21,18 @@ module.exports = () => {
           assert(org_id);
           assert(user_id);
         }),
-        () =>
-          `
-          UPDATE ${tableName}
-          SET ${buildUpdateSet(data)}
+        async () => ({
+          out: data,
+          query: await sql`
+          UPDATE ${sql(tableName)}
+          SET ${sql(data, keys(data))}
           WHERE org_id IN (
                   SELECT org_id
                   FROM user_orgs
-                  WHERE user_id = '${user_id}' AND org_id = '${org_id}'
+                  WHERE user_id = ${user_id} AND org_id = ${org_id}
               );
           `,
+        }),
       ])(),
     destroy: ({ where: { org_id, user_id } }) =>
       pipe([
@@ -39,25 +41,48 @@ module.exports = () => {
           assert(user_id);
         }),
         () =>
-          `
-          DELETE from ${tableName}
+          sql`
+          DELETE from ${sql(tableName)}
           WHERE org_id IN (
                   SELECT org_id
                   FROM user_orgs
-                  WHERE user_id = '${user_id}' AND org_id = '${org_id}'
+                  WHERE user_id = ${user_id} AND org_id = ${org_id}
               );
           `,
       ])(),
-    getAllByUser: ({ user_id }) => `
-    SELECT ${tableName}.org_id,
+    getAllByUser: ({ user_id }) =>
+      pipe([
+        tap((param) => {
+          assert(user_id);
+        }),
+        () => sql`
+    SELECT ${sql(tableName)}.org_id,
       name
-      FROM ${tableName}
+      FROM ${sql(tableName)}
       INNER JOIN (
           user_orgs
           INNER JOIN users ON users.user_id = user_orgs.user_id
-      ) ON ${tableName}.org_id = user_orgs.org_id
-      AND users.user_id = '${user_id}';`,
+      ) ON ${sql(tableName)}.org_id = user_orgs.org_id
+      AND users.user_id = ${user_id};`,
+        tap((param) => {
+          assert(true);
+        }),
+      ])(),
     addUser: ({ org_id, user_id }) =>
-      `INSERT INTO user_orgs (org_id, user_id) VALUES ('${org_id}','${user_id}');`,
+      pipe([
+        tap((param) => {
+          assert(user_id);
+          assert(org_id);
+        }),
+        () =>
+          sql`INSERT INTO user_orgs ${sql(
+            { org_id, user_id },
+            "org_id",
+            "user_id"
+          )}`,
+        tap((param) => {
+          assert(true);
+        }),
+      ])(),
   };
 };

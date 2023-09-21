@@ -4,7 +4,7 @@ const { defaultsDeep, identity } = require("rubico/x");
 const nanoid = require("nanoid");
 const { insert, buildUpdateSet } = require("utils/SqlOps");
 
-module.exports = () => {
+module.exports = ({ sql }) => {
   const tableName = "git_repository";
   return {
     tableName,
@@ -12,7 +12,7 @@ module.exports = () => {
       pipe([
         () => data,
         defaultsDeep({ git_repository_id: `repo-${nanoid.nanoid(8)}` }),
-        fork({ out: identity, query: insert({ tableName }) }),
+        fork({ out: identity, query: insert({ tableName, sql }) }),
       ])(),
   };
 };

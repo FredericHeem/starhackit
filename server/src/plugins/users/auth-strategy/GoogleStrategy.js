@@ -42,8 +42,8 @@ const profileMobileToUser = (profile) => ({
   auth_id: profile.id,
 });
 
-function verifyMobile({ models, sql, publisherUser, accessToken }) {
-  assert(sql);
+function verifyMobile({ models, publisherUser, accessToken }) {
+  assert(models);
   assert(accessToken);
 
   const getMe = () =>
@@ -59,11 +59,11 @@ function verifyMobile({ models, sql, publisherUser, accessToken }) {
       })
       .then((res) => profileMobileToUser(res.data));
 
-  return createVerifyMobile({ getMe, models, sql, publisherUser, accessToken });
+  return createVerifyMobile({ getMe, models, publisherUser, accessToken });
 }
 
-function registerWeb({ passport, models, sql, publisherUser }) {
-  assert(sql);
+function registerWeb({ passport, models, publisherUser }) {
+  assert(models);
   const googleConfig = config.authentication.google;
   if (googleConfig && !_.isEmpty(googleConfig.clientID)) {
     const strategy = new Strategy(googleConfig, async function (
@@ -88,14 +88,13 @@ function registerWeb({ passport, models, sql, publisherUser }) {
   }
 }
 
-function registerMobile({ passport, models, sql, publisherUser }) {
-  assert(sql);
+function registerMobile({ passport, models, publisherUser }) {
+  assert(models);
   createRegisterMobile({
     name: "google",
     verifyMobile,
     passport,
     models,
-    sql,
     publisherUser,
   });
 

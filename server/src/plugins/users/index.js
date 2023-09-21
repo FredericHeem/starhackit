@@ -11,12 +11,12 @@ const AuthenticationRouter = require("./authentication/AuthenticationRouter");
 
 function UserPlugin(app) {
   let log = require("logfilename")(__filename);
-  const sqlAdaptor = require("utils/SqlAdapter")(app.data.sqlClient);
+  const { sql } = app.data;
+  const sqlAdaptor = require("utils/SqlAdapter")({ sql });
   const models = {
-    user: sqlAdaptor(require("./sql/UserSql")()),
-    userPending: sqlAdaptor(require("./sql/UserPendingSql")()),
+    user: sqlAdaptor(require("./sql/UserSql")({ sql })),
+    userPending: sqlAdaptor(require("./sql/UserPendingSql")({ sql })),
   };
-  app.data.sql = models;
   setupAuthentication(app);
 
   setupRouter({ app, models });

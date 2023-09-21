@@ -2,9 +2,10 @@ const assert = require("assert");
 const faker = require("faker");
 const testMngr = require("test/testManager");
 const { pipe, tap } = require("rubico");
-const { sqlClient } = testMngr;
-const sqlAdaptor = require("utils/SqlAdapter")(sqlClient);
-const orgSql = sqlAdaptor(require("../OrganisationSql")());
+const { sql } = testMngr;
+
+const sqlAdaptor = require("utils/SqlAdapter")({ sql });
+const orgSql = sqlAdaptor(require("../OrganisationSql")({ sql }));
 
 const user_id = "user-test-1234567890";
 const org_id = `org-${faker.random.alphaNumeric(8)}`;

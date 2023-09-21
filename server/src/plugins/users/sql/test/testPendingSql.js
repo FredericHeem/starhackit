@@ -3,10 +3,10 @@ const faker = require("faker");
 const testMngr = require("test/testManager");
 const { pipe, tap } = require("rubico");
 
-const { sqlClient } = testMngr;
+const { sql } = testMngr;
 
-const sqlAdaptor = require("utils/SqlAdapter")(sqlClient);
-const userPendingSql = sqlAdaptor(require("../UserPendingSql")());
+const sqlAdaptor = require("utils/SqlAdapter")({ sql });
+const userPendingSql = sqlAdaptor(require("../UserPendingSql")({ sql }));
 
 const email = faker.internet.email();
 

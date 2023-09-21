@@ -4,7 +4,9 @@ const testMngr = require("test/testManager");
 
 describe("PasswordReset", function () {
   let app = testMngr.app;
-  const { sql, sqlClient } = app.data;
+  const { sql } = app.data;
+  const plugins = app.plugins.get();
+  const { models } = plugins.users;
   let client;
   let sandbox;
   let publisherUserStub;
@@ -36,7 +38,7 @@ describe("PasswordReset", function () {
     let res = await client.post("v1/auth/reset_password", resetPaswordData);
     assert(res);
 
-    const user = await sql.user.findOne({
+    const user = await models.user.findOne({
       attributes: ["password_reset_token"],
       where: { email },
     });
@@ -58,7 +60,7 @@ describe("PasswordReset", function () {
     );
     assert(res);
 
-    const userPasswordReset = await sql.user.findOne({
+    const userPasswordReset = await models.user.findOne({
       attributes: ["password_reset_token"],
       where: { password_reset_token },
     });
@@ -91,7 +93,7 @@ describe("PasswordReset", function () {
     assert(res);
 
     // Verify that the reset token has been created
-    const user = await sql.user.findOne({
+    const user = await models.user.findOne({
       attributes: ["password_reset_token"],
       where: { email },
     });
@@ -99,12 +101,10 @@ describe("PasswordReset", function () {
     let token = user.password_reset_token;
     assert(token);
     //Set the token creation date to the past
-    await sqlClient.query(
-      `
+    await sql`
       UPDATE users 
-      SET password_reset_date='${new Date("2016-08-25").toUTCString()}'
-      WHERE password_reset_token='${token}';`
-    );
+      SET password_reset_date=${new Date("2016-08-25").toUTCString()}
+      WHERE password_reset_token=${token};`;
     let verifyPaswordData = {
       email,
       token,

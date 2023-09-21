@@ -5,10 +5,10 @@ const { pipe, tap, fork, get } = require("rubico");
 const { first } = require("rubico/x");
 const nanoid = require("nanoid");
 
-const { sqlClient } = testMngr;
+const { sql } = testMngr;
 
-const sqlAdaptor = require("utils/SqlAdapter")(sqlClient);
-const userSql = sqlAdaptor(require("../UserSql")());
+const sqlAdaptor = require("utils/SqlAdapter")({ sql });
+const userSql = sqlAdaptor(require("../UserSql")({ sql }));
 
 const user_id = `user-${nanoid.nanoid(10)}`;
 const email = faker.internet.email();

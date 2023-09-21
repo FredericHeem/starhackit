@@ -1,4 +1,5 @@
 const assert = require("assert");
+const { omit } = require("rubico");
 const _ = require("lodash");
 const Router = require("koa-66");
 const passport = require("koa-passport");
@@ -58,10 +59,11 @@ const localAuthCB =
     }
   };
 
-async function verifyLogin({ sql, email, password }) {
+async function verifyLogin({ models, email, password }) {
+  assert(models);
   log.debug("verifyLogin username: ", email);
-  const user = await sql.user.findOne({
-    attributes: ["*"],
+  const user = await models.user.findOne({
+    attributes: ["user_id", "user_type", "email", "password_hash"],
     where: { email },
   });
   if (!user) {
@@ -80,7 +82,7 @@ async function verifyLogin({ sql, email, password }) {
   if (result) {
     //log.debug("verifyLogin valid password for user: ", user);
     return {
-      user,
+      user: omit(["password_hash"])(user),
     };
   } else {
     log.debug("verifyLogin invalid password user: ", user);
@@ -92,7 +94,8 @@ async function verifyLogin({ sql, email, password }) {
   }
 }
 
-async function login({ context, sql, models }) {
+async function login({ context, models }) {
+  assert(models);
   const { email, password } = context.request.body;
   if (!email || !password) {
     context.status = 401;
@@ -100,7 +103,6 @@ async function login({ context, sql, models }) {
     return;
   }
   const { user, error } = await verifyLogin({
-    sql,
     models,
     email,
     password,
@@ -118,14 +120,15 @@ async function login({ context, sql, models }) {
     };
   }
 }
-function AuthenticationHttpController(app) {
+function AuthenticationHttpController({ app, models }) {
+  assert(app);
+  assert(models);
   log.debug("AuthenticationHttpController");
-  let authApi = AuthenticationApi(app);
+  let authApi = AuthenticationApi({ app, models });
   let respond = app.utils.http.respond;
-  const { sql } = app.data;
   return {
     login(context, next) {
-      return login({ context, sql, models: app.data.models() });
+      return login({ context, models });
     },
     logout(ctx) {
       log.debug("logout");
@@ -176,11 +179,11 @@ function AuthenticationHttpController(app) {
 }
 
 function AuthenticationRouter({ app, models }) {
+  assert(app);
   assert(models);
 
-  const { config } = app;
   let router = new Router();
-  let authHttpController = AuthenticationHttpController(app);
+  let authHttpController = AuthenticationHttpController({ app, models });
   router.post("/login", authHttpController.login);
   router.post("/logout", authHttpController.logout);
   router.post("/register", authHttpController.register);

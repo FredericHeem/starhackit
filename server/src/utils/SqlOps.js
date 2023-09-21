@@ -2,21 +2,17 @@ const assert = require("assert");
 const { tap, pipe, map } = require("rubico");
 const { callProp, isObject, keys, values } = require("rubico/x");
 
-const buildSelectAttr = pipe([callProp("join", ", ")]);
-
-const buildInsertAttr = pipe([keys, callProp("join", ", ")]);
-
-const buildInsertValues = pipe([
-  values,
-  map((v) => `'${v}'`),
-  callProp("join", ", "),
-]);
-
-const buildWhere = pipe([
-  Object.entries,
-  map(([k, v]) => `${k}='${v}'`),
-  callProp("join", " AND "),
-]);
+const buildWhere = (sql) =>
+  pipe([
+    tap((params) => {
+      assert(sql);
+    }),
+    Object.entries,
+    (res) =>
+      res.map(
+        ([k, v], index) => sql`${index ? sql`AND` : sql``} ${sql(k)} = ${v}`
+      ),
+  ]);
 
 const buildUpdateSet = pipe([
   Object.entries,
@@ -24,65 +20,60 @@ const buildUpdateSet = pipe([
   callProp("join", ", "),
 ]);
 exports.buildUpdateSet = buildUpdateSet;
-
 const findOne =
-  ({ tableName }) =>
+  ({ tableName, sql }) =>
   ({ attributes, where }) =>
     pipe([
       tap(() => {
+        assert(sql);
         assert(tableName);
         assert(attributes);
         assert(where);
       }),
       () =>
-        `SELECT ${buildSelectAttr(
-          attributes
-        )} FROM ${tableName} WHERE ${buildWhere(where)};`,
+        sql`SELECT ${sql(attributes)} FROM ${sql(tableName)} WHERE ${buildWhere(
+          sql
+        )(where)};`,
     ])();
 
 exports.findOne = findOne;
 
 const insert =
-  ({ tableName }) =>
+  ({ tableName, sql }) =>
   (data) =>
     pipe([
       tap(() => {
+        assert(sql);
         assert(data);
       }),
-      () =>
-        `INSERT INTO ${tableName} (${buildInsertAttr(
-          data
-        )}) VALUES (${buildInsertValues(data)});`,
-      tap((param) => {
-        assert(true);
-      }),
+      () => sql`INSERT INTO ${sql(tableName)} ${sql(data, ...keys(data))};`,
     ])();
 exports.insert = insert;
 
 const update =
-  ({ tableName }) =>
+  ({ tableName, sql }) =>
   ({ data, where }) =>
     pipe([
       tap(() => {
         assert(data);
         assert(where);
       }),
-      () => ({
+      async () => ({
         out: data,
-        query: `UPDATE ${tableName} SET ${buildUpdateSet(
+        query: await sql`UPDATE ${sql(tableName)} SET ${sql(
           data
-        )} WHERE ${buildWhere(where)}`,
+        )} WHERE ${buildWhere(sql)(where)}`,
       }),
     ])();
 exports.update = update;
 
 const destroy =
-  ({ tableName }) =>
+  ({ tableName, sql }) =>
   ({ where }) =>
     pipe([
       tap(() => {
         assert(where);
       }),
-      () => `DELETE FROM ${tableName} WHERE ${buildWhere(where)}`,
+      () => sql`DELETE FROM ${sql(tableName)} WHERE ${buildWhere(sql)(where)}`,
     ])();
 exports.destroy = destroy;

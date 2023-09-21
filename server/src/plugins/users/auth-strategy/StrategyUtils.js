@@ -39,23 +39,22 @@ function createRegisterMobile({
   passport.use(`${name}_mobile`, strategy);
 }
 
-async function verifyWeb({ sql, models, publisherUser, userConfig }) {
+async function verifyWeb({ models, publisherUser, userConfig }) {
   assert(userConfig);
   assert(models);
-  assert(sql);
   log.debug(`verifyWeb`, JSON.stringify(userConfig, null, 4));
-  const userByEmail = await sql.user.findOne({
+  const userByEmail = await models.user.findOne({
     attributes: ["email"],
     where: { email: userConfig.email },
   });
   if (userByEmail) {
     log.debug("email already registered ");
     // TODO
-    await sql.user.update({
+    await models.user.update({
       data: userConfig,
       where: { email: userConfig.email },
     });
-    const userUpdated = await sql.user.findOne({
+    const userUpdated = await models.user.findOne({
       attributes: ["*"],
       where: { email: userConfig.email },
     });
@@ -64,7 +63,7 @@ async function verifyWeb({ sql, models, publisherUser, userConfig }) {
     };
   } else {
     log.debug("creating user: ", userConfig);
-    let userCreated = await sql.user.insert(userConfig);
+    let userCreated = await models.user.insert(userConfig);
 
     log.debug("register created new user ", userCreated);
     if (publisherUser) {
@@ -83,19 +82,17 @@ module.exports.verifyWeb = verifyWeb;
 async function createVerifyMobile({
   getMe,
   models,
-  sql,
   publisherUser,
   accessToken,
 }) {
   assert(getMe);
-  assert(sql);
   assert(accessToken);
   log.debug("createVerifyMobile ");
 
   try {
     const userConfig = await getMe();
     log.debug("profile ", JSON.stringify(profile, null, 4));
-    return verifyWeb({ models, sql, publisherUser, userConfig });
+    return verifyWeb({ models, publisherUser, userConfig });
   } catch (error) {
     log.error("verifyMobile ", error);
     return {

@@ -8,7 +8,7 @@ function PassportAuth(app) {
   const { publisher, config, data } = app;
   let models = data.sequelize.models;
   const { sql } = data;
-  registerJwt({ passport, models, sql });
+  registerJwt({ passport });
 
   if (_.get(config, "authentication.facebook")) {
     const registerWeb = require("./auth-strategy/FacebookStrategy").registerWeb;

@@ -3,11 +3,11 @@ let _ = require("lodash");
 let fs = require("fs");
 let path = require("path");
 let Sequelize = require("sequelize");
-const pg = require("pg");
+const postgres = require("postgres");
 
 function Data(config) {
   let log = require("logfilename")(__filename);
-  const sqlClient = new pg.Client(config.db.url);
+  const sql = postgres(config.db.url);
   let dbConfig = config.db;
   let sequelizeOption = {
     define: {
@@ -25,7 +25,8 @@ function Data(config) {
   let modelsMap = {};
 
   let data = {
-    sqlClient,
+    sql,
+    //sqlClient,
     sequelize,
     Sequelize,
     registerModelsFromDir(baseDir, name) {
@@ -66,7 +67,7 @@ function Data(config) {
       let option = {
         force: false,
       };
-      await sqlClient.connect();
+      //await sqlClient.connect();
       await sequelize.sync(option);
       //await this.seedIfEmpty(app);
       log.info("db started");

@@ -1,7 +1,7 @@
 version: "3"
 services:
   pg:
-    image: postgres:10-alpine
+    image: postgres:16-alpine
     restart: on-failure
     environment:
       POSTGRES_USER: postgres

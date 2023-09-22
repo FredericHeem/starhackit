@@ -32,7 +32,7 @@ const buildWhereFromContext = pipe([
 ]);
 
 exports.WorkspaceApi = ({ app, models }) => {
-  assert(models);
+  assert(models.workspace);
   return {
     pathname: "/org/:org_id/project/:project_id/workspace",
     middlewares: [

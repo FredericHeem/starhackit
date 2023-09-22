@@ -34,15 +34,53 @@ VALUES (
         'admin'
     );
 -- alice
+-- org
 INSERT INTO org (org_id, name)
 VALUES ('org-alice', 'org alice');
 INSERT INTO user_orgs (org_id, user_id)
 VALUES ('org-alice', 'alice-1234567890');
+-- git_credential
+INSERT INTO git_credential (git_credential_id, org_id, username, password)
+VALUES (
+        'cred-org-alice',
+        'org-alice',
+        'alice',
+        'password'
+    );
+-- project
 INSERT INTO project (org_id, project_id, project_name)
 VALUES (
         'org-alice',
         'project-alice',
         'alice project'
+    );
+-- git_repository
+INSERT INTO git_repository (
+        git_repository_id,
+        git_credential_id,
+        project_id,
+        url
+    )
+VALUES (
+        'repo-alice',
+        'cred-org-alice',
+        'project-alice',
+        'https://github.com/FredericHeem/grucloud-aws-demo'
+    );
+-- workspace
+INSERT INTO workspace (workspace_id, project_id, workspace_name)
+VALUES (
+        'workspace-project-alice-dev',
+        'project-alice',
+        'Workspace dev alice'
+    );
+-- run
+INSERT INTO run (run_id, workspace_id, status, kind)
+VALUES (
+        'run-1-alice',
+        'workspace-project-alice-dev',
+        'started',
+        'kind'
     );
 -- bob
 INSERT INTO org (org_id, name)

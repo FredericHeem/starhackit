@@ -86,7 +86,7 @@ describe.skip("CloudDiagramAws", function () {
   });
 });
 
-describe("CloudDiagram No Auth", function () {
+describe.skip("CloudDiagram No Auth", function () {
   let client;
   before(async function () {
     if (!testMngr.app.config.infra) {

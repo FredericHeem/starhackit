@@ -10,6 +10,7 @@ const {
 const { middlewareUserBelongsToOrg } = require("../utils");
 
 exports.OrgApi = ({ app, models }) => {
+  assert(models.org);
   return {
     pathname: "/org",
     middlewares: [app.server.auth.isAuthenticated],

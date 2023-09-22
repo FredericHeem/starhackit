@@ -37,6 +37,18 @@ CREATE TABLE IF NOT EXISTS "project" (
   "org_id" TEXT NOT NULL REFERENCES "org" ("org_id") ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY ("project_id")
 );
+-- git_repository
+CREATE TABLE IF NOT EXISTS "git_repository" (
+  "git_repository_id" TEXT,
+  "url" TEXT NOT NULL,
+  "branch" TEXT NOT NULL DEFAULT 'main',
+  "options" JSONB,
+  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  "project_id" TEXT NOT NULL REFERENCES "project" ("project_id") ON DELETE CASCADE ON UPDATE CASCADE,
+  "git_credential_id" TEXT NOT NULL REFERENCES "git_credential" ("git_credential_id") ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY ("git_repository_id")
+);
 -- workspace
 CREATE TABLE IF NOT EXISTS "workspace" (
   "workspace_id" TEXT,
@@ -46,17 +58,6 @@ CREATE TABLE IF NOT EXISTS "workspace" (
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   "project_id" TEXT NOT NULL REFERENCES "project" ("project_id") ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY ("workspace_id")
-);
--- git_repository
-CREATE TABLE IF NOT EXISTS "git_repository" (
-  "git_repository_id" TEXT,
-  "url" TEXT NOT NULL,
-  "branch" TEXT NOT NULL DEFAULT 'master',
-  "options" JSONB,
-  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "org_id" TEXT NOT NULL REFERENCES "org" ("org_id") ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY ("git_repository_id")
 );
 -- infra
 CREATE TABLE IF NOT EXISTS "infra" (
@@ -76,9 +77,9 @@ CREATE TABLE IF NOT EXISTS "infra" (
   SET NULL ON UPDATE CASCADE,
     PRIMARY KEY ("id")
 );
--- job
-CREATE TABLE IF NOT EXISTS "job" (
-  "id" TEXT,
+-- run
+CREATE TABLE IF NOT EXISTS "run" (
+  "run_id" TEXT,
   "kind" TEXT NOT NULL,
   "options" JSONB,
   "status" TEXT NOT NULL,
@@ -86,7 +87,6 @@ CREATE TABLE IF NOT EXISTS "job" (
   "error" JSONB,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "infra_id" TEXT NOT NULL REFERENCES "infra" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-  "user_id" TEXT NOT NULL REFERENCES "users" ("user_id") ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY ("id")
+  "workspace_id" TEXT NOT NULL REFERENCES "workspace" ("workspace_id") ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY ("run_id")
 )

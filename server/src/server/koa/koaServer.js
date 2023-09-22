@@ -1,4 +1,3 @@
-let Promise = require("bluebird");
 const Koa = require("koa");
 const Router = require("koa-66");
 const _ = require("lodash");
@@ -6,8 +5,8 @@ const { tap, map } = require("rubico");
 const { forEach } = require("rubico/x");
 
 function KoaServer(app) {
-  let log = require("logfilename")(__filename);
-  let koaApp = new Koa();
+  const log = require("logfilename")(__filename);
+  const koaApp = new Koa();
   const { config } = app;
   let httpHandle;
   let rootRouter = new Router();
@@ -41,8 +40,8 @@ function KoaServer(app) {
      * Start the koa server
      */
     async start() {
-      let configHttp = config.koa;
-      let port = process.env.PORT || configHttp.port;
+      const configHttp = config.koa;
+      const port = process.env.PORT || configHttp.port;
 
       log.info("start koa on port %s", port);
       return new Promise(function (resolve) {

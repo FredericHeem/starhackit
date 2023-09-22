@@ -32,7 +32,7 @@ const buildWhereFromContext = pipe([
 ]);
 
 exports.ProjectApi = ({ app, models }) => {
-  assert(models);
+  assert(models.project);
   return {
     pathname: "/org/:org_id/project",
     middlewares: [

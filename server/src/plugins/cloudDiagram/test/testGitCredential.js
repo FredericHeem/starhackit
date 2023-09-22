@@ -21,8 +21,8 @@ describe("Git Credential No Auth", function () {
 
   it("should get a 401 when getting all git credentials", async () => {
     try {
-      let orgs = await client.get(`v1/org/${org_id}/git_credential`);
-      assert(orgs);
+      await client.get(`v1/org/${org_id}/git_credential`);
+      assert(false);
     } catch (error) {
       assert.equal(error.response.data, "Unauthorized");
       assert.equal(error.response.status, 401);
@@ -30,8 +30,8 @@ describe("Git Credential No Auth", function () {
   });
   it("should get 403 when getting a org", async () => {
     try {
-      let org = await client.get(`v1/org/${org_id}/git_credential/123456`);
-      assert(org);
+      await client.get(`v1/org/${org_id}/git_credential/123456`);
+      assert(false);
     } catch (error) {
       assert.equal(error.response.data, "Unauthorized");
       assert.equal(error.response.status, 401);
@@ -97,10 +97,10 @@ describe("Git Credential", function () {
       throw error;
     }
   });
-  it("should get 404 when the org is not found", async () => {
+  it("should get 404 when the credentials is not found", async () => {
     try {
-      let orgs = await client.get(`v1/org/${org_id}/git_credential/123456`);
-      assert(orgs);
+      await client.get(`v1/org/${org_id}/git_credential/123456`);
+      assert(false);
     } catch (error) {
       assert(error.response.data.error);
       assert.equal(error.response.data.error.name, "NotFound");

@@ -2,7 +2,7 @@ const assert = require("assert");
 const { tap, pipe, get, tryCatch, switchCase } = require("rubico");
 const { first } = require("rubico/x");
 
-const { findOne, insert, update, destroy } = require("utils/SqlOps");
+const { findOne, findAll, insert, update, destroy } = require("utils/SqlOps");
 
 module.exports =
   ({ sql }) =>
@@ -13,6 +13,7 @@ module.exports =
       ...new Proxy(
         {
           findOne: findOne({ tableName, sql }),
+          findAll: findAll({ tableName, sql }),
           insert: insert({ tableName, sql }),
           update: update({ tableName, sql }),
           destroy: destroy({ tableName, sql }),

@@ -10,7 +10,7 @@ const { InfraPushCodeRestApi } = require("./api/infraPushCodeApi");
 const { InfraRestApi } = require("./api/infraApi");
 const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { ProjectApi } = require("./api/projectApi");
-
+const { WorkspaceApi } = require("./api/workspaceApi");
 const { GitRepositoryRestApi } = require("./api/gitRepositoryApi");
 const { OrgApi } = require("./api/orgApi");
 
@@ -31,6 +31,7 @@ module.exports = (app) => {
   const models = {
     org: sqlAdaptor(require("./sql/OrganisationSql")({ sql })),
     project: sqlAdaptor(require("./sql/ProjectSql")({ sql })),
+    workspace: sqlAdaptor(require("./sql/WorkspaceSql")({ sql })),
     userOrg: sqlAdaptor(require("./sql/UserOrgSql")({ sql })),
     gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")({ sql })),
   };
@@ -50,6 +51,7 @@ module.exports = (app) => {
   [
     OrgApi,
     ProjectApi,
+    WorkspaceApi,
     GitCredentialApi,
     DiagramApi,
     InfraPushCodeRestApi,

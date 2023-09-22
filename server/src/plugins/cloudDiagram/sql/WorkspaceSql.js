@@ -5,13 +5,13 @@ const nanoid = require("nanoid");
 const { insert } = require("utils/SqlOps");
 
 module.exports = ({ sql }) => {
-  const tableName = "git_repository";
+  const tableName = "workspace";
   return {
     tableName,
     insert: (data) =>
       pipe([
         () => data,
-        defaultsDeep({ git_repository_id: `repo-${nanoid.nanoid(8)}` }),
+        defaultsDeep({ workspace_id: `workspace-${nanoid.nanoid(8)}` }),
         fork({ out: identity, query: insert({ tableName, sql }) }),
       ])(),
   };

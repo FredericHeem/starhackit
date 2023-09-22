@@ -14,12 +14,6 @@ const buildWhere = (sql) =>
       ),
   ]);
 
-const buildUpdateSet = pipe([
-  Object.entries,
-  map(([k, v]) => `${k}='${isObject(v) ? JSON.stringify(v) : v}'`),
-  callProp("join", ", "),
-]);
-exports.buildUpdateSet = buildUpdateSet;
 const findOne =
   ({ tableName, sql }) =>
   ({ attributes, where }) =>
@@ -31,12 +25,32 @@ const findOne =
         assert(where);
       }),
       () =>
-        sql`SELECT ${sql(attributes)} FROM ${sql(tableName)} WHERE ${buildWhere(
-          sql
-        )(where)};`,
+        sql`
+        SELECT ${sql(attributes)}
+        FROM ${sql(tableName)}
+        WHERE ${buildWhere(sql)(where)};`,
     ])();
 
 exports.findOne = findOne;
+
+const findAll =
+  ({ tableName, sql }) =>
+  ({ attributes, where }) =>
+    pipe([
+      tap(() => {
+        assert(sql);
+        assert(tableName);
+        assert(attributes);
+        assert(where);
+      }),
+      () =>
+        sql`
+        SELECT ${sql(attributes)} 
+        FROM ${sql(tableName)} 
+        WHERE ${buildWhere(sql)(where)};`,
+    ])();
+
+exports.findAll = findAll;
 
 const insert =
   ({ tableName, sql }) =>
@@ -46,7 +60,9 @@ const insert =
         assert(sql);
         assert(data);
       }),
-      () => sql`INSERT INTO ${sql(tableName)} ${sql(data, ...keys(data))};`,
+      () => sql`
+      INSERT INTO ${sql(tableName)}
+      ${sql(data, ...keys(data))};`,
     ])();
 exports.insert = insert;
 
@@ -60,9 +76,10 @@ const update =
       }),
       async () => ({
         out: data,
-        query: await sql`UPDATE ${sql(tableName)} SET ${sql(
-          data
-        )} WHERE ${buildWhere(sql)(where)}`,
+        query: await sql`
+        UPDATE ${sql(tableName)}
+        SET ${sql(data)}
+        WHERE ${buildWhere(sql)(where)}`,
       }),
     ])();
 exports.update = update;
@@ -74,6 +91,8 @@ const destroy =
       tap(() => {
         assert(where);
       }),
-      () => sql`DELETE FROM ${sql(tableName)} WHERE ${buildWhere(sql)(where)}`,
+      () => sql`
+      DELETE FROM ${sql(tableName)}
+      WHERE ${buildWhere(sql)(where)}`,
     ])();
 exports.destroy = destroy;

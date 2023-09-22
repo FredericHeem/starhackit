@@ -37,6 +37,16 @@ CREATE TABLE IF NOT EXISTS "project" (
   "org_id" TEXT NOT NULL REFERENCES "org" ("org_id") ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY ("project_id")
 );
+-- workspace
+CREATE TABLE IF NOT EXISTS "workspace" (
+  "workspace_id" TEXT,
+  "workspace_name" TEXT,
+  "options" JSONB,
+  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  "project_id" TEXT NOT NULL REFERENCES "project" ("project_id") ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY ("workspace_id")
+);
 -- git_repository
 CREATE TABLE IF NOT EXISTS "git_repository" (
   "git_repository_id" TEXT,

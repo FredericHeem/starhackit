@@ -1,6 +1,5 @@
 function Ticket(app) {
-  const { models } = app.data.sequelize;
-  app.data.registerModel(__dirname, `TicketModel`);
+  const { models } = app.plugins.get().ticket;
 
   const api = {
     pathname: "/ticket",
@@ -12,10 +11,10 @@ function Ticket(app) {
         pathname: "/",
         method: "get",
         handler: async (context) => {
-          const tickets = await models.Ticket.findAll({
+          const tickets = await models.ticket.findAll({
             where: { user_id: context.state.user.user_id },
           });
-          context.body = tickets.map((ticket) => ticket.get());
+          context.body = tickets;
           context.status = 200;
         },
       },
@@ -23,7 +22,7 @@ function Ticket(app) {
         pathname: "/:id",
         method: "get",
         handler: async (context) => {
-          const ticket = await models.Ticket.findOne({
+          const ticket = await models.ticket.findOne({
             where: {
               id: context.params.id,
               user_id: context.state.user.user_id,
@@ -39,7 +38,7 @@ function Ticket(app) {
               },
             };
           } else {
-            context.body = ticket.get();
+            context.body = ticket;
             context.status = 200;
           }
         },
@@ -48,11 +47,11 @@ function Ticket(app) {
         pathname: "/",
         method: "post",
         handler: async (context) => {
-          const ticket = await models.Ticket.create({
+          const ticket = await models.ticket.create({
             ...context.request.body,
             user_id: context.state.user.user_id,
           });
-          context.body = ticket.get();
+          context.body = ticket;
           context.status = 200;
         },
       },
@@ -62,19 +61,19 @@ function Ticket(app) {
         handler: async (context) => {
           const { id } = context.params;
           const user_id = context.state.user.user_id;
-          await models.Ticket.update(context.request.body, {
+          await models.ticket.update(context.request.body, {
             where: {
               id,
               user_id,
             },
           });
-          const ticket = await models.Ticket.findOne({
+          const ticket = await models.ticket.findOne({
             where: {
               id,
               user_id,
             },
           });
-          context.body = ticket.get();
+          context.body = ticket;
           context.status = 200;
         },
       },
@@ -82,7 +81,7 @@ function Ticket(app) {
         pathname: "/:id",
         method: "delete",
         handler: async (context) => {
-          await models.Ticket.destroy({
+          await models.ticket.destroy({
             where: {
               id: context.params.id,
               user_id: context.state.user.user_id,

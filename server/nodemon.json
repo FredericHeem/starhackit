@@ -1,3 +1,0 @@
-{
-  "ignore": ["input/*", "output/*", "*.test.js", "fixtures/*"]
-}

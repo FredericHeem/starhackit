@@ -31,9 +31,8 @@ const InfraPushCodeApi = ({ models, log }) => ({
     ])(),
 });
 
-exports.InfraPushCodeRestApi = (app) => {
+exports.InfraPushCodeRestApi = ({ app, models }) => {
   const log = require("logfilename")(__filename);
-  const { models } = app.data.sequelize;
   const api = InfraPushCodeApi({ model: models.Infra, models, log });
   const apiSpec = {
     pathname: "/infra",

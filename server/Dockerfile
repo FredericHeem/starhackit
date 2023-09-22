@@ -1,5 +1,5 @@
 # ---- Base Node ----
-FROM node:14-alpine as base
+FROM node:20-alpine as base
 ENV GIT_SSH_COMMAND "ssh -i ~/.ssh/id_ecdsa -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 RUN apk update && apk upgrade && \

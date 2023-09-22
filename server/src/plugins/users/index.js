@@ -17,7 +17,7 @@ function UserPlugin(app) {
     user: sqlAdaptor(require("./sql/UserSql")({ sql })),
     userPending: sqlAdaptor(require("./sql/UserPendingSql")({ sql })),
   };
-  setupAuthentication(app);
+  setupAuthentication({ app, models });
 
   setupRouter({ app, models });
 
@@ -55,8 +55,8 @@ function setupRouter({ app, models }) {
   );
 }
 
-function setupAuthentication(app) {
-  let auth = new PassportAuth(app);
+function setupAuthentication({ app, models }) {
+  let auth = new PassportAuth({ app, models });
   app.auth = auth;
   return auth;
 }

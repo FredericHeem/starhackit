@@ -2,7 +2,6 @@ const Promise = require("bluebird");
 const _ = require("lodash");
 const Client = require("./Client");
 const App = require("../app");
-const pg = require("pg");
 const postgres = require("postgres");
 
 let log = require("logfilename")(__filename);
@@ -14,11 +13,9 @@ let TestMngr = function () {
 
   let clientsMap = {};
   const app = App();
-  const sqlClient = new pg.Client(app.config.db.url);
   const sql = postgres(app.config.db.url);
   let testMngr = {
     app,
-    sqlClient,
     sql,
     createClient(userConfig = {}) {
       userConfig.url = "http://localhost:9000/api/";
@@ -40,15 +37,11 @@ let TestMngr = function () {
       //await app.seed();
     },
     async start() {
-      await sqlClient.connect();
       return app.start();
     },
 
     stop() {
       return this.app.stop();
-    },
-    sqlQuery() {
-      return sqlClient;
     },
   };
 

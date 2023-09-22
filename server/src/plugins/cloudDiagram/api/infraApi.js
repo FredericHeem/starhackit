@@ -127,9 +127,8 @@ const InfraApi = ({ models, model, log }) => ({
     ])(),
 });
 
-exports.InfraRestApi = (app) => {
+exports.InfraRestApi = ({ app, models }) => {
   const log = require("logfilename")(__filename);
-  const { models } = app.data.sequelize;
   const api = InfraApi({ model: models.Infra, models, log });
   return createRestApiByUser({ pathname: "infra", api, app });
 };

@@ -2,8 +2,7 @@ const fs = require("fs-extra");
 const asyncBusboy = require("async-busboy");
 
 function Document(app) {
-  const { models } = app.data.sequelize;
-  app.data.registerModel(__dirname, `DocumentModel`);
+  const { models } = app.plugins.get().document;
 
   const readContent = async (file) =>
     new Promise((resolve, reject) => {

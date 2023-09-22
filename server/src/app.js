@@ -18,11 +18,6 @@ function App() {
       http: HttpUtils,
       api: require("./utils/ApiUtils"),
     },
-    async seed() {
-      log.info("seed");
-      //await data.seed(app);
-    },
-
     async start() {
       log.debug("start");
       await action("start");
@@ -40,11 +35,10 @@ function App() {
   app.server = Server(app);
   app.plugins = Plugins(app);
   //Must be called when all plugins are created.
-  data.associate();
   app.server.mountRootRouter();
   app.server.displayRoutes();
 
-  let parts = [app.data, app.publisher, app.server, app.plugins];
+  let parts = [app.data, app.server, app.plugins];
 
   async function action(ops) {
     await Promise.each(parts, (part) => part[ops](app));

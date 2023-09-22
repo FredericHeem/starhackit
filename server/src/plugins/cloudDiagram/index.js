@@ -45,14 +45,14 @@ module.exports = (app) => {
 
   app.dockerClient = dockerClient;
 
-  [OrgApi, GitCredentialApi].forEach((router) =>
-    app.server.createRouter(router({ app, models }))
-  );
-
-  DiagramApi(app);
-  InfraPushCodeRestApi(app);
-  InfraRestApi(app);
-  GitRepositoryRestApi(app);
+  [
+    OrgApi,
+    GitCredentialApi,
+    DiagramApi,
+    InfraPushCodeRestApi,
+    InfraRestApi,
+    GitRepositoryRestApi,
+  ].forEach((api) => app.server.createRouter(api({ app, models })));
 
   return {
     models,

@@ -22,10 +22,9 @@ const getHttpStatus = switchCase([
   () => 422,
 ]);
 
-exports.DiagramApi = (app) => {
+exports.DiagramApi = ({ app, models }) => {
   const log = require("logfilename")(__filename);
 
-  const { models } = app.data.sequelize;
   const { config, dockerClient } = app;
   assert(dockerClient, "dockerClient");
   const { localOutputPath, localInputPath } = config.infra;
@@ -317,6 +316,6 @@ exports.DiagramApi = (app) => {
       ])(),
   });
 
-  const api = DiagramApi({ model: models.Job, models, log });
+  const api = DiagramApi({ model: models.job, models, log });
   return createRestApiByUser({ pathname: "cloudDiagram", api, app });
 };

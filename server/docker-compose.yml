@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   pg:
     image: postgres:10-alpine
@@ -11,9 +11,3 @@ services:
       - "5432"
     ports:
       - "6432:5432"
-  redis:
-    image: smebberson/alpine-redis
-    expose:
-      - "6379"
-    ports:
-      - "7379:6379"

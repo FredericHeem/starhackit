@@ -15,7 +15,8 @@ const {
   contextHandleError,
 } = require("utils/koaCommon");
 
-const { middlewareUserBelongsToOrg } = require("../utils");
+const { middlewareUserBelongsToOrg } = require("../middleware");
+const { RunGc } = require("../utils/rungc");
 
 const buildWhereFromContext = pipe([
   tap((context) => {
@@ -33,6 +34,7 @@ const buildWhereFromContext = pipe([
 
 exports.RunApi = ({ app, models }) => {
   assert(models.run);
+  const runGc = RunGc({ app });
   return {
     pathname: "/org/:org_id/project/:project_id/workspace/:workspace_id/run",
     middlewares: [
@@ -61,6 +63,23 @@ exports.RunApi = ({ app, models }) => {
               tap((param) => {
                 assert(true);
               }),
+              // start a container and return the Id
+              assign({
+                container_id: pipe([
+                  ({ run_id }) => ({
+                    run_id,
+                    provider_auth: {},
+                    provider: "aws",
+                    dockerClient: app.dockerClient,
+                  }),
+                  runGc,
+                  get("Id"),
+                ]),
+              }),
+              // Save the container_id to the db
+              tap((data) =>
+                models.run.update({ data, where: { run_id: data.run_id } })
+              ),
               contextSetOk({ context }),
             ])(),
           contextHandleError
@@ -153,7 +172,7 @@ exports.RunApi = ({ app, models }) => {
             }),
             models.run.update,
             () => ({
-              attributes: ["workspace_id", "run_id"],
+              attributes: ["workspace_id", "run_id", "reason"],
               where: buildWhereFromContext(context),
             }),
             models.run.findOne,

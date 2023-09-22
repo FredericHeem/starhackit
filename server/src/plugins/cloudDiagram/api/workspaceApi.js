@@ -15,7 +15,7 @@ const {
   contextHandleError,
 } = require("utils/koaCommon");
 
-const { middlewareUserBelongsToOrg } = require("../utils");
+const { middlewareUserBelongsToOrg } = require("../middleware");
 
 const buildWhereFromContext = pipe([
   tap((context) => {

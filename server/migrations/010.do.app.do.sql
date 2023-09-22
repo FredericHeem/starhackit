@@ -59,29 +59,12 @@ CREATE TABLE IF NOT EXISTS "workspace" (
   "project_id" TEXT NOT NULL REFERENCES "project" ("project_id") ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY ("workspace_id")
 );
--- infra
-CREATE TABLE IF NOT EXISTS "infra" (
-  "id" TEXT,
-  "name" TEXT NOT NULL,
-  "provider_type" TEXT NOT NULL,
-  "provider_name" TEXT NOT NULL,
-  "provider_auth" JSONB,
-  "project" JSONB,
-  "options" JSONB,
-  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "user_id" TEXT NOT NULL REFERENCES "users" ("user_id") ON DELETE CASCADE ON UPDATE CASCADE,
-  "git_credential_id" TEXT REFERENCES "git_credential" ("git_credential_id") ON DELETE
-  SET NULL ON UPDATE CASCADE,
-    "git_repository_id" TEXT REFERENCES "git_repository" ("git_repository_id") ON DELETE
-  SET NULL ON UPDATE CASCADE,
-    PRIMARY KEY ("id")
-);
 -- run
 CREATE TABLE IF NOT EXISTS "run" (
   run_id TEXT,
   reason TEXT,
   kind TEXT NOT NULL,
+  container_id TEXT,
   options JSONB,
   status TEXT NOT NULL,
   result JSONB,

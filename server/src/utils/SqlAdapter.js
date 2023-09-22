@@ -35,7 +35,7 @@ module.exports =
                         pipe([
                           () => target[name](...args),
                           tap((param) => {
-                            assert(true);
+                            console.log(param.query?.statement?.string);
                           }),
                           //tap(({ out, query }) => query.execute()),
                           tap((param) => {

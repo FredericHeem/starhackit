@@ -56,15 +56,15 @@ describe("Run", function () {
   it("CRUD", async () => {
     try {
       // Create
-      const workspace = await client.post(
+      const run = await client.post(
         `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
         payloadCreate
       );
-      assert(workspace);
-      const { run_id } = workspace;
+      assert(run);
+      const { run_id } = run;
       assert(run_id);
 
-      assert.equal(workspace.workspace_name, payloadCreate.workspace_name);
+      assert.equal(run.reason, payloadCreate.reason);
       // Get By Id
       {
         let getOneResult = await client.get(
@@ -83,7 +83,7 @@ describe("Run", function () {
           `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`,
           inputUpdated
         );
-        assert.equal(updatedResult.workspace_name, inputUpdated.workspace_name);
+        assert.equal(updatedResult.reason, inputUpdated.reason);
       }
       // Get all by workspace id
       {

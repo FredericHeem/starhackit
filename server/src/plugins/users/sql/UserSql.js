@@ -38,10 +38,12 @@ module.exports = ({ sql }) => {
       pipe([
         () => password,
         hashPassword,
-        (password_hash) =>
-          sql`UPDATE ${sql(
+        async (password_hash) => ({
+          out: { password_hash },
+          query: await sql`UPDATE ${sql(
             tableName
           )} SET password_hash = ${password_hash} WHERE user_id=${user_id};`,
+        }),
       ])(),
     getById: ({ user_id }) => getByKey("user_id", user_id),
     getByEmail: ({ email }) => getByKey("email", email),

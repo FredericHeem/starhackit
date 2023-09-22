@@ -32,13 +32,6 @@ const config = {
       directory: "examples/azure/Compute/vm",
       branch: "main",
     },
-    provider_auth: {
-      AZURE_TENANT_ID,
-      AZURE_SUBSCRIPTION_ID,
-      AZURE_CLIENT_ID,
-      AZURE_CLIENT_SECRET,
-      LOCATION,
-    },
   },
   gitCredential: {
     provider_type: "GitHub",

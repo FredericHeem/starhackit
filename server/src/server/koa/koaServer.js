@@ -3,14 +3,21 @@ const Router = require("koa-66");
 const _ = require("lodash");
 const { tap, map } = require("rubico");
 const { forEach } = require("rubico/x");
+const websockify = require("koa-websocket");
 
 function KoaServer(app) {
   const log = require("logfilename")(__filename);
-  const koaApp = new Koa();
   const { config } = app;
   let httpHandle;
   let rootRouter = new Router();
   let baseRouter = new Router();
+
+  const koaApp = websockify(
+    new Koa()
+    //wsOptions
+    // le.httpsOptions
+  );
+
   middlewareInit(app, koaApp, config);
   return {
     koa: koaApp,

@@ -79,14 +79,15 @@ CREATE TABLE IF NOT EXISTS "infra" (
 );
 -- run
 CREATE TABLE IF NOT EXISTS "run" (
-  "run_id" TEXT,
-  "kind" TEXT NOT NULL,
-  "options" JSONB,
-  "status" TEXT NOT NULL,
-  "result" JSONB,
-  "error" JSONB,
-  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  "workspace_id" TEXT NOT NULL REFERENCES "workspace" ("workspace_id") ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY ("run_id")
+  run_id TEXT,
+  reason TEXT,
+  kind TEXT NOT NULL,
+  options JSONB,
+  status TEXT NOT NULL,
+  result JSONB,
+  error JSONB,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  workspace_id TEXT NOT NULL REFERENCES workspace (workspace_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (run_id)
 )

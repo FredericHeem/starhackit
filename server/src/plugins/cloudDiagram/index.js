@@ -5,14 +5,12 @@ const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
 
-// const { DiagramApi } = require("./api/diagramApi");
-// const { InfraPushCodeRestApi } = require("./api/infraPushCodeApi");
-// const { InfraRestApi } = require("./api/infraApi");
+const { OrgApi } = require("./api/orgApi");
 const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { ProjectApi } = require("./api/projectApi");
 const { WorkspaceApi } = require("./api/workspaceApi");
 const { GitRepositoryApi } = require("./api/gitRepositoryApi");
-const { OrgApi } = require("./api/orgApi");
+const { RunApi } = require("./api/runApi");
 
 const configDefault = {
   containerImage: "fredericheem/grucloud-cli:v12.6.2",
@@ -35,6 +33,7 @@ module.exports = (app) => {
     gitRepository: sqlAdaptor(require("./sql/GitRepositorySql")({ sql })),
     userOrg: sqlAdaptor(require("./sql/UserOrgSql")({ sql })),
     gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")({ sql })),
+    run: sqlAdaptor(require("./sql/RunSql")({ sql })),
   };
 
   app.config = assign({
@@ -51,13 +50,11 @@ module.exports = (app) => {
 
   [
     OrgApi,
+    GitCredentialApi,
     ProjectApi,
     WorkspaceApi,
-    GitCredentialApi,
-    //DiagramApi,
-    //InfraPushCodeRestApi,
-    //InfraRestApi,
     GitRepositoryApi,
+    RunApi,
   ].forEach((api) => app.server.createRouter(api({ app, models })));
 
   return {

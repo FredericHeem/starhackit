@@ -1,23 +1,15 @@
 const assert = require("assert");
 const { pipe, tap, tryCatch, map } = require("rubico");
+const sinon = require("sinon");
+
 const testMngr = require("test/testManager");
 const nanoid = require("nanoid");
 const { DockerGcCreate, DockerGcRun } = require("../utils/rungc");
 
-const WebSocket = require("ws");
-
-const promisifyWsClient = (ws) =>
-  new Promise((resolve, reject) => {
-    ws.on("close", () => {
-      ws.close();
-      resolve();
-    });
-    ws.on("error", reject);
-  });
-
 describe("DockerGc", function () {
   let dockerGcCreate;
   let dockerGcRun;
+  const ws = { close: sinon.spy(), send: sinon.spy() };
   const { app } = testMngr;
   const { dockerClient } = testMngr.app;
   before(async function () {
@@ -26,7 +18,7 @@ describe("DockerGc", function () {
     }
     const models = app.plugins.get().cloudDiagram.models;
     dockerGcCreate = DockerGcCreate({ app: testMngr.app });
-    dockerGcRun = DockerGcRun({ app, models });
+    dockerGcRun = DockerGcRun({ app, models, ws });
   });
 
   it("list", async () => {
@@ -41,18 +33,13 @@ describe("DockerGc", function () {
       const container_id = res.Id;
       assert(container_id);
 
-      const ws = new WebSocket(`ws://localhost:9000/${container_id}`);
-      ws.on("open", function open() {
-        ws.send("start");
-      });
-      ws.on("message", (d) => {
-        console.log(d.toString());
-      });
-      //await promisifyWsClient(ws);
       {
         await dockerGcRun({
           container_id,
           run_id,
+          org_id: "org-test",
+          project_id: "project-test",
+          workspace_id: "workspace-test",
         });
       }
     } catch (error) {

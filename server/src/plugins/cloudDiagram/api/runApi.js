@@ -16,7 +16,10 @@ const {
 } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
-const { DockerGcCreate, DockerGcRun } = require("../utils/rungc");
+const { DockerGcCreate } = require("../utils/rungc");
+
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
 const buildWhereFromContext = pipe([
   tap((context) => {
@@ -32,10 +35,41 @@ const buildWhereFromContext = pipe([
   }),
 ]);
 
+const buildLogsUrl = ({ config, context, logfile }) =>
+  pipe([
+    tap(() => {
+      assert(config.aws.bucketUpload);
+      assert(logfile);
+      assert(context);
+    }),
+    () => context.params,
+    ({ org_id, project_id, workspace_id, run_id }) => ({
+      Bucket: config.aws.bucketUpload,
+      Key: `${org_id}/${project_id}/${workspace_id}/${run_id}/${logfile}`,
+    }),
+    tryCatch(
+      pipe([
+        (input) =>
+          getSignedUrl(new S3Client({}), new GetObjectCommand(input), {}),
+      ]),
+      (error, bucket) =>
+        pipe([
+          // error happens when using AWS profile
+          tap((params) => {
+            logger.error(`getSignedUrl error for ${JSON.stringify(bucket)}`);
+            logger.error(error);
+            logger.error(error.stack);
+          }),
+          () => ({
+            error,
+          }),
+        ])()
+    ),
+  ]);
 exports.RunApi = ({ app, models }) => {
+  const { config } = app;
   assert(models.run);
   const dockerGcCreate = DockerGcCreate({ app });
-  const dockerGcCRun = DockerGcRun({ app, models });
 
   return {
     pathname: "/org/:org_id/project/:project_id/workspace/:workspace_id/run",
@@ -81,7 +115,6 @@ exports.RunApi = ({ app, models }) => {
               // Save the container_id to the db
               tap((data) => {
                 models.run.update({ data, where: { run_id: data.run_id } });
-                dockerGcCRun(data);
               }),
               contextSetOk({ context }),
               tap((param) => {
@@ -124,17 +157,31 @@ exports.RunApi = ({ app, models }) => {
                 assert(context.state.user.user_id);
               }),
               () => ({
-                attributes: ["workspace_id", "run_id"],
+                attributes: [
+                  "workspace_id",
+                  "run_id",
+                  "container_id",
+                  "container_state",
+                  "status",
+                ],
                 where: buildWhereFromContext(context),
               }),
               models.run.findOne,
-              tap((param) => {
-                assert(true);
-              }),
               switchCase([
                 isEmpty,
                 tap(contextSet404({ context })),
-                tap(contextSetOk({ context })),
+                tap(
+                  pipe([
+                    assign({
+                      logsUrl: buildLogsUrl({
+                        config,
+                        context,
+                        logfile: "grucloud-debug.log",
+                      }),
+                    }),
+                    contextSetOk({ context }),
+                  ])
+                ),
               ]),
             ])(),
           contextHandleError
@@ -178,7 +225,13 @@ exports.RunApi = ({ app, models }) => {
             }),
             models.run.update,
             () => ({
-              attributes: ["workspace_id", "run_id", "reason"],
+              attributes: [
+                "workspace_id",
+                "run_id",
+                "reason",
+                "container_state",
+                "status",
+              ],
               where: buildWhereFromContext(context),
             }),
             models.run.findOne,

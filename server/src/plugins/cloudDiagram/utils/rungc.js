@@ -8,52 +8,98 @@ const pfs = fs.promises;
 const path = require("path");
 const { uploadDirToS3 } = require("./uploadDirToS3");
 
-exports.DockerGcRun = ({ app, models }) => {
+exports.DockerGcRun = ({ app, models, ws }) => {
   assert(app);
   assert(models);
+  assert(ws);
   const log = require("logfilename")(__filename);
   const { dockerClient } = app;
-  return ({ container_id, run_id }) =>
+  return ({ container_id, run_id, org_id, project_id, workspace_id }) =>
     pipe([
       tap(() => {
         assert(container_id);
         assert(run_id);
-        log.debug("DockerGcRun", container_id, "starting");
+        assert(org_id);
+        assert(project_id);
+        assert(workspace_id);
+        log.debug(
+          "DockerGcRun starting",
+          org_id,
+          project_id,
+          container_id,
+          workspace_id,
+          run_id,
+          "container_id",
+          container_id
+        );
+        ws.send("starting docker container");
       }),
+      // TODO check status == "created"
       // Start
       () => ({ name: container_id }),
       dockerClient.container.start,
       tap((params) => {
+        ws.send("update status");
         log.debug("DockerGcRun", container_id, "started, wait for completion");
       }),
       // Update status
       () => ({ data: { status: "running" }, where: { container_id } }),
       models.run.update,
+      tap((params) => {
+        ws.send("wait for completion");
+      }),
       // Wait
       () => ({ name: container_id }),
       dockerClient.container.wait,
       tap((params) => {
         log.debug("DockerGcRun ", container_id, "ended");
+        ws.send("getting container state");
       }),
       // Get container state
       () => ({ id: container_id }),
       dockerClient.container.get,
       get("State"),
+      tap((State) => {
+        ws.send("saving container state");
+      }),
       // Save container_state and status to DB
       (container_state) => ({
-        data: { status: "completed", container_state },
+        data: { status: "docker_run_completed", container_state },
         where: { container_id },
       }),
       models.run.update,
       () => Path.resolve("output", run_id),
       tap((path) => {
         log.debug("DockerGcRun upload to s3", container_id, path);
+        ws.send("uploading file");
       }),
       //TODO error handling
-      uploadDirToS3(app.config),
+      uploadDirToS3({
+        ...app.config.aws,
+        keyPrefix: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+      }),
+      //
+      () => ({
+        data: { status: "s3_uploaded" },
+        where: { container_id },
+      }),
+      models.run.update,
+      tap((params) => {
+        log.debug("DockerGcRun ", container_id, "deleting container");
+      }),
       // Delete container
       () => ({ name: container_id }),
       dockerClient.container.delete,
+      () => ({
+        data: { status: "completed" },
+        where: { container_id },
+      }),
+      models.run.update,
+      tap((params) => {
+        log.debug("DockerGcRun ", container_id, "done");
+        ws.send("completed");
+        ws.close();
+      }),
     ])();
 };
 

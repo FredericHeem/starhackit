@@ -30,7 +30,7 @@ class Client {
         data,
       })
       .then((res) => {
-        console.log(JSON.stringify(res.data, null, 4));
+        //console.log(JSON.stringify(res.data, null, 4));
         return res.data;
       });
   }

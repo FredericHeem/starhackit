@@ -13,8 +13,12 @@ describe("UploadDirToS3", function () {
 
   it("upload", async () => {
     try {
-      const dir = "output";
-      await uploadDirToS3(app.config)(dir);
+      // Arbitary folder
+      const dir = "docs";
+      await uploadDirToS3({
+        bucketUpload: app.config.aws.bucketUpload,
+        keyPrefix: "org-test/project-test/workspace-test/run-test-1234",
+      })(dir);
     } catch (error) {
       console.log(error);
       throw error;

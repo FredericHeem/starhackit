@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.332.0",
+    "@aws-sdk/s3-request-presigner": "3.332.0",
     "@grucloud/docker-axios": "12.7.0",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",
@@ -60,7 +61,6 @@
     "logfilename": "0.3.0",
     "moment": "2.29.1",
     "nanoid": "3.3.5",
-    "node-docker-api": "1.1.22",
     "nodemailer": "6.4.18",
     "oauth": "0.9.15",
     "passport-facebook": "3.0.0",

@@ -10,6 +10,22 @@ const payloadCreate = {
   kind: "list",
   status: "creating",
 };
+const wait = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
+const WebSocket = require("ws");
+
+const promisifyWsClient = (ws) =>
+  new Promise((resolve, reject) => {
+    ws.on("close", () => {
+      console.log("close");
+      ws.close();
+      resolve();
+    });
+    ws.on("error", (error) => {
+      console.log(error);
+      reject();
+    });
+  });
 
 describe("Run No Auth", function () {
   let client;
@@ -61,10 +77,26 @@ describe("Run", function () {
         payloadCreate
       );
       assert(run);
-      const { run_id } = run;
+      const { run_id, container_id } = run;
       assert(run_id);
+      assert(container_id);
 
       assert.equal(run.reason, payloadCreate.reason);
+
+      const ws = new WebSocket(`ws://localhost:9000`);
+      ws.on("open", () => {
+        ws.send(
+          JSON.stringify({
+            command: "Run",
+            options: { org_id, project_id, workspace_id, run_id, container_id },
+          })
+        );
+      });
+      ws.on("message", (d) => {
+        console.log(d.toString());
+      });
+      await promisifyWsClient(ws);
+
       // Get By Id
       {
         let getOneResult = await client.get(
@@ -92,6 +124,14 @@ describe("Run", function () {
         );
         assert(runs);
         assert(Array.isArray(runs));
+      }
+      {
+        let getOneResult = await client.get(
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+        );
+        assert(getOneResult);
+        assert(getOneResult.workspace_id);
+        assert(getOneResult.run_id);
       }
       // Delete
       await client.delete(

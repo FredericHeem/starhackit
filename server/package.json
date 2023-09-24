@@ -10,8 +10,8 @@
   },
   "license": "NLPL",
   "scripts": {
-    "start": "NODE_PATH=src node --watch src/index.js",
-    "start:prod": "NODE_PATH=src NODE_ENV=production node src/index.js",
+    "start": "NODE_PATH=src node --env-file env --watch src/index.js",
+    "start:prod": "NODE_PATH=src NODE_ENV=production node --env-file env src/index.js",
     "test": "npm run mocha",
     "mocha": "NODE_PATH=src node --env-file env  node_modules/mocha/bin/_mocha --file test/setup.js 'src/**/test*.js' --exit",
     "mocha:watch": "npm run mocha -- --watch",
@@ -34,7 +34,8 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:migrate"
   },
   "dependencies": {
-    "@grucloud/docker-axios": "12.1.0",
+    "@aws-sdk/client-s3": "3.332.0",
+    "@grucloud/docker-axios": "12.7.0",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
     "axios": "0.21.1",
     "bcryptjs": "2.4.3",

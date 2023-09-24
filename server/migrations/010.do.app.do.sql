@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS "run" (
   reason TEXT,
   kind TEXT NOT NULL,
   container_id TEXT,
+  container_state JSONB,
   options JSONB,
   status TEXT NOT NULL,
   result JSONB,

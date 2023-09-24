@@ -16,7 +16,7 @@ const {
 } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
-const { RunGc } = require("../utils/rungc");
+const { DockerGcCreate, DockerGcRun } = require("../utils/rungc");
 
 const buildWhereFromContext = pipe([
   tap((context) => {
@@ -34,7 +34,9 @@ const buildWhereFromContext = pipe([
 
 exports.RunApi = ({ app, models }) => {
   assert(models.run);
-  const runGc = RunGc({ app });
+  const dockerGcCreate = DockerGcCreate({ app });
+  const dockerGcCRun = DockerGcRun({ app, models });
+
   return {
     pathname: "/org/:org_id/project/:project_id/workspace/:workspace_id/run",
     middlewares: [
@@ -72,15 +74,19 @@ exports.RunApi = ({ app, models }) => {
                     provider: "aws",
                     dockerClient: app.dockerClient,
                   }),
-                  runGc,
+                  dockerGcCreate,
                   get("Id"),
                 ]),
               }),
               // Save the container_id to the db
-              tap((data) =>
-                models.run.update({ data, where: { run_id: data.run_id } })
-              ),
+              tap((data) => {
+                models.run.update({ data, where: { run_id: data.run_id } });
+                dockerGcCRun(data);
+              }),
               contextSetOk({ context }),
+              tap((param) => {
+                assert(true);
+              }),
             ])(),
           contextHandleError
         ),

@@ -1,12 +1,63 @@
 const assert = require("assert");
 
 const { pipe, tap, assign, get, eq, switchCase, map } = require("rubico");
-const { isEmpty, values, callProp, identity } = require("rubico/x");
+const { values, identity } = require("rubico/x");
 const fs = require("fs");
+const Path = require("path");
 const pfs = fs.promises;
 const path = require("path");
+const { uploadDirToS3 } = require("./uploadDirToS3");
 
-exports.RunGc = ({ app }) => {
+exports.DockerGcRun = ({ app, models }) => {
+  assert(app);
+  assert(models);
+  const log = require("logfilename")(__filename);
+  const { dockerClient } = app;
+  return ({ container_id, run_id }) =>
+    pipe([
+      tap(() => {
+        assert(container_id);
+        assert(run_id);
+        log.debug("DockerGcRun", container_id, "starting");
+      }),
+      // Start
+      () => ({ name: container_id }),
+      dockerClient.container.start,
+      tap((params) => {
+        log.debug("DockerGcRun", container_id, "started, wait for completion");
+      }),
+      // Update status
+      () => ({ data: { status: "running" }, where: { container_id } }),
+      models.run.update,
+      // Wait
+      () => ({ name: container_id }),
+      dockerClient.container.wait,
+      tap((params) => {
+        log.debug("DockerGcRun ", container_id, "ended");
+      }),
+      // Get container state
+      () => ({ id: container_id }),
+      dockerClient.container.get,
+      get("State"),
+      // Save container_state and status to DB
+      (container_state) => ({
+        data: { status: "completed", container_state },
+        where: { container_id },
+      }),
+      models.run.update,
+      () => Path.resolve("output", run_id),
+      tap((path) => {
+        log.debug("DockerGcRun upload to s3", container_id, path);
+      }),
+      //TODO error handling
+      uploadDirToS3(app.config),
+      // Delete container
+      () => ({ name: container_id }),
+      dockerClient.container.delete,
+    ])();
+};
+
+exports.DockerGcCreate = ({ app }) => {
   assert(app);
   const log = require("logfilename")(__filename);
   const { config, dockerClient } = app;
@@ -21,20 +72,11 @@ exports.RunGc = ({ app }) => {
         assert(params.name);
         assert(dockerClient, "dockerClient");
       }),
-      () => dockerClient.container.create(params),
+      () => params,
+      dockerClient.container.create,
       tap(({ Id }) => {
         assert(Id);
-        //Save Id to db
       }),
-      tap(() => dockerClient.container.start({ name: params.name })),
-      tap((xxx) => {
-        assert(true);
-      }),
-      //() => dockerClient.container.wait({ name: params.name }),
-      tap((xxx) => {
-        assert(true);
-      }),
-      // save result to db
     ])();
 
   const gcpConfigFileContent = ({
@@ -67,16 +109,16 @@ exports.RunGc = ({ app }) => {
         ),
     ])();
 
-  const runGcList = ({
+  const dockerGcCreateList = ({
     run_id,
     provider_auth,
     provider,
     containerName = "grucloud-cli",
     containerImage = "grucloud-cli",
-    localOutputPath = "output",
+    localOutputPath = `output/${run_id}`,
     localInputPath = "input",
     dockerClient,
-    outputDir = "output",
+    outputDir = `output`,
     inputDir = "input",
   }) =>
     pipe([
@@ -151,7 +193,7 @@ exports.RunGc = ({ app }) => {
         identity,
       ]),
       tap((input) => {
-        log.debug(`runGcList: ${JSON.stringify(input, null, 4)}`);
+        log.debug(`dockerGcCreateList: ${JSON.stringify(input, null, 4)}`);
       }),
       ({
         name,
@@ -170,7 +212,7 @@ exports.RunGc = ({ app }) => {
               Cmd,
               Env,
               HostConfig,
-              WorkingDir: "/app/output",
+              WorkingDir: `/app/${outputDir}`,
             },
           }),
           tap((xxx) => {
@@ -192,5 +234,5 @@ exports.RunGc = ({ app }) => {
         ])(),
     ])();
 
-  return runGcList;
+  return dockerGcCreateList;
 };

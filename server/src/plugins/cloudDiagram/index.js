@@ -4,7 +4,7 @@ const { defaultsDeep, forEach } = require("rubico/x");
 const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
-
+const { RunWorker } = require("./worker/runWorker");
 const { OrgApi } = require("./api/orgApi");
 const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { ProjectApi } = require("./api/projectApi");
@@ -13,7 +13,7 @@ const { GitRepositoryApi } = require("./api/gitRepositoryApi");
 const { RunApi } = require("./api/runApi");
 
 const configDefault = {
-  containerImage: "fredericheem/grucloud-cli:v12.6.2",
+  containerImage: "fredericheem/grucloud-cli:v12.7.1",
   localOutputPath: "output",
   localInputPath: "input",
   docker: {
@@ -25,6 +25,12 @@ const configDefault = {
 
 module.exports = (app) => {
   const { sql } = app.data;
+  const dockerClient = pipe([
+    () => app.config,
+    get("infra.docker"),
+    DockerClient,
+  ])();
+
   const sqlAdaptor = require("utils/SqlAdapter")({ sql });
   const models = {
     org: sqlAdaptor(require("./sql/OrganisationSql")({ sql })),
@@ -35,16 +41,16 @@ module.exports = (app) => {
     gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")({ sql })),
     run: sqlAdaptor(require("./sql/RunSql")({ sql })),
   };
+  const runWorker = RunWorker({
+    config: app.config,
+    sql,
+    dockerClient,
+    models,
+  });
 
   app.config = assign({
     infra: pipe([get("infra", {}), defaultsDeep(configDefault)]),
   })(app.config);
-
-  const dockerClient = pipe([
-    () => app.config,
-    get("infra.docker"),
-    DockerClient,
-  ])();
 
   app.dockerClient = dockerClient;
 
@@ -60,6 +66,7 @@ module.exports = (app) => {
   return {
     models,
     start: pipe([
+      runWorker.start,
       () => ({ image: app.config.infra.containerImage }),
       tap(({ image }) => {
         assert(image);
@@ -67,6 +74,6 @@ module.exports = (app) => {
       dockerClient.image.pull,
       () => fs.mkdir(app.config.infra.localInputPath, { recursive: true }),
     ]),
-    stop: async () => {},
+    stop: pipe([runWorker.stop]),
   };
 };

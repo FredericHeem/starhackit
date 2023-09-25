@@ -19,7 +19,7 @@ describe("OrganisationSql", function () {
   it("org create, get one, get all, destroy", () =>
     pipe([
       // Insert Org
-      () => ({ org_id, name: faker.company.companyName() }),
+      () => ({ org_id, org_name: faker.company.companyName() }),
       orgSql.insert,
       // Add user to org
       () => ({ org_id, user_id }),
@@ -32,7 +32,7 @@ describe("OrganisationSql", function () {
         assert(rows.length);
       }),
       //Update
-      () => ({ data: { name: "new org" }, where: { org_id, user_id } }),
+      () => ({ data: { org_name: "new org" }, where: { org_id, user_id } }),
       orgSql.update,
       tap((params) => {
         assert(params);

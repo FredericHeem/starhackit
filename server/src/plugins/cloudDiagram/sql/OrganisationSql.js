@@ -57,7 +57,7 @@ module.exports = ({ sql }) => {
         }),
         () => sql`
     SELECT ${sql(tableName)}.org_id,
-      name
+      org_name
       FROM ${sql(tableName)}
       INNER JOIN (
           user_orgs

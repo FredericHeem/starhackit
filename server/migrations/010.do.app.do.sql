@@ -1,7 +1,7 @@
 -- org
 CREATE TABLE IF NOT EXISTS "org" (
   "org_id" TEXT,
-  "name" TEXT NOT NULL,
+  "org_name" TEXT NOT NULL,
   "options" JSONB,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),

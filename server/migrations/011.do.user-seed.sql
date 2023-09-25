@@ -35,7 +35,7 @@ VALUES (
     );
 -- alice
 -- org
-INSERT INTO org (org_id, name)
+INSERT INTO org (org_id, org_name)
 VALUES ('org-alice', 'org alice');
 INSERT INTO user_orgs (org_id, user_id)
 VALUES ('org-alice', 'alice-1234567890');
@@ -68,7 +68,7 @@ VALUES (
         'https://github.com/FredericHeem/grucloud-aws-demo'
     );
 -- bob
-INSERT INTO org (org_id, name)
+INSERT INTO org (org_id, org_name)
 VALUES ('org-bob', 'org bob');
 INSERT INTO user_orgs (org_id, user_id)
 VALUES ('org-bob', 'bob-1234567890');

@@ -31,7 +31,7 @@ describe("Org No Auth", function () {
 });
 
 const orgPayload = {
-  name: "my new org",
+  org_name: "my new org",
 };
 
 describe("Org", function () {
@@ -51,7 +51,7 @@ describe("Org", function () {
       const { org_id } = org;
       assert(org_id);
 
-      assert.equal(org.name, orgPayload.name);
+      assert.equal(org.org_name, orgPayload.org_name);
       // Get By Id
       {
         let orgGet = await client.get(`v1/org/${org_id}`);
@@ -61,10 +61,10 @@ describe("Org", function () {
       // Update
       {
         const inputUpdated = {
-          name: "New Org",
+          org_name: "New Org",
         };
         const updatedOrg = await client.patch(`v1/org/${org_id}`, inputUpdated);
-        assert.equal(updatedOrg.name, inputUpdated.name);
+        assert.equal(updatedOrg.org_name, inputUpdated.org_name);
       }
       // Get all org by user
       {

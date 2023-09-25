@@ -9,6 +9,8 @@ const {
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 
+const orgAttributes = ["org_name", "org_id"];
+
 exports.OrgApi = ({ app, models }) => {
   assert(models.org);
   return {
@@ -74,7 +76,7 @@ exports.OrgApi = ({ app, models }) => {
                 assert(context.state.user.user_id);
               }),
               () => ({
-                attributes: ["name", "org_id"],
+                attributes: orgAttributes,
                 where: { org_id: context.params.org_id },
               }),
               models.org.findOne,
@@ -132,7 +134,7 @@ exports.OrgApi = ({ app, models }) => {
             }),
             models.org.update,
             () => ({
-              attributes: ["name", "org_id"],
+              attributes: orgAttributes,
               where: {
                 org_id: context.params.org_id,
               },

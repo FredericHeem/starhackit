@@ -22,7 +22,7 @@
     "jscpd": "jscpd -r console --format 'javascript' --ignore '**/test*.js' ./src",
     "db:create": "createdb dev -p 6432 -h localhost -U postgres",
     "db:drop": "dropdb dev -p 6432 -h localhost -U postgres",
-    "db:migrate": "node ./scripts/migrate.mjs",
+    "db:migrate": "node --env-file env ./scripts/migrate.mjs",
     "db:recreate": "npm run db:drop && npm run db:create && npm run db:migrate",
     "docker:build": "docker build . -t api",
     "docker:tag": "docker tag api fredericheem/api:latest",

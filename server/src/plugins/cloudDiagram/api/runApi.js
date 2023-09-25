@@ -102,9 +102,19 @@ exports.RunApi = ({ app, models }) => {
               // start a container and return the Id
               assign({
                 container_id: pipe([
-                  ({ run_id }) => ({
+                  assign({
+                    env_vars: pipe([
+                      ({ workspace_id }) =>
+                        models.workspace.findOne({
+                          attributes: ["env_vars"],
+                          where: { workspace_id },
+                        }),
+                      get("env_vars"),
+                    ]),
+                  }),
+                  ({ run_id, env_vars }) => ({
                     run_id,
-                    provider_auth: {},
+                    env_vars,
                     provider: "aws",
                     dockerClient: app.dockerClient,
                   }),

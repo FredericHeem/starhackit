@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS "git_repository" (
 CREATE TABLE IF NOT EXISTS "workspace" (
   "workspace_id" TEXT,
   "workspace_name" TEXT,
+  "env_vars" JSONB,
   "options" JSONB,
   "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),

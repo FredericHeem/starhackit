@@ -26,7 +26,6 @@ describe("DockerGc", function () {
       const run_id = `run-${nanoid.nanoid(8)}`;
       const res = await dockerGcCreate({
         run_id,
-        provider_auth: {},
         provider: "aws",
         dockerClient,
       });
@@ -40,6 +39,7 @@ describe("DockerGc", function () {
           org_id: "org-test",
           project_id: "project-test",
           workspace_id: "workspace-test",
+          env_vars: {},
         });
       }
     } catch (error) {

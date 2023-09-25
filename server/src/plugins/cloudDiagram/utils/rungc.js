@@ -157,7 +157,7 @@ exports.DockerGcCreate = ({ app }) => {
 
   const dockerGcCreateList = ({
     run_id,
-    provider_auth,
+    env_vars = {},
     provider,
     containerName = "grucloud-cli",
     containerImage = "grucloud-cli",
@@ -174,9 +174,9 @@ exports.DockerGcCreate = ({ app }) => {
         assert(provider);
       }),
       () => ({
-        outputGcList: `gc-list-${run_id}.json`,
-        outputDot: `${run_id}.dot`,
-        outputSvg: `${run_id}.svg`,
+        outputGcList: `gc-list.json`,
+        outputDot: `resources.dot`,
+        outputSvg: `resources.svg`,
       }),
       assign({
         name: () => `${containerName}-${run_id}`,
@@ -189,7 +189,6 @@ exports.DockerGcCreate = ({ app }) => {
           "--config",
           `/app/input/config_${provider}.js`,
           "--graph",
-          //"--default-exclude",
           "--types-exclude",
           "ServiceAccount",
           "--json",
@@ -201,10 +200,6 @@ exports.DockerGcCreate = ({ app }) => {
         ],
         outputGcListLocalPath: ({ outputGcList }) =>
           path.resolve(outputDir, outputGcList),
-        outputDotLocalPath: ({ outputDot }) =>
-          path.resolve(outputDir, outputDot),
-        outputSvgLocalPath: ({ outputSvg }) =>
-          path.resolve(outputDir, outputSvg),
         HostConfig: () => ({
           Binds: [
             `${path.resolve(localOutputPath)}:/app/${outputDir}`,
@@ -213,7 +208,7 @@ exports.DockerGcCreate = ({ app }) => {
         }),
         Env: () =>
           pipe([
-            () => provider_auth,
+            () => env_vars,
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),
@@ -232,7 +227,7 @@ exports.DockerGcCreate = ({ app }) => {
             writeGcpFiles({
               configFileName: `input/config-${run_id}.js`,
               credendialFileName: `gcp-credendial-${run_id}.json`,
-              credendialContent: provider_auth.credentials,
+              credendialContent: env_vars.credentials,
             })
           ),
         ]),
@@ -241,15 +236,7 @@ exports.DockerGcCreate = ({ app }) => {
       tap((input) => {
         log.debug(`dockerGcCreateList: ${JSON.stringify(input, null, 4)}`);
       }),
-      ({
-        name,
-        Cmd,
-        HostConfig,
-        Env,
-        outputGcListLocalPath,
-        outputSvgLocalPath,
-        outputDotLocalPath,
-      }) =>
+      ({ name, Cmd, HostConfig, Env }) =>
         pipe([
           () => ({
             name,
@@ -265,16 +252,7 @@ exports.DockerGcCreate = ({ app }) => {
             assert(true);
           }),
           (params) => runDockerJob({ dockerClient, params }),
-          // assign({
-          //   list: pipe([
-          //     () => pfs.readFile(outputGcListLocalPath, "utf-8"),
-          //     JSON.parse,
-          //   ]),
-          //   dot: () => pfs.readFile(outputDotLocalPath, "utf-8"),
-          //   svg: () => pfs.readFile(outputSvgLocalPath, "utf-8"),
-          // }),
           tap((content) => {
-            console.log(outputGcListLocalPath);
             console.log(JSON.stringify(content, null, 4));
           }),
         ])(),

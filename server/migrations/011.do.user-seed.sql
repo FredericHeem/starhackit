@@ -67,21 +67,6 @@ VALUES (
         'project-alice',
         'https://github.com/FredericHeem/grucloud-aws-demo'
     );
--- workspace
-INSERT INTO workspace (workspace_id, project_id, workspace_name)
-VALUES (
-        'workspace-project-alice-dev',
-        'project-alice',
-        'Workspace dev alice'
-    );
--- run
-INSERT INTO run (run_id, workspace_id, status, kind)
-VALUES (
-        'run-1-alice',
-        'workspace-project-alice-dev',
-        'started',
-        'kind'
-    );
 -- bob
 INSERT INTO org (org_id, name)
 VALUES ('org-bob', 'org bob');

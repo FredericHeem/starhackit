@@ -1,6 +1,6 @@
 const assert = require("assert");
 const testMngr = require("test/testManager");
-
+const Axios = require("axios");
 const org_id = "org-alice";
 const project_id = "project-alice";
 const workspace_id = "workspace-project-alice-dev";
@@ -10,7 +10,6 @@ const payloadCreate = {
   kind: "list",
   status: "creating",
 };
-const wait = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 const WebSocket = require("ws");
 
@@ -105,6 +104,12 @@ describe("Run", function () {
         assert(getOneResult);
         assert(getOneResult.workspace_id);
         assert(getOneResult.run_id);
+        assert(getOneResult.logsUrl);
+        const { logsUrl } = getOneResult;
+        assert(logsUrl);
+
+        const { data } = await Axios.get(logsUrl);
+        console.log(data);
       }
       // Update
       {

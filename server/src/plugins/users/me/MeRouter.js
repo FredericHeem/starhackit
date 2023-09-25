@@ -2,6 +2,8 @@ const assert = require("assert");
 const { switchCase, fork, pipe, tap, get, pick } = require("rubico");
 const { isEmpty } = require("rubico/x");
 
+const userAttributes = ["user_id", "email", "username", "picture", "biography"];
+
 const getFromContext = pipe([
   tap((context) => {
     assert(context);
@@ -30,9 +32,12 @@ function MeRouter({ app, models }) {
         handler: (context) =>
           pipe([
             () => context,
-            getFromContext,
-            get("where"),
-            models.user.getById,
+            get("state.user"),
+            ({ user_id }) => ({
+              attributes: userAttributes,
+              where: { user_id },
+            }),
+            models.user.findOne,
             switchCase([
               isEmpty,
               () => {
@@ -67,8 +72,14 @@ function MeRouter({ app, models }) {
             () => context,
             getFromContext,
             tap(models.user.update),
-            get("where"),
-            models.user.getById,
+            // FindOne
+            () => context,
+            get("state.user"),
+            ({ user_id }) => ({
+              attributes: userAttributes,
+              where: { user_id },
+            }),
+            models.user.findOne,
             (body) => {
               context.body = body;
               context.status = 200;

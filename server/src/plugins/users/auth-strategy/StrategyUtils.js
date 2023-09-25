@@ -49,13 +49,12 @@ async function verifyWeb({ models, publisherUser, userConfig }) {
   });
   if (userByEmail) {
     log.debug("email already registered ");
-    // TODO
     await models.user.update({
       data: userConfig,
       where: { email: userConfig.email },
     });
     const userUpdated = await models.user.findOne({
-      attributes: ["*"],
+      attributes: ["email", "user_id", "username", "picture"],
       where: { email: userConfig.email },
     });
     return {

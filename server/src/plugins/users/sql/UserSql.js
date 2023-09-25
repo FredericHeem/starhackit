@@ -13,6 +13,7 @@ module.exports = ({ sql }) => {
     sql`
   SELECT user_id,
       email,
+      username,
       user_type,
       biography,
       created_at,
@@ -46,7 +47,6 @@ module.exports = ({ sql }) => {
         }),
       ])(),
     getById: ({ user_id }) => getByKey("user_id", user_id),
-    getByEmail: ({ email }) => getByKey("email", email),
     getByPasswordResetToken: ({ password_reset_token }) =>
       pipe([
         () => ({

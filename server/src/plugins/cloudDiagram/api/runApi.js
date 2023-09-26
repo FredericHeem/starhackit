@@ -94,6 +94,7 @@ exports.RunApi = ({ app, models }) => {
               () => context.request.body,
               assign({
                 workspace_id: () => context.params.workspace_id,
+                status: () => "creating",
               }),
               models.run.insert,
               tap((param) => {

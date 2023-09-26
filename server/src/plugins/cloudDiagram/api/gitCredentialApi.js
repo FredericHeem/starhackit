@@ -17,6 +17,7 @@ const {
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 
+const gitCredentialAttribute = ["org_id", "git_credential_id", "username"];
 const buildWhereFromContext = pipe([
   tap((context) => {
     assert(context);
@@ -68,13 +69,12 @@ exports.GitCredentialApi = ({ app, models }) => {
           (context) =>
             pipe([
               () => ({
-                attributes: ["org_id", "git_credential_id", "username"],
+                attributes: gitCredentialAttribute,
                 where: {
                   org_id: context.params.org_id,
-                  user_id: context.state.user.user_id,
                 },
               }),
-              models.gitCredential.getAllByOrg,
+              models.gitCredential.findAll,
               tap((param) => {
                 assert(true);
               }),
@@ -95,7 +95,7 @@ exports.GitCredentialApi = ({ app, models }) => {
                 assert(context.state.user.user_id);
               }),
               () => ({
-                attributes: ["org_id", "git_credential_id", "username"],
+                attributes: gitCredentialAttribute,
                 where: buildWhereFromContext(context),
               }),
               models.gitCredential.findOne,
@@ -139,7 +139,7 @@ exports.GitCredentialApi = ({ app, models }) => {
             }),
             models.gitCredential.update,
             () => ({
-              attributes: ["username", "org_id", "git_credential_id"],
+              attributes: gitCredentialAttribute,
               where: buildWhereFromContext(context),
             }),
             models.gitCredential.findOne,

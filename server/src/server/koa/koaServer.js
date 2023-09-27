@@ -1,7 +1,5 @@
 const Koa = require("koa");
 const Router = require("koa-66");
-const _ = require("lodash");
-const { tap, map } = require("rubico");
 const { forEach } = require("rubico/x");
 const websockify = require("koa-websocket");
 
@@ -35,7 +33,7 @@ function KoaServer(app) {
       });
     },
     createRouter(api) {
-      _.each(api.ops, ({ middlewares = [], pathname, method, handler }) => {
+      api.ops.map(({ middlewares = [], pathname, method, handler }) => {
         const router = new Router();
         forEach((m) => router.use(m))(api.middlewares);
         forEach((m) => router.use(m))(middlewares);

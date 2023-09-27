@@ -11,8 +11,8 @@ function UserRouter({ app, models }) {
       app.server.auth.isAuthenticated,
       app.server.auth.isAuthorized,
     ],
-    ops: {
-      getAll: {
+    ops: [
+      {
         pathname: "/",
         method: "get",
         handler: (context) =>
@@ -41,7 +41,7 @@ function UserRouter({ app, models }) {
             ]),
           ])(),
       },
-      getOne: {
+      {
         pathname: "/:id",
         method: "get",
         handler: (context) =>
@@ -66,7 +66,7 @@ function UserRouter({ app, models }) {
             ]),
           ])(),
       },
-    },
+    ],
   };
 
   return api;

@@ -39,8 +39,8 @@ exports.InfraPushCodeRestApi = ({ app, models }) => {
     middlewares: [
       app.server.auth.isAuthenticated /*,app.server.auth.isAuthorized*/,
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/:id/push_code",
         method: "post",
         handler: (context) =>
@@ -77,7 +77,7 @@ exports.InfraPushCodeRestApi = ({ app, models }) => {
               ])()
           )(),
       },
-    },
+    ],
   };
 
   app.server.createRouter(apiSpec);

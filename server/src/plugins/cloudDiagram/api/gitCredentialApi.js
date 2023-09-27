@@ -40,8 +40,8 @@ exports.GitCredentialApi = ({ app, models }) => {
       app.server.auth.isAuthenticated, //
       middlewareUserBelongsToOrg(models),
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/",
         method: "post",
         handler: tryCatch(
@@ -62,7 +62,7 @@ exports.GitCredentialApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getAll: {
+      {
         pathname: "/",
         method: "get",
         handler: tryCatch(
@@ -83,7 +83,7 @@ exports.GitCredentialApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getOne: {
+      {
         pathname: "/:git_credential_id",
         method: "get",
         handler: tryCatch(
@@ -111,7 +111,7 @@ exports.GitCredentialApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      delete: {
+      {
         pathname: "/:git_credential_id",
         method: "delete",
         handler: tryCatch(
@@ -128,7 +128,7 @@ exports.GitCredentialApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      patch: {
+      {
         pathname: "/:git_credential_id",
         method: "patch",
         handler: (context) =>
@@ -146,6 +146,6 @@ exports.GitCredentialApi = ({ app, models }) => {
             contextSetOk({ context }),
           ])(),
       },
-    },
+    ],
   };
 };

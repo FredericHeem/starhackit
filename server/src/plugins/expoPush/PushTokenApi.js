@@ -5,15 +5,15 @@ function PushToken(app) {
   const api = {
     pathname: "/push_token/",
     middlewares: [app.server.auth.isAuthenticated],
-    ops: {
-      getAll: {
+    ops: [
+      {
         pathname: "/",
         method: "get",
         handler: async (context) => {
           context.status = 200;
         },
       },
-      create: {
+      {
         pathname: "/",
         method: "post",
         handler: async (context) => {
@@ -24,7 +24,7 @@ function PushToken(app) {
           context.status = 204;
         },
       },
-    },
+    ],
   };
 
   app.server.createRouter(api);

@@ -25,8 +25,8 @@ function MeRouter({ app, models }) {
   const api = {
     pathname: "/me",
     middlewares: [app.server.auth.isAuthenticated],
-    ops: {
-      get: {
+    ops: [
+      {
         pathname: "/",
         method: "get",
         handler: (context) =>
@@ -50,7 +50,7 @@ function MeRouter({ app, models }) {
             ]),
           ])(),
       },
-      delete: {
+      {
         pathname: "/",
         method: "delete",
         handler: (context) =>
@@ -64,7 +64,7 @@ function MeRouter({ app, models }) {
             },
           ])(),
       },
-      patch: {
+      {
         pathname: "/",
         method: "patch",
         handler: (context) =>
@@ -86,7 +86,7 @@ function MeRouter({ app, models }) {
             },
           ])(),
       },
-    },
+    ],
   };
   return api;
 }

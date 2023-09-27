@@ -39,8 +39,8 @@ exports.GitRepositoryApi = ({ app, models }) => {
       app.server.auth.isAuthenticated, //
       middlewareUserBelongsToOrg(models),
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/",
         method: "post",
         handler: tryCatch(
@@ -65,7 +65,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getAll: {
+      {
         pathname: "/",
         method: "get",
         handler: tryCatch(
@@ -91,7 +91,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getOne: {
+      {
         pathname: "/:git_repository_id",
         method: "get",
         handler: tryCatch(
@@ -124,7 +124,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      delete: {
+      {
         pathname: "/:git_repository_id",
         method: "delete",
         handler: tryCatch(
@@ -141,7 +141,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      patch: {
+      {
         pathname: "/:git_repository_id",
         method: "patch",
         handler: (context) =>
@@ -159,6 +159,6 @@ exports.GitRepositoryApi = ({ app, models }) => {
             contextSetOk({ context }),
           ])(),
       },
-    },
+    ],
   };
 };

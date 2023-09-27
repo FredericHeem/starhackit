@@ -6,8 +6,8 @@ function Ticket(app) {
     middlewares: [
       app.server.auth.isAuthenticated /*,app.server.auth.isAuthorized*/,
     ],
-    ops: {
-      getAll: {
+    ops: [
+      {
         pathname: "/",
         method: "get",
         handler: async (context) => {
@@ -18,7 +18,7 @@ function Ticket(app) {
           context.status = 200;
         },
       },
-      getOne: {
+      {
         pathname: "/:id",
         method: "get",
         handler: async (context) => {
@@ -43,7 +43,7 @@ function Ticket(app) {
           }
         },
       },
-      create: {
+      {
         pathname: "/",
         method: "post",
         handler: async (context) => {
@@ -55,7 +55,7 @@ function Ticket(app) {
           context.status = 200;
         },
       },
-      update: {
+      {
         pathname: "/:id",
         method: "patch",
         handler: async (context) => {
@@ -77,7 +77,7 @@ function Ticket(app) {
           context.status = 200;
         },
       },
-      delete: {
+      {
         pathname: "/:id",
         method: "delete",
         handler: async (context) => {
@@ -90,7 +90,7 @@ function Ticket(app) {
           context.status = 204;
         },
       },
-    },
+    ],
   };
 
   app.server.createRouter(api);

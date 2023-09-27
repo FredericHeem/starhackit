@@ -39,8 +39,8 @@ exports.WorkspaceApi = ({ app, models }) => {
       app.server.auth.isAuthenticated, //
       middlewareUserBelongsToOrg(models),
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/",
         method: "post",
         handler: tryCatch(
@@ -65,7 +65,7 @@ exports.WorkspaceApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getAll: {
+      {
         pathname: "/",
         method: "get",
         handler: tryCatch(
@@ -86,7 +86,7 @@ exports.WorkspaceApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getOne: {
+      {
         pathname: "/:workspace_id",
         method: "get",
         handler: tryCatch(
@@ -114,7 +114,7 @@ exports.WorkspaceApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      delete: {
+      {
         pathname: "/:workspace_id",
         method: "delete",
         handler: tryCatch(
@@ -131,7 +131,7 @@ exports.WorkspaceApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      patch: {
+      {
         pathname: "/:workspace_id",
         method: "patch",
         handler: (context) =>
@@ -149,6 +149,6 @@ exports.WorkspaceApi = ({ app, models }) => {
             contextSetOk({ context }),
           ])(),
       },
-    },
+    ],
   };
 };

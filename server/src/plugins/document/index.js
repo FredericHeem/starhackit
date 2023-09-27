@@ -17,8 +17,8 @@ function Document(app) {
   const api = {
     pathname: "/document",
     middlewares: [app.server.auth.isAuthenticated],
-    ops: {
-      getAll: {
+    ops: [
+      {
         pathname: "/",
         method: "get",
         handler: async (context) => {
@@ -29,7 +29,7 @@ function Document(app) {
           context.status = 200;
         },
       },
-      getOne: {
+      {
         pathname: "/:type",
         method: "get",
         handler: async (context) => {
@@ -43,7 +43,7 @@ function Document(app) {
           context.status = 200;
         },
       },
-      update: {
+      {
         pathname: "/:type",
         method: "post",
         handler: async (context) => {
@@ -67,7 +67,7 @@ function Document(app) {
           }
         },
       },
-      upload: {
+      {
         pathname: "/",
         method: "post",
         handler: async (context) => {
@@ -90,7 +90,7 @@ function Document(app) {
           }
         },
       },
-    },
+    ],
   };
 
   app.server.createRouter(api);

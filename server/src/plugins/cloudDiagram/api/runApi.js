@@ -77,8 +77,8 @@ exports.RunApi = ({ app, models }) => {
       app.server.auth.isAuthenticated, //
       middlewareUserBelongsToOrg(models),
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/",
         method: "post",
         handler: tryCatch(
@@ -135,7 +135,7 @@ exports.RunApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getAll: {
+      {
         pathname: "/",
         method: "get",
         handler: tryCatch(
@@ -156,7 +156,7 @@ exports.RunApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getOne: {
+      {
         pathname: "/:run_id",
         method: "get",
         handler: tryCatch(
@@ -198,7 +198,7 @@ exports.RunApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      delete: {
+      {
         pathname: "/:run_id",
         method: "delete",
         handler: tryCatch(
@@ -220,7 +220,7 @@ exports.RunApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      patch: {
+      {
         pathname: "/:run_id",
         method: "patch",
         handler: (context) =>
@@ -249,6 +249,6 @@ exports.RunApi = ({ app, models }) => {
             contextSetOk({ context }),
           ])(),
       },
-    },
+    ],
   };
 };

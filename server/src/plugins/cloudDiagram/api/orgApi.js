@@ -16,8 +16,8 @@ exports.OrgApi = ({ app, models }) => {
   return {
     pathname: "/org",
     middlewares: [app.server.auth.isAuthenticated],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/",
         method: "post",
         handler: tryCatch(
@@ -43,7 +43,7 @@ exports.OrgApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getAll: {
+      {
         pathname: "/",
         method: "get",
         handler: tryCatch(
@@ -64,7 +64,7 @@ exports.OrgApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getOne: {
+      {
         pathname: "/:org_id",
         method: "get",
         middlewares: [middlewareUserBelongsToOrg(models)],
@@ -92,7 +92,7 @@ exports.OrgApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      delete: {
+      {
         pathname: "/:org_id",
         method: "delete",
         middlewares: [middlewareUserBelongsToOrg(models)],
@@ -116,7 +116,7 @@ exports.OrgApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      patch: {
+      {
         pathname: "/:org_id",
         method: "patch",
         middlewares: [middlewareUserBelongsToOrg(models)],
@@ -143,6 +143,6 @@ exports.OrgApi = ({ app, models }) => {
             contextSetOk({ context }),
           ])(),
       },
-    },
+    ],
   };
 };

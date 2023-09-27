@@ -39,8 +39,8 @@ exports.ProjectApi = ({ app, models }) => {
       app.server.auth.isAuthenticated, //
       middlewareUserBelongsToOrg(models),
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/",
         method: "post",
         handler: tryCatch(
@@ -61,7 +61,7 @@ exports.ProjectApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getAll: {
+      {
         pathname: "/",
         method: "get",
         handler: tryCatch(
@@ -83,7 +83,7 @@ exports.ProjectApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      getOne: {
+      {
         pathname: "/:project_id",
         method: "get",
         handler: tryCatch(
@@ -111,7 +111,7 @@ exports.ProjectApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      delete: {
+      {
         pathname: "/:project_id",
         method: "delete",
         handler: tryCatch(
@@ -128,7 +128,7 @@ exports.ProjectApi = ({ app, models }) => {
           contextHandleError
         ),
       },
-      patch: {
+      {
         pathname: "/:project_id",
         method: "patch",
         handler: (context) =>
@@ -146,6 +146,6 @@ exports.ProjectApi = ({ app, models }) => {
             contextSetOk({ context }),
           ])(),
       },
-    },
+    ],
   };
 };

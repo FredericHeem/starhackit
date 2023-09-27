@@ -32,4 +32,15 @@ describe("GetAll", function () {
       throw error;
     }
   });
+  it("Get all runs by user", async () => {
+    try {
+      {
+        let runs = await client.get("v1/runs");
+        assert(runs);
+        assert(Array.isArray(runs));
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
 });

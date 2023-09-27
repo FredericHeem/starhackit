@@ -10,15 +10,24 @@ describe("GetAll", function () {
     client = testMngr.client("alice");
     await client.login();
   });
-  it("Get all project by user", async () => {
+  it("Get all projects by user", async () => {
     try {
-      // Get all project by user
       {
         let projects = await client.get("v1/projects");
         assert(projects);
         assert(Array.isArray(projects));
       }
-      // Delete
+    } catch (error) {
+      throw error;
+    }
+  });
+  it("Get all workspaces by user", async () => {
+    try {
+      {
+        let workspaces = await client.get("v1/workspaces");
+        assert(workspaces);
+        assert(Array.isArray(workspaces));
+      }
     } catch (error) {
       throw error;
     }

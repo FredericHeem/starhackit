@@ -29,6 +29,27 @@ exports.GetAllApi = ({ app, models }) => {
           contextHandleError
         ),
       },
+      {
+        pathname: "/workspaces",
+        method: "get",
+        handler: tryCatch(
+          (context) =>
+            pipe([
+              tap(() => {
+                assert(context.state.user.user_id);
+              }),
+              () => ({
+                where: { user_id: context.state.user.user_id },
+              }),
+              models.workspace.getAllByUser,
+              tap((param) => {
+                assert(true);
+              }),
+              contextSetOk({ context }),
+            ])(),
+          contextHandleError
+        ),
+      },
     ],
   };
 };

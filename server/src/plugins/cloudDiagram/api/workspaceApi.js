@@ -72,12 +72,11 @@ exports.WorkspaceApi = ({ app, models }) => {
           (context) =>
             pipe([
               () => ({
-                attributes: ["project_id", "workspace_id", "workspace_name"],
                 where: {
                   project_id: context.params.project_id,
                 },
               }),
-              models.workspace.findAll,
+              models.workspace.getAllByProject,
               tap((param) => {
                 assert(true);
               }),

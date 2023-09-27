@@ -15,7 +15,10 @@ exports.OrgApi = ({ app, models }) => {
   assert(models.org);
   return {
     pathname: "/org",
-    middlewares: [app.server.auth.isAuthenticated],
+    middlewares: [
+      app.server.auth.isAuthenticated,
+      middlewareUserBelongsToOrg(models),
+    ],
     ops: [
       {
         pathname: "/",

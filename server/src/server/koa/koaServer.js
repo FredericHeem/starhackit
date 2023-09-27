@@ -33,13 +33,12 @@ function KoaServer(app) {
       });
     },
     createRouter(api) {
+      const router = new Router();
+      forEach((m) => router.use(m))(api.middlewares);
       api.ops.map(({ middlewares = [], pathname, method, handler }) => {
-        const router = new Router();
-        forEach((m) => router.use(m))(api.middlewares);
-        forEach((m) => router.use(m))(middlewares);
         router[method](pathname, handler);
-        baseRouter.mount(api.pathname, router);
       });
+      baseRouter.mount(api.pathname, router);
     },
     /**
      * Start the koa server

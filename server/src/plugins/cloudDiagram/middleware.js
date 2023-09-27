@@ -12,18 +12,25 @@ exports.middlewareUserBelongsToOrg = (models) => (context, next) =>
       org_id: get("params.org_id"),
       user_id: get("state.user.user_id"),
     }),
-    tap(({ user_id, org_id }) => {
-      assert(user_id);
-      assert(org_id);
-    }),
-    (where) => ({ attributes: ["user_id"], where }),
-    models.userOrg.findOne,
     switchCase([
-      isEmpty,
-      () => {
-        context.status = 404;
-        context.body = "NotFound";
-      },
+      get("org_id"),
+      pipe([
+        tap(({ user_id, org_id }) => {
+          assert(user_id);
+          assert(org_id);
+        }),
+        (where) => ({ attributes: ["user_id"], where }),
+        models.userOrg.findOne,
+        switchCase([
+          isEmpty,
+          () => {
+            context.status = 404;
+            context.body = "NotFound";
+          },
+          () => next(),
+        ]),
+      ]),
+      // no org_id, pass through
       () => next(),
     ]),
   ])();

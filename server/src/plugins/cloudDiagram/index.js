@@ -4,6 +4,8 @@ const { defaultsDeep } = require("rubico/x");
 const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
+const { GetAllApi } = require("./api/getAllApi");
+
 const { OrgApi } = require("./api/orgApi");
 const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { ProjectApi } = require("./api/projectApi");
@@ -119,6 +121,7 @@ module.exports = (app) => {
   app.dockerClient = dockerClient;
 
   [
+    GetAllApi,
     OrgApi,
     GitCredentialApi,
     ProjectApi,

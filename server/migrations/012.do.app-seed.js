@@ -1,9 +1,10 @@
 module.exports.generateSql = () => {
   return `
-    INSERT INTO workspace (workspace_id, project_id, workspace_name, env_vars)
+    INSERT INTO workspace (org_id, project_id, workspace_id, workspace_name, env_vars)
     VALUES (
-              'workspace-project-alice-dev',
+              'org-alice',
               'project-alice',
+              'workspace-project-alice-dev',
               'Workspace dev alice',
               '{
                 "AWS_REGION": "${process.env.AWS_REGION}",
@@ -11,10 +12,12 @@ module.exports.generateSql = () => {
                 "AWSSecretKey": "${process.env.AWSSecretKey}"
               }'
           );
-    INSERT INTO run (run_id, workspace_id, status, kind)
+    INSERT INTO run (org_id, project_id, workspace_id, run_id, status, kind)
     VALUES (
-            'run-1-alice',
+            'org-alice',
+            'project-alice',
             'workspace-project-alice-dev',
+            'run-1-alice',
             'started',
             'list'
         );

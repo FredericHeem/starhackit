@@ -17,15 +17,24 @@ const {
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 
+const workspaceAttributes = [
+  "org_id",
+  "project_id",
+  "workspace_id",
+  "workspace_name",
+];
+
 const buildWhereFromContext = pipe([
   tap((context) => {
     assert(context);
   }),
   fork({
+    org_id: pipe([get("params.org_id")]),
     project_id: pipe([get("params.project_id")]),
     workspace_id: pipe([get("params.workspace_id")]),
   }),
-  tap(({ project_id, workspace_id }) => {
+  tap(({ org_id, project_id, workspace_id }) => {
+    assert(org_id);
     assert(project_id);
     assert(workspace_id);
   }),
@@ -55,6 +64,7 @@ exports.WorkspaceApi = ({ app, models }) => {
               () => context.request.body,
               assign({
                 project_id: () => context.params.project_id,
+                org_id: () => context.params.org_id,
               }),
               models.workspace.insert,
               tap((param) => {
@@ -73,6 +83,7 @@ exports.WorkspaceApi = ({ app, models }) => {
             pipe([
               () => ({
                 where: {
+                  org_id: context.params.org_id,
                   project_id: context.params.project_id,
                 },
               }),
@@ -92,12 +103,13 @@ exports.WorkspaceApi = ({ app, models }) => {
           (context) =>
             pipe([
               tap(() => {
+                assert(context.params.org_id);
                 assert(context.params.project_id);
                 assert(context.params.workspace_id);
                 assert(context.state.user.user_id);
               }),
               () => ({
-                attributes: ["project_id", "workspace_id", "workspace_name"],
+                attributes: workspaceAttributes,
                 where: buildWhereFromContext(context),
               }),
               models.workspace.findOne,
@@ -141,7 +153,7 @@ exports.WorkspaceApi = ({ app, models }) => {
             }),
             models.workspace.update,
             () => ({
-              attributes: ["workspace_name", "project_id", "workspace_id"],
+              attributes: workspaceAttributes,
               where: buildWhereFromContext(context),
             }),
             models.workspace.findOne,

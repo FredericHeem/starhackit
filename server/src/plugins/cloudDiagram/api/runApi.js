@@ -7,6 +7,7 @@ const {
   tap,
   get,
   assign,
+  pick,
 } = require("rubico");
 const { isEmpty } = require("rubico/x");
 const {
@@ -21,15 +22,29 @@ const { DockerGcCreate } = require("../utils/rungc");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
+const runAttributes = [
+  "org_id",
+  "project_id",
+  "workspace_id",
+  "run_id",
+  "container_id",
+  "container_state",
+  "status",
+];
+
 const buildWhereFromContext = pipe([
   tap((context) => {
     assert(context);
   }),
   fork({
+    org_id: pipe([get("params.org_id")]),
+    project_id: pipe([get("params.project_id")]),
     workspace_id: pipe([get("params.workspace_id")]),
     run_id: pipe([get("params.run_id")]),
   }),
-  tap(({ workspace_id, run_id }) => {
+  tap(({ org_id, project_id, workspace_id, run_id }) => {
+    assert(org_id);
+    assert(project_id);
     assert(workspace_id);
     assert(run_id);
   }),
@@ -93,8 +108,13 @@ exports.RunApi = ({ app, models }) => {
               }),
               () => context.request.body,
               assign({
+                org_id: () => context.params.org_id,
+                project_id: () => context.params.project_id,
                 workspace_id: () => context.params.workspace_id,
                 status: () => "creating",
+              }),
+              tap((param) => {
+                assert(true);
               }),
               models.run.insert,
               tap((param) => {
@@ -125,7 +145,15 @@ exports.RunApi = ({ app, models }) => {
               }),
               // Save the container_id to the db
               tap((data) => {
-                models.run.update({ data, where: { run_id: data.run_id } });
+                models.run.update({
+                  data,
+                  where: pick([
+                    "org_id",
+                    "project_id",
+                    "workspace_id",
+                    "run_id",
+                  ])(data),
+                });
               }),
               contextSetOk({ context }),
               tap((param) => {
@@ -142,8 +170,10 @@ exports.RunApi = ({ app, models }) => {
           (context) =>
             pipe([
               () => ({
-                attributes: ["workspace_id", "run_id"],
+                attributes: runAttributes,
                 where: {
+                  org_id: context.params.org_id,
+                  project_id: context.params.project_id,
                   workspace_id: context.params.workspace_id,
                 },
               }),
@@ -168,13 +198,7 @@ exports.RunApi = ({ app, models }) => {
                 assert(context.state.user.user_id);
               }),
               () => ({
-                attributes: [
-                  "workspace_id",
-                  "run_id",
-                  "container_id",
-                  "container_state",
-                  "status",
-                ],
+                attributes: runAttributes,
                 where: buildWhereFromContext(context),
               }),
               models.run.findOne,

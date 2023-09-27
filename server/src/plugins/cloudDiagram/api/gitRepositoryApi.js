@@ -17,15 +17,25 @@ const {
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 
+const gitRepositoryAttributes = [
+  "org_id",
+  "project_id",
+  "git_credential_id",
+  "git_repository_id",
+  "url",
+];
+
 const buildWhereFromContext = pipe([
   tap((context) => {
     assert(context);
   }),
   fork({
+    org_id: pipe([get("params.org_id")]),
     project_id: pipe([get("params.project_id")]),
     git_repository_id: pipe([get("params.git_repository_id")]),
   }),
-  tap(({ project_id, git_repository_id }) => {
+  tap(({ org_id, project_id, git_repository_id }) => {
+    assert(org_id);
     assert(project_id);
     assert(git_repository_id);
   }),
@@ -54,6 +64,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
               }),
               () => context.request.body,
               assign({
+                org_id: () => context.params.org_id,
                 project_id: () => context.params.project_id,
               }),
               models.gitRepository.insert,
@@ -73,6 +84,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
             pipe([
               () => ({
                 attributes: [
+                  "org_id",
                   "project_id",
                   "git_credential_id",
                   "git_repository_id",
@@ -98,17 +110,13 @@ exports.GitRepositoryApi = ({ app, models }) => {
           (context) =>
             pipe([
               tap(() => {
+                assert(context.params.org_id);
                 assert(context.params.project_id);
                 assert(context.params.git_repository_id);
                 assert(context.state.user.user_id);
               }),
               () => ({
-                attributes: [
-                  "project_id",
-                  "git_repository_id",
-                  "git_credential_id",
-                  "url",
-                ],
+                attributes: gitRepositoryAttributes,
                 where: buildWhereFromContext(context),
               }),
               models.gitRepository.findOne,
@@ -152,7 +160,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
             }),
             models.gitRepository.update,
             () => ({
-              attributes: ["url", "project_id", "git_repository_id"],
+              attributes: gitRepositoryAttributes,
               where: buildWhereFromContext(context),
             }),
             models.gitRepository.findOne,

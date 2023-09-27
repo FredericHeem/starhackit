@@ -56,13 +56,18 @@ module.exports = ({ sql }) => {
           assert(user_id);
         }),
         () => sql`
-    SELECT ${sql(tableName)}.org_id,
-      org_name
-      FROM ${sql(tableName)}
+    SELECT org.org_id,
+      org_name,
+      (SELECT 
+         COUNT(*)
+         FROM project 
+         WHERE org.org_id = project.org_id)
+         AS project_count
+      FROM org
       INNER JOIN (
           user_orgs
           INNER JOIN users ON users.user_id = user_orgs.user_id
-      ) ON ${sql(tableName)}.org_id = user_orgs.org_id
+      ) ON org.org_id = user_orgs.org_id
       AND users.user_id = ${user_id};`,
         tap((param) => {
           assert(true);

@@ -20,7 +20,16 @@ module.exports = ({ sql }) => {
           assert(user_id);
         }),
         () => sql`
-    SELECT project.project_name, project_id, project.org_id, org.org_name
+    SELECT 
+      project.project_name,
+      project_id,
+      project.org_id,
+      org.org_name,
+      (SELECT 
+         COUNT(*)
+         FROM workspace 
+         WHERE workspace.project_id = project.project_id)
+         AS workspace_count
       FROM project
       INNER JOIN org ON org.org_id = project.org_id
       INNER JOIN (
@@ -36,7 +45,15 @@ module.exports = ({ sql }) => {
           assert(user_id);
         }),
         () => sql`
-      SELECT project.project_name, project_id, project.org_id
+      SELECT 
+          project.project_name,
+          project_id,
+          project.org_id,
+          (SELECT 
+            COUNT(*)
+            FROM workspace 
+            WHERE workspace.project_id = project.project_id)
+            AS workspace_count
         FROM project
         INNER JOIN (
             user_orgs

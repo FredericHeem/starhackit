@@ -11,7 +11,7 @@ module.exports = ({ sql }) => {
     insert: (data) =>
       pipe([
         () => data,
-        defaultsDeep({ run_id: `run-${nanoid.nanoid(8)}` }),
+        defaultsDeep({}),
         fork({ out: identity, query: insert({ tableName, sql }) }),
       ])(),
     getAllByUser: ({ where: { user_id } }) =>

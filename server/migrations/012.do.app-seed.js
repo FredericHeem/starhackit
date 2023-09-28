@@ -12,12 +12,11 @@ module.exports.generateSql = () => {
                 "AWSSecretKey": "${process.env.AWSSecretKey}"
               }'
           );
-    INSERT INTO run (org_id, project_id, workspace_id, run_id, status, kind)
+    INSERT INTO run (org_id, project_id, workspace_id, status, kind)
     VALUES (
             'org-alice',
             'project-alice',
             'workspace-project-alice-dev',
-            'run-1-alice',
             'started',
             'list'
         );

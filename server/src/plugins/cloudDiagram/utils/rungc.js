@@ -68,7 +68,7 @@ exports.DockerGcRun = ({ app, models, ws }) => {
         where: { container_id },
       }),
       models.run.update,
-      () => Path.resolve("output", run_id),
+      () => Path.resolve("output", `${run_id}`),
       tap((path) => {
         log.debug("DockerGcRun upload to s3", container_id, path);
         ws.send("uploading file");
@@ -169,7 +169,7 @@ exports.DockerGcCreate = ({ app }) => {
   }) =>
     pipe([
       tap(() => {
-        assert(run_id);
+        //assert(run_id);
         assert(dockerClient);
         assert(provider);
       }),

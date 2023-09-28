@@ -29,20 +29,28 @@ module.exports =
                     pipe([
                       switchCase([
                         // insert
-                        () =>
-                          name.startsWith("insert") ||
-                          name.startsWith("update"),
+                        () => name.startsWith("insert"),
                         pipe([
                           () => target[name](...args),
                           tap((param) => {
                             console.log(param.query?.statement?.string);
                           }),
-                          //tap(({ out, query }) => query.execute()),
+                          tap((param) => {
+                            assert(true);
+                          }),
+                          get("query"),
+                          first,
+                        ]),
+                        () => name.startsWith("update"),
+                        pipe([
+                          () => target[name](...args),
+                          tap((param) => {
+                            console.log(param.query?.statement?.string);
+                          }),
                           tap((param) => {
                             assert(true);
                           }),
                           get("out"),
-                          // () => query.out,
                         ]),
                         // Find one
                         () => name.startsWith("getBy") || name == "findOne",

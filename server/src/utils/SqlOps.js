@@ -1,6 +1,6 @@
 const assert = require("assert");
-const { tap, pipe, map } = require("rubico");
-const { callProp, isObject, keys, values } = require("rubico/x");
+const { tap, pipe } = require("rubico");
+const { keys } = require("rubico/x");
 
 const buildWhere = (sql) =>
   pipe([
@@ -62,7 +62,7 @@ const insert =
       }),
       () => sql`
       INSERT INTO ${sql(tableName)}
-      ${sql(data, ...keys(data))};`,
+      ${sql(data, ...keys(data))} RETURNING *;`,
     ])();
 exports.insert = insert;
 

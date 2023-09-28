@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS workspace (
 );
 -- -- run
 CREATE TABLE IF NOT EXISTS run (
-  run_id TEXT NOT NULL,
+  run_id SERIAL,
   reason TEXT,
   kind TEXT NOT NULL,
   container_id TEXT,

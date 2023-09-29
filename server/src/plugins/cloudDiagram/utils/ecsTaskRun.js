@@ -20,7 +20,7 @@ exports.ecsTaskRun = ({}) =>
       // TODO
       () => ({
         cluster: "grucloud-console-dev",
-        taskDefinition: "grucloud-cli:6",
+        taskDefinition: "grucloud-cli:8",
         launchType: "FARGATE",
         networkConfiguration: {
           awsvpcConfiguration: {
@@ -33,11 +33,27 @@ exports.ecsTaskRun = ({}) =>
           containerOverrides: [
             {
               name: "grucloud-cli",
-              command: ["list", "--provider", "aws"],
+              command: [
+                "list",
+                "--json",
+                "grucloud-result.json",
+                "-g",
+                "--provider",
+                "aws",
+                "--s3-bucket",
+                "grucloud-console-dev",
+                "--s3-key",
+                "my-org/my-project/my-workspace/run/1",
+                "--ws-url",
+                "ws://localhost:9000",
+                "--ws-room",
+                "my-org/my-project/my-workspace/run/1",
+              ],
               environment: [
                 { name: "AWSAccessKeyId", value: AWSAccessKeyId },
                 { name: "AWSSecretKey", value: AWSSecretKey },
                 { name: "AWS_REGION", value: AWS_REGION },
+                { name: "CONTINUOUS_INTEGRATION", value: "1" },
               ],
             },
           ],

@@ -41,8 +41,8 @@ const profileMobileToUser = (profile) => ({
 });
 
 async function verifyMobile({ models, publisherUser, accessToken }) {
+  assert(models);
   assert(accessToken);
-  assert(profile);
   log.debug("verifyMobile ");
   const getMe = () =>
     axios

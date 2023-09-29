@@ -87,22 +87,60 @@ module.exports = (app) => {
     run: sqlAdaptor(require("./sql/RunSql")({ sql })),
   };
 
+  const roomMap = new Map();
+  const producerMap = new Map();
+
   app.server.koa.ws.use((ctx) => {
     const ws = ctx.websocket;
     dockerGcRun = DockerGcRun({ app, models, ws });
-
+    ws.on("close", () => {
+      console.log("ws close");
+      const room = producerMap.get();
+      if (room) {
+        roomMap.delete(room);
+      }
+      producerMap.delete(ws);
+    });
     ws.on("message", async function (message) {
       assert(ctx.request);
-
+      console.log("ws  message", message.toString());
       try {
         const { command, options } = JSON.parse(message.toString());
         switch (command) {
+          case "join":
+            console.log("join", options.room);
+            const roomInfo = roomMap.get(options.room);
+            if (roomInfo) {
+              console.log("join", options.room, "room already exist");
+              roomMap.set(options.room, [...roomInfo, ws]);
+            } else {
+              console.log("join", options.room, "create room");
+              roomMap.set(options.room, [ws]);
+            }
+            producerMap.set(ws, options.room);
+            break;
+          case "list":
+          case "logs":
+            const room = producerMap.set(ws, options.room);
+            if (room) {
+              const clients = roomMap.get(room);
+              if (clients) {
+                clients
+                  .filter((c) => c != ws)
+                  .forEach((client) => {
+                    console.log("sending back");
+                    client.send(message);
+                  });
+              }
+            }
+            return;
           case "DockerLogs":
             streamDockerLogs({
               containerId: options.containerId,
               ws,
               dockerClient,
             });
+            break;
           case "Run":
             dockerGcRun(options);
             return;

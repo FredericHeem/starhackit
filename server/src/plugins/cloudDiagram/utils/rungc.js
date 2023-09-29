@@ -3,10 +3,8 @@ const assert = require("assert");
 const { pipe, tap, assign, get, eq, switchCase, map } = require("rubico");
 const { values, identity } = require("rubico/x");
 const fs = require("fs");
-const Path = require("path");
 const pfs = fs.promises;
 const path = require("path");
-const { uploadDirToS3 } = require("./uploadDirToS3");
 
 exports.DockerGcRun = ({ app, models, ws }) => {
   assert(app);
@@ -65,22 +63,6 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       // Save container_state and status to DB
       (container_state) => ({
         data: { status: "docker_run_completed", container_state },
-        where: { container_id },
-      }),
-      models.run.update,
-      () => Path.resolve("output", `${run_id}`),
-      tap((path) => {
-        log.debug("DockerGcRun upload to s3", container_id, path);
-        ws.send("uploading file");
-      }),
-      //TODO error handling
-      uploadDirToS3({
-        ...app.config.aws,
-        keyPrefix: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-      }),
-      //
-      () => ({
-        data: { status: "s3_uploaded" },
         where: { container_id },
       }),
       models.run.update,
@@ -156,11 +138,14 @@ exports.DockerGcCreate = ({ app }) => {
     ])();
 
   const dockerGcCreateList = ({
+    org_id,
+    project_id,
+    workspace_id,
     run_id,
     env_vars = {},
     provider,
     containerName = "grucloud-cli",
-    containerImage = "grucloud-cli",
+    containerImage = "grucloud/grucloud-cli",
     localOutputPath = `output/${run_id}`,
     localInputPath = "input",
     dockerClient,
@@ -172,9 +157,10 @@ exports.DockerGcCreate = ({ app }) => {
         //assert(run_id);
         assert(dockerClient);
         assert(provider);
+        assert(containerImage);
       }),
       () => ({
-        outputGcList: `gc-list.json`,
+        outputGcList: `grucloud-result.json`,
         outputDot: `resources.dot`,
         outputSvg: `resources.svg`,
       }),
@@ -184,6 +170,15 @@ exports.DockerGcCreate = ({ app }) => {
           "list",
           "--provider",
           provider,
+          "--s3-bucket",
+          //TODO configure
+          "grucloud-console-dev",
+          "--s3-key",
+          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+          "--ws-url",
+          "ws://localhost:9000",
+          "--ws-room",
+          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
           "--infra",
           `/app/iac_${provider}.js`,
           "--config",

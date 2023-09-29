@@ -20,7 +20,7 @@ function PassportAuth({ app, models }) {
 
   if (_.get(config, "authentication.google")) {
     const registerWeb = require("./auth-strategy/GoogleStrategy").registerWeb;
-    registerWeb(passport, models, publisher);
+    registerWeb({ passport, models, publisher });
     const registerMobile =
       require("./auth-strategy/GoogleStrategy").registerMobile;
     registerMobile({ passport, models, publisher });

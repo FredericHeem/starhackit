@@ -8,11 +8,9 @@ function createRegisterMobile({
   verifyMobile,
   passport,
   models,
-  sql,
   publisherUser,
 }) {
   log.debug(`createRegisterMobile  ${name}`);
-  assert(sql);
   assert(name);
   assert(verifyMobile);
   const strategy = new Strategy(
@@ -25,7 +23,6 @@ function createRegisterMobile({
       try {
         let res = await verifyMobile({
           models,
-          sql,
           publisherUser,
           profile,
           accessToken,

@@ -25,6 +25,9 @@ describe("DockerGc", function () {
     try {
       const run_id = `run-${nanoid.nanoid(8)}`;
       const res = await dockerGcCreate({
+        org_id: "org-test",
+        project_id: "project-test",
+        workspace_id: "workspace-test",
         run_id,
         provider: "aws",
         dockerClient,

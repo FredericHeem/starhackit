@@ -7,9 +7,9 @@ const uuid = require("uuid");
 const profile = {
   username: "justin time",
   email: "justin.time@gmail.com",
-  gender: "male",
-  last_name: "Time",
-  first_name: "justin",
+  //TODO
+  //last_name: "Time",
+  //first_name: "justin",
 };
 
 describe("FacebookStrategy", function () {
@@ -30,7 +30,7 @@ describe("FacebookStrategy", function () {
     assert(!res.err);
     assert(res.user);
 
-    profile.id = uuid.v4();
+    profile.user_id = uuid.v4();
     res = await verifyWeb({ models, userConfig: profile });
     assert(!res.err);
     assert(res.user);

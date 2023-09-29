@@ -125,15 +125,19 @@ exports.RunApi = ({ app, models }) => {
                 container_id: pipe([
                   assign({
                     env_vars: pipe([
-                      ({ workspace_id }) =>
+                      ({ org_id, project_id, workspace_id }) =>
                         models.workspace.findOne({
                           attributes: ["env_vars"],
-                          where: { workspace_id },
+                          where: { org_id, project_id, workspace_id },
                         }),
                       get("env_vars"),
                     ]),
                   }),
-                  ({ run_id, env_vars }) => ({
+                  ({ org_id, project_id, workspace_id, run_id, env_vars }) => ({
+                    containerImage: "grucloud/grucloud-cli",
+                    org_id,
+                    project_id,
+                    workspace_id,
                     run_id,
                     env_vars,
                     provider: "aws",
@@ -141,6 +145,9 @@ exports.RunApi = ({ app, models }) => {
                   }),
                   dockerGcCreate,
                   get("Id"),
+                  tap((Id) => {
+                    assert(Id);
+                  }),
                 ]),
               }),
               // Save the container_id to the db

@@ -137,8 +137,9 @@ module.exports = (app) => {
       tap(({ image }) => {
         assert(image);
       }),
-      dockerClient.image.pull,
-      () => fs.mkdir(app.config.infra.localInputPath, { recursive: true }),
+      //TODO
+      // dockerClient.image.pull,
+      // () => fs.mkdir(app.config.infra.localInputPath, { recursive: true }),
     ]),
     stop: pipe([
       tap(() => {

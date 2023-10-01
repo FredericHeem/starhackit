@@ -1,4 +1,5 @@
 {
+  "aws": { "bucketUpload": "{{s3_bucket_upload}}" },
   "infra": { 
     "docker": { "baseURL": "{{docker_base_url}}" },
     "containerImage": "{{grucloud_image}}",
@@ -7,14 +8,11 @@
   },
   "jwtSecret": "{{jwt_secret}}",
   "db": {
-    "url": "postgres://{{db_username}}:{{db_password}}@{{db_hostname}}:5432/{{db_database}}?sslmode=disable"
-  },
-  "redis":{
-    "url": "redis://redis:6379"
+    "url": "{{db_url}}"
   },
   "log": {
     "console": {
-      "level": "error",
+      "level": "debug",
       "timestamp": true,
       "colorize": true
     }

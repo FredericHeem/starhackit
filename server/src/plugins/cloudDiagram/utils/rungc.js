@@ -58,6 +58,7 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       dockerClient.container.get,
       get("State"),
       tap((State) => {
+        log.debug(`container state ${JSON.stringify(State)}`);
         ws.send("saving container state");
       }),
       // Save container_state and status to DB
@@ -154,7 +155,9 @@ exports.DockerGcCreate = ({ app }) => {
   }) =>
     pipe([
       tap(() => {
-        //assert(run_id);
+        assert(org_id);
+        assert(project_id);
+        assert(workspace_id);
         assert(dockerClient);
         assert(provider);
         assert(containerImage);

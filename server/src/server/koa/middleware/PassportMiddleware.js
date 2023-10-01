@@ -8,15 +8,15 @@ function PassportMiddleware(app, koaApp /*, config*/) {
   koaApp.use(passport.session());
 
   koaApp.use(async (context, next) => {
-    log.debug(`${context.method} ${context.url} JWT`);
+    //log.debug(`${context.method} ${context.url} JWT`);
     return passport.authenticate(
       "jwt",
       { session: false },
       (err, user /*, info, status*/) => {
         if (user === false) {
-          log.debug("auth JWT KO");
+          //log.debug("auth JWT KO");
         } else {
-          log.debug("auth JWT OK, ", user);
+          //log.debug("auth JWT OK, ", user);
           context.state.user = user;
         }
         return next();

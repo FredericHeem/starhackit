@@ -20,7 +20,7 @@ exports.ecsTaskRun = ({}) =>
       // TODO
       () => ({
         cluster: "grucloud-console-dev",
-        taskDefinition: "grucloud-cli:8",
+        taskDefinition: "grucloud-cli:9",
         launchType: "FARGATE",
         networkConfiguration: {
           awsvpcConfiguration: {
@@ -44,10 +44,10 @@ exports.ecsTaskRun = ({}) =>
                 "grucloud-console-dev",
                 "--s3-key",
                 "my-org/my-project/my-workspace/run/1",
-                "--ws-url",
-                "ws://localhost:9000",
-                "--ws-room",
-                "my-org/my-project/my-workspace/run/1",
+                // "--ws-url",
+                // "ws://localhost:9000",
+                // "--ws-room",
+                // "my-org/my-project/my-workspace/run/1",
               ],
               environment: [
                 { name: "AWSAccessKeyId", value: AWSAccessKeyId },

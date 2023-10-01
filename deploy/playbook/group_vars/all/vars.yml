@@ -8,15 +8,14 @@ postgres_directory: pg_data
 pip_install_packages:
   - name: docker
 
-  
-grucloud_image: "fredericheem/grucloud-cli:v1.23.0"
+grucloud_image: "grucloud/grucloud-cli:v12.8.0"
 docker_base_url: "http:/v1.41"
 # Docker image tag names
-api_image: "fredericheem/api"
-api_tag: v10.41.0
+api_image: "fredericheem/grucloud-api"
+api_tag: "10.43"
 
-web_image: "fredericheem/ui"
-web_tag: v10.41.0
+web_image: "fredericheem/grucloud-ui"
+web_tag: "12.13"
 
 firewall_state: started
 firewall_enabled_at_boot: true
@@ -26,9 +25,7 @@ firewall_allowed_tcp_ports:
   - "443"
 
 # Database settings
-db_username: "docker"
-db_hostname: "pg"
-db_database: "prod"
+
 # External volume
 db_data_dir: "/data/pg_data"
 
@@ -38,6 +35,8 @@ ssl_admin_email: "hello@grucloud.com"
 production: "FALSE"
 network: "mainnet"
 
-mail_from: "StarHackIt <notification@starhack.it>"
-mail_signature: "The StarHackIt Team"
-mail_service: "Mailgun"
+mail_from: ""
+mail_signature: ""
+mail_service: ""
+
+s3_bucket_upload: grucloud-console-dev

@@ -22,6 +22,8 @@ const { DockerGcCreate } = require("../utils/rungc");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
+const logger = require("logfilename")(__filename);
+
 const runAttributes = [
   "org_id",
   "project_id",
@@ -96,160 +98,145 @@ exports.RunApi = ({ app, models }) => {
       {
         pathname: "/",
         method: "post",
-        handler: tryCatch(
-          (context) =>
-            pipe([
-              tap(() => {
-                assert(context.request.body);
-                assert(context.state.user.user_id);
-                assert(context.params.org_id);
-                assert(context.params.project_id);
-                assert(context.params.workspace_id);
-              }),
-              () => context.request.body,
-              assign({
-                org_id: () => context.params.org_id,
-                project_id: () => context.params.project_id,
-                workspace_id: () => context.params.workspace_id,
-                status: () => "creating",
-              }),
-              tap((param) => {
-                assert(true);
-              }),
-              models.run.insert,
-              tap((param) => {
-                assert(true);
-              }),
-              // start a container and return the Id
-              assign({
-                container_id: pipe([
-                  assign({
-                    env_vars: pipe([
-                      ({ org_id, project_id, workspace_id }) =>
-                        models.workspace.findOne({
-                          attributes: ["env_vars"],
-                          where: { org_id, project_id, workspace_id },
-                        }),
-                      get("env_vars"),
-                    ]),
-                  }),
-                  ({ org_id, project_id, workspace_id, run_id, env_vars }) => ({
-                    containerImage: "grucloud/grucloud-cli",
-                    org_id,
-                    project_id,
-                    workspace_id,
-                    run_id,
-                    env_vars,
-                    provider: "aws",
-                    dockerClient: app.dockerClient,
-                  }),
-                  dockerGcCreate,
-                  get("Id"),
-                  tap((Id) => {
-                    assert(Id);
-                  }),
-                ]),
-              }),
-              // Save the container_id to the db
-              tap((data) => {
-                models.run.update({
-                  data,
-                  where: pick([
-                    "org_id",
-                    "project_id",
-                    "workspace_id",
-                    "run_id",
-                  ])(data),
-                });
-              }),
-              contextSetOk({ context }),
-              tap((param) => {
-                assert(true);
-              }),
-            ])(),
-          contextHandleError
-        ),
+        handler: (context) =>
+          pipe([
+            tap(() => {
+              assert(context.request.body);
+              assert(context.state.user.user_id);
+              assert(context.params.org_id);
+              assert(context.params.project_id);
+              assert(context.params.workspace_id);
+            }),
+            () => context.request.body,
+            assign({
+              org_id: () => context.params.org_id,
+              project_id: () => context.params.project_id,
+              workspace_id: () => context.params.workspace_id,
+              status: () => "creating",
+            }),
+            tap((param) => {
+              assert(true);
+            }),
+            models.run.insert,
+            tap((param) => {
+              assert(true);
+            }),
+            // start a container and return the Id
+            assign({
+              container_id: pipe([
+                assign({
+                  env_vars: pipe([
+                    ({ org_id, project_id, workspace_id }) =>
+                      models.workspace.findOne({
+                        attributes: ["env_vars"],
+                        where: { org_id, project_id, workspace_id },
+                      }),
+                    get("env_vars"),
+                  ]),
+                }),
+                ({ org_id, project_id, workspace_id, run_id, env_vars }) => ({
+                  containerImage: "grucloud/grucloud-cli",
+                  org_id,
+                  project_id,
+                  workspace_id,
+                  run_id,
+                  env_vars,
+                  provider: "aws",
+                  dockerClient: app.dockerClient,
+                }),
+                dockerGcCreate,
+                get("Id"),
+                tap((Id) => {
+                  assert(Id);
+                }),
+              ]),
+            }),
+            // Save the container_id to the db
+            tap((data) => {
+              models.run.update({
+                data,
+                where: pick(["org_id", "project_id", "workspace_id", "run_id"])(
+                  data
+                ),
+              });
+            }),
+            contextSetOk({ context }),
+            tap((param) => {
+              assert(true);
+            }),
+          ])(),
       },
       {
         pathname: "/",
         method: "get",
-        handler: tryCatch(
-          (context) =>
-            pipe([
-              () => ({
-                attributes: runAttributes,
-                where: {
-                  org_id: context.params.org_id,
-                  project_id: context.params.project_id,
-                  workspace_id: context.params.workspace_id,
-                },
-              }),
-              models.run.findAll,
-              tap((param) => {
-                assert(true);
-              }),
-              contextSetOk({ context }),
-            ])(),
-          contextHandleError
-        ),
+        handler: (context) =>
+          pipe([
+            () => ({
+              attributes: runAttributes,
+              where: {
+                org_id: context.params.org_id,
+                project_id: context.params.project_id,
+                workspace_id: context.params.workspace_id,
+              },
+            }),
+            models.run.findAll,
+            tap((param) => {
+              assert(true);
+            }),
+            contextSetOk({ context }),
+          ])(),
       },
       {
         pathname: "/:run_id",
         method: "get",
-        handler: tryCatch(
-          (context) =>
-            pipe([
-              tap(() => {
-                assert(context.params.workspace_id);
-                assert(context.params.run_id);
-                assert(context.state.user.user_id);
-              }),
-              () => ({
-                attributes: runAttributes,
-                where: buildWhereFromContext(context),
-              }),
-              models.run.findOne,
-              switchCase([
-                isEmpty,
-                tap(contextSet404({ context })),
-                tap(
-                  pipe([
-                    assign({
-                      logsUrl: buildLogsUrl({
-                        config,
-                        context,
-                        logfile: "grucloud-debug.log",
-                      }),
+        handler: (context) =>
+          pipe([
+            tap(() => {
+              assert(context.params.workspace_id);
+              assert(context.params.run_id);
+              assert(context.state.user.user_id);
+            }),
+            () => ({
+              attributes: runAttributes,
+              where: buildWhereFromContext(context),
+            }),
+            models.run.findOne,
+            switchCase([
+              isEmpty,
+              tap(contextSet404({ context })),
+              tap(
+                pipe([
+                  assign({
+                    logsUrl: buildLogsUrl({
+                      config,
+                      context,
+                      logfile: "grucloud-debug.log",
                     }),
-                    contextSetOk({ context }),
-                  ])
-                ),
-              ]),
-            ])(),
-          contextHandleError
-        ),
+                  }),
+                  contextSetOk({ context }),
+                ])
+              ),
+            ]),
+          ])(),
       },
       {
         pathname: "/:run_id",
         method: "delete",
-        handler: tryCatch(
-          (context) =>
-            pipe([
-              tap(() => {
-                assert(context.params.workspace_id);
-                assert(context.params.run_id);
-                assert(context.state.user.user_id);
-              }),
-              () => ({
-                where: buildWhereFromContext(context),
-              }),
-              models.run.destroy,
-              () => {
-                context.status = 204;
-              },
-            ])(),
-          contextHandleError
-        ),
+        handler: (context) =>
+          pipe([
+            tap(() => {
+              assert(context.params.workspace_id);
+              assert(context.params.run_id);
+              assert(context.state.user.user_id);
+            }),
+            () => ({
+              where: buildWhereFromContext(context),
+            }),
+            models.run.destroy,
+            () => {
+              context.status = 204;
+            },
+          ])(),
       },
       {
         pathname: "/:run_id",

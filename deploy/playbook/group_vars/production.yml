@@ -1,3 +1,4 @@
 ---
 website_url: "https://app.grucloud.com"
-domain_name: 'app.grucloud.com'
+domain_name: "app.grucloud.com"
+s3_bucket_upload: grucloud-console-prod

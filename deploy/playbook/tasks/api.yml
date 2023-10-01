@@ -4,7 +4,7 @@
     src: api.json.j2
     dest: /home/{{user}}/api.json
     owner: "{{user}}"
-    mode: '0600'
+    mode: "0600"
 
 - name: docker run api
   docker_container:
@@ -13,22 +13,19 @@
     image: "{{ api_image }}:{{ api_tag }}"
     state: started
     recreate: yes
+    restart_policy: "always"
     volumes:
-    - /home/{{user}}/api.json:/app/config/production.json
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /home/{{user}}/output:/app/output
-    - /home/{{user}}/input:/app/input
+      - /home/{{user}}/api.json:/app/config/production.json
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/{{user}}/output:/app/output
+      - /home/{{user}}/input:/app/input
 
     published_ports:
-    - "9000:9000"
+      - "9000:9000"
     env:
       NODE_ENV: "production"
-    entrypoint: sh scripts/initialise.sh
     networks:
-    - name: net
-      links:
-      - postgres
-      - redis
+      - name: net
   tags:
-  - containers
-  - app
+    - containers
+    - app

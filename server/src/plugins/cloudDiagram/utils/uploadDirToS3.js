@@ -2,7 +2,7 @@ const assert = require("assert");
 const { pipe, tap, map, tryCatch } = require("rubico");
 const Path = require("path");
 const fs = require("fs").promises;
-
+const { inspect } = require("node:util");
 const { walkDir } = require("./walkDir");
 const { PutObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 
@@ -35,7 +35,9 @@ const uploadFileToS3 =
         (command) => client.send(command),
       ]),
       (error) => {
-        console.log(error);
+        log.error(
+          `uploadFileToS3 ${bucketUpload} ${keyPrefix} ${inspect(error)}`
+        );
         return { error };
       }
     )();

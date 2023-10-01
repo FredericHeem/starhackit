@@ -1,5 +1,4 @@
 const assert = require("assert");
-const { pipe, tap } = require("rubico");
 
 exports.contextSet400 =
   ({ context, message }) =>
@@ -39,15 +38,3 @@ exports.contextSet =
     context.status = status;
     context.body = body;
   };
-
-exports.contextHandleError = (error, context) =>
-  pipe([
-    tap(() => {
-      assert(context);
-      console.error(error);
-    }),
-    () => {
-      context.status = 500;
-      context.body = error.toString();
-    },
-  ])();

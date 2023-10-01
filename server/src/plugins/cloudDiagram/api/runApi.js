@@ -10,11 +10,7 @@ const {
   pick,
 } = require("rubico");
 const { isEmpty } = require("rubico/x");
-const {
-  contextSet404,
-  contextSetOk,
-  contextHandleError,
-} = require("utils/koaCommon");
+const { contextSet404, contextSetOk } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 const { DockerGcCreate } = require("../utils/rungc");

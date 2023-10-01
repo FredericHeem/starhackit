@@ -1,20 +1,30 @@
 const Koa = require("koa");
 const Router = require("koa-66");
+const { tryCatch, pipe, tap } = require("rubico");
 const { forEach } = require("rubico/x");
 const websockify = require("koa-websocket");
 
+const log = require("logfilename")(__filename);
+
+const contextHandleError = (error, context) =>
+  pipe([
+    tap(() => {
+      assert(context);
+      log.error(error);
+    }),
+    () => {
+      context.status = 500;
+      context.body = error.toString();
+    },
+  ])();
+
 function KoaServer(app) {
-  const log = require("logfilename")(__filename);
   const { config } = app;
   let httpHandle;
   let rootRouter = new Router();
   let baseRouter = new Router();
 
-  const koaApp = websockify(
-    new Koa()
-    //wsOptions
-    // le.httpsOptions
-  );
+  const koaApp = websockify(new Koa());
 
   middlewareInit(app, koaApp, config);
   return {
@@ -35,8 +45,8 @@ function KoaServer(app) {
     createRouter(api) {
       const router = new Router();
       forEach((m) => router.use(m))(api.middlewares);
-      api.ops.map(({ middlewares = [], pathname, method, handler }) => {
-        router[method](pathname, handler);
+      api.ops.map(({ pathname, method, handler }) => {
+        router[method](pathname, tryCatch(handler, contextHandleError));
       });
       baseRouter.mount(api.pathname, router);
     },

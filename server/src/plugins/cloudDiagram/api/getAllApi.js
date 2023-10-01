@@ -1,6 +1,6 @@
 const assert = require("assert");
 const { tryCatch, pipe, tap } = require("rubico");
-const { contextSetOk, contextHandleError } = require("utils/koaCommon");
+const { contextSetOk } = require("utils/koaCommon");
 
 exports.GetAllApi = ({ app, models }) => {
   assert(models.org);

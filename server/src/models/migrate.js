@@ -1,27 +1,27 @@
-import Postgrator from "postgrator";
-import Path from "path";
-import pg from "pg";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import config from "config";
+const assert = require("assert");
+//const Postgrator = require("postgrator");
+const Path = require("path");
+const pg = require("pg");
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-async function main() {
+exports.migrate = async ({ config, pluginPaths = [] }) => {
   // Create a client of your choice
+  const Postgrator = (await import("postgrator")).default;
+  assert(config.db.url);
   const client = new pg.Client(config.db.url);
 
   try {
     // Establish a database connection
     await client.connect();
-    const migrationPattern = Path.resolve(__dirname, "../migrations") + "/**";
+    const migrationPattern =
+      Path.resolve(__dirname, "../plugins", `{${pluginPaths.join(",")}}`) +
+      "/migrations/**";
     console.log("migrationPattern", migrationPattern);
 
     const postgrator = new Postgrator({
       migrationPattern,
       driver: "pg",
+      //TODO
       database: "dev",
-      schemaTable: "schemaversion",
       execQuery: (query) => {
         //console.log("migrations", query);
         return client.query(query);
@@ -44,5 +44,4 @@ async function main() {
   }
 
   await client.end();
-}
-main();
+};

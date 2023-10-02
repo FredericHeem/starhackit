@@ -6,7 +6,7 @@ const pluginsName = [
   "version",
   "users",
   //"dbSchema",
-  //"document",
+  "document",
   //"ticket",
   //"expoPush",
   "docker",

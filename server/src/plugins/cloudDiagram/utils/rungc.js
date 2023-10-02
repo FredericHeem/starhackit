@@ -179,7 +179,7 @@ exports.DockerGcCreate = ({ app }) => {
           "--s3-key",
           `${org_id}/${project_id}/${workspace_id}/${run_id}`,
           "--ws-url",
-          "ws://localhost:9000",
+          "ws://host.docker.internal:9000",
           "--ws-room",
           `${org_id}/${project_id}/${workspace_id}/${run_id}`,
           "--infra",

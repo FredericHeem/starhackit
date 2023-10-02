@@ -60,7 +60,6 @@ exports.OrgApi = ({ app, models }) => {
       {
         pathname: "/:org_id",
         method: "get",
-        middlewares: [middlewareUserBelongsToOrg(models)],
         handler: (context) =>
           pipe([
             tap(() => {
@@ -85,7 +84,6 @@ exports.OrgApi = ({ app, models }) => {
       {
         pathname: "/:org_id",
         method: "delete",
-        middlewares: [middlewareUserBelongsToOrg(models)],
         handler: (context) =>
           pipe([
             tap((param) => {
@@ -106,7 +104,6 @@ exports.OrgApi = ({ app, models }) => {
       {
         pathname: "/:org_id",
         method: "patch",
-        middlewares: [middlewareUserBelongsToOrg(models)],
         handler: (context) =>
           pipe([
             tap((param) => {

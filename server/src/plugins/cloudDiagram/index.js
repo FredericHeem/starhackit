@@ -105,7 +105,7 @@ module.exports = (app) => {
       assert(ctx.request);
       console.log("ws  message", message.toString());
       try {
-        const { command, options } = JSON.parse(message.toString());
+        const { command, options = {} } = JSON.parse(message.toString());
         switch (command) {
           case "join":
             console.log("join", options.room);
@@ -121,7 +121,7 @@ module.exports = (app) => {
             break;
           case "list":
           case "logs":
-            const room = producerMap.set(ws, options.room);
+            const room = producerMap.get(ws);
             if (room) {
               const clients = roomMap.get(room);
               if (clients) {
@@ -132,8 +132,10 @@ module.exports = (app) => {
                     client.send(message);
                   });
               }
+            } else {
+              console.error("no room for log command");
             }
-            return;
+            break;
           case "DockerLogs":
             streamDockerLogs({
               containerId: options.containerId,

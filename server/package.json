@@ -22,16 +22,15 @@
     "jscpd": "jscpd -r console --format 'javascript' --ignore '**/test*.js' ./src",
     "db:create": "createdb dev -p 6432 -h localhost -U postgres",
     "db:drop": "dropdb dev -p 6432 -h localhost -U postgres",
-    "db:migrate": "node --env-file env ./scripts/migrate.mjs",
-    "db:recreate": "npm run db:drop && npm run db:create && npm run db:migrate",
+    "db:recreate": "PGPASSWORD=password npm run db:drop && npm run db:create",
     "docker:build": "docker build . -t grucloud-api",
-    "docker:tag": "docker tag grucloud-api fredericheem/grucloud-api:10.43",
-    "docker:push": "docker push fredericheem/grucloud-api:10.43",
+    "docker:tag": "docker tag grucloud-api fredericheem/grucloud-api:10.45",
+    "docker:push": "docker push fredericheem/grucloud-api:10.45",
     "docker:btp": "npm run docker:build && npm run docker:tag && npm run docker:push",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:destroy": "docker ps -a -q | xargs docker rm -f && docker volume prune -f",
-    "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:migrate"
+    "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:create"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.332.0",

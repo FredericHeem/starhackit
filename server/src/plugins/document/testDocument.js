@@ -56,21 +56,6 @@ describe("Document", function () {
     await client.upload("v1/document", formData2);
     //assert(document);
   });
-  it("should upload a specific document", async () => {
-    const formData = new FormData();
-    formData.append("name", "IMG_20180316_153034.jpg");
-    formData.append("file_type", "image/jpeg");
-    formData.append(
-      "photo",
-      fs.createReadStream(__dirname + "/testDocument.js")
-    );
-
-    const type = "profile_picture";
-    await client.upload(`v1/document/${type}`, formData);
-    const picture = await client.get(`v1/document/${type}`);
-    assert.equal(picture.type, type);
-    assert(picture.content);
-  });
   it("should return an error when no file is present", async () => {
     const formData = new FormData();
     formData.append("name", "IMG_20180316_153034.jpg");

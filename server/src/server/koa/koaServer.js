@@ -1,3 +1,4 @@
+const assert = require("assert");
 const Koa = require("koa");
 const Router = require("koa-66");
 const { tryCatch, pipe, tap } = require("rubico");

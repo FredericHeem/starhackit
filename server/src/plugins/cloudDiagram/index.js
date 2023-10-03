@@ -14,7 +14,7 @@ const { RunApi } = require("./api/runApi");
 const { DockerGcRun } = require("./utils/rungc");
 
 const configDefault = {
-  containerImage: "fredericheem/grucloud-cli:v12.7.1",
+  containerImage: "grucloud/grucloud-cli",
   localOutputPath: "output",
   localInputPath: "input",
   docker: {
@@ -104,7 +104,9 @@ module.exports = (app) => {
       assert(ctx.request);
       console.log("ws  message", message.toString());
       try {
-        const { command, options = {} } = JSON.parse(message.toString());
+        //TODO
+        let { command, action, options = {} } = JSON.parse(message.toString());
+        action && (command = action);
         switch (command) {
           case "join":
             console.log("join", options.room);
@@ -130,7 +132,7 @@ module.exports = (app) => {
                   .filter((c) => c != ws)
                   .forEach((client) => {
                     console.log("sending back");
-                    client.send(message);
+                    client.send(message.toString());
                   });
               }
             } else {

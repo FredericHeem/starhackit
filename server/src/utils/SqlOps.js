@@ -14,6 +14,16 @@ const buildWhere = (sql) =>
       ),
   ]);
 
+const buildOrder = (sql) => (order) => {
+  if (order) {
+    return sql`ORDER BY ${sql(order[0])} ${
+      order[0] == "ACS" ? sql`ASC` : sql`DESC`
+    }`;
+  } else {
+    return sql``;
+  }
+};
+
 const findOne =
   ({ tableName, sql }) =>
   ({ attributes, where }) =>
@@ -35,7 +45,7 @@ exports.findOne = findOne;
 
 const findAll =
   ({ tableName, sql }) =>
-  ({ attributes, where }) =>
+  ({ attributes, where, order = ["created_at", "DESC"] }) =>
     pipe([
       tap(() => {
         assert(sql);
@@ -47,7 +57,11 @@ const findAll =
         sql`
         SELECT ${sql(attributes)} 
         FROM ${sql(tableName)} 
-        WHERE ${buildWhere(sql)(where)};`,
+        WHERE ${buildWhere(sql)(where)}
+        ${buildOrder(sql)(order)};`,
+      tap((params) => {
+        assert(params);
+      }),
     ])();
 
 exports.findAll = findAll;

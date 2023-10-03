@@ -1,7 +1,6 @@
 const { tap, pipe, fork } = require("rubico");
 const assert = require("assert");
 const { defaultsDeep, identity } = require("rubico/x");
-const nanoid = require("nanoid");
 const { insert } = require("utils/SqlOps");
 
 module.exports = ({ sql }) => {
@@ -43,7 +42,8 @@ FROM run
       ) ON project.org_id = user_orgs.org_id
     ) ON workspace.project_id = project.project_id
   ) ON run.workspace_id = workspace.workspace_id
-  AND users.user_id = ${user_id};`,
+  AND users.user_id = ${user_id}
+  ORDER BY run.created_at DESC;`,
       ])(),
   };
 };

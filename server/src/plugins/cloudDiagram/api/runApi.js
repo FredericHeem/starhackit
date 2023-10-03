@@ -70,7 +70,9 @@ const buildLogsUrl = ({ config, context, logfile }) =>
         pipe([
           // error happens when using AWS profile
           tap((params) => {
-            logger.error(`getSignedUrl error for ${JSON.stringify(bucket)}`);
+            logger.error(
+              `buildLogsUrl getSignedUrl error for ${JSON.stringify(bucket)}`
+            );
             logger.error(error);
             logger.error(error.stack);
           }),

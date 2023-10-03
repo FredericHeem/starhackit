@@ -1,7 +1,6 @@
 const assert = require("assert");
 const { pipe, tap, assign, get } = require("rubico");
 const { defaultsDeep } = require("rubico/x");
-const fs = require("fs").promises;
 
 const { DockerClient } = require("@grucloud/docker-axios");
 const { GetAllApi } = require("./api/getAllApi");
@@ -125,6 +124,8 @@ module.exports = (app) => {
             if (room) {
               const clients = roomMap.get(room);
               if (clients) {
+                console.error("#clients", clients.length);
+
                 clients
                   .filter((c) => c != ws)
                   .forEach((client) => {

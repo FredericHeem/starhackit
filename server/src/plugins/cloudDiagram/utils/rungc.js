@@ -178,6 +178,8 @@ exports.DockerGcCreate = ({ app }) => {
           "grucloud-console-dev",
           "--s3-key",
           `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+          "--s3-local-dir",
+          `/app/${outputDir}`,
           "--ws-url",
           "ws://host.docker.internal:9000",
           "--ws-room",

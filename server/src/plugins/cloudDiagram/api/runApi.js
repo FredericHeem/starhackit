@@ -62,6 +62,7 @@ const buildLogsUrl = ({ config, context, logfile }) =>
     }),
     tryCatch(
       pipe([
+        //TODO credentials
         (input) =>
           getSignedUrl(new S3Client({}), new GetObjectCommand(input), {}),
       ]),

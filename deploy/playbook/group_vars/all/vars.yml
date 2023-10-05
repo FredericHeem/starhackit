@@ -12,10 +12,10 @@ grucloud_image: "grucloud/grucloud-cli:v12.9.4"
 docker_base_url: "http:/v1.41"
 # Docker image tag names
 api_image: "fredericheem/grucloud-api"
-api_tag: "10.46"
+api_tag: "10.47"
 
 web_image: "fredericheem/grucloud-ui"
-web_tag: "12.16"
+web_tag: "12.17"
 
 firewall_state: started
 firewall_enabled_at_boot: true

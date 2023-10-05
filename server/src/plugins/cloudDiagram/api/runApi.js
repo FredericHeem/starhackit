@@ -30,6 +30,7 @@ const runAttributes = [
   "container_id",
   "container_state",
   "status",
+  "engine",
 ];
 
 const buildWhereFromContext = pipe([

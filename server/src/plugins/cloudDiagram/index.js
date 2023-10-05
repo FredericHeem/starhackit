@@ -152,7 +152,9 @@ module.exports = (app) => {
             }
             break;
           case "Run":
-            dockerGcRun(options);
+            if (options.engine == "docker") {
+              dockerGcRun(options);
+            }
             return;
         }
       } catch (error) {

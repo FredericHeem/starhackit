@@ -24,25 +24,27 @@ const configDefault = {
   },
 };
 
-const streamDockerLogs = async ({ dockerClient, containerId, ws }) => {
+const streamDockerLogs = async ({ dockerClient, container_id, ws }) => {
   assert(dockerClient);
-  assert(containerId);
+  assert(container_id);
   assert(ws);
 
-  console.log("streamDockerLogs ", containerId, "message", message.toString());
+  console.log("streamDockerLogs ", container_id, "message", message.toString());
 
-  // TODO: validate containerId
+  // TODO: validate container_id
   ws.on("error", console.error);
 
-  let container = await dockerClient.container.get({ id: containerId });
+  let container = await dockerClient.container.get({ id: container_id });
   if (!container) {
-    console.error("streamDockerLogs containerId does not exist");
-    ws.send(JSON.stringify({ error: "container does not exist", containerId }));
+    console.error("streamDockerLogs container_id does not exist");
+    ws.send(
+      JSON.stringify({ error: "container does not exist", container_id })
+    );
     ws.close();
     return;
   }
   const logParam = {
-    name: containerId,
+    name: container_id,
     options: {
       stdout: true,
       stderr: true,
@@ -52,7 +54,7 @@ const streamDockerLogs = async ({ dockerClient, containerId, ws }) => {
   const stream = await dockerClient.container.logs(logParam);
 
   ws.once("close", () => {
-    console.log("ws ", containerId, "close");
+    console.log("ws ", container_id, "close");
     stream.removeAllListeners();
     stream.destroy();
   });
@@ -62,7 +64,7 @@ const streamDockerLogs = async ({ dockerClient, containerId, ws }) => {
     ws.send(info.toString("utf-8"));
   });
   stream.on("end", (info) => {
-    console.log("ws ", containerId, "end");
+    console.log("ws ", container_id, "end");
     ws.close();
   });
 };
@@ -140,11 +142,14 @@ module.exports = (app) => {
             }
             break;
           case "DockerLogs":
-            streamDockerLogs({
-              containerId: options.containerId,
-              ws,
-              dockerClient,
-            });
+            if (options.engine == "docker") {
+              streamDockerLogs({
+                container_id: options.container_id,
+                engine: options.engine,
+                ws,
+                dockerClient,
+              });
+            }
             break;
           case "Run":
             dockerGcRun(options);

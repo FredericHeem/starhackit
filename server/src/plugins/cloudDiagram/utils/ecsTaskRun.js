@@ -1,79 +1,77 @@
 const assert = require("assert");
-const { pipe, tap, get, tryCatch } = require("rubico");
+const { pipe, tap, get, tryCatch, switchCase } = require("rubico");
 const { first } = require("rubico/x");
-
+const { inspect } = require("node:util");
 const { RunTaskCommand, ECSClient } = require("@aws-sdk/client-ecs");
 
 const { AWSAccessKeyId, AWSSecretKey, AWS_REGION } = process.env;
 
 const log = require("logfilename")(__filename);
 
-exports.ecsTaskRun = ({}) =>
+exports.ecsTaskRun = ({ config: { ecs }, container }) =>
   tryCatch(
     pipe([
       tap(() => {
-        log.debug(`ecsTaskRun`);
+        log.debug(
+          `ecsTaskRun cluster: ${ecs.cluster}, taskDefinition: ${ecs.taskDefinition}, subnets: ${ecs.subnets}, securityGroups: ${ecs.securityGroups}`
+        );
+        assert(ecs);
+        assert(ecs.cluster);
         assert(AWSAccessKeyId);
         assert(AWSSecretKey);
         assert(AWS_REGION);
       }),
-      // TODO
       () => ({
-        cluster: "grucloud-console-dev",
-        taskDefinition: "grucloud-cli:9",
+        cluster: ecs.cluster,
+        taskDefinition: ecs.taskDefinition,
         launchType: "FARGATE",
         networkConfiguration: {
           awsvpcConfiguration: {
-            subnets: ["subnet-b80a4ff5"],
+            subnets: ecs.subnets,
             assignPublicIp: "ENABLED",
-            securityGroups: ["sg-4e82a670"],
+            securityGroups: ecs.securityGroups,
           },
         },
         overrides: {
-          containerOverrides: [
-            {
-              name: "grucloud-cli",
-              command: [
-                "list",
-                "--json",
-                "grucloud-result.json",
-                "-g",
-                "--provider",
-                "aws",
-                "--s3-bucket",
-                "grucloud-console-dev",
-                "--s3-key",
-                "my-org/my-project/my-workspace/run/1",
-                // "--ws-url",
-                // "ws://localhost:9000",
-                // "--ws-room",
-                // "my-org/my-project/my-workspace/run/1",
-              ],
-              environment: [
-                { name: "AWSAccessKeyId", value: AWSAccessKeyId },
-                { name: "AWSSecretKey", value: AWSSecretKey },
-                { name: "AWS_REGION", value: AWS_REGION },
-                { name: "CONTINUOUS_INTEGRATION", value: "1" },
-              ],
-            },
-          ],
+          containerOverrides: [container],
         },
       }),
-      tap((taskArn) => {
-        assert(taskArn);
+      tap((input) => {
+        assert(input);
       }),
       (input) => new RunTaskCommand(input),
-      (command) => new ECSClient({ region: AWS_REGION }).send(command),
+      (command) =>
+        new ECSClient({
+          region: process.env.AWS_REGION,
+          credentials: {
+            accessKeyId: process.env.AWSAccessKeyId,
+            secretAccessKey: process.env.AWSSecretKey,
+          },
+        }).send(command),
       tap((params) => {
         assert(params);
       }),
-      get("tasks"),
-      first,
-      get("taskArn"),
-      tap((taskArn) => {
-        console.log(taskArn);
-        assert(taskArn);
-      }),
+      switchCase([
+        pipe([get("failures"), first]),
+        pipe([
+          (failures) => {
+            const error = new Error(
+              `Error running ecs task: ${inspect(failures)}`
+            );
+            error.failures;
+            throw error;
+          },
+        ]),
+        pipe([
+          get("tasks"),
+          first,
+          get("taskArn"),
+          tap((taskArn) => {
+            log.debug(`ecsTaskRun ${taskArn}`);
+            assert(taskArn);
+          }),
+        ]),
+      ]),
     ]),
     (error) => {
       throw error;

@@ -61,7 +61,7 @@ function KoaServer(app) {
       log.info("start koa on port %s", port);
       return new Promise(function (resolve) {
         httpHandle = koaApp.listen(port, function () {
-          log.info("koa server started");
+          //log.info("koa server started");
           resolve();
         });
       });

@@ -1,6 +1,13 @@
 {
   "aws": { "bucketUpload": "{{s3_bucket_upload}}" },
+  "ecs": {
+    "cluster": "{{ecs_cluster}}",
+    "taskDefinition": "{{ecs_taskDefinition}}",
+    "subnets": ["{{ecs_subnet}}"],
+    "securityGroups": ["{{ecs_securityGroup}}"]
+  },
   "infra": { 
+    "wsUrl": "{{ws_url}}",
     "docker": { "baseURL": "{{docker_base_url}}" },
     "containerImage": "{{grucloud_image}}",
     "localOutputPath": "/home/{{user}}/output",

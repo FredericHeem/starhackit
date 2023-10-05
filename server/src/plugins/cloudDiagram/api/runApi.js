@@ -6,6 +6,7 @@ const {
   pipe,
   tap,
   get,
+  eq,
   assign,
   pick,
 } = require("rubico");
@@ -14,6 +15,7 @@ const { contextSet404, contextSetOk } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 const { DockerGcCreate } = require("../utils/rungc");
+const { ecsTaskRun } = require("../utils/ecsTaskRun");
 
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
@@ -84,6 +86,7 @@ const buildLogsUrl = ({ config, context, logfile }) =>
   ]);
 exports.RunApi = ({ app, models }) => {
   const { config } = app;
+  const { aws, ecs, infra } = config;
   assert(models.run);
   const dockerGcCreate = DockerGcCreate({ app });
 
@@ -133,21 +136,85 @@ exports.RunApi = ({ app, models }) => {
                     get("env_vars"),
                   ]),
                 }),
-                ({ org_id, project_id, workspace_id, run_id, env_vars }) => ({
-                  containerImage: "grucloud/grucloud-cli",
-                  org_id,
-                  project_id,
-                  workspace_id,
-                  run_id,
-                  env_vars,
-                  provider: "aws",
-                  dockerClient: app.dockerClient,
-                }),
-                dockerGcCreate,
-                get("Id"),
-                tap((Id) => {
-                  assert(Id);
-                }),
+                switchCase([
+                  eq(get("engine"), "docker"),
+                  pipe([
+                    ({
+                      org_id,
+                      project_id,
+                      workspace_id,
+                      run_id,
+                      env_vars,
+                    }) => ({
+                      containerImage: "grucloud/grucloud-cli",
+                      org_id,
+                      project_id,
+                      workspace_id,
+                      run_id,
+                      env_vars,
+                      provider: "aws",
+                      dockerClient: app.dockerClient,
+                    }),
+                    dockerGcCreate,
+                    get("Id"),
+                    tap((Id) => {
+                      assert(Id);
+                    }),
+                  ]),
+                  // default is ecs
+                  pipe([
+                    ({
+                      org_id,
+                      project_id,
+                      workspace_id,
+                      run_id,
+                      env_vars,
+                    }) => ({
+                      config,
+                      container: {
+                        name: "grucloud-cli",
+                        command: [
+                          "list",
+                          "--json",
+                          "grucloud-result.json",
+                          "--infra",
+                          `/app/iac.js`,
+                          "--provider",
+                          "aws",
+                          "--s3-bucket",
+                          aws.bucketUpload,
+                          "--s3-key",
+                          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+                          "--s3-local-dir",
+                          "/app/artifacts",
+                          "--ws-url",
+                          infra.wsUrl,
+                          "--ws-room",
+                          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+                        ],
+                        environment: [
+                          {
+                            name: "AWSAccessKeyId",
+                            value: process.env.AWSAccessKeyId,
+                          },
+                          {
+                            name: "AWSSecretKey",
+                            value: process.env.AWSSecretKey,
+                          },
+                          { name: "AWS_REGION", value: process.env.AWS_REGION },
+                          { name: "CONTINUOUS_INTEGRATION", value: "1" },
+                        ],
+                      },
+                    }),
+                    tap((param) => {
+                      assert(true);
+                    }),
+                    ecsTaskRun,
+                    tap((param) => {
+                      assert(true);
+                    }),
+                  ]),
+                ]),
               ]),
             }),
             // Save the container_id to the db
@@ -160,9 +227,6 @@ exports.RunApi = ({ app, models }) => {
               });
             }),
             contextSetOk({ context }),
-            tap((param) => {
-              assert(true);
-            }),
           ])(),
       },
       {

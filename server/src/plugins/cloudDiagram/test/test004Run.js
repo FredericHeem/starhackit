@@ -5,12 +5,18 @@ const org_id = "org-alice";
 const project_id = "project-alice";
 const workspace_id = "workspace-project-alice-dev";
 
-const payloadCreate = {
+const payloadCreateDocker = {
   reason: "my reason",
   kind: "list",
   status: "creating",
+  engine: "docker", // ecs or docker
 };
-
+const payloadCreateEcs = {
+  reason: "my reason",
+  kind: "list",
+  status: "creating",
+  engine: "ecs", // ecs or docker
+};
 const WebSocket = require("ws");
 
 const promisifyWsClient = (ws) =>
@@ -68,19 +74,19 @@ describe("Run", function () {
     client = testMngr.client("alice");
     await client.login();
   });
-  it("CRUD", async () => {
+  it("CRUD docker", async () => {
     try {
       // Create
       const run = await client.post(
         `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
-        payloadCreate
+        payloadCreateDocker
       );
       assert(run);
       const { run_id, container_id } = run;
       assert(run_id);
       assert(container_id);
 
-      assert.equal(run.reason, payloadCreate.reason);
+      assert.equal(run.reason, payloadCreateDocker.reason);
 
       const ws = new WebSocket(`ws://localhost:9000`);
       ws.on("open", () => {
@@ -110,6 +116,67 @@ describe("Run", function () {
 
         const { data } = await Axios.get(logsUrl);
         console.log(data);
+      }
+      // Update
+      {
+        const inputUpdated = {
+          reason: "other reason",
+        };
+        const updatedResult = await client.patch(
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`,
+          inputUpdated
+        );
+        assert.equal(updatedResult.reason, inputUpdated.reason);
+      }
+      // Get all by workspace id
+      {
+        let runs = await client.get(
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`
+        );
+        assert(runs);
+        assert(Array.isArray(runs));
+      }
+      {
+        let getOneResult = await client.get(
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+        );
+        assert(getOneResult);
+        assert(getOneResult.workspace_id);
+        assert(getOneResult.run_id);
+      }
+      // Delete
+      await client.delete(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+      );
+    } catch (error) {
+      throw error;
+    }
+  });
+  it("CRUD ecs task", async () => {
+    try {
+      // Create
+      const run = await client.post(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
+        payloadCreateEcs
+      );
+      assert(run);
+      const { run_id, container_id } = run;
+      assert(run_id);
+      assert(container_id);
+
+      assert.equal(run.reason, payloadCreateEcs.reason);
+
+      // Get By Id
+      {
+        let getOneResult = await client.get(
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+        );
+        assert(getOneResult);
+        assert(getOneResult.workspace_id);
+        assert(getOneResult.run_id);
+        assert(getOneResult.logsUrl);
+        const { logsUrl } = getOneResult;
+        assert(logsUrl);
       }
       // Update
       {

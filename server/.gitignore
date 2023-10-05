@@ -22,6 +22,7 @@ coverage
 .settings/
 log.txt
 *.sqlite
+config/default.json
 config/development.json
 config/heroku.json
 config/travis.json

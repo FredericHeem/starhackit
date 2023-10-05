@@ -87,7 +87,7 @@ const buildLogsUrl = ({ config, context, logfile }) =>
   ]);
 exports.RunApi = ({ app, models }) => {
   const { config } = app;
-  const { aws, ecs, infra } = config;
+  const { aws, infra } = config;
   assert(models.run);
   const dockerGcCreate = DockerGcCreate({ app });
 

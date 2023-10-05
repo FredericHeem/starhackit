@@ -7,8 +7,19 @@
       "colorize": true
     }
   },
-  "redis": {
-    "url": "//localhost:7379"
+  "aws": { "bucketUpload": "grucloud-console-phase" },
+  "ecs": {
+    "cluster": "grucloud-console-phase",
+    "taskDefinition": "grucloud-cli:10",
+    "subnets": ["subnet-xxxxxx"],
+    "securityGroups": ["sg-xxxxxxx"]
+  },
+  "infra": {
+    "wsUrl": "ws://172.31.30.158:9000",
+    "docker": { "baseURL": "http://localhost/v1.41" },
+    "localOutputPath": "output",
+    "localInputPath": "input",
+    "containerImage": "grucloud/grucloud-cli:v1.23.0"
   },
   "koa": {
     "port": 9000,
@@ -42,11 +53,5 @@
         "pass": "11111111111111111111"
       }
     }
-  },
-  "infra": {
-    "docker": { "baseURL": "http://localhost/v1.40" },
-    "localOutputPath": "output",
-    "localInputPath": "input",
-    "containerImage": "fredericheem/grucloud-cli:v1.23.0"
   }
 }

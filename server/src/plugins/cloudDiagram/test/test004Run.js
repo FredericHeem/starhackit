@@ -92,8 +92,24 @@ describe("Run", function () {
       ws.on("open", () => {
         ws.send(
           JSON.stringify({
+            origin: "browser",
+            command: "join",
+            options: {
+              room: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+            },
+          })
+        );
+        ws.send(
+          JSON.stringify({
             command: "Run",
-            options: { org_id, project_id, workspace_id, run_id, container_id },
+            options: {
+              org_id,
+              project_id,
+              workspace_id,
+              run_id,
+              container_id,
+              engine: "docker",
+            },
           })
         );
       });

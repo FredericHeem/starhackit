@@ -220,6 +220,7 @@ exports.RunApi = ({ app, models }) => {
                 ]),
               ]),
             }),
+            assign({ status: () => "running" }),
             // Save the container_id to the db
             tap((data) => {
               models.run.update({

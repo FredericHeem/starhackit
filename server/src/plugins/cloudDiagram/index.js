@@ -106,9 +106,11 @@ module.exports = (app) => {
       assert(ctx.request);
       console.log("ws message", message.toString());
       try {
-        //TODO
-        let { command, action, options = {} } = JSON.parse(message.toString());
-        action && (command = action);
+        const {
+          command,
+          options = {},
+          data = {},
+        } = JSON.parse(message.toString());
         switch (command) {
           case "join":
             console.log("join", options.room);
@@ -122,7 +124,33 @@ module.exports = (app) => {
             }
             producerMap.set(ws, options.room);
             break;
-          case "list":
+          case "list": {
+            const { error } = data;
+            const room = producerMap.get(ws);
+            if (room) {
+              const [org_id, project_id, workspace_id, run_id] =
+                room.split("/");
+              console.log(
+                "list",
+                org_id,
+                project_id,
+                workspace_id,
+                run_id,
+                ", error: ",
+                error
+              );
+              models.run.update({
+                where: { org_id, project_id, workspace_id, run_id },
+                data: {
+                  status: error ? "error" : "completed",
+                  updated_at: new Date().toUTCString(),
+                },
+              });
+            } else {
+              console.error("no room for list command");
+            }
+          }
+          // fall through
           case "logs":
             const room = producerMap.get(ws);
             if (room) {

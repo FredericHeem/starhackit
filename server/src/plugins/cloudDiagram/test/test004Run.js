@@ -3,7 +3,7 @@ const testMngr = require("test/testManager");
 const Axios = require("axios");
 const org_id = "org-alice";
 const project_id = "project-alice";
-const workspace_id = "workspace-project-alice-dev";
+const workspace_id = "dev";
 
 const payloadCreateDocker = {
   reason: "my reason",

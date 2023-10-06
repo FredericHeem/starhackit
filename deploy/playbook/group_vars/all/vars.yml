@@ -8,14 +8,14 @@ postgres_directory: pg_data
 pip_install_packages:
   - name: docker
 
-grucloud_image: "grucloud/grucloud-cli:v12.9.4"
+grucloud_image: "grucloud/grucloud-cli:v12.10.2"
 docker_base_url: "http:/v1.41"
 # Docker image tag names
 api_image: "fredericheem/grucloud-api"
-api_tag: "10.47"
+api_tag: "10.49"
 
 web_image: "fredericheem/grucloud-ui"
-web_tag: "12.17"
+web_tag: "12.19"
 
 firewall_state: started
 firewall_enabled_at_boot: true

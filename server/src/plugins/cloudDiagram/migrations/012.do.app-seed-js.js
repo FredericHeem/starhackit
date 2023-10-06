@@ -4,7 +4,7 @@ module.exports.generateSql = () => {
     VALUES (
               'org-alice',
               'project-alice',
-              'workspace-project-alice-dev',
+              'dev',
               'Workspace dev alice',
               '{
                 "AWS_REGION": "${process.env.AWS_REGION}",
@@ -16,7 +16,7 @@ module.exports.generateSql = () => {
     VALUES (
             'org-alice',
             'project-alice',
-            'workspace-project-alice-dev',
+            'dev',
             'started',
             'list'
         );

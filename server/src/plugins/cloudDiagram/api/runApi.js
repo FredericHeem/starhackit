@@ -51,17 +51,17 @@ const buildWhereFromContext = pipe([
   }),
 ]);
 
-const buildLogsUrl = ({ config, context, logfile }) =>
+const buildS3SignedUrl = ({ config, context, filename }) =>
   pipe([
     tap(() => {
       assert(config.aws.bucketUpload);
-      assert(logfile);
+      assert(filename);
       assert(context);
     }),
     () => context.params,
     ({ org_id, project_id, workspace_id, run_id }) => ({
       Bucket: config.aws.bucketUpload,
-      Key: `${org_id}/${project_id}/${workspace_id}/${run_id}/${logfile}`,
+      Key: `${org_id}/${project_id}/${workspace_id}/${run_id}/${filename}`,
     }),
     tryCatch(
       pipe([
@@ -74,10 +74,11 @@ const buildLogsUrl = ({ config, context, logfile }) =>
           // error happens when using AWS profile
           tap((params) => {
             logger.error(
-              `buildLogsUrl getSignedUrl error for ${JSON.stringify(bucket)}`
+              `buildS3SignedUrl getSignedUrl error for ${JSON.stringify(
+                bucket
+              )}`
             );
             logger.error(error);
-            logger.error(error.stack);
           }),
           () => ({
             error,
@@ -178,6 +179,7 @@ exports.RunApi = ({ app, models }) => {
                           "list",
                           "--json",
                           "grucloud-result.json",
+                          "--graph",
                           "--infra",
                           `/app/iac.js`,
                           "--provider",
@@ -271,10 +273,20 @@ exports.RunApi = ({ app, models }) => {
               tap(
                 pipe([
                   assign({
-                    logsUrl: buildLogsUrl({
+                    logsUrl: buildS3SignedUrl({
                       config,
                       context,
-                      logfile: "grucloud-debug.log",
+                      filename: "grucloud-debug.log",
+                    }),
+                    stateUrl: buildS3SignedUrl({
+                      config,
+                      context,
+                      filename: "grucloud-result.json",
+                    }),
+                    svgUrl: buildS3SignedUrl({
+                      config,
+                      context,
+                      filename: "artifacts/diagram-live.svg",
                     }),
                   }),
                   contextSetOk({ context }),

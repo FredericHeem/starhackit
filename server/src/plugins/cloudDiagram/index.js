@@ -104,7 +104,7 @@ module.exports = (app) => {
     });
     ws.on("message", async function (message) {
       assert(ctx.request);
-      console.log("ws  message", message.toString());
+      console.log("ws message", message.toString());
       try {
         //TODO
         let { command, action, options = {} } = JSON.parse(message.toString());
@@ -158,7 +158,7 @@ module.exports = (app) => {
             return;
         }
       } catch (error) {
-        console.error(error);
+        console.error("ws message", error);
         ws.close();
       }
     });

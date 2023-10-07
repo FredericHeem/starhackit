@@ -226,6 +226,7 @@ describe("Run", function () {
         `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
       );
     } catch (error) {
+      console.error(error);
       throw error;
     }
   });

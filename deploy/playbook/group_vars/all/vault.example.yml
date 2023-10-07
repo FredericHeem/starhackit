@@ -3,6 +3,10 @@ docker_hub_username: ""
 docker_hub_password: ""
 docker_hub_email: ""
 
+S3_AWS_REGION: ""
+S3_AWSAccessKeyId: ""
+S3_AWSSecretKey: ""
+
 jwt_secret: ""
 db_password: ""
 

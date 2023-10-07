@@ -10,6 +10,7 @@ const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { ProjectApi } = require("./api/projectApi");
 const { WorkspaceApi } = require("./api/workspaceApi");
 const { GitRepositoryApi } = require("./api/gitRepositoryApi");
+const { CloudAuthenticationApi } = require("./api/cloudAuthenticationApi");
 const { RunApi } = require("./api/runApi");
 const { DockerGcRun } = require("./utils/rungc");
 
@@ -86,6 +87,9 @@ module.exports = (app) => {
     userOrg: sqlAdaptor(require("./sql/UserOrgSql")({ sql })),
     gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")({ sql })),
     run: sqlAdaptor(require("./sql/RunSql")({ sql })),
+    cloudAuthentication: sqlAdaptor(
+      require("./sql/CloudAuthenticationSql")({ sql })
+    ),
   };
 
   const roomMap = new Map();
@@ -171,7 +175,7 @@ module.exports = (app) => {
             break;
           case "DockerLogs":
             if (options.engine == "docker") {
-              streamDockerLogs({
+              await streamDockerLogs({
                 container_id: options.container_id,
                 engine: options.engine,
                 ws,
@@ -181,7 +185,7 @@ module.exports = (app) => {
             break;
           case "Run":
             if (options.engine == "docker") {
-              dockerGcRun(options);
+              await dockerGcRun(options);
             }
             return;
         }
@@ -206,6 +210,7 @@ module.exports = (app) => {
     WorkspaceApi,
     GitRepositoryApi,
     RunApi,
+    CloudAuthenticationApi,
   ].forEach((api) => app.server.createRouter(api({ app, models })));
 
   return {

@@ -1,7 +1,7 @@
 const assert = require("assert");
 
 const { pipe, tap, assign, get, eq, switchCase, map } = require("rubico");
-const { values, identity } = require("rubico/x");
+const { values, identity, defaultsDeep } = require("rubico/x");
 const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
@@ -213,6 +213,11 @@ exports.DockerGcCreate = ({ app }) => {
         Env: () =>
           pipe([
             () => env_vars,
+            defaultsDeep({
+              S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
+              S3_AWSSecretKey: process.env.S3_AWSSecretKey,
+              S3_AWS_REGION: process.env.S3_AWS_REGION,
+            }),
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),

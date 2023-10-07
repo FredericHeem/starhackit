@@ -9,8 +9,9 @@ const {
   eq,
   assign,
   pick,
+  map,
 } = require("rubico");
-const { isEmpty } = require("rubico/x");
+const { isEmpty, values, defaultsDeep } = require("rubico/x");
 const { contextSet404, contextSetOk } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
@@ -29,6 +30,7 @@ const runAttributes = [
   "run_id",
   "container_id",
   "container_state",
+  "reason",
   "status",
   "engine",
 ];
@@ -90,6 +92,8 @@ exports.RunApi = ({ app, models }) => {
   const { config } = app;
   const { aws, infra } = config;
   assert(models.run);
+  assert(models.cloudAuthentication);
+
   const dockerGcCreate = DockerGcCreate({ app });
 
   return {
@@ -131,10 +135,13 @@ exports.RunApi = ({ app, models }) => {
                 assign({
                   env_vars: pipe([
                     ({ org_id, project_id, workspace_id }) =>
-                      models.workspace.findOne({
+                      models.cloudAuthentication.findOne({
                         attributes: ["env_vars"],
                         where: { org_id, project_id, workspace_id },
                       }),
+                    tap((param) => {
+                      assert(true);
+                    }),
                     get("env_vars"),
                   ]),
                 }),
@@ -195,18 +202,20 @@ exports.RunApi = ({ app, models }) => {
                           "--ws-room",
                           `${org_id}/${project_id}/${workspace_id}/${run_id}`,
                         ],
-                        environment: [
-                          {
-                            name: "AWSAccessKeyId",
-                            value: process.env.AWSAccessKeyId,
-                          },
-                          {
-                            name: "AWSSecretKey",
-                            value: process.env.AWSSecretKey,
-                          },
-                          { name: "AWS_REGION", value: process.env.AWS_REGION },
-                          { name: "CONTINUOUS_INTEGRATION", value: "1" },
-                        ],
+                        environment: pipe([
+                          () => env_vars,
+                          defaultsDeep({
+                            CONTINUOUS_INTEGRATION: "1",
+                            S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
+                            S3_AWSSecretKey: process.env.S3_AWSSecretKey,
+                            S3_AWS_REGION: process.env.S3_AWS_REGION,
+                          }),
+                          map.entries(([name, value]) => [
+                            name,
+                            { name, value },
+                          ]),
+                          values,
+                        ])(),
                       },
                     }),
                     tap((param) => {
@@ -331,13 +340,7 @@ exports.RunApi = ({ app, models }) => {
             }),
             models.run.update,
             () => ({
-              attributes: [
-                "workspace_id",
-                "run_id",
-                "reason",
-                "container_state",
-                "status",
-              ],
+              attributes: runAttributes,
               where: buildWhereFromContext(context),
             }),
             models.run.findOne,

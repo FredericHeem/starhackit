@@ -24,6 +24,10 @@
       - "9000:9000"
     env:
       NODE_ENV: "production"
+      S3_AWS_REGION: "{{S3_AWS_REGION}}"
+      S3_AWSAccessKeyId: "{{S3_AWSAccessKeyId}}"
+      S3_AWSSecretKey: "{{S3_AWSSecretKey}}"
+
     networks:
       - name: net
   tags:

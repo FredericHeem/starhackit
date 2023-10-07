@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS workspace (
   FOREIGN KEY(org_id, project_id) REFERENCES project,
   PRIMARY KEY (org_id, project_id, workspace_id)
 );
--- -- run
+-- run
 CREATE TABLE IF NOT EXISTS run (
   run_id SERIAL,
   reason TEXT,
@@ -86,4 +86,23 @@ CREATE TABLE IF NOT EXISTS run (
   workspace_id TEXT NOT NULL,
   FOREIGN KEY(org_id, project_id, workspace_id) REFERENCES workspace,
   PRIMARY KEY (org_id, project_id, workspace_id, run_id)
+);
+-- cloud_authentication
+CREATE TABLE IF NOT EXISTS cloud_authentication (
+  cloud_authentication_id SERIAL,
+  provider_type TEXT NOT NULL,
+  options JSONB,
+  env_vars JSONB,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  org_id TEXT NOT NULL,
+  project_id TEXT NOT NULL,
+  workspace_id TEXT NOT NULL,
+  FOREIGN KEY(org_id, project_id, workspace_id) REFERENCES workspace,
+  PRIMARY KEY (
+    org_id,
+    project_id,
+    workspace_id,
+    cloud_authentication_id
+  )
 )

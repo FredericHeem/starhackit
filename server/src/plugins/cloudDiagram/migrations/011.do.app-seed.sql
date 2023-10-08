@@ -12,12 +12,56 @@ VALUES (
         'alice',
         'password'
     );
--- project
+-- project aws
 INSERT INTO project (org_id, project_id, project_name)
 VALUES (
         'org-alice',
-        'project-alice',
+        'project-aws',
         'alice project'
+    );
+-- project azure
+INSERT INTO project (org_id, project_id, project_name)
+VALUES (
+        'org-alice',
+        'project-azure',
+        'project azure'
+    );
+-- project google
+INSERT INTO project (org_id, project_id, project_name)
+VALUES (
+        'org-alice',
+        'project-google',
+        'project google'
+    );
+-- workspace aws
+INSERT INTO workspace (org_id, project_id, workspace_id)
+VALUES (
+        'org-alice',
+        'project-aws',
+        'dev'
+    );
+-- workspace azure
+INSERT INTO workspace (org_id, project_id, workspace_id)
+VALUES (
+        'org-alice',
+        'project-azure',
+        'dev'
+    );
+-- workspace google
+INSERT INTO workspace (org_id, project_id, workspace_id)
+VALUES (
+        'org-alice',
+        'project-google',
+        'dev'
+    );
+-- run
+INSERT INTO run (org_id, project_id, workspace_id, status, kind)
+VALUES (
+        'org-alice',
+        'project-aws',
+        'dev',
+        'started',
+        'list'
     );
 -- git_repository
 INSERT INTO git_repository (
@@ -29,7 +73,7 @@ INSERT INTO git_repository (
     )
 VALUES (
         'org-alice',
-        'project-alice',
+        'project-aws',
         'repo-alice',
         'cred-org-alice',
         'https://github.com/FredericHeem/grucloud-aws-demo'

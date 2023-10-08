@@ -5,6 +5,6 @@ s3_bucket_upload: grucloud-console-demo
 
 ws_url: "ws://172.31.30.158:9000"
 ecs_cluster: "grucloud-console-dev"
-ecs_taskDefinition: "grucloud-cli:11"
+ecs_taskDefinition: "grucloud-cli:15"
 ecs_subnet: "subnet-b80a4ff5"
 ecs_securityGroup: "sg-04e8312be2f0b22b4"

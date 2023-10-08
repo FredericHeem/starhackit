@@ -2,7 +2,7 @@ const assert = require("assert");
 const testMngr = require("test/testManager");
 
 const org_id = "org-alice";
-const project_id = "project-alice";
+const project_id = "project-aws";
 
 const payloadCreate = {
   git_credential_id: "cred-org-alice",

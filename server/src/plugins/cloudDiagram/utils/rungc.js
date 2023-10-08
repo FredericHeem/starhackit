@@ -1,7 +1,7 @@
 const assert = require("assert");
 
-const { pipe, tap, assign, get, eq, switchCase, map } = require("rubico");
-const { values, identity, defaultsDeep } = require("rubico/x");
+const { pipe, tap, assign, get, eq, switchCase, map, pick } = require("rubico");
+const { values, identity, defaultsDeep, unless } = require("rubico/x");
 const fs = require("fs");
 const pfs = fs.promises;
 const path = require("path");
@@ -63,7 +63,15 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       }),
       // Save container_state and status to DB
       (container_state) => ({
-        data: { status: "docker_run_completed", container_state },
+        status: "completed",
+        container_state,
+      }),
+      unless(
+        eq(get("container_state.ExitCode"), 0),
+        assign({ error: pipe([get("container_state"), pick(["ExitCode"])]) })
+      ),
+      (data) => ({
+        data,
         where: { container_id },
       }),
       models.run.update,
@@ -73,11 +81,6 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       // Delete container
       () => ({ name: container_id }),
       dockerClient.container.delete,
-      () => ({
-        data: { status: "completed" },
-        where: { container_id },
-      }),
-      models.run.update,
       tap((params) => {
         log.debug("DockerGcRun ", container_id, "done");
         ws.send("completed");

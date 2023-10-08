@@ -30,7 +30,7 @@ function Store(config = {}) {
             reject();
           });
         } else {
-          log.error("redis not configured");
+          //log.error("redis not configured");
           return resolve();
         }
       });

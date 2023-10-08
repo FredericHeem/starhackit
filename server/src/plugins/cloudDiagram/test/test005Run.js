@@ -2,7 +2,11 @@ const assert = require("assert");
 const testMngr = require("test/testManager");
 const Axios = require("axios");
 const org_id = "org-alice";
-const project_id = "project-alice";
+const project_id = "project-aws";
+
+const project_aws_id = "project-aws";
+const project_azure_id = "project-azure";
+
 const workspace_id = "dev";
 
 const payloadCreateDocker = {
@@ -65,6 +69,107 @@ describe("Run No Auth", function () {
   });
 });
 
+const runCrudDocker = async ({
+  client,
+  org_id,
+  project_id,
+  workspace_id,
+  payloadCreateDocker,
+}) => {
+  try {
+    // Create
+    const run = await client.post(
+      `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
+      payloadCreateDocker
+    );
+    assert(run);
+    const { run_id, container_id } = run;
+    assert(run_id);
+    assert(container_id);
+
+    assert.equal(run.reason, payloadCreateDocker.reason);
+
+    const ws = new WebSocket(`ws://localhost:9000`);
+    ws.on("open", () => {
+      ws.send(
+        JSON.stringify({
+          origin: "browser",
+          command: "join",
+          options: {
+            room: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+          },
+        })
+      );
+      ws.send(
+        JSON.stringify({
+          command: "Run",
+          options: {
+            org_id,
+            project_id,
+            workspace_id,
+            run_id,
+            container_id,
+            engine: "docker",
+          },
+        })
+      );
+    });
+    ws.on("message", (d) => {
+      console.log(d.toString());
+    });
+    await promisifyWsClient(ws);
+
+    // Get By Id
+    {
+      let getOneResult = await client.get(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+      );
+      assert(getOneResult);
+      assert(getOneResult.workspace_id);
+      assert(getOneResult.run_id);
+      assert(getOneResult.logsUrl);
+      const { logsUrl } = getOneResult;
+      assert(logsUrl);
+
+      const { data } = await Axios.get(logsUrl);
+      console.log(data);
+    }
+    // Update
+    {
+      const inputUpdated = {
+        reason: "other reason",
+      };
+      const updatedResult = await client.patch(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`,
+        inputUpdated
+      );
+      assert.equal(updatedResult.reason, inputUpdated.reason);
+    }
+    // Get all by workspace id
+    {
+      let runs = await client.get(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`
+      );
+      assert(runs);
+      assert(Array.isArray(runs));
+    }
+    {
+      let getOneResult = await client.get(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+      );
+      assert(getOneResult);
+      assert(getOneResult.workspace_id);
+      assert(getOneResult.run_id);
+    }
+    // Delete
+    await client.delete(
+      `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 describe("Run", function () {
   let client;
   before(async function () {
@@ -74,99 +179,23 @@ describe("Run", function () {
     client = testMngr.client("alice");
     await client.login();
   });
-  it("CRUD docker", async () => {
-    try {
-      // Create
-      const run = await client.post(
-        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
-        payloadCreateDocker
-      );
-      assert(run);
-      const { run_id, container_id } = run;
-      assert(run_id);
-      assert(container_id);
-
-      assert.equal(run.reason, payloadCreateDocker.reason);
-
-      const ws = new WebSocket(`ws://localhost:9000`);
-      ws.on("open", () => {
-        ws.send(
-          JSON.stringify({
-            origin: "browser",
-            command: "join",
-            options: {
-              room: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-            },
-          })
-        );
-        ws.send(
-          JSON.stringify({
-            command: "Run",
-            options: {
-              org_id,
-              project_id,
-              workspace_id,
-              run_id,
-              container_id,
-              engine: "docker",
-            },
-          })
-        );
-      });
-      ws.on("message", (d) => {
-        console.log(d.toString());
-      });
-      await promisifyWsClient(ws);
-
-      // Get By Id
-      {
-        let getOneResult = await client.get(
-          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
-        );
-        assert(getOneResult);
-        assert(getOneResult.workspace_id);
-        assert(getOneResult.run_id);
-        assert(getOneResult.logsUrl);
-        const { logsUrl } = getOneResult;
-        assert(logsUrl);
-
-        const { data } = await Axios.get(logsUrl);
-        console.log(data);
-      }
-      // Update
-      {
-        const inputUpdated = {
-          reason: "other reason",
-        };
-        const updatedResult = await client.patch(
-          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`,
-          inputUpdated
-        );
-        assert.equal(updatedResult.reason, inputUpdated.reason);
-      }
-      // Get all by workspace id
-      {
-        let runs = await client.get(
-          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`
-        );
-        assert(runs);
-        assert(Array.isArray(runs));
-      }
-      {
-        let getOneResult = await client.get(
-          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
-        );
-        assert(getOneResult);
-        assert(getOneResult.workspace_id);
-        assert(getOneResult.run_id);
-      }
-      // Delete
-      await client.delete(
-        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run/${run_id}`
-      );
-    } catch (error) {
-      throw error;
-    }
+  it("CRUD aws docker", async () => {
+    await runCrudDocker({
+      client,
+      org_id,
+      project_id: project_aws_id,
+      workspace_id,
+      payloadCreateDocker,
+    });
+  });
+  it("CRUD azure docker", async () => {
+    await runCrudDocker({
+      client,
+      org_id,
+      project_id: project_azure_id,
+      workspace_id,
+      payloadCreateDocker,
+    });
   });
   it("CRUD ecs task", async () => {
     try {

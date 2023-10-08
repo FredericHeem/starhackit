@@ -33,6 +33,7 @@ const runAttributes = [
   "reason",
   "status",
   "engine",
+  "error",
 ];
 
 const buildWhereFromContext = pipe([
@@ -129,105 +130,105 @@ exports.RunApi = ({ app, models }) => {
             tap((param) => {
               assert(true);
             }),
-            // start a container and return the Id
             assign({
-              container_id: pipe([
-                assign({
-                  env_vars: pipe([
-                    ({ org_id, project_id, workspace_id }) =>
-                      models.cloudAuthentication.findOne({
-                        attributes: ["env_vars"],
-                        where: { org_id, project_id, workspace_id },
+              container_id: (data) =>
+                pipe([
+                  () => ({
+                    attributes: ["env_vars", "provider_type"],
+                    where: pick(["org_id", "project_id", "workspace_id"])(data),
+                  }),
+                  models.cloudAuthentication.findOne,
+                  tap((param) => {
+                    assert(true);
+                  }),
+                  defaultsDeep(data),
+                  switchCase([
+                    eq(get("engine"), "docker"),
+                    pipe([
+                      ({
+                        org_id,
+                        project_id,
+                        workspace_id,
+                        run_id,
+                        env_vars,
+                        provider_type,
+                      }) => ({
+                        containerImage: "grucloud/grucloud-cli",
+                        org_id,
+                        project_id,
+                        workspace_id,
+                        run_id,
+                        env_vars,
+                        provider: provider_type,
+                        dockerClient: app.dockerClient,
                       }),
-                    tap((param) => {
-                      assert(true);
-                    }),
-                    get("env_vars"),
+                      dockerGcCreate,
+                      get("Id"),
+                      tap((Id) => {
+                        assert(Id);
+                      }),
+                    ]),
+                    // default is ecs
+                    pipe([
+                      ({
+                        org_id,
+                        project_id,
+                        workspace_id,
+                        run_id,
+                        env_vars,
+                        provider_type,
+                      }) => ({
+                        config,
+                        container: {
+                          name: "grucloud-cli",
+                          command: [
+                            "list",
+                            "--json",
+                            "grucloud-result.json",
+                            "--graph",
+                            "--infra",
+                            `/app/iac.js`,
+                            "--provider",
+                            provider_type,
+                            "--s3-bucket",
+                            aws.bucketUpload,
+                            "--s3-key",
+                            `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+                            "--s3-local-dir",
+                            "/app/artifacts",
+                            "--ws-url",
+                            infra.wsUrl,
+                            "--ws-room",
+                            `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+                            "--title",
+                            "",
+                          ],
+                          environment: pipe([
+                            () => env_vars,
+                            defaultsDeep({
+                              CONTINUOUS_INTEGRATION: "1",
+                              S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
+                              S3_AWSSecretKey: process.env.S3_AWSSecretKey,
+                              S3_AWS_REGION: process.env.S3_AWS_REGION,
+                            }),
+                            map.entries(([name, value]) => [
+                              name,
+                              { name, value },
+                            ]),
+                            values,
+                          ])(),
+                        },
+                      }),
+                      tap((param) => {
+                        assert(true);
+                      }),
+                      ecsTaskRun,
+                      tap((param) => {
+                        assert(true);
+                      }),
+                    ]),
                   ]),
-                }),
-                switchCase([
-                  eq(get("engine"), "docker"),
-                  pipe([
-                    ({
-                      org_id,
-                      project_id,
-                      workspace_id,
-                      run_id,
-                      env_vars,
-                    }) => ({
-                      containerImage: "grucloud/grucloud-cli",
-                      org_id,
-                      project_id,
-                      workspace_id,
-                      run_id,
-                      env_vars,
-                      provider: "aws",
-                      dockerClient: app.dockerClient,
-                    }),
-                    dockerGcCreate,
-                    get("Id"),
-                    tap((Id) => {
-                      assert(Id);
-                    }),
-                  ]),
-                  // default is ecs
-                  pipe([
-                    ({
-                      org_id,
-                      project_id,
-                      workspace_id,
-                      run_id,
-                      env_vars,
-                    }) => ({
-                      config,
-                      container: {
-                        name: "grucloud-cli",
-                        command: [
-                          "list",
-                          "--json",
-                          "grucloud-result.json",
-                          "--graph",
-                          "--infra",
-                          `/app/iac.js`,
-                          "--provider",
-                          "aws",
-                          "--s3-bucket",
-                          aws.bucketUpload,
-                          "--s3-key",
-                          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-                          "--s3-local-dir",
-                          "/app/artifacts",
-                          "--ws-url",
-                          infra.wsUrl,
-                          "--ws-room",
-                          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-                        ],
-                        environment: pipe([
-                          () => env_vars,
-                          defaultsDeep({
-                            CONTINUOUS_INTEGRATION: "1",
-                            S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
-                            S3_AWSSecretKey: process.env.S3_AWSSecretKey,
-                            S3_AWS_REGION: process.env.S3_AWS_REGION,
-                          }),
-                          map.entries(([name, value]) => [
-                            name,
-                            { name, value },
-                          ]),
-                          values,
-                        ])(),
-                      },
-                    }),
-                    tap((param) => {
-                      assert(true);
-                    }),
-                    ecsTaskRun,
-                    tap((param) => {
-                      assert(true);
-                    }),
-                  ]),
-                ]),
-              ]),
+                ])(),
             }),
             assign({ status: () => "running" }),
             // Save the container_id to the db

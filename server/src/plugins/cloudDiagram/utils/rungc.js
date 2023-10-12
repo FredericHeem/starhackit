@@ -1,9 +1,6 @@
 const assert = require("assert");
-
-const { pipe, tap, assign, get, eq, switchCase, map, pick } = require("rubico");
-const { values, identity, defaultsDeep, unless } = require("rubico/x");
-const fs = require("fs");
-const pfs = fs.promises;
+const { pipe, tap, assign, get, eq, map, pick } = require("rubico");
+const { when, values, defaultsDeep, unless } = require("rubico/x");
 const path = require("path");
 
 exports.DockerGcRun = ({ app, models, ws }) => {
@@ -111,36 +108,6 @@ exports.DockerGcCreate = ({ app }) => {
       }),
     ])();
 
-  const gcpConfigFileContent = ({
-    credendialFileName,
-  }) => `const path = require("path");
-  module.exports = ({ stage }) => ({
-    credentialFile: path.resolve(__dirname, "${credendialFileName}"),
-  });`;
-
-  const writeGcpFiles = ({
-    configFileName,
-    credendialFileName,
-    credendialContent,
-  }) =>
-    pipe([
-      tap(() => {
-        log.debug(
-          `writeGcpFiles configFileName: ${configFileName}, credendialFileName: ${credendialFileName}`
-        );
-      }),
-      () =>
-        pfs.writeFile(
-          `input/${credendialFileName}`,
-          JSON.stringify(credendialContent)
-        ),
-      () =>
-        pfs.writeFile(
-          configFileName,
-          gcpConfigFileContent({ credendialFileName })
-        ),
-    ])();
-
   const dockerGcCreateList = ({
     org_id,
     project_id,
@@ -221,30 +188,19 @@ exports.DockerGcCreate = ({ app }) => {
               S3_AWSSecretKey: process.env.S3_AWSSecretKey,
               S3_AWS_REGION: process.env.S3_AWS_REGION,
             }),
+            when(
+              get("GOOGLE_CREDENTIALS"),
+              assign({
+                GOOGLE_CREDENTIALS: pipe([
+                  get("GOOGLE_CREDENTIALS"),
+                  JSON.stringify,
+                ]),
+              })
+            ),
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),
       }),
-      switchCase([
-        eq(provider, "google"),
-        pipe([
-          assign({
-            Cmd: ({ Cmd }) => [
-              ...Cmd,
-              "--config",
-              `/app/input/config-${run_id}.js`,
-            ],
-          }),
-          tap(() =>
-            writeGcpFiles({
-              configFileName: `input/config-${run_id}.js`,
-              credendialFileName: `gcp-credendial-${run_id}.json`,
-              credendialContent: env_vars.credentials,
-            })
-          ),
-        ]),
-        identity,
-      ]),
       tap((input) => {
         log.debug(`dockerGcCreateList: ${JSON.stringify(input, null, 4)}`);
       }),

@@ -37,7 +37,7 @@ exports.ecsTaskRun = ({ config: { ecs }, container }) =>
         },
       }),
       tap((input) => {
-        assert(input);
+        log.debug(`RunTaskCommand: ${JSON.stringify(input)}`);
       }),
       (input) => new RunTaskCommand(input),
       (command) =>

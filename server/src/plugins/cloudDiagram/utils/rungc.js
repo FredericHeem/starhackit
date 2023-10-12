@@ -1,7 +1,9 @@
 const assert = require("assert");
 const { pipe, tap, assign, get, eq, map, pick } = require("rubico");
-const { when, values, defaultsDeep, unless } = require("rubico/x");
+const { values, unless } = require("rubico/x");
 const path = require("path");
+
+const { transformEnv } = require("./envUtils");
 
 exports.DockerGcRun = ({ app, models, ws }) => {
   assert(app);
@@ -183,20 +185,7 @@ exports.DockerGcCreate = ({ app }) => {
         Env: () =>
           pipe([
             () => env_vars,
-            defaultsDeep({
-              S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
-              S3_AWSSecretKey: process.env.S3_AWSSecretKey,
-              S3_AWS_REGION: process.env.S3_AWS_REGION,
-            }),
-            when(
-              get("GOOGLE_CREDENTIALS"),
-              assign({
-                GOOGLE_CREDENTIALS: pipe([
-                  get("GOOGLE_CREDENTIALS"),
-                  JSON.stringify,
-                ]),
-              })
-            ),
+            transformEnv,
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),

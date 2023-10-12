@@ -22,6 +22,7 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
 const logger = require("logfilename")(__filename);
+const { transformEnv } = require("../utils/envUtils");
 
 const runAttributes = [
   "org_id",
@@ -205,12 +206,7 @@ exports.RunApi = ({ app, models }) => {
                           ],
                           environment: pipe([
                             () => env_vars,
-                            defaultsDeep({
-                              CONTINUOUS_INTEGRATION: "1",
-                              S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
-                              S3_AWSSecretKey: process.env.S3_AWSSecretKey,
-                              S3_AWS_REGION: process.env.S3_AWS_REGION,
-                            }),
+                            transformEnv,
                             map.entries(([name, value]) => [
                               name,
                               { name, value },

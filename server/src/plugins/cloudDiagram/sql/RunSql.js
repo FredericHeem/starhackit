@@ -41,7 +41,7 @@ FROM run
         INNER JOIN users ON users.user_id = user_orgs.user_id
       ) ON project.org_id = user_orgs.org_id
     ) ON workspace.project_id = project.project_id
-  ) ON run.workspace_id = workspace.workspace_id
+  ) ON run.workspace_id = workspace.workspace_id AND run.project_id = workspace.project_id AND run.org_id = workspace.org_id
   AND users.user_id = ${user_id}
   ORDER BY run.created_at DESC;`,
       ])(),

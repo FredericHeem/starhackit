@@ -33,8 +33,8 @@
     "setup": "npm run docker:down  && npm run docker:up && sleep 2 && npm run db:create"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.332.0",
     "@aws-sdk/client-ecs": "3.332.0",
+    "@aws-sdk/client-s3": "3.332.0",
     "@aws-sdk/s3-request-presigner": "3.332.0",
     "@grucloud/docker-axios": "12.7.0",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
@@ -53,6 +53,7 @@
     "koa-66": "1.0.1",
     "koa-bodyparser": "4.3.0",
     "koa-generic-session": "2.1.1",
+    "koa-mount": "4.0.0",
     "koa-passport": "4.1.3",
     "koa-redis": "4.0.1",
     "koa-static": "5.0.0",
@@ -63,6 +64,7 @@
     "nanoid": "3.3.5",
     "nodemailer": "6.4.18",
     "oauth": "0.9.15",
+    "oidc-provider": "8.4.0",
     "passport-facebook": "3.0.0",
     "passport-github": "1.1.0",
     "passport-google-id-token": "0.4.7",

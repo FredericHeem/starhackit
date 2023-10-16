@@ -11,6 +11,7 @@ const pluginsName = [
   //"expoPush",
   "docker",
   "cloudDiagram",
+  "oidc",
 ];
 
 function Plugins(app) {

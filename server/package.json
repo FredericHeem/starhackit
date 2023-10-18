@@ -35,6 +35,7 @@
   "dependencies": {
     "@aws-sdk/client-ecs": "3.332.0",
     "@aws-sdk/client-s3": "3.332.0",
+    "@aws-sdk/client-sts": "3.429.0",
     "@aws-sdk/s3-request-presigner": "3.332.0",
     "@grucloud/docker-axios": "12.7.0",
     "async-busboy": "https://github.com/amit777/async-busboy.git",
@@ -46,6 +47,7 @@
     "config": "3.3.3",
     "ejs": "3.1.6",
     "isomorphic-git": "1.8.3",
+    "jose": "4.15.4",
     "jsonschema": "1.4.0",
     "jsonwebtoken": "8.5.1",
     "kcors": "2.2.2",

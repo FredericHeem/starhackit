@@ -1,31 +1,44 @@
 const assert = require("assert");
-const { pipe, tap } = require("rubico");
-const { switchCase, map, get } = require("rubico");
-const {} = require("rubico/x");
+const { pipe, tap, get } = require("rubico");
 
 const mount = require("koa-mount");
 const log = require("logfilename")(__filename);
+const adapter = require("./adapter");
 
 const configuration = {
+  adapter,
   features: {
     clientCredentials: { enabled: true },
+    claimsParameter: { enabled: true },
+    resourceIndicators: {
+      enabled: true,
+      getResourceServerInfo(ctx, resourceIndicator) {
+        log.debug("getResourceServerInfo", resourceIndicator);
+
+        return {
+          scope: "read",
+          //TODO
+          audience: "https://demo.grucloud.com",
+          accessTokenTTL: 1 * 60 * 60, // 1 hour
+          accessTokenFormat: "jwt",
+        };
+      },
+    },
   },
   clientDefaults: {
-    response_types: ["id_token"],
+    response_types: [],
     grant_types: ["client_credentials"],
   },
   scopes: ["openid"],
   clients: [
-    {
-      client_id: "grucloud",
-      client_secret: "bar",
-      redirect_uris: [],
-      response_types: [],
-      grant_types: ["client_credentials"],
-    },
+    // {
+    //   client_id: "grucloud",
+    //   client_secret: "bar",
+    //   redirect_uris: [],
+    //   response_types: [],
+    //   grant_types: ["client_credentials"],
+    // },
   ],
-  grant_types: ["client_credentials"],
-
   claims: {
     sub: null,
     aud: null,
@@ -45,13 +58,17 @@ const configuration = {
     grucloud_run_id: null,
     grucloud_full_workspace: null,
   },
+  // async extraTokenClaims(ctx, token) {
+  //   return {
+  //     "urn:idp:example:foo": "bar",
+  //   };
+  // },
   async findAccount(ctx, id) {
     console.log("findAccount", id);
     return {
       accountId: id,
       async claims(use, scope) {
         console.log("claims", scope);
-
         return { sub: id };
       },
     };

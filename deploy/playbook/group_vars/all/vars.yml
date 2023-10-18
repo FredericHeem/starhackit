@@ -8,8 +8,9 @@ postgres_directory: pg_data
 pip_install_packages:
   - name: docker
 
-grucloud_image: "grucloud/grucloud-cli:v12.10.2"
 docker_base_url: "http:/v1.41"
+
+grucloud_image: "grucloud/grucloud-cli:v12.10.2"
 # Docker image tag names
 api_image: "fredericheem/grucloud-api"
 api_tag: "10.50"
@@ -39,5 +40,3 @@ network: "mainnet"
 mail_from: ""
 mail_signature: ""
 mail_service: ""
-
-s3_bucket_upload: grucloud-console-dev

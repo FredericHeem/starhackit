@@ -50,9 +50,13 @@ http {
     }
 
     location /.well-known/openid-configuration  {
-      rewrite ^/.* http://$server_name/oidc/.well-known/openid-configuration  permanent;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_pass http://api/oidc/.well-known/openid-configuration;
     }
-
+    
     location /oidc {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

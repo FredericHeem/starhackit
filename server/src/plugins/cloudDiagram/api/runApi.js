@@ -37,6 +37,9 @@ const runAttributes = [
   "error",
 ];
 
+const buildSubject = ({ org_id, project_id, workspace_id, phase = "plan" }) =>
+  `organization:${org_id}:project:${project_id}:workspace:${workspace_id}:run_phase:${phase}`;
+
 const buildWhereFromContext = pipe([
   tap((context) => {
     assert(context);
@@ -162,6 +165,11 @@ exports.RunApi = ({ app, models }) => {
                         env_vars,
                         provider: provider_type,
                         dockerClient: app.dockerClient,
+                        GRUCLOUD_OAUTH_SUBJECT: buildSubject({
+                          org_id,
+                          project_id,
+                          workspace_id,
+                        }),
                       }),
                       dockerGcCreate,
                       get("Id"),
@@ -206,7 +214,13 @@ exports.RunApi = ({ app, models }) => {
                           ],
                           environment: pipe([
                             () => env_vars,
-                            transformEnv,
+                            transformEnv({
+                              GRUCLOUD_OAUTH_SUBJECT: buildSubject({
+                                org_id,
+                                project_id,
+                                workspace_id,
+                              }),
+                            }),
                             map.entries(([name, value]) => [
                               name,
                               { name, value },

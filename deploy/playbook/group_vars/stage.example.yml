@@ -13,7 +13,8 @@ docker_hub_username: ""
 docker_hub_password: ""
 docker_hub_email: ""
 
-OAUTH2_CLIENT_SECRET: ""
+GRUCLOUD_OAUTH_CLIENT_SECRET: ""
+
 S3_AWS_REGION: "us-east-1"
 S3_AWSAccessKeyId: ""
 S3_AWSSecretKey: ""

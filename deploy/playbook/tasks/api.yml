@@ -27,7 +27,7 @@
       S3_AWS_REGION: "{{S3_AWS_REGION}}"
       S3_AWSAccessKeyId: "{{S3_AWSAccessKeyId}}"
       S3_AWSSecretKey: "{{S3_AWSSecretKey}}"
-      OAUTH2_CLIENT_SECRET: "{{OAUTH2_CLIENT_SECRET}}"
+      GRUCLOUD_OAUTH_CLIENT_SECRET: "{{GRUCLOUD_OAUTH_CLIENT_SECRET}}"
 
     networks:
       - name: net

@@ -1,16 +1,22 @@
-const { pipe, tap, assign, get } = require("rubico");
+const { pipe, tap, assign, get, pick } = require("rubico");
 const { when, defaultsDeep } = require("rubico/x");
 
-exports.transformEnv = pipe([
-  defaultsDeep({
-    S3_AWSAccessKeyId: process.env.S3_AWSAccessKeyId,
-    S3_AWSSecretKey: process.env.S3_AWSSecretKey,
-    S3_AWS_REGION: process.env.S3_AWS_REGION,
-  }),
-  when(
-    get("GOOGLE_CREDENTIALS"),
-    assign({
-      GOOGLE_CREDENTIALS: pipe([get("GOOGLE_CREDENTIALS"), JSON.stringify]),
-    })
-  ),
-]);
+const defaultEnv = [
+  "S3_AWSAccessKeyId",
+  "S3_AWSSecretKey",
+  "S3_AWS_REGION",
+  "GRUCLOUD_OAUTH_SERVER",
+  "GRUCLOUD_OAUTH_CLIENT_SECRET",
+];
+
+exports.transformEnv = ({ GRUCLOUD_OAUTH_SUBJECT }) =>
+  pipe([
+    defaultsDeep(pick(defaultEnv)(process.env)),
+    defaultsDeep({ GRUCLOUD_OAUTH_SUBJECT }),
+    when(
+      get("GOOGLE_CREDENTIALS"),
+      assign({
+        GOOGLE_CREDENTIALS: pipe([get("GOOGLE_CREDENTIALS"), JSON.stringify]),
+      })
+    ),
+  ]);

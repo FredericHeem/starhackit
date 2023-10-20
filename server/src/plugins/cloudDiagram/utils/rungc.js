@@ -124,6 +124,7 @@ exports.DockerGcCreate = ({ app }) => {
     dockerClient,
     outputDir = `output`,
     inputDir = "input",
+    GRUCLOUD_OAUTH_SUBJECT,
   }) =>
     pipe([
       tap(() => {
@@ -185,7 +186,7 @@ exports.DockerGcCreate = ({ app }) => {
         Env: () =>
           pipe([
             () => env_vars,
-            transformEnv,
+            transformEnv({ GRUCLOUD_OAUTH_SUBJECT }),
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),

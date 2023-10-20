@@ -30,6 +30,7 @@ function KoaServer(app) {
   middlewareInit(app, koaApp, config);
   return {
     koa: koaApp,
+    rootRouter,
     auth: require("./middleware/PassportMiddleware")(app, koaApp, config),
     baseRouter() {
       return baseRouter;
@@ -43,13 +44,13 @@ function KoaServer(app) {
         log.debug(`${stack.methods} : ${stack.path}`);
       });
     },
-    createRouter(api) {
+    createRouter(api, parentRoute = baseRouter) {
       const router = new Router();
       forEach((m) => router.use(m))(api.middlewares);
       api.ops.map(({ pathname, method, handler }) => {
         router[method](pathname, tryCatch(handler, contextHandleError));
       });
-      baseRouter.mount(api.pathname, router);
+      parentRoute.mount(api.pathname, router);
     },
     /**
      * Start the koa server

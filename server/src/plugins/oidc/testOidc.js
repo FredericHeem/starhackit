@@ -13,7 +13,9 @@ const AZ_AUTHORIZATION_URL = "https://login.microsoftonline.com";
 const subscriptionId = process.env.AZURE_SUBSCRIPTION_ID;
 const GOOGLE_SA_EMAIL = "grucloud@grucloud-test.iam.gserviceaccount.com";
 const project_id = "grucloud-test";
-const tokenUrl = `http://localhost:9000/oidc/token`;
+//const tokenUrl = `http://localhost:9000/oidc/token`;
+const tokenUrl = `https://demo.grucloud.com/oidc/token`;
+
 const subject =
   "organization:my-org:project:my-project:workspace:my-workspace:run_phase:plan";
 const audience =
@@ -195,7 +197,7 @@ const googleAuthenticateFederated = ({
     }),
   ]);
 
-describe("Oicd", function () {
+describe.only("Oicd", function () {
   const { config } = testMngr.app;
   before(async function () {
     if (!testMngr.app.config.oidc) {
@@ -229,7 +231,7 @@ describe("Oicd", function () {
           assert(true);
         }),
         // Check nginx is configured properly
-        () => `http://demo.grucloud.com/.well-known/openid-configuration`,
+        () => `https://demo.grucloud.com/.well-known/openid-configuration`,
         Axios.get,
         get("data"),
         tap((data) => {
@@ -240,6 +242,27 @@ describe("Oicd", function () {
             authorization_endpoint,
             "https://demo.grucloud.com/oidc/auth"
           );
+        }),
+      ]),
+      (error) => {
+        throw error;
+      }
+    )());
+  it("jwks", () =>
+    tryCatch(
+      pipe([
+        tap((params) => {
+          assert(true);
+        }),
+        () => `http://localhost:9000/oidc/jwks`,
+        Axios.get,
+        get("data"),
+        tap((data) => {
+          //console.log(JSON.stringify(data, null, 4));
+        }),
+        tap(({ keys }) => {
+          assert(keys);
+          assert(keys[0].use, "sig");
         }),
       ]),
       (error) => {

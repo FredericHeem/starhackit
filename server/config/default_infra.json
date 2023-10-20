@@ -1,5 +1,9 @@
 {
   "websiteUrl": "http://localhost:8080",
+  "oidc": {
+    "issuer": "https://demo.grucloud.com",
+    "audience": "https://demo.grucloud.com"
+  },
   "log": {
     "console": {
       "level": "debug",

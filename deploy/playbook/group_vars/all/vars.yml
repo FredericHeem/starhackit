@@ -16,7 +16,7 @@ api_image: "fredericheem/grucloud-api"
 api_tag: "10.50"
 
 web_image: "fredericheem/grucloud-ui"
-web_tag: "12.20"
+web_tag: "12.21"
 
 firewall_state: started
 firewall_enabled_at_boot: true

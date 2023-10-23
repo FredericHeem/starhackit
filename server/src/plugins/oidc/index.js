@@ -1,11 +1,8 @@
 const assert = require("assert");
-const { pipe, tap, get, eq, not, assign } = require("rubico");
+const { pipe, tap, get, eq, not, assign, fork } = require("rubico");
+
 const { CompactSign, exportJWK, generateKeyPair } = require("jose");
 const nanoid = require("nanoid");
-
-// const mount = require("koa-mount");
-// const log = require("logfilename")(__filename);
-// const adapter = require("./adapter");
 
 const alg = "RS256";
 const expires_in = 3600;
@@ -24,7 +21,7 @@ const wellKnow = ({ issuer }) => ({
   token_endpoint: `${issuer}/oidc/token`,
 });
 
-const api = ({ privateKey, publicJwk, issuer, audience }) => ({
+const api = ({ sql, privateKey, publicJwk, issuer }) => ({
   pathname: "/oidc",
   ops: [
     {
@@ -36,7 +33,6 @@ const api = ({ privateKey, publicJwk, issuer, audience }) => ({
           get("request.body"),
           tap((params) => {
             assert(issuer);
-            assert(audience);
             assert(process.env.GRUCLOUD_OAUTH_CLIENT_SECRET);
           }),
           tap.if(not(get("client_id")), () => {
@@ -56,9 +52,25 @@ const api = ({ privateKey, publicJwk, issuer, audience }) => ({
               context.status = 401;
             }
           ),
-          assign({ iat: () => Math.floor(new Date().getTime() / 1000) }),
-          ({ client_id, iat }) => ({
-            aud: audience,
+          assign({
+            iat: () => Math.floor(new Date().getTime() / 1000),
+            //TODO
+            // aud: pipe([
+            //   get("client_id"),
+            //   callProp("split", ":"),
+            //   fork({
+            //     org_id: callProp("at", 1),
+            //     project_id: callProp("at", 3),
+            //     workspace_id: callProp("at", 5),
+            //   }),
+            //   tap((params) => {
+            //     assert(params);
+            //   }),
+            //   (where) => ({ where }),
+            // ]),
+          }),
+          ({ client_id, iat, aud }) => ({
+            aud,
             client_id,
             exp: iat + expires_in,
             iat,
@@ -108,78 +120,16 @@ const api = ({ privateKey, publicJwk, issuer, audience }) => ({
   ],
 });
 
-// const configuration = ({ privateJwk }) => ({
-//   adapter,
-//   jwks: { keys: [privateJwk] },
-//   features: {
-//     clientCredentials: { enabled: true },
-//     claimsParameter: { enabled: true },
-//     resourceIndicators: {
-//       enabled: true,
-//       getResourceServerInfo(ctx, resourceIndicator) {
-//         log.debug("getResourceServerInfo", resourceIndicator);
-
-//         return {
-//           scope: "read",
-//           //TODO
-//           audience: "https://demo.grucloud.com",
-//           accessTokenTTL: 1 * 60 * 60, // 1 hour
-//           accessTokenFormat: "jwt",
-//         };
-//       },
-//     },
-//   },
-//   clientDefaults: {
-//     response_types: [],
-//     grant_types: ["client_credentials"],
-//   },
-//   scopes: ["openid"],
-//   clients: [],
-//   claims: {
-//     sub: null,
-//     aud: null,
-//     exp: null,
-//     iat: null,
-//     iss: null,
-//     jti: null,
-//     nbf: null,
-//     ref: null,
-//     grucloud_run_phase: null,
-//     grucloud_workspace_id: null,
-//     grucloud_workspace_name: null,
-//     grucloud_organization_id: null,
-//     grucloud_organization_name: null,
-//     grucloud_project_id: null,
-//     grucloud_project_name: null,
-//     grucloud_run_id: null,
-//     grucloud_full_workspace: null,
-//   },
-//   // async extraTokenClaims(ctx, token) {
-//   //   return {
-//   //     "urn:idp:example:foo": "bar",
-//   //   };
-//   // },
-//   async findAccount(ctx, id) {
-//     console.log("findAccount", id);
-//     return {
-//       accountId: id,
-//       async claims(use, scope) {
-//         console.log("claims", scope);
-//         return { sub: id };
-//       },
-//     };
-//   },
-// });
-
 module.exports = async function OidProvider(app) {
   const { config } = app;
+  const { sql } = app.data;
   if (!config.oidc) return;
-  //const { koa } = app.server;
   const { publicKey, privateKey } = await generateKeyPair("RS256");
   const publicJwk = await exportJWK(publicKey);
 
   app.server.createRouter(
     api({
+      sql,
       privateKey,
       publicJwk: { ...publicJwk, use: "sig", alg: "RS256", kid: "grucloud" },
       ...config.oidc,
@@ -187,12 +137,5 @@ module.exports = async function OidProvider(app) {
     app.server.rootRouter
   );
 
-  // const { default: Provider } = await import("oidc-provider");
-  // const issuer = get("oidc.issuer", "http://localhost:9000")(config);
-  // log.debug(`oidc ${issuer}`);
-  // const oidc = new Provider(issuer, configuration({ privateJwk }));
-
-  // koa.use(mount("/oidc", oidc.app));
-  // koa.proxy = true;
   return {};
 };

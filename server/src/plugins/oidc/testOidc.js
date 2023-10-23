@@ -27,10 +27,10 @@ const client = new STSClient({
   region: AWS_REGION,
 });
 
-const getJwt = ({ tokenUrl, subject }) =>
+const getJwt = ({ tokenUrl, subject, aud }) =>
   pipe([
     tap((params) => {
-      assert(true);
+      assert(aud);
     }),
     () => ({
       method: "POST",
@@ -40,8 +40,7 @@ const getJwt = ({ tokenUrl, subject }) =>
         grant_type: "client_credentials",
         client_id: subject,
         client_secret: "bar",
-        resource: "uri:app",
-        scope: "openid",
+        aud,
       }),
     }),
     Axios.request,
@@ -197,7 +196,7 @@ const googleAuthenticateFederated = ({
     }),
   ]);
 
-describe.only("Oicd", function () {
+describe("Oicd", function () {
   const { config } = testMngr.app;
   before(async function () {
     if (!testMngr.app.config.oidc) {
@@ -277,8 +276,8 @@ describe.only("Oicd", function () {
         }),
         () => ({
           tokenUrl,
-          subject:
-            "organization:my-org:project:my-project:workspace:my-workspace:run_phase:plan",
+          subject,
+          aud: "aws.workload.identity",
         }),
         getJwt,
         awsAssumeRoleWebIdentity({
@@ -302,6 +301,7 @@ describe.only("Oicd", function () {
         () => ({
           tokenUrl,
           subject,
+          aud: "api://AzureADTokenExchange",
         }),
         getJwt,
         azureAuthenticateFederated({
@@ -323,6 +323,7 @@ describe.only("Oicd", function () {
         () => ({
           tokenUrl,
           subject,
+          aud: "https://demo.grucloud.com",
         }),
         getJwt,
         googleAuthenticateFederated({

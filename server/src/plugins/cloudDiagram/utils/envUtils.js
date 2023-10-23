@@ -7,6 +7,8 @@ const defaultEnv = [
   "S3_AWS_REGION",
   "GRUCLOUD_OAUTH_SERVER",
   "GRUCLOUD_OAUTH_CLIENT_SECRET",
+  "AWS_OAUTH_AUDIENCE",
+  "AZURE_OAUTH_AUDIENCE",
 ];
 
 exports.transformEnv = ({ GRUCLOUD_OAUTH_SUBJECT }) =>

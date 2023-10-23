@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS run (
   error JSONB,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  FOREIGN KEY(org_id, project_id, workspace_id) REFERENCES workspace ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY(org_id, project_id, workspace_id) REFERENCES workspace ON DELETE CASCADE,
   PRIMARY KEY (org_id, project_id, workspace_id, run_id)
 );
 -- cloud_authentication

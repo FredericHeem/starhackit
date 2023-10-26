@@ -9,8 +9,9 @@ const gitRepositoryAttributes = [
   "org_id",
   "project_id",
   "git_credential_id",
-  "git_repository_id",
-  "url",
+  "repository_url",
+  "branch",
+  "working_directory",
 ];
 
 const buildWhereFromContext = pipe([
@@ -20,19 +21,20 @@ const buildWhereFromContext = pipe([
   fork({
     org_id: pipe([get("params.org_id")]),
     project_id: pipe([get("params.project_id")]),
-    git_repository_id: pipe([get("params.git_repository_id")]),
+    workspace_id: pipe([get("params.workspace_id")]),
   }),
-  tap(({ org_id, project_id, git_repository_id }) => {
+  tap(({ org_id, project_id, workspace_id }) => {
     assert(org_id);
     assert(project_id);
-    assert(git_repository_id);
+    assert(workspace_id);
   }),
 ]);
 
 exports.GitRepositoryApi = ({ app, models }) => {
   assert(models.gitRepository);
   return {
-    pathname: "/org/:org_id/project/:project_id/git_repository",
+    pathname:
+      "/org/:org_id/project/:project_id/workspace/:workspace_id/git_repository",
     middlewares: [
       app.server.auth.isAuthenticated, //
       middlewareUserBelongsToOrg(models),
@@ -48,11 +50,13 @@ exports.GitRepositoryApi = ({ app, models }) => {
               assert(context.state.user.user_id);
               assert(context.params.org_id);
               assert(context.params.project_id);
+              assert(context.params.workspace_id);
             }),
             () => context.request.body,
             assign({
               org_id: () => context.params.org_id,
               project_id: () => context.params.project_id,
+              workspace_id: () => context.params.workspace_id,
             }),
             models.gitRepository.insert,
             tap((param) => {
@@ -66,34 +70,10 @@ exports.GitRepositoryApi = ({ app, models }) => {
         method: "get",
         handler: (context) =>
           pipe([
-            () => ({
-              attributes: [
-                "org_id",
-                "project_id",
-                "git_credential_id",
-                "git_repository_id",
-                "url",
-              ],
-              where: {
-                project_id: context.params.project_id,
-              },
-            }),
-            models.gitRepository.findAll,
-            tap((param) => {
-              assert(true);
-            }),
-            contextSetOk({ context }),
-          ])(),
-      },
-      {
-        pathname: "/:git_repository_id",
-        method: "get",
-        handler: (context) =>
-          pipe([
             tap(() => {
               assert(context.params.org_id);
               assert(context.params.project_id);
-              assert(context.params.git_repository_id);
+              assert(context.params.workspace_id);
               assert(context.state.user.user_id);
             }),
             () => ({
@@ -112,7 +92,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
           ])(),
       },
       {
-        pathname: "/:git_repository_id",
+        pathname: "/",
         method: "delete",
         handler: (context) =>
           pipe([
@@ -126,7 +106,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
           ])(),
       },
       {
-        pathname: "/:git_repository_id",
+        pathname: "/",
         method: "patch",
         handler: (context) =>
           pipe([

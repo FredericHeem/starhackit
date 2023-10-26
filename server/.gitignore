@@ -30,3 +30,4 @@ yarn-error.log
 gc-list*.json
 *.env.json
 bun.lockb
+*.pem

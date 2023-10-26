@@ -67,16 +67,20 @@ VALUES (
 INSERT INTO git_repository (
         org_id,
         project_id,
-        git_repository_id,
+        workspace_id,
         git_credential_id,
-        url
+        repository_url,
+        branch,
+        working_directory
     )
 VALUES (
         'org-alice',
         'project-aws',
-        'repo-alice',
+        'dev',
         'cred-org-alice',
-        'https://github.com/FredericHeem/grucloud-aws-demo'
+        'https://github.com/FredericHeem/grucloud-aws-demo',
+        'main',
+        ''
     );
 -- bob
 INSERT INTO org (org_id, org_name)

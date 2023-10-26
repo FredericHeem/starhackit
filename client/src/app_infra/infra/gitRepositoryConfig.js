@@ -15,6 +15,7 @@ import { buttonWizardBack } from "./wizardCreate";
 import form from "components/form";
 import alertAxios from "mdlean/lib/alertAjax";
 
+// TODO delete
 const rules = {
   url: {
     presence: true,

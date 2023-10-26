@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS user_orgs (
 -- git_credential
 CREATE TABLE IF NOT EXISTS git_credential (
   git_credential_id TEXT,
-  provider_type TEXT NOT NULL DEFAULT '',
+  provider_type TEXT NOT NULL DEFAULT 'GitHub',
   username TEXT NOT NULL,
   password TEXT NOT NULL,
   options JSONB,
@@ -39,20 +39,6 @@ CREATE TABLE IF NOT EXISTS project (
   org_id TEXT NOT NULL REFERENCES org (org_id) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (org_id, project_id)
 );
--- git_repository 
-CREATE TABLE IF NOT EXISTS git_repository (
-  git_repository_id TEXT NOT NULL,
-  url TEXT NOT NULL,
-  branch TEXT NOT NULL DEFAULT 'main',
-  options JSONB,
-  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-  org_id TEXT NOT NULL,
-  project_id TEXT NOT NULL,
-  FOREIGN KEY(org_id, project_id) REFERENCES project ON DELETE CASCADE ON UPDATE CASCADE,
-  git_credential_id TEXT NOT NULL REFERENCES git_credential (git_credential_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY (git_repository_id)
-);
 -- workspace
 CREATE TABLE IF NOT EXISTS workspace (
   org_id TEXT NOT NULL,
@@ -65,6 +51,21 @@ CREATE TABLE IF NOT EXISTS workspace (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
   FOREIGN KEY(org_id, project_id) REFERENCES project ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (org_id, project_id, workspace_id)
+);
+-- git_repository 
+CREATE TABLE IF NOT EXISTS git_repository (
+  org_id TEXT NOT NULL,
+  project_id TEXT NOT NULL,
+  workspace_id TEXT NOT NULL,
+  repository_url TEXT NOT NULL,
+  branch TEXT NOT NULL DEFAULT 'main',
+  working_directory TEXT DEFAULT '',
+  options JSONB,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  FOREIGN KEY(org_id, project_id, workspace_id) REFERENCES workspace ON DELETE CASCADE,
+  git_credential_id TEXT NOT NULL REFERENCES git_credential (git_credential_id) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (org_id, project_id, workspace_id)
 );
 -- run

@@ -323,7 +323,7 @@ describe("Oicd", function () {
         () => ({
           tokenUrl,
           subject,
-          aud: "https://demo.grucloud.com",
+          aud: audience,
         }),
         getJwt,
         googleAuthenticateFederated({

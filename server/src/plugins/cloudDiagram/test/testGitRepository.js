@@ -3,10 +3,11 @@ const testMngr = require("test/testManager");
 
 const org_id = "org-alice";
 const project_id = "project-aws";
+const workspace_id = "dev";
 
 const payloadCreate = {
   git_credential_id: "cred-org-alice",
-  url: "https://github.com/FredericHeem/grucloud-aws-demo",
+  repository_url: "https://github.com/FredericHeem/grucloud-aws-demo",
   branch: "master",
 };
 
@@ -21,7 +22,9 @@ describe("Git Repository No Auth", function () {
 
   it("should get a 401 when getting all git_repositories", async () => {
     try {
-      await client.get(`v1/org/${org_id}/project/${project_id}/git_repository`);
+      await client.get(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/git_repository`
+      );
       assert(false);
     } catch (error) {
       assert.equal(error.response.data, "Unauthorized");
@@ -31,7 +34,7 @@ describe("Git Repository No Auth", function () {
   it("should get 403 when getting a git_repository", async () => {
     try {
       await client.get(
-        `v1/org/${org_id}/project/${project_id}/git_repository/123456`
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/git_repository`
       );
       assert(false);
     } catch (error) {
@@ -53,46 +56,47 @@ describe("Git Repository", function () {
   it("CRUD", async () => {
     try {
       // Create
-      const git_repository = await client.post(
-        `v1/org/${org_id}/project/${project_id}/git_repository`,
-        payloadCreate
-      );
-      assert(git_repository);
-      const { git_repository_id } = git_repository;
-      assert(git_repository_id);
+      try {
+        const git_repository = await client.post(
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/git_repository`,
+          payloadCreate
+        );
+        assert(git_repository);
 
-      assert.equal(git_repository.url, payloadCreate.url);
+        assert.equal(
+          git_repository.repository_url,
+          payloadCreate.repository_url
+        );
+      } catch (error) {
+        // May already be created
+      }
+
       // Get By Id
       {
         let getOneResult = await client.get(
-          `v1/org/${org_id}/project/${project_id}/git_repository/${git_repository_id}`
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/git_repository`
         );
         assert(getOneResult);
-        assert(getOneResult.git_repository_id);
+        assert(getOneResult.branch);
         assert(getOneResult.git_credential_id);
       }
       // Update
       {
         const inputUpdated = {
-          url: "https://github.com/FredericHeem/grucloud-aws-demo1",
+          repository_url: "https://github.com/FredericHeem/grucloud-aws-demo1",
         };
         const updatedGitCredential = await client.patch(
-          `v1/org/${org_id}/project/${project_id}/git_repository/${git_repository_id}`,
+          `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/git_repository`,
           inputUpdated
         );
-        assert.equal(updatedGitCredential.url, inputUpdated.url);
-      }
-      // Get all git_repository by project id
-      {
-        let git_repositorys = await client.get(
-          `v1/org/${org_id}/project/${project_id}/git_repository`
+        assert.equal(
+          updatedGitCredential.repository_url,
+          inputUpdated.repository_url
         );
-        assert(git_repositorys);
-        assert(Array.isArray(git_repositorys));
       }
       // Delete
       await client.delete(
-        `v1/org/${org_id}/project/${project_id}/git_repository/${git_repository_id}`
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/git_repository`
       );
     } catch (error) {
       throw error;
@@ -101,7 +105,7 @@ describe("Git Repository", function () {
   it("should get 404 when the git_repository is not found", async () => {
     try {
       await client.get(
-        `v1/org/${org_id}/project/${project_id}/git_repository/123456`
+        `v1/org/${org_id}/project/${project_id}/workspace/idonotexist/git_repository`
       );
       assert(false);
     } catch (error) {

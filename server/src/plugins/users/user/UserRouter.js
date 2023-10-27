@@ -3,6 +3,15 @@ const { tap, pipe, get, switchCase, fork } = require("rubico");
 const { isEmpty } = require("rubico/x");
 const Qs = require("qs");
 
+const userAttributes = [
+  "user_id",
+  "username",
+  "email",
+  "picture",
+  "created_at",
+  "updated_at",
+];
+
 function UserRouter({ app, models }) {
   assert(models);
   const api = {
@@ -46,8 +55,11 @@ function UserRouter({ app, models }) {
         method: "get",
         handler: (context) =>
           pipe([
-            () => ({ user_id: context.params.id }),
-            models.user.getById,
+            () => ({
+              attributes: userAttributes,
+              where: { user_id: context.params.id },
+            }),
+            models.user.findOne,
             switchCase([
               isEmpty,
               () => {

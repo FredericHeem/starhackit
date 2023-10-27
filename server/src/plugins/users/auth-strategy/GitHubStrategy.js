@@ -9,8 +9,8 @@ const config = require("config");
 const log = require("logfilename")(__filename);
 
 const profileToUser = (profile) => ({
-  username: profile.name,
-  display_name: profile.displayName,
+  username: profile.login,
+  display_name: profile.name,
   picture: { url: profile.avatar_url },
   email: profile.email,
   auth_type: "github",

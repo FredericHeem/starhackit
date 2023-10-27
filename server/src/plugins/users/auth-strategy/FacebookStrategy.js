@@ -18,8 +18,10 @@ const axios = Axios.create({
   timeout: 30e3,
 });
 
-const profileToUser = (profile) => ({
-  display_name: profile.displayName,
+const profileToUser = (profile, accessToken) => ({
+  display_name: `${profile.first_name} ${
+    profile.middle_name && profile.middle_name
+  } ${profile.last_name}`,
   username: `${profile.first_name} ${
     profile.middle_name && profile.middle_name
   } ${profile.last_name}`,
@@ -32,6 +34,7 @@ const profileToUser = (profile) => ({
 });
 
 const profileMobileToUser = (profile) => ({
+  display_name: profile.name,
   username: profile.name,
   email: profile.email,
   first_name: profile.given_name,
@@ -76,6 +79,7 @@ function registerWeb({ passport, models, publisherUser }) {
           "id",
           "email",
           "picture",
+
           "gender",
           "link",
           "locale",
@@ -84,13 +88,14 @@ function registerWeb({ passport, models, publisherUser }) {
         ],
         enableProof: false,
       },
-      async function (req, accessToken, refreshToken, profile, done) {
+      async function (req, _, { access_token }, profile, done) {
         try {
+          //refreshToken;
           log.info("registerWeb ", JSON.stringify(profile, null, 4));
           let res = await verifyWeb({
             models,
             publisherUser,
-            userConfig: profileToUser(profile._json),
+            userConfig: profileToUser(profile._json, access_token),
           });
           done(res.err, res.user);
         } catch (err) {

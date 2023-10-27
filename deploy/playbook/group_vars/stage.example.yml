@@ -33,3 +33,6 @@ google_client_secret: ""
 
 github_client_id: ""
 github_client_secret: ""
+
+gitlab_client_id: ""
+gitlab_client_secret: ""

@@ -29,6 +29,10 @@ function PassportAuth({ app, models }) {
     const registerWeb = require("./auth-strategy/GitHubStrategy").registerWeb;
     registerWeb({ passport, models, publisher });
   }
+  if (_.get(config, "authentication.gitlab")) {
+    const registerWeb = require("./auth-strategy/GitLabStrategy").registerWeb;
+    registerWeb({ passport, models, publisher });
+  }
   passport.serializeUser(function (user, done) {
     log.debug("serializeUser user.user_id", user.user_id);
     done(null, user);

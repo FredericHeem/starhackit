@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_type TEXT,
     username VARCHAR(64) UNIQUE,
     email VARCHAR(64) NOT NULL UNIQUE,
+    display_name VARCHAR(64),
     first_name VARCHAR(64),
     last_name VARCHAR(64),
     picture JSONB,

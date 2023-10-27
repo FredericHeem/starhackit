@@ -254,7 +254,34 @@ function AuthenticationRouter({ app, models }) {
       next();
     }
   );
-
+  //Gitlab
+  router.get(
+    "/gitlab",
+    passport.authenticate("gitlab", {
+      scope: "read_user api read_api",
+      //TODO redirect
+      state: { redirect: "/" },
+    })
+  );
+  router.get(
+    "/gitlab/callback",
+    passport.authenticate("gitlab"),
+    (context, next) => {
+      if (context.req.user) {
+        // context.cookies.set(
+        //   "github-access-token",
+        //   context.req.user.access_token,
+        //   {
+        //     httpOnly: false,
+        //   }
+        // );
+        context.redirect("/");
+      } else {
+        context.redirect("/login");
+      }
+      next();
+    }
+  );
   app.server.baseRouter().mount("auth", router);
 
   return router;

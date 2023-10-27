@@ -19,6 +19,7 @@ const axios = Axios.create({
 });
 
 const profileWebToUser = (profile) => ({
+  display_name: profile.displayName,
   username: profile.displayName,
   email: profile.emails[0].value,
   first_name: profile.name.givenName,

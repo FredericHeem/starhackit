@@ -1,6 +1,6 @@
 const assert = require("assert");
 const _ = require("lodash");
-const GitHubStrategy = require("passport-github").Strategy;
+const GitLabStrategy = require("passport-gitlab2").Strategy;
 const { verifyWeb } = require("./StrategyUtils");
 
 //TODO
@@ -9,30 +9,32 @@ const config = require("config");
 const log = require("logfilename")(__filename);
 
 const profileToUser = (profile) => ({
-  username: profile.name,
-  display_name: profile.displayName,
+  username: profile.username,
+  display_name: profile.name,
   picture: { url: profile.avatar_url },
   email: profile.email,
-  auth_type: "github",
+  auth_type: "gitlab",
   auth_id: profile.id,
 });
 
 function registerWeb({ passport, models, publisherUser }) {
+  assert(passport);
   assert(models);
-  let authenticationGHConfig = config.authentication.github;
+  let authenticationGHConfig = config.authentication.gitlab;
   if (authenticationGHConfig && !_.isEmpty(authenticationGHConfig.clientID)) {
-    log.info("configuring github authentication strategy");
-    let githubStrategy = new GitHubStrategy(
+    log.info("configuring gitlab authentication strategy");
+    let gitlabStrategy = new GitLabStrategy(
       {
         ...authenticationGHConfig,
       },
       async function (_accessToken, _refreshToken, params, profile, done) {
         try {
-          log.info("registerWeb ", JSON.stringify(profile, null, 4));
+          log.debug("registerWeb ", JSON.stringify(profile, null, 4));
+          const userConfig = profileToUser(profile._json);
           let res = await verifyWeb({
             models,
             publisherUser,
-            userConfig: profileToUser(profile._json),
+            userConfig,
           });
           done(res.err, { ...params, ...res.user });
         } catch (err) {
@@ -40,7 +42,7 @@ function registerWeb({ passport, models, publisherUser }) {
         }
       }
     );
-    passport.use("github", githubStrategy);
+    passport.use("gitlab", gitlabStrategy);
   }
 }
 

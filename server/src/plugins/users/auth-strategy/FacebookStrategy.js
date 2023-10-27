@@ -19,6 +19,7 @@ const axios = Axios.create({
 });
 
 const profileToUser = (profile) => ({
+  display_name: profile.displayName,
   username: `${profile.first_name} ${
     profile.middle_name && profile.middle_name
   } ${profile.last_name}`,

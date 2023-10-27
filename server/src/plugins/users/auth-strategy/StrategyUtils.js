@@ -1,6 +1,6 @@
 const assert = require("assert");
 const { Strategy } = require("passport-local");
-
+const { pick } = require("rubico");
 const log = require("logfilename")(__filename);
 
 function createRegisterMobile({
@@ -35,7 +35,13 @@ function createRegisterMobile({
   );
   passport.use(`${name}_mobile`, strategy);
 }
-
+const userAttributes = [
+  "email",
+  "user_id",
+  "username",
+  "picture",
+  "display_name",
+];
 async function verifyWeb({ models, publisherUser, userConfig }) {
   assert(userConfig);
   assert(models);
@@ -47,11 +53,11 @@ async function verifyWeb({ models, publisherUser, userConfig }) {
   if (userByEmail) {
     log.debug("email already registered ");
     await models.user.update({
-      data: userConfig,
+      data: pick(userAttributes)(userConfig),
       where: { email: userConfig.email },
     });
     const userUpdated = await models.user.findOne({
-      attributes: ["email", "user_id", "username", "picture"],
+      attributes: userAttributes,
       where: { email: userConfig.email },
     });
     return {

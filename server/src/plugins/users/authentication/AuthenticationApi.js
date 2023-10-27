@@ -1,5 +1,4 @@
 const assert = require("assert");
-const _ = require("lodash");
 const Chance = require("chance");
 let chance = new Chance();
 

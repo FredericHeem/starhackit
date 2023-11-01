@@ -5,7 +5,8 @@ const testMngr = require("test/testManager");
 const org_id = "org-alice";
 
 const payloadCreate = {
-  provider_type: "GitHub",
+  provider: "GitHub",
+  auth_type: "PersonalAccessCode",
   username: "username",
   password: "password",
 };

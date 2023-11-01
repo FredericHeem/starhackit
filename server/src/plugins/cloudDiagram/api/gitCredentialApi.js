@@ -6,10 +6,12 @@ const { contextSet404, contextSetOk } = require("utils/koaCommon");
 const { middlewareUserBelongsToOrg } = require("../middleware");
 
 const gitCredentialAttribute = [
-  "provider_type",
+  "provider",
+  "auth_type",
   "org_id",
   "git_credential_id",
   "username",
+  "password",
 ];
 
 const buildWhereFromContext = pipe([

@@ -33,6 +33,7 @@ const extractRedirectFromState = pipe([
 ]);
 
 const extractRedirectFromSearchParams = (context) =>
+  new URL(context.request.URL).searchParams.get("nextPath") ??
   new URL(context.request.headers.referer).searchParams.get("nextPath") ??
   successRedirect;
 
@@ -276,6 +277,7 @@ function AuthenticationRouter({ app, models }) {
     "/github/callback",
     passport.authenticate("github"),
     (context, next) => {
+      //console.log("/github/callback", context.request);
       const redirect = extractRedirectFromState(context);
       if (context.req.user) {
         context.cookies.set(
@@ -295,6 +297,7 @@ function AuthenticationRouter({ app, models }) {
   //Gitlab
   router.get("/gitlab", (context, next) => {
     const redirect = extractRedirectFromSearchParams(context);
+    //console.log("gitlab redirect to ", redirect);
     return passport.authenticate("gitlab", {
       scope: "read_user api read_api",
       state: JSON.stringify({ redirect }),

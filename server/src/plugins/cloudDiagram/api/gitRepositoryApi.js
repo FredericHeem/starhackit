@@ -86,7 +86,7 @@ exports.GitRepositoryApi = ({ app, models }) => {
             }),
             switchCase([
               isEmpty,
-              tap(contextSet404({ context })),
+              tap(contextSetOk({ context })),
               tap(contextSetOk({ context })),
             ]),
           ])(),

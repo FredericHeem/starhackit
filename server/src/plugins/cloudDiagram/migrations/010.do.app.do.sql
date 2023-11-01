@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS user_orgs (
 -- git_credential
 CREATE TABLE IF NOT EXISTS git_credential (
   git_credential_id TEXT,
-  provider_type TEXT NOT NULL DEFAULT 'GitHub',
+  provider TEXT NOT NULL DEFAULT 'GitHub',
+  auth_type TEXT NOT NULL,
   username TEXT NOT NULL,
   password TEXT NOT NULL,
   options JSONB,

@@ -5,12 +5,21 @@ VALUES ('org-alice', 'org alice');
 INSERT INTO user_orgs (org_id, user_id)
 VALUES ('org-alice', 'alice-1234567890');
 -- git_credential
-INSERT INTO git_credential (git_credential_id, org_id, username, password)
+INSERT INTO git_credential (
+        git_credential_id,
+        org_id,
+        username,
+        password,
+        provider,
+        auth_type
+    )
 VALUES (
         'cred-org-alice',
         'org-alice',
         'alice',
-        'password'
+        'password',
+        'GitHub',
+        'PersonalAccessCode'
     );
 -- project aws
 INSERT INTO project (org_id, project_id, project_name)

@@ -4,8 +4,6 @@ const { find } = require("rubico/x");
 
 const fs = require("fs").promises;
 const Axios = require("axios");
-// const { Octokit, App } = require("octokit");
-// const { createAppAuth } = require("@octokit/auth-app");
 
 const testMngr = require("test/testManager");
 const { GeneralSign, importPKCS8 } = require("jose");

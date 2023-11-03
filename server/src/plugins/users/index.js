@@ -1,24 +1,25 @@
-const Promise = require('bluebird');
+const Promise = require("bluebird");
 const nodemailer = require("nodemailer");
-const PassportAuth = require('./PassportAuth');
-//TODO
-const config = require('config');
+const PassportAuth = require("./PassportAuth");
+const config = require("config");
 // Jobs
-const MailJob =  require('./jobs/mail/MailJob');
-const MeRouter =  require('./me/MeRouter');
-const UserRouter =  require('./user/UserRouter');
-const AuthenticationRouter = require('./authentication/AuthenticationRouter');
 
-function UserPlugin(app){
+const MailJob = require("./jobs/mail/MailJob");
+const MeRouter = require("./me/MeRouter");
+const UserRouter = require("./user/UserRouter");
+const AuthenticationRouter = require("./authentication/AuthenticationRouter");
+
+function UserPlugin(app) {
   let log = require("logfilename")(__filename);
+  const { sql } = app.data;
+  const sqlAdaptor = require("utils/SqlAdapter")({ sql });
+  const models = {
+    user: sqlAdaptor(require("./sql/UserSql")({ sql })),
+    userPending: sqlAdaptor(require("./sql/UserPendingSql")({ sql })),
+  };
+  setupAuthentication({ app, models });
 
-  app.data.registerModelsFromDir(__dirname, './models');
-
-  setupAuthentication(app);
-
-  setupRouter(app);
-
-  let models = app.data.models();
+  setupRouter({ app, models });
 
   let parts = [];
   if (config.mail && config.mail.smtp) {
@@ -28,51 +29,34 @@ function UserPlugin(app){
   }
 
   return {
-    async start(){
+    models,
+    async start() {
       try {
         for (let part of parts) {
           await part.start(app);
-        };
-      } catch(error){
+        }
+      } catch (error) {
         log.error(`cannot start: ${error}`);
       }
     },
 
-    async stop(){
-      await Promise.each(parts, obj => obj.stop(app));
+    async stop() {
+      await Promise.each(parts, (obj) => obj.stop(app));
     },
-
-    seedDefault(){
-      let seedDefaultFns = [
-        models.Group.seedDefault,
-        models.User.seedDefault,
-        models.Permission.seedDefault,
-        models.GroupPermission.seedDefault
-      ];
-      return Promise.each(seedDefaultFns, fn => fn());
-    },
-
-    async isSeeded() {
-      let count = await models.User.count();
-      log.debug("#users ", count);
-      return count;
-    }
   };
 }
 
-function setupRouter(app){
+function setupRouter({ app, models }) {
   //Authentication
-  AuthenticationRouter(app);
+  AuthenticationRouter({ app, models });
 
-  //Me
-  MeRouter(app);
-
-  //Users
-  UserRouter(app);
+  [MeRouter, UserRouter].forEach((router) =>
+    app.server.createRouter(router({ app, models }))
+  );
 }
 
-function setupAuthentication(app) {
-  let auth = new PassportAuth(app);
+function setupAuthentication({ app, models }) {
+  let auth = new PassportAuth({ app, models });
   app.auth = auth;
   return auth;
 }

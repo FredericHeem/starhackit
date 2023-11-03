@@ -1,4 +1,4 @@
-FROM node:16-alpine as build
+FROM node:20-alpine as build
 
 ARG BUILD_VERSION
 ENV BUILD_VERSION $BUILD_VERSION
@@ -17,7 +17,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM fredericheem/alpine-nginx
+FROM nginx:alpine-slim
 WORKDIR /app
 
 COPY --from=build /app/dist /usr/html/

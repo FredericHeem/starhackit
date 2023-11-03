@@ -1,5 +1,3 @@
-const Redis = require("ioredis");
-
 function Store(config = {}) {
   let log = require("logfilename")(__filename);
   let client;
@@ -11,6 +9,7 @@ function Store(config = {}) {
       log.debug("start ", config);
       return new Promise(function (resolve, reject) {
         if (config.redis) {
+          const Redis = require("ioredis");
           client = new Redis(config.redis.url);
           client.on("error", (err) => {
             log.error("Error " + err);
@@ -31,7 +30,7 @@ function Store(config = {}) {
             reject();
           });
         } else {
-          log.error("redis not configured");
+          //log.error("redis not configured");
           return resolve();
         }
       });

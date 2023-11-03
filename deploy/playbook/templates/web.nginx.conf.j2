@@ -1,6 +1,5 @@
 user nginx;
 worker_processes 1;
-daemon off;
 
 events {
   worker_connections 1024;
@@ -27,7 +26,8 @@ http {
   gzip on;
 
   server {
-    listen 443 ssl http2;
+    listen 443 ssl;
+    http2  on;
     server_name   {{domain_name}};
     root /usr/html;
     
@@ -35,17 +35,59 @@ http {
     location /api/ {
         proxy_pass http://api;
         break;
-        
     }
+    location /ws {
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_pass http://api;
+            break;
+    }
+
+    location /.well-known/openid-configuration  {
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_pass http://api/oidc/.well-known/openid-configuration;
+    }
+    
+    location /oidc {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://api;
+    }
+
     location / {
         try_files $uri /index.html;
-        
     }
    
     location /admin {
         try_files $uri /admin/index.html;
-        
     }
+
+    # Media: images, icons, video, audio, HTC
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|mp3|ogg|ogv|webm|htc|woff2|woff)$ {
+        expires 1M;
+        access_log off;
+        # max-age must be in seconds
+        add_header Cache-Control "max-age=31536000, public";
+    }
+
+    # CSS and Javascript
+    location ~* \.(?:css|js)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "max-age=31536000, public";
+    }
+    
     ssl_certificate      /etc/letsencrypt/live/{{domain_name}}/fullchain.pem;
     ssl_certificate_key  /etc/letsencrypt/live/{{domain_name}}/privkey.pem;
   }

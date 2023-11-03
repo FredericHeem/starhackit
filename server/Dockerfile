@@ -1,5 +1,5 @@
 # ---- Base Node ----
-FROM node:14-alpine as base
+FROM node:20-alpine as base
 ENV GIT_SSH_COMMAND "ssh -i ~/.ssh/id_ecdsa -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 RUN apk update && apk upgrade && \
@@ -23,7 +23,7 @@ COPY package.json .
 FROM base AS dependencies
 # install production node packages
 RUN npm set progress=false && npm config set depth 0
-RUN npm install --only=production 
+RUN npm install --omit=dev
 # copy production node_modules aside
 RUN cp -R node_modules prod_node_modules
 # install ALL node_modules, including 'devDependencies'

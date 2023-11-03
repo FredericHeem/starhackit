@@ -7,23 +7,15 @@
       - name: docker
 
   vars_files:
-  - vars/certbot-vars.yml
+    - vars/certbot-vars.yml
 
   roles:
-  - dependencies
-  - geerlingguy.pip
-  - geerlingguy.firewall
-  - geerlingguy.docker
-  - { role: geerlingguy.certbot, when: protocol == "https" }
-  - { role: certbot-renew-hooks, when: protocol == "https" }
-  
+    - dependencies
+    - geerlingguy.pip
+    - geerlingguy.firewall
+    - geerlingguy.docker
+    - { role: geerlingguy.certbot, when: protocol == "https" }
+    - { role: certbot-renew-hooks, when: protocol == "https" }
+
   tasks:
-  - include_tasks: tasks/docker.yml
-  - include_tasks: tasks/redis.yml
-  - include_tasks: tasks/pg.yml
-    vars:
-      data_dir: "{{db_data_dir}}"
-      database: "{{db_database}}"
-      hostname: "{{db_hostname}}"
-      username: "{{db_username}}"
-      password: "{{db_password}}"
+    - include_tasks: tasks/docker.yml

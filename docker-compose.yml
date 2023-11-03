@@ -1,7 +1,7 @@
 version: "3"
 services:
   pg:
-    image: postgres:10-alpine
+    image: postgres:16-alpine
     restart: on-failure
     environment:
       POSTGRES_USER: postgres
@@ -11,13 +11,6 @@ services:
       - "5432"
     ports:
       - "7432:5432"
-    networks:
-      - net
-
-  redis:
-    image: smebberson/alpine-redis
-    expose:
-      - "6379"
     networks:
       - net
 
@@ -36,13 +29,9 @@ services:
           "db": {
             "url":  "postgres://postgres:password@pg:5432/dev?sslmode=disable"
           },
-          "redis":{
-            "url": "redis://redis:6379"
-          }
         }
     links:
       - pg
-      - redis
     entrypoint: sh scripts/initialise.sh
     networks:
       - net

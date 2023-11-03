@@ -1,70 +1,87 @@
-const _ = require("lodash");
+const assert = require("assert");
+const { tap, pipe, get, switchCase, fork } = require("rubico");
+const { isEmpty } = require("rubico/x");
 const Qs = require("qs");
-const Op = require("sequelize").Op;
 
-function UserRouter(app) {
-  const { models } = app.data.sequelize;
+const userAttributes = [
+  "user_id",
+  "username",
+  "email",
+  "picture",
+  "created_at",
+  "updated_at",
+];
 
+function UserRouter({ app, models }) {
+  assert(models);
   const api = {
     pathname: "/users",
     middlewares: [
       app.server.auth.isAuthenticated,
-      app.server.auth.isAuthorized
+      app.server.auth.isAuthorized,
     ],
-    ops: {
-      getAll: {
+    ops: [
+      {
         pathname: "/",
         method: "get",
-        handler: async context => {
-          const filter = Qs.parse(context.request.querystring);
-          _.defaults(filter, {
-            limit: 100,
-            order: "DESC",
-            offset: 0
-          });
-          const result = await models.User.findAndCountAll({
-            limit: filter.limit,
-            order: [["createdAt", filter.order]],
-            offset: filter.offset,
-            where: filter.search && {
-              [Op.or]: [
-                { username: { [Op.like]: `%${filter.search}%` } },
-                { email: { [Op.like]: `%${filter.search}%` } }
-              ]
-            }
-          });
-          context.body = {
-            count: result.count,
-            data: result.rows.map(user => user.toJSON())
-          };
-          context.status = 200;
-        }
+        handler: (context) =>
+          pipe([
+            () => context.request.querystring,
+            Qs.parse,
+            fork({
+              count: models.user.count,
+              data: models.user.findAll,
+            }),
+            switchCase([
+              get("count"),
+              (users) => {
+                context.body = users;
+                context.status = 200;
+              },
+              () => {
+                context.status = 404;
+                context.body = {
+                  error: {
+                    code: 404,
+                    name: "NotFound",
+                  },
+                };
+              },
+            ]),
+          ])(),
       },
-      getOne: {
+      {
         pathname: "/:id",
         method: "get",
-        handler: async context => {
-          const user = await models.User.findByUserId(context.params.id);
-
-          if (!user) {
-            context.status = 404;
-            context.body = {
-              error: {
-                code: 404,
-                name: "NotFound"
-              }
-            };
-          } else {
-            context.body = user.get();
-            context.status = 200;
-          }
-        }
-      }
-    }
+        handler: (context) =>
+          pipe([
+            () => ({
+              attributes: userAttributes,
+              where: { user_id: context.params.id },
+            }),
+            models.user.findOne,
+            switchCase([
+              isEmpty,
+              () => {
+                context.status = 404;
+                context.body = {
+                  error: {
+                    code: 404,
+                    name: "NotFound",
+                  },
+                };
+              },
+              (user) => {
+                context.body = user;
+                context.status = 200;
+              },
+            ]),
+          ])(),
+      },
+    ],
   };
 
-  app.server.createRouter(api);
-  return {};
+  return api;
 }
 
 module.exports = UserRouter;

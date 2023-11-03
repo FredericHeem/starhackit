@@ -6,7 +6,7 @@ const fs = require("fs");
 const pfs = fs.promises;
 const os = require("os");
 
-const { contextSet400, contextSetOk } = require("../common");
+const { contextSet400, contextSetOk } = require("utils/koaCommon");
 const { gitPush } = require("../gitUtils");
 const { infraFindOne } = require("./infraApi");
 
@@ -31,17 +31,16 @@ const InfraPushCodeApi = ({ models, log }) => ({
     ])(),
 });
 
-exports.InfraPushCodeRestApi = (app) => {
+exports.InfraPushCodeRestApi = ({ app, models }) => {
   const log = require("logfilename")(__filename);
-  const { models } = app.data.sequelize;
   const api = InfraPushCodeApi({ model: models.Infra, models, log });
   const apiSpec = {
     pathname: "/infra",
     middlewares: [
       app.server.auth.isAuthenticated /*,app.server.auth.isAuthorized*/,
     ],
-    ops: {
-      create: {
+    ops: [
+      {
         pathname: "/:id/push_code",
         method: "post",
         handler: (context) =>
@@ -49,7 +48,7 @@ exports.InfraPushCodeRestApi = (app) => {
             pipe([
               tap(() => {
                 assert(context.params.id);
-                assert(context.state.user.id);
+                assert(context.state.user.user_id);
               }),
               switchCase([
                 () => uuid.validate(context.params.id),
@@ -78,7 +77,7 @@ exports.InfraPushCodeRestApi = (app) => {
               ])()
           )(),
       },
-    },
+    ],
   };
 
   app.server.createRouter(apiSpec);

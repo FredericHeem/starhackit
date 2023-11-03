@@ -1,10 +1,11 @@
+const assert = require("assert");
 const _ = require("lodash");
 const { Strategy } = require("passport-google-oauth20");
 const GoogleTokenStrategy = require("passport-google-id-token");
 const {
   createRegisterMobile,
   createVerifyMobile,
-  verifyWeb
+  verifyWeb,
 } = require("./StrategyUtils");
 
 const Axios = require("axios");
@@ -14,58 +15,59 @@ const log = require("logfilename")(__filename);
 
 const axios = Axios.create({
   baseURL: "https://www.googleapis.com/",
-  timeout: 30e3
+  timeout: 30e3,
 });
 
-const profileWebToUser = profile => ({
+const profileWebToUser = (profile) => ({
+  display_name: profile.displayName,
   username: profile.displayName,
   email: profile.emails[0].value,
-  firstName: profile.name.givenName,
-  lastName: profile.name.familyName,
+  first_name: profile.name.givenName,
+  last_name: profile.name.familyName,
   picture: {
-    url: profile.photos[0].value
+    url: profile.photos[0].value,
   },
-  authProvider: {
-    name: "google",
-    authId: profile.id
-  }
+  auth_type: "google",
+  auth_id: profile.id,
 });
 
-const profileMobileToUser = profile => ({
+const profileMobileToUser = (profile) => ({
   username: profile.name,
   email: profile.email,
-  firstName: profile.given_name,
-  lastName: profile.family_name,
+  first_name: profile.given_name,
+  last_name: profile.family_name,
   picture: {
-    url: profile.picture
+    url: profile.picture,
   },
-  authProvider: {
-    name: "google",
-    authId: profile.id
-  }
+  auth_type: "google",
+  auth_id: profile.id,
 });
 
-function verifyMobile(models, publisherUser, profile, accessToken) {
+function verifyMobile({ models, publisherUser, accessToken }) {
+  assert(models);
+  assert(accessToken);
+
   const getMe = () =>
     axios
       .get("userinfo/v2/me", {
         headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .then(res => {
+      .then((res) => {
         log.debug("verifyMobile me: ", JSON.stringify(res.data, null, 4));
         return res;
       })
-      .then(res => profileMobileToUser(res.data));
+      .then((res) => profileMobileToUser(res.data));
 
-  return createVerifyMobile(getMe, models, publisherUser, accessToken);
+  return createVerifyMobile({ getMe, models, publisherUser, accessToken });
 }
 
-function registerWeb(passport, models, publisherUser) {
+function registerWeb({ passport, models, publisherUser }) {
+  assert(models);
   const googleConfig = config.authentication.google;
   if (googleConfig && !_.isEmpty(googleConfig.clientID)) {
-    const strategy = new Strategy(googleConfig, async function(
+    const strategy = new Strategy(googleConfig, async function (
       accessToken,
       refreshToken,
       profile,
@@ -73,11 +75,11 @@ function registerWeb(passport, models, publisherUser) {
     ) {
       log.debug("registerWeb me: ", JSON.stringify(profile, null, 4));
       try {
-        const res = await verifyWeb(
+        const res = await verifyWeb({
           models,
           publisherUser,
-          profileWebToUser(profile)
-        );
+          userConfig: profileWebToUser(profile),
+        });
         done(res.err, res.user);
       } catch (err) {
         done(err);
@@ -87,10 +89,15 @@ function registerWeb(passport, models, publisherUser) {
   }
 }
 
-function registerMobile(passport, models, publisherUser) {
-  createRegisterMobile("google", verifyMobile, passport, models, publisherUser);
-
-  //const googleConfig = config.authentication.google;
+function registerMobile({ passport, models, publisherUser }) {
+  assert(models);
+  createRegisterMobile({
+    name: "google",
+    verifyMobile,
+    passport,
+    models,
+    publisherUser,
+  });
 
   // Standalone android
   passport.use(
@@ -105,11 +112,14 @@ function registerMobile(passport, models, publisherUser) {
       );
 
       try {
-        const res = await verifyWeb(
+        const res = await verifyWeb({
           models,
           publisherUser,
-          profileMobileToUser({ ...parsedToken.payload, id: googleId })
-        );
+          userConfig: profileMobileToUser({
+            ...parsedToken.payload,
+            id: googleId,
+          }),
+        });
         done(res.err, res.user);
       } catch (err) {
         log.error("GoogleTokenStrategy", err);

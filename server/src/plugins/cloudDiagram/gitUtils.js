@@ -120,17 +120,17 @@ const gitCloneOrPull = ({
     ]),
   ])();
 
-const getProject = ({ providerName, project }) =>
+const getProject = ({ provider_name, project }) =>
   pipe([
     tap(() => {
-      assert(providerName);
+      assert(provider_name);
     }),
     () => project,
     when(
       isEmpty,
       pipe([
         () => ({
-          directory: `packages/core/template/${providerName}`,
+          directory: `packages/core/template/${provider_name}`,
           url: "https://github.com/grucloud/grucloud/",
         }),
       ])
@@ -142,7 +142,14 @@ const getProject = ({ providerName, project }) =>
   ])();
 
 exports.gitPush = ({
-  infra: { providerName, gitCredential, gitRepository, user, user_id, project },
+  infra: {
+    provider_name,
+    gitCredential,
+    gitRepository,
+    user,
+    user_id,
+    project,
+  },
   dirTemplate,
   dir,
   message,
@@ -165,7 +172,7 @@ exports.gitPush = ({
             fs,
             http,
             dir: dirTemplate,
-            gitRepository: getProject({ providerName, project }),
+            gitRepository: getProject({ provider_name, project }),
             gitCredential,
             user,
           }),
@@ -183,7 +190,7 @@ exports.gitPush = ({
           getFiles({
             dir: path.resolve(
               dirTemplate,
-              getProject({ providerName, project }).directory
+              getProject({ provider_name, project }).directory
             ),
           }),
         tap((files) => {
@@ -192,7 +199,7 @@ exports.gitPush = ({
         map((filepath) => ({
           source: path.resolve(
             dirTemplate,
-            getProject({ providerName, project }).directory,
+            getProject({ provider_name, project }).directory,
             filepath
           ),
           destination: path.resolve(dir, filepath),

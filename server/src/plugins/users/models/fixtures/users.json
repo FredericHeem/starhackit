@@ -1,21 +1,17 @@
 [
- {
-    "username":"admin",
-    "email": "admin@myapp.com",
-    "password":"password",
-    "groups": ["Admin", "User"]
+  {
+    "username": "admin",
+    "email": "admin@mail.com",
+    "password": "password"
   },
   {
-    "username":"alice",
+    "username": "alice",
     "email": "alice@mail.com",
-    "password":"password",
-    "groups": ["User"]
+    "password": "password"
   },
   {
-    "username":"bob",
+    "username": "bob",
     "email": "bob@mail.com",
-    "password":"password",
-    "groups": ["User"]
+    "password": "password"
   }
-
 ]

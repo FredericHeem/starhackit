@@ -11,7 +11,6 @@ describe("FacebookMobileAuth", function () {
       this.skip();
     }
   });
-  after(async () => {});
 
   beforeEach(async () => {
     client = testMngr.createClient();

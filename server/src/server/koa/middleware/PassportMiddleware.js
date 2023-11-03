@@ -1,25 +1,27 @@
-const passport = require('koa-passport');
+const assert = require("assert");
+const passport = require("koa-passport");
 
-
-function PassportMiddleware(app, koaApp/*, config*/){
-  let log = require('logfilename')(__filename);
+function PassportMiddleware(app, koaApp /*, config*/) {
+  let log = require("logfilename")(__filename);
 
   koaApp.use(passport.initialize());
   koaApp.use(passport.session());
 
-  let models = app.data.sequelize.models;
-
-  koaApp.use(async(context, next) => {
-    log.debug(`${context.method} ${context.url} JWT`);
-    return passport.authenticate('jwt', { session: false}, (err, user/*, info, status*/) => {
-      if (user === false) {
-        log.debug("auth JWT KO");
-      } else {
-        log.debug("auth JWT OK, ", user);
-        context.state.user = user;
+  koaApp.use(async (context, next) => {
+    //log.debug(`${context.method} ${context.url} JWT`);
+    return passport.authenticate(
+      "jwt",
+      { session: false },
+      (err, user /*, info, status*/) => {
+        if (user === false) {
+          //log.debug("auth JWT KO");
+        } else {
+          //log.debug("auth JWT OK, ", user);
+          context.state.user = user;
+        }
+        return next();
       }
-      return next();
-    })(context);
+    )(context);
   });
 
   return {
@@ -35,32 +37,21 @@ function PassportMiddleware(app, koaApp/*, config*/){
     },
 
     async isAuthorized(context, next) {
-      let request = context.request;
-
-      if (!context.state.user) {
+      const { user } = context.state;
+      if (!user) {
         log.warn("isAuthorized user not set");
         context.status = 401;
         context.body = "Unauthorized";
       }
-
-      //TODO /api/v1 should be configurable
-      let routePath = context.route.path.replace(/^(\/api\/v1)/,"");
-      let userId = context.state.user.id;
-      let method = request.method;
-      log.debug(`isAuthorized: who:${userId}, resource:${routePath}, method: ${method}`);
-
-      try {
-        let authorized = await models.User.checkUserPermission(userId, routePath, method);
-        log.debug("isAuthorized ", authorized);
-        if (authorized) {
-          return next();
-        } else {
-          context.status = 401;
-        }
-      } catch(error){
-          log.error("isAuthorized: ", error);
+      assert(user.user_type);
+      let authorized = user.user_type === "admin";
+      log.debug("isAuthorized ", authorized);
+      if (authorized) {
+        return next();
+      } else {
+        context.status = 401;
       }
-    }
+    },
   };
 }
 

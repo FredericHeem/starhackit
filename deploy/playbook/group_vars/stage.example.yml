@@ -1,0 +1,38 @@
+---
+website_url: "https://mystage.grucloud.com"
+domain_name: "mystage.grucloud.com"
+s3_bucket_upload: grucloud-console-mystage
+
+ws_url: "ws://172.31.30.158:9000"
+ecs_cluster: "grucloud-console-mystage"
+ecs_taskDefinition: "grucloud-cli:18"
+ecs_subnet: "subnet-xxxxxx"
+ecs_securityGroup: "sg-xxxxxx"
+
+docker_hub_username: ""
+docker_hub_password: ""
+docker_hub_email: ""
+
+GRUCLOUD_OAUTH_CLIENT_SECRET: ""
+
+S3_AWS_REGION: "us-east-1"
+S3_AWSAccessKeyId: ""
+S3_AWSSecretKey: ""
+
+jwt_secret: ""
+
+db_url: ""
+mail_user: ""
+mail_password: ""
+
+facebook_client_id: ""
+facebook_client_secret: ""
+
+google_client_id: ""
+google_client_secret: ""
+
+github_client_id: ""
+github_client_secret: ""
+
+gitlab_client_id: ""
+gitlab_client_secret: ""

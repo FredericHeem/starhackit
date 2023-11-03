@@ -1,18 +1,36 @@
-let Promise = require("bluebird");
+const assert = require("assert");
 const Koa = require("koa");
 const Router = require("koa-66");
-const _ = require("lodash");
+const { tryCatch, pipe, tap } = require("rubico");
+const { forEach } = require("rubico/x");
+const websockify = require("koa-websocket");
+
+const log = require("logfilename")(__filename);
+
+const contextHandleError = (error, context) =>
+  pipe([
+    tap(() => {
+      assert(context);
+      log.error(error);
+    }),
+    () => {
+      context.status = 500;
+      context.body = error.toString();
+    },
+  ])();
 
 function KoaServer(app) {
-  let log = require("logfilename")(__filename);
-  let koaApp = new Koa();
   const { config } = app;
   let httpHandle;
   let rootRouter = new Router();
   let baseRouter = new Router();
+
+  const koaApp = websockify(new Koa());
+
   middlewareInit(app, koaApp, config);
   return {
     koa: koaApp,
+    rootRouter,
     auth: require("./middleware/PassportMiddleware")(app, koaApp, config),
     baseRouter() {
       return baseRouter;
@@ -22,30 +40,29 @@ function KoaServer(app) {
       koaApp.use(rootRouter.routes());
     },
     displayRoutes() {
-      rootRouter.stacks.forEach(function(stack) {
+      rootRouter.stacks.forEach(function (stack) {
         log.debug(`${stack.methods} : ${stack.path}`);
       });
     },
-    createRouter(api) {
+    createRouter(api, parentRoute = baseRouter) {
       const router = new Router();
-      _.each(api.middlewares, middleware => router.use(middleware));
-      _.each(api.ops, ({ pathname, method, handler }) =>
-        router[method](pathname, handler)
-      );
-
-      baseRouter.mount(api.pathname, router);
+      forEach((m) => router.use(m))(api.middlewares);
+      api.ops.map(({ pathname, method, handler }) => {
+        router[method](pathname, tryCatch(handler, contextHandleError));
+      });
+      parentRoute.mount(api.pathname, router);
     },
     /**
      * Start the koa server
      */
     async start() {
-      let configHttp = config.koa;
-      let port = process.env.PORT || configHttp.port;
+      const configHttp = config.koa;
+      const port = process.env.PORT || configHttp.port;
 
       log.info("start koa on port %s", port);
-      return new Promise(function(resolve) {
-        httpHandle = koaApp.listen(port, function() {
-          log.info("koa server started");
+      return new Promise(function (resolve) {
+        httpHandle = koaApp.listen(port, function () {
+          //log.info("koa server started");
           resolve();
         });
       });
@@ -60,13 +77,13 @@ function KoaServer(app) {
         log.info("koa server is already stopped");
         return;
       }
-      return new Promise(function(resolve) {
-        httpHandle.close(function() {
+      return new Promise(function (resolve) {
+        httpHandle.close(function () {
           log.info("koa server is stopped");
           resolve();
         });
       });
-    }
+    },
   };
 
   function middlewareInit(app, koaApp, config) {

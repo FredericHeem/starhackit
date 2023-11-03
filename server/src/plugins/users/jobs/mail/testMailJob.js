@@ -1,12 +1,12 @@
 const assert = require("assert");
 const sinon = require("sinon");
 const _ = require("lodash");
-const config =  require("config");
+const config = require("config");
 const Store = require("../../../../store/Store");
 
 const MailJob = require("./MailJob");
 
-describe("MailJob", function() {
+describe.skip("MailJob", function () {
   let publisher = Store(config);
   let sandbox;
 
@@ -18,26 +18,26 @@ describe("MailJob", function() {
     await publisher.stop();
   });
 
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     sandbox = sinon.createSandbox();
     done();
   });
 
-  afterEach(function(done) {
+  afterEach(function (done) {
     sandbox.restore();
     done();
   });
 
   let user = {
     email: "idonotexist@mail.com",
-    code: "1234567890123456"
+    code: "1234567890123456",
   };
 
   let emailType = "user.registering";
 
   describe("Basic", () => {
     let mailJob;
-    beforeEach(function(done) {
+    beforeEach(function (done) {
       const sendMail = (mailOptions, fn) => {
         fn(null, mailOptions);
       };
@@ -45,7 +45,7 @@ describe("MailJob", function() {
       done();
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
       done();
     });
     it.skip("getTemplate ok", async () => {
@@ -64,7 +64,7 @@ describe("MailJob", function() {
       let passwordReset = "user.resetpassword";
       await mailJob._sendEmail(passwordReset, user);
     });
-    it.skip("invalid email type", done => {
+    it.skip("invalid email type", (done) => {
       (async () => {
         try {
           await mailJob._sendEmail("invalidEmailType", user);
@@ -75,7 +75,7 @@ describe("MailJob", function() {
         }
       })();
     });
-    it.skip("no email", done => {
+    it.skip("no email", (done) => {
       (async () => {
         try {
           await mailJob._sendEmail(emailType, {});
@@ -86,7 +86,7 @@ describe("MailJob", function() {
         }
       })();
     });
-    it.skip("no token", done => {
+    it.skip("no token", (done) => {
       (async () => {
         try {
           await mailJob._sendEmail(emailType, { email: user.email });
@@ -100,13 +100,11 @@ describe("MailJob", function() {
   });
 
   describe("StartStop", () => {
-    beforeEach(async () => {
-    });
+    beforeEach(async () => {});
 
-    afterEach(async () => {
-    });
+    afterEach(async () => {});
 
-    it("publish user.register", done => {
+    it("publish user.register", (done) => {
       (async () => {
         const sendMail = (options, cb) => {
           console.log("sendMail ", options);
@@ -120,7 +118,7 @@ describe("MailJob", function() {
         console.log("published user.registering ");
       })();
     });
-    it.skip("publish user.resetpassword", done => {
+    it.skip("publish user.resetpassword", (done) => {
       (async () => {
         const sendMail = (options, cb) => {
           console.log("sendMail ", options);
@@ -135,7 +133,7 @@ describe("MailJob", function() {
     });
   });
   describe("Ko", () => {
-    it.skip("login failed", async done => {
+    it.skip("login failed", async (done) => {
       let badPasswordConfig = _.clone(config, true);
       //console.log(JSON.stringify(badPasswordConfig));
       badPasswordConfig.mail.smtp.auth.pass = "1234567890";

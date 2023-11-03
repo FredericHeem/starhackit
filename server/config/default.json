@@ -7,9 +7,6 @@
       "colorize": true
     }
   },
-  "redis": {
-    "url": "//localhost:7379"
-  },
   "koa": {
     "port": 9000,
     "apiBasePath": "/api/v1/",
@@ -41,6 +38,28 @@
         "user": "postmaster@yourproject.mailgun.org",
         "pass": "11111111111111111111"
       }
+    }
+  },
+  "authentication": {
+    "_facebook": {
+      "clientID": "",
+      "clientSecret": "",
+      "callbackURL": "http://localhost:5173/api/v1/auth/facebook/callback"
+    },
+    "_google": {
+      "clientID": "",
+      "clientSecret": "",
+      "callbackURL": "https://localhost:5173/api/v1/auth/google/callback"
+    },
+    "github": {
+      "clientID": "",
+      "clientSecret": "",
+      "callbackURL": "http://localhost:5173/api/v1/auth/github/callback"
+    },
+    "gitlab": {
+      "clientID": "",
+      "clientSecret": "",
+      "callbackURL": "http://localhost:5173/api/v1/auth/gitlab/callback"
     }
   }
 }

@@ -1,34 +1,29 @@
 {
   "count": 105,
-  "data": [{
-    "id": "6fba6aca-db12-4eb1-8ae6-918cf20e0f8c",
-    "username": "Laura.Jennie.Reeves",
-    "email": "Laura.Jennie.Reeves@mail.com",
-    "firstName": null,
-    "lastName": null,
-    "profile": {
-      "biography": "Ciao"
+  "data": [
+    {
+      "id": "6fba6aca-db12-4eb1-8ae6-918cf20e0f8c",
+      "username": "Laura.Jennie.Reeves",
+      "email": "Laura.Jennie.Reeves@mail.com",
+      "first_name": null,
+      "last_name": null,
+      "profile": {
+        "biography": "Ciao"
+      },
+      "created_at": "2016-05-28T15:00:56.358Z",
+      "updated_at": "2016-05-28T15:00:56.358Z"
     },
-    "auth_provider": [{
-      "name": "facebook",
-      "authId": "1234567890"
-    }],
-    "createdAt": "2016-05-28T15:00:56.358Z",
-    "updatedAt": "2016-05-28T15:00:56.358Z"
-  }, {
-    "id": "0fba6aca-db12-4eb1-8ae6-918cf20e0f8d",
-    "username": "Hilda.Virgie.Young",
-    "email": "Hilda.Virgie.Young@mail.com",
-    "firstName": null,
-    "lastName": null,
-    "profile": {
-      "biography": "Ciao"
-    },
-    "auth_provider": [{
-      "name": "facebook",
-      "authId": "1234567890"
-    }],
-    "createdAt": "2016-05-28T15:00:55.922Z",
-    "updatedAt": "2016-05-28T15:00:55.922Z"
-  }]
+    {
+      "id": "0fba6aca-db12-4eb1-8ae6-918cf20e0f8d",
+      "username": "Hilda.Virgie.Young",
+      "email": "Hilda.Virgie.Young@mail.com",
+      "first_name": null,
+      "last_name": null,
+      "profile": {
+        "biography": "Ciao"
+      },
+      "created_at": "2016-05-28T15:00:55.922Z",
+      "updated_at": "2016-05-28T15:00:55.922Z"
+    }
+  ]
 }

@@ -112,7 +112,7 @@ traits: !include traits.raml
   get:
     is: [
       searchable: {description: "with valid searchable fields: firtName", example: "[\"firtName\", \"marco\", \"like\"]"},
-      orderable: {fieldsList: "lastName"},
+      orderable: {fieldsList: "last_name"},
       pageable
     ]
     responses:

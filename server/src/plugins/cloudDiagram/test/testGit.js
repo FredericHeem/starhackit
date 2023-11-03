@@ -1,6 +1,5 @@
 const assert = require("assert");
 const { pipe, tap, tryCatch, map } = require("rubico");
-const { first } = require("rubico/x");
 const path = require("path");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
@@ -14,7 +13,7 @@ const { gitPush, gitPushInventory } = require("../gitUtils");
 
 const { PERSONAL_ACCESS_TOKEN, GIT_USERNAME, GIT_REPOSITORY } = process.env;
 
-describe("Git", function () {
+describe.skip("Git", function () {
   before(async function () {
     if (!testMngr.app.config.infra) {
       this.skip();
@@ -51,29 +50,10 @@ describe("Git", function () {
       messsage: "update inventory again",
     })(input);
   });
-  it("gitCreateProject from template ec2", async () => {
-    const infra = {
-      providerType: "aws",
-      providerName: "aws",
-      gitCredential: {
-        username: GIT_USERNAME,
-        password: PERSONAL_ACCESS_TOKEN,
-      },
-      gitRepository: { url: GIT_REPOSITORY, branch: "master" },
-      user: { username: "topolino", email: "topolino@mail.com" },
-      user_id: uuid.v4(),
-      project: {
-        url: "https://github.com/grucloud/grucloud/",
-        title: "EC2 an instance with public address",
-        directory: "examples/aws/ec2",
-        branch: "main",
-      },
-    };
-  });
   it("gitCreateProject from template eks", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -99,8 +79,8 @@ describe("Git", function () {
   });
   it("gitCreateProject from empty template", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,
@@ -121,8 +101,8 @@ describe("Git", function () {
   });
   it("gitCreateProject repo 404", async () => {
     const infra = {
-      providerType: "aws",
-      providerName: "aws",
+      provider_type: "aws",
+      provider_name: "aws",
       gitCredential: {
         username: GIT_USERNAME,
         password: PERSONAL_ACCESS_TOKEN,

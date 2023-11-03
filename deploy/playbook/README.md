@@ -16,7 +16,7 @@ Check the ansible version:
 
 ```
 $ ansible --version
-ansible 2.9.6
+ansible 2.15.4
 
 ```
 
@@ -26,7 +26,6 @@ Ansible enables the automation of the installation and configuration of the vari
 All components are dockerised
 
 - Docker
-- Redis
 - Postgres
 - Certbot to generate and renew ssl certificate
 - The node backend
@@ -47,7 +46,7 @@ Copy the file [vault example](group_vars/all/vault.example.yml) to a file called
 
 The strict necessary is the docker configuration.
 
-Please create a new access token from _https://hub.docker.com/settings/security_ for _docker_hub_password_
+Please create a new access token from https://hub.docker.com/settings/security for _docker_hub_password_
 
 [include](group_vars/all/vault.example.yml)
 

@@ -1,32 +1,31 @@
 ---
-  - name: stop docker
-    command: systemctl stop docker
+- name: stop docker
+  command: systemctl stop docker
 
-  - name: Copy docker daemon config
-    template: src=templates/daemon.json.j2 dest=/etc/docker/daemon.json mode=0755
-    
-  - name: start docker
-    command: systemctl start docker
+- name: Copy docker daemon config
+  template: src=templates/daemon.json.j2 dest=/etc/docker/daemon.json mode=0755
 
-  - name: Add the user docker
-    user:
-      name: "{{user}}"
-      shell: /bin/bash
+- name: start docker
+  command: systemctl start docker
 
-  - name: make docker directory
-    file:
-      path: /home/{{user}}/{{docker_directory}}
-      state: directory
-      owner: "{{user}}"
+- name: Add the user docker
+  user:
+    name: "{{user}}"
+    shell: /bin/bash
 
-  - name: Login to docker registry
-    docker_login:
-      username: "{{ docker_hub_username }}"
-      password: "{{ docker_hub_password }}"
-      email: "{{ docker_hub_email }}"
+- name: make docker directory
+  file:
+    path: /home/{{user}}/{{docker_directory}}
+    state: directory
+    owner: "{{user}}"
 
-  - name: Create a network
-    docker_network:
-      name: net
-    tags:
+- name: Login to docker registry
+  docker_login:
+    username: "{{ docker_hub_username }}"
+    password: "{{ docker_hub_password }}"
+
+- name: Create a network
+  docker_network:
+    name: net
+  tags:
     - containers

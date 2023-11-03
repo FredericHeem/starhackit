@@ -1,18 +1,21 @@
+const assert = require("assert");
 const testMngr = require("test/testManager");
 const Axios = require("axios");
 const { sendToUser } = require("./sendNotification");
 //TODO error Request failed with status code 503
 describe("Expo Push Notification", function () {
   let client;
-  const models = testMngr.app.data.models();
+  let modelsUser;
+  let modelsExpo;
   before(async function () {
     if (!testMngr.app.config.expo) {
       this.skip();
     }
+    modelsUser = testMngr.app.plugins.get().users.models;
+    modelsExpo = testMngr.app.plugins.get().expo.models;
     client = testMngr.client("alice");
     await client.login();
   });
-  after(async () => {});
   it("should get all token for the current user", async () => {
     const body = {
       token: "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
@@ -37,17 +40,19 @@ describe("Expo Push Notification", function () {
     });
   });
   it("send to user", async () => {
-    const user = await models.User.findByEmail("alice@mail.com");
-    const user_id = user.get().id;
-    await models.PushToken.upsert({
+    const user = await modelsUser.user.findOne({
+      where: { email: "alice@mail.com" },
+    });
+    assert(user);
+    const user_id = user.user_id;
+    await modelsExpo.pushToken.upsert({
       token: "ExponentPushToken[8giJthMgGEyYUr8H5NsPWO]",
       user_id,
     });
-    const res = await sendToUser(models, user_id, {
+    const res = await sendToUser(modelsExpo, user_id, {
       title: "test notif",
       body: "Ciao ciccio",
       sound: "default",
     });
-    console.log("res: ", res);
   });
 });

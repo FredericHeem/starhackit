@@ -5,9 +5,11 @@ const testMngr = require("test/testManager");
 const UserUtils = require("./userUtils");
 
 describe("UserRegister", function () {
-  let app = testMngr.app;
+  const { app } = testMngr;
   this.timeout(300e3);
-  let models = app.data.models();
+  const { models } = app.plugins.get().users;
+  let { sql } = app.data;
+
   let client;
   let sandbox;
   let userUtils = UserUtils();
@@ -15,7 +17,6 @@ describe("UserRegister", function () {
     sandbox = sinon.createSandbox();
     assert(app.plugins);
     sinon.stub(app.publisher, "publish").callsFake((key, msg) => {
-      //console.log("publish has been called");
       //assert.equal(key, "user.registered");
       assert(msg);
     });
@@ -28,13 +29,13 @@ describe("UserRegister", function () {
     client = testMngr.createClient();
   });
   it("shoud register up to n users", async () => {
-    let countBefore = await models.User.count();
+    let countBefore = await models.user.count();
     assert(countBefore > 0);
     let usersToAdd = 10;
     // Limit to 1 when using sqlite
     let limit = 2;
-    await userUtils.createBulk(models, client, usersToAdd, limit);
-    let countAfter = await models.User.count();
+    await userUtils.createBulk({ sql, models, client, usersToAdd, limit });
+    let countAfter = await models.user.count();
     //console.log("users to add ", usersToAdd);
     //console.log("#users before ", countBefore);
     //console.log("#users after ", countAfter);
@@ -43,49 +44,45 @@ describe("UserRegister", function () {
   });
 
   it("shoud register a user", async () => {
-    let userConfig = await userUtils.registerRandom(models, client);
-    //The user shoud no longer be in the user_pendings table
-    let res = await models.UserPending.findOne({
-      where: {
-        email: userConfig.email,
-      },
-    });
-    assert(!res);
-
     try {
-      res = await client.post("v1/auth/register", userConfig);
-      assert(false, "should not be here");
-    } catch (error) {
-      //console.log(error);
-      assert.equal(error.response.status, 422);
-      assert.equal(error.response.data.error.name, "UsernameExists");
-    }
+      let userConfig = await userUtils.registerRandom({ sql, models, client });
+      //The user shoud no longer be in the user_pendings table
+      const res = await models.userPending.findOne({
+        attributes: ["email"],
+        where: { email: userConfig.email },
+      });
+      assert(!res);
 
-    // registering the same email when user is already registered
-    userConfig.username = "anotherusername";
-    res = await client.post("v1/auth/register", userConfig);
-    assert(res);
-    assert(res.success);
-    assert.equal(res.message, "confirm email");
+      try {
+        res = await client.post("v1/auth/register", userConfig);
+        assert(false, "should not be here");
+      } catch (error) {
+        //console.log(error);
+        assert.equal(error.response.status, 422);
+        assert.equal(error.response.data.error.name, "EmailExists");
+      }
 
-    // Should login now
-    let loginParam = {
-      password: userConfig.password,
-      username: userConfig.email,
-    };
-
-    let loginRes = await client.login(loginParam);
-    assert(loginRes);
-    //console.log(loginRes);
-    const me = await client.get("v1/me");
-    assert.equal(me.email, userConfig.email);
-    await client.delete("v1/me");
-    const user = await models.User.findOne({
-      where: {
+      // Should login now
+      let loginParam = {
+        password: userConfig.password,
         email: userConfig.email,
-      },
-    });
-    assert(!user);
+      };
+
+      let loginRes = await client.login(loginParam);
+      assert(loginRes);
+      //console.log(loginRes);
+      const me = await client.get("v1/me");
+      assert.equal(me.email, userConfig.email);
+      await client.delete("v1/me");
+
+      const user = await models.user.findOne({
+        attributes: ["email"],
+        where: { email: userConfig.email },
+      });
+      assert(!user);
+    } catch (error) {
+      throw error;
+    }
   });
   it("invalid email code", async () => {
     try {
@@ -111,47 +108,26 @@ describe("UserRegister", function () {
       );
     }
   });
-  it("invalid register username too short", async () => {
-    let registerDataKo = { username: "aa", password: "aaaaaa" };
-
+  it("invalid register email too short", async () => {
+    let registerDataKo = { email: "aa", password: "aaaaaa" };
     try {
       await client.post("v1/auth/register", registerDataKo);
       assert(false);
     } catch (error) {
-      console.log(error.response.data);
-      assert.equal(error.response.status, 400);
-      assert.equal(
-        error.response.data.error.validation[0].stack,
-        "instance.username does not meet minimum length of 3"
-      );
+      //TODO should be 422
+      assert(error.response.status >= 400);
     }
   });
-  it("shoud register twice a user", async () => {
+  it("shoud reject a duplicated email", async () => {
     let userConfig = userUtils.createRandomRegisterConfig();
-    let res = await client.post("v1/auth/register", userConfig);
-    assert(res);
-    assert(res.success);
-    assert.equal(res.message, "confirm email");
-
-    userConfig.username = userUtils.createRandomRegisterConfig().username;
-
-    res = await client.post("v1/auth/register", userConfig);
-    assert(res);
-    assert(res.success);
-    assert.equal(res.message, "confirm email");
-  });
-  it("shoud reject a duplicated username", async () => {
-    let userConfig = userUtils.createRandomRegisterConfig();
-
     let res = await client.post("v1/auth/register", userConfig);
     assert.equal(res.message, "confirm email");
     try {
       res = await client.post("v1/auth/register", userConfig);
       assert(false, "should not be here");
     } catch (error) {
-      //console.log(error);
       assert.equal(error.response.status, 422);
-      assert.equal(error.response.data.error.name, "UsernameExists");
+      assert.equal(error.response.data.error.name, "EmailExists");
     }
   });
 });

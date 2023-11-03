@@ -11,8 +11,6 @@ describe("GoogleMobileAuth", function () {
       this.skip();
     }
   });
-  after(async () => {});
-
   beforeEach(async () => {
     client = testMngr.createClient();
   });

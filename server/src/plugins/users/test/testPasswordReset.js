@@ -4,7 +4,9 @@ const testMngr = require("test/testManager");
 
 describe("PasswordReset", function () {
   let app = testMngr.app;
-  let models = app.data.sequelize.models;
+  const { sql } = app.data;
+  const plugins = app.plugins.get();
+  const { models } = plugins.users;
   let client;
   let sandbox;
   let publisherUserStub;
@@ -35,29 +37,20 @@ describe("PasswordReset", function () {
     // Create the reset token
     let res = await client.post("v1/auth/reset_password", resetPaswordData);
     assert(res);
-    // Verify that the reset token has been created
-    let resUser = await models.User.findOne({
-      where: {
-        email: email,
-      },
-      include: [
-        {
-          model: models.PasswordReset,
-        },
-      ],
-    });
 
-    let user = resUser.get();
+    const user = await models.user.findOne({
+      attributes: ["password_reset_token"],
+      where: { email },
+    });
     assert(user);
 
-    let token = user.PasswordReset.get().token;
-    //console.log(token);
-    assert(token);
+    let { password_reset_token } = user;
+    assert(password_reset_token);
 
     // reset the passsword with the token
     let verifyPaswordData = {
       email,
-      token,
+      token: password_reset_token,
       password: passwordNew,
     };
 
@@ -67,17 +60,15 @@ describe("PasswordReset", function () {
     );
     assert(res);
 
-    // Verify that the reset token has been deleted
-    const passwordReset = await models.PasswordReset.findOne({
-      where: {
-        token,
-      },
+    const userPasswordReset = await models.user.findOne({
+      attributes: ["password_reset_token"],
+      where: { password_reset_token },
     });
-    assert(!passwordReset);
+    assert(!userPasswordReset);
 
     // Now login with the new password
     let loginData = {
-      username: email,
+      email: email,
       password: passwordNew,
     };
 
@@ -102,33 +93,18 @@ describe("PasswordReset", function () {
     assert(res);
 
     // Verify that the reset token has been created
-    let resUser = await models.User.findOne({
-      where: {
-        email: email,
-      },
-      include: [
-        {
-          model: models.PasswordReset,
-        },
-      ],
+    const user = await models.user.findOne({
+      attributes: ["password_reset_token"],
+      where: { email },
     });
-
-    let user = resUser.get();
     assert(user);
-
-    let token = user.PasswordReset.get().token;
-    //console.log(token);
+    let token = user.password_reset_token;
     assert(token);
     //Set the token creation date to the past
-    await models.PasswordReset.update(
-      {
-        createdAt: new Date("2016-08-25").toUTCString(),
-      },
-      {
-        where: { token },
-      }
-    );
-    // reset the passsword with the token
+    await sql`
+      UPDATE users 
+      SET password_reset_date=${new Date("2016-08-25").toUTCString()}
+      WHERE password_reset_token=${token};`;
     let verifyPaswordData = {
       email,
       token,

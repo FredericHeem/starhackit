@@ -5,13 +5,11 @@ const testMngr = require("test/testManager");
 describe("FacebookAuth", function () {
   let client;
 
-  before(async function () {});
-  beforeEach(async function () {
+  before(async function () {
     if (!_.get(testMngr.app.config, "authentication.facebook")) {
       this.skip();
     }
   });
-  after(async () => {});
 
   beforeEach(async () => {
     client = testMngr.createClient();

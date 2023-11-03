@@ -3,14 +3,10 @@
     "id": 1,
     "username": "admin",
     "email": "admin@myapp.com",
-    "firstName": "john",
-    "lastName": "doe",
-    "auth_providers": [{
-      "name":"facebook",
-      "authId": "1234567890"
-    }],
-    "createdAt": "2016-05-28T15:00:42.527Z",
-    "updatedAt": "2016-05-28T15:00:42.527Z"
+    "first_name": "john",
+    "last_name": "doe",
+    "created_at": "2016-05-28T15:00:42.527Z",
+    "updated_at": "2016-05-28T15:00:42.527Z"
   },
   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbXlhcHAuY29tIiwiZmlyc3ROYW1lIjpudWxsLCJsYXN0TmFtZSI6bnVsbCwiZmFjZWJvb2tJZCI6bnVsbCwiZ2l0aHViSWQiOm51bGwsInR3aXR0ZXJJZCI6bnVsbCwiZ29vZ2xlSWQiOm51bGwsImZpZG9ySWQiOm51bGwsImNyZWF0ZWRBdCI6IjIwMTYtMDUtMjhUMTU6MDA6NDIuNTI3WiIsInVwZGF0ZWRBdCI6IjIwMTYtMDUtMjhUMTU6MDA6NDIuNTI3WiIsImlhdCI6MTQ2NTMzODQ2OX0.rkTuYYgXd7gCsFZDJNXUlHJrjiCXrvdlaUEONyzTfQM"
 }

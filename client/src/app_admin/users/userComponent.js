@@ -28,7 +28,12 @@ export default (context) => {
         <Paper>
           <h3>{tr.t("User")}</h3>
           <FormGroup>
-            <UserIdInput id="id" value={user.id} disabled label={tr.t("Id")} />
+            <UserIdInput
+              id="id"
+              value={user.user_id}
+              disabled
+              label={tr.t("Id")}
+            />
           </FormGroup>
           <FormGroup>
             <UsernameInput

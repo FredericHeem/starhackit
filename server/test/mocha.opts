@@ -1,6 +1,0 @@
---timeout 40e3
---bail
---exit
---file test/setup.js
---recursive
-src/**/test*.js

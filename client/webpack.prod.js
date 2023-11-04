@@ -14,7 +14,6 @@ const webpackProdConfig = {
       public: ["./src/app_public/index.js"],
       user: ["./src/app_user/index.js"],
       admin: ["./src/app_admin/index.js"],
-      infra: ["./src/app_infra/index.js"],
     },
     output: {
       path: path.join(__dirname, "dist"),

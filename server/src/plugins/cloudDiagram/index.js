@@ -6,10 +6,8 @@ const { DockerClient } = require("@grucloud/docker-axios");
 const { GetAllApi } = require("./api/getAllApi");
 
 const { OrgApi } = require("./api/orgApi");
-const { GitCredentialApi } = require("./api/gitCredentialApi");
 const { ProjectApi } = require("./api/projectApi");
 const { WorkspaceApi } = require("./api/workspaceApi");
-const { GitRepositoryApi } = require("./api/gitRepositoryApi");
 const { CloudAuthenticationApi } = require("./api/cloudAuthenticationApi");
 const { RunApi } = require("./api/runApi");
 const { DockerGcRun } = require("./utils/rungc");
@@ -83,9 +81,7 @@ module.exports = (app) => {
     org: sqlAdaptor(require("./sql/OrganisationSql")({ sql })),
     project: sqlAdaptor(require("./sql/ProjectSql")({ sql })),
     workspace: sqlAdaptor(require("./sql/WorkspaceSql")({ sql })),
-    gitRepository: sqlAdaptor(require("./sql/GitRepositorySql")({ sql })),
     userOrg: sqlAdaptor(require("./sql/UserOrgSql")({ sql })),
-    gitCredential: sqlAdaptor(require("./sql/GitCredentialSql")({ sql })),
     run: sqlAdaptor(require("./sql/RunSql")({ sql })),
     cloudAuthentication: sqlAdaptor(
       require("./sql/CloudAuthenticationSql")({ sql })
@@ -205,10 +201,8 @@ module.exports = (app) => {
   [
     GetAllApi,
     OrgApi,
-    GitCredentialApi,
     ProjectApi,
     WorkspaceApi,
-    GitRepositoryApi,
     RunApi,
     CloudAuthenticationApi,
   ].forEach((api) => app.server.createRouter(api({ app, models })));

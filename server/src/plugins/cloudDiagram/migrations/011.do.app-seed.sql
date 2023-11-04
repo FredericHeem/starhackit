@@ -4,23 +4,6 @@ INSERT INTO org (org_id, org_name)
 VALUES ('org-alice', 'org alice');
 INSERT INTO user_orgs (org_id, user_id)
 VALUES ('org-alice', 'alice-1234567890');
--- git_credential
-INSERT INTO git_credential (
-        git_credential_id,
-        org_id,
-        username,
-        password,
-        provider,
-        auth_type
-    )
-VALUES (
-        'cred-org-alice',
-        'org-alice',
-        'alice',
-        'password',
-        'GitHub',
-        'PersonalAccessCode'
-    );
 -- project aws
 INSERT INTO project (org_id, project_id, project_name)
 VALUES (
@@ -71,25 +54,6 @@ VALUES (
         'dev',
         'started',
         'list'
-    );
--- git_repository
-INSERT INTO git_repository (
-        org_id,
-        project_id,
-        workspace_id,
-        git_credential_id,
-        repository_url,
-        branch,
-        working_directory
-    )
-VALUES (
-        'org-alice',
-        'project-aws',
-        'dev',
-        'cred-org-alice',
-        'https://github.com/FredericHeem/grucloud-aws-demo',
-        'main',
-        ''
     );
 -- bob
 INSERT INTO org (org_id, org_name)

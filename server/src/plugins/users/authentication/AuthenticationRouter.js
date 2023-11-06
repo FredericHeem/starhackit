@@ -154,6 +154,9 @@ function AuthenticationHttpController({ app, models }) {
     logout(ctx) {
       log.debug("logout");
       ctx.logout();
+      ctx.cookies.set("github-access-token", "");
+      ctx.cookies.set("gitlab-access-token", "");
+
       ctx.body = {
         success: true,
       };

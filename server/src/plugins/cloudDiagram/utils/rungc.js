@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { pipe, tap, assign, get, eq, map, pick } = require("rubico");
+const { pipe, tap, assign, get, eq, map, pick, flatMap } = require("rubico");
 const { values, unless } = require("rubico/x");
 const path = require("path");
 
@@ -141,8 +141,15 @@ exports.DockerGcCreate = ({ app }) => {
         outputSvg: `resources.svg`,
       }),
       assign({
+        servicesCmd: pipe([
+          () => env_vars,
+          get("SERVICES", []),
+          flatMap((service) => ["--include-groups", service]),
+        ]),
+      }),
+      assign({
         name: () => `${containerName}-${run_id}`,
-        Cmd: ({ outputGcList, outputDot }) => [
+        Cmd: ({ outputGcList, servicesCmd }) => [
           "list",
           "--provider",
           provider,
@@ -170,10 +177,7 @@ exports.DockerGcCreate = ({ app }) => {
           //`${outputDot}`,
           "--title",
           "",
-          "--include-groups",
-          "EC2",
-          "--include-groups",
-          "ECS",
+          ...servicesCmd,
         ],
         outputGcListLocalPath: ({ outputGcList }) =>
           path.resolve(outputDir, outputGcList),

@@ -10,6 +10,8 @@ const {
   assign,
   pick,
   map,
+  flatMap,
+  omit,
 } = require("rubico");
 const { isEmpty, values, defaultsDeep } = require("rubico/x");
 const { contextSet404, contextSetOk } = require("utils/koaCommon");
@@ -179,6 +181,12 @@ exports.RunApi = ({ app, models }) => {
                     ]),
                     // default is ecs
                     pipe([
+                      assign({
+                        servicesCmd: pipe([
+                          get("env_vars.SERVICES", []),
+                          flatMap((service) => ["--include-groups", service]),
+                        ]),
+                      }),
                       ({
                         org_id,
                         project_id,
@@ -186,6 +194,7 @@ exports.RunApi = ({ app, models }) => {
                         run_id,
                         env_vars,
                         provider_type,
+                        servicesCmd,
                       }) => ({
                         config,
                         container: {
@@ -211,9 +220,11 @@ exports.RunApi = ({ app, models }) => {
                             `${org_id}/${project_id}/${workspace_id}/${run_id}`,
                             "--title",
                             "",
+                            ...servicesCmd,
                           ],
                           environment: pipe([
                             () => env_vars,
+                            omit(["SERVICES"]),
                             transformEnv({
                               GRUCLOUD_OAUTH_SUBJECT: buildSubject({
                                 org_id,

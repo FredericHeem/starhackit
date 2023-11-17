@@ -1,5 +1,9 @@
 {
   "websiteUrl": "http://localhost:8080",
+  "infra": {
+    "wsUrl": "ws://host.docker.internal:9000",
+    "containerImage": "grucloud/grucloud-cli"
+  },
   "log": {
     "console": {
       "level": "debug",

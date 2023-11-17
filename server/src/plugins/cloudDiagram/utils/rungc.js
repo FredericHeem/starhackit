@@ -140,45 +140,10 @@ exports.DockerGcCreate = ({ app }) => {
         outputDot: `resources.dot`,
         outputSvg: `resources.svg`,
       }),
-      assign({
-        servicesCmd: pipe([
-          () => env_vars,
-          get("SERVICES", []),
-          flatMap((service) => ["--include-groups", service]),
-        ]),
-      }),
+
       assign({
         name: () => `${containerName}-${run_id}`,
-        Cmd: ({ outputGcList, servicesCmd }) => [
-          "list",
-          "--provider",
-          provider,
-          "--s3-bucket",
-          //TODO configure
-          "grucloud-console-dev",
-          "--s3-key",
-          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-          "--s3-local-dir",
-          `/app/${outputDir}`,
-          "--ws-url",
-          "ws://host.docker.internal:9000",
-          "--ws-room",
-          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-          "--infra",
-          `/app/iac_${provider}.js`,
-          //"--config",
-          //`/app/input/config_${provider}.js`,
-          "--graph",
-          "--types-exclude",
-          "ServiceAccount",
-          "--json",
-          `${outputGcList}`,
-          //"--dot-file",
-          //`${outputDot}`,
-          "--title",
-          "",
-          ...servicesCmd,
-        ],
+        Cmd: () => [],
         outputGcListLocalPath: ({ outputGcList }) =>
           path.resolve(outputDir, outputGcList),
         HostConfig: () => ({

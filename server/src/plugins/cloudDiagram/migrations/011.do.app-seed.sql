@@ -5,25 +5,31 @@ VALUES ('org-alice', 'org alice');
 INSERT INTO user_orgs (org_id, user_id)
 VALUES ('org-alice', 'alice-1234567890');
 -- project aws
-INSERT INTO project (org_id, project_id, project_name)
+INSERT INTO project (org_id, project_id, project_name, repository_url, branch)
 VALUES (
         'org-alice',
         'project-aws',
-        'alice project'
+        'alice project',
+        'https://github.com/FredericHeem/grucloud-aws-demo',
+        'main'
     );
 -- project azure
-INSERT INTO project (org_id, project_id, project_name)
+INSERT INTO project (org_id, project_id, project_name, repository_url, branch)
 VALUES (
         'org-alice',
         'project-azure',
-        'project azure'
+        'project azure',
+        'https://github.com/FredericHeem/grucloud-azure-demo',
+        'master'
     );
 -- project google
-INSERT INTO project (org_id, project_id, project_name)
+INSERT INTO project (org_id, project_id, project_name,repository_url, branch)
 VALUES (
         'org-alice',
         'project-google',
-        'project google'
+        'project google',
+        'https://github.com/FredericHeem/grucloud-gcp-demo',
+        'master'
     );
 -- workspace aws
 INSERT INTO workspace (org_id, project_id, workspace_id)

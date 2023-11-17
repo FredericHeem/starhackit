@@ -6,6 +6,7 @@ const project_id = "project-aws";
 
 const project_aws_id = "project-aws";
 const project_azure_id = "project-azure";
+const project_google_id = "project-google";
 
 const workspace_id = "dev";
 

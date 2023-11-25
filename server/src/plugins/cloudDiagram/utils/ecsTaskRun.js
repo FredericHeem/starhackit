@@ -13,7 +13,10 @@ exports.ecsTaskRun = ({ config: { ecs }, container }) =>
     pipe([
       tap(() => {
         log.debug(
-          `ecsTaskRun cluster: ${ecs.cluster}, taskDefinition: ${ecs.taskDefinition}, subnets: ${ecs.subnets}, securityGroups: ${ecs.securityGroups}`
+          `ecsTaskRun cluster: ${ecs.cluster}, taskDefinition: ${ecs.taskDefinition}, subnets: ${ecs.subnets}, securityGroups: ${ecs.securityGroups}, AWS_REGION: ${AWS_REGION}`
+        );
+        log.debug(
+          `ecsTaskRun AWS_REGION: ${AWS_REGION}, AWSAccessKeyId: ${AWSAccessKeyId}`
         );
         assert(ecs);
         assert(ecs.cluster);

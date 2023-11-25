@@ -14,7 +14,7 @@ const defaultEnv = [
 exports.transformEnv = ({ GRUCLOUD_OAUTH_SUBJECT }) =>
   pipe([
     defaultsDeep(pick(defaultEnv)(process.env)),
-    defaultsDeep({ GRUCLOUD_OAUTH_SUBJECT }),
+    defaultsDeep({ GRUCLOUD_OAUTH_SUBJECT, CONTINUOUS_INTEGRATION: "1" }),
     when(
       get("GOOGLE_CREDENTIALS"),
       assign({

@@ -123,7 +123,7 @@ const buildCmd = ({
     () => [
       "list",
       "--json",
-      "grucloud-result.json",
+      "artifacts/grucloud-result.json",
       "--graph",
       // "--infra",
       // `/app/iac.js`,
@@ -134,8 +134,7 @@ const buildCmd = ({
       "--s3-key",
       `${org_id}/${project_id}/${workspace_id}/${run_id}`,
       "--s3-local-dir",
-      //"/app/artifacts",
-      "artifacts",
+      "/app/my-repo/artifacts",
       "--ws-url",
       wsUrl,
       "--ws-room",
@@ -163,6 +162,10 @@ const buildGcFlow = ({
     when(
       () => repository_url,
       pipe([
+        append({
+          name: "Env",
+          run: "env",
+        }),
         append({
           name: "Clone Repo",
           run: "git clone $GIT_REPO -b $GIT_BRANCH --depth 1 my-repo",
@@ -341,16 +344,7 @@ exports.RunApi = ({ app, models }) => {
                           flatMap((service) => ["--include-groups", service]),
                         ]),
                       }),
-                      ({
-                        org_id,
-                        project_id,
-                        workspace_id,
-                        run_id,
-                        servicesCmd,
-                        cloudAuthentication,
-                        env_vars,
-                        project,
-                      }) => ({
+                      ({ org_id, project_id, workspace_id, env_vars }) => ({
                         config,
                         container: {
                           name: "grucloud-cli",
@@ -451,7 +445,7 @@ exports.RunApi = ({ app, models }) => {
                     svgUrl: buildS3SignedUrl({
                       config,
                       context,
-                      filename: "artifacts/diagram-live.svg",
+                      filename: "diagram-live.svg",
                     }),
                   }),
                   contextSetOk({ context }),

@@ -1,5 +1,5 @@
 .git
-.env
+*env
 .vscode
 coverage
 dist
@@ -7,4 +7,7 @@ builds
 local_backup
 node_modules
 docs
-
+output
+config/development.json
+test
+*.log

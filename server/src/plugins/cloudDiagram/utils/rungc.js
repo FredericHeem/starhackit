@@ -172,7 +172,7 @@ exports.DockerGcCreate = ({ app }) => {
               Cmd,
               Env,
               HostConfig,
-              WorkingDir: `/app/${outputDir}`,
+              WorkingDir: `/app/`,
             },
           }),
           tap((xxx) => {

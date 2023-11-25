@@ -10,13 +10,13 @@ pip_install_packages:
 
 docker_base_url: "http:/v1.41"
 
-grucloud_image: "grucloud/grucloud-cli:v12.10.2"
+grucloud_image: "grucloud/grucloud-cli:v13.0.0"
 # Docker image tag names
 api_image: "fredericheem/grucloud-api"
-api_tag: "10.50"
+api_tag: "13.0.0"
 
 web_image: "fredericheem/grucloud-ui"
-web_tag: "12.21"
+web_tag: "13.0.0"
 
 firewall_state: started
 firewall_enabled_at_boot: true

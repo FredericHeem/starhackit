@@ -95,8 +95,8 @@ module.exports = (app) => {
     const ws = ctx.websocket;
     dockerGcRun = DockerGcRun({ app, models, ws });
     ws.on("close", () => {
-      console.log("ws close");
-      const room = producerMap.get();
+      const room = producerMap.get(ws);
+      console.log("ws close room", room);
       if (room) {
         roomMap.delete(room);
       }

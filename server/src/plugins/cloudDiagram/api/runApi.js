@@ -297,6 +297,8 @@ exports.RunApi = ({ app, models }) => {
                             workspace_id,
                             run_id,
                           }),
+                          WS_URL: infra.wsUrl,
+                          WS_ROOM: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
                         }),
                       ])(),
                   }),

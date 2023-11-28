@@ -94,9 +94,11 @@ module.exports = (app) => {
   app.server.koa.ws.use((ctx) => {
     const ws = ctx.websocket;
     dockerGcRun = DockerGcRun({ app, models, ws });
-    ws.on("close", () => {
+    ws.on("close", (event) => {
       const room = producerMap.get(ws);
       console.log("ws close room", room);
+      //console.log(ws);
+
       if (room) {
         roomMap.delete(room);
       }
@@ -124,7 +126,7 @@ module.exports = (app) => {
             }
             producerMap.set(ws, options.room);
             break;
-          case "list": {
+          case "end": {
             const { error } = data;
             const room = producerMap.get(ws);
             if (room) {
@@ -164,6 +166,8 @@ module.exports = (app) => {
                     console.log("sending back");
                     client.send(message.toString());
                   });
+              } else {
+                console.error("no client for room", room);
               }
             } else {
               console.error("no room for log command");

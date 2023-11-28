@@ -135,10 +135,10 @@ const buildCmd = ({
       `${org_id}/${project_id}/${workspace_id}/${run_id}`,
       "--s3-local-dir",
       "/app/my-repo/artifacts",
-      "--ws-url",
-      wsUrl,
-      "--ws-room",
-      `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+      // "--ws-url",
+      // wsUrl,
+      // "--ws-room",
+      // `${org_id}/${project_id}/${workspace_id}/${run_id}`,
       "--title",
       '""',
       ...servicesCmd,
@@ -163,20 +163,21 @@ const buildGcFlow = ({
       () => repository_url,
       pipe([
         append({
-          name: "Env",
-          run: "env",
-        }),
-        append({
           name: "Clone Repo",
           run: "git clone $GIT_REPO -b $GIT_BRANCH --depth 1 my-repo",
         }),
         append({
           name: "npm install",
-          run: "npm install",
+          run: "npm install --loglevel=error",
           workingDirectory: "my-repo",
         }),
       ])
     ),
+    // append({
+    //   name: "ls",
+    //   run: "ls -l",
+    //   workingDirectory: "my-repo",
+    // }),
     append({
       name: "gc list",
       run: `node_modules/.bin/gc ${buildCmd({

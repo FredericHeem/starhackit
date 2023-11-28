@@ -36,21 +36,21 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       () => ({ name: container_id }),
       dockerClient.container.start,
       tap((params) => {
-        ws.send("update status");
+        // ws.send("update status");
         log.debug("DockerGcRun", container_id, "started, wait for completion");
       }),
       // Update status
       () => ({ data: { status: "running" }, where: { container_id } }),
       models.run.update,
       tap((params) => {
-        ws.send("wait for completion");
+        //ws.send("wait for completion");
       }),
       // Wait
       () => ({ name: container_id }),
       dockerClient.container.wait,
       tap((params) => {
         log.debug("DockerGcRun ", container_id, "ended");
-        ws.send("getting container state");
+        //ws.send("getting container state");
       }),
       // Get container state
       () => ({ id: container_id }),
@@ -58,7 +58,7 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       get("State"),
       tap((State) => {
         log.debug(`container state ${JSON.stringify(State)}`);
-        ws.send("saving container state");
+        //ws.send("saving container state");
       }),
       // Save container_state and status to DB
       (container_state) => ({

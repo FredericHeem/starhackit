@@ -21,30 +21,32 @@ describe("EcsTask", function () {
         config,
         container: {
           name: "grucloud-cli",
-          command: [
-            "list",
-            "--json",
-            "grucloud-result.json",
-            "--infra",
-            `/app/iac.js`,
-            "--provider",
-            "aws",
-            "--s3-bucket",
-            aws.bucketUpload,
-            "--s3-key",
-            "my-org/my-project/my-workspace/3",
-            "--s3-local-dir",
-            "/app/artifacts",
-            "--ws-url",
-            infra.wsUrl,
-            "--ws-room",
-            "my-org/my-project/my-workspace/3",
-          ],
+          command: [],
           environment: [
-            { name: "AWSAccessKeyId", value: process.env.AWSAccessKeyId },
-            { name: "AWSSecretKey", value: process.env.AWSSecretKey },
-            { name: "AWS_REGION", value: process.env.AWS_REGION },
-            { name: "CONTINUOUS_INTEGRATION", value: "1" },
+            {
+              name: "GC_FLOW",
+              value: '{"steps":[{"name":"Env","run":"env"}]}',
+            },
+            {
+              name: "S3_BUCKET",
+              value: aws.bucketUpload,
+            },
+            {
+              name: "S3_BUCKET_KEY",
+              value: "test/steps.txt",
+            },
+            {
+              name: "S3_AWS_REGION",
+              value: process.env.S3_AWS_REGION,
+            },
+            {
+              name: "WS_URL",
+              value: infra.wsUrl,
+            },
+            {
+              name: "WS_ROOM",
+              value: "room-test",
+            },
           ],
         },
       });

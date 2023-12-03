@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-ecs": "3.332.0",
+    "@aws-sdk/client-lambda": "3.429.0",
     "@aws-sdk/client-s3": "3.332.0",
     "@aws-sdk/client-sts": "3.429.0",
     "@aws-sdk/s3-request-presigner": "3.332.0",

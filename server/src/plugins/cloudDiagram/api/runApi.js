@@ -26,9 +26,12 @@ const { contextSet404, contextSetOk } = require("utils/koaCommon");
 const { middlewareUserBelongsToOrg } = require("../middleware");
 const { DockerGcCreate } = require("../utils/rungc");
 const { ecsTaskRun } = require("../utils/ecsTaskRun");
+const { lambdaRun } = require("../utils/lambdaRun");
 
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { GetObjectCommand } = require("@aws-sdk/client-s3");
+
+const { createS3Client } = require("../utils/S3Client");
 
 const logger = require("logfilename")(__filename);
 const { transformEnv } = require("../utils/envUtils");
@@ -81,9 +84,12 @@ const buildS3SignedUrl = ({ config, context, filename }) =>
     }),
     tryCatch(
       pipe([
-        //TODO credentials
         (input) =>
-          getSignedUrl(new S3Client({}), new GetObjectCommand(input), {}),
+          getSignedUrl(
+            createS3Client(process.env),
+            new GetObjectCommand(input),
+            {}
+          ),
       ]),
       (error, bucket) =>
         pipe([
@@ -133,8 +139,8 @@ const buildCmd = ({
       bucketUpload,
       "--s3-key",
       `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-      "--s3-local-dir",
-      "/app/my-repo/artifacts",
+      //"--s3-local-dir",
+      //"/app/my-repo/artifacts",
       // "--ws-url",
       // wsUrl,
       // "--ws-room",
@@ -148,6 +154,7 @@ const buildCmd = ({
 
 const buildGcFlow = ({
   repository_url,
+  working_directory,
   provider_type,
   bucketUpload,
   wsUrl,
@@ -163,21 +170,26 @@ const buildGcFlow = ({
       () => repository_url,
       pipe([
         append({
+          name: "rm",
+          run: `rm -rf /tmp/my-repo/`,
+          workingDirectory: `/tmp/`,
+        }),
+        append({
           name: "Clone Repo",
-          run: "git clone $GIT_REPO -b $GIT_BRANCH --depth 1 my-repo",
+          run: "git clone $GIT_REPO -b $GIT_BRANCH --depth 1 /tmp/my-repo",
+        }),
+        append({
+          name: "ls",
+          run: "ls -l",
+          workingDirectory: `/tmp/my-repo/${working_directory}`,
         }),
         append({
           name: "npm install",
           run: "npm install --loglevel=error",
-          workingDirectory: "my-repo",
+          workingDirectory: `/tmp/my-repo/${working_directory}`,
         }),
       ])
     ),
-    // append({
-    //   name: "ls",
-    //   run: "ls -l",
-    //   workingDirectory: "my-repo",
-    // }),
     append({
       name: "gc list",
       run: `node_modules/.bin/gc ${buildCmd({
@@ -190,11 +202,35 @@ const buildGcFlow = ({
         workspace_id,
         run_id,
       })}`,
-      workingDirectory: "my-repo",
+      workingDirectory: `/tmp/my-repo/${working_directory}`,
     }),
     (steps) => ({ steps }),
     JSON.stringify,
   ])();
+
+const grucloudEcsTask = ({ config }) =>
+  pipe([
+    ({ env_vars }) => ({
+      config,
+      container: {
+        name: "grucloud-cli",
+        command: [],
+        environment: pipe([
+          () => env_vars,
+          omit(["SERVICES"]),
+          map.entries(([name, value]) => [name, { name, value }]),
+          values,
+        ])(),
+      },
+    }),
+    tap((param) => {
+      assert(true);
+    }),
+    ecsTaskRun,
+    tap((param) => {
+      assert(true);
+    }),
+  ]);
 
 exports.RunApi = ({ app, models }) => {
   const { config } = app;
@@ -290,6 +326,7 @@ exports.RunApi = ({ app, models }) => {
                           GC_FLOW: buildGcFlow({
                             servicesCmd,
                             repository_url: project.repository_url,
+                            working_directory: project.working_directory,
                             provider_type: cloudAuthentication.provider_type,
                             bucketUpload: aws.bucketUpload,
                             wsUrl: infra.wsUrl,
@@ -300,6 +337,13 @@ exports.RunApi = ({ app, models }) => {
                           }),
                           WS_URL: infra.wsUrl,
                           WS_ROOM: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+                        }),
+                        transformEnv({
+                          GRUCLOUD_OAUTH_SUBJECT: buildSubject({
+                            org_id,
+                            project_id,
+                            workspace_id,
+                          }),
                         }),
                       ])(),
                   }),
@@ -339,45 +383,10 @@ exports.RunApi = ({ app, models }) => {
                         assert(Id);
                       }),
                     ]),
+                    eq(get("engine"), "lambda"),
+                    lambdaRun(config),
                     // default is ecs
-                    pipe([
-                      assign({
-                        servicesCmd: pipe([
-                          get("env_vars.SERVICES", []),
-                          flatMap((service) => ["--include-groups", service]),
-                        ]),
-                      }),
-                      ({ org_id, project_id, workspace_id, env_vars }) => ({
-                        config,
-                        container: {
-                          name: "grucloud-cli",
-                          command: [],
-                          environment: pipe([
-                            () => env_vars,
-                            omit(["SERVICES"]),
-                            transformEnv({
-                              GRUCLOUD_OAUTH_SUBJECT: buildSubject({
-                                org_id,
-                                project_id,
-                                workspace_id,
-                              }),
-                            }),
-                            map.entries(([name, value]) => [
-                              name,
-                              { name, value },
-                            ]),
-                            values,
-                          ])(),
-                        },
-                      }),
-                      tap((param) => {
-                        assert(true);
-                      }),
-                      ecsTaskRun,
-                      tap((param) => {
-                        assert(true);
-                      }),
-                    ]),
+                    grucloudEcsTask({ config }),
                   ]),
                 ])(),
             }),

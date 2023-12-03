@@ -1,9 +1,7 @@
 const assert = require("assert");
-const { pipe, tap, assign, get, eq, map, pick, flatMap } = require("rubico");
+const { pipe, tap, assign, get, eq, map, pick } = require("rubico");
 const { values, unless } = require("rubico/x");
 const path = require("path");
-
-const { transformEnv } = require("./envUtils");
 
 exports.DockerGcRun = ({ app, models, ws }) => {
   assert(app);
@@ -140,10 +138,9 @@ exports.DockerGcCreate = ({ app }) => {
         outputDot: `resources.dot`,
         outputSvg: `resources.svg`,
       }),
-
       assign({
         name: () => `${containerName}-${run_id}`,
-        Cmd: () => [],
+        Cmd: () => ["app.handler"],
         outputGcListLocalPath: ({ outputGcList }) =>
           path.resolve(outputDir, outputGcList),
         HostConfig: () => ({
@@ -155,7 +152,6 @@ exports.DockerGcCreate = ({ app }) => {
         Env: () =>
           pipe([
             () => env_vars,
-            transformEnv({ GRUCLOUD_OAUTH_SUBJECT }),
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),
@@ -173,6 +169,7 @@ exports.DockerGcCreate = ({ app }) => {
               Env,
               HostConfig,
               WorkingDir: `/app/`,
+              Entrypoint: "/var/task/src/index.js",
             },
           }),
           tap((xxx) => {

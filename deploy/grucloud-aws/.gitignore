@@ -1,8 +1,0 @@
-*.csv
-*.pem
-node_modules/
-*.env
-.nyc_output
-coverage
-*.log
-*.dot

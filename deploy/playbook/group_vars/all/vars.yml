@@ -25,7 +25,9 @@ firewall_allowed_tcp_ports:
   - "80"
   - "443"
   - "9000"
-
+firewall_additional_rules:
+  - "iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -j MASQUERADE"
+  - "iptables -A INPUT -p tcp -s 10.0.0.0/16 -j ACCEPT"
 # Database settings
 
 # External volume

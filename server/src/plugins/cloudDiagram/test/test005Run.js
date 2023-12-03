@@ -14,13 +14,19 @@ const payloadCreateDocker = {
   reason: "my reason",
   kind: "list",
   status: "creating",
-  engine: "docker", // ecs or docker
+  engine: "docker",
 };
 const payloadCreateEcs = {
   reason: "my reason",
   kind: "list",
   status: "creating",
-  engine: "ecs", // ecs or docker
+  engine: "ecs",
+};
+const payloadCreateLambda = {
+  reason: "my reason",
+  kind: "list",
+  status: "creating",
+  engine: "lambda",
 };
 const WebSocket = require("ws");
 
@@ -70,25 +76,25 @@ describe("Run No Auth", function () {
   });
 });
 
-const runCrudDocker = async ({
+const runCrud = async ({
   client,
   org_id,
   project_id,
   workspace_id,
-  payloadCreateDocker,
+  payloadCreate,
 }) => {
   try {
     // Create
     const run = await client.post(
       `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
-      payloadCreateDocker
+      payloadCreate
     );
     assert(run);
     const { run_id, container_id } = run;
     assert(run_id);
     assert(container_id);
 
-    assert.equal(run.reason, payloadCreateDocker.reason);
+    assert.equal(run.reason, payloadCreate.reason);
 
     const ws = new WebSocket(`ws://localhost:9000`);
     ws.on("open", () => {
@@ -181,23 +187,40 @@ describe("Run", function () {
     await client.login();
   });
   it("CRUD aws docker", async () => {
-    await runCrudDocker({
+    await runCrud({
       client,
       org_id,
       project_id: project_aws_id,
       workspace_id,
-      payloadCreateDocker,
+      payloadCreate: payloadCreateDocker,
     });
   });
   it("CRUD azure docker", async () => {
-    await runCrudDocker({
+    await runCrud({
       client,
       org_id,
       project_id: project_azure_id,
       workspace_id,
-      payloadCreateDocker,
+      payloadCreate: payloadCreateDocker,
     });
   });
+  it("CRUD aws lamda", async () => {
+    try {
+      // Create
+      const run = await client.post(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
+        payloadCreateLambda
+      );
+      assert(run);
+      const { run_id, container_id } = run;
+      assert(run_id);
+      assert(container_id);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  });
+
   it("CRUD ecs task", async () => {
     try {
       // Create

@@ -186,13 +186,27 @@ describe("Run", function () {
     client = testMngr.client("alice");
     await client.login();
   });
-  it("CRUD aws docker", async () => {
+  it("CRUD aws docker list", async () => {
     await runCrud({
       client,
       org_id,
       project_id: project_aws_id,
       workspace_id,
       payloadCreate: payloadCreateDocker,
+    });
+  });
+  it("CRUD aws docker plan", async () => {
+    await runCrud({
+      client,
+      org_id,
+      project_id: project_aws_id,
+      workspace_id,
+      payloadCreate: {
+        reason: "my reason",
+        kind: "plan",
+        status: "creating",
+        engine: "docker",
+      },
     });
   });
   it("CRUD azure docker", async () => {

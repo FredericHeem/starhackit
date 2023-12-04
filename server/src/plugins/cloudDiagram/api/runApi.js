@@ -118,6 +118,7 @@ const buildCmd = ({
   project_id,
   workspace_id,
   run_id,
+  kind,
 }) =>
   pipe([
     tap((param) => {
@@ -125,30 +126,20 @@ const buildCmd = ({
       assert(wsUrl);
       assert(provider_type);
       assert(run_id);
+      assert(kind);
     }),
     () => [
-      "list",
+      kind,
       "--json",
       "artifacts/grucloud-result.json",
-      "--graph",
-      // "--infra",
-      // `/app/iac.js`,
-      // "--provider",
-      // provider_type,
       "--s3-bucket",
       bucketUpload,
       "--s3-key",
       `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-      //"--s3-local-dir",
-      //"/app/my-repo/artifacts",
-      // "--ws-url",
-      // wsUrl,
-      // "--ws-room",
-      // `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-      "--title",
-      '""',
+
       ...servicesCmd,
     ],
+    when(() => kind == "list", append(["--graph", "--title", '""'])),
     callProp("join", " "),
   ])();
 
@@ -163,6 +154,7 @@ const buildGcFlow = ({
   project_id,
   workspace_id,
   run_id,
+  kind,
 }) =>
   pipe([
     () => [],
@@ -191,7 +183,7 @@ const buildGcFlow = ({
       ])
     ),
     append({
-      name: "gc list",
+      name: `gc ${kind}`,
       run: `node_modules/.bin/gc ${buildCmd({
         servicesCmd,
         bucketUpload,
@@ -201,6 +193,7 @@ const buildGcFlow = ({
         project_id,
         workspace_id,
         run_id,
+        kind,
       })}`,
       workingDirectory: `/tmp/my-repo/${working_directory}`,
     }),
@@ -314,6 +307,7 @@ exports.RunApi = ({ app, models }) => {
                       project_id,
                       workspace_id,
                       run_id,
+                      kind,
                     }) =>
                       pipe([
                         () => cloudAuthentication.env_vars,
@@ -334,6 +328,7 @@ exports.RunApi = ({ app, models }) => {
                             project_id,
                             workspace_id,
                             run_id,
+                            kind,
                           }),
                           WS_URL: infra.wsUrl,
                           WS_ROOM: `${org_id}/${project_id}/${workspace_id}/${run_id}`,

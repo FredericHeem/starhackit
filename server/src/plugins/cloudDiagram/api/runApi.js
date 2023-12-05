@@ -20,6 +20,7 @@ const {
   append,
   when,
   callProp,
+  isIn,
 } = require("rubico/x");
 const { contextSet404, contextSetOk } = require("utils/koaCommon");
 
@@ -47,6 +48,7 @@ const runAttributes = [
   "status",
   "engine",
   "error",
+  "kind",
 ];
 
 const buildSubject = ({ org_id, project_id, workspace_id, phase = "plan" }) =>
@@ -140,6 +142,8 @@ const buildCmd = ({
       ...servicesCmd,
     ],
     when(() => kind == "list", append(["--graph", "--title", '""'])),
+    when(() => isIn(["apply", "destroy"])(kind), append("--force")),
+
     callProp("join", " "),
   ])();
 
@@ -167,6 +171,14 @@ const buildGcFlow = ({
           workingDirectory: `/tmp/`,
         }),
         append({
+          name: "echo $GIT_REPO",
+          run: "echo $GIT_REPO",
+        }),
+        append({
+          name: "echo $GIT_BRANCH",
+          run: "echo $GIT_BRANCH",
+        }),
+        append({
           name: "Clone Repo",
           run: "git clone $GIT_REPO -b $GIT_BRANCH --depth 1 /tmp/my-repo",
         }),
@@ -177,7 +189,7 @@ const buildGcFlow = ({
         }),
         append({
           name: "npm install",
-          run: "npm install --loglevel=error",
+          run: "npm install --loglevel=error  --no-audit",
           workingDirectory: `/tmp/my-repo/${working_directory}`,
         }),
       ])

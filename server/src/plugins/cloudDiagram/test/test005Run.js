@@ -209,6 +209,20 @@ describe("Run", function () {
       },
     });
   });
+  it("CRUD aws docker apply", async () => {
+    await runCrud({
+      client,
+      org_id,
+      project_id: project_aws_id,
+      workspace_id,
+      payloadCreate: {
+        reason: "my reason",
+        kind: "apply",
+        status: "creating",
+        engine: "docker",
+      },
+    });
+  });
   it("CRUD azure docker", async () => {
     await runCrud({
       client,

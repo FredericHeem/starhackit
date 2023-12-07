@@ -49,6 +49,7 @@ const runAttributes = [
   "engine",
   "error",
   "kind",
+  "created_at",
 ];
 
 const buildSubject = ({ org_id, project_id, workspace_id, phase = "plan" }) =>

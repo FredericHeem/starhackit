@@ -62,6 +62,7 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       (container_state) => ({
         status: "completed",
         container_state,
+        updated_at: new Date().toUTCString(),
       }),
       unless(
         eq(get("container_state.ExitCode"), 0),

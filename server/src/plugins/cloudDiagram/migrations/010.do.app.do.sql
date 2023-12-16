@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS run (
   run_id SERIAL,
   reason TEXT,
   kind TEXT NOT NULL,
+  args TEXT,
   engine TEXT,
   container_id TEXT,
   container_state JSONB,

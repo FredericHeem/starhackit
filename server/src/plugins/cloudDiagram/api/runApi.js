@@ -49,6 +49,7 @@ const runAttributes = [
   "engine",
   "error",
   "kind",
+  "args",
   "created_at",
   "updated_at",
 ];
@@ -114,6 +115,7 @@ const buildS3SignedUrl = ({ config, context, filename }) =>
   ]);
 
 const buildCmd = ({
+  args = "",
   servicesCmd,
   bucketUpload,
   wsUrl,
@@ -140,8 +142,8 @@ const buildCmd = ({
       bucketUpload,
       "--s3-key",
       `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-
       ...servicesCmd,
+      args,
     ],
     when(() => kind == "list", append(["--graph", "--title", '""'])),
     when(() => isIn(["apply", "destroy"])(kind), append("--force")),
@@ -161,6 +163,7 @@ const buildGcFlow = ({
   workspace_id,
   run_id,
   kind,
+  args,
 }) =>
   pipe([
     () => [],
@@ -199,6 +202,7 @@ const buildGcFlow = ({
     append({
       name: `gc ${kind}`,
       run: `node_modules/.bin/gc ${buildCmd({
+        args,
         servicesCmd,
         bucketUpload,
         wsUrl,
@@ -322,6 +326,7 @@ exports.RunApi = ({ app, models }) => {
                       workspace_id,
                       run_id,
                       kind,
+                      args,
                     }) =>
                       pipe([
                         () => cloudAuthentication.env_vars,
@@ -343,6 +348,7 @@ exports.RunApi = ({ app, models }) => {
                             workspace_id,
                             run_id,
                             kind,
+                            args,
                           }),
                           WS_URL: infra.wsUrl,
                           WS_ROOM: `${org_id}/${project_id}/${workspace_id}/${run_id}`,

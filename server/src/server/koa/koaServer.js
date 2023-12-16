@@ -12,6 +12,7 @@ const contextHandleError = (error, context) =>
     tap(() => {
       assert(context);
       log.error(error);
+      error.response && log.error(error.response);
     }),
     () => {
       context.status = 500;

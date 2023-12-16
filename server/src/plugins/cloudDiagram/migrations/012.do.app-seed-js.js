@@ -23,7 +23,8 @@ VALUES (
           "AZURE_SUBSCRIPTION_ID": "${process.env.AZURE_SUBSCRIPTION_ID}",
           "AZURE_CLIENT_ID": "${process.env.AZURE_CLIENT_ID}",
           "AZURE_CLIENT_SECRET": "${process.env.AZURE_CLIENT_SECRET}",
-          "AZURE_OBJECT_ID": "${process.env.AZURE_OBJECT_ID}"
+          "AZURE_OBJECT_ID": "${process.env.AZURE_OBJECT_ID}",
+          "AZURE_LOCATION": "${process.env.AZURE_LOCATION}"
 
         }'
     );

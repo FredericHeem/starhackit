@@ -2,7 +2,9 @@ const assert = require("assert");
 const { pipe, tap, get, tryCatch, switchCase } = require("rubico");
 const { first } = require("rubico/x");
 const { inspect } = require("node:util");
-const { RunTaskCommand, ECSClient } = require("@aws-sdk/client-ecs");
+const { RunTaskCommand } = require("@aws-sdk/client-ecs");
+
+const { createECSClient } = require("./ECSClient");
 
 const { AWSAccessKeyId, AWSSecretKey, AWS_REGION } = process.env;
 
@@ -13,10 +15,16 @@ exports.ecsTaskRun = ({ config: { ecs }, container }) =>
     pipe([
       tap(() => {
         log.debug(
-          `ecsTaskRun cluster: ${ecs.cluster}, taskDefinition: ${ecs.taskDefinition}, subnets: ${ecs.subnets}, securityGroups: ${ecs.securityGroups}`
+          `ecsTaskRun cluster: ${ecs.cluster}, taskDefinition: ${ecs.taskDefinition}, subnets: ${ecs.subnets}, securityGroups: ${ecs.securityGroups}, AWS_REGION: ${AWS_REGION}`
+        );
+        log.debug(
+          `ecsTaskRun AWS_REGION: ${AWS_REGION}, AWSAccessKeyId: ${AWSAccessKeyId}`
         );
         assert(ecs);
         assert(ecs.cluster);
+        assert(ecs.subnets);
+        assert(ecs.securityGroups);
+
         assert(AWSAccessKeyId);
         assert(AWSSecretKey);
         assert(AWS_REGION);
@@ -40,14 +48,7 @@ exports.ecsTaskRun = ({ config: { ecs }, container }) =>
         log.debug(`RunTaskCommand: ${JSON.stringify(input)}`);
       }),
       (input) => new RunTaskCommand(input),
-      (command) =>
-        new ECSClient({
-          region: process.env.AWS_REGION,
-          credentials: {
-            accessKeyId: process.env.AWSAccessKeyId,
-            secretAccessKey: process.env.AWSSecretKey,
-          },
-        }).send(command),
+      (command) => createECSClient(process.env).send(command),
       tap((params) => {
         assert(params);
       }),

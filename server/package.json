@@ -1,7 +1,7 @@
 {
   "name": "starhackit-api",
   "description": "The starhackit backend",
-  "version": "10.41.0",
+  "version": "13.0.0",
   "private": false,
   "main": "src/index.js",
   "repository": {
@@ -11,7 +11,7 @@
   "license": "NLPL",
   "scripts": {
     "start": "NODE_PATH=src node --env-file env --watch src/index.js",
-    "start:prod": "NODE_PATH=src NODE_ENV=production node --env-file env src/index.js",
+    "start:prod": "NODE_PATH=src NODE_ENV=production node src/index.js",
     "test": "npm run mocha",
     "mocha": "NODE_PATH=src node --env-file env  node_modules/mocha/bin/_mocha --file test/setup.js 'src/**/test*.js' --exit",
     "mocha:watch": "npm run mocha -- --watch",
@@ -24,8 +24,8 @@
     "db:drop": "dropdb dev -p 6432 -h localhost -U postgres",
     "db:recreate": "PGPASSWORD=password npm run db:drop && npm run db:create",
     "docker:build": "docker build . -t grucloud-api",
-    "docker:tag": "docker tag grucloud-api fredericheem/grucloud-api:10.50",
-    "docker:push": "docker push fredericheem/grucloud-api:10.50",
+    "docker:tag": "docker tag grucloud-api fredericheem/grucloud-api:13.0.0",
+    "docker:push": "docker push fredericheem/grucloud-api:13.0.0",
     "docker:btp": "npm run docker:build && npm run docker:tag && npm run docker:push",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-ecs": "3.332.0",
+    "@aws-sdk/client-lambda": "3.429.0",
     "@aws-sdk/client-s3": "3.332.0",
     "@aws-sdk/client-sts": "3.429.0",
     "@aws-sdk/s3-request-presigner": "3.332.0",

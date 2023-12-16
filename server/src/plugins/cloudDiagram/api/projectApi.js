@@ -5,6 +5,21 @@ const { contextSet404, contextSetOk } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 
+const projectAttributes = [
+  "org_id",
+  "project_id",
+  "project_name",
+  "project_description",
+  "options",
+  "git_provider_type",
+  "git_auth_type",
+  "username",
+  "password",
+  "repository_url",
+  "branch",
+  "working_directory",
+];
+
 const buildWhereFromContext = pipe([
   tap((context) => {
     assert(context);
@@ -52,7 +67,6 @@ exports.ProjectApi = ({ app, models }) => {
         handler: (context) =>
           pipe([
             () => ({
-              //attributes: ["org_id", "project_id", "project_name"],
               where: {
                 org_id: context.params.org_id,
                 user_id: context.state.user.user_id,
@@ -76,7 +90,7 @@ exports.ProjectApi = ({ app, models }) => {
               assert(context.state.user.user_id);
             }),
             () => ({
-              attributes: ["org_id", "project_id", "project_name"],
+              attributes: projectAttributes,
               where: buildWhereFromContext(context),
             }),
             models.project.findOne,
@@ -115,7 +129,7 @@ exports.ProjectApi = ({ app, models }) => {
             }),
             models.project.update,
             () => ({
-              attributes: ["project_name", "org_id", "project_id"],
+              attributes: projectAttributes,
               where: buildWhereFromContext(context),
             }),
             models.project.findOne,

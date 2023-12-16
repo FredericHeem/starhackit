@@ -6,6 +6,7 @@ const project_id = "project-aws";
 
 const project_aws_id = "project-aws";
 const project_azure_id = "project-azure";
+const project_google_id = "project-google";
 
 const workspace_id = "dev";
 
@@ -13,13 +14,19 @@ const payloadCreateDocker = {
   reason: "my reason",
   kind: "list",
   status: "creating",
-  engine: "docker", // ecs or docker
+  engine: "docker",
 };
 const payloadCreateEcs = {
   reason: "my reason",
   kind: "list",
   status: "creating",
-  engine: "ecs", // ecs or docker
+  engine: "ecs",
+};
+const payloadCreateLambda = {
+  reason: "my reason",
+  kind: "list",
+  status: "creating",
+  engine: "lambda",
 };
 const WebSocket = require("ws");
 
@@ -69,25 +76,25 @@ describe("Run No Auth", function () {
   });
 });
 
-const runCrudDocker = async ({
+const runCrud = async ({
   client,
   org_id,
   project_id,
   workspace_id,
-  payloadCreateDocker,
+  payloadCreate,
 }) => {
   try {
     // Create
     const run = await client.post(
       `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
-      payloadCreateDocker
+      payloadCreate
     );
     assert(run);
     const { run_id, container_id } = run;
     assert(run_id);
     assert(container_id);
 
-    assert.equal(run.reason, payloadCreateDocker.reason);
+    assert.equal(run.reason, payloadCreate.reason);
 
     const ws = new WebSocket(`ws://localhost:9000`);
     ws.on("open", () => {
@@ -179,24 +186,69 @@ describe("Run", function () {
     client = testMngr.client("alice");
     await client.login();
   });
-  it("CRUD aws docker", async () => {
-    await runCrudDocker({
+  it("CRUD aws docker list", async () => {
+    await runCrud({
       client,
       org_id,
       project_id: project_aws_id,
       workspace_id,
-      payloadCreateDocker,
+      payloadCreate: payloadCreateDocker,
+    });
+  });
+  it("CRUD aws docker plan", async () => {
+    await runCrud({
+      client,
+      org_id,
+      project_id: project_aws_id,
+      workspace_id,
+      payloadCreate: {
+        reason: "my reason",
+        kind: "plan",
+        status: "creating",
+        engine: "docker",
+      },
+    });
+  });
+  it("CRUD aws docker apply", async () => {
+    await runCrud({
+      client,
+      org_id,
+      project_id: project_aws_id,
+      workspace_id,
+      payloadCreate: {
+        reason: "my reason",
+        kind: "apply",
+        status: "creating",
+        engine: "docker",
+      },
     });
   });
   it("CRUD azure docker", async () => {
-    await runCrudDocker({
+    await runCrud({
       client,
       org_id,
       project_id: project_azure_id,
       workspace_id,
-      payloadCreateDocker,
+      payloadCreate: payloadCreateDocker,
     });
   });
+  it("CRUD aws lamda", async () => {
+    try {
+      // Create
+      const run = await client.post(
+        `v1/org/${org_id}/project/${project_id}/workspace/${workspace_id}/run`,
+        payloadCreateLambda
+      );
+      assert(run);
+      const { run_id, container_id } = run;
+      assert(run_id);
+      assert(container_id);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  });
+
   it("CRUD ecs task", async () => {
     try {
       // Create

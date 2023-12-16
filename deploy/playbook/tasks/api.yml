@@ -24,9 +24,13 @@
       - "9000:9000"
     env:
       NODE_ENV: "production"
-      S3_AWS_REGION: "{{S3_AWS_REGION}}"
-      S3_AWSAccessKeyId: "{{S3_AWSAccessKeyId}}"
-      S3_AWSSecretKey: "{{S3_AWSSecretKey}}"
+      S3_AWS_REGION: "{{AWS_REGION}}"
+      S3_AWSAccessKeyId: "{{AWSAccessKeyId}}"
+      S3_AWSSecretKey: "{{AWSSecretKey}}"
+      AWS_REGION: "{{AWS_REGION}}"
+      AWSAccessKeyId: "{{AWSAccessKeyId}}"
+      AWSSecretKey: "{{AWSSecretKey}}"
+      GRUCLOUD_OAUTH_SERVER: "{{GRUCLOUD_OAUTH_SERVER}}"
       GRUCLOUD_OAUTH_CLIENT_SECRET: "{{GRUCLOUD_OAUTH_CLIENT_SECRET}}"
 
     networks:

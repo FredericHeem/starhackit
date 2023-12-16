@@ -10,16 +10,29 @@ const {
   assign,
   pick,
   map,
+  flatMap,
+  omit,
 } = require("rubico");
-const { isEmpty, values, defaultsDeep } = require("rubico/x");
+const {
+  isEmpty,
+  values,
+  defaultsDeep,
+  append,
+  when,
+  callProp,
+  isIn,
+} = require("rubico/x");
 const { contextSet404, contextSetOk } = require("utils/koaCommon");
 
 const { middlewareUserBelongsToOrg } = require("../middleware");
 const { DockerGcCreate } = require("../utils/rungc");
 const { ecsTaskRun } = require("../utils/ecsTaskRun");
+const { lambdaRun } = require("../utils/lambdaRun");
 
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { GetObjectCommand } = require("@aws-sdk/client-s3");
+
+const { createS3Client } = require("../utils/S3Client");
 
 const logger = require("logfilename")(__filename);
 const { transformEnv } = require("../utils/envUtils");
@@ -35,6 +48,10 @@ const runAttributes = [
   "status",
   "engine",
   "error",
+  "kind",
+  "args",
+  "created_at",
+  "updated_at",
 ];
 
 const buildSubject = ({ org_id, project_id, workspace_id, phase = "plan" }) =>
@@ -72,9 +89,12 @@ const buildS3SignedUrl = ({ config, context, filename }) =>
     }),
     tryCatch(
       pipe([
-        //TODO credentials
         (input) =>
-          getSignedUrl(new S3Client({}), new GetObjectCommand(input), {}),
+          getSignedUrl(
+            createS3Client(process.env),
+            new GetObjectCommand(input),
+            {}
+          ),
       ]),
       (error, bucket) =>
         pipe([
@@ -93,6 +113,136 @@ const buildS3SignedUrl = ({ config, context, filename }) =>
         ])()
     ),
   ]);
+
+const buildCmd = ({
+  args = "",
+  servicesCmd,
+  bucketUpload,
+  wsUrl,
+  provider_type,
+  org_id,
+  project_id,
+  workspace_id,
+  run_id,
+  kind,
+}) =>
+  pipe([
+    tap((param) => {
+      assert(bucketUpload);
+      assert(wsUrl);
+      assert(provider_type);
+      assert(run_id);
+      assert(kind);
+    }),
+    () => [
+      kind,
+      "--json",
+      "artifacts/grucloud-result.json",
+      "--s3-bucket",
+      bucketUpload,
+      "--s3-key",
+      `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+      ...servicesCmd,
+      args,
+    ],
+    when(() => kind == "list", append(["--graph", "--title", '""'])),
+    when(() => isIn(["apply", "destroy"])(kind), append("--force")),
+
+    callProp("join", " "),
+  ])();
+
+const buildGcFlow = ({
+  repository_url,
+  working_directory,
+  provider_type,
+  bucketUpload,
+  wsUrl,
+  servicesCmd,
+  org_id,
+  project_id,
+  workspace_id,
+  run_id,
+  kind,
+  args,
+}) =>
+  pipe([
+    () => [],
+    when(
+      () => repository_url,
+      pipe([
+        append({
+          name: "rm",
+          run: `rm -rf /tmp/my-repo/`,
+          workingDirectory: `/tmp/`,
+        }),
+        append({
+          name: "echo $GIT_REPO",
+          run: "echo $GIT_REPO",
+        }),
+        append({
+          name: "echo $GIT_BRANCH",
+          run: "echo $GIT_BRANCH",
+        }),
+        append({
+          name: "Clone Repo",
+          run: "git clone $GIT_REPO -b $GIT_BRANCH --depth 1 /tmp/my-repo",
+        }),
+        append({
+          name: "ls",
+          run: "ls -l",
+          workingDirectory: `/tmp/my-repo/${working_directory}`,
+        }),
+        append({
+          name: "npm install",
+          run: "npm install --loglevel=error  --no-audit",
+          workingDirectory: `/tmp/my-repo/${working_directory}`,
+        }),
+      ])
+    ),
+    append({
+      name: `gc ${kind}`,
+      run: `node_modules/.bin/gc ${buildCmd({
+        args,
+        servicesCmd,
+        bucketUpload,
+        wsUrl,
+        provider_type,
+        org_id,
+        project_id,
+        workspace_id,
+        run_id,
+        kind,
+      })}`,
+      workingDirectory: `/tmp/my-repo/${working_directory}`,
+    }),
+    (steps) => ({ steps }),
+    JSON.stringify,
+  ])();
+
+const grucloudEcsTask = ({ config }) =>
+  pipe([
+    ({ env_vars }) => ({
+      config,
+      container: {
+        name: "grucloud-cli",
+        command: [],
+        environment: pipe([
+          () => env_vars,
+          omit(["SERVICES"]),
+          map.entries(([name, value]) => [name, { name, value }]),
+          values,
+        ])(),
+      },
+    }),
+    tap((param) => {
+      assert(true);
+    }),
+    ecsTaskRun,
+    tap((param) => {
+      assert(true);
+    }),
+  ]);
+
 exports.RunApi = ({ app, models }) => {
   const { config } = app;
   const { aws, infra } = config;
@@ -127,9 +277,6 @@ exports.RunApi = ({ app, models }) => {
               workspace_id: () => context.params.workspace_id,
               status: () => "creating",
             }),
-            tap((param) => {
-              assert(true);
-            }),
             models.run.insert,
             tap((param) => {
               assert(true);
@@ -137,15 +284,87 @@ exports.RunApi = ({ app, models }) => {
             assign({
               container_id: (data) =>
                 pipe([
-                  () => ({
-                    attributes: ["env_vars", "provider_type"],
-                    where: pick(["org_id", "project_id", "workspace_id"])(data),
+                  fork({
+                    cloudAuthentication: pipe([
+                      () => ({
+                        attributes: ["env_vars", "provider_type"],
+                        where: pick(["org_id", "project_id", "workspace_id"])(
+                          data
+                        ),
+                      }),
+                      models.cloudAuthentication.findOne,
+                    ]),
+                    project: pipe([
+                      () => ({
+                        attributes: [
+                          "repository_url",
+                          "branch",
+                          "working_directory",
+                          "username",
+                          "password",
+                        ],
+                        where: pick(["org_id", "project_id"])(data),
+                      }),
+                      models.project.findOne,
+                    ]),
+                    servicesCmd: pipe([
+                      get("cloudAuthentication.env_vars.SERVICES", []),
+                      flatMap((service) => ["--include-groups", service]),
+                    ]),
                   }),
-                  models.cloudAuthentication.findOne,
                   tap((param) => {
                     assert(true);
                   }),
                   defaultsDeep(data),
+                  assign({
+                    env_vars: ({
+                      cloudAuthentication,
+                      project,
+                      servicesCmd,
+                      org_id,
+                      project_id,
+                      workspace_id,
+                      run_id,
+                      kind,
+                      args,
+                    }) =>
+                      pipe([
+                        () => cloudAuthentication.env_vars,
+                        defaultsDeep({
+                          DB_URL: config.db.urlDocker ?? config.db.url,
+                          S3_BUCKET: aws.bucketUpload,
+                          S3_BUCKET_KEY: `${org_id}/${project_id}/${workspace_id}/${run_id}/steps.txt`,
+                          GIT_REPO: project.repository_url,
+                          GIT_BRANCH: project.branch,
+                          GC_FLOW: buildGcFlow({
+                            servicesCmd,
+                            repository_url: project.repository_url,
+                            working_directory: project.working_directory,
+                            provider_type: cloudAuthentication.provider_type,
+                            bucketUpload: aws.bucketUpload,
+                            wsUrl: infra.wsUrl,
+                            org_id,
+                            project_id,
+                            workspace_id,
+                            run_id,
+                            kind,
+                            args,
+                          }),
+                          WS_URL: infra.wsUrl,
+                          WS_ROOM: `${org_id}/${project_id}/${workspace_id}/${run_id}`,
+                        }),
+                        transformEnv({
+                          GRUCLOUD_OAUTH_SUBJECT: buildSubject({
+                            org_id,
+                            project_id,
+                            workspace_id,
+                          }),
+                        }),
+                      ])(),
+                  }),
+                  tap((param) => {
+                    assert(true);
+                  }),
                   switchCase([
                     eq(get("engine"), "docker"),
                     pipe([
@@ -155,7 +374,8 @@ exports.RunApi = ({ app, models }) => {
                         workspace_id,
                         run_id,
                         env_vars,
-                        provider_type,
+                        cloudAuthentication,
+                        project,
                       }) => ({
                         containerImage: "grucloud/grucloud-cli",
                         org_id,
@@ -163,13 +383,14 @@ exports.RunApi = ({ app, models }) => {
                         workspace_id,
                         run_id,
                         env_vars,
-                        provider: provider_type,
+                        provider: cloudAuthentication.provider_type,
                         dockerClient: app.dockerClient,
                         GRUCLOUD_OAUTH_SUBJECT: buildSubject({
                           org_id,
                           project_id,
                           workspace_id,
                         }),
+                        project,
                       }),
                       dockerGcCreate,
                       get("Id"),
@@ -177,66 +398,10 @@ exports.RunApi = ({ app, models }) => {
                         assert(Id);
                       }),
                     ]),
+                    eq(get("engine"), "lambda"),
+                    lambdaRun(config),
                     // default is ecs
-                    pipe([
-                      ({
-                        org_id,
-                        project_id,
-                        workspace_id,
-                        run_id,
-                        env_vars,
-                        provider_type,
-                      }) => ({
-                        config,
-                        container: {
-                          name: "grucloud-cli",
-                          command: [
-                            "list",
-                            "--json",
-                            "grucloud-result.json",
-                            "--graph",
-                            "--infra",
-                            `/app/iac.js`,
-                            "--provider",
-                            provider_type,
-                            "--s3-bucket",
-                            aws.bucketUpload,
-                            "--s3-key",
-                            `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-                            "--s3-local-dir",
-                            "/app/artifacts",
-                            "--ws-url",
-                            infra.wsUrl,
-                            "--ws-room",
-                            `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-                            "--title",
-                            "",
-                          ],
-                          environment: pipe([
-                            () => env_vars,
-                            transformEnv({
-                              GRUCLOUD_OAUTH_SUBJECT: buildSubject({
-                                org_id,
-                                project_id,
-                                workspace_id,
-                              }),
-                            }),
-                            map.entries(([name, value]) => [
-                              name,
-                              { name, value },
-                            ]),
-                            values,
-                          ])(),
-                        },
-                      }),
-                      tap((param) => {
-                        assert(true);
-                      }),
-                      ecsTaskRun,
-                      tap((param) => {
-                        assert(true);
-                      }),
-                    ]),
+                    grucloudEcsTask({ config }),
                   ]),
                 ])(),
             }),
@@ -307,7 +472,7 @@ exports.RunApi = ({ app, models }) => {
                     svgUrl: buildS3SignedUrl({
                       config,
                       context,
-                      filename: "artifacts/diagram-live.svg",
+                      filename: "diagram-live.svg",
                     }),
                   }),
                   contextSetOk({ context }),

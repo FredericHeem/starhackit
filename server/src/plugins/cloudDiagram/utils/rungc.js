@@ -3,8 +3,6 @@ const { pipe, tap, assign, get, eq, map, pick } = require("rubico");
 const { values, unless } = require("rubico/x");
 const path = require("path");
 
-const { transformEnv } = require("./envUtils");
-
 exports.DockerGcRun = ({ app, models, ws }) => {
   assert(app);
   assert(models);
@@ -36,21 +34,21 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       () => ({ name: container_id }),
       dockerClient.container.start,
       tap((params) => {
-        ws.send("update status");
+        // ws.send("update status");
         log.debug("DockerGcRun", container_id, "started, wait for completion");
       }),
       // Update status
       () => ({ data: { status: "running" }, where: { container_id } }),
       models.run.update,
       tap((params) => {
-        ws.send("wait for completion");
+        //ws.send("wait for completion");
       }),
       // Wait
       () => ({ name: container_id }),
       dockerClient.container.wait,
       tap((params) => {
         log.debug("DockerGcRun ", container_id, "ended");
-        ws.send("getting container state");
+        //ws.send("getting container state");
       }),
       // Get container state
       () => ({ id: container_id }),
@@ -58,12 +56,13 @@ exports.DockerGcRun = ({ app, models, ws }) => {
       get("State"),
       tap((State) => {
         log.debug(`container state ${JSON.stringify(State)}`);
-        ws.send("saving container state");
+        //ws.send("saving container state");
       }),
       // Save container_state and status to DB
       (container_state) => ({
         status: "completed",
         container_state,
+        updated_at: new Date().toUTCString(),
       }),
       unless(
         eq(get("container_state.ExitCode"), 0),
@@ -142,39 +141,7 @@ exports.DockerGcCreate = ({ app }) => {
       }),
       assign({
         name: () => `${containerName}-${run_id}`,
-        Cmd: ({ outputGcList, outputDot }) => [
-          "list",
-          "--provider",
-          provider,
-          "--s3-bucket",
-          //TODO configure
-          "grucloud-console-dev",
-          "--s3-key",
-          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-          "--s3-local-dir",
-          `/app/${outputDir}`,
-          "--ws-url",
-          "ws://host.docker.internal:9000",
-          "--ws-room",
-          `${org_id}/${project_id}/${workspace_id}/${run_id}`,
-          "--infra",
-          `/app/iac_${provider}.js`,
-          //"--config",
-          //`/app/input/config_${provider}.js`,
-          "--graph",
-          "--types-exclude",
-          "ServiceAccount",
-          "--json",
-          `${outputGcList}`,
-          //"--dot-file",
-          //`${outputDot}`,
-          "--title",
-          "",
-          "--include-groups",
-          "EC2",
-          "--include-groups",
-          "ECS",
-        ],
+        Cmd: () => ["app.handler"],
         outputGcListLocalPath: ({ outputGcList }) =>
           path.resolve(outputDir, outputGcList),
         HostConfig: () => ({
@@ -186,7 +153,6 @@ exports.DockerGcCreate = ({ app }) => {
         Env: () =>
           pipe([
             () => env_vars,
-            transformEnv({ GRUCLOUD_OAUTH_SUBJECT }),
             map.entries(([key, value]) => [key, `${key}=${value}`]),
             values,
           ])(),
@@ -203,7 +169,8 @@ exports.DockerGcCreate = ({ app }) => {
               Cmd,
               Env,
               HostConfig,
-              WorkingDir: `/app/${outputDir}`,
+              WorkingDir: `/app/`,
+              Entrypoint: "/var/task/src/index.js",
             },
           }),
           tap((xxx) => {
